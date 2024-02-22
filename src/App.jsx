@@ -1,6 +1,5 @@
 import React from 'react'
-import Login from './Login/login'
-
+import Login from './Components/Login/login'
 const App = () => {
   return (
     <div className="app">
