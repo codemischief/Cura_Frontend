@@ -3,9 +3,10 @@ import "./login.css";
 import Logo from "../assets/logo.jpg";
 import eyeIcon from "../assets/eye.jpg";
 import { useState, useEffect, useContext } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const login = () => {
+  const navigate = useNavigate();
 
   // Testing User Login info
   const database = [
@@ -27,7 +28,7 @@ const login = () => {
   }
   const [formValues, setFormValues]= useState(initialValues);
   const [formErrors, setFormErrors]= useState({});
-  const [isSubmit, setIsSubmit]= useState(false)
+  const [isSubmit, setIsSubmit]= useState(false);
   const [type, setType] = useState('password');
  
 
@@ -87,6 +88,7 @@ useEffect(() =>{
             // Invalid password
             console.log("invalid password")
           } else {
+            navigate("/dashboard");
             console.log("login successful")
           }
         }else{
