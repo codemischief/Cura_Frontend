@@ -118,6 +118,21 @@ form{
     margin-left: 100px ;
 }
 
+.modified-loginBtn{
+    background-color: #D7D7D7;
+    height: 35px;
+    width: 200px;
+    color: #787878;
+    font-size: 18px;
+    font-weight: 600px;
+    line-height: 24.30px;
+    word-wrap: break-word;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 100px ;
+}
+
 .input_group{
     position:relative;
         padding:0;

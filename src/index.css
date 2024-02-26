@@ -12,3 +12,12 @@ body{
     background: #F5F5F5;
     font-family: "Open Sans", sans-serif;
 }
+/* 
+@layer components{
+    .button-action {
+
+    }
+    .button-action:hover{
+        @apply hover: bg-white text-[#004DD7] 
+    }
+} */
