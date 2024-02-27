@@ -1,5 +1,5 @@
 import React from 'react'
-import Login from './Components/Login/login'
+import Login from './Components/Login';
 import Navbar from './Components/Navbar'
 import Dashboard from './Components/Dashboard'
 import NotFound from "./Components/notFound";
