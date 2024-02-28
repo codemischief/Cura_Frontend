@@ -1,8 +1,9 @@
 import React from "react";
-import Logo from "./assets/logo.jpg";
-import eyeIcon from "./assets/eye.jpg";
+import Logo from "../assets/logo.jpg";
+import eyeIcon from "../assets/eye.jpg";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import bcrypt from 'bcryptjs'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Login = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [type1, setType1] = useState("password");
   const [type2, setType2] = useState("password");
+  const [errorMessage, setErrorMessage] = useState("");
 
 
   // handle changes in input form
@@ -89,13 +91,17 @@ const Login = () => {
       if (userData) {
         if (userData.password !== formValues.password) {
           // Invalid password
+          setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
           console.log("invalid password");
           show();
         } else {
+          const hashedPassword=bcrypt.hashSync(userData.password,10)
+          console.log(hashedPassword)
           navigate("/dashboard");
           console.log("login successful");
         }
       } else {
+        setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
         console.log("user not found");
         show();
       }
@@ -172,13 +178,21 @@ const Login = () => {
                 <div className="text-[12px] text-[#CD0000] ">{formErrors.comkey}</div>
               </div>
             </div>
-            <div id="inputError" className="w-[450px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[14px] invisible">
-              Incorrect username,password or Company Key. Please enter the Correct Information and try again.
-            </div>
+
+             {/* to create a space  */}
+            <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>  
+
+            {/* error message  */}
+           {isSubmit && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
+              {errorMessage}
+            </div>}
+
+            {/* forgot section */}
             <div className="flex flex-col items-center justify-center gap-[10px]">
               <Link className="text-[#004DD7] text-[18px] cursor-pointer" to="/">Forget your password?</Link>
               <button className="bg-[#004DD7] w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer">Login</button>
             </div>
+            
           </form>
         </div>
       </div>

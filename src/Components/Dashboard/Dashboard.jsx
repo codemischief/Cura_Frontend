@@ -1,5 +1,5 @@
 import React from "react";
-import searchIcon from "./assets/searchIcon.png";
+import searchIcon from "../assets/searchIcon.png";
 import {Outlet} from "react-router-dom";
 
 const Dashboard = () => {

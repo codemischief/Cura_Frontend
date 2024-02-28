@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import Back from "./assets/back.png";
-import searchIcon from "./assets/searchIcon.png";
-import Next from "./assets/next.png";
-import Refresh from "./assets/refresh.png";
-import Download from "./assets/download.png";
+import Back from "../assets/back.png";
+import searchIcon from "../assets/searchIcon.png";
+import Next from "../assets/next.png";
+import Refresh from "../assets/refresh.png";
+import Download from "../assets/download.png";
 
-const ManageUser = () => {
+const Country = () => {
   return (
     <div>
       <div>
@@ -21,8 +21,8 @@ const ManageUser = () => {
               </Link>
             </div>
             <div>
-              <div className="text-md">Manage User</div>
-              <div className="text-[12px]">Admin - Manage User</div>
+              <div className="text-md">Country</div>
+              <div className="text-[12px]">Admin - Country</div>
             </div>
           </div>
           <div className="flex justify-center items-center gap-[20px]">
@@ -42,27 +42,11 @@ const ManageUser = () => {
           </div>
         </div>
         <hr className="m-[10px]" />
-        <div className="flex justify-evenly items-center">
+        <div className="flex justify-between items-center mx-[40px]">
           <input
             className="bg-[#F5F5F5] h-[23px] w-[115px] rounded-md text-[11px]"
             type="text"
-            placeholder=" Search Name"
-          />
-          <input
-            className="bg-[#F5F5F5] h-[23px] w-[115px] rounded-md text-[11px]"
-            type="text"
-            placeholder=" Search Username"
-          />
-
-          <input
-            className="bg-[#F5F5F5] h-[23px] w-[115px] rounded-md text-[11px]"
-            type="text"
-            placeholder=" Role"
-          />
-          <input
-            className="bg-[#F5F5F5] h-[23px] w-[115px] rounded-md text-[11px]"
-            type="text"
-            placeholder=" Status"
+            placeholder="Country"
           />
           <input
             className="bg-[#F5F5F5] h-[23px] w-[115px] rounded-md text-[11px]"
@@ -97,7 +81,7 @@ const ManageUser = () => {
         </footer>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ManageUser;
+export default Country
