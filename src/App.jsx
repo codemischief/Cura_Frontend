@@ -8,6 +8,7 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
+import AddNewUser from './Components/ManageUser/addNewUser';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 const App = () => {
@@ -76,6 +77,10 @@ const App = () => {
           element: <Navbar />
         },
       ],
+    },
+    {
+      path: '/addnewuser',
+      element: <AddNewUser />,
     },
   ])
   return (
