@@ -2,17 +2,23 @@ import React from 'react';
 import logo from '../assets/logo-white1.jpg';
 import LogoutIcon from '../assets/logout.png';
 import { Link } from 'react-router-dom';
-
+import { useState } from 'react';
 const Navbar = () => {
-  const display = () => {
-    let element = document.getElementById("dashboard");
-    // if(element.style.display=="hidden"){
-    element.style.display = "inline-block";
-    // }
-    // else{
-    //   element.style.display="hidden";
-    // }
-  }
+  const [isToggledDash, setIsToggled] = useState(false);
+  // const [isToggledAdmin, setIsToggledAdmin] = useState(false);
+
+  const handleChange = (e) => {
+    console.log(e)
+    console.log(e.target.outerText)
+    setIsToggled(!isToggledDash);
+  };
+  // const display = () => {
+  //   let element = document.getElementById("dashboard");
+  //   switch (element){
+
+  //   }
+    
+  // }
   return (
     <>
       <div className="bg-[#004DD7] h-[65px] flex items-center space-x-[240px]">
@@ -27,7 +33,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex items-center text-white space-x-[50px]">
-          <button className="" onClick={display} ><Link to="/dashboard">DashBoard</Link></button>
+          <button className="" onClick={handleChange} id="dashboard"><Link to="/dashboard">DashBoard</Link></button>
           <button><Link to="#">Change Password</Link></button>
           <div className="flex items-center space-x-2">
             <img className="w-[18xp] h-[18px] " src={LogoutIcon} alt="logout-icon" />
@@ -36,7 +42,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="w-[1200px] h-[300] absolute top-[65px] left-[35px] bg-white rounded-xl px-[25px] py-[15px] drop-shadow-md flex hidden" id="dashboard">
+    {isToggledDash &&  <div className="w-[1200px] h-[300] absolute top-[65px] left-[35px] bg-white rounded-xl px-[25px] py-[15px] drop-shadow-md flex " id="dashboard">
         <div className="w-[240px] space-y-[15px] mr-[45px]">
           <div className="text-[24px] ">Home</div>
           <div className='text-[14px]'>DashBoard of all</div>
@@ -70,7 +76,7 @@ const Navbar = () => {
           <div className="text-[24px]">Data management</div>
           <div className='text-[14px]'>Delete by ID</div>
         </div>
-      </div>
+      </div>}
 
       <div className="w-[1200px] h-[300] absolute top-[65px] left-[35px] bg-white rounded-xl px-[25px] py-[15px] drop-shadow-md flex hidden" id="admin">
         <div className="w-[300px] space-y-[15px]">
