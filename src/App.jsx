@@ -8,7 +8,6 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
-import AddNewUser from './Components/ManageUser/addNewUser';
 import AddNewEmp from './Components/ManageUser/addNewEmp';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
@@ -79,10 +78,10 @@ const App = () => {
         },
       ],
     },
-    {
-      path: '/addnewuser',
-      element: <AddNewUser />,
-    },
+    // {
+    //   path: '/addnewuser',
+    //   element: <AddNewUser />,
+    // },
     {
       path: '/addnewemp',
       element: <AddNewEmp />,

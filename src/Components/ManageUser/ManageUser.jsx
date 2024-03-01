@@ -5,13 +5,77 @@ import searchIcon from "../assets/searchIcon.png";
 import Next from "../assets/next.png";
 import Refresh from "../assets/refresh.png";
 import Download from "../assets/download.png";
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import AddNewUserDialogue from "./AddNewUserDialogue";
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
 const ManageUser = () => {
+  const [open,setOpen] = React.useState(false);
+
+  const handleOpenAddUser = () => {
+      // this is the function that handles when we add new user
+      setOpen(true);
+  }
+  const handleCloseAddUser = () => {
+    setOpen(false);
+  }
   return (
     <div>
       <div>
         <Outlet />
       </div>
+      <BootstrapDialog
+        // maxWidth="700px"
+        fullWidth
+  maxWidth="md"
+        onClose={handleCloseAddUser}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+          Add New User
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleCloseAddUser}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers>
+          
+            <AddNewUserDialogue/>
+         
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleCloseAddUser}>
+            Save changes
+          </Button>
+        </DialogActions>
+      </BootstrapDialog>
+      
+      
+
+      {/* above is the dialogue box */}
       <div className="mx-[10px] mt-[10px] px-[20px] pt-[10xp] bg-white w-[1260px] h-[500px] rounded-sm">
         <div className="flex items-center gap-[600px] h-[45px]">
           <div className="flex items-center gap-[10px]">
@@ -36,8 +100,9 @@ const ManageUser = () => {
                 <img className="h-[26px] " src={searchIcon} alt="search-icon" />
               </div>
             </div>
-            <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg">
+            <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpenAddUser}>
               Add New user   +
+              {/* clicking this should open the modal */}
             </button>
           </div>
         </div>
