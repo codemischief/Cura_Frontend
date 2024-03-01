@@ -11,7 +11,7 @@ const addNewEmp = () => {
                         <div className="text-[16px]">Add New Employee</div>
                     </div>
                     <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                        <Link to="/manageuser"><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></Link>
+                        <Link to="/manageemployees"><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></Link>
                     </div>
                 </div>
                 <form>

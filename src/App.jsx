@@ -8,10 +8,12 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
+
 import AddNewUser from './Components/ManageUser/addNewUser';
 import AddNewEmp from './Components/ManageUser/addNewEmp';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
+import ManageEmployees from './Components/ManageUser/ManageEmployees';
 const App = () => {
   const router= createBrowserRouter([
     {
@@ -32,6 +34,16 @@ const App = () => {
     {
       path: '/manageuser',
       element: <ManageUser />,
+      children: [
+        {
+          path: '',
+          element: <Navbar />
+        },
+      ],
+    },
+    {
+      path: '/manageemployees',
+      element: <ManageEmployees />,
       children: [
         {
           path: '',
