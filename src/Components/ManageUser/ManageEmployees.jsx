@@ -8,7 +8,7 @@ import Refresh from "../assets/refresh.png";
 import Download from "../assets/download.png";
 // import DialogTitle from "@mui/material/DialogTitle";
 // import Dialog from "@mui/material/Dialog";
-import EmpDailog from "../modals/EmpDailog"
+import EmpDailog from "../modals/EmpDailog";
 // import Cross from "../assets/cross.png";
 
 

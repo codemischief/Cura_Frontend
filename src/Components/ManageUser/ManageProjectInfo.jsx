@@ -8,10 +8,10 @@ import Refresh from "../assets/refresh.png";
 import Download from "../assets/download.png";
 // import DialogTitle from "@mui/material/DialogTitle";
 // import Dialog from "@mui/material/Dialog";
-import UserDialog from "../modals/UserDialog";
+import ProjectDialog from "../modals/ProjectDailog";
 // import Cross from "../assets/cross.png";
 
-const ManageUser = () => {
+const manageProjectInfo = () => {
   const [ openDialog, setOpenDialog ] = useState(false);
 
     const handleOpenDialog = () => {
@@ -22,7 +22,7 @@ const ManageUser = () => {
       <div>
         <Outlet />
       </div>   
-      <UserDialog openDialog={openDialog} setOpenDialog={setOpenDialog}></UserDialog>
+      <ProjectDialog openDialog={openDialog} setOpenDialog={setOpenDialog}></ProjectDialog>
       <div className="mx-[10px] mt-[10px] px-[20px] pt-[10xp] bg-white w-[1260px] h-[500px] rounded-sm">
         <div className="flex items-center gap-[600px] h-[45px]">
           <div className="flex items-center gap-[10px]">
@@ -32,8 +32,8 @@ const ManageUser = () => {
               </Link>
             </div>
             <div>
-              <div className="text-md">Manage User</div>
-              <div className="text-[12px]">Admin - Manage User</div>
+              <div className="text-md">Manage Project</div>
+              <div className="text-[12px]">Manage - Manage Project</div>
             </div>
           </div>
           <div className="flex justify-center items-center gap-[20px]">
@@ -48,7 +48,7 @@ const ManageUser = () => {
               </div>
             </div>
             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpenDialog}>
-              Add New user   +
+              Add New Project   +
               {/* clicking this should open the modal */}
             </button>
           </div>
@@ -112,4 +112,4 @@ const ManageUser = () => {
   );
 };
 
-export default ManageUser;
+export default manageProjectInfo;
