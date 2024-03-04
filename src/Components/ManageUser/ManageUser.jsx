@@ -46,8 +46,8 @@ const ManageUser = () => {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Add New User
+        <DialogTitle sx={{ m: 0, p: 2,}} id="customized-dialog-title">
+          <div className="text-center ">Add New User</div>
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -66,11 +66,6 @@ const ManageUser = () => {
             <AddNewUserDialogue/>
          
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleCloseAddUser}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
       
       
