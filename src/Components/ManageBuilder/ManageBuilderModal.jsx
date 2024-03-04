@@ -78,9 +78,6 @@ const ManageBuilderModal = (props) => {
             if (!values.email1) {
             errors.email1 = "Enter Email";
             }
-            if (!values.email) {
-            errors.email = "Enter email addresss";
-            }
             if (!values.address1) {
             errors.address1 = "Enter Builder Adress";
             }
@@ -177,7 +174,7 @@ const ManageBuilderModal = (props) => {
                                                     </option>
                                                     ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">City<label className="text-red-500">*</label></div>
@@ -188,7 +185,7 @@ const ManageBuilderModal = (props) => {
                                                     </option>
                                                     ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">ZIP Code</div>
