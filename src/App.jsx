@@ -8,8 +8,6 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
-
-import AddNewEmp from './Components/ManageUser/addNewEmp';
 import ManageProjectInfo from './Components/ManageUser/ManageProjectInfo';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
