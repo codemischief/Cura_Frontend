@@ -4,7 +4,24 @@ import LogoutIcon from '../assets/logout.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 const Navbar = () => {
+
+  const navigationMenu = [
+    {name:"Admin",link:""},
+    {name:"Manage",link:"/manageuser"},
+    {name:"task",link:"#"},
+    {name:"Report",link:"#"},
+    {name:"Research",link:"#"},
+  ]
  
+  const home =[
+    "DashBoard of all", "Monthly Margin-LOB-Receipt-Payments","Monthly Margin-Entity-Receipt-Payments","Monthly Margin-LOB-Receipt-Payments Consolidated",
+    "Monthly Margin-LOB-Receipt-Payments Consolidated"
+  ]
+  const Personnel = [ "Users","Employees","Contractual Payment"];
+  const Offerrings = ["LOB (Line of Business)","Services"];
+  const Locations = ["Country","State","City","Locality"];
+
+
   const [isToggledDash, setIsToggled] = useState(false);
   const [isToggledAdmin, setIsToggledAdmin] = useState(false);
   const [isToggledManage, setIsToggledManage] = useState(false);
@@ -41,11 +58,9 @@ const Navbar = () => {
         <div className=" ml-[35px] flex space-x-[50px]">
           <img className="w-[68px]" src={logo} alt="company logo" />
           <div className="text-white space-x-[40px]">
-            <button className="" onClick={handleChange} id='admin'><Link to="">Admin</Link></button>
-            <button onClick={handleChange}><Link to="/manageuser">Manage</Link></button>
-            <button><Link to="#">task</Link></button>
-            <button><Link to="#">Report</Link></button>
-            <button><Link to="#">Research</Link></button>
+          {navigationMenu.map((item) => (
+            <button className="" onClick={handleChange} ><Link to="">{item.name}</Link></button>
+          ))}
           </div>
         </div>
         <div className="flex items-center text-white space-x-[50px]">
@@ -61,31 +76,36 @@ const Navbar = () => {
     {isToggledDash &&  <div className="w-[1200px] h-[300] absolute top-[65px] left-[35px] bg-white rounded-xl px-[25px] py-[15px] drop-shadow-md flex " id="dashboard">
         <div className="w-[240px] space-y-[15px] mr-[45px]">
           <div className="text-[24px] ">Home</div>
-          <div className='text-[14px]'>DashBoard of all</div>
-          <div className='text-[14px]'>Monthly Margin-LOB-Receipt-Payments</div>
-          <div className='text-[14px]'>Monthly Margin-Entity-Receipt-Payments</div>
-          <div className='text-[14px]'>Monthly Margin-LOB-Receipt-Payments Consolidated</div>
+          {home.map((item) => (
+            <div className='text-[14px]'>{item}</div>
+          ))}
         </div>
         <div class="absolute left-[264px] -ml-0.5 w-[2px] h-[240px] bg-[#CBCBCB]"></div>
         <div className="w-[240px] space-y-[15px]">
           <div className="text-[24px]">Personnel</div>
-          <div className='text-[14px]'>Users</div>
-          <div className='text-[14px]'>Employees</div>
-          <div className='text-[14px]'>Contractual Payment</div>
+          {
+            Personnel.map((item) => (
+              <div className='text-[14px]'>{item}</div>
+            ))
+          }
         </div>
         <div class="absolute left-[485px] -ml-0.5 w-[2px] h-[240px] bg-[#CBCBCB]"></div>
         <div className="w-[240px] space-y-[15px]">
           <div className="text-[24px]">Offerrings</div>
-          <div className='text-[14px]'>LOB (Line of Business)</div>
-          <div className='text-[14px]'>Services</div>
+          {
+            Offerrings.map((item) => (
+              <div className='text-[14px]'>{item}</div>
+            ))
+          }
         </div>
         <div class="absolute left-[700px] -ml-0.5 w-[2px] h-[240px] bg-[#CBCBCB]"></div>
         <div className="w-[240px] space-y-[15px]">
           <div className="text-[24px]">Locations</div>
-          <div className='text-[14px]'>Country</div>
-          <div className='text-[14px]'>State</div>
-          <div className='text-[14px]'>City</div>
-          <div className='text-[14px]'>Locality</div>
+          {
+            Locations.map((item) => (
+              <div className='text-[14px]'>{item}</div>
+            ))
+          }
         </div>
         <div class="absolute left-[920px] -ml-0.5 w-[2px] h-[240px] bg-[#CBCBCB]"></div>
         <div className="w-[240px] space-y-[15px]">
@@ -97,9 +117,11 @@ const Navbar = () => {
      {isToggledAdmin && <div className="w-[1200px] h-[300] absolute top-[65px] left-[35px] bg-white rounded-xl px-[25px] py-[15px] drop-shadow-md flex " id="admin">
         <div className="w-[300px] space-y-[15px]">
           <div className="text-[24px]">Personnel</div>
-          <div className='text-[14px]'>Users</div>
-          <div className='text-[14px]'>Employees</div>
-          <div className='text-[14px]'>Contractual Payment</div>
+          {
+            Personnel.map((item) => (
+              <div className='text-[14px]'>{item}</div>
+            ))
+          }
           <div className="pt-[10px] w-[200px] space-y-[10px]">
             <div className="text-[24px]">Margin report</div>
             <div className='text-[14px]'>Monthly Margin-LOB-Receipt-Payments</div>
@@ -110,16 +132,20 @@ const Navbar = () => {
         <div class="absolute left-[264px] -ml-0.5 w-[2px] h-[350px] bg-[#CBCBCB]"></div>
         <div className="w-[300px] space-y-[15px]">
           <div className="text-[24px]">Offerrings</div>
-          <div className='text-[14px]'>LOB (Line of Business)</div>
-          <div className='text-[14px]'>Services</div>
+          {
+            Offerrings.map((item) => (
+              <div className='text-[14px]'>{item}</div>
+            ))
+          }
         </div>
         <div class="absolute left-[525px] -ml-0.5 w-[2px] h-[350px] bg-[#CBCBCB]"></div>
         <div className="w-[300px] space-y-[15px]">
           <div className="text-[24px]">Locations</div>
-          <div className='text-[14px]'><Link to="/Country">Country</Link></div>
-          <div className='text-[14px]'><Link to="/State">State</Link></div>
-          <div className='text-[14px]'><Link to="/City">City</Link></div>
-          <div className='text-[14px]'><Link to="/Locality">Locality</Link></div>
+         {
+            Locations.map((item) => (
+              <div className='text-[14px]'>{item}</div>
+            ))
+          }
         </div>
         <div class="absolute left-[810px] -ml-0.5 w-[2px] h-[350px] bg-[#CBCBCB]"></div>
         <div className="w-[300px] space-y-[15px]">

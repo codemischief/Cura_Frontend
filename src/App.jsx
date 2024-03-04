@@ -12,7 +12,7 @@ import ManageUser from './Components/ManageUser/ManageUser';
 import AddNewUser from './Components/ManageUser/addNewUser';
 import AddNewEmp from './Components/ManageUser/addNewEmp';
 
-import { createBrowserRouter,RouterProvider } from 'react-router-dom';
+import { createBrowserRouter,RouterProvider, Routes ,Route} from 'react-router-dom';
 import ManageEmployees from './Components/ManageUser/ManageEmployees';
 const App = () => {
   const router= createBrowserRouter([
@@ -100,8 +100,20 @@ const App = () => {
       element: <AddNewEmp />,
     },
   ])
+
+  const User = {
+    Registered: "registered",
+    Public : "public",
+    Admin:"admin"
+  }
+
+  const Current_User = User.Registered;
   return (
     <div className="app">
+      {/* <Routes>
+      <Route path="" element={<Login />} />
+      
+      </Routes> */}
       <RouterProvider router={router}/>
     </div>
   )

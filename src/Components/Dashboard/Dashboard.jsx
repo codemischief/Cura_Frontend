@@ -24,14 +24,14 @@ const Dashboard = () => {
                     </div>
                     <table className="ml-[15px] mt-[7px] w-[1100px] h-[170px] ">
                         <thead className="text-left">
-                            <tr>
+                            <tr >
                                 <th>Sr.</th>
                                 <th>Order Status</th>
                                 <th>Count</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr className="hover:bg-blue-700">
                                 <td>01</td>
                                 <td>billed</td>
                                 <td>37</td>
