@@ -13,6 +13,7 @@ import AddNewEmp from './Components/ManageUser/addNewEmp';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import ManageEmployees from './Components/ManageUser/ManageEmployees';
+import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
 const App = () => {
   const router= createBrowserRouter([
     {
@@ -43,6 +44,16 @@ const App = () => {
     {
       path: '/manageemployees',
       element: <ManageEmployees />,
+      children: [
+        {
+          path: '',
+          element: <Navbar />
+        },
+      ],
+    },
+    {
+      path: '/managebuilder',
+      element: <ManageBuilder />,
       children: [
         {
           path: '',
