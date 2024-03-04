@@ -97,7 +97,7 @@ const ManageUser = () => {
                 placeholder="  Search"
               />
               <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                {/* <img className="h-[26px] " src={searchIcon} alt="search-icon" /> */}
+                <img className="h-[26px] " src={searchIcon} alt="search-icon" />
               </div>
             </div>
             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpenAddUser}>
