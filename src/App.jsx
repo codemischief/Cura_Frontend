@@ -8,8 +8,7 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
-
-import AddNewEmp from './Components/ManageUser/addNewEmp';
+import ManageProjectInfo from './Components/ManageUser/ManageProjectInfo';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import ManageEmployees from './Components/ManageUser/ManageEmployees';
@@ -43,6 +42,16 @@ const App = () => {
     {
       path: '/manageemployees',
       element: <ManageEmployees />,
+      children: [
+        {
+          path: '',
+          element: <Navbar />
+        },
+      ],
+    },
+    {
+      path: '/manageprojectinfo',
+      element: <ManageProjectInfo />,
       children: [
         {
           path: '',
@@ -98,10 +107,10 @@ const App = () => {
     //   path: '/addnewuser',
     //   element: <AddNewUser />,
     // },
-    {
-      path: '/addnewemp',
-      element: <AddNewEmp />,
-    },
+    // {
+    //   path: '/addnewemp',
+    //   element: <AddNewEmp />,
+    // },
   ])
   return (
     <div className="app">
