@@ -1,16 +1,18 @@
 import React from "react";
 import Logo from "../assets/logo.jpg";
 import eyeIcon from "../assets/eye.jpg";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import useAuth from "../../context/useAuth";
 import bcrypt from 'bcryptjs'
-import AuthContext from "../../context/AuthProvider";
+
 import axios from "../Config/axios";
 
 
 const Login = () => {
+  const  {setAuth} =useAuth();
   const navigate = useNavigate();
-  const {setAuth} = useContext(AuthContext)
+
 
   const LOGIN_URL="/validateCredentials"
 

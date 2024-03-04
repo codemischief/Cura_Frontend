@@ -8,13 +8,17 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
+import RequireAuth from './context/RequireAuth';
+
 
 import AddNewUser from './Components/ManageUser/addNewUser';
 import AddNewEmp from './Components/ManageUser/addNewEmp';
 
+
 import { createBrowserRouter,RouterProvider, Routes ,Route} from 'react-router-dom';
 import ManageEmployees from './Components/ManageUser/ManageEmployees';
 const App = () => {
+
   const router= createBrowserRouter([
     {
       path: '/',
@@ -110,11 +114,18 @@ const App = () => {
   const Current_User = User.Registered;
   return (
     <div className="app">
-      {/* <Routes>
+      <Routes>
+        {/* public routes */}
       <Route path="" element={<Login />} />
-      
-      </Routes> */}
-      <RouterProvider router={router}/>
+
+      {/* private routes */}
+      <Route element={<RequireAuth/>}>
+      <Route path="/dashboard" element={<Dashboard />}/>
+      </Route>
+
+      <Route path="/*" element={<NotFound />}/>
+      </Routes>
+      {/* <RouterProvider router={router}/> */}
     </div>
   )
 }
