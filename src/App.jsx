@@ -94,6 +94,10 @@ const App = () => {
     //   path: '/addnewuser',
     //   element: <AddNewUser />,
     // },
+    // {
+    //   path: '/addnewuser',
+    //   element: <AddNewUser />,
+    // },
     {
       path: '/addnewemp',
       element: <AddNewEmp />,
