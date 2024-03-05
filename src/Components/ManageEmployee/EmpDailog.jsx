@@ -132,8 +132,8 @@ const EmpDailog = (props) => {
             fullWidth={true}
             maxWidth={'md'} >
 
-            <div className='flex justify-center mt-[20px]'>
-                <div className="w-[1050px] h-[580px] bg-white rounded-lg">
+            <div className='flex justify-center '>
+                <div className="w-[1050px] h-auto bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
                             <div className="text-[16px]">Add New Employee</div>
@@ -286,8 +286,7 @@ const EmpDailog = (props) => {
                             </div>
                         </div>
                         <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
-                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-
+                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                         </div>

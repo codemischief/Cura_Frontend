@@ -8,11 +8,13 @@ import City from './Components/Admin/City';
 import Locality from './Components/Admin/Locality';
 import State from './Components/Admin/State';
 import ManageUser from './Components/ManageUser/ManageUser';
-import ManageProjectInfo from './Components/ManageUser/ManageProjectInfo';
+import ManageProjectInfo from './Components/ManageProjectInfo/ManageProjectInfo';
+import ManageOrder from './Components/ManageOrder/ManageOrder';
+import ManageEmployees from './Components/ManageEmployee/ManageEmployees';
+import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
-import ManageEmployees from './Components/ManageUser/ManageEmployees';
-import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
+
 const App = () => {
   const router= createBrowserRouter([
     {
@@ -63,6 +65,16 @@ const App = () => {
     {
       path: '/manageprojectinfo',
       element: <ManageProjectInfo />,
+      children: [
+        {
+          path: '',
+          element: <Navbar />
+        },
+      ],
+    },
+    {
+      path: '/manageOrder',
+      element: <ManageOrder />,
       children: [
         {
           path: '',

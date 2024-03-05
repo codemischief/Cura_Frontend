@@ -7,22 +7,37 @@ import Next from "../assets/next.png";
 import Refresh from "../assets/refresh.png";
 import Download from "../assets/download.png";
 // import DialogTitle from "@mui/material/DialogTitle";
-// import Dialog from "@mui/material/Dialog";
-import UserDialog from "./UserDialog";
+import ManageOrderModal from "./ManageOrderModel";
 // import Cross from "../assets/cross.png";
 
-const ManageUser = () => {
+const ManageOrder = (props) => {
+
   const [ openDialog, setOpenDialog ] = useState(false);
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
     };
+  
+  // const [openDialog, handleDisplay] = React.useState(false);
+
+  // const handleClose = () => {
+  //    handleDisplay(false);
+  // };
+
+  // const openDialogBox = () => {
+  //    handleDisplay(true);
+  // };
+ 
+
+
   return (
     <div>
       <div>
         <Outlet />
-      </div>   
-      <UserDialog openDialog={openDialog} setOpenDialog={setOpenDialog}></UserDialog>
+      </div>
+      <ManageOrderModal openDialog={openDialog} setOpenDialog={setOpenDialog}></ManageOrderModal> 
+
+   
       <div className="mx-[10px] mt-[10px] px-[20px] pt-[10xp] bg-white w-[1260px] h-[500px] rounded-sm">
         <div className="flex items-center gap-[600px] h-[45px]">
           <div className="flex items-center gap-[10px]">
@@ -32,8 +47,8 @@ const ManageUser = () => {
               </Link>
             </div>
             <div>
-              <div className="text-md">Manage User</div>
-              <div className="text-[12px]">Admin - Manage User</div>
+              <div className="text-md">Manage Order</div>
+              <div className="text-[12px]">Manage - Manage Order</div>
             </div>
           </div>
           <div className="flex justify-center items-center gap-[20px]">
@@ -48,8 +63,7 @@ const ManageUser = () => {
               </div>
             </div>
             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpenDialog}>
-              Add New user   +
-              {/* clicking this should open the modal */}
+              Add New Order  +
             </button>
           </div>
         </div>
@@ -112,4 +126,4 @@ const ManageUser = () => {
   );
 };
 
-export default ManageUser;
+export default ManageOrder;
