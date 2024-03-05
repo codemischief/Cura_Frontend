@@ -15,11 +15,9 @@ import ManageBuilderModal from "./ManageBuilderModal";
 const ManageBuilder = (props) => {
 
   const [ openDialog, setOpenDialog ] = useState(false);
-
     const handleOpenDialog = () => {
         setOpenDialog(true);
     };
-  
   // const [openDialog, handleDisplay] = React.useState(false);
 
   // const handleClose = () => {
