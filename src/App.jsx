@@ -14,8 +14,7 @@ import ManageEmployees from './Components/ManageEmployee/ManageEmployees';
 import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
-import ManageEmployees from './Components/ManageUser/ManageEmployees';
-import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
+
 const App = () => {
   const router= createBrowserRouter([
     {
