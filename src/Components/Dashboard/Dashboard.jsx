@@ -5,7 +5,7 @@ import {Outlet} from "react-router-dom";
 const Dashboard = () => {
     return (
         <div>
-            <div className="flex flex-col">
+            <div >
                 <Outlet />
             </div>
             <div className="ml-[35px] mt-[27px]">
