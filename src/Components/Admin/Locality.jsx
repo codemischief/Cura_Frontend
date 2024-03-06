@@ -36,7 +36,7 @@ const Locality = () => {
   return (
     <div>
       <Navbar/>
-      <div className='flex-col w-screen h-full  bg-white'>
+      <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
             {/* this div will have all the content */}
             <div className='w-full  flex-col px-6'>
@@ -81,7 +81,7 @@ const Locality = () => {
                 </div>
             </div>
 
-            <div className='w-full h-[509.5px] bg-white px-6'>
+            <div className='w-full h-[400px] bg-white px-6'>
                 <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-3/4 flex'>
                       <div className='w-1/6 p-4'>
