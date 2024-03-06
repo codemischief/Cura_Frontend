@@ -13,6 +13,7 @@ import ManageOrder from './Components/ManageOrder/ManageOrder';
 import ManageEmployees from './Components/ManageEmployee/ManageEmployees';
 import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
 
+import Prospect from './Components/Prospect/Prospect';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 
@@ -122,6 +123,10 @@ const App = () => {
           element: <Navbar />
         },
       ],
+    },
+    {
+      path: '/prospect',
+      element: <Prospect />,
     },
   ])
   return (
