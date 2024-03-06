@@ -7,9 +7,28 @@ import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import Checkbox from '@mui/material/Checkbox';
+import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
+import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
+import BankDetails from "./ManageProjectInfoForm/BankDetails";
 
 const projectDialog = (props) => {
     //For closing a modal 
+    const [selectedDialogue,setSelectedDialogue] = useState(1);
+    const selectFirst = () => {
+       setSelectedDialogue(1);
+    }
+    const selectSecond = () => {
+        setSelectedDialogue(2);
+    }
+    const selectThird = () => {
+        setSelectedDialogue(3);
+    }
+    const selectFourth = () => {
+        setSelectedDialogue(4);
+    }
+    const selectFifth = () => {
+        setSelectedDialogue(5);
+    }
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     };
@@ -91,26 +110,26 @@ const projectDialog = (props) => {
         <Modal open={props.openDialog}
             fullWidth={true}
             maxWidth={'md'} >
-
-            <div className='flex justify-center'>
+            <>
+            <div className='flex justify-center mt-[50px]'>
                 <div className="w-50 h-auto bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
                             <div className="text-[16px]">New project</div>
                         </div>
-                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <Link to="/manageprojectinfo"><img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></Link>
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
+                            <button onClick={handleDialogClose}><img  className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
                         </div>
                     </div>
                     <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
                         <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40" >
-                            <Link to="/projectinfosec">Project Information</Link>
+                            <button onClick={selectFirst}><div>Project Information</div></button>
                         </div>
                         <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
-                            <div>Project details</div>
+                            <button onClick={selectSecond}><div>Project details</div></button>
                         </div>
                         <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
-                            <div>Bank details</div>
+                            <button onClick={selectThird}><div>Bank details</div></button>
                         </div>
                         <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
                             <div>Contacts</div>
@@ -119,119 +138,25 @@ const projectDialog = (props) => {
                             <div>Photos</div>
                         </div>
                     </div>
-                    <form onSubmit={handleSubmit}>
-                        <div className="flex items-center justify-evenly">
-                            <div className="space-y-2">
-                                <div className="">
-                                    <div>Project Name <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="projectName" value={formValues.projectName} onChange={handleChange} />
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.projectName}</div>
-                                </div>
-                                <div className="">
-                                    <div>Project Type <label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="projectType" value={formValues.projectType} onChange={handleChange} >
-                                            {selectedProjectType.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.projectType}</div>
-                                </div>
-                                <div className="">
-                                    <div>Address Line 1 <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="addressLine1" value={formValues.addressLine1} onChange={handleChange}/>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.addressLine1}</div>
-                                </div>
-                                <div className="">
-                                    <div>Country<label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
-                                            {selectedCountry.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
-                                </div>
-                                <div className="">
-                                    <div>State<label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
-                                            {selectedState.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
-                                </div>
-                                <div className="">
-                                    <div>City<label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
-                                            {selectedCity.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
-                                </div>
-                                <div className="">
-                                    <div>Suburb<label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="suburb" value={formValues.suburb} onChange={handleChange}/>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <div className="">
-                                    <div>Builder Name <label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="builderName" value={formValues.builderName} onChange={handleChange} >
-                                            {selectedBuilderName.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div>
-                                </div>
-                                <div className="">
-                                    <div>Mailing Group</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Address Line 2</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Zip code</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Nearest Landmark</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Subscribed E-mail</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Website</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex justify-center items-center space-x-2">
-                            <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet woking bachlors allowed</div>
-                            <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet student allowed</div>
-                            <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet Foreigners allowed</div>
-                        </div>
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                    <form>
+                        
+
+                        
+                        {selectedDialogue == 1 && <ProjectInformation/>}
+                        {selectedDialogue == 2 && <ProjectDetails/>}
+                        {selectedDialogue == 3 && <BankDetails/>}
+                        
+                        <div className="my-8 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md'>Cancel</button>
                         </div>
                     </form>
+                    
                 </div>
+                
             </div>
+            
+            </>
         </Modal>
 
 
