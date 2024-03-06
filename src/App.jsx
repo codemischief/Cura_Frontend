@@ -12,7 +12,7 @@ import ManageProjectInfo from './Components/ManageProjectInfo/ManageProjectInfo'
 import ManageOrder from './Components/ManageOrder/ManageOrder';
 import ManageEmployees from './Components/ManageEmployee/ManageEmployees';
 import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
-import ProjectInfoSec from './Components/ManageProjectInfo/ProjectInfoSec'
+import Prospect from './Components/Prospect/Prospect';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 
@@ -124,21 +124,9 @@ const App = () => {
       ],
     },
     {
-      path: '/projectinfosec',
-      element: <ProjectInfoSec />,
+      path: '/prospect',
+      element: <Prospect />,
     },
-    // {
-    //   path: '/addnewuser',
-    //   element: <AddNewUser />,
-    // },
-    // {
-    //   path: '/addnewuser',
-    //   element: <AddNewUser />,
-    // },
-    // {
-    //   path: '/addnewemp',
-    //   element: <AddNewEmp />,
-    // },
   ])
   return (
     <div className="app">
