@@ -147,7 +147,7 @@ const UserDialog = (props) => {
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
                                         <div className="text-[14px]">Name of the User<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="nameOfuser" value={formValues.nameOfTheUser} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="nameOfTheUser" value={formValues.nameOfTheUser} onChange={handleChange} />
                                         <div className="text-[12px] text-[#CD0000] ">{formErrors.nameOfTheUser}</div>
                                     </div>
                                     <div className="">

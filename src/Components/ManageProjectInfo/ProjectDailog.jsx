@@ -8,24 +8,40 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 import Checkbox from '@mui/material/Checkbox';
 
-import ProjectDialogHeader from "./ProjectDialogHeader";
 const projectDialog = (props) => {
-    const [ openDialog, setOpenDialog ] = useState(props.openDialog);
     //For closing a modal 
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     };
 
+    // hardcoded for dropdown instances ********* start*************
+    const selectedCity = [
+        "City1", "City2", "City3", "City4"
+    ]
+    const selectedState = [
+        "state1", "state2", "state3", "state4"
+    ]
+    const selectedCountry = [
+        "country1", "country2", "country3", "country4"
+    ]
+    const selectedProjectType = [
+        "1", "2", "3", "4"
+    ]
+    const selectedBuilderName = [
+        "name1", "name2", "name3", "name4"
+    ]
+    // hardcoded for dropdown instances ********* End*************
+
     //Validation of the form
     const initialValues = {
         projectName: "",
         projectType: "",
-        addressLine1:"",
-        country:"",
+        addressLine1: "",
+        country: "",
         state: "",
         city: "",
         suburb: "",
-        builderName: "", 
+        builderName: "",
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -78,50 +94,104 @@ const projectDialog = (props) => {
 
             <div className='flex justify-center'>
                 <div className="w-50 h-auto bg-white rounded-lg">
-                    <ProjectDialogHeader openDialog={openDialog} setOpenDialog={setOpenDialog}/>
+                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                        <div className="mr-[410px] ml-[410px]">
+                            <div className="text-[16px]">New project</div>
+                        </div>
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                            <Link to="/manageprojectinfo"><img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></Link>
+                        </div>
+                    </div>
+                    <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40" >
+                            <Link to="/projectinfosec">Project Information</Link>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <div>Project details</div>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <div>Bank details</div>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <div>Contacts</div>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <div>Photos</div>
+                        </div>
+                    </div>
                     <form onSubmit={handleSubmit}>
                         <div className="flex items-center justify-evenly">
                             <div className="space-y-2">
                                 <div className="">
                                     <div>Project Name <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name ="projectName" value={formValues.projectName} onChange={handleChange}/>
+                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="projectName" value={formValues.projectName} onChange={handleChange} />
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.projectName}</div>
                                 </div>
                                 <div className="">
                                     <div>Project Type <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="projectType" value={formValues.projectType} onChange={handleChange} >
+                                            {selectedProjectType.map(item => (
+                                                <option key={item} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                    </select>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.projectType}</div>
                                 </div>
                                 <div className="">
                                     <div>Address Line 1 <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="addressLine1" value={formValues.addressLine1} onChange={handleChange}/>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.addressLine1}</div>
                                 </div>
                                 <div className="">
                                     <div>Country<label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
+                                            {selectedCountry.map(item => (
+                                                <option key={item} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                    </select>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                 </div>
                                 <div className="">
                                     <div>State<label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
+                                            {selectedState.map(item => (
+                                                <option key={item} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                    </select>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                 </div>
                                 <div className="">
                                     <div>City<label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
+                                            {selectedCity.map(item => (
+                                                <option key={item} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                    </select>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                 </div>
                                 <div className="">
                                     <div>Suburb<label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="suburb" value={formValues.suburb} onChange={handleChange}/>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <div className="">
                                     <div>Builder Name <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
+                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="builderName" value={formValues.builderName} onChange={handleChange} >
+                                            {selectedBuilderName.map(item => (
+                                                <option key={item} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                    </select>
                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div>
                                 </div>
                                 <div className="">
