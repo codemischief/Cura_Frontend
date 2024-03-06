@@ -1,14 +1,55 @@
 import React from "react";
 import searchIcon from "../assets/searchIcon.png";
 import {Outlet} from "react-router-dom";
+import { useEffect , useState } from "react";
 
 const Dashboard = () => {
+    const [myOrder, setmyorder] = useState([]);
+    const [cashBalance, setcashbalance] = useState([]);
+    
+    
+    
+    
+    useEffect(() => {
+        fetch("/myOrder")
+                .then((res) => res.json())
+                .then((data) =>{
+                  setmyorder(data)
+                })
+        fetch("/myCashBalance")
+                .then((res) => res.json())
+                .then((data) =>{
+                    console.log(data)
+                setcashbalance(data)
+                })
+              
+      },[]);
+
+//************ mock post request ************** */
+    //   const [content, setContent] = useState('')
+
+    //   const addCountryOnClick = (d) =>{
+    //     d.preventDefault();
+    //     fetch("/addCountry", { 
+    //         method :"POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({content})
+    //     });
+    //   }
+
+    
     return (
         <div>
             <div >
                 <Outlet />
             </div>
             <div className="ml-[35px] mt-[27px]">
+                
+            {/* //************ mock post request ************** */ }
+            {/* <input value={content} onChange={(c) => {setContent(c.target.value)}}/>
+                <button onClick={addCountryOnClick}>ADD</button> */}
                 <div className="flex space-x-[820px]">
                     <div className="text-[28px]">Dashboard</div>
                     <div className="flex w-[304px] h-[36px] items-center">
@@ -29,8 +70,17 @@ const Dashboard = () => {
                                 <th>Order Status</th>
                                 <th>Count</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                        </thead> 
+                        {myOrder.map((item) => (
+                               <tbody>
+                                <tr>
+                                    <td>{item.sl}</td>
+                                    <td>{item.order_status}</td>
+                                    <td>{item.count}</td>
+                                </tr>
+                                </tbody> 
+                             ))}
+                        {/* <tbody>
                             <tr>
                                 <td>01</td>
                                 <td>billed</td>
@@ -57,7 +107,7 @@ const Dashboard = () => {
                                 <td>In progress</td>
                                 <td>182</td>
                             </tr>
-                        </tbody>
+                        </tbody> */}
                     </table>
                 </div>
                 <div className="mt-[15px] px-[27px] py-[15px] h-[130px] w-[1200px] bg-white rounded-md">
@@ -72,13 +122,15 @@ const Dashboard = () => {
                                 <th>Balance</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>01</td>
-                                <td>Harshada</td>
-                                <td>RS 72,719.00</td>
-                            </tr>
-                        </tbody>
+                        {cashBalance.map((item) => (
+                               <tbody>
+                                <tr>
+                                    <td>{item.Sr}</td>
+                                    <td>{item.Username}</td>
+                                    <td>{item.Balance}</td>
+                                </tr>
+                                </tbody> 
+                             ))}
                     </table>
                 </div>
             </div>
