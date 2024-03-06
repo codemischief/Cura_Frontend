@@ -78,11 +78,11 @@ const ProjectInformation = () => {
         return errors;
     };
     const handleDialogClose = () => {
-        
+
     }
   return (
-    <form onSubmit={handleSubmit}>
-                        <div className="flex items-center justify-evenly">
+              <>
+                        <div className="flex items-center justify-evenly mt-5 ">
                             <div className="space-y-2">
                                 <div className="">
                                     <div>Project Name <label className="text-red-500">*</label></div>
@@ -187,11 +187,8 @@ const ProjectInformation = () => {
                             <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet student allowed</div>
                             <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet Foreigners allowed</div>
                         </div>
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
-                        </div>
-                    </form>
+                        
+             </>       
   )
 }
 

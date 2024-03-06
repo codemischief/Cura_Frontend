@@ -9,6 +9,7 @@ import Select from "react-select";
 import Checkbox from '@mui/material/Checkbox';
 import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
 import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
+import BankDetails from "./ManageProjectInfoForm/BankDetails";
 
 const projectDialog = (props) => {
     //For closing a modal 
@@ -110,14 +111,14 @@ const projectDialog = (props) => {
             fullWidth={true}
             maxWidth={'md'} >
             <>
-            <div className='flex justify-center'>
+            <div className='flex justify-center mt-[50px]'>
                 <div className="w-50 h-auto bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
                             <div className="text-[16px]">New project</div>
                         </div>
-                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <button onClick={handleDialogClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
+                            <button onClick={handleDialogClose}><img  className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
                         </div>
                     </div>
                     <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
@@ -128,7 +129,7 @@ const projectDialog = (props) => {
                             <button onClick={selectSecond}><div>Project details</div></button>
                         </div>
                         <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
-                            <div>Bank details</div>
+                            <button onClick={selectThird}><div>Bank details</div></button>
                         </div>
                         <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
                             <div>Contacts</div>
@@ -137,8 +138,20 @@ const projectDialog = (props) => {
                             <div>Photos</div>
                         </div>
                     </div>
-                    {selectedDialogue == 1 && <ProjectInformation/>}
-                    {selectedDialogue == 2 && <ProjectDetails/>}
+                    <form>
+                        
+
+                        
+                        {selectedDialogue == 1 && <ProjectInformation/>}
+                        {selectedDialogue == 2 && <ProjectDetails/>}
+                        {selectedDialogue == 3 && <BankDetails/>}
+                        
+                        <div className="my-8 flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md'>Cancel</button>
+                        </div>
+                    </form>
+                    
                 </div>
                 
             </div>

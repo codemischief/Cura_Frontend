@@ -36,8 +36,8 @@ const ProjectDetails = () => {
   };
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div className="flex justify-center space-x-10 ">
+      
+        <div className="flex justify-center space-x-10 mt-5">
           <div>
             <div className="flex space-x-10">
               <div className="space-y-2">
@@ -180,11 +180,8 @@ const ProjectDetails = () => {
             </div>
           </div>
         </div>
-        <div className="my-8 flex justify-center items-center gap-[10px]">
-          <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-          <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md'>Cancel</button>
-        </div>
-      </form>
+        
+      
     </>
   )
 }
