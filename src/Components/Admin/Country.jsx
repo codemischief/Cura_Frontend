@@ -5,17 +5,26 @@ import searchIcon from "../assets/searchIcon.png";
 import nextIcon from "../assets/next.png";
 import refreshIcon from "../assets/refresh.png";
 import downloadIcon from "../assets/download.png";
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import Navbar from "../Navabar/Navbar";
 import Cross from "../assets/cross.png";
 import { Modal } from "@mui/material";
 const Country = () => {
   // we have the module here
+  useEffect(()=> {
+    fetch("/getcountry")
+    .then((res) => res.json())
+    .then((data) =>{
+      setExistingCountries(data)
+      console.log(data);
+    })
+  },[]);
   //Validation of the form
   const initialValues = {
     countryName:"",
   };
   const [formValues, setFormValues] = useState(initialValues);
+  const [existingCountries,setExistingCountries] = useState([]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -34,7 +43,7 @@ const Country = () => {
     setIsCountryDialogue(false);
   }
   return (
-    <div>
+    <div className='h-screen'>
       <Navbar/>
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
@@ -80,7 +89,7 @@ const Country = () => {
                   
                 </div>
             </div>
-
+            
             <div className='w-full h-[400px] bg-white px-6'>
                 <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-3/4 flex'>
@@ -100,7 +109,32 @@ const Country = () => {
                       </div>
                    </div>
                 </div>
+                <div className='w-full h-80 '>
+                    {existingCountries.map((item ,index) => {
+                       return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className='w-3/4 flex'>
+                                    <div className='w-1/6 p-4'>
+                                        <p>{index + 1}</p>
+                                    </div>
+                                    <div className='w-5/6  p-4'>
+                                        <p>{item.country_name}</p>
+                                    </div>
+                                </div>
+                                <div className='w-1/6  flex'>
+                                    <div className='w-1/2  p-4'>
+                                        <p>{item.user_id}</p>
+                                    </div>
+                                    <div className='w-1/2 0 p-4'>
+                                        <p>Edit</p>
+                                    </div>
+                                </div>
+                          </div>
+                    })}
+                   {/* we get all the existing countries here */}
+                    
+                </div>
             </div>
+            
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
