@@ -36,7 +36,7 @@ const Navbar = () => {
         </div>
         <div className='flex text-stone-50	space-x-9 items-center'>
           {/* this will have the center bar */}
-          <div className='bg-white w-20 h-7 flex items-center justify-center text-accent-blue rounded-sm'>
+          <div className={`w-24 h-7 flex items-center justify-center  rounded-sm   ${isToggledAdmin  ? 'bg-white text-accent-blue' : ''}`}>
              <button onClick={handleAdminChange}>
                <p className=' font-sans text-md' >Admin</p>
              </button>
@@ -51,9 +51,12 @@ const Navbar = () => {
         </div>
         <div className='flex  text-stone-50	space-x-4 items-center mr-4'>
           {/* this will have the right content */}
-          <button onClick={handleDashChange}>
-             <p className='font-thin font-sans text-md'>Dashboard</p>
-          </button>
+          <div className={`w-24 h-7 flex items-center justify-center  rounded-sm   ${isToggledDash  ? 'bg-white text-accent-blue' : ''}`}>
+            <button onClick={handleDashChange}>
+               <p className=' font-sans text-md'>Dashboard</p>
+            </button>
+          </div>
+          
           
           <p className='font-thin font-sans text-md'>Change Password</p>
           <div className='flex just items-center '>
@@ -62,7 +65,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {isToggledAdmin && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans ml-5 absolute top-16'>
+      {isToggledAdmin && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
          <div className=' w-1/4 h-full flex-col '>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Personal</h1>
@@ -105,7 +108,7 @@ const Navbar = () => {
             </div>
          </div>
       </div>}
-      {isToggledDash && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-14 absolute top-16 scroll-mr-7'>
+      {isToggledDash && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-14 absolute top-16 scroll-mr-7 shadow-2xl '>
          <div className=' w-1/5 h-full flex-col '>
             <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                <h1 className='font-semibold text-xl	'>Home </h1>
