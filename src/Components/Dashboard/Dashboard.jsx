@@ -42,9 +42,9 @@ const Dashboard = () => {
 
     
     return (
-        <div className="w-scren h-screen">
+        <div className="w-screen h-screen overflow-x-hidden">
             <Navbar/>
-            <div className="w-screen h-fit p-5">
+            <div className="w-screen  p-5">
                {/* this is the background container */}
                <div className="w-full h-full ">
                   <div className="flex justify-between">
@@ -59,7 +59,7 @@ const Dashboard = () => {
                     </div>
                   </div>
 
-                  <div className="mt-2 bg-white w-full h-96 p-3">
+                  <div className="mt-2 bg-white w-full h-96 p-3  ">
                      <div className="w-full h-full">
                         {/* this is the internal div */}
                         <div className="w-full h-[55px] bg-[#DAE7FF] pl-5 pt-3 rounded-md">
@@ -82,7 +82,7 @@ const Dashboard = () => {
                              </div>
 
                              {/* map the items here */}
-                             
+                             <div className="h-64 overflow-auto">
                              {myOrder.map((item) => {
                                   return <div className=" w-full h-[45px] flex border-gray-400 border-b-[1px]">
                                         
@@ -98,14 +98,20 @@ const Dashboard = () => {
                                     </div>
                                     </div>
                              })}
+                             </div>
                         </div>
                      </div>
-                        <div className="mt-5 w-full h-48 ">
+                        
+                  </div>
+                  
+               </div>
+               <div className="mt-5 w-full h-full">
                             <div className="w-full h-[55px] bg-[#DAE7FF] pl-5 pt-3 rounded-lg">
                                 {/* this will havw the header */}
                                 <h1 className="font-sans text-2xl">Cash Balance</h1>
                             </div>
                             {/* map the data here */}
+                            <div className="h-64 overflow-auto">
                             {cashBalance.map((item) => {
                                   return <div className=" w-full h-[45px] flex border-gray-400 border-b-[1px]">
                                         
@@ -121,12 +127,9 @@ const Dashboard = () => {
                                     </div>
                                     </div>
                              })}
+                             </div>
                       {/* this will be the cash balances section */}
                         </div>
-                  </div>
-                  
-               </div>
-               
             </div>
         </div>
     );

@@ -34,7 +34,17 @@ export const handlers = [
             sl:3,order_status:"cancelled", count:28
         },{
             sl:4,order_status:"In Progress", count:192
-        }
+        },{
+            sl:1,order_status:"billed", count:37
+        },
+        {
+           sl:2,order_status:"closed", count:2898
+       },{
+           sl:3,order_status:"cancelled", count:28
+       },{
+           sl:4,order_status:"In Progress", count:192
+       },
+
         ]);
  
      }),
@@ -43,6 +53,40 @@ export const handlers = [
          {
             Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
          },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         {
+            Sr:"01",Username:"Harshada", Balance:"RS 72,719.00"
+         },
+         
         ]);
  
      }),
