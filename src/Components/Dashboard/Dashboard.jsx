@@ -6,10 +6,6 @@ import Navbar from "../Navabar/Navbar";
 const Dashboard = () => {
     const [myOrder, setmyorder] = useState([]);
     const [cashBalance, setcashbalance] = useState([]);
-    
-    
-    
-    
     useEffect(() => {
         fetch("/myOrder")
                 .then((res) => res.json())

@@ -112,7 +112,7 @@ const Navbar = () => {
          <div className=' w-1/5 h-full flex-col '>
             <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                <h1 className='font-semibold text-xl	'>Home </h1>
-               <p className='text-thin text-base'>Dashboard of all</p>
+               <Link to="/dashboard"><p className='text-thin text-base'>Dashboard of all</p></Link>
                <p className='text-thin text-base'>Monthly Margins - LOB Receipts Payments</p>
                <p className='text-thin text-base'>Monthly Margins - Entity Receipts-Paymen</p>
                <p className='text-thin text-base'>Monthly Margins - LOB Receipts Payments Consolidated</p>
