@@ -1,6 +1,6 @@
 import React from "react";
-import Logo from "../assets/logo.jpg";
-import eyeIcon from "../assets/eye.jpg";
+import Logo from "../../assets/logo.jpg";
+import eyeIcon from "../../assets/eye.jpg";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import bcrypt from 'bcryptjs'

@@ -1,37 +1,48 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import backLink from "../assets/back.png";
-import searchIcon from "../assets/searchIcon.png";
-import nextIcon from "../assets/next.png";
-import refreshIcon from "../assets/refresh.png";
-import downloadIcon from "../assets/download.png";
+import backLink from "../../../assets/back.png";
+import searchIcon from "../../../assets/searchIcon.png";
+import nextIcon from "../../../assets/next.png";
+import refreshIcon from "../../../assets/refresh.png";
+import downloadIcon from "../../../assets/download.png";
 import { useState } from 'react';
-import Navbar from "../Navabar/Navbar";
-import Cross from "../assets/cross.png";
+import Navbar from "../../../Components/Navabar/Navbar";
+import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
-const City = () => {
+import Checkbox from '@mui/material/Checkbox';
+
+import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
+import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
+import BankDetails from "./ManageProjectInfoForm/BankDetails";
+
+const ManageProjectInfo = () => {
   // we have the module here
-  //Validation of the form
-  const initialValues = {
-    cityName:"",
-  };
-  const [formValues, setFormValues] = useState(initialValues);
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
-   
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      setIsSubmit(true);
-    };
+
+
+  const [selectedDialogue,setSelectedDialogue] = useState(1);
+    const selectFirst = () => {
+       setSelectedDialogue(1);
+    }
+    const selectSecond = () => {
+        setSelectedDialogue(2);
+    }
+    const selectThird = () => {
+        setSelectedDialogue(3);
+    }
+    const selectFourth = () => {
+        setSelectedDialogue(4);
+    }
+    const selectFifth = () => {
+        setSelectedDialogue(5);
+    }
     
-  const [isCityDialogue,setIsCityDialogue] = React.useState(false);
+  const [isStateDialogue,setIsStateDialogue] = React.useState(false);
+  
   const handleOpen = () => {
-     setIsCityDialogue(true);
+     setIsStateDialogue(true);
   };
   const handleClose = () => {
-    setIsCityDialogue(false);
+    setIsStateDialogue(false);
   }
   return (
     <div>
@@ -48,12 +59,11 @@ const City = () => {
                       </div>
                         
                       <div className='flex-col'>
-                          <h1>City</h1>
-                          <p>Admin &gt; City</p>
+                          <h1>Manage Project</h1>
+                          <p>Manage &gt; Manage Project</p>
                       </div>
                    </div>
                    <div className='flex space-x-2 items-center'>
-
                         <div className='flex'>
                             {/* search button */}
                                 <input
@@ -69,7 +79,7 @@ const City = () => {
                         <div>
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                Add New City +
+                                Add New Project +
                             </button>
                         </div>
 
@@ -88,7 +98,7 @@ const City = () => {
                          <p>Sr. No</p>
                       </div>
                       <div className='w-5/6  p-4'>
-                        <p>City</p>
+                        <p>State</p>
                       </div>
                    </div>
                    <div className='w-1/6  flex'>
@@ -151,44 +161,56 @@ const City = () => {
     </div>
 
     {/* modal goes here */}
-    <Modal open={isCityDialogue} 
+    <Modal open={isStateDialogue} 
           fullWidth={true}
           maxWidth = {'md'} >
-            <div className='flex justify-center mt-[200px]'>
-                <div className="w-6/7  h-[200px] bg-white rounded-lg">
+            <>
+            <div className='flex justify-center mt-[50px]'>
+                <div className="w-50 h-auto bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
-                            <div className="text-[16px]">Add New City</div>
+                            <div className="text-[16px]">New project</div>
                         </div>
-                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <button onClick={handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
+                            <button onClick={handleClose}><img  className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
                         </div>
                     </div>
-                    <form onSubmit={handleSubmit}>
-                        <div className="h-auto w-full mt-[5px] ">
-                            <div className="flex gap-[48px] justify-center items-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                    <div className="">
-                                        <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.cityName} onChange={handleChange}  />
-                                    </div>
-                                    
-                                    
-                                </div>
-                            </div>
+                    <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40" >
+                            <button onClick={selectFirst}><div>Project Information</div></button>
                         </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <button onClick={selectSecond}><div>Project details</div></button>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <button onClick={selectThird}><div>Bank details</div></button>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <div>Contacts</div>
+                        </div>
+                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                            <div>Photos</div>
+                        </div>
+                    </div>
+                    <form>  
+                        {selectedDialogue == 1 && <ProjectInformation />}
+                        {selectedDialogue == 2 && <ProjectDetails />}
+                        {selectedDialogue == 3 && <BankDetails />}
                         
-                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-                            
+                        <div className="my-8 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </form>
+                    
                 </div>
+                
             </div>
+            
+            </>
     </Modal>
     </div>
   )
 }
 
-export default City
+export default ManageProjectInfo;

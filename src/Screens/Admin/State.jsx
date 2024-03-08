@@ -1,13 +1,13 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import backLink from "../assets/back.png";
-import searchIcon from "../assets/searchIcon.png";
-import nextIcon from "../assets/next.png";
-import refreshIcon from "../assets/refresh.png";
-import downloadIcon from "../assets/download.png";
+import backLink from "../../assets/back.png";
+import searchIcon from "../../assets/searchIcon.png";
+import nextIcon from "../../assets/next.png";
+import refreshIcon from "../../assets/refresh.png";
+import downloadIcon from "../../assets/download.png";
 import { useState } from 'react';
-import Navbar from "../Navabar/Navbar";
-import Cross from "../assets/cross.png";
+import Navbar from "../../Components/Navabar/Navbar";
+import Cross from "../../assets/cross.png";
 import { Modal } from "@mui/material";
 const State = () => {
   // we have the module here

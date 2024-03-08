@@ -1,7 +1,7 @@
 
 import React from "react";
 // import Dialog from "@mui/material/Dialog";
-import Cross from "../assets/cross.png";
+import Cross from "../../../assets/cross.png";
 import { Link } from 'react-router-dom';
 import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";

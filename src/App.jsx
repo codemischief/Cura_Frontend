@@ -1,19 +1,18 @@
 import React from 'react';
-import Login from './Components/Login/Login';
+import Login from './Screens/Login/Login'
 import Navbar from './Components/Navabar/Navbar';
-import Dashboard from "./Components/Dashboard/Dashboard";
-import NotFound from './Components/NotFound/notFound';
-import Country from './Components/Admin/Country';
-import City from './Components/Admin/City';
-import Locality from './Components/Admin/Locality';
-import State from './Components/Admin/State';
-import ManageUser from './Components/ManageUser/ManageUser';
-import ManageProjectInfo from './Components/ManageProjectInfo/ManageProjectInfo';
-import ManageOrder from './Components/ManageOrder/ManageOrder';
-import ManageEmployees from './Components/ManageEmployee/ManageEmployees';
-import ManageBuilder from './Components/ManageBuilder/ManageBuilder';
-
-import Prospect from './Components/Prospect/Prospect';
+import Dashboard from "./Screens/Dashboard/Dashboard";
+import NotFound from './Screens/NotFound/notFound';
+import Country from './Screens/Admin/Country';
+import City from './Screens/Admin/City';
+import Locality from './Screens/Admin/Locality';
+import State from './Screens/Admin/State';
+import ManageUser from './Screens/Manage/ManageUser/ManageUser';
+import ManageProjectInfo from './Screens/Manage/ManageProjectInfo/ManageProjectInfo';
+import ManageOrder from './Screens/Manage/ManageOrder/ManageOrder';
+import ManageEmployees from './Screens/Manage/ManageEmployee/ManageEmployees';
+import ManageBuilder from './Screens/Manage/ManageBuilder/ManageBuilder';
+import Prospect from './Screens/Research/Prospect/Prospect';
 
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 

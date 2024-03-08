@@ -1,35 +1,30 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import backLink from "../assets/back.png";
-import searchIcon from "../assets/searchIcon.png";
-import nextIcon from "../assets/next.png";
-import refreshIcon from "../assets/refresh.png";
-import downloadIcon from "../assets/download.png";
-import { useState } from 'react';
-import Navbar from "../Navabar/Navbar";
-import Cross from "../assets/cross.png";
+import backLink from "../../assets/back.png";
+import searchIcon from "../../assets/searchIcon.png";
+import nextIcon from "../../assets/next.png";
+import refreshIcon from "../../assets/refresh.png";
+import downloadIcon from "../../assets/download.png";
+import Cross from "../../assets/cross.png";
+import { useState ,useEffect} from 'react';
+import Navbar from "../../Components/Navabar/Navbar";
 import { Modal } from "@mui/material";
-const Prospect = () => {
-
+const Country = () => {
   // we have the module here
+  useEffect(()=> {
+    fetch("/getcountry")
+    .then((res) => res.json())
+    .then((data) =>{
+      setExistingCountries(data)
+      console.log(data);
+    })
+  },[]);
   //Validation of the form
   const initialValues = {
-    personName:"",
-    country:"",
+    countryName:"",
   };
-
-  const selectedCountry = [
-    "Country1", "Country2", "Country3", "Country4"
-    ]
-    const selectedState = [
-        "State1", "State2", "State3", "State4"
-    ]
-    const selectedCity = [
-        "City1", "City2", "City3", "City4"
-    ]
-
   const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
+  const [existingCountries,setExistingCountries] = useState([]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -37,29 +32,18 @@ const Prospect = () => {
    
   const handleSubmit = (e) => {
       e.preventDefault();
-      setFormErrors(validate(formValues)); // validate form and set error message
       setIsSubmit(true);
     };
-    const validate = (values) => {
-        const errors = {};
-        if (!values.personName) {
-            errors.personName = "Enter the name of the person";
-        }
-        if (!values.country) {
-            errors.country = "Select Country";
-        }
-        return errors;
-    };
     
-  const [isCityDialogue,setIsCityDialogue] = React.useState(false);
+  const [isCountryDialogue,setIsCountryDialogue] = React.useState(false);
   const handleOpen = () => {
-     setIsCityDialogue(true);
+     setIsCountryDialogue(true);
   };
   const handleClose = () => {
-    setIsCityDialogue(false);
+    setIsCountryDialogue(false);
   }
   return (
-    <div>
+    <div className='h-screen'>
       <Navbar/>
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
@@ -73,8 +57,8 @@ const Prospect = () => {
                       </div>
                         
                       <div className='flex-col'>
-                          <h1>Prospect</h1>
-                          <p>Research &gt; Propect</p>
+                          <h1>Country</h1>
+                          <p>Admin &gt; Country</p>
                       </div>
                    </div>
                    <div className='flex space-x-2 items-center'>
@@ -94,7 +78,7 @@ const Prospect = () => {
                         <div>
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                Add New Prospect +
+                                Add New Country +
                             </button>
                         </div>
 
@@ -105,7 +89,7 @@ const Prospect = () => {
                   
                 </div>
             </div>
-
+            
             <div className='w-full h-[400px] bg-white px-6'>
                 <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-3/4 flex'>
@@ -113,7 +97,7 @@ const Prospect = () => {
                          <p>Sr. No</p>
                       </div>
                       <div className='w-5/6  p-4'>
-                        <p>City</p>
+                        <p>Country</p>
                       </div>
                    </div>
                    <div className='w-1/6  flex'>
@@ -125,7 +109,32 @@ const Prospect = () => {
                       </div>
                    </div>
                 </div>
+                <div className='w-full h-80 '>
+                    {existingCountries.map((item ,index) => {
+                       return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className='w-3/4 flex'>
+                                    <div className='w-1/6 p-4'>
+                                        <p>{index + 1}</p>
+                                    </div>
+                                    <div className='w-5/6  p-4'>
+                                        <p>{item.country_name}</p>
+                                    </div>
+                                </div>
+                                <div className='w-1/6  flex'>
+                                    <div className='w-1/2  p-4'>
+                                        <p>{item.user_id}</p>
+                                    </div>
+                                    <div className='w-1/2 0 p-4'>
+                                        <p>Edit</p>
+                                    </div>
+                                </div>
+                          </div>
+                    })}
+                   {/* we get all the existing countries here */}
+                    
+                </div>
             </div>
+            
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
@@ -176,14 +185,14 @@ const Prospect = () => {
     </div>
 
     {/* modal goes here */}
-    <Modal open={isCityDialogue} 
+    <Modal open={isCountryDialogue} 
           fullWidth={true}
           maxWidth = {'md'} >
-            <div className='flex justify-center mt-[10px]'>
-                <div className="w-6/7  h-auto bg-white rounded-lg">
+            <div className='flex justify-center mt-[200px]'>
+                <div className="w-6/7  h-[200px] bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
-                            <div className="text-[16px]">New Prospect</div>
+                            <div className="text-[16px]">Add New Country</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                             <button onClick={handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -191,73 +200,21 @@ const Prospect = () => {
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className="h-auto w-full mt-[5px] ">
-                            <div className="flex gap-[48px] justify-center">
+                            <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Person Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="personName"  value={formValues.personName} onChange={handleChange}  />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.personName}</div>
+                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.countryName} onChange={handleChange}  />
                                     </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Country<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
-                                            {selectedCountry.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">State</div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state"  >
-                                            {selectedState.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">City</div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city"  >
-                                            {selectedCity.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Suburb</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb"  />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Property Location</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation"  />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">requirement</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="requirement"  />
-                                    </div>
-                                </div>
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                    <div className="">
-                                        <div className="text-[14px]">Email</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email"  />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Phone Number</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber"  />
-                                    </div>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
                             
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </form>
@@ -268,4 +225,4 @@ const Prospect = () => {
   )
 }
 
-export default Prospect;
+export default Country
