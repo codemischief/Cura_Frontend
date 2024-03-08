@@ -34,7 +34,7 @@ const App = () => {
       ],
     },
     {
-      path: '/manageuser',
+      path: '/admin/manageuser',
       element: <ManageUser />,
       children: [
         {
@@ -44,7 +44,7 @@ const App = () => {
       ],
     },
     {
-      path: '/manageemployees',
+      path: '/admin/manageemployees',
       element: <ManageEmployees />,
       children: [
         {
@@ -54,7 +54,7 @@ const App = () => {
       ],
     },
     {
-      path: '/managebuilder',
+      path: '/admin/managebuilder',
       element: <ManageBuilder />,
       children: [
         {
@@ -64,7 +64,7 @@ const App = () => {
       ],
     },
     {
-      path: '/manageprojectinfo',
+      path: '/admin/manageprojectinfo',
       element: <ManageProjectInfo />,
       children: [
         {
@@ -74,7 +74,7 @@ const App = () => {
       ],
     },
     {
-      path: '/manageOrder',
+      path: '/admin/manageOrder',
       element: <ManageOrder />,
       children: [
         {
@@ -84,7 +84,7 @@ const App = () => {
       ],
     },
     {
-      path: '/Country',
+      path: '/admin/country',
       element: <Country />,
       children: [
         {
@@ -94,7 +94,7 @@ const App = () => {
       ],
     },
     {
-      path: '/City',
+      path: '/admin/city',
       element: <City />,
       children: [
         {
@@ -104,7 +104,7 @@ const App = () => {
       ],
     },
     {
-      path: '/Locality',
+      path: '/admin/locality',
       element: <Locality />,
       children: [
         {
@@ -114,7 +114,7 @@ const App = () => {
       ],
     },
     {
-      path: '/State',
+      path: '/admin/state',
       element: <State />,
       children: [
         {
@@ -124,7 +124,7 @@ const App = () => {
       ],
     },
     {
-      path: '/prospect',
+      path: '/research/prospect',
       element: <Prospect />,
     },
   ])
