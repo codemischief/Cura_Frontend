@@ -1,19 +1,19 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import backLink from "../assets/back.png";
-import searchIcon from "../assets/searchIcon.png";
-import nextIcon from "../assets/next.png";
-import refreshIcon from "../assets/refresh.png";
-import downloadIcon from "../assets/download.png";
+import backLink from "../../assets/back.png";
+import searchIcon from "../../assets/searchIcon.png";
+import nextIcon from "../../assets/next.png";
+import refreshIcon from "../../assets/refresh.png";
+import downloadIcon from "../../assets/download.png";
 import { useState } from 'react';
-import Navbar from "../Navabar/Navbar";
-import Cross from "../assets/cross.png";
+import Navbar from "../../Components/Navabar/Navbar";
+import Cross from "../../assets/cross.png";
 import { Modal } from "@mui/material";
-const Locality = () => {
+const City = () => {
   // we have the module here
   //Validation of the form
   const initialValues = {
-    localityName:"",
+    cityName:"",
   };
   const [formValues, setFormValues] = useState(initialValues);
     const handleChange = (e) => {
@@ -26,12 +26,12 @@ const Locality = () => {
       setIsSubmit(true);
     };
     
-  const [isLocalityDialogue,setIsLocalityDialogue] = React.useState(false);
+  const [isCityDialogue,setIsCityDialogue] = React.useState(false);
   const handleOpen = () => {
-     setIsLocalityDialogue(true);
+     setIsCityDialogue(true);
   };
   const handleClose = () => {
-    setIsLocalityDialogue(false);
+    setIsCityDialogue(false);
   }
   return (
     <div>
@@ -48,8 +48,8 @@ const Locality = () => {
                       </div>
                         
                       <div className='flex-col'>
-                          <h1>Locality</h1>
-                          <p>Admin &gt; Locality</p>
+                          <h1>City</h1>
+                          <p>Admin &gt; City</p>
                       </div>
                    </div>
                    <div className='flex space-x-2 items-center'>
@@ -69,7 +69,7 @@ const Locality = () => {
                         <div>
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                Add New Locality +
+                                Add New City +
                             </button>
                         </div>
 
@@ -88,7 +88,7 @@ const Locality = () => {
                          <p>Sr. No</p>
                       </div>
                       <div className='w-5/6  p-4'>
-                        <p>Locality</p>
+                        <p>City</p>
                       </div>
                    </div>
                    <div className='w-1/6  flex'>
@@ -151,14 +151,14 @@ const Locality = () => {
     </div>
 
     {/* modal goes here */}
-    <Modal open={isLocalityDialogue} 
+    <Modal open={isCityDialogue} 
           fullWidth={true}
           maxWidth = {'md'} >
             <div className='flex justify-center mt-[200px]'>
                 <div className="w-6/7  h-[200px] bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
-                            <div className="text-[16px]">Add New Locality</div>
+                            <div className="text-[16px]">Add New City</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                             <button onClick={handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -169,8 +169,8 @@ const Locality = () => {
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.localityName} onChange={handleChange}  />
+                                        <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.cityName} onChange={handleChange}  />
                                     </div>
                                     
                                     
@@ -191,4 +191,4 @@ const Locality = () => {
   )
 }
 
-export default Locality
+export default City

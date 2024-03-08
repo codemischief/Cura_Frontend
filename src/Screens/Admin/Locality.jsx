@@ -1,30 +1,21 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
-import backLink from "../assets/back.png";
-import searchIcon from "../assets/searchIcon.png";
-import nextIcon from "../assets/next.png";
-import refreshIcon from "../assets/refresh.png";
-import downloadIcon from "../assets/download.png";
-import { useState ,useEffect} from 'react';
-import Navbar from "../Navabar/Navbar";
-import Cross from "../assets/cross.png";
+import backLink from "../../assets/back.png";
+import searchIcon from "../../assets/searchIcon.png";
+import nextIcon from "../../assets/next.png";
+import refreshIcon from "../../assets/refresh.png";
+import downloadIcon from "../../assets/download.png";
+import { useState } from 'react';
+import Navbar from "../../Components/Navabar/Navbar";
+import Cross from "../../assets/cross.png";
 import { Modal } from "@mui/material";
-const Country = () => {
+const Locality = () => {
   // we have the module here
-  useEffect(()=> {
-    fetch("/getcountry")
-    .then((res) => res.json())
-    .then((data) =>{
-      setExistingCountries(data)
-      console.log(data);
-    })
-  },[]);
   //Validation of the form
   const initialValues = {
-    countryName:"",
+    localityName:"",
   };
   const [formValues, setFormValues] = useState(initialValues);
-  const [existingCountries,setExistingCountries] = useState([]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -35,15 +26,15 @@ const Country = () => {
       setIsSubmit(true);
     };
     
-  const [isCountryDialogue,setIsCountryDialogue] = React.useState(false);
+  const [isLocalityDialogue,setIsLocalityDialogue] = React.useState(false);
   const handleOpen = () => {
-     setIsCountryDialogue(true);
+     setIsLocalityDialogue(true);
   };
   const handleClose = () => {
-    setIsCountryDialogue(false);
+    setIsLocalityDialogue(false);
   }
   return (
-    <div className='h-screen'>
+    <div>
       <Navbar/>
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
@@ -57,8 +48,8 @@ const Country = () => {
                       </div>
                         
                       <div className='flex-col'>
-                          <h1>Country</h1>
-                          <p>Admin &gt; Country</p>
+                          <h1>Locality</h1>
+                          <p>Admin &gt; Locality</p>
                       </div>
                    </div>
                    <div className='flex space-x-2 items-center'>
@@ -78,7 +69,7 @@ const Country = () => {
                         <div>
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                Add New Country +
+                                Add New Locality +
                             </button>
                         </div>
 
@@ -89,7 +80,7 @@ const Country = () => {
                   
                 </div>
             </div>
-            
+
             <div className='w-full h-[400px] bg-white px-6'>
                 <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-3/4 flex'>
@@ -97,7 +88,7 @@ const Country = () => {
                          <p>Sr. No</p>
                       </div>
                       <div className='w-5/6  p-4'>
-                        <p>Country</p>
+                        <p>Locality</p>
                       </div>
                    </div>
                    <div className='w-1/6  flex'>
@@ -109,32 +100,7 @@ const Country = () => {
                       </div>
                    </div>
                 </div>
-                <div className='w-full h-80 '>
-                    {existingCountries.map((item ,index) => {
-                       return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className='w-3/4 flex'>
-                                    <div className='w-1/6 p-4'>
-                                        <p>{index + 1}</p>
-                                    </div>
-                                    <div className='w-5/6  p-4'>
-                                        <p>{item.country_name}</p>
-                                    </div>
-                                </div>
-                                <div className='w-1/6  flex'>
-                                    <div className='w-1/2  p-4'>
-                                        <p>{item.user_id}</p>
-                                    </div>
-                                    <div className='w-1/2 0 p-4'>
-                                        <p>Edit</p>
-                                    </div>
-                                </div>
-                          </div>
-                    })}
-                   {/* we get all the existing countries here */}
-                    
-                </div>
             </div>
-            
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
@@ -185,14 +151,14 @@ const Country = () => {
     </div>
 
     {/* modal goes here */}
-    <Modal open={isCountryDialogue} 
+    <Modal open={isLocalityDialogue} 
           fullWidth={true}
           maxWidth = {'md'} >
             <div className='flex justify-center mt-[200px]'>
                 <div className="w-6/7  h-[200px] bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
-                            <div className="text-[16px]">Add New Country</div>
+                            <div className="text-[16px]">Add New Locality</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                             <button onClick={handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -203,8 +169,8 @@ const Country = () => {
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.countryName} onChange={handleChange}  />
+                                        <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.localityName} onChange={handleChange}  />
                                     </div>
                                     
                                     
@@ -225,4 +191,4 @@ const Country = () => {
   )
 }
 
-export default Country
+export default Locality

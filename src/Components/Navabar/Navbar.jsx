@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '../assets/logo-white1.jpg';
-import LogoutIcon from '../assets/logout.png';
+import logo from '../../assets/logo-white1.jpg';
+import LogoutIcon from '../../assets/logout.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 const Navbar = () => {
