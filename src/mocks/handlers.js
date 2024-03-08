@@ -93,7 +93,143 @@ export const handlers = [
      http.get('/getCountry', (res) =>{
         return HttpResponse.json(country);
      }),
-
+     http.get('getEmployees', (res) => {
+       return HttpResponse.json([
+           {
+             empName : "akash dhoke",
+             empId : "09A",
+             phoneNo : 96758393434,
+             empEmail : "a8hiyt@gmail.com",
+             role : "admin",
+             panNo : "ZXEDEED",
+             dateJoining : "17-Feb-2016",
+             lastDate : "16 feb 2018",
+             empStatus : "active",
+             empId : 34
+           },
+           {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+          {
+            empName : "akash dhoke",
+            empId : "09A",
+            phoneNo : 96758393434,
+            empEmail : "a8hiyt@gmail.com",
+            role : "admin",
+            panNo : "ZXEDEED",
+            dateJoining : "17-Feb-2016",
+            lastDate : "16 feb 2018",
+            empStatus : "active",
+            empId : 34
+          },
+       ]) 
+     })
+    
      //************ mock post request ************** */
 
      

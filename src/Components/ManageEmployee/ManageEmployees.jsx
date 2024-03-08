@@ -5,7 +5,7 @@ import searchIcon from "../assets/searchIcon.png";
 import nextIcon from "../assets/next.png";
 import refreshIcon from "../assets/refresh.png";
 import downloadIcon from "../assets/download.png";
-import { useState } from 'react';
+import { useState ,useEffect } from 'react';
 import Navbar from "../Navabar/Navbar";
 import Cross from "../assets/cross.png";
 import { Modal } from "@mui/material";
@@ -13,7 +13,15 @@ import Checkbox from '@mui/material/Checkbox';
 
 const ManageEmployees = () => {
   // we have the module here
-
+    const [existingEmployees,setExistingEmployees] = useState([]);
+    useEffect(()=> {
+        fetch("/getEmployees")
+        .then((res) => res.json())
+        .then((data) =>{
+        setExistingEmployees(data)
+        console.log(data);
+        })
+    },[]);
     // hardcoded for dropdown instances ********* start*************
     const selectedCountry = [
       "India", "USA", "UK", "Germany", "France", "Italy"
@@ -177,25 +185,137 @@ const validate = (values) => {
             </div>
 
             <div className='w-full h-[400px] bg-white px-6'>
-                <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                   <div className='w-3/4 flex'>
-                      <div className='w-1/6 p-4'>
+            <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                   <div className='w-[4.33%] flex'>
+                      <div className='p-2'>
                          <p>Sr. No</p>
                       </div>
-                      <div className='w-5/6  p-4'>
-                        <p>State</p>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Employee </p>
                       </div>
                    </div>
-                   <div className='w-1/6  flex'>
-                      <div className='w-1/2  p-4'>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Employee ID</p>
+                      </div>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Phone</p>
+                      </div>
+                   </div>
+                   <div className='w-[12.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Email</p>
+                      </div>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Role</p>
+                      </div>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p> Pan No</p>
+                      </div>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Join Date</p>
+                      </div>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p>Last Date</p>
+                      </div>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
+                          <p> Status</p>
+                      </div>
+                   </div>
+                   <div className='w-[4.33%]  flex'>
+                      <div className='p-2'>
                           <p>ID</p>
                       </div>
-                      <div className='w-1/2 0 p-4'>
+                   </div>
+                   <div className='w-[8.33%]  flex'>
+                      <div className='p-2'>
                           <p>Edit</p>
                       </div>
                    </div>
                 </div>
+                <div className='w-full h-[350px] overflow-auto'> 
+                {/* we map our items here */}
+                {existingEmployees.map((item,index) => {
+                    return  <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                                <div className='w-[4.33%] flex'>
+                                <div className='p-2'>
+                                    <p>{index+1}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.empName} </p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.empId}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.phoneNo}</p>
+                                </div>
+                                </div>
+                                <div className='w-[12.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.empEmail}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.role}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.panNo}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.dateJoining}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.lastDate}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p> {item.empStatus}</p>
+                                </div>
+                                </div>
+                                <div className='w-[4.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>{item.empId}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex'>
+                                <div className='p-2'>
+                                    <p>Edit</p>
+                                </div>
+                                </div>
+                            </div>
+                })}
             </div>
+            </div>
+            
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
