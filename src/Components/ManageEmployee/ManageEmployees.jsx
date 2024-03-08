@@ -250,7 +250,7 @@ const validate = (values) => {
                 <div className='w-full h-[350px] overflow-auto'> 
                 {/* we map our items here */}
                 {existingEmployees.map((item,index) => {
-                    return  <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                    return  <div className='w-full h-12 bg-white flex justify-between'>
                                 <div className='w-[4.33%] flex'>
                                 <div className='p-2'>
                                     <p>{index+1}</p>
@@ -369,9 +369,9 @@ const validate = (values) => {
     <Modal open={isStateDialogue} 
           fullWidth={true}
           maxWidth = {'md'} >
-            <div className='flex justify-center '>
+            <div className='flex justify-center mt-16'>
                 <div className="w-[1050px] h-auto bg-white rounded-lg">
-                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                         <div className="mr-[410px] ml-[410px]">
                             <div className="text-[16px]">Add New Employee</div>
                         </div>
