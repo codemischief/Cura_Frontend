@@ -5,15 +5,25 @@ import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
+import Edit from "../../../assets/edit.png";
+import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 
 const ManageBuilder = () => {
   // we have the module here
-
+  const [existingBuilders, setExistingBuilders] = useState([]);
+    useEffect(() => {
+        fetch("/getbuilders")
+            .then((res) => res.json())
+            .then((data) => {
+                setExistingBuilders(data)
+                console.log(data);
+            })
+    }, []);
   // hardcoded for dropdown instances ********* start*************
   const selectedCountry =[
     "India", "USA", "UK", "Germany", "France","Italy"
@@ -150,26 +160,69 @@ const userName =[
                 </div>
             </div>
 
-            <div className='w-full h-[400px] bg-white px-6'>
-                <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                   <div className='w-3/4 flex'>
-                      <div className='w-1/6 p-4'>
-                         <p>Sr. No</p>
-                      </div>
-                      <div className='w-5/6  p-4'>
-                        <p>State</p>
-                      </div>
-                   </div>
-                   <div className='w-1/6  flex'>
-                      <div className='w-1/2  p-4'>
-                          <p>ID</p>
-                      </div>
-                      <div className='w-1/2 0 p-4'>
-                          <p>Edit</p>
-                      </div>
-                   </div>
-                </div>
-            </div>
+            <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                            <div className='w-[85%] flex'>
+                                <div className='w-[5%] p-4'>
+                                    <p>Sr. </p>
+                                </div>
+                                <div className='w-[25%]  p-4'>
+                                    <p>Builder Name</p>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <p>Country</p>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <p>City</p>
+                                </div>
+                                <div className='w-[25%]  p-4'>
+                                    <p>Suburb</p>
+                                </div>
+                            </div>
+                            <div className='w-[15%] flex'>
+                                <div className='w-1/2  p-4'>
+                                    <p>ID</p>
+                                </div>
+                                <div className='w-1/2 0 p-4'>
+                                    <p>Edit</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='w-full h-80 '>
+                            {existingBuilders.map((item, index) => {
+                                return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                                    <div className='w-[85%] flex'>
+                                        <div className='w-[5%] p-4'>
+                                            <p>{index + 1}</p>
+                                        </div>
+                                        <div className='w-[25%]  p-4'>
+                                            <p>{item.builder_name}</p>
+                                        </div>
+                                        <div className='w-[15%]  p-4'>
+                                            <p>{item.country_name}</p>
+                                        </div>
+                                        <div className='w-[15%]  p-4'>
+                                            <p>{item.city_name}</p>
+                                        </div>
+                                        <div className='w-[25%]  p-4'>
+                                            <p>{item.suburb_name}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[15%] flex'>
+                                        <div className='w-1/2  p-4'>
+                                            <p>{item.user_id}</p>
+                                        </div>
+                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                            <img className='w-5 h-5' src={Edit} alt="edit" />
+                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                        </div>
+                                    </div>
+                                </div>
+                            })}
+                            {/* we get all the existing builders here */}
+
+                        </div>
+                    </div>
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
