@@ -11,16 +11,21 @@ import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
 import { Modal } from "@mui/material";
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 const Locality = () => {
     // we have the module here
     const [existingLocalities, setExistingLocalities] = useState([]);
-    useEffect(() => {
+    const fetchData = () => {
         fetch("/getlocality")
             .then((res) => res.json())
             .then((data) => {
                 setExistingLocalities(data)
                 console.log(data);
             })
+    }
+    useEffect(() => {
+        fetchData();
     }, []);
     //Validation of the form
     const initialValues = {
@@ -44,6 +49,17 @@ const Locality = () => {
     const handleClose = () => {
         setIsLocalityDialogue(false);
     }
+    const handleDownload = () => {
+        // we handle the download here
+        const worksheet = XLSX.utils.json_to_sheet(existingLocalities);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
+        XLSX.writeFile(workbook,"LocalityData.xlsx");
+        FileSaver.saveAs(workbook,"demo.xlsx");
+      }
+    const handleRefresh = () => {
+        fetchData();
+    }
     return (
         <div>
             <Navbar />
@@ -55,7 +71,7 @@ const Locality = () => {
                         <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 '>
-                                    <img src={backLink} />
+                                <Link to="/dashboard"><img src={backLink} /></Link>
                                 </div>
 
                                 <div className='flex-col'>
@@ -190,12 +206,12 @@ const Locality = () => {
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
                                 {/* refresh */}
-                                <p>Refresh</p>
+                                <button onClick={handleRefresh}><p>Refresh</p></button>
                                 <img src={refreshIcon} className='h-1/2' />
                             </div>
                             <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
                                 {/* download */}
-                                <p>Download</p>
+                                <button onClick={handleDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className='h-1/2' />
                             </div>
                         </div>

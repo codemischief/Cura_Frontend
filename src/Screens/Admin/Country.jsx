@@ -9,15 +9,23 @@ import Cross from "../../assets/cross.png";
 import { useState ,useEffect} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import { Modal } from "@mui/material";
+import Edit from '../../assets/edit.png';
+import Trash from "../../assets/trash.png"
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 const Country = () => {
   // we have the module here
-  useEffect(()=> {
+  const fetchData = () => {
     fetch("/getcountry")
     .then((res) => res.json())
     .then((data) =>{
       setExistingCountries(data)
       console.log(data);
     })
+  }
+  useEffect(()=> {
+    
+    fetchData()
   },[]);
   //Validation of the form
   const initialValues = {
@@ -42,6 +50,17 @@ const Country = () => {
   const handleClose = () => {
     setIsCountryDialogue(false);
   }
+  const handleDownload = () => {
+    // we handle the download here
+    const worksheet = XLSX.utils.json_to_sheet(existingCountries);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
+    XLSX.writeFile(workbook,"CountryData.xlsx");
+    FileSaver.saveAs(workbook,"demo.xlsx");
+  }
+  const handleRefresh = () => {
+    fetchData();
+  }
   return (
     <div className='h-screen'>
       <Navbar/>
@@ -53,7 +72,7 @@ const Country = () => {
                 <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                    <div className='flex items-center space-x-3'>
                       <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 '>
-                          <img src={backLink} />
+                          <Link to="/dashboard"><img src={backLink} /></Link>
                       </div>
                         
                       <div className='flex-col'>
@@ -90,7 +109,7 @@ const Country = () => {
                 </div>
             </div>
             
-            <div className='w-full h-[400px] bg-white px-6'>
+            <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
                 <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-3/4 flex'>
                       <div className='w-1/6 p-4'>
@@ -124,8 +143,9 @@ const Country = () => {
                                     <div className='w-1/2  p-4'>
                                         <p>{item.user_id}</p>
                                     </div>
-                                    <div className='w-1/2 0 p-4'>
-                                        <p>Edit</p>
+                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                            <img className='w-5 h-5' src={Edit} alt="edit" />
+                                            <img className='w-5 h-5' src={Trash} alt="trash" />
                                     </div>
                                 </div>
                           </div>
@@ -170,13 +190,15 @@ const Country = () => {
                 <div className='flex mr-10 justify-center items-center space-x-2 '>
                     <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
                        {/* refresh */}
-                       <p>Refresh</p>
+                       <button onClick={handleRefresh}><p>Refresh</p></button>
                        <img src={refreshIcon} className='h-1/2'/>
                     </div>
+
                     <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
                         {/* download */}
-                        <p>Download</p>
-                        <img src={downloadIcon} className='h-1/2'/>
+                        
+                        <button onClick={handleDownload}> <p>Download</p></button>
+                            <img src={downloadIcon} className='h-1/2'/>
                     </div>
                 </div>
             </div>
