@@ -3,6 +3,7 @@ import logo from '../../assets/logo-white1.jpg';
 import LogoutIcon from '../../assets/logout.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+
 const Navbar = () => {
  
   const [isToggledDash, setIsToggledDash] = useState(false);
@@ -36,22 +37,22 @@ const Navbar = () => {
         </div>
         <div className='flex text-stone-50	space-x-9 items-center'>
           {/* this will have the center bar */}
-          <div className={`w-24 h-7 flex items-center justify-center  rounded-sm   ${isToggledAdmin  ? 'bg-white text-accent-blue' : ''}`}>
+          <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledAdmin  ? 'bg-white text-accent-blue' : ''}`}>
              <button onClick={handleAdminChange}>
                <p className=' font-sans text-md' >Admin</p>
              </button>
              
           </div>
-          <div>
+          <div className='w-24 h-7 flex items-center justify-center  rounded-sm  font-thin'>
              <p className='font-thin font-sans text-md'>Manage</p>
           </div>
-         
-          <p className='font-thin font-sans text-md'>Report</p>
-          <p className='font-thin font-sans text-md'>Research</p>
+           
+          <p className='font-thin font-sans text-md w-24'>Report</p>
+          <p className='font-thin font-sans text-md w-24'>Research</p>
         </div>
-        <div className='flex  text-stone-50	space-x-4 items-center mr-4'>
+        <div className='flex  text-stone-50	space-x-5 items-center mr-4'>
           {/* this will have the right content */}
-          <div className={`w-24 h-7 flex items-center justify-center  rounded-sm   ${isToggledDash  ? 'bg-white text-accent-blue' : ''}`}>
+          <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash  ? 'bg-white text-accent-blue' : ''}`}>
             <button onClick={handleDashChange}>
                <p className=' font-sans text-md'>Dashboard</p>
             </button>
@@ -94,9 +95,10 @@ const Navbar = () => {
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Locations</h1>
                
-               <p className='text-thin text-base'>Country</p>
-               <p className='text-thin text-base'>State</p>
-               <p className='text-thin text-base'>City</p>
+               <p className='text-thin text-base'><Link to="/admin/country">Country</Link></p>
+               <p className='text-thin text-base'><Link to="/admin/state">State</Link></p>
+               <p className='text-thin text-base'><Link to="/admin/city">City</Link></p>
+               
 
             </div>
          </div>
