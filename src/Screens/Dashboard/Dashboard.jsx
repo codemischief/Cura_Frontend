@@ -45,7 +45,7 @@ const Dashboard = () => {
                <div className="w-full h-full ">
                   <div className="flex justify-between">
                     <div >
-                       <h1 className="text-3xl font-sans">Dashboard</h1>
+                       <h1 className="text-3xl font-sans">Checkout</h1>
                     </div>
                     <div className="flex w-[220px] h-[36px] items-center">
                         <input className="h-[36px]" type="text" placeholder="  Search" />
