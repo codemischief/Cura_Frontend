@@ -12,6 +12,8 @@ import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
+import EditManageBuilder from './EditManageBuilder';
+import Delete from './Delete';
 
 const ManageBuilder = () => {
   // we have the module here
@@ -113,6 +115,22 @@ const userName =[
   const handleClose = () => {
     setIsStateDialogue(false);
   }
+
+  const [isEditDialogue,setIsEditDialogue] = React.useState(false);
+  const handleOpenEdit = () => {
+    setIsEditDialogue(true);
+  };
+  const handleCloseEdit = () => {
+    setIsEditDialogue(false);
+  }
+
+  const [isDeleteDialogue,setIsDeleteDialogue] = React.useState(false);
+  const handleOpenDelete = () => {
+    setIsDeleteDialogue(true);
+  };
+  const handleCloseDelete = () => {
+    setIsDeleteDialogue(false);
+  }
   return (
     <div>
       <Navbar/>
@@ -213,14 +231,15 @@ const userName =[
                                             <p>{item.user_id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={handleOpenEdit}/>
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={handleOpenDelete}/>
                                         </div>
                                     </div>
                                 </div>
                             })}
                             {/* we get all the existing builders here */}
-
+                            <EditManageBuilder  openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue}/>
+                            <Delete  openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue}/>
                         </div>
                     </div>
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
