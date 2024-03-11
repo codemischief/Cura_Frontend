@@ -6,7 +6,7 @@ const Dashboard = () => {
     return (
         <div>
             <div className="flex flex-col">
-                <Outlet />
+            <Outlet />            
             </div>
             <div className="ml-[35px] mt-[27px]">
                 <div className="flex space-x-[820px]">

@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "../assets/logo.jpg";
 import eyeIcon from "../assets/eye.jpg";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import useAuth from "../../context/useAuth";
 import bcrypt from 'bcryptjs'
 
@@ -13,8 +13,10 @@ const Login = () => {
   const  {setAuth} =useAuth();
   const navigate = useNavigate();
 
+  const location = useLocation();
+  // const from = location.state?.from?.pathname || "/";
 
-  const LOGIN_URL="/validateCredentials"
+
 
 
   // Testing User Login info
@@ -69,30 +71,40 @@ const Login = () => {
     const element = document.getElementById("inputError");
     element.style.display="block";
   }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const mockPostResponse = async () => {
+  console.log("inside mockPostResponse ")
+  if(isSubmit){
+    console.log("inside mockPostResponse ")
     try{
-      const response = await axios.post(LOGIN_URL,
-        JSON.stringify({
-          user : formValues.username, password : formValues.password, company_key:formValues.comkey
-        }),{
-          headers: { 'Content-Type': 'application/json'},
-          withCredentials: true
+      const user =formValues.username;
+      const pwd =formValues.password;
+        const response = await axios.post("/validateCredentials",
+          JSON.stringify({ user, pwd }),
+          {
+              headers: { 'Content-Type': 'application/json' },
+              withCredentials: true
+          }
+      );
+        setFormValues(initialValues);
+        if(response.data.data.role_id == "1"){
+          navigate("/dashboard")
+        }else {
+          navigate("/user")
         }
-        );
-       console.log(response) 
-      setFormErrors(validate(formValues)); // validate form and set error message
-      setIsSubmit(true);
     }catch(e){
       if(!e?.response){
         setErrorMessage("No server Response");}
-      // }else(e?.response.error){
-      //   setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.");
-      // }
-       errRef.current.focus();
+
     }
- 
+
+  }
+
+}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmit(true);
+   
   };
 
   // validate form and to throw Error message
@@ -116,23 +128,25 @@ const Login = () => {
       const userData = database.find(
         (user) => user.username === formValues.username
       );
-      // if (userData) {
-      //   if (userData.password !== formValues.password) {
-      //     // Invalid password
-      //     setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
-      //     console.log("invalid password");
-      //     show();
-      //   } else {
-      //     const hashedPassword=bcrypt.hashSync(userData.password,10)
-      //     console.log(hashedPassword)
-      //     navigate("/dashboard");
-      //     console.log("login successful");
-      //   }
-      // } else {
-      //   setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
-      //   console.log("user not found");
-      //   show();
-      // }
+      if (userData) {
+        if (userData.password !== formValues.password) {
+          // Invalid password
+          setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
+          console.log("invalid password");
+          show();
+        } else {
+          const hashedPassword=bcrypt.hashSync(userData.password,10)
+          console.log(hashedPassword)
+          // navigate("/dashboard");
+          setIsSubmit(true);
+          mockPostResponse();
+          console.log("login successful");
+        }
+      } else {
+        setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
+        console.log("user not found");
+        show();
+      }
     }
   }, [formErrors]);
   return (
