@@ -15,24 +15,69 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 const Country = () => {
   // we have the module here
-  const fetchData = () => {
-    fetch("/getcountry")
-    .then((res) => res.json())
-    .then((data) =>{
-      setExistingCountries(data)
-      console.log(data);
-    })
+  const [existingCountries, setCountryValues] = useState([]);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const fetchCountryData = async () => {
+    const data = {"user_id":1};
+    const response = await fetch('http://192.168.10.133:8000/getCountries', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const result = (await response.json()).data;
+    //   console.log(result);
+      setCountryValues(result.map(x => ({ 
+        sl: x[0], 
+        country_name: x[1] 
+      })))
+  }
+
+  const addCountry = async () => {
+    const data = {"user_id":1,"country_name":formValues.countryName};
+    // try {
+    //     const response = await APIService.getCountries(data);
+    //     console.log(response)
+    // } catch(e) {
+    //     console.log(e);
+    // }
+    const response = await fetch('http://192.168.10.133:8000/addCountry', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log(response);
+      fetchCountryData();
+     
+  }
+
+  const deleteCountry = async (item) =>{
+    const data = {"user_id":1,"country_name":item.country_name};
+    const response = await fetch('http://192.168.10.133:8000/deleteCountry', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log(response);
+      fetchCountryData();
   }
   useEffect(()=> {
     
-    fetchData()
+    fetchCountryData()
   },[]);
   //Validation of the form
   const initialValues = {
     countryName:"",
   };
   const [formValues, setFormValues] = useState(initialValues);
-  const [existingCountries,setExistingCountries] = useState([]);
+ 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -41,6 +86,8 @@ const Country = () => {
   const handleSubmit = (e) => {
       e.preventDefault();
       setIsSubmit(true);
+      addCountry();
+      setIsCountryDialogue(false);
     };
     
   const [isCountryDialogue,setIsCountryDialogue] = React.useState(false);
@@ -49,6 +96,9 @@ const Country = () => {
   };
   const handleClose = () => {
     setIsCountryDialogue(false);
+  }
+  const handleDelete = (item) => {
+    console.log("hello");
   }
   const handleDownload = () => {
     // we handle the download here
@@ -129,11 +179,11 @@ const Country = () => {
                    </div>
                 </div>
                 <div className='w-full h-80 '>
-                    {existingCountries.map((item ,index) => {
+                    {existingCountries.map((item) => {
                        return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-3/4 flex'>
                                     <div className='w-1/6 p-4'>
-                                        <p>{index + 1}</p>
+                                        <p>{item.sl}</p>
                                     </div>
                                     <div className='w-5/6  p-4'>
                                         <p>{item.country_name}</p>
@@ -145,7 +195,7 @@ const Country = () => {
                                     </div>
                                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                            <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash"   /></button>
                                     </div>
                                 </div>
                           </div>
@@ -154,7 +204,7 @@ const Country = () => {
                     
                 </div>
             </div>
-            
+        
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
@@ -226,7 +276,13 @@ const Country = () => {
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
                                         <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName"  value={formValues.countryName} onChange={handleChange}  />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" 
+                                        type="text"
+                                        name="countryName"
+                                        value={formValues.countryName}
+                                        onChange={handleChange}
+                                        autoComplete="off"
+                                         />
                                     </div>
                                     
                                     
