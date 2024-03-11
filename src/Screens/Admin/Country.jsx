@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, Link } from "react-router-dom";
+import axios from 'axios';
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -15,13 +16,19 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 const Country = () => {
   // we have the module here
-  const fetchData = () => {
-    fetch("/getcountry")
-    .then((res) => res.json())
-    .then((data) =>{
-      setExistingCountries(data)
-      console.log(data);
+  const fetchData = async () => {
+    // const request = await axios.post();
+    await axios.post('http://192.168.10.133:8000/getCountries', {
+        user_id: '1',
     })
+    .then(function (response) {
+        setExistingCountries(response.data.data);
+        
+        console.log(response.data.data);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
   }
   useEffect(()=> {
     
@@ -60,6 +67,21 @@ const Country = () => {
   }
   const handleRefresh = () => {
     fetchData();
+  }
+  const handleDelete = async (name) => {
+    // send a request to delete 
+    console.log(name)
+    console.log("hi")
+    await axios.delete('http://192.168.10.133:8000/deleteCountry', {
+        user_id: 1,
+        country_name : name
+    })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
   }
   return (
     <div className='h-screen'>
@@ -128,7 +150,7 @@ const Country = () => {
                       </div>
                    </div>
                 </div>
-                <div className='w-full h-80 '>
+                <div className='w-full h-80 overflow-auto'>
                     {existingCountries.map((item ,index) => {
                        return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-3/4 flex'>
@@ -136,21 +158,21 @@ const Country = () => {
                                         <p>{index + 1}</p>
                                     </div>
                                     <div className='w-5/6  p-4'>
-                                        <p>{item.country_name}</p>
+                                        <p>{item[1]}</p>
                                     </div>
                                 </div>
                                 <div className='w-1/6  flex'>
                                     <div className='w-1/2  p-4'>
-                                        <p>{item.user_id}</p>
+                                        <p>{item[0]}</p>
                                     </div>
                                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                            <button onClick={() => handleDelete(item[1])}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
                           </div>
                     })}
-                   {/* we get all the existing countries here */}
+                   
                     
                 </div>
             </div>
