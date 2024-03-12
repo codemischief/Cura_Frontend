@@ -8,16 +8,38 @@ import downloadIcon from "../../assets/download.png";
 import Cross from "../../assets/cross.png";
 import { useState ,useEffect} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
-import { Modal } from "@mui/material";
+import { Modal , CircularProgress} from "@mui/material";
 import Edit from '../../assets/edit.png';
 import Trash from "../../assets/trash.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import SucessfullModal from '../../Components/modals/SucessfullModal';
+import FailureModal from '../../Components/modals/FailureModal';
 const Country = () => {
   // we have the module here
   const [existingCountries, setCountryValues] = useState([]);
-  const [isSubmit, setIsSubmit] = useState(false);
+//   const [isSubmit, setIsSubmit] = useState(false);
+const [pageLoading,setPageLoading] = useState(false);
+  const [showSucess,setShowSucess] = useState(false);
+  const [showFailure,setShowFailure] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
+  const openSuccessModal = () => {
+    // set the state for true for some time
+    setIsCountryDialogue(false);
+    setShowSucess(true);
+    setTimeout(function () {
+        setShowSucess(false)
+    }, 2000)
+  }
+  const openFailureModal = () => {
+    setIsCountryDialogue(false);
+    setShowFailure(true);
+    setTimeout(function () {
+        setShowFailure(false)
+    }, 4000);
+  }
   const fetchCountryData = async () => {
+    setPageLoading(true);
     const data = {"user_id":1};
     const response = await fetch('http://192.168.10.133:8000/getCountries', {
         method: 'POST',
@@ -28,6 +50,7 @@ const Country = () => {
       });
       const result = (await response.json()).data;
     //   console.log(result);
+    setPageLoading(false);
       setCountryValues(result.map(x => ({ 
         sl: x[0], 
         country_name: x[1] 
@@ -36,12 +59,6 @@ const Country = () => {
 
   const addCountry = async () => {
     const data = {"user_id":1,"country_name":formValues.countryName};
-    // try {
-    //     const response = await APIService.getCountries(data);
-    //     console.log(response)
-    // } catch(e) {
-    //     console.log(e);
-    // }
     const response = await fetch('http://192.168.10.133:8000/addCountry', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -49,9 +66,16 @@ const Country = () => {
           'Content-Type': 'application/json'
         }
       });
-      
       console.log(response);
-      fetchCountryData();
+    if(response.ok) {
+        setIsLoading(false);
+        openSuccessModal();
+    }else {
+
+        setIsLoading(false);
+        openFailureModal();
+    }
+    fetchCountryData();
      
   }
 
@@ -77,7 +101,6 @@ const Country = () => {
     countryName:"",
   };
   const [formValues, setFormValues] = useState(initialValues);
- 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -85,10 +108,10 @@ const Country = () => {
    
   const handleSubmit = (e) => {
       e.preventDefault();
-      setIsSubmit(true);
+      setIsLoading(true);
       addCountry();
-      setIsCountryDialogue(false);
-    };
+    //   setIsCountryDialogue(false);
+  };
     
   const [isCountryDialogue,setIsCountryDialogue] = React.useState(false);
   const handleOpen = () => {
@@ -109,11 +132,13 @@ const Country = () => {
     FileSaver.saveAs(workbook,"demo.xlsx");
   }
   const handleRefresh = () => {
-    fetchData();
+    fetchCountryData();
   }
   return (
     <div className='h-screen'>
       <Navbar/>
+      <SucessfullModal isOpen={showSucess} />
+      <FailureModal isOpen={showFailure} />
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
             {/* this div will have all the content */}
@@ -178,12 +203,16 @@ const Country = () => {
                       </div>
                    </div>
                 </div>
-                <div className='w-full h-80 '>
-                    {existingCountries.map((item) => {
+                <div className='w-full h-80 overflow-auto'>
+                     
+                     {pageLoading && <div className='ml-11 mt-9'>
+                        <CircularProgress/>
+                     </div>}
+                    {existingCountries.map((item,index) => {
                        return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-3/4 flex'>
                                     <div className='w-1/6 p-4'>
-                                        <p>{item.sl}</p>
+                                        <p>{index+1}</p>
                                     </div>
                                     <div className='w-5/6  p-4'>
                                         <p>{item.country_name}</p>
@@ -191,7 +220,7 @@ const Country = () => {
                                 </div>
                                 <div className='w-1/6  flex'>
                                     <div className='w-1/2  p-4'>
-                                        <p>{item.user_id}</p>
+                                        <p>{item.sl}</p>
                                     </div>
                                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
@@ -204,7 +233,7 @@ const Country = () => {
                     
                 </div>
             </div>
-        
+            
             <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
@@ -261,7 +290,7 @@ const Country = () => {
           fullWidth={true}
           maxWidth = {'md'} >
             <div className='flex justify-center mt-[200px]'>
-                <div className="w-6/7  h-[200px] bg-white rounded-lg">
+                <div className="w-6/7  h-[250px] bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
                             <div className="text-[16px]">Add New Country</div>
@@ -294,6 +323,7 @@ const Country = () => {
                             
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            {isLoading && <CircularProgress/>}
                         </div>
                     </form>
                 </div>
