@@ -11,6 +11,10 @@ import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
+import EditProspect from './EditProspect';
+import DeleteProspect from './DeleteProspect';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 const Prospect = () => {
 
     // we have the module here
@@ -20,7 +24,7 @@ const Prospect = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingProspect(data)
-                
+                console.log(data);
             })
     }, []);
     //Validation of the form
@@ -62,13 +66,40 @@ const Prospect = () => {
         return errors;
     };
 
-    const [isCityDialogue, setIsCityDialogue] = React.useState(false);
+    const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsCityDialogue(true);
+        setIsProspectDialogue(true);
     };
     const handleClose = () => {
-        setIsCityDialogue(false);
+        setIsProspectDialogue(false);
     }
+
+    const [isEditDialogue, setIsEditDialogue] = React.useState(false);
+    const handleOpenEdit = () => {
+        setIsEditDialogue(true);
+    };
+    const handleCloseEdit = () => {
+        setIsEditDialogue(false);
+    }
+
+    const [isDeleteDialogue, setIsDeleteDialogue] = React.useState(false);
+    const handleOpenDelete = () => {
+        setIsDeleteDialogue(true);
+    };
+    const handleCloseDelete = () => {
+        setIsDeleteDialogue(false);
+    }
+    const handleDownload = () => {
+        // we handle the download here
+        const worksheet = XLSX.utils.json_to_sheet(existingCountries);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
+        XLSX.writeFile(workbook,"CountryData.xlsx");
+        FileSaver.saveAs(workbook,"demo.xlsx");
+      }
+      const handleRefresh = () => {
+        fetchData();
+      }
     return (
         <div>
             <Navbar />
@@ -176,12 +207,14 @@ const Prospect = () => {
                                             <p>{item.user_id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={handleOpenEdit}/>
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={handleOpenDelete}/>
                                         </div>
                                     </div>
                                 </div>
                             })}
+                            <EditProspect openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue}/>
+                            <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue}/>
                             {/* we get all the existing prospect here */}
 
                         </div>
@@ -221,12 +254,12 @@ const Prospect = () => {
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
                                 {/* refresh */}
-                                <p>Refresh</p>
+                                <button onClick={handleRefresh}><p>Refresh</p></button>
                                 <img src={refreshIcon} className='h-1/2' />
                             </div>
                             <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
                                 {/* download */}
-                                <p>Download</p>
+                                <button onClick={handleDownload}> <p>Download</p></button>
                                 <img src={downloadIcon} className='h-1/2' />
                             </div>
                         </div>
@@ -236,9 +269,10 @@ const Prospect = () => {
             </div>
 
             {/* modal goes here */}
-            <Modal open={isCityDialogue}
+            <Modal open={isProspectDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
+                maxWidth={'md'} 
+                >
                 <div className='flex justify-center mt-[10px]'>
                     <div className="w-6/7  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
