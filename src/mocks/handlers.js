@@ -4,24 +4,24 @@ import { http, HttpResponse } from "msw";
 const country = ["India", "USA", "UK"];
 
 export const handlers = [
-   http.get('/getcountry', (res) => {
-      return HttpResponse.json([
-         {
-            user_id: 1, country_name: "India"
-         },
-         {
-            user_id: 2, country_name: "USA"
-         },
-         {
-            user_id: 3, country_name: "UK"
-         },
-         {
-            user_id: 4, country_name: "Germany"
-         }
+   // http.get('/getcountry', (res) => {
+   //    return HttpResponse.json([
+   //       {
+   //          user_id: 1, country_name: "India"
+   //       },
+   //       {
+   //          user_id: 2, country_name: "USA"
+   //       },
+   //       {
+   //          user_id: 3, country_name: "UK"
+   //       },
+   //       {
+   //          user_id: 4, country_name: "Germany"
+   //       }
 
-      ]);
+   //    ]);
 
-   }),
+   // }),
    http.get('/getcity', (res) => {
       return HttpResponse.json([
          {
