@@ -4,8 +4,44 @@ import eyeIcon from "../../assets/eye.jpg";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import bcrypt from 'bcryptjs'
+import useAuth from "../../context/useAuth";
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
+
+
+  const  {setAuth} =useAuth();
+  const location = useLocation();
+
+  const mockPostResponse = async () => {
+    localStorage.setItem("username","ruderaw")
+    localStorage.setItem("password","abcdefg")
+    const username =formValues.username;
+    // var salt = bcrypt.genSaltSync(12);
+    // var password = bcrypt.hashSync(formValues.password, salt);
+      const password =bcrypt.hash(formValues.password,12);
+      console.log(password)
+      const company_key =formValues.comkey;
+      try{
+          const {response} = await axios.post("http://192.168.10.133:8000/validateCredentials",
+            { username,password,company_key},
+            {
+                headers: { 
+                "Content-Type": "application/json"},
+  
+            }
+        );
+          setFormValues(initialValues);
+          console.log(response);
+          sessionStorage.setItem('user_id', JSON.stringify(response.data.data.role_id));
+      }catch(e){
+        if(!e?.response){
+          setErrorMessage("No server Response");}
+  
+      }
+  }
+
+
   const navigate = useNavigate();
 
   // Testing User Login info
@@ -65,6 +101,9 @@ const Login = () => {
     e.preventDefault();
     setFormErrors(validate(formValues)); // validate form and set error message
     setIsSubmit(true);
+
+    //uncomment mockPostResponse()  for login authe
+    // mockPostResponse();     
   };
 
   // validate form and to throw Error message
@@ -83,6 +122,7 @@ const Login = () => {
   };
 
   useEffect(() => {
+// if uncommenting  mockPostResponse(); then comment everything in useEffect
     if (Object.keys(formErrors).length == 0 && isSubmit) {
       // Find user login info
       const userData = database.find(
