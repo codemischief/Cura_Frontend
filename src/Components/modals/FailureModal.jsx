@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from '@mui/material'
 import FailureImage from "../../assets/FailureImage.png";
-const SucessfullModal = (props) => {
+const FailureModal = (props) => {
   return (
     <Modal open={props.isOpen} fullWidth={true} maxWidth={'md'}>
         <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
@@ -17,4 +17,4 @@ const SucessfullModal = (props) => {
   )
 }
 
-export default SucessfullModal
+export default FailureModal

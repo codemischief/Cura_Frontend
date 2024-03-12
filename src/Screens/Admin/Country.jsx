@@ -8,31 +8,34 @@ import downloadIcon from "../../assets/download.png";
 import Cross from "../../assets/cross.png";
 import { useState ,useEffect} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
-import { Modal } from "@mui/material";
+import { Modal , CircularProgress} from "@mui/material";
 import Edit from '../../assets/edit.png';
 import Trash from "../../assets/trash.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
+import FailureModal from '../../Components/modals/FailureModal';
 const Country = () => {
   // we have the module here
   const [existingCountries, setCountryValues] = useState([]);
-  const [isSubmit, setIsSubmit] = useState(false);
+//   const [isSubmit, setIsSubmit] = useState(false);
   const [showSucess,setShowSucess] = useState(false);
   const [showFailure,setShowFailure] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
   const openSuccessModal = () => {
     // set the state for true for some time
+    setIsCountryDialogue(false);
     setShowSucess(true);
     setTimeout(function () {
         setShowSucess(false)
     }, 2000)
   }
   const openFailureModal = () => {
+    setIsCountryDialogue(false);
     setShowFailure(true);
     setTimeout(function () {
         setShowFailure(false)
-    }, 2000)
+    }, 4000);
   }
   const fetchCountryData = async () => {
     const data = {"user_id":1};
@@ -62,9 +65,12 @@ const Country = () => {
       });
       console.log(response);
     if(response.ok) {
-        openSuccessModal()
+        setIsLoading(false);
+        openSuccessModal();
     }else {
-        openFailureModal()
+
+        setIsLoading(false);
+        openFailureModal();
     }
     fetchCountryData();
      
@@ -99,9 +105,9 @@ const Country = () => {
    
   const handleSubmit = (e) => {
       e.preventDefault();
-      setIsSubmit(true);
+      setIsLoading(true);
       addCountry();
-      setIsCountryDialogue(false);
+    //   setIsCountryDialogue(false);
   };
     
   const [isCountryDialogue,setIsCountryDialogue] = React.useState(false);
@@ -125,13 +131,11 @@ const Country = () => {
   const handleRefresh = () => {
     fetchData();
   }
-  const closeSuccess = () => {
-      setShowSucess(false);
-  }
   return (
     <div className='h-screen'>
       <Navbar/>
-      <SucessfullModal isOpen={showSucess} closeDialog={closeSuccess}/>
+      <SucessfullModal isOpen={showSucess} />
+      <FailureModal isOpen={showFailure} />
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
             {/* this div will have all the content */}
@@ -279,7 +283,7 @@ const Country = () => {
           fullWidth={true}
           maxWidth = {'md'} >
             <div className='flex justify-center mt-[200px]'>
-                <div className="w-6/7  h-[200px] bg-white rounded-lg">
+                <div className="w-6/7  h-[250px] bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                         <div className="mr-[410px] ml-[410px]">
                             <div className="text-[16px]">Add New Country</div>
@@ -312,6 +316,7 @@ const Country = () => {
                             
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            {isLoading && <CircularProgress/>}
                         </div>
                     </form>
                 </div>
