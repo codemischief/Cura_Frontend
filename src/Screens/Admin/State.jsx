@@ -21,7 +21,7 @@ const State = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingState(data)
-                console.log(data);
+                
             })
     }
     useEffect(() => {

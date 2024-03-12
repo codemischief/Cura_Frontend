@@ -11,12 +11,12 @@ const Dashboard = () => {
                 .then((res) => res.json())
                 .then((data) =>{
                   setmyorder(data)
-                  console.log(data);
+                  
                 })
         fetch("/myCashBalance")
                 .then((res) => res.json())
                 .then((data) =>{
-                    console.log(data)
+                    
                 setcashbalance(data)
                 })
               

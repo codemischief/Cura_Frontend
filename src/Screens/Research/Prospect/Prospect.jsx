@@ -20,7 +20,7 @@ const Prospect = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingProspect(data)
-                console.log(data);
+                
             })
     }, []);
     //Validation of the form

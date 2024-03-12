@@ -49,7 +49,7 @@ const [pageLoading,setPageLoading] = useState(false);
         }
       });
       const result = (await response.json()).data;
-    //   console.log(result);
+   
     setPageLoading(false);
       setCountryValues(result.map(x => ({ 
         sl: x[0], 
@@ -66,7 +66,7 @@ const [pageLoading,setPageLoading] = useState(false);
           'Content-Type': 'application/json'
         }
       });
-      console.log(response);
+     
     if(response.ok) {
         setIsLoading(false);
         openSuccessModal();
@@ -89,7 +89,7 @@ const [pageLoading,setPageLoading] = useState(false);
         }
       });
       
-      console.log(response);
+      
       fetchCountryData();
   }
   useEffect(()=> {
@@ -121,7 +121,7 @@ const [pageLoading,setPageLoading] = useState(false);
     setIsCountryDialogue(false);
   }
   const handleDelete = (item) => {
-    console.log("hello");
+    
   }
   const handleDownload = () => {
     // we handle the download here

@@ -19,7 +19,7 @@ const ManageEmployees = () => {
         .then((res) => res.json())
         .then((data) =>{
         setExistingEmployees(data)
-        console.log(data);
+        
         })
     },[]);
     // hardcoded for dropdown instances ********* start*************

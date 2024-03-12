@@ -23,7 +23,7 @@ const ManageBuilder = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingBuilders(data)
-                console.log(data);
+                
             })
     }, []);
   // hardcoded for dropdown instances ********* start*************

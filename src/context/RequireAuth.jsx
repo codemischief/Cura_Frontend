@@ -7,7 +7,6 @@ const RequireAuth = ({allowedRoles}) =>{
     const {auth} = useAuth();
 
     const location = useLocation();
-console.log(auth?.roles)
     // return (auth?.roles?.find(role => allowedRoles.includes(role))) ? <Outlet/> :<Navigate to="" />
     return (allowedRoles == 1) ? <Outlet /> :<Navigate to="" />
 //    return ( (allowedRoles == 1)

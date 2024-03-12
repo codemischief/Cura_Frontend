@@ -22,7 +22,7 @@ const City = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingCities(data)
-                console.log(data);
+                
             })
     }
     useEffect(() => {

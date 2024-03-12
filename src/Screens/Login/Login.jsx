@@ -20,7 +20,7 @@ const Login = () => {
     // var salt = bcrypt.genSaltSync(12);
     // var password = bcrypt.hashSync(formValues.password, salt);
       const password =bcrypt.hash(formValues.password,12);
-      console.log(password)
+      
       const company_key =formValues.comkey;
       try{
           const {response} = await axios.post("http://192.168.10.133:8000/validateCredentials",
@@ -32,7 +32,7 @@ const Login = () => {
             }
         );
           setFormValues(initialValues);
-          console.log(response);
+          
           sessionStorage.setItem('user_id', JSON.stringify(response.data.data.role_id));
       }catch(e){
         if(!e?.response){
@@ -132,17 +132,17 @@ const Login = () => {
         if (userData.password !== formValues.password) {
           // Invalid password
           setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
-          console.log("invalid password");
+          
           show();
         } else {
           const hashedPassword=bcrypt.hashSync(userData.password,10)
-          console.log(hashedPassword)
+          
           navigate("/dashboard");
-          console.log("login successful");
+          
         }
       } else {
         setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
-        console.log("user not found");
+       
         show();
       }
     }

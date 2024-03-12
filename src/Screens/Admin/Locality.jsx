@@ -21,7 +21,7 @@ const Locality = () => {
             .then((res) => res.json())
             .then((data) => {
                 setExistingLocalities(data)
-                console.log(data);
+                
             })
     }
     useEffect(() => {
