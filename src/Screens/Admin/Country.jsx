@@ -19,6 +19,7 @@ const Country = () => {
   // we have the module here
   const [existingCountries, setCountryValues] = useState([]);
 //   const [isSubmit, setIsSubmit] = useState(false);
+const [pageLoading,setPageLoading] = useState(false);
   const [showSucess,setShowSucess] = useState(false);
   const [showFailure,setShowFailure] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
@@ -38,6 +39,7 @@ const Country = () => {
     }, 4000);
   }
   const fetchCountryData = async () => {
+    setPageLoading(true);
     const data = {"user_id":1};
     const response = await fetch('http://192.168.10.133:8000/getCountries', {
         method: 'POST',
@@ -48,6 +50,7 @@ const Country = () => {
       });
       const result = (await response.json()).data;
     //   console.log(result);
+    setPageLoading(false);
       setCountryValues(result.map(x => ({ 
         sl: x[0], 
         country_name: x[1] 
@@ -129,7 +132,7 @@ const Country = () => {
     FileSaver.saveAs(workbook,"demo.xlsx");
   }
   const handleRefresh = () => {
-    fetchData();
+    fetchCountryData();
   }
   return (
     <div className='h-screen'>
@@ -201,6 +204,10 @@ const Country = () => {
                    </div>
                 </div>
                 <div className='w-full h-80 overflow-auto'>
+                     
+                     {pageLoading && <div className='ml-11 mt-9'>
+                        <CircularProgress/>
+                     </div>}
                     {existingCountries.map((item,index) => {
                        return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-3/4 flex'>
