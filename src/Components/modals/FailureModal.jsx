@@ -8,7 +8,7 @@ const FailureModal = (props) => {
            <div className='w-full h-64 pt-12'>
                 <img src={FailureImage} className='h-24 w-24  mx-auto '/>
                 <div className='w-full flex justify-center mt-6'>
-                    <h1>Some Error Occured</h1>
+                    <h1>{props.message}</h1>
                 </div>
            </div>
            

@@ -101,6 +101,7 @@ const [pageLoading,setPageLoading] = useState(false);
     countryName:"",
   };
   const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors,setFormErrors] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -108,6 +109,10 @@ const [pageLoading,setPageLoading] = useState(false);
    
   const handleSubmit = (e) => {
       e.preventDefault();
+      setFormErrors(validate(formValues));
+      if(formValues.countryName == "") {
+        return ;
+      }
       setIsLoading(true);
       addCountry();
     //   setIsCountryDialogue(false);
@@ -120,8 +125,12 @@ const [pageLoading,setPageLoading] = useState(false);
   const handleClose = () => {
     setIsCountryDialogue(false);
   }
-  const handleDelete = (item) => {
-    
+  const validate = () => {
+    const errors = {};
+    if(!formValues.countryName) {
+      errors.countryName = "Enter A Country Name"
+    }
+    return errors;
   }
   const handleDownload = () => {
     // we handle the download here
@@ -137,8 +146,8 @@ const [pageLoading,setPageLoading] = useState(false);
   return (
     <div className='h-screen'>
       <Navbar/>
-      <SucessfullModal isOpen={showSucess} />
-      <FailureModal isOpen={showFailure} />
+      <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
+      <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country"/>
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
             {/* this div will have all the content */}
@@ -312,6 +321,7 @@ const [pageLoading,setPageLoading] = useState(false);
                                         onChange={handleChange}
                                         autoComplete="off"
                                          />
+                                         <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div>
                                     </div>
                                     
                                     
