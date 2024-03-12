@@ -1,113 +1,77 @@
- 
-import React from "react";
-// import Dialog from "@mui/material/Dialog";
-import Cross from "../../../assets/cross.png";
-import { Link } from 'react-router-dom';
-import { Modal } from "@mui/material";
-import { useState, useEffect} from "react";
-import Select from "react-select";
-import Checkbox from '@mui/material/Checkbox';
-const ManageOrderModal = (props) => {
+import React from 'react';
+import { useState } from 'react';
 
-    // hardcoded for dropdown instances ********* start*************
-   const selectedClient = [
-    "client 1","client 2","client 3"
-   ];
-   const selectedTallyLedger=[
-    "1","2","3","4"
-   ];
-   const selectedVendors=[
-    "1","2","3","4"
-   ];
-   const selectedAssignedTo=[
-    "1","2","3","4"
-   ];
-   const selectedClientProperty=[
-    "1","2","3","4"
-   ];
-   const selectedStatus=[
-    "1","2","3","4"
-   ];
-   const selectedService=[
-    "1","2","3","4"
-   ];
-    // hardcoded for dropdown instances ********* End*************
 
-   //For closing a modal 
-    const handleDialogClose = () => {
-        props.setOpenDialog(false); 
-      };
+const orderInformation = (props) => {
+    const handleClose = () => {
+        props.setIsStateDialogue(false);
+    }
 
-      //Validation of the form
-      const initialValues = {
-        assignedTo:"",
-        status:"",
-        clientName:"",
-        orderDescription:"",
-      };
-      const [formValues, setFormValues] = useState(initialValues);
-      const [formErrors, setFormErrors] = useState({});
-      
-      // handle changes in input form
-        const handleChange = (e) => {
-            const { name, value } = e.target;
-            setFormValues({ ...formValues, [name]: value });
+    const selectedClient = [
+        "client 1","client 2","client 3"
+       ];
+       const selectedTallyLedger=[
+        "1","2","3","4"
+       ];
+       const selectedVendors=[
+        "1","2","3","4"
+       ];
+       const selectedAssignedTo=[
+        "1","2","3","4"
+       ];
+       const selectedClientProperty=[
+        "1","2","3","4"
+       ];
+       const selectedStatus=[
+        "1","2","3","4"
+       ];
+       const selectedService=[
+        "1","2","3","4"
+       ];
+        // hardcoded for dropdown instances ********* End*************
+    
+        //Validation of the form
+        const initialValues = {
+          assignedTo:"",
+          status:"",
+          clientName:"",
+          orderDescription:"",
         };
-       
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            setFormErrors(validate(formValues)); // validate form and set error message
-            setIsSubmit(true);
-          };
-        // validate form and to throw Error message
-        const validate = (values) => {
-            const errors = {};
-            if (!values.assignedTo) {
-            errors.assignedTo = "select a name";
-            }
-            if (!values.status) {
-            errors.status = "Select your status";
-            }
-            if (!values.clientName) {
-            errors.clientName = "Select Client Name";
-            }
-            if (!values.orderDescription) {
-                errors.orderDescription = "Enter Order Description";
-            }
-            return errors;
-        };
-
-      
-
-
-    return(
+        const [formValues, setFormValues] = useState(initialValues);
+        const [formErrors, setFormErrors] = useState({});
         
-     <Modal open={props.openDialog} 
-          fullWidth={true}
-         maxWidth = {'md'} >
-          
-            <div className='flex justify-center mt-[20px] rounded-lg'>
-                <div className="w-[1050px] h-auto bg-white ">
-                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                        <div className="mr-[410px] ml-[410px]">
-                            <div className="text-[16px]">New Order</div>
-                        </div>
-                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <Link to="/manageorder"><img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></Link>
-                        </div>
-                    </div>
-                    <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60">
-                            <div>Order Information</div>
-                        </div>
-                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60">
-                            <div>Photos</div>
-                        </div>
-                        <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60">
-                            <div>Order Status history</div>
-                        </div>
-                    </div>
-                    <form onSubmit={handleSubmit}>
+        // handle changes in input form
+          const handleChange = (e) => {
+              const { name, value } = e.target;
+              setFormValues({ ...formValues, [name]: value });
+          };
+         
+          const handleSubmit = (e) => {
+              e.preventDefault();
+              setFormErrors(validate(formValues)); // validate form and set error message
+              setIsSubmit(true);
+            };
+          // validate form and to throw Error message
+          const validate = (values) => {
+              const errors = {};
+              if (!values.assignedTo) {
+              errors.assignedTo = "select a name";
+              }
+              if (!values.status) {
+              errors.status = "Select your status";
+              }
+              if (!values.clientName) {
+              errors.clientName = "Select Client Name";
+              }
+              if (!values.orderDescription) {
+                  errors.orderDescription = "Enter Order Description";
+              }
+              return errors;
+          };
+        
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
                         <div className="h-auto w-full">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -232,15 +196,11 @@ const ManageOrderModal = (props) => {
                         
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose} >Cancel</button>
                         </div>
                     </form>
-                </div>
-            </div>
-    </Modal>
-        
-       
-    )
+    </div>
+  )
 }
 
-export default ManageOrderModal;
+export default orderInformation
