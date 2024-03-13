@@ -15,6 +15,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 import FailureModal from '../../Components/modals/FailureModal';
+import DeleteModal from '../../Components/modals/DeleteModal';
 const Country = () => {
   // we have the module here
   const [existingCountries, setCountryValues] = useState([]);
@@ -22,7 +23,9 @@ const Country = () => {
 const [pageLoading,setPageLoading] = useState(false);
   const [showSucess,setShowSucess] = useState(false);
   const [showFailure,setShowFailure] = useState(false);
+  const [showDelete,setShowDelete] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
+  const [currentCountry,setCurrentCountry] = useState("");
   const openSuccessModal = () => {
     // set the state for true for some time
     setIsCountryDialogue(false);
@@ -80,17 +83,20 @@ const [pageLoading,setPageLoading] = useState(false);
   }
 
   const deleteCountry = async (item) =>{
-    const data = {"user_id":1,"country_name":item.country_name};
-    const response = await fetch('http://192.168.10.133:8000/deleteCountry', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+    setShowDelete(true);
+    setCurrentCountry(item.country_name);
+    // const data = {"user_id":1,"country_name":item.country_name};
+    // console.log(data);
+    // const response = await fetch('http://192.168.10.133:8000/deleteCountry', {
+    //     method: 'POST',
+    //     body: JSON.stringify(data),
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   });
       
       
-      fetchCountryData();
+      // fetchCountryData();
   }
   useEffect(()=> {
     
@@ -148,6 +154,7 @@ const [pageLoading,setPageLoading] = useState(false);
       <Navbar/>
       <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
       <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country"/>
+      <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData}/>
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
             {/* this div will have all the content */}
@@ -233,7 +240,7 @@ const [pageLoading,setPageLoading] = useState(false);
                                     </div>
                                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash"   /></button>
+                                            <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash"/></button>
                                     </div>
                                 </div>
                           </div>
