@@ -93,7 +93,6 @@ const [pageLoading,setPageLoading] = useState(false);
       fetchCountryData();
   }
   useEffect(()=> {
-    
     fetchCountryData()
   },[]);
   //Validation of the form

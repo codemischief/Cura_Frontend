@@ -80,7 +80,7 @@ const EditManageBuilder = (props) => {
                             <div className="text-[16px]">Edit Builder</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                            <img onClick={handleDialogClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                         </div>
                     </div>
                     <form onSubmit={handleSubmit}>
