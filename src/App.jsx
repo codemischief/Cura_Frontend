@@ -158,6 +158,7 @@ const App = () => {
                     <Route path="/admin/manageOrder" element={<ManageOrder />}/>
                     <Route path="/admin/manageuser" element={<ManageUser />}/>
                     <Route path="/admin/country" element={<Country />}/>
+                    <Route path="/admin/state" element={<State />}/>
                     <Route path="/admin/city" element={<City />}/>
                     <Route path="/admin/locality" element={<Locality />}/>
                     <Route path="/research/prospect" element={<Prospect />}/>

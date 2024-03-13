@@ -82,7 +82,7 @@ const Navbar = () => {
                <p className='text-thin text-base'>LOB-Receipts-Payments</p>
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/4 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Offerings </h1>
@@ -90,7 +90,7 @@ const Navbar = () => {
                <p className='text-thin text-base'>Services</p>
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/4 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Locations</h1>
@@ -102,7 +102,7 @@ const Navbar = () => {
 
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/4 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Data Management</h1>
@@ -120,7 +120,7 @@ const Navbar = () => {
                <p className='text-thin text-base'>Monthly Margins - LOB Receipts Payments Consolidated</p>
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/5 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Personnel </h1>
@@ -129,7 +129,7 @@ const Navbar = () => {
                <p className='text-thin text-base'>Contractual Payment</p>
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/5 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Offerings</h1>
@@ -138,7 +138,7 @@ const Navbar = () => {
                <p className='text-thin text-base'>Services</p>
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/5 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Locations</h1>
@@ -148,7 +148,7 @@ const Navbar = () => {
                <p className='text-thin text-base'>Locality</p>
             </div>
          </div>
-         <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+         <div className="  w-[2px] h-full bg-[#CBCBCB]"></div>
          <div className=' w-1/5 h-full'>
             <div className='ml-5 mt-4 flex-col space-y-2'>
                <h1 className='font-semibold text-xl	'>Data Management</h1>
