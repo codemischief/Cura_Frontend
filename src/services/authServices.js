@@ -1,5 +1,6 @@
 // import jwt_decode  from 'jwt-decode';
-import axios from '../Components/Config/axios';
+import axios from "./axios";
+const env_URL_SERVER="http://192.168.10.133:8000/"
 
 
 
@@ -19,18 +20,13 @@ const getToken = ()=> {
 
 
 const login = (userData) => {
-   return axios.post("/validateCredentials", userData);
+   return axios.post(`${env_URL_SERVER}validateCredentials`, userData);
 }
 
 
 
 const getUserRole = () => {
-   const token = getToken();
-   if(token){
-       const payLoad = token;
-       return payLoad?.role;
-   }
-   return null;
+ 
 }
 
 // const isLoggedIn = () => {

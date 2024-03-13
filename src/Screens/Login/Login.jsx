@@ -21,7 +21,7 @@ const Login = () => {
     // var password = bcrypt.hashSync(formValues.password, salt);
       const password =bcrypt.hash(formValues.password,12);
       
-      const company_key =formValues.comkey;
+            const company_key =formValues.comkey;
       try{
           const {response} = await axios.post("http://192.168.10.133:8000/validateCredentials",
             { username,password,company_key},
@@ -136,7 +136,7 @@ const Login = () => {
           show();
         } else {
           const hashedPassword=bcrypt.hashSync(userData.password,10)
-          
+                    
           navigate("/dashboard");
           
         }

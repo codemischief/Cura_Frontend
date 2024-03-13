@@ -16,6 +16,7 @@ import FileSaver from 'file-saver';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 import FailureModal from '../../Components/modals/FailureModal';
 import DeleteModal from '../../Components/modals/DeleteModal';
+import { APIService } from '../../services/API';
 const Country = () => {
   // we have the module here
   const [existingCountries, setCountryValues] = useState([]);
@@ -44,15 +45,16 @@ const [pageLoading,setPageLoading] = useState(false);
   const fetchCountryData = async () => {
     setPageLoading(true);
     const data = {"user_id":1};
-    const response = await fetch('http://192.168.10.133:8000/getCountries', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+    const response = await APIService.getCountries(data)
+    // const response = await fetch('http://192.168.10.133:8000/getCountries', {
+    //     method: 'POST',
+    //     body: JSON.stringify(data),
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     }
+    //   });
       const result = (await response.json()).data;
-   
+             
     setPageLoading(false);
       setCountryValues(result.map(x => ({ 
         sl: x[0], 
