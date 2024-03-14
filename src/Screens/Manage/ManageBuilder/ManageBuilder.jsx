@@ -127,22 +127,22 @@ const ManageBuilder = () => {
     const addNewBuilder = async () => {
         const data = {
             "user_id": 1234,
-            "builder_name": formValues.builderName,
-            "phone_1": formValues.phone1,
-            "phone_2": formValues.phone2,
+            "buildername": formValues.builderName,
+            "phone1": formValues.phone1,
+            "phone2": formValues.phone2,
             "email1": formValues.email1,
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
             "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": formValues.state,
-            "country": formValues.country,
+            "city": 360,
+            "state": "maharastra",
+            "country": 5,
             "zip": formValues.zip,
             "website": formValues.website,
             "comments": formValues.comment,
             "dated": "10-03-2024 08:29:00", 
-            "created_by": 1234,
-            "is_deleted": deleted
+            "createdby": 1234,
+            "isdeleted": false
         };
         const response = await fetch('http://192.168.10.133:8000/addBuilderInfo', {
             method: 'POST',
@@ -184,6 +184,7 @@ const ManageBuilder = () => {
         zip: "",
         website: "",
         comment: "",
+        suburb: ""
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
