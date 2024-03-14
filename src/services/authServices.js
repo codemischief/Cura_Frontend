@@ -1,4 +1,5 @@
 // import jwt_decode  from 'jwt-decode';
+import { useState } from "react";
 import axios from "./axios";
 const env_URL_SERVER="http://192.168.10.133:8000/"
 
@@ -19,14 +20,17 @@ const getToken = ()=> {
 
 
 
-const login = (userData) => {
-   return axios.post(`${env_URL_SERVER}validateCredentials`, userData);
+const login = async (userData) => {
+   const response =await  axios.post(`${env_URL_SERVER}validateCredentials`, userData);
+   sessionStorage.setItem("User_id" ,response.data.role_id);
+   return response.data;
 }
 
 
 
 const getUserRole = () => {
- 
+  const Role_id =sessionStorage.getItem("User_id");
+  return Role_id;
 }
 
 // const isLoggedIn = () => {
@@ -40,8 +44,8 @@ const getUserRole = () => {
 // }
 
 const logOut = ()=> {
-   localStorage.clear();
+   sessionStorage.clear();
 }
 
 
-export  const authService = { logOut, getToken, setToken, getUserRole};
+export  const authService = { logOut, getToken, setToken, getUserRole,login};

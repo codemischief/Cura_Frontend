@@ -3,6 +3,7 @@ import logo from '../../assets/logo-white1.jpg';
 import LogoutIcon from '../../assets/logout.png';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { authService } from '../../services/authServices';
 
 const Navbar = () => {
 
@@ -12,7 +13,9 @@ const Navbar = () => {
    const [isToggledResearch, setIsToggledResearch] = useState(false);
    // const [isToggledManage, setIsToggledManage] = useState(false);
 
-
+const logout = () =>{
+   authService.logOut();
+}
    const handleAdminChange = () => {
       if (isToggledDash) {
          handleDashChange();
@@ -111,9 +114,9 @@ const Navbar = () => {
 
 
                <p className='font-thin font-sans text-md'>Change Password</p>
-               <div className='flex just items-center '>
+               <div className='flex just items-center 'onClick={() => logout()}>
                   <img src={LogoutIcon} className='h-4 m-1' />
-                  <p className='font-thin font-sans text-md'><Link to="/">Logout</Link> </p>
+                  <p className='font-thin font-sans text-md'><Link to="/" >Logout</Link> </p>
                </div>
             </div>
          </div>
