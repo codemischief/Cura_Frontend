@@ -3,13 +3,13 @@ import useAuth from "./useAuth";
 // import Dashboard from "../Components/Dashboard/Dashboard";
 
 
-const RequireAuth = ({allowedRoles}) =>{
+const RequireAuth = ({}) =>{
     const {auth} = useAuth();
 
     const location = useLocation();
 console.log(auth?.roles)
     // return (auth?.roles?.find(role => allowedRoles.includes(role))) ? <Outlet/> :<Navigate to="" />
-    return (allowedRoles == 1) ? <Outlet /> :<Navigate to="" />
+    return (Login.getUserId() === '1') ? <Outlet /> :<Navigate to="" />
 //    return ( (allowedRoles == 1)
 //     ? <Outlet />
 //     : auth?.user

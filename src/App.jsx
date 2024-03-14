@@ -18,8 +18,11 @@ import AddNewEmp from './Components/ManageUser/addNewEmp';
 import { createBrowserRouter,RouterProvider, Routes ,Route, Outlet} from 'react-router-dom';
 import ManageEmployees from './Components/ManageUser/ManageEmployees';
 import UserPage from './Components/userPage/Userpage';
-const App = () => {
 
+
+
+const App = () => {
+ 
   const router= createBrowserRouter([
     {
       path: '/',
@@ -122,7 +125,7 @@ const App = () => {
               <Route path="/user" element={<UserPage />} />
          
               {/* private routes */}
-              <Route element={<RequireAuth allowedRoles={ROLES.Admin}/>}>
+              <Route element={<RequireAuth />}>
                     <Route path="/dashboard" element={<Dashboard />}/>
                     <Route path="/country" element={<Country />}/>
                     <Route path="/city" element={<City />}/>

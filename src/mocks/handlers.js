@@ -395,23 +395,23 @@ export const handlers = [
       ]);
 
    }),
-   http.post('/validateCredentials', async (req, res, ctx) =>{
-      // const request = await req.json();
-      // console.log(req)
-      return HttpResponse.json({"result" : "Success", "data" : { "role_id": 2, "user_id" : 1} });
-         //  const request = await req;
-         //  console.log(req)
-         //  if(request.username == "user1"  && request.password == "pass1"){
-         //    return HttpResponse.json({"result" : "Success", "data" : { "role_id": 1, "user_id" : 1} });
-         //  }else if(request.username == "user2" && request.password == "pass2"){
-         //    return HttpResponse.json({"result" : "Success", "data" : { "role_id": 2, "user_id" : 2} });
-         //  }
-         //  else{
-         //    return new HttpResponse(null, { status: 401 })
-         //  }
+   // http.post('/validateCredentials', async (req, res, ctx) =>{
+   //    // const request = await req.json();
+   //    // console.log(req)
+   //    return HttpResponse.json({"result" : "Success", "data" : { "role_id": 1, "user_id" : 1} });
+   //       //  const request = await req;
+   //       //  console.log(req)
+   //       //  if(request.username == "user1"  && request.password == "pass1"){
+   //       //    return HttpResponse.json({"result" : "Success", "data" : { "role_id": 1, "user_id" : 1} });
+   //       //  }else if(request.username == "user2" && request.password == "pass2"){
+   //       //    return HttpResponse.json({"result" : "Success", "data" : { "role_id": 2, "user_id" : 2} });
+   //       //  }
+   //       //  else{
+   //       //    return new HttpResponse(null, { status: 401 })
+   //       //  }
          
    
-       })
+   //     })
 
    //************ mock post request ************** */
 

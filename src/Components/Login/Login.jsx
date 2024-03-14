@@ -5,11 +5,13 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import useAuth from "../../context/useAuth";
 import bcrypt from 'bcryptjs'
+import { authService } from "../../services/authServices";
 
 import axios from "../Config/axios";
 
-
 const Login = () => {
+  const getuserId = (data) => (data);
+
   const  {setAuth} =useAuth();
   const navigate = useNavigate();
 
@@ -43,6 +45,8 @@ const Login = () => {
   const [type2, setType2] = useState("password");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [userId, setUserId] = useState("");
+
 
   // handle changes in input form
   const handleChange = (e) => {
@@ -72,20 +76,41 @@ const Login = () => {
     element.style.display="block";
   }
 const mockPostResponse = async () => {
-  console.log("inside mockPostResponse ")
-  if(isSubmit){
-    console.log("inside mockPostResponse ")
+  // localStorage.setItem("username","ruderaw")
+  // localStorage.setItem("password","abcdefg")
+  const username =formValues.username;
+  // var salt = bcrypt.genSaltSync(12);
+  var password = formValues.password;
+    // const password =bcrypt.hash(formValues.password,12);
+    // const password ="$2a$12$pT07xTktKj9e1KWuib8/z.riX4asy1vyk8jvIaGxtPELi9UhM9OQC"
+    console.log(password)
+    const company_key =formValues.comkey;
+  // const userData  ={
+  //   "username" :formValues.username,
+  //    "password" : bcrypt.hashSync(formValues.password,10),
+  //   "company_key" : Number(formValues.comkey)
+  // }
+  // const response =  await authService.login(userData);
+  // console.log(response);
+  
     try{
-      const user =formValues.username;
-      const pwd =formValues.password;
-        const response = await axios.post("/validateCredentials",
-          JSON.stringify({ user, pwd }),
+          
+      // const response =  await authService.login({ username,password,company_key});
+      const {response} = await axios.post("http://192.168.10.133:8000/validateCredentials",
+          { username,password,company_key},
           {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: true
+              headers: { 
+              "Content-Type": "application/json"},
+
           }
       );
-        setFormValues(initialValues);
+      // console.log((response.json()).data)
+      // const data=response.data.data.role_id;
+      // setUserId(response.data.data.user_id)
+      // getuserId("1")
+      //   setFormValues(initialValues);
+      //   console.log(response);
+      //   sessionStorage.setItem('user_id', JSON.stringify(response.data.data.role_id));
         if(response.data.data.role_id == "1"){
           navigate("/dashboard")
         }else {
@@ -96,14 +121,35 @@ const mockPostResponse = async () => {
         setErrorMessage("No server Response");}
 
     }
+    // axios.post('http://192.168.10.133:8000/validateCredentials', {username,password,company_key})
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   setErrorMessage("No server Response");
+    //   console.log(error);
+    // });
 
-  }
+  //   const {data} = await axios.post('http://192.168.10.133:8000/validateCredentials', {
+  //     username: username,
+  //     password: password,
+  //     company_key: company_key
+  //   }, {
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  // })
+  // console.log(data)
 
 }
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true);
+    mockPostResponse();
+    
    
   };
 
@@ -123,31 +169,33 @@ const mockPostResponse = async () => {
   };
 
   useEffect(() => {
-    if (Object.keys(formErrors).length == 0 && isSubmit) {
-      // Find user login info
-      const userData = database.find(
-        (user) => user.username === formValues.username
-      );
-      if (userData) {
-        if (userData.password !== formValues.password) {
-          // Invalid password
-          setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
-          console.log("invalid password");
-          show();
-        } else {
-          const hashedPassword=bcrypt.hashSync(userData.password,10)
-          console.log(hashedPassword)
-          // navigate("/dashboard");
-          setIsSubmit(true);
-          mockPostResponse();
-          console.log("login successful");
-        }
-      } else {
-        setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
-        console.log("user not found");
-        show();
-      }
-    }
+    // localStorage.setItem(username, "ruderaw");
+
+    // if (Object.keys(formErrors).length == 0 && isSubmit) {
+    //   // Find user login info
+    //   const userData = database.find(
+    //     (user) => user.username === formValues.username
+    //   );
+    //   if (userData) {
+    //     if (userData.password !== formValues.password) {
+    //       // Invalid password
+    //       setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
+    //       console.log("invalid password");
+    //       show();
+    //     } else {
+    //       const hashedPassword=bcrypt.hashSync(userData.password,10)
+    //       console.log(hashedPassword)
+    //       // navigate("/dashboard");
+    //       setIsSubmit(true);
+    //       mockPostResponse();
+    //       console.log("login successful");
+    //     }
+    //   } else {
+    //     setErrorMessage("Incorrect username,password or Company Key. Please enter the Correct Information and try again.")
+    //     console.log("user not found");
+    //     show();
+    //   }
+    // }
   }, [formErrors]);
   return (
     <div className="flex gap-[75px] py-[20px]">
@@ -167,7 +215,7 @@ const mockPostResponse = async () => {
                   className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050]"
                   type="text"
                   name="username"
-                  value={formValues.username}
+                  value="rudraw"
                   onChange={handleChange}
                   autoComplete="off"
                 />

@@ -6,12 +6,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthProvider.jsx'
 import { Routes ,Route} from 'react-router-dom';
 
-async function deferRender(){
-  const {worker} = await import('./mocks/browser.js');
-  return worker.start();
-}
+// async function deferRender(){
+//   const {worker} = await import('./mocks/browser.js');
+//   return worker.start();
+// }
 
-deferRender().then( () =>{
+// deferRender().then( () =>{
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
     <BrowserRouter>
@@ -25,9 +25,9 @@ deferRender().then( () =>{
 
   </React.StrictMode>,
   )
-}
+// }
 
-)
+// )
 
 
 
