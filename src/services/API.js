@@ -22,6 +22,11 @@ const getCountries= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}getCountries`, METHOD_POST(data));
   return response;
  }
+const getState= async (data)=> {
+    const response = await fetch(`${env_URL_SERVER}getState`, METHOD_POST(data));
+  return response;
+ }
+ 
 
  const addCountries= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}addCountry`, METHOD_POST(data));
@@ -38,4 +43,4 @@ const getCountries= async (data)=> {
 
 
 
- export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries};
+ export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState};

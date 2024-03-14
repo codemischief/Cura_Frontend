@@ -16,6 +16,7 @@ import EditManageBuilder from './EditManageBuilder';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import Delete from './Delete';
+import { APIService } from '../../../services/API';
 
 const ManageBuilder = () => {
     // we have the module here
@@ -27,6 +28,15 @@ const ManageBuilder = () => {
     const [showDelete, setShowDelete] = useState(false);
     const [currentBuilderId, setCurrentBuilderId] = useState("");
     const [deleted, setDeleted] = useState(false);
+    const [allCountry,setAllCountry]=useState([]);
+    const [selectedCountry,setselectedCountry]=useState("");
+    const [allState,setAllState]=useState([]);
+    const [selectedState,setSelectedState] = useState("");
+    const [allCity, setAllCity]=useState([]);
+    // const [selectedCountry,setselectedCountry] = useState([]);
+    // const [isCountrySelected,setCountrySelected] = useState(false)
+    // const [selectedState,setSelectedState] = useState([])
+    // const [selectedCity,setSelectedCity] = useState([])
 
     const openSuccessModal = () => {
         // set the state for true for some time
@@ -47,18 +57,66 @@ const ManageBuilder = () => {
     const fetchBuilderData = async () => {
         setPageLoading(true);
         const data = { "user_id": 1 };
-        const response = await fetch('http://192.168.10.133:8000/getBuilderInfo', {
+        const response = await APIService.getNewBuilderInfo(data)
+        const result = (await response.json()).data.builder_info;
+        setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
+    }
+    const fetchCountryData = async () => {
+        setPageLoading(true);
+        const data = {"user_id":1};
+        const response = await APIService.getCountries(data)
+        // const response = await fetch('http://192.168.10.133:8000/getCountries', {
+        //     method: 'POST',
+        //     body: JSON.stringify(data),
+        //     headers: {
+        //       'Content-Type': 'application/json'
+        //     }
+        //   });
+        const result = (await response.json()).data;
+        //   setAllCountry(result.map(x => ({ 
+        //         sl: x[0], 
+        //         country_name: x[1] 
+        //   })));
+        //   console.log(allCountry)
+        setAllCountry(result.map(x => (
+            x[0]+" "+x[1]
+          )));
+          console.log(allCountry)
+
+      }
+     
+    const fetchStateData = async (d) => {
+        console.log(d)
+        const data = {"user_id":1,"country_id":5};
+        const response = await fetch('http://192.168.10.133:8000/getStates', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        const result = (await response.json()).data.builder_info;
-        setPageLoading(false);
-        console.log(result);
-        setExistingBuilders(result);
-    }
+        const result = (await response.json()).data;
+        // console.log(result)
+        setAllState(result)
+      }
+
+      const fetchCityData = async (d) => {
+        console.log(d)
+        const data = {"user_id":1,"country_id":5,"state_name":"Maharashtra"};
+        const response = await fetch('http://192.168.10.133:8000/getCities', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    const result = (await response.json()).data;
+    console.log(result)
+    (result != undefined)?setAllCity(result): "";
+    // setAllCity(result)
+  }
 
     const deleteBuilder = async (item) => {
         setShowDelete(true);
@@ -108,19 +166,10 @@ const ManageBuilder = () => {
     }
 
     useEffect(() => {
-        fetchBuilderData()
+        fetchBuilderData();
+        fetchCountryData();
     }, []);
-    // hardcoded for dropdown instances ********* start*************
-    const selectedCountry = [
-        "India", "USA", "UK", "Germany", "France", "Italy"
-    ]
-    const selectedState = [
-        "State1", "State2", "State3", "State4"
-    ]
-    const selectedCity = [
-        "City1", "City2", "City3", "City4"
-    ]
-    // hardcoded for dropdown instances ********* End*************
+  
 
     //Validation of the form
     const initialValues = {
@@ -145,6 +194,7 @@ const ManageBuilder = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
+        // console.log(e.target.value)
     };
 
     const handleSubmit = (e) => {
@@ -433,8 +483,17 @@ const ManageBuilder = () => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
-                                                {selectedCountry.map(item => (
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
+                                            name="country" 
+                                            value={formValues.country} 
+                                            defaultValue="Select Country"
+                                            onChange={e => {
+                                                setselectedCountry(e.target.value);
+                                                let res = selectedCountry.split(' ')[0];
+                                                fetchStateData(res);
+                                                }}
+                                                 >
+                                                {allCountry.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
@@ -444,8 +503,15 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
-                                                {selectedState.map(item => (
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
+                                            name="state" 
+                                            value={formValues.state} 
+                                            defaultValue="Select State"
+                                            onChange={e => {
+                                                setSelectedState(e.target.value);
+                                                fetchCityData(selectedState);
+                                                }} >
+                                                {allState.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
@@ -455,8 +521,12 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
-                                                {selectedCity.map(item => (
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
+                                            name="city" 
+                                            value={formValues.city} 
+                                            defaultValue="Select City"
+                                            onChange={handleChange} >
+                                                {allCity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
