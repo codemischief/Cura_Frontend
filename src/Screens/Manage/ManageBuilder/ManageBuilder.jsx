@@ -28,11 +28,11 @@ const ManageBuilder = () => {
     const [showDelete, setShowDelete] = useState(false);
     const [currentBuilderId, setCurrentBuilderId] = useState("");
     const [deleted, setDeleted] = useState(false);
-    const [allCountry,setAllCountry]=useState([]);
-    const [selectedCountry,setselectedCountry]=useState("");
-    const [allState,setAllState]=useState([]);
-    const [selectedState,setSelectedState] = useState("");
-    const [allCity, setAllCity]=useState([]);
+    const [allCountry, setAllCountry] = useState([]);
+    const [selectedCountry, setselectedCountry] = useState("");
+    const [allState, setAllState] = useState([]);
+    const [selectedState, setSelectedState] = useState("");
+    const [allCity, setAllCity] = useState([]);
     // const [selectedCountry,setselectedCountry] = useState([]);
     // const [isCountrySelected,setCountrySelected] = useState(false)
     // const [selectedState,setSelectedState] = useState([])
@@ -65,7 +65,7 @@ const ManageBuilder = () => {
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = {"user_id":1};
+        const data = { "user_id": 1 };
         const response = await APIService.getCountries(data)
         // const response = await fetch('http://192.168.10.133:8000/getCountries', {
         //     method: 'POST',
@@ -81,15 +81,15 @@ const ManageBuilder = () => {
         //   })));
         //   console.log(allCountry)
         setAllCountry(result.map(x => (
-            x[0]+" "+x[1]
-          )));
-          console.log(allCountry)
+            x[0] + " " + x[1]
+        )));
+        console.log(allCountry)
 
-      }
-     
+    }
+
     const fetchStateData = async (d) => {
         console.log(d)
-        const data = {"user_id":1,"country_id":5};
+        const data = { "user_id": 1, "country_id": 5 };
         const response = await fetch('http://192.168.10.133:8000/getStates', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -100,11 +100,11 @@ const ManageBuilder = () => {
         const result = (await response.json()).data;
         // console.log(result)
         setAllState(result)
-      }
+    }
 
-      const fetchCityData = async (d) => {
+    const fetchCityData = async (d) => {
         console.log(d)
-        const data = {"user_id":1,"country_id":5,"state_name":"Maharashtra"};
+        const data = { "user_id": 1, "country_id": 5, "state_name": "Maharashtra" };
         const response = await fetch('http://192.168.10.133:8000/getCities', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -112,11 +112,11 @@ const ManageBuilder = () => {
                 'Content-Type': 'application/json'
             }
         });
-    const result = (await response.json()).data;
-    console.log(result)
-    (result != undefined)?setAllCity(result): "";
-    // setAllCity(result)
-  }
+        const result = (await response.json()).data;
+        console.log(result)
+            (result != undefined) ? setAllCity(result) : "";
+        // setAllCity(result)
+    }
 
     const deleteBuilder = async (item) => {
         setShowDelete(true);
@@ -126,28 +126,25 @@ const ManageBuilder = () => {
 
     const addNewBuilder = async () => {
         const data = {
-            "user_id": 1,
-            "data": {
-                "builder_id": 2225,
-                "builder_name": formValues.builderName,
-                "phone_1": formValues.phone1,
-                "phone_2": formValues.phon2,
-                "email1": formValues.email1,
-                "addressline1": formValues.address1,
-                "addressline2": formValues.address2,
-                "suburb": formValues.suburb,
-                "city": formValues.city,
-                "state": formValues.state,
-                "country": formValues.country,
-                "zip": formValues.zip,
-                "website": formValues.website,
-                "comments": formValues.comment,
-                "dated": "10-03-2024 08:29:00",
-                "created_by": 1234,
-                "is_deleted": deleted
-            }
+            "user_id": 1234,
+            "builder_name": formValues.builderName,
+            "phone_1": formValues.phone1,
+            "phone_2": formValues.phone2,
+            "email1": formValues.email1,
+            "addressline1": formValues.address1,
+            "addressline2": formValues.address2,
+            "suburb": formValues.suburb,
+            "city": formValues.city,
+            "state": formValues.state,
+            "country": formValues.country,
+            "zip": formValues.zip,
+            "website": formValues.website,
+            "comments": formValues.comment,
+            "dated": "10-03-2024 08:29:00", 
+            "created_by": 1234,
+            "is_deleted": deleted
         };
-        const response = await fetch('http://192.168.10.133:8000/addNewBuilder', {
+        const response = await fetch('http://192.168.10.133:8000/addBuilderInfo', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -155,6 +152,7 @@ const ManageBuilder = () => {
             }
         });
 
+        console.log(response);
         if (response.ok) {
             setIsLoading(false);
             openSuccessModal();
@@ -169,13 +167,13 @@ const ManageBuilder = () => {
         fetchBuilderData();
         fetchCountryData();
     }, []);
-  
+
 
     //Validation of the form
     const initialValues = {
         builderName: "",
         phone1: "",
-        phon2: "",
+        phone2: "",
         email1: "",
         email2: "",
         address1: "",
@@ -200,7 +198,6 @@ const ManageBuilder = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
-        setFormErrors(validate(formValues));
         if (formValues.builderName == "") {
             return;
         }
@@ -265,7 +262,7 @@ const ManageBuilder = () => {
         <div>
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
-            <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country" />
+            <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
             <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
@@ -339,9 +336,9 @@ const ManageBuilder = () => {
                             </div>
                         </div>
                         <div className='w-full h-80 overflow-auto'>
-                        {pageLoading && <div className='ml-11 mt-9'>
-                        <CircularProgress />
-                     </div>}
+                            {pageLoading && <div className='ml-11 mt-9'>
+                                <CircularProgress />
+                            </div>}
                             {existingBuilders.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
@@ -367,7 +364,7 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={handleOpenEdit} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)}/>
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
                                         </div>
                                     </div>
                                 </div>
@@ -456,7 +453,7 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone1} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
                                         </div>
                                         <div className="">
@@ -466,7 +463,7 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="desc" value={formValues.email2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div> */}
                                         </div>
                                         <div className="">
@@ -476,23 +473,23 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.address2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
                                             {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
-                                            name="country" 
-                                            value={formValues.country} 
-                                            defaultValue="Select Country"
-                                            onChange={e => {
-                                                setselectedCountry(e.target.value);
-                                                let res = selectedCountry.split(' ')[0];
-                                                fetchStateData(res);
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                                name="country"
+                                                value={formValues.country}
+                                                defaultValue="Select Country"
+                                                onChange={e => {
+                                                    setselectedCountry(e.target.value);
+                                                    let res = selectedCountry.split(' ')[0];
+                                                    fetchStateData(res);
                                                 }}
-                                                 >
+                                            >
                                                 {allCountry.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -503,13 +500,13 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
-                                            name="state" 
-                                            value={formValues.state} 
-                                            defaultValue="Select State"
-                                            onChange={e => {
-                                                setSelectedState(e.target.value);
-                                                fetchCityData(selectedState);
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                                name="state"
+                                                value={formValues.state}
+                                                defaultValue="Select State"
+                                                onChange={e => {
+                                                    setSelectedState(e.target.value);
+                                                    fetchCityData(selectedState);
                                                 }} >
                                                 {allState.map(item => (
                                                     <option key={item} value={item}>
@@ -521,11 +518,11 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
-                                            name="city" 
-                                            value={formValues.city} 
-                                            defaultValue="Select City"
-                                            onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                                name="city"
+                                                value={formValues.city}
+                                                defaultValue="Select City"
+                                                onChange={handleChange} >
                                                 {allCity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -536,7 +533,7 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">ZIP Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zipcode" value={formValues.zip} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Website</div>
