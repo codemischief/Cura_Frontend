@@ -34,7 +34,6 @@ const getState= async (data)=> {
  const editCountry= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}editCountry`, METHOD_POST(data));
  } 
-
  const getNewBuilderInfo= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}getBuilderInfo`, METHOD_POST(data));
   return response;
