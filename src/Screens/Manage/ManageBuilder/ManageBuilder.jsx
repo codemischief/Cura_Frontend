@@ -25,7 +25,7 @@ const ManageBuilder = () => {
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
-    const [currentCountry, setCurrentCountry] = useState("");
+    const [currentBuilderId, setCurrentBuilderId] = useState("");
     const [deleted, setDeleted] = useState(false);
 
     const openSuccessModal = () => {
@@ -62,7 +62,7 @@ const ManageBuilder = () => {
 
     const deleteBuilder = async (item) => {
         setShowDelete(true);
-        setCurrentCountry(item);
+        setCurrentBuilderId(item);
         setDeleted(true);
     }
 
@@ -216,7 +216,7 @@ const ManageBuilder = () => {
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country" />
-            <Delete isOpen={showDelete} currentBuilder={currentBuilder} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
+            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}

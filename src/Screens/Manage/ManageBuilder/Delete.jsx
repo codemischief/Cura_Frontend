@@ -29,16 +29,16 @@ const Delete = (props) => {
             className='flex justify-center items-center rounded-lg'
              >
             <div className='bg-white'>
-                <div className="w-auto h-auto  ">
-                    <div className="h-[40px] justify-center flex items-center">
-                        <div className="mr-[210px] ml-[210px]">
+                <div className="w-auto h-auto flex flex-col justify-center items-center ">
+                    <div className="h-[40px] flex justify-center items-center">
+                        <div className="ml-56 mr-52">
                             <div className="text-[16px]">Delete</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                            <img onClick={() => props.closeDialog(false)} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                         </div>
                     </div>
-                    <div className="ml-48 mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
+                    <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
                         <img className="h-10 w-10" src={DeletePhoto} alt="delete photo" />
                     </div>
                     <div className="mt-4 w-full text-center">

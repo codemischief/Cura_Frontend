@@ -220,7 +220,7 @@ const Navbar = () => {
          {isToggledResearch && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-10 absolute top-16 scroll-mr-7 shadow-2xl '>
          <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>           
-                  <Link to="/research/prospect"><h1 className='text-thin text-base'>Propspect</h1></Link>
+                  <Link to="/research/prospect"><h1 className='text-thin text-base'>Prospect</h1></Link>
                </div>
             </div>
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
