@@ -2,15 +2,29 @@ import React from 'react';
 import DeletePhoto from '../../../assets/delete.png'
 import Cross from "../../../assets/cross.png";
 import { Link } from 'react-router-dom';
-import { Modal } from "@mui/material";
+import { Modal , Button ,CircularProgress} from '@mui/material'
 import { useState, useEffect } from "react";
 
 const Delete = (props) => {
-    const handleDialogClose = () => {
-        props.setOpenDialog(false);
-    };
+    const [showLoading,setShowLoading] = useState(false);
+    const deleteCountry = async (item) =>{
+        // props.setShowDelete(true);
+        const data = {"user_id":1,"builder_id":props.currentBuilder};
+        setShowLoading(true);
+        console.log(data);
+        const response = await fetch('http://192.168.10.133:8000/deleteBuilder', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          setShowLoading(false);
+          props.closeDialog(false);
+          props.fetchData();
+      }
   return (
-    <Modal open={props.openDialog}
+    <Modal open={props.isOpen}
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
@@ -31,8 +45,8 @@ const Delete = (props) => {
                         <p>Are you sure you want to delete the builder</p>
                     </div>
                     <div className="my-5 flex justify-center items-center gap-[10px]">
-                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' type="submit">Delete</button>
-                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
+                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => deleteCountry(props.item)}>Delete</button>
+                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => props.closeDialog(false)}>Cancel</button>
                     </div>
                 </div>
             </div>

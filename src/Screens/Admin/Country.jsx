@@ -101,7 +101,6 @@ const [pageLoading,setPageLoading] = useState(false);
       // fetchCountryData();
   }
   useEffect(()=> {
-    
     fetchCountryData()
   },[]);
   //Validation of the form
@@ -164,8 +163,8 @@ const [pageLoading,setPageLoading] = useState(false);
                 {/* the top section of the div */}
                 <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                    <div className='flex items-center space-x-3'>
-                      <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 '>
-                          <Link to="/dashboard"><img src={backLink} /></Link>
+                      <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
+                          <Link to="/dashboard"><img className="w-5 h-5"src={backLink} /></Link>
                       </div>
                         
                       <div className='flex-col'>
@@ -186,10 +185,9 @@ const [pageLoading,setPageLoading] = useState(false);
                                     <img className="h-[26px] " src={searchIcon} alt="search-icon" />
                                 </div>
                         </div>
-
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
                                 Add New Country +
                             </button>
                         </div>
@@ -224,7 +222,7 @@ const [pageLoading,setPageLoading] = useState(false);
                 <div className='w-full h-80 overflow-auto'>
                      
                      {pageLoading && <div className='ml-11 mt-9'>
-                        <CircularProgress/>
+                        <CircularProgress />
                      </div>}
                     {existingCountries.map((item,index) => {
                        return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
@@ -332,14 +330,11 @@ const [pageLoading,setPageLoading] = useState(false);
                                          />
                                          <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div>
                                     </div>
-                                    
-                                    
                                 </div>
                             </div>
                         </div>
                         
-                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-                            
+                        <div className="mt-[10px] flex justify-center items-center gap-[10px]"> 
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             {isLoading && <CircularProgress/>}
