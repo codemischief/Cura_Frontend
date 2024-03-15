@@ -37,6 +37,12 @@ const ManageBuilder = () => {
     const [countryId,setcountryId]=useState("");
     const [userId,setUserId]=useState(0);
     // const [selectedBuilder,setSelectedBuilder] = useState();
+    const fetchUserId = async() =>{
+        const response = await authService.getUserId()
+        
+        setUserId(response)
+
+    }
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsManageBuidlerDialogue(false);
@@ -55,7 +61,7 @@ const ManageBuilder = () => {
 
     const fetchBuilderData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1 };
+        const data = { "user_id": userId || 1234 };
         const response = await APIService.getNewBuilderInfo(data)
         const result = (await response.json()).data.builder_info;
         setPageLoading(false);
@@ -64,19 +70,19 @@ const ManageBuilder = () => {
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234 };
+        const data = { "user_id": userId || 1234 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
 
         setAllCountry(result);
 
-        console.log(allCountry)
+        
 
     }
 
-    const fetchStateData = async (d) => {
-        console.log(d)
-        const data = { "user_id": 1, "country_id": 5 };
+    const fetchStateData = async (e) => {
+       
+        const data = { "user_id": userId || 1234, "country_id": 5 };
         const response = await APIService.getState(data);
 
         const result = (await response.json()).data;
@@ -85,11 +91,11 @@ const ManageBuilder = () => {
     }
 
     const fetchCityData = async (d) => {
-        console.log(d)
-        const data = { "user_id": 1, "country_id": 5, "state_name": "Maharashtra" };
+        
+        const data = { "user_id": userId || 1234, "country_id": 5, "state_name": "Maharashtra" };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        console.log(result)
+        
         setAllCity(result)
     }
     const fetchUserId = async() =>{
@@ -106,7 +112,7 @@ const ManageBuilder = () => {
 
     const addNewBuilder = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "buildername": formValues.builderName,
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
@@ -125,7 +131,7 @@ const ManageBuilder = () => {
             "isdeleted": false
         };
         const response = await APIService.addNewBuilder(data);
-        console.log(response);
+       
         if (response.ok) {
             setIsLoading(false);
             openSuccessModal();
@@ -210,7 +216,7 @@ const ManageBuilder = () => {
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const editBuilder = (item) => {
         setCurrentBuilder(item);
-        console.log(item);
+        
         setIsEditDialogue(true);
     }
     const [isDeleteDialogue, setIsDeleteDialogue] = React.useState(false);
@@ -470,7 +476,7 @@ const ManageBuilder = () => {
                                                 defaultValue="Select Country"
                                                 onChange={e => {
                                                     setselectedCountry(e.target.value);
-                                                    // let res = selectedCountry.split(' ')[0];
+                                                    fetchStateData(e);
                                                     setFormValues((existing) => {
                                                         const newData = {...existing, country: e.target.value}
                                                         return newData;
@@ -494,6 +500,7 @@ const ManageBuilder = () => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     setSelectedState(e.target.value);
+                                                    fetchCityData(e)
                                                     setFormValues((existing) => {
                                                         const newData = {...existing, state: e.target.value}
                                                         return newData;
