@@ -98,12 +98,7 @@ const ManageBuilder = () => {
         
         setAllCity(result)
     }
-    const fetchUserId = async() =>{
-        const response = await authService.getUserId()
-        console.log(response)
-        setUserId(response)
-
-    }
+   
     const deleteBuilder = async (item) => {
         setShowDelete(true);
         setCurrentBuilderId(item);
