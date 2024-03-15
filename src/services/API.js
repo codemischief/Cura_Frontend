@@ -33,9 +33,11 @@ const getState= async (data)=> {
 
  const addCountries= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}addCountry`, METHOD_POST(data));
+    return response;
  }
  const editCountry= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}editCountry`, METHOD_POST(data));
+    return response;
  } 
  const getNewBuilderInfo= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}getBuilderInfo`, METHOD_POST(data));
@@ -53,7 +55,10 @@ const getState= async (data)=> {
   const response = await fetch(`${env_URL_SERVER}deleteBuilder`, METHOD_POST(data));
   return response;
  }
+ const deleteCountries = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteCountry`, METHOD_POST(data));
+  return response;
+ }
 
 
-
- export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo};
+ export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries};
