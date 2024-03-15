@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, CircularProgress } from "@mui/material";
-import DeleteImage from "../../assets/trash.png";
+import DeleteImage from "../../assets/delete.png";
+import Cross from "../../assets/cross.png";
 import { APIService } from "../../services/API";
 const DeleteModal = (props) => {
   const [showLoading, setShowLoading] = useState(false);
@@ -23,32 +24,33 @@ const DeleteModal = (props) => {
   };
 
   return (
-    <Modal open={props.isOpen} fullWidth={true} maxWidth={"md"}>
-      <div className="w-2/4 h-64 rounded-xl bg-white mx-auto mt-48">
-        <div className="w-full h-64 pt-12">
-          <img src={DeleteImage} className="h-24 w-24  mx-auto " />
-          <h1 className="text-center mt-3">Country - {props.currentCountry}</h1>
-          <div className="w-full flex justify-center mt-6 space-x-4">
-            <h1>Do you want to Delete</h1>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => deleteCountry(props.item)}
-            >
-              Delete
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => props.closeDialog(false)}
-            >
-              Cancel
-            </Button>
-            {showLoading && <CircularProgress />}
-          </div>
-        </div>
-      </div>
-    </Modal>
+    <Modal open={props.isOpen}
+            fullWidth={true}
+            className='flex justify-center items-center rounded-lg'
+             >
+            <div className='bg-white'>
+                <div className="w-auto h-auto flex flex-col justify-center items-center ">
+                    <div className="h-[40px] flex justify-center items-center">
+                        <div className="ml-56 mr-52">
+                            <div className="text-[16px]">Delete</div>
+                        </div>
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                            <img onClick={() => props.closeDialog(false)} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                        </div>
+                    </div>
+                    <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
+                        <img className="h-10 w-10" src={DeleteImage} alt="delete photo" />
+                    </div>
+                    <div className="mt-4 w-full text-center">
+                        <p>Are you sure you want to delete the Country</p>
+                    </div>
+                    <div className="my-5 flex justify-center items-center gap-[10px]">
+                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => deleteCountry(props.item)}>Delete</button>
+                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => props.closeDialog(false)}>Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </Modal>
   );
 };
 

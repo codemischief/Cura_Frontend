@@ -50,7 +50,6 @@ const Delete = (props) => {
                     </div>
                 </div>
             </div>
-
         </Modal>
   )
 }

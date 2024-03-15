@@ -64,7 +64,7 @@ const ManageBuilder = () => {
         setExistingBuilders(result);
     }
     const fetchCountryData = async () => {
-        setPageLoading(true);
+        // setPageLoading(true);
         const data = { "user_id": 1 };
         const response = await APIService.getCountries(data)
         // const response = await fetch('http://192.168.10.133:8000/getCountries', {
@@ -83,12 +83,12 @@ const ManageBuilder = () => {
         setAllCountry(result.map(x => (
             x[0] + " " + x[1]
         )));
-        console.log(allCountry)
+        // console.log(allCountry)
 
     }
 
     const fetchStateData = async (d) => {
-        console.log(d)
+        // console.log(d)
         const data = { "user_id": 1, "country_id": 5 };
         const response = await fetch('http://192.168.10.133:8000/getStates', {
             method: 'POST',
@@ -98,13 +98,13 @@ const ManageBuilder = () => {
             }
         });
         const result = (await response.json()).data;
-        // console.log(result)
+        console.log(result)
         setAllState(result)
     }
 
     const fetchCityData = async (d) => {
         console.log(d)
-        const data = { "user_id": 1, "country_id": 5, "state_name": "Maharashtra" };
+        const data = { "user_id": 1, "state_name": "Maharashtra" };
         const response = await fetch('http://192.168.10.133:8000/getCities', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -113,7 +113,7 @@ const ManageBuilder = () => {
             }
         });
         const result = (await response.json()).data;
-        console.log(result)
+        // console.log(result)
             (result != undefined) ? setAllCity(result) : "";
         // setAllCity(result)
     }
