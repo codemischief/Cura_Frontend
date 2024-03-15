@@ -30,7 +30,7 @@ const handleEdit = async () => {
                             <div className="text-[16px]">Edit Country Name!</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <button onClick={() => {}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <button onClick={() => {props.setIsOpen(false)}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                         </div>
                     </div>
                     <form onSubmit={() => {}}>
@@ -50,10 +50,9 @@ const handleEdit = async () => {
                                 </div>
                             </div>
                         </div>
-                        
                         <div className="mt-[10px] flex justify-center items-center gap-[10px]"> 
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {}}>Cancel</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {props.setIsOpen(false)}}>Cancel</button>
                             {/* {isLoading && <CircularProgress/>} */}
                         </div>
                     </form>

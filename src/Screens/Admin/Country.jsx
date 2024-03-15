@@ -152,7 +152,7 @@ const Country = () => {
       <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
       <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country" />
       <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
-      <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} />
+      <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit}/>
       <div className='flex-col w-full h-full  bg-white'>
         <div className='flex-col'>
           {/* this div will have all the content */}
