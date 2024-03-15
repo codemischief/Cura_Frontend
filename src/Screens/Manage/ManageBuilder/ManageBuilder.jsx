@@ -34,6 +34,8 @@ const ManageBuilder = () => {
     const [selectedState, setSelectedState] = useState("");
     const [selectedCity,setSelectedCity] = useState("");
     const [allCity, setAllCity] = useState([]);
+    const [countryId,setcountryId]=useState("");
+    const [userId,setUserId]=useState(0);
     // const [selectedBuilder,setSelectedBuilder] = useState();
     const openSuccessModal = () => {
         // set the state for true for some time
@@ -90,7 +92,12 @@ const ManageBuilder = () => {
         console.log(result)
         setAllCity(result)
     }
+    const fetchUserId = async() =>{
+        const response = await authService.getUserId()
+        console.log(response)
+        setUserId(response)
 
+    }
     const deleteBuilder = async (item) => {
         setShowDelete(true);
         setCurrentBuilderId(item);
@@ -130,6 +137,7 @@ const ManageBuilder = () => {
     }
 
     useEffect(() => {
+        fetchUserId();
         fetchBuilderData();
         fetchCountryData();
         fetchCityData();
