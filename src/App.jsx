@@ -17,6 +17,7 @@ import RequireAuth from './context/RequireAuth';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
+import Userscreen from './Screens/UserScreens/Userscreen';
 
 const App = () => {
   const ROLES = {
@@ -25,117 +26,7 @@ const App = () => {
     Admin:"1"
   }
 
-  const router= createBrowserRouter([
-    {
-      path: '/',
-      element: <Login />,
-      errorElement: <NotFound />,
-    },
-    {
-      path: '/dashboard',
-      element: <Dashboard />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/manageuser',
-      element: <ManageUser />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/manageemployees',
-      element: <ManageEmployees />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/managebuilder',
-      element: <ManageBuilder />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/manageprojectinfo',
-      element: <ManageProjectInfo />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/manageOrder',
-      element: <ManageOrder />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/country',
-      element: <Country />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/city',
-      element: <City />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/locality',
-      element: <Locality />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/admin/state',
-      element: <State />,
-      children: [
-        {
-          path: '',
-          element: <Navbar />
-        },
-      ],
-    },
-    {
-      path: '/research/prospect',
-      element: <Prospect />,
-    },
-  ])
+ 
   return (
     <div className="app">
      
@@ -146,6 +37,7 @@ const App = () => {
       <Route  path="/" element={<Outlet/>}>
                 
               <Route path="" element={<Login />} />
+              <Route path="/user" element={<Userscreen />} />
            
          
            

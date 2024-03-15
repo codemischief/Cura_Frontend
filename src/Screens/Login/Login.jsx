@@ -22,10 +22,15 @@ const Login = () => {
     // var password = bcrypt.hashSync(formValues.password, salt);
       const password =formValues.password;
       const company_key =formValues.comkey;
+   
       const response = await authService.login({ username,password,company_key});
         if(response.result == "success" && response.role_id == "1"){
           navigate("/dashboard")
-        }else if (response.result == "failure"){
+        }else if(response.result == "success" && response.role_id == "2"){
+          navigate("/user")
+        }
+          else if (response.result == "failure"){
+          setIsError(true)
           setErrorMessage(response.message);
         }
 
@@ -57,6 +62,7 @@ const Login = () => {
   const [type1, setType1] = useState("password");
   const [type2, setType2] = useState("password");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
 
   // handle changes in input form
@@ -89,9 +95,10 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues)); // validate form and set error message
+     // validate form and set error message
     setIsSubmit(true);
     mockPostResponse();
+    setFormErrors(validate(formValues));
 
       
   };
@@ -190,7 +197,7 @@ const Login = () => {
             <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>  
 
             {/* error message  */}
-           {isSubmit && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
+           {isError && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
               {errorMessage}
             </div>}
 
