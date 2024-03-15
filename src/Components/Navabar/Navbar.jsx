@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../../assets/logo-white1.jpg';
 import LogoutIcon from '../../assets/logout.png';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { authService } from '../../services/authServices';
 
 const Navbar = () => {
@@ -13,9 +13,11 @@ const Navbar = () => {
    const [isToggledResearch, setIsToggledResearch] = useState(false);
    // const [isToggledManage, setIsToggledManage] = useState(false);
 
-const logout = () =>{
-   authService.logOut();
-}
+   const menuRef = useRef();
+
+   const logout = () => {
+      authService.logOut();
+   }
    const handleAdminChange = () => {
       if (isToggledDash) {
          handleDashChange();
@@ -75,6 +77,24 @@ const logout = () =>{
          return !toggle;
       })
    }
+
+   useEffect(() => {
+      const handler = (e) => {
+         if (!menuRef.current.contains(e.target)) {
+            setIsToggledAdmin(false);
+            setIsToggledDash(false);
+            setIsToggledManage(false);
+            setIsToggledResearch(false);
+         }
+      }
+
+      document.addEventListener("mousedown", handler);
+
+      return () =>{
+         document.removeEventListener("mousedown",handler);
+      };
+   })
+
    return (
       <>
          <div className='bg-accent-blue w-full  justify-between	 h-16 flex '>
@@ -114,13 +134,13 @@ const logout = () =>{
 
 
                <p className='font-thin font-sans text-md'>Change Password</p>
-               <div className='flex just items-center 'onClick={() => logout()}>
+               <div className='flex just items-center ' onClick={() => logout()}>
                   <img src={LogoutIcon} className='h-4 m-1' />
                   <p className='font-thin font-sans text-md'><Link to="/" >Logout</Link> </p>
                </div>
             </div>
          </div>
-         {isToggledAdmin && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
+         {isToggledAdmin && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
             <div className=' w-1/4 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
                   <h1 className='font-semibold text-xl'>Personal</h1>
@@ -164,7 +184,7 @@ const logout = () =>{
                </div>
             </div>
          </div>}
-         {isToggledDash && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-8 absolute top-16 scroll-mr-7 shadow-2xl '>
+         {isToggledDash && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-8 absolute top-16 scroll-mr-7 shadow-2xl '>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <h1 className='font-semibold text-xl	'>Home </h1>
@@ -211,18 +231,18 @@ const logout = () =>{
             </div>
          </div>
          }
-         {isToggledManage && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-32 absolute top-16 scroll-mr-7 shadow-2xl '>
+         {isToggledManage && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-32 absolute top-16 scroll-mr-7 shadow-2xl '>
             <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>           
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <Link to="/admin/managebuilder"><h1 className='text-thin text-base'>Manage Builder</h1></Link>
                </div>
             </div>
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
          </div>
          }
-         {isToggledResearch && <div className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-10 absolute top-16 scroll-mr-7 shadow-2xl '>
-         <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>           
+         {isToggledResearch && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[370px] flex font-sans right-10 absolute top-16 scroll-mr-7 shadow-2xl '>
+            <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <Link to="/research/prospect"><h1 className='text-thin text-base'>Prospect</h1></Link>
                </div>
             </div>
