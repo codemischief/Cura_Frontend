@@ -29,6 +29,13 @@ const [pageLoading,setPageLoading] = useState(false);
   const [showEdit,setShowEdit] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
   const [currentCountry,setCurrentCountry] = useState("");
+  const [userId,setUserId]=useState(0);
+  const fetchUserId = async() =>{
+    const response = await authService.getUserId()
+    console.log(response)
+    setUserId(response)
+
+}
   const openSuccessModal = () => {
     // set the state for true for some time
     setIsCountryDialogue(false);
@@ -46,7 +53,7 @@ const [pageLoading,setPageLoading] = useState(false);
   }
   const fetchCountryData = async () => {
     setPageLoading(true);
-    const data = {"user_id":1};
+    const data = {"user_id":user_id || 1234};
     const response = await APIService.getCountries(data)
     // const response = await fetch('http://192.168.10.133:8000/getCountries', {
     //     method: 'POST',
@@ -65,7 +72,7 @@ const [pageLoading,setPageLoading] = useState(false);
   }
 
   const addCountry = async () => {
-    const data = {"user_id":1,"country_name":formValues.countryName};
+    const data = {"user_id":user_id || 1234,"country_name":formValues.countryName};
     const response = await fetch('http://192.168.10.133:8000/addCountry', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -99,7 +106,9 @@ const [pageLoading,setPageLoading] = useState(false);
   }
   // /edit country modal
   useEffect(()=> {
-    fetchCountryData()
+    fetchUserId();
+    fetchCountryData();
+
   },[]);
   //Validation of the form
   const initialValues = {

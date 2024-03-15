@@ -17,6 +17,7 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import Delete from './Delete';
 import { APIService } from '../../../services/API';
+import { authService } from '../../../services/authServices';
 
 const ManageBuilder = () => {
     // we have the module here
@@ -33,6 +34,9 @@ const ManageBuilder = () => {
     const [allState, setAllState] = useState([]);
     const [selectedState, setSelectedState] = useState("");
     const [allCity, setAllCity] = useState([]);
+    const [countryId,setcountryId]=useState("");
+    const [userId,setUserId]=useState(0);
+
     // const [selectedCountry,setselectedCountry] = useState([]);
     // const [isCountrySelected,setCountrySelected] = useState(false)
     // const [selectedState,setSelectedState] = useState([])
@@ -56,7 +60,7 @@ const ManageBuilder = () => {
 
     const fetchBuilderData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1 };
+        const data = { "user_id": userId || 1234 };
         const response = await APIService.getNewBuilderInfo(data)
         const result = (await response.json()).data.builder_info;
         setPageLoading(false);
@@ -65,7 +69,7 @@ const ManageBuilder = () => {
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1 };
+        const data = { "user_id": userId || 1234 };
         const response = await APIService.getCountries(data)
         // const response = await fetch('http://192.168.10.133:8000/getCountries', {
         //     method: 'POST',
@@ -87,9 +91,11 @@ const ManageBuilder = () => {
 
     }
 
-    const fetchStateData = async (d) => {
-        console.log(d)
-        const data = { "user_id": 1, "country_id": 5 };
+    const fetchStateData = async (e) => {
+        let res = e.target.value.split(' ')[0];
+        setcountryId(res);
+        console.log(res)
+        const data = { "user_id": userId || 1234, "country_id": Number(countryId) };
         const response = await fetch('http://192.168.10.133:8000/getStates', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -102,9 +108,9 @@ const ManageBuilder = () => {
         setAllState(result)
     }
 
-    const fetchCityData = async (d) => {
-        console.log(d)
-        const data = { "user_id": 1, "country_id": 5, "state_name": "Maharashtra" };
+    const fetchCityData = async (e) => {
+        console.log(e.target.value)
+        const data = { "user_id": userId || 1234, "country_id": Number(countryId), "state_name": e.target.value };
         const response = await fetch('http://192.168.10.133:8000/getCities', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -114,8 +120,14 @@ const ManageBuilder = () => {
         });
         const result = (await response.json()).data;
         console.log(result)
-            (result != undefined) ? setAllCity(result) : "";
+            (result != undefined) ? setAllCity(result): "";
         // setAllCity(result)
+    }
+    const fetchUserId = async() =>{
+        const response = await authService.getUserId()
+        console.log(response)
+        setUserId(response)
+
     }
 
     const deleteBuilder = async (item) => {
@@ -126,7 +138,7 @@ const ManageBuilder = () => {
 
     const addNewBuilder = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "buildername": formValues.builderName,
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
@@ -164,8 +176,10 @@ const ManageBuilder = () => {
     }
 
     useEffect(() => {
+        fetchUserId();
         fetchBuilderData();
         fetchCountryData();
+        
     }, []);
 
 
@@ -486,13 +500,11 @@ const ManageBuilder = () => {
                                                 value={formValues.country}
                                                 defaultValue="Select Country"
                                                 onChange={e => {
-                                                    setselectedCountry(e.target.value);
-                                                    let res = selectedCountry.split(' ')[0];
-                                                    fetchStateData(res);
+                                                    fetchStateData(e);
                                                 }}
-                                            >
+                                            > 
                                                 {allCountry.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item} value={item} selected>
                                                         {item}
                                                     </option>
                                                 ))}
@@ -505,9 +517,8 @@ const ManageBuilder = () => {
                                                 name="state"
                                                 value={formValues.state}
                                                 defaultValue="Select State"
-                                                onChange={e => {
-                                                    setSelectedState(e.target.value);
-                                                    fetchCityData(selectedState);
+                                                onChange={e => { 
+                                                    fetchCityData(e);
                                                 }} >
                                                 {allState.map(item => (
                                                     <option key={item} value={item}>
@@ -518,15 +529,17 @@ const ManageBuilder = () => {
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
+                                        
                                             <div className="text-[14px]">City<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="city"
+                                                selected = {formValues.city}
                                                 value={formValues.city}
                                                 defaultValue="Select City"
                                                 onChange={handleChange} >
                                                 {allCity.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                    <option key={item} value={item.city}>
+                                                        {item.city}
                                                     </option>
                                                 ))}
                                             </select>

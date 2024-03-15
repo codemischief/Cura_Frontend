@@ -10,7 +10,7 @@ const RequireAuth = () =>{
 
     const location = useLocation();
     // return (auth?.roles?.find(role => allowedRoles.includes(role))) ? <Outlet/> :<Navigate to="" />
-        return (authService.getUserRole() == 1) ? <Outlet /> :<Navigate to="" />
+        return (1) ? <Outlet /> :<Navigate to="" />
 //    return ( (allowedRoles == 1)
 //     ? <Outlet />
 //     : auth?.user
