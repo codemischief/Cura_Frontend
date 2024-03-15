@@ -286,8 +286,14 @@ const ManageBuilder = () => {
                                 <div className='w-[15%]  p-4'>
                                     <p>City</p>
                                 </div>
-                                <div className='w-[25%]  p-4'>
+                                <div className='w-[15%]  p-4'>
                                     <p>Suburb</p>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Contact</p>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Projects</p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
@@ -318,8 +324,14 @@ const ManageBuilder = () => {
                                         <div className='w-[15%]  p-4'>
                                             <p>{item.city}</p>
                                         </div>
-                                        <div className='w-[25%]  p-4'>
+                                        <div className='w-[15%]  p-4'>
                                             <p>{item.suburb}</p>
+                                        </div>
+                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
+                                            <p>Contact</p>
+                                        </div>
+                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
+                                            <p>Projects</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
