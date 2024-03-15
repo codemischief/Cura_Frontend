@@ -41,7 +41,7 @@ const App = () => {
            
          
            
-              <Route element={<RequireAuth allowedRoles={ROLES.Admin}/>}>
+              <Route element={<RequireAuth/>}>
                     <Route path="/dashboard" element={<Dashboard />}/>
                     <Route path="/admin/manageuser" element={<ManageUser />}/>
                     <Route path="/admin/manageemployees" element={<ManageEmployees />}/>
