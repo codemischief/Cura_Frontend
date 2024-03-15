@@ -1,22 +1,20 @@
-import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { CircularProgress, Modal } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import Navbar from "../../../Components/Navabar/Navbar";
+import FailureModal from '../../../Components/modals/FailureModal';
+import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import backLink from "../../../assets/back.png";
-import searchIcon from "../../../assets/searchIcon.png";
+import Cross from "../../../assets/cross.png";
+import downloadIcon from "../../../assets/download.png";
+import Edit from "../../../assets/edit.png";
 import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
-import downloadIcon from "../../../assets/download.png";
-import { useState, useEffect } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
-import Edit from "../../../assets/edit.png";
+import searchIcon from "../../../assets/searchIcon.png";
 import Trash from "../../../assets/trash.png";
-import Cross from "../../../assets/cross.png";
-import { Modal, CircularProgress } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
-import EditManageBuilder from './EditManageBuilder';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import FailureModal from '../../../Components/modals/FailureModal';
-import Delete from './Delete';
 import { APIService } from '../../../services/API';
+import Delete from './Delete';
+import EditManageBuilder from './EditManageBuilder';
 
 const ManageBuilder = () => {
     // we have the module here
@@ -26,18 +24,16 @@ const ManageBuilder = () => {
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
-    const [currentBuilderId, setCurrentBuilderId] = useState("");
+    const [currentBuilder, setCurrentBuilder] = useState({});
+    const [currentBuilderId,setCurrentBuilderId] = useState();
     const [deleted, setDeleted] = useState(false);
     const [allCountry, setAllCountry] = useState([]);
     const [selectedCountry, setselectedCountry] = useState("");
     const [allState, setAllState] = useState([]);
     const [selectedState, setSelectedState] = useState("");
+    const [selectedCity,setSelectedCity] = useState("");
     const [allCity, setAllCity] = useState([]);
-    // const [selectedCountry,setselectedCountry] = useState([]);
-    // const [isCountrySelected,setCountrySelected] = useState(false)
-    // const [selectedState,setSelectedState] = useState([])
-    // const [selectedCity,setSelectedCity] = useState([])
-
+    // const [selectedBuilder,setSelectedBuilder] = useState();
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsManageBuidlerDialogue(false);
@@ -65,24 +61,12 @@ const ManageBuilder = () => {
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1 };
+        const data = { "user_id": 1234 };
         const response = await APIService.getCountries(data)
-        // const response = await fetch('http://192.168.10.133:8000/getCountries', {
-        //     method: 'POST',
-        //     body: JSON.stringify(data),
-        //     headers: {
-        //       'Content-Type': 'application/json'
-        //     }
-        //   });
         const result = (await response.json()).data;
-        //   setAllCountry(result.map(x => ({ 
-        //         sl: x[0], 
-        //         country_name: x[1] 
-        //   })));
-        //   console.log(allCountry)
-        setAllCountry(result.map(x => (
-            x[0] + " " + x[1]
-        )));
+
+        setAllCountry(result);
+
         console.log(allCountry)
 
     }
@@ -90,13 +74,8 @@ const ManageBuilder = () => {
     const fetchStateData = async (d) => {
         console.log(d)
         const data = { "user_id": 1, "country_id": 5 };
-        const response = await fetch('http://192.168.10.133:8000/getStates', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        const response = await APIService.getState(data);
+
         const result = (await response.json()).data;
         // console.log(result)
         setAllState(result)
@@ -105,17 +84,10 @@ const ManageBuilder = () => {
     const fetchCityData = async (d) => {
         console.log(d)
         const data = { "user_id": 1, "country_id": 5, "state_name": "Maharashtra" };
-        const response = await fetch('http://192.168.10.133:8000/getCities', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result)
-            (result != undefined) ? setAllCity(result) : "";
-        // setAllCity(result)
+        setAllCity(result)
     }
 
     const deleteBuilder = async (item) => {
@@ -133,7 +105,7 @@ const ManageBuilder = () => {
             "email1": formValues.email1,
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
-            "suburb": formValues.suburb,
+            "suburb": "deccan",
             "city": 360,
             "state": "maharastra",
             "country": 5,
@@ -144,14 +116,7 @@ const ManageBuilder = () => {
             "createdby": 1234,
             "isdeleted": false
         };
-        const response = await fetch('http://192.168.10.133:8000/addBuilderInfo', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
+        const response = await APIService.addNewBuilder(data);
         console.log(response);
         if (response.ok) {
             setIsLoading(false);
@@ -166,9 +131,9 @@ const ManageBuilder = () => {
     useEffect(() => {
         fetchBuilderData();
         fetchCountryData();
+        fetchCityData();
+        fetchStateData();
     }, []);
-
-
     //Validation of the form
     const initialValues = {
         builderName: "",
@@ -223,16 +188,6 @@ const ManageBuilder = () => {
         if (!values.address1) {
             errors.address1 = "Enter Builder Adress";
         }
-        if (!values.country) {
-            errors.country = " Select country";
-        }
-        if (!values.state) {
-            errors.state = "Select state";
-        }
-        if (!values.city) {
-            errors.city = "Select city";
-        }
-
         return errors;
     };
 
@@ -243,21 +198,28 @@ const ManageBuilder = () => {
     const handleClose = () => {
         setIsManageBuidlerDialogue(false);
     }
-
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
-    const handleOpenEdit = () => {
+    const editBuilder = (item) => {
+        setCurrentBuilder(item);
+        console.log(item);
         setIsEditDialogue(true);
-    };
-    const handleCloseEdit = () => {
-        setIsEditDialogue(false);
     }
-
     const [isDeleteDialogue, setIsDeleteDialogue] = React.useState(false);
     const handleOpenDelete = () => {
         setIsDeleteDialogue(true);
     };
     const handleCloseDelete = () => {
         setIsDeleteDialogue(false);
+    }
+    const handleRefresh = async  () => {
+       await fetchBuilderData();
+    }
+    const handleDownload =  () => {
+        const worksheet = XLSX.utils.json_to_sheet(existingBuilders);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
+        XLSX.writeFile(workbook,"BuilderData.xlsx");
+        FileSaver.saveAs(workbook,"demo.xlsx");
     }
     return (
         <div>
@@ -364,15 +326,15 @@ const ManageBuilder = () => {
                                             <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={handleOpenEdit} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editBuilder(item)} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
                                         </div>
                                     </div>
                                 </div>
                             })}
                             {/* we get all the existing builders here */}
-                            <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} />
-                            <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} />
+                            {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData}/>}
+                            {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData}/> }
                         </div>
                     </div>
                     <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
@@ -410,12 +372,12 @@ const ManageBuilder = () => {
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
                                 {/* refresh */}
-                                <p>Refresh</p>
+                                <button onClick={handleRefresh}><p>Refresh</p></button>
                                 <img src={refreshIcon} className='h-1/2' />
                             </div>
                             <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
                                 {/* download */}
-                                <p>Download</p>
+                                <button onClick={handleDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className='h-1/2' />
                             </div>
                         </div>
@@ -487,13 +449,17 @@ const ManageBuilder = () => {
                                                 defaultValue="Select Country"
                                                 onChange={e => {
                                                     setselectedCountry(e.target.value);
-                                                    let res = selectedCountry.split(' ')[0];
-                                                    fetchStateData(res);
+                                                    // let res = selectedCountry.split(' ')[0];
+                                                    setFormValues((existing) => {
+                                                        const newData = {...existing, country: e.target.value}
+                                                        return newData;
+                                                    })
+                                                    // fetchStateData(res);
                                                 }}
                                             >
                                                 {allCountry.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                    <option value={item}>
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -507,10 +473,14 @@ const ManageBuilder = () => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     setSelectedState(e.target.value);
-                                                    fetchCityData(selectedState);
+                                                    setFormValues((existing) => {
+                                                        const newData = {...existing, state: e.target.value}
+                                                        return newData;
+                                                    })
+                                                    // fetchCityData(selectedState);
                                                 }} >
                                                 {allState.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option  value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
@@ -519,17 +489,20 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="city"
-                                                value={formValues.city}
-                                                defaultValue="Select City"
-                                                onChange={handleChange} >
-                                                {allCity.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
-                                                    </option>
-                                                ))}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" onChange={(e) => {
+                                               setFormValues((existing) => {
+                                                const newData = {...existing, city: e.target.value};
+                                                 return newData;
+                                               })
+                                            }}>
+                                            {allCity.map((item) => {
+                                                return <option value={item}>
+                                                      {item.city}
+                                                </option>
+                                                
+                                            })}
                                             </select>
+                                           
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">

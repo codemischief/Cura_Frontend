@@ -4,24 +4,20 @@ import Cross from "../../../assets/cross.png";
 import { Link } from 'react-router-dom';
 import { Modal , Button ,CircularProgress} from '@mui/material'
 import { useState, useEffect } from "react";
-
+import { APIService } from '../../../services/API';
 const Delete = (props) => {
     const [showLoading,setShowLoading] = useState(false);
     const deleteCountry = async (item) =>{
         // props.setShowDelete(true);
-        const data = {"user_id":1,"builder_id":props.currentBuilder};
+        // console.log(props.currentBuilder);
         setShowLoading(true);
+        const data = {"user_id":1234,"builder_id": props.currentBuilder};
         console.log(data);
-        const response = await fetch('http://192.168.10.133:8000/deleteBuilder', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
+        const response = await APIService.deleteBuilderInfo(data);
+          await props.fetchData();
           setShowLoading(false);
           props.closeDialog(false);
-          props.fetchData();
+          
       }
   return (
     <Modal open={props.isOpen}
@@ -47,6 +43,7 @@ const Delete = (props) => {
                     <div className="my-5 flex justify-center items-center gap-[10px]">
                         <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => deleteCountry(props.item)}>Delete</button>
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => props.closeDialog(false)}>Cancel</button>
+                        {showLoading && <CircularProgress/>}
                     </div>
                 </div>
             </div>

@@ -5,16 +5,14 @@ import { Modal, CircularProgress } from "@mui/material";
 import { useState, useEffect } from "react";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
+import { APIService } from '../../../services/API';
 
 
 const EditManageBuilder = (props) => {
-
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-
     const openSuccessModal = () => {
         // set the state for true for some time
         props.setOpenDialog(false);
@@ -34,41 +32,34 @@ const EditManageBuilder = (props) => {
     const editNewBuilder = async () => {
         const data = {
             "user_id": 1234,
-            "builder_id": 10027,
-            "builder_name": formValues.builderName,
-            "phone_1": formValues.phone1,
-            "phone_2": formValues.phone2,
-            "email1": formValues.email1,
-            "addressline1": formValues.address1,
-            "addressline2": formValues.address2,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": formValues.state,
-            "country": formValues.country,
-            "zip": formValues.zip,
-            "website": formValues.website,
-            "comments": formValues.comment,
+            "builder_id": Number(props.builder.id),
+            "builder_name": String(formValues.builderName),
+            "phone_1": String(formValues.phone1),
+            "phone_2": String(formValues.phone2),
+            "email1": String(formValues.email1),
+            "addressline1": String(formValues.address1) == "" ? "" : String(formValues.address1),
+            "addressline2": String(formValues.address2),
+            "suburb": "deccan",
+            "city": 360,
+            "state": "Maharashtra",
+            "country": 5,
+            "zip": String(formValues.zip),
+            "website": String(formValues.website),
+            "comments": String(formValues.comment),
             "dated": "10-03-2024 08:29:00",
             "created_by": 1234,
             "is_deleted": false
         }
-
-        const response = await fetch('http://192.168.10.183:8000/editBuilder', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
+        console.log(data);
+        const response = await APIService.editBuilderInfo(data);
         if (response.ok) {
-            setIsLoading(false);
+            
             openSuccessModal();
         } else {
-            setIsLoading(false);
+           
             openFailureModal();
         }
-        fetchBuilderData();
+        
     }
 
     const selectedCountry = [
@@ -84,22 +75,22 @@ const EditManageBuilder = (props) => {
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     };
-
-    //Validation of the form
+    console.log(props.builder)
     const initialValues = {
-        builderName: "",
-        phone1: "",
-        phone2: "",
-        email1: "",
-        email2: "",
-        address1: "",
-        address2: "",
-        country: "",
-        state: "",
-        city: "",
-        zip: "",
-        website: "",
-        comment: ""
+        builderName: props.builder.buildername ,
+        phone1: props.builder.phone1,
+        phone2: props.builder.phone2,
+        email1: props.builder.email1,
+        email2: props.builder.email2,
+        suburb : "deccan",
+        address1: props.builder.address1,
+        address2: props.builder.address2,
+        country: props.builder.country,
+        state: props.builder.state,
+        city: props.builder.city,
+        zip: props.builder.zip,
+        website: props.builder.website,
+        comment: props.builder.comment
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -110,15 +101,16 @@ const EditManageBuilder = (props) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async  (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
         if (formValues.builderName == "") {
             return;
         }
         setIsLoading(true);
-        editNewBuilder();
-
+        await editNewBuilder();
+         await props.fetchData();   
+        setIsLoading(false);
     };
     // validate form and to throw Error message
     const validate = (values) => {
