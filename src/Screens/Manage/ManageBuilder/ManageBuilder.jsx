@@ -174,9 +174,18 @@ const ManageBuilder = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
+        console.log(formErrors)
         if (formValues.builderName == "") {
             return;
         }
+        if(formValues.address1 == "") {
+            return ;
+        }
+        if(formValues.phone1 == "") {
+            return ;
+        } 
+        
+        // if(formValues.)
         setIsLoading(true);
         addNewBuilder();
     };
@@ -184,16 +193,13 @@ const ManageBuilder = () => {
     const validate = (values) => {
         const errors = {};
         if (!values.builderName) {
-            errors.employeeName = "Enter Builder name";
+            errors.builderName = "Enter Builder name";
         }
         if (!values.phone1) {
             errors.phone1 = "Enter Phone number";
         }
         if (!values.email1) {
             errors.email1 = "Enter Email";
-        }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
         }
         if (!values.address1) {
             errors.address1 = "Enter Builder Adress";
@@ -211,7 +217,6 @@ const ManageBuilder = () => {
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const editBuilder = (item) => {
         setCurrentBuilder(item);
-        
         setIsEditDialogue(true);
     }
     const [isDeleteDialogue, setIsDeleteDialogue] = React.useState(false);
@@ -463,7 +468,7 @@ const ManageBuilder = () => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[20px]'>
-                    <div className="w-[1050px] h-[580px] bg-white rounded-lg">
+                    <div className="w-[1100px] h-[600px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Add New Builder</div>
@@ -504,7 +509,7 @@ const ManageBuilder = () => {
                                         <div className="">
                                             <div className="text-[14px]">Address 1 <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.adress1}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.address1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Address Line 2</div>
@@ -529,7 +534,7 @@ const ManageBuilder = () => {
                                                     // fetchStateData(res);
                                                 }}
                                             >
-                                                {allCountry.map(item => (
+                                                {!allCountry && allCountry.map(item => (
                                                     <option value={item}>
                                                         {item[1]}
                                                     </option>
