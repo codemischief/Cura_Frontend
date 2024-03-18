@@ -18,6 +18,8 @@ import RequireAuth from './context/RequireAuth';
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
 import Userscreen from './Screens/UserScreens/Userscreen';
+import LOB from './Screens/Admin/LOB';
+import Service from './Screens/Admin/Service';
 
 const App = () => {
   const ROLES = {
@@ -53,6 +55,8 @@ const App = () => {
                     <Route path="/admin/state" element={<State />}/>
                     <Route path="/admin/city" element={<City />}/>
                     <Route path="/admin/locality" element={<Locality />}/>
+                    <Route path="/admin/LOB" element={<LOB />}/>
+                    <Route path="/admin/service" element={<Service />}/>
                     <Route path="/research/prospect" element={<Prospect />}/>
               </Route>
 
