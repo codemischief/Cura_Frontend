@@ -41,7 +41,7 @@ const App = () => {
            
          
            
-              {/* <Route element={<RequireAuth/>}> */}
+               <Route element={<RequireAuth/>}> 
                     <Route path="/dashboard" element={<Dashboard />}/>
                     <Route path="/admin/manageuser" element={<ManageUser />}/>
                     <Route path="/admin/manageemployees" element={<ManageEmployees />}/>
@@ -54,7 +54,7 @@ const App = () => {
                     <Route path="/admin/city" element={<City />}/>
                     <Route path="/admin/locality" element={<Locality />}/>
                     <Route path="/research/prospect" element={<Prospect />}/>
-              {/* </Route> */}
+               </Route> 
 
               <Route path="/*" element={<NotFound />}/>
         </Route>
