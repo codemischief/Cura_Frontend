@@ -13,6 +13,9 @@ import ManageOrder from './Screens/Manage/ManageOrder/ManageOrder';
 import ManageEmployees from './Screens/Manage/ManageEmployee/ManageEmployees';
 import ManageBuilder from './Screens/Manage/ManageBuilder/ManageBuilder';
 import Prospect from './Screens/Research/Prospect/Prospect';
+import Owner from './Screens/Research/Owner/Owner';
+import Educational from './Screens/Research/Educational/Educational'
+import Architect from './Screens/Research/Architect/Architect'
 import RequireAuth from './context/RequireAuth';
 
 
@@ -43,7 +46,7 @@ const App = () => {
            
          
            
-               <Route element={<RequireAuth/>}> 
+               {/* <Route element={<RequireAuth/>}>  */}
                     <Route path="/dashboard" element={<Dashboard />}/>
                     <Route path="/admin/manageuser" element={<ManageUser />}/>
                     <Route path="/admin/manageemployees" element={<ManageEmployees />}/>
@@ -58,7 +61,10 @@ const App = () => {
                     <Route path="/admin/LOB" element={<LOB />}/>
                     <Route path="/admin/service" element={<Service />}/>
                     <Route path="/research/prospect" element={<Prospect />}/>
-               </Route> 
+                    <Route path="/research/owner" element={<Owner />}/>
+                    <Route path="/research/educational" element={<Educational />}/>
+                    <Route path="/research/architect" element={<Architect />}/>
+               {/* </Route>  */}
 
               <Route path="/*" element={<NotFound />}/>
         </Route>
