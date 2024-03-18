@@ -11,26 +11,38 @@ import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
-import EditProspect from './EditProspect';
-import DeleteProspect from './DeleteProspect';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-const Prospect = () => {
+const Owner = () => {
 
     // we have the module here
-    const [existingProspect, setExistingProspect] = useState([]);
+    const [existingOwner, setExistingOwner] = useState([]);
     useEffect(() => {
         fetch("/getprospect")
             .then((res) => res.json())
             .then((data) => {
-                setExistingProspect(data)
+                setExistingOwner(data)
                 console.log(data);
             })
     }, []);
     //Validation of the form
     const initialValues = {
-        personName: "",
+        corporation: "",
+        name: "",
+        email: "",
+        phoneNumber: "",
+        phone1: "",
+        phone2: "",
+        sR: "",
+        address: "",
+        propertyTaxNo: "",
         country: "",
+        state: "",
+        city: "",
+        locality: "",
+        propertyDetails: "",
+        societyName: "",
+        source: ""
     };
 
     const selectedCountry = [
@@ -41,6 +53,9 @@ const Prospect = () => {
     ]
     const selectedCity = [
         "City1", "City2", "City3", "City4"
+    ]
+    const selectedsR = [
+        "1", "2", "3", "4"
     ]
 
     const [formValues, setFormValues] = useState(initialValues);
@@ -57,8 +72,8 @@ const Prospect = () => {
     };
     const validate = (values) => {
         const errors = {};
-        if (!values.personName) {
-            errors.personName = "Enter the name of the person";
+        if (!values.name) {
+            errors.name = "Enter the name ";
         }
         if (!values.country) {
             errors.country = "Select Country";
@@ -66,12 +81,12 @@ const Prospect = () => {
         return errors;
     };
 
-    const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
+    const [isOwnerDialogue, setIsOwnerDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsProspectDialogue(true);
+        setIsOwnerDialogue(true);
     };
     const handleClose = () => {
-        setIsProspectDialogue(false);
+        setIsOwnerDialogue(false);
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -91,7 +106,7 @@ const Prospect = () => {
     }
     const handleDownload = () => {
         // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingProspect);
+        const worksheet = XLSX.utils.json_to_sheet(existingOwner);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
         XLSX.writeFile(workbook, "ProspectData.xlsx");
@@ -115,8 +130,8 @@ const Prospect = () => {
                                 </div>
 
                                 <div className='flex-col'>
-                                    <h1 className='text-[18px]'>Prospect</h1>
-                                    <p className='text-[14px]'>Research &gt; Prospect</p>
+                                    <h1 className='text-[18px]'>Owner</h1>
+                                    <p className='text-[14px]'>Research &gt; Owner</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -136,7 +151,7 @@ const Prospect = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New Prospect +
+                                        Add New Owner  +
                                     </button>
                                 </div>
 
@@ -146,22 +161,31 @@ const Prospect = () => {
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
                                 <div className='w-[85%] flex'>
-                                    <div className='w-[5%] p-4'>
+                                    <div className='w-[4%] p-4'>
                                         {/* <p>Sr. </p> */}
                                     </div>
-                                    <div className='w-[25%]  px-4 py-3'>
+                                    <div className='w-[12%]  px-4 py-3'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className='w-[10%]  px-4 py-3'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className='w-[14%]  px-4 py-3'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[20%]  px-4 py-3'>
-                                        {/* <input className="w-14 bg-[#EBEBEB]"/> */}
+                                    <div className='w-[13%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[20%]  px-4 py-3'>
+                                    <div className='w-[10%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[10%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[14%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[12%]  px-4 py-3'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
                                 </div>
@@ -169,7 +193,7 @@ const Prospect = () => {
                                     <div className='w-1/2  px-4 py-3'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-1/2 0 p-4'>
+                                    <div className='w-1/2 0 px-4 py-3'>
                                     </div>
                                 </div>
                             </div>
@@ -179,28 +203,37 @@ const Prospect = () => {
                     <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
+                                <div className='w-[4%] p-4'>
                                     <p>Sr. </p>
                                 </div>
-                                <div className='w-[25%]  p-4'>
-                                    <p>Person Name</p>
+                                <div className='w-[12%]  p-4'>
+                                    <p>Corporation<span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Suburb</p>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Name <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>City</p>
+                                <div className='w-[14%]  p-4'>
+                                    <p>Property Tax No. <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[20%]  p-4'>
-                                    <p>Property Location</p>
+                                <div className='w-[13%]  p-4'>
+                                    <p>Phone Number <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[20%]  p-4'>
-                                    <p>Possible Location</p>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Email ID <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Sale/Rent <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[14%]  p-4'>
+                                    <p>Property Details <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[12%]  p-4'>
+                                    <p>Society Name <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID</p>
+                                    <p>Source <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     <p>Edit</p>
@@ -208,41 +241,10 @@ const Prospect = () => {
                             </div>
                         </div>
                         <div className='w-full h-80 '>
-                            {existingProspect.map((item, index) => {
+                            {existingOwner.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
-                                            <p>{index + 1}</p>
-                                        </div>
-                                        <div className='w-[25%]  p-4'>
-                                            <p>{item.person_name}</p>
-                                        </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.suburb_name}</p>
-                                        </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.city_name}</p>
-                                        </div>
-                                        <div className='w-[20%]  p-4'>
-                                            <p>{item.property_location}</p>
-                                        </div>
-                                        <div className='w-[20%]  p-4'>
-                                            <p>{item.possible_location}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
-                                            <p>{item.user_id}</p>
-                                        </div>
-                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={handleOpenEdit} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={handleOpenDelete} />
-                                        </div>
-                                    </div>
                                 </div>
                             })}
-                            <EditProspect openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} />
-                            <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} />
                             {/* we get all the existing prospect here */}
 
                         </div>
@@ -297,15 +299,16 @@ const Prospect = () => {
             </div>
 
             {/* modal goes here */}
-            <Modal open={isProspectDialogue}
+            <Modal open={isOwnerDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
+                className='flex justify-center items-center'
             >
-                <div className='flex justify-center mt-[10px]'>
+                <div className=''>
                     <div className="w-6/7  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Prospect</div>
+                                <div className="text-[16px]">New Owner</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -316,9 +319,50 @@ const Prospect = () => {
                                 <div className="flex gap-[48px] justify-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Person Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="personName" value={formValues.personName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.personName}</div>
+                                            <div className="text-[14px]">Corporation</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="corporation" value={formValues.corporation} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Name</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="name" value={formValues.name} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.name}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Email Id</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Phone Number</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber" value={formValues.phoneNumber} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Phone 1</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Phone 2</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Sale/Rent</div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
+                                                {selectedsR.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Address </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address" value={formValues.address} onChange={handleChange} />
+                                        </div>
+
+                                    </div>
+                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                        <div className="">
+                                            <div className="text-[14px]">Property Tax Number </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address" value={formValues.propertyTaxNo} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Country<label className="text-red-500">*</label></div>
@@ -333,7 +377,7 @@ const Prospect = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state"  >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
                                                 {selectedState.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -343,7 +387,7 @@ const Prospect = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city"  >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
                                                 {selectedCity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -352,36 +396,36 @@ const Prospect = () => {
                                             </select>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Suburb</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" />
+                                            <div className="text-[14px]">Locality </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="locality" value={formValues.locality} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Property Location</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" />
+                                            <div className="text-[14px]">Property Details </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyDetails" value={formValues.propertyDetails} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">requirement</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="requirement" />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Email</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email" />
+                                            <div className="text-[14px]">Society Name</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="societyName" value={formValues.societyName} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Phone Number</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber" />
+                                            <div className="text-[14px]">Source</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="source" value={formValues.source} onChange={handleChange} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
-
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="flex space-x-2 items-center">
+                                    <input type="checkbox" />
+                                    <div className="text-[13px] font-semibold">Exclude from Mailing List</div>
+                                </div>
+                                <div className=" mb-2 flex justify-center items-center gap-[10px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                                </div>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -390,4 +434,5 @@ const Prospect = () => {
     )
 }
 
-export default Prospect;
+export default Owner;
+
