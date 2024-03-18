@@ -13,13 +13,13 @@ const Navbar = () => {
    const [isToggledReport, setIsToggledReport] = useState(false);
    const [isToggledResearch, setIsToggledResearch] = useState(false);
    // const [isToggledManage, setIsToggledManage] = useState(false);
-
+   
    const menuRef = useRef();
 
    const logout = () => {
       authService.logOut();
    }
-   const handleAdminChange = () => {
+     const handleAdminChange = () => {
       if (isToggledDash) {
          handleDashChange();
       }
@@ -110,7 +110,7 @@ const Navbar = () => {
    }
 
    useEffect(() => {
-      const handler = (e) => {
+            const handler = (e) => {
          if (!menuRef.current.contains(e.target)) {
             setIsToggledAdmin(false);
             setIsToggledDash(false);
@@ -137,11 +137,11 @@ const Navbar = () => {
             </div>
             <div className='flex text-stone-50	space-x-9 items-center'>
                {/* this will have the center bar */}
-               <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledAdmin ? 'bg-white text-accent-blue' : ''}`}>
+            <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledAdmin ? 'bg-white text-accent-blue' : ''}`}>
                   <button onClick={handleAdminChange}>
                      <p className=' font-sans text-md' >Admin</p>
                   </button>
-               </div>
+               </div> 
                <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledManage ? 'bg-white text-accent-blue' : ''}`}>
                   <button onClick={handleManageChange}>
                      <p className='font-thin font-sans text-md'>Manage</p>
@@ -178,8 +178,8 @@ const Navbar = () => {
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
                   <h1 className='font-semibold text-xl'>Personal</h1>
-                  <p className='text-thin text-base'>Users</p>
-                  <p className='text-thin text-base'>Employees</p>
+                  <p className='text-thin text-base'><Link to="/admin/manageuser">Users</Link></p>
+                  <p className='text-thin text-base'> <Link to="/admin/manageemployees">Employees</Link></p>
                   <p className='text-thin text-base'>Contractuel Payment</p>
 
                </div>
@@ -188,8 +188,8 @@ const Navbar = () => {
             <div className=' w-1/5 h-full'>
                <div className='ml-5 mt-4 flex-col space-y-2'>
                   <h1 className='font-semibold text-xl	'>Offerings </h1>
-                  <p className='text-thin text-base'>LOB (Line of business)</p>
-                  <p className='text-thin text-base'>Services</p>
+                  <p className='text-thin text-base'><Link to="/admin/LOB" >LOB (Line of business)</Link></p>
+                  <p className='text-thin text-base'><Link to="/admin/service">Services</Link></p>
                </div>
             </div>
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
@@ -200,7 +200,7 @@ const Navbar = () => {
                   <p className='text-thin text-base'><Link to="/admin/country">Country</Link></p>
                   <p className='text-thin text-base'><Link to="/admin/state">State</Link></p>
                   <p className='text-thin text-base'><Link to="/admin/city">City</Link></p>
-                  <p className='text-thin text-base'><Link to="/admin/city">Locality</Link></p>
+                  <p className='text-thin text-base'><Link to="/admin/locality">Locality</Link></p>
 
 
                </div>
