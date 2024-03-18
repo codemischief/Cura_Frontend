@@ -174,9 +174,18 @@ const ManageBuilder = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
+        console.log(formErrors)
         if (formValues.builderName == "") {
             return;
         }
+        if(formValues.address1 == "") {
+            return ;
+        }
+        if(formValues.phone1 == "") {
+            return ;
+        } 
+        
+        // if(formValues.)
         setIsLoading(true);
         addNewBuilder();
     };
@@ -184,16 +193,13 @@ const ManageBuilder = () => {
     const validate = (values) => {
         const errors = {};
         if (!values.builderName) {
-            errors.employeeName = "Enter Builder name";
+            errors.builderName = "Enter Builder name";
         }
         if (!values.phone1) {
             errors.phone1 = "Enter Phone number";
         }
         if (!values.email1) {
             errors.email1 = "Enter Email";
-        }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
         }
         if (!values.address1) {
             errors.address1 = "Enter Builder Adress";
@@ -211,7 +217,6 @@ const ManageBuilder = () => {
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const editBuilder = (item) => {
         setCurrentBuilder(item);
-        
         setIsEditDialogue(true);
     }
     const [isDeleteDialogue, setIsDeleteDialogue] = React.useState(false);
@@ -232,7 +237,7 @@ const ManageBuilder = () => {
         FileSaver.saveAs(workbook,"demo.xlsx");
     }
     return (
-        <div>
+        <div >
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
@@ -275,28 +280,59 @@ const ManageBuilder = () => {
                             </div>
 
                         </div>
-                        <div className='h-12 w-full bg-white'>
-
+                        <div className='h-12 w-full flex'>
+                           <div className="w-[85%] h-full flex">
+                               <div className='w-[5%] p-4'>
+                                    {/* <p>Sr. </p> */}
+                                </div>
+                                <div className='w-[25%]  p-4'>
+                                     <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    < input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    {/* <p>Contact</p> */}
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    {/* <p>Projects</p> */}
+                                </div>
+                           </div>
+                           <div className="w-[15%]  h-full flex">
+                                <div className='w-1/2  p-4'>
+                                     < input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-1/2 0 p-4'>
+                                    {/* <p>Edit</p> */}
+                                </div>
+                           </div>
                         </div>
+                        
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
                                 </div>
                                 <div className='w-[25%]  p-4'>
-                                    <p>Builder Name</p>
+                                    <p>Builder Name <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>Country</p>
+                                    <p>Country ↑↓</p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>City</p>
+                                    <p>City ↑↓</p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>Suburb</p>
+                                    <p>Suburb ↑↓</p>
                                 </div>
                                 <div className='w-[10%]  p-4'>
                                     <p>Contact</p>
@@ -307,7 +343,7 @@ const ManageBuilder = () => {
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID</p>
+                                    <p>ID ↑↓</p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     <p>Edit</p>
@@ -389,18 +425,37 @@ const ManageBuilder = () => {
                             </div>
                             <div>
                                 {/* items per page */}
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-400">Items Per page</p>
+                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                                <option>
+                                    12
+                                </option>
+                                <option>
+                                    13
+                                </option>
+                                <option>
+                                    14
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                            </div>
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className='h-1/2' />
+                                <img src={refreshIcon} className="h-2/3" />
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
                                 <button onClick={handleDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className='h-1/2' />
+                                <img src={downloadIcon} className="h-2/3" />
                             </div>
                         </div>
                     </div>
@@ -413,7 +468,7 @@ const ManageBuilder = () => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[20px]'>
-                    <div className="w-[1050px] h-[580px] bg-white rounded-lg">
+                    <div className="w-[1100px] h-[600px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Add New Builder</div>
@@ -454,7 +509,7 @@ const ManageBuilder = () => {
                                         <div className="">
                                             <div className="text-[14px]">Address 1 <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.adress1}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.address1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Address Line 2</div>
@@ -479,7 +534,7 @@ const ManageBuilder = () => {
                                                     // fetchStateData(res);
                                                 }}
                                             >
-                                                {allCountry.map(item => (
+                                                {!allCountry && allCountry.map(item => (
                                                     <option value={item}>
                                                         {item[1]}
                                                     </option>

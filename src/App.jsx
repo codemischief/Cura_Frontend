@@ -43,7 +43,7 @@ const App = () => {
            
          
            
-              <Route element={<RequireAuth/>}>
+               <Route element={<RequireAuth/>}> 
                     <Route path="/dashboard" element={<Dashboard />}/>
                     <Route path="/admin/manageuser" element={<ManageUser />}/>
                     <Route path="/admin/manageemployees" element={<ManageEmployees />}/>
@@ -58,7 +58,7 @@ const App = () => {
                     <Route path="/admin/LOB" element={<LOB />}/>
                     <Route path="/admin/service" element={<Service />}/>
                     <Route path="/research/prospect" element={<Prospect />}/>
-              </Route>
+               </Route> 
 
               <Route path="/*" element={<NotFound />}/>
         </Route>
