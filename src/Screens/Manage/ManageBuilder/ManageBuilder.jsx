@@ -232,7 +232,7 @@ const ManageBuilder = () => {
         FileSaver.saveAs(workbook,"demo.xlsx");
     }
     return (
-        <div>
+        <div >
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
@@ -275,28 +275,59 @@ const ManageBuilder = () => {
                             </div>
 
                         </div>
-                        <div className='h-12 w-full bg-white'>
-
+                        <div className='h-12 w-full flex'>
+                           <div className="w-[85%] h-full flex">
+                               <div className='w-[5%] p-4'>
+                                    {/* <p>Sr. </p> */}
+                                </div>
+                                <div className='w-[25%]  p-4'>
+                                     <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    < input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    {/* <p>Contact</p> */}
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    {/* <p>Projects</p> */}
+                                </div>
+                           </div>
+                           <div className="w-[15%]  h-full flex">
+                                <div className='w-1/2  p-4'>
+                                     < input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-1/2 0 p-4'>
+                                    {/* <p>Edit</p> */}
+                                </div>
+                           </div>
                         </div>
+                        
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
                                 </div>
                                 <div className='w-[25%]  p-4'>
-                                    <p>Builder Name</p>
+                                    <p>Builder Name <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>Country</p>
+                                    <p>Country ↑↓</p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>City</p>
+                                    <p>City ↑↓</p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>Suburb</p>
+                                    <p>Suburb ↑↓</p>
                                 </div>
                                 <div className='w-[10%]  p-4'>
                                     <p>Contact</p>
@@ -307,7 +338,7 @@ const ManageBuilder = () => {
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID</p>
+                                    <p>ID ↑↓</p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     <p>Edit</p>
@@ -389,18 +420,37 @@ const ManageBuilder = () => {
                             </div>
                             <div>
                                 {/* items per page */}
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-400">Items Per page</p>
+                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                                <option>
+                                    12
+                                </option>
+                                <option>
+                                    13
+                                </option>
+                                <option>
+                                    14
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                            </div>
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className='h-1/2' />
+                                <img src={refreshIcon} className="h-2/3" />
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
                                 <button onClick={handleDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className='h-1/2' />
+                                <img src={downloadIcon} className="h-2/3" />
                             </div>
                         </div>
                     </div>
