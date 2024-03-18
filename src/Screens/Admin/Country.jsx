@@ -163,7 +163,6 @@ const Country = () => {
                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
                   <Link to="/dashboard"><img className="w-5 h-5" src={backLink} /></Link>
                 </div>
-
                 <div className='flex-col'>
                   <h1>Country</h1>
                   <p>Admin &gt; Country</p>
@@ -192,13 +191,28 @@ const Country = () => {
               </div>
 
             </div>
-            <div className='h-12 w-full bg-white'>
-
+            <div className='h-12 w-full bg-white flex justify-between'>
+               <div className='w-3/4 h-full  flex'>
+                  <div className='w-1/6 p-4'>
+                      {/* <p>Sr. No</p> */}
+                    </div>
+                    <div className='w-5/6  p-4'>
+                       <input className="w-14 bg-[#EBEBEB]"/>
+                    </div>
+               </div>
+               <div className='w-1/6 h-full flex'>
+                  <div className='w-1/2  p-4'>
+                      < input className="w-14 bg-[#EBEBEB]"/>
+                    </div>
+                    <div className='w-1/2 0 p-4'>
+                      {/* <p>Edit</p> */}
+                    </div>
+               </div>
             </div>
           </div>
 
-          <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
-            <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+          <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
+          <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
               <div className='w-3/4 flex'>
                 <div className='w-1/6 p-4'>
                   <p>Sr. No</p>
@@ -221,6 +235,7 @@ const Country = () => {
               {pageLoading && <div className='ml-11 mt-9'>
                 <CircularProgress />
               </div>}
+              {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>}
               {existingCountries.map((item, index) => {
                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                   <div className='w-3/4 flex'>

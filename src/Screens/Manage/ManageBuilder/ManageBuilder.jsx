@@ -73,8 +73,11 @@ const ManageBuilder = () => {
         const data = { "user_id": userId || 1234 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-
-        setAllCountry(result);
+        console.log(result);
+        if(Array.isArray(result)) {
+            setAllCountry(result);
+        }
+        
 
         
 
@@ -84,19 +87,20 @@ const ManageBuilder = () => {
        
         const data = { "user_id": userId || 1234, "country_id": 5 };
         const response = await APIService.getState(data);
-
         const result = (await response.json()).data;
         // console.log(result)
-        setAllState(result)
+        if(Array.isArray(result)){
+            setAllState(result)
+        }
     }
 
     const fetchCityData = async (d) => {
-        
         const data = { "user_id": userId || 1234, "country_id": 5, "state_name": "Maharashtra" };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        
-        setAllCity(result)
+        if(Array.isArray(result)){
+            setAllCity(result)
+        }
     }
    
     const deleteBuilder = async (item) => {
@@ -354,7 +358,7 @@ const ManageBuilder = () => {
                             {pageLoading && <div className='ml-11 mt-9'>
                                 <CircularProgress />
                             </div>}
-                            {existingBuilders.map((item, index) => {
+                            {existingBuilders && existingBuilders.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
                                         <div className='w-[5%] p-4'>
@@ -422,10 +426,6 @@ const ManageBuilder = () => {
                                     {/* right button */}
                                     <img src={nextIcon} className='h-2/4' />
                                 </div>
-                            </div>
-                            <div>
-                                {/* items per page */}
-                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
@@ -534,7 +534,7 @@ const ManageBuilder = () => {
                                                     // fetchStateData(res);
                                                 }}
                                             >
-                                                {!allCountry && allCountry.map(item => (
+                                                {allCountry && allCountry.map(item => (
                                                     <option value={item}>
                                                         {item[1]}
                                                     </option>
@@ -557,7 +557,7 @@ const ManageBuilder = () => {
                                                     })
                                                     // fetchCityData(selectedState);
                                                 }} >
-                                                {allState.map(item => (
+                                                {allState && allState.map(item => (
                                                     <option  value={item}>
                                                         {item}
                                                     </option>
@@ -573,7 +573,7 @@ const ManageBuilder = () => {
                                                  return newData;
                                                })
                                             }}>
-                                            {allCity.map((item) => {
+                                            {allCity && allCity.map((item) => {
                                                 return <option value={item}>
                                                       {item.city}
                                                 </option>
