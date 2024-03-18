@@ -427,10 +427,6 @@ const ManageBuilder = () => {
                                     <img src={nextIcon} className='h-2/4' />
                                 </div>
                             </div>
-                            <div>
-                                {/* items per page */}
-                                
-                            </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
