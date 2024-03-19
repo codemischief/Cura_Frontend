@@ -28,6 +28,9 @@ import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-
 import Userscreen from './Screens/UserScreens/Userscreen';
 import LOB from './Screens/Admin/LOB';
 import Service from './Screens/Admin/Service';
+import Agent from './Screens/Research/Agent/Agent';
+import Employer from './Screens/Research/Employer/Employer';
+import GovernmentDepartment from './Screens/Research/Government Department/GovernmentDepartment';
 
 const App = () => {
   const ROLES = {
@@ -74,7 +77,11 @@ const App = () => {
                     <Route path="/research/coc" element={<COC />}/>
                     <Route path="/research/banks" element={<Banks />}/>
                     <Route path="/research/friends" element={<Friends />}/>
+                     <Route path="/reasearch/agent" element={<Agent />}/>
+                    <Route path="/reasearch/employer" element={<Employer />}/>
+                    <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
                </Route> 
+
 
               <Route path="/*" element={<NotFound />}/>
         </Route>
