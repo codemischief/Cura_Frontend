@@ -323,7 +323,7 @@ const Owner = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="corporation" value={formValues.corporation} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Name</div>
+                                            <div className="text-[14px]">Name <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="name" value={formValues.name} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.name}</div>
                                         </div>
