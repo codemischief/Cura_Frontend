@@ -14,8 +14,13 @@ import ManageEmployees from './Screens/Manage/ManageEmployee/ManageEmployees';
 import ManageBuilder from './Screens/Manage/ManageBuilder/ManageBuilder';
 import Prospect from './Screens/Research/Prospect/Prospect';
 import Owner from './Screens/Research/Owner/Owner';
-import Educational from './Screens/Research/Educational/Educational'
-import Architect from './Screens/Research/Architect/Architect'
+import Educational from './Screens/Research/Educational/Educational';
+import Architect from './Screens/Research/Architect/Architect';
+import Mandals from './Screens/Research/Mandals/Mandals';
+import Professionals from './Screens/Research/Professionals/Professionals';
+import COC from './Screens/Research/COC/COC';
+import Banks from './Screens/Research/Banks/Banks'
+import Friends from './Screens/Research/Friends/Friends';
 import RequireAuth from './context/RequireAuth';
 
 
@@ -23,6 +28,9 @@ import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-
 import Userscreen from './Screens/UserScreens/Userscreen';
 import LOB from './Screens/Admin/LOB';
 import Service from './Screens/Admin/Service';
+import Agent from './Screens/Research/Agent/Agent';
+import Employer from './Screens/Research/Employer/Employer';
+import GovernmentDepartment from './Screens/Research/Government Department/GovernmentDepartment';
 
 const App = () => {
   const ROLES = {
@@ -64,7 +72,16 @@ const App = () => {
                     <Route path="/research/owner" element={<Owner />}/>
                     <Route path="/research/educational" element={<Educational />}/>
                     <Route path="/research/architect" element={<Architect />}/>
+                    <Route path="/research/mandals" element={<Mandals />}/>
+                    <Route path="/research/professionals" element={<Professionals />}/>
+                    <Route path="/research/coc" element={<COC />}/>
+                    <Route path="/research/banks" element={<Banks />}/>
+                    <Route path="/research/friends" element={<Friends />}/>
+                     <Route path="/reasearch/agent" element={<Agent />}/>
+                    <Route path="/reasearch/employer" element={<Employer />}/>
+                    <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
                </Route> 
+
 
               <Route path="/*" element={<NotFound />}/>
         </Route>

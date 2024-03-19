@@ -16,32 +16,26 @@ import FileSaver from 'file-saver';
 const Educational = () => {
 
     // we have the module here
-    const [existingInstitute, setExistingInstitute] = useState([]);
+    const [existingArchitect, setExistingArchitect] = useState([]);
     useEffect(() => {
         fetch("/getprospect")
             .then((res) => res.json())
             .then((data) => {
-                setExistingOwner(data)
+                setExistingArchitect(data)
                 console.log(data);
             })
     }, []);
     //Validation of the form
     const initialValues = {
-        type: "",
         name: "",
+        project: "",
         email: "",
         phoneNumber: "",
-        contactName1: "",
-        contactEmail1: "",
-        phone1: "",
-        phone2: "",
+        societyName: "",
         country: "",
         state: "",
         city: "",
-        locality: "",
-        contactName2: "",
-        contactEmail2: "",
-        website: "",
+        locality: ""
     };
 
     const selectedCountry = [
@@ -80,12 +74,12 @@ const Educational = () => {
         return errors;
     };
 
-    const [isInstituteDialogue, setIsInstituteDialogue] = React.useState(false);
+    const [isArchitectDialogue, setIsArchitectDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsInstituteDialogue(true);
+        setIsArchitectDialogue(true);
     };
     const handleClose = () => {
-        setIsInstituteDialogue(false);
+        setIsArchitectDialogue(false);
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -105,10 +99,10 @@ const Educational = () => {
     }
     const handleDownload = () => {
         // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingInstitute);
+        const worksheet = XLSX.utils.json_to_sheet(existingArchitect);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "InstituteData.xlsx");
+        XLSX.writeFile(workbook, "ArchitectData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleRefresh = async () => {
@@ -158,38 +152,38 @@ const Educational = () => {
 
                         </div>
                         <div className='h-12 w-full bg-white'>
-                        <div className='flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    {/* <p>Sr. </p> */}
+                            <div className='flex justify-between'>
+                                <div className='w-[85%] flex'>
+                                    <div className='w-[5%] p-4'>
+                                        {/* <p>Sr. </p> */}
+                                    </div>
+                                    <div className='w-[20%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[10%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[15%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[15%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[20%]  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[15%] px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
                                 </div>
-                                <div className='w-[20%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[10%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[20%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[15%] px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[15%] flex'>
+                                    <div className='w-1/2  px-4 py-3'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-1/2 0 p-4'>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[15%] flex'>
-                                <div className='w-1/2  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-1/2 0 p-4'>                                   
-                                </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
 
@@ -228,7 +222,7 @@ const Educational = () => {
                             </div>
                         </div>
                         <div className='w-full h-80 '>
-                            {existingInstitute.map((item, index) => {
+                            {existingArchitect.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 </div>
                             })}
@@ -286,7 +280,7 @@ const Educational = () => {
             </div>
 
             {/* modal goes here */}
-            <Modal open={isInstituteDialogue}
+            <Modal open={isArchitectDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -295,24 +289,24 @@ const Educational = () => {
                     <div className="w-6/7  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Educational Institute</div>
+                                <div className="text-[16px]">New Architect</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} className='space-y-20'>
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Type</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="type" value={formValues.type} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Name</div>
+                                            <div className="text-[14px]">Name <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="name" value={formValues.name} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.name}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Project </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="project" value={formValues.project} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Email Id</div>
@@ -323,22 +317,9 @@ const Educational = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber" value={formValues.phoneNumber} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Contact Name 1</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactName1" value={formValues.contactName1} onChange={handleChange} />
+                                            <div className="text-[14px]">Society Name</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="societyName" value={formValues.societyName} onChange={handleChange} />
                                         </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Contact Email 1</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactEmail1" value={formValues.contactEmail1} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Phone 1</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Phone 2 </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
-                                        </div>
-
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
@@ -376,18 +357,6 @@ const Educational = () => {
                                             <div className="text-[14px]">Locality </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="locality" value={formValues.locality} onChange={handleChange} />
                                         </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Contact Name 2 </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactName2" value={formValues.contactName2} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Contact Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="contactEmail2" value={formValues.contactEmail2} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Website </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="website" value={formValues.website} onChange={handleChange} />
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -402,7 +371,6 @@ const Educational = () => {
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>

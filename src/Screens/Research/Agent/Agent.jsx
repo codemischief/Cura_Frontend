@@ -13,17 +13,17 @@ import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-const Educational = () => {
+const Agent = () => {
 
     // we have the module here
-    const [existingInstitute, setExistingInstitute] = useState([]);
+    const [existingExployer, setExistingEmployer] = useState([]);
     useEffect(() => {
-        fetch("/getprospect")
-            .then((res) => res.json())
-            .then((data) => {
-                setExistingOwner(data)
-                console.log(data);
-            })
+        // fetch("")
+        //     .then((res) => res.json())
+        //     .then((data) => {
+        //         setExistingOwner(data)
+        //         console.log(data);
+        //     })
     }, []);
     //Validation of the form
     const initialValues = {
@@ -80,12 +80,12 @@ const Educational = () => {
         return errors;
     };
 
-    const [isInstituteDialogue, setIsInstituteDialogue] = React.useState(false);
+    const [isEmployerDialogue, setIsEmployerDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsInstituteDialogue(true);
+        setIsEmployerDialogue(true);
     };
     const handleClose = () => {
-        setIsInstituteDialogue(false);
+        setIsEmployerDialogue(false);
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -105,14 +105,14 @@ const Educational = () => {
     }
     const handleDownload = () => {
         // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingInstitute);
+        const worksheet = XLSX.utils.json_to_sheet(existingExployer);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "InstituteData.xlsx");
+        XLSX.writeFile(workbook, "EmployerData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleRefresh = async () => {
-        await fetchData();
+        // await fetchData();
     }
     return (
         <div>
@@ -129,8 +129,8 @@ const Educational = () => {
                                 </div>
 
                                 <div className='flex-col'>
-                                    <h1 className='text-[18px]'>Educational Institute</h1>
-                                    <p className='text-[14px]'>Research &gt; Educational Institute</p>
+                                    <h1 className='text-[18px]'>Government Department</h1>
+                                    <p className='text-[14px]'>Research &gt; Government Department</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -150,7 +150,7 @@ const Educational = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg text-[14px]" onClick={handleOpen}>
-                                        Add New Educational Institute  +
+                                        Add New Government Department  +
                                     </button>
                                 </div>
 
@@ -158,33 +158,40 @@ const Educational = () => {
 
                         </div>
                         <div className='h-12 w-full bg-white'>
+                           
                         <div className='flex justify-between'>
-                            <div className='w-[85%] flex'>
+                        <div className='w-[85%] flex '>
                                 <div className='w-[5%] p-4'>
-                                    {/* <p>Sr. </p> */}
+                                    
                                 </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[12%]  p-4'>
+                                   <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[10%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[10%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[12%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[15%]  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[12%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[15%] px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[12%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                </div>
+                                <div className='w-[12%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  px-4 py-3'>
-                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                   <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     
@@ -194,29 +201,35 @@ const Educational = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    <p>Sr. </p>
+                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
+                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between '>
+                            <div className='w-[85%] flex '>
+                                <div className='w-[5%] p-4 '>
+                                    <p className='text-xs'>Sr. </p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Institue Type<span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[12%]  p-3 flex items-center'>
+                                    <p className='text-xs'>Name of Agent<span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Name <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[10%]  p-3 flex items-center'>
+                                    <p className='text-xs'>Agency Name <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>City <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[10%]  p-3 flex items-center'>
+                                    <p>Email Id <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Locality <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[12%]  p-3 flex items-center'>
+                                    <p className='text-xs'>Phone Number<span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Email ID <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[12%]  flex items-center'>
+                                    <p className='text-xs'>Whatsapp Number <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Phone Number <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[12%]  flex items-center'>
+                                    <p className='text-xs'>Localities Dealing <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[12%] flex items-center'>
+                                    <p className='text-xs'>Name Of Partners <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[10%]  p-3 flex items-center'>
+                                    <p className='text-xs'>Registered <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
@@ -229,11 +242,11 @@ const Educational = () => {
                             </div>
                         </div>
                         <div className='w-full h-80 '>
-                            {existingInstitute.map((item, index) => {
+                            {existingExployer.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 </div>
                             })}
-                            {/* we get all the existing prospect here */}
+                            {/* we get all the existing Employers here */}
 
                         </div>
                     </div>
@@ -265,20 +278,35 @@ const Educational = () => {
                                     <img src={nextIcon} className='h-2/4' />
                                 </div>
                             </div>
-                            <div>
-                                {/* items per page */}
-                            </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-400">Items Per page</p>
+                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                                <option>
+                                    12
+                                </option>
+                                <option>
+                                    13
+                                </option>
+                                <option>
+                                    14
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                            </div>
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className='h-1/2' />
+                                <img src={refreshIcon} className="h-2/3" />
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
-                                <button onClick={handleDownload}> <p>Download</p></button>
-                                <img src={downloadIcon} className='h-1/2' />
+                                <button onClick={handleDownload}><p>Download</p></button>
+                                <img src={downloadIcon} className="h-2/3" />
                             </div>
                         </div>
                     </div>
@@ -287,7 +315,7 @@ const Educational = () => {
             </div>
 
             {/* modal goes here */}
-            <Modal open={isInstituteDialogue}
+            <Modal open={isEmployerDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -296,7 +324,7 @@ const Educational = () => {
                     <div className="w-6/7  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Educational Institute</div>
+                                <div className="text-[16px]">New Employer Institute</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -311,7 +339,7 @@ const Educational = () => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="type" value={formValues.type} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Name <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Name</div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="name" value={formValues.name} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.name}</div>
                                         </div>
@@ -343,7 +371,7 @@ const Educational = () => {
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Country<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
                                                 {selectedCountry.map(item => (
                                                     <option key={item} value={item}>
@@ -403,6 +431,7 @@ const Educational = () => {
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -411,5 +440,5 @@ const Educational = () => {
     )
 }
 
-export default Educational;
+export default Agent;
 
