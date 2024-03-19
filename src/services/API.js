@@ -26,6 +26,14 @@ const getState= async (data)=> {
     const response = await fetch(`${env_URL_SERVER}getStates`, METHOD_POST(data));
   return response;
  }
+ const getStatesAdmin= async (data)=> {
+  const response = await fetch(`${env_URL_SERVER}getStatesAdmin`, METHOD_POST(data));
+return response;
+}
+const getCitiesAdmin= async (data)=> {
+  const response = await fetch(`${env_URL_SERVER}getCitiesAdmin`, METHOD_POST(data));
+return response;
+}
  const getCities = async (data) => {
     const response = await fetch(`${env_URL_SERVER}getCities`, METHOD_POST(data));
     return response;
@@ -61,4 +69,5 @@ const getState= async (data)=> {
  }
 
 
- export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries};
+ export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
+  getStatesAdmin, getCitiesAdmin};

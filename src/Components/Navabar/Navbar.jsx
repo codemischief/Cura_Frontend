@@ -479,7 +479,7 @@ const Navbar = () => {
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
             <div className=' w-1/4 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-base font-semibold'>Manage Owners</h1>
+               <h1 className='text-thin text-base font-semibold'><Link to="/research/owner"></Link>Manage Owners</h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <h1 className='text-thin text-base font-semibold'>Service Appartments And Guest Houses </h1>
@@ -509,10 +509,10 @@ const Navbar = () => {
                <h1 className='text-thin text-base font-semibold'>Mandals</h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <h1 className='text-thin text-base font-semibold'>Architect</h1>
+                  <h1 className='text-thin text-base font-semibold'><Link to="/research/architect">Architect</Link></h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-base font-semibold'>Educational Institute </h1>
+               <h1 className='text-thin text-base font-semibold'><Link to="/research/educational">Educational Institute </Link></h1>
                </div>
             </div>
          </div>

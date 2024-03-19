@@ -13,20 +13,46 @@ import Trash from "../../assets/trash.png";
 import { Modal } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import { APIService } from '../../services/API';
+import { authService } from '../../services/authServices';
 const City = () => {
     // we have the module here
 
     const [existingCities, setExistingCities] = useState([]);
-    const fetchData = () => {
-        fetch("/getcity")
-            .then((res) => res.json())
-            .then((data) => {
-                setExistingCities(data)
-                
-            })
-    }
+    const [pageLoading, setPageLoading] = useState(false);
+    const [showSucess, setShowSucess] = useState(false);
+  const [showFailure, setShowFailure] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const openSuccessModal = () => {
+    // set the state for true for some time
+    setIsCountryDialogue(false);
+    setShowSucess(true);
+    setTimeout(function () {
+      setShowSucess(false)
+    }, 2000)
+  }
+  const openFailureModal = () => {
+    setIsCountryDialogue(false);
+    setShowFailure(true);
+    setTimeout(function () {
+      setShowFailure(false)
+    }, 4000);
+  }
+  const fetchCityData = async () => {
+    setPageLoading(true);
+    const user_id = await authService.getUserID();
+    console.log(user_id)
+    const data = { "user_id": user_id };
+    const response = await APIService.getCitiesAdmin(data)
+    const result = (await response.json()).data;
+    setPageLoading(false);
+    setExistingCities(result)
+  }
+    
     useEffect(() => {
-        fetchData();
+        fetchCityData();
     }, []);
     //Validation of the form
     const initialValues = {
@@ -59,7 +85,7 @@ const City = () => {
         FileSaver.saveAs(workbook,"demo.xlsx");
       }
       const handleRefresh = () => {
-        fetchData();
+        fetchCityData();
       }
     return (
         <div>
@@ -109,7 +135,7 @@ const City = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[375px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -134,7 +160,7 @@ const City = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 '>
+                        <div className='w-full h-80 overflow-auto '>
                             {existingCities.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
@@ -142,18 +168,18 @@ const City = () => {
                                             <p>{index + 1}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.country_name}</p>
+                                            <p></p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.state_name}</p>
+                                            <p>{item.state}</p>
                                         </div>
                                         <div className='w-[25%]  p-4'>
-                                            <p>{item.city_name}</p>
+                                            <p>{item.city}</p>
                                         </div>
                                     </div>
                                     <div className='w-1/6  flex'>
                                         <div className='w-1/2  p-4'>
-                                            <p>{item.user_id}</p>
+                                            <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />

@@ -23,17 +23,22 @@ const getToken = ()=> {
 
 const login = async (userData) => {
    const response =await  axios.post(`${env_URL_SERVER}validateCredentials`, userData);
-   sessionStorage.setItem("User_id" ,response.data.role_id);
+   sessionStorage.setItem("Role" ,response.data.role_id);
+   sessionStorage.setItem("User_id" ,response.data.user_id);
    return response.data;
 }
 
 
 
 const getUserRole = () => {
-  const Role_id =sessionStorage.getItem("User_id");
+  const Role_id =sessionStorage.getItem("Role");
   return Role_id;
 }
 
+const getUserID = () => {
+   const User_id =sessionStorage.getItem("User_id");
+   return User_id;
+ }
 // const isLoggedIn = () => {
 //    const token = getToken();
 //    if(token){
@@ -49,4 +54,4 @@ const logOut = ()=> {
 }
 
 
-export  const authService = { logOut, getToken, setToken, getUserRole,login};
+export  const authService = { logOut, getToken, setToken, getUserRole,login, getUserID};
