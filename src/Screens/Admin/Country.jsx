@@ -18,6 +18,7 @@ import FailureModal from '../../Components/modals/FailureModal';
 import DeleteModal from '../../Components/modals/DeleteModal';
 import { APIService } from '../../services/API';
 import EditCountryModal from './Modals/EditCountryModal';
+import { authService } from '../../services/authServices';
 const Country = () => {
   // we have the module here
   const [existingCountries, setCountryValues] = useState([]);
@@ -46,15 +47,10 @@ const Country = () => {
   }
   const fetchCountryData = async () => {
     setPageLoading(true);
-    const data = { "user_id": 1234 };
+    const user_id = await authService.getUserID();
+    console.log(user_id)
+    const data = { "user_id": user_id };
     const response = await APIService.getCountries(data)
-    // const response = await fetch('http://192.168.10.133:8000/getCountries', {
-    //     method: 'POST',
-    //     body: JSON.stringify(data),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   });
     const result = (await response.json()).data;
 
     setPageLoading(false);
@@ -62,6 +58,7 @@ const Country = () => {
       sl: x[0],
       country_name: x[1]
     })))
+    console.log(countryValues)
   }
 
   const addCountry = async () => {

@@ -10,12 +10,45 @@ import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
-import { Modal } from "@mui/material";
+import { Modal ,CircularProgress} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import { APIService } from '../../services/API';
+import { authService } from '../../services/authServices';
+
 const State = () => {
     // we have the module here
     const [existingState, setExistingState] = useState([]);
+    const [pageLoading, setPageLoading] = useState(false);
+    const [showSucess, setShowSucess] = useState(false);
+  const [showFailure, setShowFailure] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const openSuccessModal = () => {
+    // set the state for true for some time
+    setIsCountryDialogue(false);
+    setShowSucess(true);
+    setTimeout(function () {
+      setShowSucess(false)
+    }, 2000)
+  }
+  const openFailureModal = () => {
+    setIsCountryDialogue(false);
+    setShowFailure(true);
+    setTimeout(function () {
+      setShowFailure(false)
+    }, 4000);
+  }
+  const fetchStateData = async () => {
+    setPageLoading(true);
+    const user_id = await authService.getUserID();
+    const data = { "user_id": user_id };
+    const response = await APIService.getStatesAdmin(data)
+    const result = (await response.json()).data;
+    setPageLoading(false);
+    setExistingState(result)
+  }
     const fetchData = () => {
         fetch("/getcity")
             .then((res) => res.json())
@@ -25,7 +58,7 @@ const State = () => {
             })
     }
     useEffect(() => {
-        fetchData();
+        fetchStateData();
     }, []);
     //Validation of the form
     const initialValues = {
@@ -58,7 +91,7 @@ const State = () => {
         FileSaver.saveAs(workbook,"demo.xlsx");
       }
       const handleRefresh = () => {
-        fetchData();
+        fetchStateData();
       }
     return (
         <div>
@@ -126,7 +159,7 @@ const State = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[375px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -148,23 +181,27 @@ const State = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 '>
-                            {existingState.map((item, index) => {
+                        {pageLoading && <div className='ml-11 mt-9'>
+                <CircularProgress />
+              </div>}
+                        <div className='w-full h-80 overflow-auto'>
+                            {existingState
+                            .map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
                                         <div className='w-[10%] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.country_name}</p>
+                                            <p>{item[1]}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.state_name}</p>
+                                            <p>{item[0]}</p>
                                         </div>
                                     </div>
                                     <div className='w-1/6  flex'>
                                         <div className='w-1/2  p-4'>
-                                            <p>{item.user_id}</p>
+                                            <p></p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
