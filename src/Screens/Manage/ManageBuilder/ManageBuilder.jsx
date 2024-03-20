@@ -77,10 +77,6 @@ const ManageBuilder = () => {
         if(Array.isArray(result)) {
             setAllCountry(result);
         }
-        
-
-        
-
     }
 
     const fetchStateData = async (e) => {

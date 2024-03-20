@@ -20,6 +20,7 @@ const State = () => {
     // we have the module here
     const [existingState, setExistingState] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
+    
     const [showSucess, setShowSucess] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -43,7 +44,7 @@ const State = () => {
   const fetchStateData = async () => {
     setPageLoading(true);
     const user_id = await authService.getUserID();
-    const data = { "user_id": user_id };
+    const data = { "user_id": user_id || 1234 };
     const response = await APIService.getStatesAdmin(data)
     const result = (await response.json()).data;
     setPageLoading(false);
@@ -57,12 +58,26 @@ const State = () => {
                 
             })
     }
+    const [allCountry,setAllCountry] = useState([]);
+    const fetchCountryData = async () => {
+        // setPageLoading(true);
+        const user_id = await authService.getUserID();
+        const data = { "user_id": user_id || 1234 };
+        const response = await APIService.getCountries(data)
+        const result = (await response.json()).data;
+        console.log(result);
+        if(Array.isArray(result)) {
+            setAllCountry(result);
+        }
+    }
     useEffect(() => {
         fetchStateData();
+        fetchCountryData();
     }, []);
     //Validation of the form
     const initialValues = {
-        stateName: "",
+        country:"",
+        stateName: ""
     };
     const [formValues, setFormValues] = useState(initialValues);
     const handleChange = (e) => {
@@ -159,7 +174,7 @@ const State = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[375px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -184,7 +199,7 @@ const State = () => {
                         {pageLoading && <div className='ml-11 mt-9'>
                 <CircularProgress />
               </div>}
-                        <div className='w-full h-80 overflow-auto'>
+                        <div className='w-full h-[430px] overflow-auto'>
                             {existingState
                             .map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
@@ -283,7 +298,7 @@ const State = () => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[200px]'>
-                    <div className="w-6/7  h-[200px] bg-white rounded-lg">
+                    <div className="w-6/7  h-[300px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Add New State</div>
@@ -296,9 +311,53 @@ const State = () => {
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    {/* <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                                name="country"
+                                                value={formValues.country}
+                                                defaultValue="Select Country"
+                                                onChange={e => {
+                                                    setselectedCountry(e.target.value);
+                                                    fetchStateData(e);
+                                                    setFormValues((existing) => {
+                                                        const newData = {...existing, country: e.target.value}
+                                                        return newData;
+                                                    })
+                                                    // fetchStateData(res);
+                                                }}
+                                            >
+                                                {allCountry && allCountry.map(item => (
+                                                    <option value={item}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select> */}
+                                            
+                                        <div className="">
+                                            <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
+                                            {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.stateName} onChange={handleChange} /> */}
+                                            <select className='w-[230px] h-[25px] border-[1px] border-[#C6C6C6]'>
+                                                {allCountry.map((item,index) => {
+                                                   return (
+                                                    <option name="country"
+                                                    value={formValues.country}
+                                                    defaultValue="Select Country"
+                                                    onChange={e => {
+                                                        // setselectedCountry(e.target.value);
+                                                        fetchStateData(e);
+                                                        setFormValues((existing) => {
+                                                            const newData = {...existing, country: e.target.value}
+                                                            return newData;
+                                                        })
+                                                    }}>
+                                                        {item[1]}
+                                                    </option>
+                                                   )
+                                                })}
+                                            </select>
+                                        </div>
                                         <div className="">
                                             <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.stateName} onChange={handleChange} />
+                                            <input className="w-[230px] h-[25px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="stateName" value={formValues.stateName} onChange={handleChange} />
                                         </div>
 
 
