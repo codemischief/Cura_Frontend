@@ -10,33 +10,90 @@ import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
-import { Modal } from "@mui/material";
+import { Modal , CircularProgress} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import { APIService } from '../../services/API';
 const LOB = () => {
     // we have the module here
 
     const [existingLOB,setExistingLOB] = useState([]);
-    const fetchData = () => {
-        fetch("/getcity")
-            .then((res) => res.json())
-            .then((data) => {
-                setExistingLOB(data)
-                
-            })
+    const [currentPages,setCurrentPages] = useState(15);
+    const [currentPage,setCurrentPage] = useState(1);
+    const [pageLoading,setPageLoading] = useState(false);
+    const fetchPageData = async (pageNumber) => {
+        setPageLoading(true);
+        setCurrentPage(pageNumber);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(pageNumber),
+            "pg_size" : Number(currentPages)
+         };
+        const response = await APIService.getLob(data)
+        const result = (await response.json()).data;
+        setExistingLOB(result);
+        setPageLoading(false);
+    }
+    const fetchSomeData = async (number) => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name","lob_head","company"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(number)
+         };
+        // we need to do something about this
+
+        const response = await APIService.getLob(data)
+        // console.log("we called this for" , currentPages);
+        // console.log(response);
+        const result = (await response.json()).data;
+        // console.log(result);
+        // console.log(result);
+        setExistingLOB(result);
+        setPageLoading(false);
+    }
+    const addLob = async () => {
+        
+    }
+    const fetchData = async () => {
+        // const user_id = await authService.getUserID();
+        // console.log(user_id)
+        // console.log(currentPages);
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name","lob_head","company"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : 1,
+            "pg_size" : 15
+         };
+        // we need to do something about this
+
+        const response = await APIService.getLob(data)
+        // console.log("we called this for" , currentPages);
+        // console.log(response);
+        const result = (await response.json()).data;
+        // console.log(result);
+        // console.log(result);
+        setExistingLOB(result);
+        setPageLoading(false);
     }
     useEffect(() => {
         fetchData();
     }, []);
     //Validation of the form
-    const initialValues = {
-        cityName: "",
-    };
-    const [formValues, setFormValues] = useState(initialValues);
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
+    
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -58,13 +115,63 @@ const LOB = () => {
         XLSX.writeFile(workbook,"CityData.xlsx");
         FileSaver.saveAs(workbook,"demo.xlsx");
       }
+      const [lobName,setLobName] = useState("");
+      const [searchQuery,setSearchQuery] = useState("");
       const handleRefresh = () => {
         fetchData();
       }
+      const handleChange = (e) => {
+        const { value } = e.target;
+        console.log(value);
+        setLobName(value);
+      }
+      const [flag,setFlag] = useState(true);
+      const handleSort = async (field) => {
+            setPageLoading(true);
+            const data = { 
+                "user_id" : 1234,
+                "rows" : ["id","name"],
+                "filters" : [],
+                "sort_by" : [field],
+                "order" : flag ? "asc" : "desc",
+                "pg_no" : 1,
+                "pg_size" : Number(currentPages)
+             };
+            const response = await APIService.getLob(data)
+            const result = (await response.json()).data;
+            setExistingLOB(result);
+            setFlag((prev) => {
+                return !prev;
+            })
+            setPageLoading(false);
+      }
+      const handleSearch = async () => {
+        // we need to make a search request here
+        // setPageLoading(true);
+        // const data = { 
+        //     "user_id" : 1234,
+        //     "rows" : ["id","name","lob_head","company"],
+        //     "filters" : [],
+        //     "sort_by" : [],
+        //     "order" : "asc",
+        //     "pg_no" : Number(currentPage),
+        //     "pg_size" : Number(number)
+        //  };
+        // // we need to do something about this
+
+        // const response = await APIService.getLob(data)
+        // // console.log("we called this for" , currentPages);
+        // // console.log(response);
+        // const result = (await response.json()).data;
+        // // console.log(result);
+        // // console.log(result);
+        // setExistingLOB(result);
+        // setPageLoading(false);
+      }
     return (
-        <div>
+        <div >
             <Navbar />
-            <div className='flex-col w-full h-full  bg-white'>
+            <div className='flex-col w-full h-full  '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
@@ -85,12 +192,14 @@ const LOB = () => {
                                 <div className='flex'>
                                     {/* search button */}
                                     <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                                         type="text"
-                                        placeholder="  Search"
+                                        placeholder="Search"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value) }
                                     />
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                                        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                     </div>
                                 </div>
 
@@ -104,51 +213,68 @@ const LOB = () => {
                             </div>
 
                         </div>
-                        <div className='h-12 w-full bg-white'>
-
+                        <div className='h-12 w-full bg-white flex justify-between'>
+                             <div className='w-3/4 flex'>
+                                <div className='w-[10%] p-4'>
+                                    
+                                </div>
+                                <div className='w-[20%]  p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                
+                            </div>
+                            <div className='w-1/6  flex'>
+                                <div className='w-1/2  p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]"/>
+                                </div>
+                                <div className='w-1/2 0 p-4'>
+                                     
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[400px]  px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
                                     <p>Sr. </p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>LOB Name</p>
+                                    <p>LOB Name <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                                 
                             </div>
                             <div className='w-1/6  flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID</p>
+                                    <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                      <p>Edit</p>
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 '>
-                            {/* {existingLOB.map((item, index) => {
+                           <div className='w-full '>
+                            {pageLoading && <div className='ml-5 mt-5'><CircularProgress/></div> }
+                            {!pageLoading && existingLOB.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
                                         <div className='w-[10%] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.country_name}</p>
+                                            <p>{item.name}</p>
                                         </div>
-                                        <div className='w-[20%]  p-4'>
-                                            <p>{item.state_name}</p>
+                                        {/* <div className='w-[20%]  p-4'>
+                                            <p>{item.lob_head}</p>
                                         </div>
                                         <div className='w-[25%]  p-4'>
-                                            <p>{item.city_name}</p>
-                                        </div>
+                                            <p>{item.company}</p>
+                                        </div> */}
                                     </div>
                                     <div className='w-1/6  flex'>
                                         <div className='w-1/2  p-4'>
-                                            <p>{item.user_id}</p>
+                                            <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
@@ -156,12 +282,10 @@ const LOB = () => {
                                         </div>
                                     </div>
                                 </div>
-                            })} */}
+                            })}
                             {/* we get all the existing cities here */}
-
                         </div>
-                    </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
+                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5'>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -171,11 +295,11 @@ const LOB = () => {
                                 </div>
                                 <div className='flex space-x-1 mx-5'>
                                     {/* pages */}
-                                    <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
-                                        <p>1</p>
+                                    <div className={`w-6 ${currentPage == 1 ?" bg-[#DAE7FF]" : ""} p-1 pl-2 rounded-md`}>
+                                        <button onClick={() => {fetchPageData(1)}}><p>1</p></button>
                                     </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>2</p>
+                                    <div className={`w-6 ${currentPage == 2 ?" bg-[#DAE7FF]" : ""} p-1 pl-2 rounded-md`}>
+                                        <button onClick={() => {fetchPageData(2)}}><p>2</p></button>
                                     </div>
                                     <div className='w-6 p-1 pl-2'>
                                         <p>3</p>
@@ -189,23 +313,50 @@ const LOB = () => {
                                     <img src={nextIcon} className='h-2/4' />
                                 </div>
                             </div>
-                            <div>
-                                {/* items per page */}
-                            </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-700">Items Per page</p>
+                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1"
+                                         name="currentPages"
+                                         value={currentPages}
+                                        //  defaultValue="Select State"
+                                         onChange={e => {
+                                            setCurrentPages(e.target.value);
+                                            console.log(e.target.value);
+                                            fetchSomeData(e.target.value)
+                                         }}
+                               
+                               >
+                                <option>
+                                    15
+                                </option>
+                                <option>
+                                    20
+                                </option>
+                                <option>
+                                    25
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                            </div>
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className='h-1/2' />
+                                <img src={refreshIcon} className="h-2/3" />
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
                                 <button onClick={handleDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className='h-1/2' />
+                                <img src={downloadIcon} className="h-2/3" />
                             </div>
-                        </div>
+                        </div> 
                     </div>
+                    </div>
+                    
                 </div>
 
             </div>
@@ -230,7 +381,7 @@ const LOB = () => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">LOB Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.cityName} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={lobName} onChange={handleChange} />
                                         </div>
 
 
