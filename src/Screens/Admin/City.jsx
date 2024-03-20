@@ -44,7 +44,7 @@ const City = () => {
     setPageLoading(true);
     const user_id = await authService.getUserID();
     console.log(user_id)
-    const data = { "user_id": user_id };
+    const data = { "user_id": user_id || 1234};
     const response = await APIService.getCitiesAdmin(data)
     const result = (await response.json()).data;
     setPageLoading(false);
@@ -135,7 +135,7 @@ const City = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[375px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -220,20 +220,35 @@ const City = () => {
                                     <img src={nextIcon} className='h-2/4' />
                                 </div>
                             </div>
-                            <div>
-                                {/* items per page */}
-                            </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-400">Items Per page</p>
+                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                                <option>
+                                    12
+                                </option>
+                                <option>
+                                    13
+                                </option>
+                                <option>
+                                    14
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                            </div>
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className='h-1/2' />
+                                <img src={refreshIcon} className="h-2/3" />
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
                                 <button onClick={handleDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className='h-1/2' />
+                                <img src={downloadIcon} className="h-2/3" />
                             </div>
                         </div>
                     </div>
