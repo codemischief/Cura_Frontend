@@ -21,6 +21,7 @@ import Professionals from './Screens/Research/Professionals/Professionals';
 import COC from './Screens/Research/COC/COC';
 import Banks from './Screens/Research/Banks/Banks'
 import Friends from './Screens/Research/Friends/Friends';
+import Payments from './Screens/Manage/Payments/Payments';
 import RequireAuth from './context/RequireAuth';
 
 
@@ -68,6 +69,7 @@ const App = () => {
                     <Route path="/admin/locality" element={<Locality />}/>
                     <Route path="/admin/LOB" element={<LOB />}/>
                     <Route path="/admin/service" element={<Service />}/>
+                    <Route path="/admin/payments" element={<Payments />}/>
                     <Route path="/research/prospect" element={<Prospect />}/>
                     <Route path="/research/owner" element={<Owner />}/>
                     <Route path="/research/educational" element={<Educational />}/>
@@ -77,7 +79,7 @@ const App = () => {
                     <Route path="/research/coc" element={<COC />}/>
                     <Route path="/research/banks" element={<Banks />}/>
                     <Route path="/research/friends" element={<Friends />}/>
-                     <Route path="/reasearch/agent" element={<Agent />}/>
+                    <Route path="/reasearch/agent" element={<Agent />}/>
                     <Route path="/reasearch/employer" element={<Employer />}/>
                     <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
                {/* </Route>  */}
