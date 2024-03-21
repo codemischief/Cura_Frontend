@@ -22,6 +22,18 @@ const LOB = () => {
     const [currentPages,setCurrentPages] = useState(15);
     const [currentPage,setCurrentPage] = useState(1);
     const [pageLoading,setPageLoading] = useState(false);
+    const initialSelectedFields = {
+        name : {
+            selected : false,
+            queryType : "",
+        },
+        id : {
+            selected : false,
+            queryType : ""
+        }
+    }
+    const [selectedFields,setSelectedFields] = useState(initialSelectedFields);
+    
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
@@ -62,12 +74,29 @@ const LOB = () => {
         setPageLoading(false);
     }
     const addLob = async () => {
-        
+        setPageLoading(true);
+        const data = {
+            "user_id":1234,
+            "id":null,
+            "name":lobName,
+            "lob_head":null,
+            "company":null,
+            "entityid":null
+        }
+        const response =await APIService.addLob(data);
+        setPageLoading(false);
+    }
+    const deleteLob = async (id) => {
+        // we write delete lob logic here
+        setPageLoading(true);
+        const data = {
+            "user_id" : 1234,
+            "id" : Number(id)
+        }
+        const response = await APIService.deleteLob(data);
+        setPageLoading(false);
     }
     const fetchData = async () => {
-        // const user_id = await authService.getUserID();
-        // console.log(user_id)
-        // console.log(currentPages);
         setPageLoading(true);
         const data = { 
             "user_id" : 1234,
@@ -78,24 +107,14 @@ const LOB = () => {
             "pg_no" : 1,
             "pg_size" : 15
          };
-        // we need to do something about this
-
         const response = await APIService.getLob(data)
-        // console.log("we called this for" , currentPages);
-        // console.log(response);
         const result = (await response.json()).data;
-        // console.log(result);
-        // console.log(result);
         setExistingLOB(result);
         setPageLoading(false);
     }
     useEffect(() => {
         fetchData();
     }, []);
-    //Validation of the form
-    
-    
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmit(true);
@@ -147,34 +166,16 @@ const LOB = () => {
             setPageLoading(false);
       }
       const handleSearch = async () => {
-        // we need to make a search request here
-        // setPageLoading(true);
-        // const data = { 
-        //     "user_id" : 1234,
-        //     "rows" : ["id","name","lob_head","company"],
-        //     "filters" : [],
-        //     "sort_by" : [],
-        //     "order" : "asc",
-        //     "pg_no" : Number(currentPage),
-        //     "pg_size" : Number(number)
-        //  };
-        // // we need to do something about this
-
-        // const response = await APIService.getLob(data)
-        // // console.log("we called this for" , currentPages);
-        // // console.log(response);
-        // const result = (await response.json()).data;
-        // // console.log(result);
-        // // console.log(result);
-        // setExistingLOB(result);
-        // setPageLoading(false);
+        
       }
       const [lobFilter,setLobFilter] = useState(false);
       const [lobFilterInput,setLobFilterInput] = useState("");
       const toggleLobFilter = () => {
            setLobFilter((prev) => !prev)
       }
-      const fetchFiltered = async (filterType) => {
+      const fetchFiltered = async (filterType,filterField) => {
+        const filterArray = [];
+        
         setPageLoading(true);
         const data = { 
             "user_id" : 1234,
@@ -254,22 +255,22 @@ const LOB = () => {
                                               <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >DoesNotContain</h1>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >StartsWith</h1>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                              <h1 >EndsWith</h1>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >EqualTo</h1>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >isNull</h1>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >NotIsNull</h1>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
@@ -331,7 +332,7 @@ const LOB = () => {
                                         </div>
                                         <div className='w-1/2  p-4 flex justify-between items-center'>
                                             <img className=' h-5' src={Edit} alt="edit" />
-                                            <img className=' h-5' src={Trash} alt="trash" />
+                                            <button onClick={() => deleteLob(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
                                 </div>
@@ -428,7 +429,7 @@ const LOB = () => {
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -444,10 +445,10 @@ const LOB = () => {
 
                             <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addLob}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
-                        </form>
+                        
                     </div>
                 </div>
             </Modal>
