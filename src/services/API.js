@@ -76,6 +76,31 @@ return response;
   return response;
  }
 
+ const getBankStatement = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getBankSt`, METHOD_POST(data));
+  return response;
+ }
+ const addBankStatement = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addBankSt`, METHOD_POST(data));
+  return response;
+ }
+ const editBankStatement = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}editBankSt`, METHOD_POST(data));
+  return response;
+ }
+
+ const deleteBankStatement = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteBankSt`, METHOD_POST(data));
+  return response;
+ }
+
+ const getVendorAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getVendorAdmin`, METHOD_POST(data));
+  return response;
+ }
+
+
 
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
   getStatesAdmin, getCitiesAdmin,getLob,addLob};
+  getStatesAdmin, getCitiesAdmin, getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin};

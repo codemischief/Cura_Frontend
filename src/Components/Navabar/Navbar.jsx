@@ -284,7 +284,7 @@ const Navbar = () => {
                </div>
                <div className='ml-5 mt-20 flex-col space-y-2'>
                   <h1 className='font-semibold text-xl'>Statement</h1>
-                  <p className='text-thin text-base'>Bank Statement</p>
+                  <p className='text-thin text-base'><Link to="/manage/bankstatement">Bank Statement</Link></p>
                   <p className='text-thin text-base'>Send Client Statement</p>
                </div>
             </div>

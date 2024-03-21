@@ -31,6 +31,7 @@ import Service from './Screens/Admin/Service';
 import Agent from './Screens/Research/Agent/Agent';
 import Employer from './Screens/Research/Employer/Employer';
 import GovernmentDepartment from './Screens/Research/Government Department/GovernmentDepartment';
+import ManageBankStatement from './Screens/Manage/ManageBankStatement/ManageBankStatement';
 
 const App = () => {
   const ROLES = {
@@ -80,6 +81,7 @@ const App = () => {
                      <Route path="/reasearch/agent" element={<Agent />}/>
                     <Route path="/reasearch/employer" element={<Employer />}/>
                     <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
+                    <Route path="/manage/bankstatement" element={<ManageBankStatement />}/>
                {/* </Route>  */}
 
 
