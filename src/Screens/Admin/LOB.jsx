@@ -22,6 +22,7 @@ const LOB = () => {
     const [currentPages,setCurrentPages] = useState(15);
     const [currentPage,setCurrentPage] = useState(1);
     const [pageLoading,setPageLoading] = useState(false);
+    const [totalItems,setTotalItems] = useState(0);
     const initialSelectedFields = {
         name : {
             selected : false,
@@ -47,7 +48,10 @@ const LOB = () => {
             "pg_size" : Number(currentPages)
          };
         const response = await APIService.getLob(data)
-        const result = (await response.json()).data;
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
         setExistingLOB(result);
         setPageLoading(false);
     }
@@ -67,7 +71,10 @@ const LOB = () => {
         const response = await APIService.getLob(data)
         // console.log("we called this for" , currentPages);
         // console.log(response);
-        const result = (await response.json()).data;
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
         // console.log(result);
         // console.log(result);
         setExistingLOB(result);
@@ -108,7 +115,11 @@ const LOB = () => {
             "pg_size" : 15
          };
         const response = await APIService.getLob(data)
-        const result = (await response.json()).data;
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(t);
         setExistingLOB(result);
         setPageLoading(false);
     }
@@ -158,7 +169,10 @@ const LOB = () => {
                 "pg_size" : Number(currentPages)
              };
             const response = await APIService.getLob(data)
-            const result = (await response.json()).data;
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
             setExistingLOB(result);
             setFlag((prev) => {
                 return !prev;
@@ -187,7 +201,10 @@ const LOB = () => {
             "pg_size" : Number(currentPages)
          };
         const response = await APIService.getLob(data)
-        const result = (await response.json()).data;
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
         setExistingLOB(result);
         setFlag((prev) => {
             return !prev;
@@ -394,7 +411,7 @@ const LOB = () => {
                                </select>
                             </div>
                             <div className="flex text-sm">
-                                <p className="mr-11 text-gray-700">219 Items in 19 Pages</p>
+                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
                             </div>
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
