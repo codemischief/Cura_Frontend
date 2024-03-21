@@ -13,43 +13,54 @@ import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-const Friends = () => {
+const Payments = () => {
 
     // we have the module here
-    const [existingFriends, setExistingFriends] = useState([]);
+    const [existingPayments, setExistingPayments] = useState([]);
     useEffect(() => {
         fetch("/getprospect")
             .then((res) => res.json())
             .then((data) => {
-                setExistingFriends(data)
+                setExistingPayments(data)
                 console.log(data);
             })
     }, []);
     //Validation of the form
     const initialValues = {
-        name: "",
-        friend: "",
-        phoneNumber: "",
-        email: "",
-        employee: "",
-        notes: "",
-        country: "",
-        state: "",
-        city: "",
-        locality: "",
-        societyName: "",
+        curaOffice: "",
+        PaymentTo: "",
+        PaymentBy: "",
+        amount: "",
+        deduction:"",
+        tallyLedger:"",
+        description:"",
+        paymentMode:"",
+        entity:"",
+        paidOn:"",
+        month:"",
+        TDS:"",
+        professionTax:"",
     };
 
-    const selectedCountry = [
-        "Country1", "Country2", "Country3", "Country4"
+    const selectedPaymentTo = [
+        "1", "2", "3", "4"
     ]
-    const selectedState = [
-        "State1", "State2", "State3", "State4"
+    const selectedPaymentBy = [
+        "1", "2", "3", "4"
     ]
-    const selectedCity = [
-        "City1", "City2", "City3", "City4"
+    const selectedTallyLedger = [
+        "1", "2", "3", "4"
     ]
-    const selectedGroupName = [
+    const selectedentity = [
+        "1", "2", "3", "4"
+    ]
+    const selectedPaymentMode = [
+        "1", "2", "3", "4"
+    ]
+    const selectedPaymentEntity = [
+        "1", "2", "3", "4"
+    ]
+    const selectedMonth = [
         "1", "2", "3", "4"
     ]
 
@@ -67,21 +78,45 @@ const Friends = () => {
     };
     const validate = (values) => {
         const errors = {};
-        if (!values.name) {
-            errors.name = "Enter the name";
+        if (!values.PaymentTo) {
+            errors.PaymentTo = "Select a name to pay ";
         }
-        if (!values.country) {
-            errors.country = "Select a country";
+        if (!values.PaymentBy) {
+            errors.PaymentBy = "Select a name to pay from";
+        }
+        if (!values.amount) {
+            errors.amount = "Enter the amount to pay";
+        }
+        if (!values.tallyLedger) {
+            errors.tallyLedger = "Select a tally Ledger";
+        }
+        if (!values.paymentMode) {
+            errors.paymentMode = "Select a payment mode";
+        }
+        if (!values.entity) {
+            errors.entity = "Select entity";
+        }
+        if (!values.paidOn) {
+            errors.paidOn = "Select payment date";
+        }
+        if (!values.month) {
+            errors.month = "Select payment month";
+        }
+        if (!values.TDS) {
+            errors.TDS = "enter TDS amount";
+        }
+        if (!values.professionTax) {
+            errors.professionTax = "enter Profession Tax amount";
         }
         return errors;
     };
 
-    const [isFriendsDialogue, setIsFriendsDialogue] = React.useState(false);
+    const [isPaymentsDialogue, setIsPaymentsDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsFriendsDialogue(true);
+        setIsPaymentsDialogue(true);
     };
     const handleClose = () => {
-        setIsFriendsDialogue(false);
+        setIsPaymentsDialogue(false);
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -101,10 +136,10 @@ const Friends = () => {
     }
     const handleDownload = () => {
         // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingFriends);
+        const worksheet = XLSX.utils.json_to_sheet(existingPayments);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "FriendsData.xlsx");
+        XLSX.writeFile(workbook, "PaymentsData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleRefresh = async () => {
@@ -123,10 +158,9 @@ const Friends = () => {
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
                                     <img className='h-5 w-5' src={backLink} />
                                 </div>
-
                                 <div className='flex-col'>
-                                    <h1 className='text-[18px]'>Friends</h1>
-                                    <p className='text-[14px]'>Research &gt; Friends</p>
+                                    <h1 className='text-[18px]'>Manage Contractual Payments</h1>
+                                    <p className='text-[14px]'>Research &gt; Contractual Payments</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -145,11 +179,13 @@ const Friends = () => {
 
                                 <div>
                                     {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg text-[14px]" onClick={handleOpen}>
-                                        Add New Friends  +
+                                    <button className="bg-[#004DD7] text-white h-[36px] w-[260px] rounded-lg text-[14px]" onClick={handleOpen}>
+                                        Add Contractual Payments  +
                                     </button>
                                 </div>
+
                             </div>
+
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
@@ -157,34 +193,37 @@ const Friends = () => {
                                     <div className='w-[5%] p-4'>
                                         {/* <p>Sr. </p> */}
                                     </div>
-                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className='w-[13%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[10%]  px-4 py-3'>
+                                    <div className='w-[13%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className='w-[10%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className='w-[10%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[12%]  px-4 py-3'>
+                                    <div className='w-[14%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className='w-[13%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
-                                    <div className='w-[13%]  px-4 py-3'>
+                                    <div className='w-[15%]  p-4'>
+                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    </div>
+                                    <div className='w-[10%]  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
                                 </div>
                                 <div className='w-[15%] flex'>
-                                    <div className='w-1/2 px-4 py-3'>
+                                    <div className='w-1/2  p-4'>
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
                                     <div className='w-1/2 0 p-4'>
-
+                                        {/* <p>Edit</p> */}
                                     </div>
                                 </div>
                             </div>
@@ -197,26 +236,29 @@ const Friends = () => {
                                 <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Name <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>City <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Email ID <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Phone Number <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[12%]  p-4'>
-                                    <p>Friend's Of <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Society Name <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[13%]  p-4'>
+                                    <p>Payment to<span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[13%]  p-4'>
-                                    <p>Employee <span className="font-extrabold">↑↓</span></p>
+                                    <p>payment by <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Amount <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Paid On <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[14%]  p-4'>
+                                    <p>Payment mode <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[13%]  p-4'>
+                                    <p>Payment For <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[15%]  p-4'>
+                                    <p>Payment status <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                                <div className='w-[10%]  p-4'>
+                                    <p>Entity <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
@@ -229,7 +271,7 @@ const Friends = () => {
                             </div>
                         </div>
                         <div className='w-full h-80 '>
-                            {existingFriends.map((item, index) => {
+                            {existingPayments.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                 </div>
                             })}
@@ -287,7 +329,7 @@ const Friends = () => {
             </div>
 
             {/* modal goes here */}
-            <Modal open={isFriendsDialogue}
+            <Modal open={isPaymentsDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -296,85 +338,111 @@ const Friends = () => {
                     <div className="w-6/7  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Friends  </div>
+                                <div className="text-[16px]">New Contractual Payments </div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit} className='space-y-5' >
+                        <form onSubmit={handleSubmit} className='space-y-2'>
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Name <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="name" value={formValues.name} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.name}</div>
+                                            <div className="text-[14px]">Cura Office </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="curaOffice" value={formValues.curaOffice} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Friends's Of </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="friend" value={formValues.friend} onChange={handleChange} />                 
+                                            <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="PaymentTo" value={formValues.PaymentTo} onChange={handleChange} >
+                                                {selectedPaymentTo.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Email Id</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                            <div className="text-[14px]">Payment By <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="PaymentBy" value={formValues.PaymentBy} onChange={handleChange} >
+                                                {selectedPaymentBy.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Phone Number</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber" value={formValues.phoneNumber} onChange={handleChange} />
+                                            <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Employee</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employee" value={formValues.employee} onChange={handleChange} />
+                                            <div className="text-[14px]">Tally Ledger <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} >
+                                                {selectedTallyLedger.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Notes</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                            <div className="text-[14px]">Description </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Country<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
-                                                {selectedCountry.map(item => (
+                                            <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="PaymentMode" value={formValues.paymentMode} onChange={handleChange} >
+                                                {selectedPaymentMode.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">State</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
-                                                {selectedState.map(item => (
+                                            <div className="text-[14px]">Entity <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
+                                                {selectedentity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">City</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
-                                                {selectedCity.map(item => (
+                                            <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidOn" value={formValues.paidOn} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paidOn}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="month" value={formValues.month} onChange={handleChange} >
+                                                {selectedMonth.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.month}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Locality </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="locality" value={formValues.locality} onChange={handleChange} />
+                                            <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Contact Name 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="contactName2" value={formValues.contactName2} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Society Name</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="societyName" value={formValues.societyName} onChange={handleChange} />
+                                            <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professionTax" value={formValues.professionTax} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -398,5 +466,5 @@ const Friends = () => {
     )
 }
 
-export default Friends;
+export default Payments;
 
