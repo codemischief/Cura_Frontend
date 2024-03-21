@@ -14,6 +14,7 @@ import { Modal , CircularProgress} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
+import Filter from "../../assets/filter.png"
 const LOB = () => {
     // we have the module here
 
@@ -168,10 +169,34 @@ const LOB = () => {
         // setExistingLOB(result);
         // setPageLoading(false);
       }
+      const [lobFilter,setLobFilter] = useState(false);
+      const [lobFilterInput,setLobFilterInput] = useState("");
+      const toggleLobFilter = () => {
+           setLobFilter((prev) => !prev)
+      }
+      const fetchFiltered = async (filterType) => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name"],
+            "filters" : [["name",String(filterType),lobFilterInput]],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : 1,
+            "pg_size" : Number(currentPages)
+         };
+        const response = await APIService.getLob(data)
+        const result = (await response.json()).data;
+        setExistingLOB(result);
+        setFlag((prev) => {
+            return !prev;
+        })
+        setPageLoading(false);
+      }
     return (
-        <div >
+        <div className=''>
             <Navbar />
-            <div className='flex-col w-full h-full  '>
+            <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
@@ -218,14 +243,42 @@ const LOB = () => {
                                 <div className='w-[10%] p-4'>
                                     
                                 </div>
-                                <div className='w-[20%]  p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]"/>
+                                <div className='w-[20%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >DoesNotContain</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >StartsWith</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                              <h1 >EndsWith</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >EqualTo</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >isNull</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >NotIsNull</h1>
+                                            </div>
+                                        </div>} 
                                 </div>
                                 
                             </div>
                             <div className='w-1/6  flex'>
-                                <div className='w-1/2  p-4'>
+                                <div className='w-[50%] p-2 mt-2'>
                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                      
@@ -246,21 +299,21 @@ const LOB = () => {
                                 
                             </div>
                             <div className='w-1/6  flex'>
-                                <div className='w-1/2  p-4'>
+                                <div className='w-1/2 p-4'>
                                     <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
-                                <div className='w-1/2 0 p-4'>
+                                <div className='w-1/2  p-4'>
                                      <p>Edit</p>
                                 </div>
                             </div>
                         </div>
-                           <div className='w-full '>
+                           <div className='w-full h-[450px] overflow-auto'>
                             {pageLoading && <div className='ml-5 mt-5'><CircularProgress/></div> }
                             {!pageLoading && existingLOB.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
                                         <div className='w-[10%] p-4'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
                                             <p>{item.name}</p>
@@ -273,19 +326,19 @@ const LOB = () => {
                                         </div> */}
                                     </div>
                                     <div className='w-1/6  flex'>
-                                        <div className='w-1/2  p-4'>
+                                        <div className='w-1/2 p-4 flex ml-4 '>
                                             <p>{item.id}</p>
                                         </div>
-                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                        <div className='w-1/2  p-4 flex justify-between items-center'>
+                                            <img className=' h-5' src={Edit} alt="edit" />
+                                            <img className=' h-5' src={Trash} alt="trash" />
                                         </div>
                                     </div>
                                 </div>
                             })}
                             {/* we get all the existing cities here */}
                         </div>
-                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5'>
+                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -317,7 +370,7 @@ const LOB = () => {
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
                                <p className="text-gray-700">Items Per page</p>
-                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1"
+                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
                                          name="currentPages"
                                          value={currentPages}
                                         //  defaultValue="Select State"
@@ -340,7 +393,7 @@ const LOB = () => {
                                </select>
                             </div>
                             <div className="flex text-sm">
-                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                                <p className="mr-11 text-gray-700">219 Items in 19 Pages</p>
                             </div>
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
