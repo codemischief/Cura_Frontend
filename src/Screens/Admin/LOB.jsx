@@ -24,6 +24,7 @@ const LOB = () => {
     const [pageLoading,setPageLoading] = useState(false);
     const [totalItems,setTotalItems] = useState(0);
     const [downloadModal,setDownloadModal] = useState(false);
+    const [lobError,setLobError] = useState("");
     useEffect(() => {
         fetchData();
     }, []);
@@ -109,6 +110,12 @@ const LOB = () => {
             setPageLoading(false);
     }
     const addLob = async () => {
+        if(lobName == "") {
+            setLobError("This Feild Is Mandatory");
+            return ;
+        }else {
+            setLobError("");
+        }
         setPageLoading(true);
         const data = {
             "user_id":1234,
@@ -446,6 +453,7 @@ const LOB = () => {
                                         <div className="">
                                             <div className="text-[14px]">LOB Name<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={lobName} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
                                         </div>
 
 
