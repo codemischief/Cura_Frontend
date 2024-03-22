@@ -25,6 +25,7 @@ const Country = () => {
   const [existingCountries, setCountryValues] = useState([]);
   //   const [isSubmit, setIsSubmit] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
+  const [userId, setUserId]=useState(0);
   const [showSucess, setShowSucess] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
@@ -35,6 +36,10 @@ const Country = () => {
   const [currentPage,setCurrentPage] = useState(1);
   const [totalItems,setTotalItems] = useState(0);
   const [downloadModal,setDownloadModal] = useState(false);
+  const fetchUserId = async() =>{
+    const response = await authService.getUserId();
+    setUserId(response)
+}
   const initialSelectedFields = {
       name : {
           selected : false,
@@ -70,8 +75,8 @@ const Country = () => {
       "filters" : [],
       "sort_by" : [],
       "order" : "asc",
-      "pg_no" : Number(pageNumber),
-      "pg_size" : Number(currentPages)
+      "pg_no" : 1,
+      "pg_size" : 15
    };
     const response = await APIService.getCountries(data)
     const result = (await response.json()).data;
@@ -87,7 +92,7 @@ const Country = () => {
   }
 
   const addCountry = async () => {
-    const data = { "user_id": 1234, "country_name": formValues.countryName };
+    const data = { "user_id": userId ||  1234, "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
     // const response = await fetch('http://192.168.10.133:8000/addCountry', {
     //   method: 'POST',
@@ -120,6 +125,7 @@ const Country = () => {
   }
   // /edit country modal
   useEffect(() => {
+    fetchUserId()
     fetchCountryData()
   }, []);
   //Validation of the form
@@ -157,6 +163,27 @@ const Country = () => {
     }
     return errors;
   }
+  const fetchSomeData = async (number) => {
+    setPageLoading(true);
+    const data = { 
+        "user_id" : userId ||1234,
+        "rows" : ["id","name"],
+        "filters" : [],
+        "sort_by" : [],
+        "order" : "asc",
+        "pg_no" : Number(currentPage),
+        "pg_size" : Number(number)
+     };
+     const response = await APIService.getCountries(data)
+     const result = (await response.json()).data;
+     const t = result.total_count;
+     setTotalItems(t);
+     setPageLoading(false);
+     setCountryValues(result.map(x => ({
+       sl: x[0],
+       country_name: x[1]
+     })))
+}
   const handleDownload = () => {
     // we handle the download here
     const worksheet = XLSX.utils.json_to_sheet(existingCountries);
@@ -172,7 +199,7 @@ const Country = () => {
   const handleSort = async (field) => {
         setPageLoading(true);
         const data = { 
-            "user_id" : 1234,
+            "user_id" : userId|| 1234,
             "rows" : ["id","name"],
             "filters" : [],
             "sort_by" : [field],
@@ -201,7 +228,7 @@ const Country = () => {
     
     setPageLoading(true);
     const data = { 
-        "user_id" : 1234,
+        "user_id" : userId || 1234,
         "rows" : ["id","name"],
         "filters" : [["name",String(filterType),countryFilterInput]],
         "sort_by" : [],
@@ -352,7 +379,7 @@ const Country = () => {
                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                   <div className='w-3/4 flex'>
                     <div className='w-1/6 p-4'>
-                      <p>{index + 1 + (currentPage - 1)*currentPages}</p>
+                      <p>{index + 1}</p>
                     </div>
                     <div className='w-5/6  p-4'>
                       <p>{item.country_name}</p>
