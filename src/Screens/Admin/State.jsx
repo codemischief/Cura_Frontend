@@ -10,11 +10,12 @@ import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
-import { Modal ,CircularProgress} from "@mui/material";
+import { Modal ,CircularProgress,Pagination} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
 import { authService } from '../../services/authServices';
+import Filter from "../../assets/filter.png"
 
 const State = () => {
     // we have the module here
@@ -26,6 +27,24 @@ const State = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPages,setCurrentPages] = useState(15);
+  const [currentPage,setCurrentPage] = useState(1);
+  const [totalItems,setTotalItems] = useState(0);
+  const [downloadModal,setDownloadModal] = useState(false);
+  const [userId, setUserId]=useState(0);
+  const fetchUserId = async() =>{
+    const response = await authService.getUserId();
+    setUserId(response)
+}
+  const initialSelectedFields = {
+      name : {
+          selected : false,
+          queryType : "",
+      },
+      id : {
+          selected : false,
+          queryType : ""
+      }}
   const openSuccessModal = () => {
     // set the state for true for some time
     setIsCountryDialogue(false);
@@ -43,34 +62,57 @@ const State = () => {
   }
   const fetchStateData = async () => {
     setPageLoading(true);
-    const user_id = await authService.getUserID();
-    const data = { "user_id": user_id || 1234 };
+    const data = { 
+        "user_id" : userId || 1234,
+        "rows" : ["id","name"],
+        "filters" : [],
+        "sort_by" : [],
+        "order" : "asc",
+        "pg_no" : 1,
+        "pg_size" : 15
+     };
     const response = await APIService.getStatesAdmin(data)
     const result = (await response.json()).data;
+    const t = result.total_count;
+    setTotalItems(t);
     setPageLoading(false);
     setExistingState(result)
   }
-    const fetchData = () => {
-        fetch("/getcity")
-            .then((res) => res.json())
-            .then((data) => {
-                setExistingState(data)
-                
-            })
-    }
+    
     const [allCountry,setAllCountry] = useState([]);
     const fetchCountryData = async () => {
         // setPageLoading(true);
-        const user_id = await authService.getUserID();
-        const data = { "user_id": user_id || 1234 };
+        const data = { "user_id": userId || 1234 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result);
         if(Array.isArray(result)) {
             setAllCountry(result);
         }
     }
+    const fetchSomeData = async (number) => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : userId || 1234,
+            "rows" : ["id","name"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(number)
+         };
+       
+
+        const response = await APIService.getStatesAdmin(data)
+       
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingState(result);
+        setPageLoading(false);
+    }
     useEffect(() => {
+        fetchUserId()
         fetchStateData();
         fetchCountryData();
     }, []);
@@ -107,6 +149,58 @@ const State = () => {
       }
       const handleRefresh = () => {
         fetchStateData();
+      }
+      const [flag,setFlag] = useState(true);
+      const handleSort = async (field) => {
+            setPageLoading(true);
+            const data = { 
+                "user_id" : userId|| 1234,
+                "rows" : ["id","name"],
+                "filters" : [],
+                "sort_by" : [field],
+                "order" : flag ? "asc" : "desc",
+                "pg_no" : 1,
+                "pg_size" : Number(currentPages)
+             };
+             const response = await APIService.getStatesAdmin(data)
+             const result = (await response.json()).data;
+             const t = result.total_count;
+             setTotalItems(t);
+             setPageLoading(false);
+             setExistingState(result)
+      }
+      const handleSearch = async () => {}
+      const [stateFilter,setStateFilter] = useState(false);
+      const [stateFilterInput,setStateFilterInput] = useState("");
+      const toggleStateFilter = () => {
+           setStateFilter((prev) => !prev)
+      }
+      const fetchFiltered = async (filterType,filterField) => {
+        const filterArray = [];
+        
+        setPageLoading(true);
+        const data = { 
+            "user_id" : userId || 1234,
+            "rows" : ["id","name"],
+            "filters" : [["name",String(filterType),stateFilterInput]],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : 1,
+            "pg_size" : Number(currentPages)
+         };
+         const response = await APIService.getStatesAdmin(data)
+         const result = (await response.json()).data;
+         const t = result.total_count;
+         setTotalItems(t);
+         setPageLoading(false);
+         setExistingState(result)
+        setFlag((prev) => {
+            return !prev;
+        })
+        setPageLoading(false);
+      }
+      const handlePageChange = (event,value) => {
+         setCurrentPage(value)
       }
     return (
         <div>
@@ -152,23 +246,49 @@ const State = () => {
 
                         </div>
                         <div className='h-12 w-full bg-white flex justify-between'>
-                            <div className='w-3/4 h-full flex'>
+                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
-                                    {/* <p>Sr. </p> */}
+                                    
                                 </div>
-                                <div className='w-[20%]  p-4'>
-                                    < input className="w-14 bg-[#EBEBEB]"/>
+                                <div className='w-[20%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleStateFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
                                 </div>
-                                <div className='w-[45%]  p-4'>
-                                    < input className="w-14 bg-[#EBEBEB]"/>
-                                </div>
+                                
                             </div>
-                            <div className='w-1/6 h-full  flex'>
-                                <div className='w-1/2  p-4'>
-                                    < input className="w-14 bg-[#EBEBEB]"/>
+                            <div className='w-1/6  flex'>
+                                <div className='w-[50%] p-2 mt-2'>
+                                   <input className="w-14 bg-[#EBEBEB]"/>
+                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
-                                    
+                                     
                                 </div>
                             </div>
                         </div>
@@ -181,15 +301,15 @@ const State = () => {
                                     <p>Sr. </p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>Country</p>
+                                    <p>Country<button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                                 <div className='w-[45%]  p-4'>
-                                    <p>State</p>
+                                    <p>State<button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/6  flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID</p>
+                                    <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     <p>Edit</p>
@@ -229,53 +349,53 @@ const State = () => {
 
                         </div>
                     </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
+                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <div className='h-12 flex justify-center items-center'>
-                                    <img src={backLink} className='h-2/4' />
-                                </div>
-                                <div className='flex space-x-1 mx-5'>
-                                    {/* pages */}
-                                    <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
-                                        <p>1</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>2</p>
-                                    </div>
-                                    <div className='w-6 p-1 pl-2'>
-                                        <p>3</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>4</p>
-                                    </div>
-                                </div>
-                                <div className='h-12 flex justify-center items-center'>
-                                    {/* right button */}
-                                    <img src={nextIcon} className='h-2/4' />
-                                </div>
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
-                               <p className="text-gray-400">Items Per page</p>
-                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                               <p className="text-gray-700">Items Per page</p>
+                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                                         name="currentPages"
+                                         value={currentPages}
+                                        //  defaultValue="Select State"
+                                         onChange={e => {
+                                            setCurrentPages(e.target.value);
+                                            console.log(e.target.value);
+                                            fetchSomeData(e.target.value)
+                                         }}
+                               
+                               >
                                 <option>
-                                    12
+                                    15
                                 </option>
                                 <option>
-                                    13
+                                    20
                                 </option>
                                 <option>
-                                    14
+                                    25
                                 </option>
                                </select>
                             </div>
                             <div className="flex text-sm">
-                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
                             </div>
+                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+                               
+                               <div className='flex'>
+                                 <p>Download as pdf</p>
+                                 {/* <img src=''/> */}
+                               </div>
+                               <div>
+                                  <p>Download as Excel</p>
+                               </div>
+                            </div>}
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
@@ -287,7 +407,7 @@ const State = () => {
                                 <button onClick={handleDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className="h-2/3" />
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
 
