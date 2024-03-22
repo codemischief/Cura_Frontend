@@ -114,5 +114,5 @@ return response;
 
 
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob};
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob, getLocality};
+  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,deleteLob, getLocality};
+  
