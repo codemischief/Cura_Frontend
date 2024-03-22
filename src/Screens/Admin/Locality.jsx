@@ -30,12 +30,13 @@ const Locality = () => {
     const [currItem,setCurrItem] = useState({});
     const [allCountry,setAllCountry] = useState([]);
     const [allState,setAllState] = useState([]);
+    const [allCity,setAllCity] = useState([]);
     const [currCountry,setCurrCountry] = useState(-1);
     const initialValues = {
         country : 0,
         state : 0,
         city : 0,
-        locality : 0
+        locality : ""
     }
     const [formValues,setFormValues] = useState(initialValues);
     
@@ -62,8 +63,8 @@ const Locality = () => {
             setAllState(result)
         }
     }
-    const fetchCityData = async (d) => {
-        const data = { "user_id": 1234, "country_id": 5, "state_name": "Maharashtra" };
+    const fetchCityData = async (id) => {
+        const data = { "user_id": 1234, "state_id": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         if(Array.isArray(result)){
@@ -661,11 +662,35 @@ const Locality = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={""} onChange={handleChange} />
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                                name="country"
+                                                value={formValues.city}
+                                                defaultValue="Select State"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = {...existing, city: e.target.value}
+                                                        return newData;
+                                                    })
+                                                    
+                                                }}
+                                            >
+                                                {allCity && allCity.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.city}
+                                                    </option>
+                                                  
+                                                ))}
+                                            </select>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={""} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.locality} onChange={(e) => {
+                                                setFormValues((existing) => {
+                                                    const newData = {...existing, locality: e.target.value}
+                                                    return newData;
+                                                })
+                                            }} />
                                         </div>
 
                                     </div>
