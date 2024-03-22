@@ -17,6 +17,7 @@ import { APIService } from '../../services/API';
 import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
+import EditLobModal from './Modals/EditLobModal';
 const LOB = () => {
     const [existingLOB,setExistingLOB] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
@@ -24,7 +25,9 @@ const LOB = () => {
     const [pageLoading,setPageLoading] = useState(false);
     const [totalItems,setTotalItems] = useState(0);
     const [downloadModal,setDownloadModal] = useState(false);
+    const [editModal,setEditModal] = useState(false);
     const [lobError,setLobError] = useState("");
+    const [currItem,setCurrItem] = useState({});
     useEffect(() => {
         fetchData();
     }, []);
@@ -119,7 +122,7 @@ const LOB = () => {
         setPageLoading(true);
         const data = {
             "user_id":1234,
-            "id":totalItems + 1,
+            "id":null,
             "name":lobName,
             "lob_head":null,
             "company":null,
@@ -136,6 +139,7 @@ const LOB = () => {
             "id" : Number(id)
         }
         const response = await APIService.deleteLob(data);
+        fetchPageData();
         setPageLoading(false);
     }
     const [isLobDialogue, setIsLobDialogue] = React.useState(false);
@@ -210,13 +214,19 @@ const LOB = () => {
       const handlePageChange = (event,value) => {
         console.log(value);
          setCurrentPage(value)
+         fetchPageData(value);
       }
       const openDownload = () => {
         setDownloadModal((prev) => !prev);
       }
+      const handleOpenEdit = (oldItem) => {
+        setEditModal(true);
+        setCurrItem(oldItem)
+      }
     return (
         <div className=''>
             <Navbar />
+            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchPageData}/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -351,7 +361,7 @@ const LOB = () => {
                                             <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2  p-4 flex justify-between items-center'>
-                                            <img className=' h-5' src={Edit} alt="edit" />
+                                            <img className=' h-5' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)}/>
                                             <button onClick={() => deleteLob(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
