@@ -15,7 +15,6 @@ import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
-import Filter from "../../../assets/filter.png"
 const ManageEmployees = () => {
   // we have the module here
     const [pageLoading,setPageLoading] = useState(false);
@@ -24,7 +23,6 @@ const ManageEmployees = () => {
     const [currentPage,setCurrentPage] = useState(1);
     const [totalItems,setTotalItems] = useState(0);
     const [downloadModal,setDownloadModal] = useState(false);
-    const [searchInput,setSearchInput] = useState("");
     const fetchData = async () => {
         setPageLoading(true);
         const data = { 
@@ -253,7 +251,7 @@ const validate = (values) => {
         "pg_no" : 0,
         "pg_size" : 0
      };
-    const response = await APIService.getEmployees(data)
+    const response = await APIService.getEmployee(data)
     const temp = await response.json();
     const result = temp.data;
     const worksheet = XLSX.utils.json_to_sheet(result);
@@ -261,27 +259,6 @@ const validate = (values) => {
     XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
     XLSX.writeFile(workbook,"EmployeeData.xlsx");
     FileSaver.saveAs(workbook,"demo.xlsx");
-  }
-  const handleSearch = async () => {
-    console.log("clicked")
-    setPageLoading(true);
-    const data = { 
-        "user_id" : 1234,
-        "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
-        "filters" : [],
-        "sort_by" : [],
-        "order" : "asc",
-        "pg_no" : 1,
-        "pg_size" : 15,
-        "search_key" : searchInput
-     };
-     const response = await APIService.getEmployees(data);
-     const temp = await response.json();
-     const result = temp.data;
-     const t = temp.total_count;
-     setTotalItems(t);
-     setExistingEmployees(result);
-     setPageLoading(false);
   }
   return (
     <div>
@@ -310,13 +287,9 @@ const validate = (values) => {
                                     className="h-[36px] bg-[#EBEBEB] text-[#787878]"
                                     type="text"
                                     placeholder="  Search"
-                                    value={searchInput}
-                                    onChange={(e) => {
-                                      setSearchInput(e.target.value);
-                                    }}
                                 />
                                 <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                    <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                                    <img className="h-[26px] " src={searchIcon} alt="search-icon" />
                                 </div>
                         </div>
 
@@ -331,83 +304,12 @@ const validate = (values) => {
                    
                 </div>
                 <div className='h-12 w-full bg-white'>
-                    <div className='w-full h-12 bg-white flex justify-between'>
-                    <div className='w-[4.33%] flex'>
-                        <div className='p-2'>
-                            
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                              <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                             <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                                  <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[12.33%]  flex'>
-                        <div className='p-2'>
-                                  <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                                <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                             <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                                 <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                                <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2'>
-                              <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[8.33%]  flex'>
-                        <div className='p-2 '>
-                            <input className="w-14 bg-[#EBEBEB]"/>
-                            <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                        </div>
-                    </div>
-                    <div className='w-[4.33%]  flex'>
-                        <div className='p-2'>
-                            
-                        </div>
-                    </div>
-                    </div>
+                  
                 </div>
             </div>
 
             <div className='w-full h-[400px] bg-white px-6'>
-                <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+            <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-[4.33%] flex'>
                       <div className='p-2'>
                          <p>Sr. No</p>
@@ -440,7 +342,7 @@ const validate = (values) => {
                    </div>
                    <div className='w-[8.33%]  flex'>
                       <div className='p-2'>
-                          <p>Pan No</p>
+                          <p> Pan No</p>
                       </div>
                    </div>
                    <div className='w-[8.33%]  flex'>
@@ -485,8 +387,8 @@ const validate = (values) => {
                                 </div>
                                 </div>
                                 <div className='w-[8.33%]  flex overflow-hidden'>
-                                <div className='p-2 '>
-                                    <p className='ml-3'>{item.employeeid}</p>
+                                <div className='p-2'>
+                                    <p>{item.employeeid}</p>
                                 </div>
                                 </div>
                                 <div className='w-[8.33%]  flex overflow-hidden'>
@@ -520,22 +422,19 @@ const validate = (values) => {
                                 </div>
                                 </div>
                                 <div className='w-[8.33%]  flex overflow-hidden'>
-                                <div className='p-2 ml-2 flex items-center space-x-2'>
-                                    {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                    <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                    <p> inactive</p></>}
-                                    
+                                <div className='p-2 ml-2'>
+                                    <p> {item.status ? "active" : "not active"}</p>
                                 </div>
                                 </div>
                                 <div className='w-[4.33%]  flex overflow-hidden'>
-                                <div className='p-2 ml-3'>
+                                <div className='p-2'>
                                     <p>{item.id}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex overflow-hidden items-center space-x-4 ml-3'>
+                                <div className='w-[8.33%]  flex overflow-hidden items-center space-x-4'>
                                 
-                                          <img className=' h-5 ml-3' src={Edit} alt="edit" />
-                                         <button onClick={() => {}}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                          <img className=' h-5' src={Edit} alt="edit" />
+                                            <button onClick={() => {}}><img className=' h-5' src={Trash} alt="trash" /></button>
                                
                                 </div>
                             </div>
@@ -548,7 +447,7 @@ const validate = (values) => {
                 <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage} />
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
                                 
                             </div>
                         </div>
