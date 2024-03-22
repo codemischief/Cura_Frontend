@@ -118,5 +118,13 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getLocality`, METHOD_POST(data));
   return response;
  }
+ const addLocality = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addLocality`, METHOD_POST(data));
+  return response;
+ }
+ const deleteLocality = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteLocality`, METHOD_POST(data));
+  return response;
+ }
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,getLocality};
+  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,getLocality,addLocality,deleteLocality};
