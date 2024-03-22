@@ -122,7 +122,7 @@ const Login = () => {
  
   }, [formErrors]);
   return (
-    <div className="flex w-screen h-screen  py-[20px] justify-center">
+    <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
       <img
         className="w-[140px] h-[64px]  absolute left-5 "
         src={Logo}

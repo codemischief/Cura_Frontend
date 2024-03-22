@@ -118,13 +118,51 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getLocality`, METHOD_POST(data));
   return response;
  }
- const addLocality = async (data) => {
-  const response = await fetch(`${env_URL_SERVER}addLocality`, METHOD_POST(data));
+ const getClientAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getClientAdmin`, METHOD_POST(data));
   return response;
  }
  const deleteLocality = async (data) => {
   const response = await fetch(`${env_URL_SERVER}deleteLocality`, METHOD_POST(data));
   return response;
  }
+ const getEntityAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getEntityAdmin`, METHOD_POST(data));
+  return response;
+ }
+ const getModesAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getModesAdmin`, METHOD_POST(data));
+  return response;
+ }
+
+ const getProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+
+ const addProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+
+ const editProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}editResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+
+ const addLocality = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addLocality`, METHOD_POST(data));
+  return response;
+ }
+
+
+ const getHowReceivedAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getHowReceivedAdmin`, METHOD_POST(data));
+  return response;
+ }
+
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,getLocality,addLocality,deleteLocality};
+  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,getProspects,addProspects,editProspects};
+
+  

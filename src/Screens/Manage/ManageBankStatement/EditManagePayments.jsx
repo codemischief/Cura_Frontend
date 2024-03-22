@@ -9,11 +9,12 @@ import { APIService } from '../../../services/API';
 
 
 const EditManageStatement = (props) => {
-    const [pageLoading, setPageLoading] = useState(false);
+        const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const crdr =["Credit","Debit"];
+    const [vendorList,setVendorList]= useState(props.bankStatement.vendorList)
     const openSuccessModal = () => {
         // set the state for true for some time
         props.setOpenDialog(false);
@@ -33,8 +34,8 @@ const EditManageStatement = (props) => {
     const editBankStatement = async () => {
         const data = {
             "user_id": 1234,
-            "id": Number(props.bankStatement.id),
-            "modeofpayment": String(formValues.modeofpayment),
+            "id": Number(props.bankStatement.item.id),
+            "modeofpayment": formValues.modeofpayment,
             "date":String(formValues.date),
             "amount":formValues.amount,
             "particulars":String(formValues.particulars),
@@ -49,7 +50,7 @@ const EditManageStatement = (props) => {
             "vendorid":String(formValues.vendor),
             // "createdby":1234
         }
-        // const response = await APIService.editBankStatement(data);
+        const response = await APIService.editBankStatement(data);
         if (response.ok) {
             
             openSuccessModal();
@@ -65,13 +66,13 @@ const EditManageStatement = (props) => {
     };
     console.log(props)
     const initialValues = {
-        modeofpayment: props.bankStatement.modeofpayment ,
-        particulars: props.bankStatement.particulars,
-        amount: props.bankStatement.amount,
-        vendor: props.bankStatement.vendor,
-        date: props.bankStatement.date,
-        crdr: props.bankStatement.crdr,
-        how: props.bankStatement.how,
+        modeofpayment: props.bankStatement.item.modeofpayment ,
+        particulars: props.bankStatement.item.particulars,
+        amount: props.bankStatement.item.amount,
+        // vendor: props.bankStatement,
+        date: props.bankStatement.item.date,
+        crdr: props.bankStatement.item.crdr,
+        how: props.bankStatement.item.how,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -85,9 +86,6 @@ const EditManageStatement = (props) => {
     const handleSubmit = async  (e) => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
-        if (formValues.builderName == "") {
-            return;
-        }
         setIsLoading(true);
         await editBankStatement();
          await props.fetchData();   
@@ -120,7 +118,7 @@ const EditManageStatement = (props) => {
             <FailureModal isOpen={showFailure} message="Error! cannot edit the Bank Statement" />
             <Modal open={props.openDialog}
                 fullWidth={true}
-                maxWidth={'md'} >
+                 >
                 <div className='flex justify-center mt-[150px] rounded-lg'>
                     <div className="w-[1050px] h-[400px] bg-white ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
@@ -151,8 +149,14 @@ const EditManageStatement = (props) => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Vendor</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="vendor" value={formValues.vendor} onChange={handleChange} />
+                                            <div className="text-[14px]">Vendor</div> 
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                                {vendorList && vendorList.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                        
                                       
