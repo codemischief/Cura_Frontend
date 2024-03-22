@@ -183,7 +183,7 @@ const Navbar = () => {
          {isToggledAdmin && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[270px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-6'>
-                  <h1 className='font-semibold text-xl pl-1 '>Personnel</h1>
+                  <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Personnel</h1>
                   <div className="space-y-2 text-[#505050] text-[11px]">
                      <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageuser">Users</Link></p>
                      <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'> <Link to="/admin/manageemployees">Employees</Link></p>
@@ -194,7 +194,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
                <div className='ml-5 mt-4 flex-col space-y-6'>
-                  <h1 className='font-semibold text-xl pl-1'>Offerings </h1>
+                  <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Offerings </h1>
                   <div className="space-y-2 text-[#505050] text-[11px]">
                      <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/LOB" >LOB (Line of business)</Link></p>
                      <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/service">Services</Link></p>
@@ -204,7 +204,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
                <div className='ml-5 mt-4 flex-col space-y-6'>
-                  <h1 className='font-semibold text-xl pl-1'>Locations</h1>
+                  <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Locations</h1>
                   <div className="space-y-2 text-[#505050] text-[11px]">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/country">Country</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/state">State</Link></p>
@@ -216,7 +216,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
                <div className='ml-5 mt-4 flex-col space-y-6'>
-                  <h1 className='font-semibold text-xl pl-1'>Data Management</h1>
+                  <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Data Management</h1>
                   <div className="space-y-2 text-[#505050] text-[11px]">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Delete by ID</p>
                   </div>
@@ -225,7 +225,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
                <div className='ml-5 mt-4 flex-col space-y-6'>
-                  <h1 className='font-semibold text-xl pl-1'>Margin Report</h1>
+                  <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Margin Report</h1>
                   <div className="space-y-2 text-[#505050] text-[11px]">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>LOB- Receipts - Payments</p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Entity-Receipts-Patments</p>
@@ -301,14 +301,14 @@ const Navbar = () => {
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div> */}
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-4'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Builder</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Builder</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Builder</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Report</p>
                   </div>
                </div>
                <div className='ml-5 mt-20 flex-col space-y-4'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Statement</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4 '>Statement</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/bankstatement">Bank Statement</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Send Client Statement</p>
@@ -319,7 +319,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-4'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Client</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Client</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Client</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Property</p>
@@ -331,7 +331,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-4'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Order</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Order</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Order</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Order Recipt</p>
@@ -341,7 +341,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-4'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Vendor</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Vendor</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Vendor</p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Vendor Invoice</p>
@@ -352,7 +352,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-4'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Service</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Service</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>PMA Agreement</p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>L&L Agreement</p>
@@ -373,7 +373,7 @@ const Navbar = () => {
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div> */}
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Bank Record</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Bank Record</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Order Recipt Mismatch Details</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Bank Balance Reconciliation</p>
@@ -384,7 +384,7 @@ const Navbar = () => {
                   </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Lists</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Lists</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment List</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Recipt List</p>
@@ -395,7 +395,7 @@ const Navbar = () => {
                   </div> 
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Monthly Margin</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Monthly Margin</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Recipts-Payments</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Entity-Recipt-Payments</p>
@@ -409,7 +409,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Client</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Client</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Statement</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Duplicate Client</p>
@@ -419,7 +419,7 @@ const Navbar = () => {
                   </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>PMA</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>PMA</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Active PMA Agreements</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>All Project Contacts</p>
@@ -436,7 +436,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Contact</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Contact</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>All Owner Email Ids </p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>All Tenant Email Ids</p>
@@ -446,7 +446,7 @@ const Navbar = () => {
                   </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828]'>Tally Report</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] hover:underline decoration-sky-500 decoration-4'>Tally Report</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Receipt </p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment-DD</p>
@@ -459,7 +459,7 @@ const Navbar = () => {
                  
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828]'>Report Trace</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] hover:underline decoration-sky-500 decoration-4'>Report Trace</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Trace</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Trace</p>
@@ -470,7 +470,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Exceptions</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Exceptions</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Manage Vendor</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Manage Vendor Invoice</p>
@@ -478,14 +478,14 @@ const Navbar = () => {
                   </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Vendor</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Vendor</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Summary</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Statement</p>
                   </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Service Tax Reports</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4 '>Service Tax Reports</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Agency Repair Service Receipts</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Service Tax Paid by Vendor</p>
@@ -495,7 +495,7 @@ const Navbar = () => {
             <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Orders</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Orders</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Aged Order</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Analysis</p>
@@ -503,13 +503,13 @@ const Navbar = () => {
                   
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828]'>Legal</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] hover:underline decoration-sky-500 decoration-4'>Legal</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Active L & L Agreement</p>
                   </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Statistics</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Statistics</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Statistics</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Statistics</p>
@@ -519,7 +519,7 @@ const Navbar = () => {
                   
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828]'>TDS Report</h1>
+                  <h1 className='font-semibold text-[18px] text-[#282828] hover:underline decoration-sky-500 decoration-4'>TDS Report</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>TDS Paid By Vendor</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Payment Summary For Period</p>
