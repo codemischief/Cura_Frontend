@@ -10,7 +10,7 @@ import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
-import { Modal , CircularProgress} from "@mui/material";
+import { Modal , CircularProgress, Pagination} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
@@ -23,6 +23,7 @@ const LOB = () => {
     const [currentPage,setCurrentPage] = useState(1);
     const [pageLoading,setPageLoading] = useState(false);
     const [totalItems,setTotalItems] = useState(0);
+    const [downloadModal,setDownloadModal] = useState(false);
     const initialSelectedFields = {
         name : {
             selected : false,
@@ -84,7 +85,7 @@ const LOB = () => {
         setPageLoading(true);
         const data = {
             "user_id":1234,
-            "id":null,
+            "id":totalItems + 1,
             "name":lobName,
             "lob_head":null,
             "company":null,
@@ -210,6 +211,10 @@ const LOB = () => {
             return !prev;
         })
         setPageLoading(false);
+      }
+      const handlePageChange = (event,value) => {
+        console.log(value);
+         setCurrentPage(value)
       }
     return (
         <div className=''>
@@ -361,28 +366,8 @@ const LOB = () => {
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <div className='h-12 flex justify-center items-center'>
-                                    <img src={backLink} className='h-2/4' />
-                                </div>
-                                <div className='flex space-x-1 mx-5'>
-                                    {/* pages */}
-                                    <div className={`w-6 ${currentPage == 1 ?" bg-[#DAE7FF]" : ""} p-1 pl-2 rounded-md`}>
-                                        <button onClick={() => {fetchPageData(1)}}><p>1</p></button>
-                                    </div>
-                                    <div className={`w-6 ${currentPage == 2 ?" bg-[#DAE7FF]" : ""} p-1 pl-2 rounded-md`}>
-                                        <button onClick={() => {fetchPageData(2)}}><p>2</p></button>
-                                    </div>
-                                    <div className='w-6 p-1 pl-2'>
-                                        <p>3</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>4</p>
-                                    </div>
-                                </div>
-                                <div className='h-12 flex justify-center items-center'>
-                                    {/* right button */}
-                                    <img src={nextIcon} className='h-2/4' />
-                                </div>
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
@@ -413,6 +398,16 @@ const LOB = () => {
                             <div className="flex text-sm">
                                 <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
                             </div>
+                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+                               
+                               <div className='flex'>
+                                 <p>Download as pdf</p>
+                                 {/* <img src=''/> */}
+                               </div>
+                               <div>
+                                  <p>Download as Excel</p>
+                               </div>
+                            </div>}
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
