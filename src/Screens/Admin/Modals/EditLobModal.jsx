@@ -19,7 +19,7 @@ const EditLobModal = (props) => {
         const response = await APIService.editLob(data);
         props.handleClose();
         props.fetchData();
-     }
+    }
   return (
     <Modal open={props.isOpen}
                 fullWidth={true}
