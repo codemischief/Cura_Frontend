@@ -65,6 +65,7 @@ const LOB = () => {
         const response = await APIService.getLob(data)
         const temp = await response.json();
         const result = temp.data;
+        if(number == 25) console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLOB(result);
@@ -78,8 +79,8 @@ const LOB = () => {
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
-            "pg_no" : 1,
-            "pg_size" : 15
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(currentPages)
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -119,27 +120,25 @@ const LOB = () => {
         }else {
             setLobError("");
         }
-        setPageLoading(true);
         const data = {
             "user_id":1234,
-            "id":null,
             "name":lobName,
-            "lob_head":null,
-            "company":null,
-            "entityid":null
         }
         const response =await APIService.addLob(data);
-        setPageLoading(false);
+        setIsLobDialogue(false);
+        fetchData();
+        // setPageLoading(false);
     }
-    const deleteLob = async (id) => {
+    const deleteLob = async (name) => {
         // we write delete lob logic here
         setPageLoading(true);
         const data = {
             "user_id" : 1234,
-            "id" : Number(id)
+            "name" : String(name)
         }
         const response = await APIService.deleteLob(data);
-        fetchPageData();
+        // fetchPageData();
+        fetchData();
         setPageLoading(false);
     }
     const [isLobDialogue, setIsLobDialogue] = React.useState(false);
@@ -226,7 +225,7 @@ const LOB = () => {
     return (
         <div className=''>
             <Navbar />
-            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchPageData}/>}
+            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData}/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -362,14 +361,14 @@ const LOB = () => {
                                         </div>
                                         <div className='w-1/2  p-4 flex justify-between items-center'>
                                             <img className=' h-5' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)}/>
-                                            <button onClick={() => deleteLob(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => deleteLob(item.name)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
                                 </div>
                             })}
                             {/* we get all the existing cities here */}
                         </div>
-                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
+                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>

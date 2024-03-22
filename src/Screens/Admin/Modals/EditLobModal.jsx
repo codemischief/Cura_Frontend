@@ -13,16 +13,10 @@ const EditLobModal = (props) => {
         }
         const data = {
             "user_id":1234,
-            "id":props.item.id,
-            "name":editModalInput,
-            "lob_head":null,
-            "company":null,
-            "entityid":null
+            "old_name":props.item.name,
+            "new_name":editModalInput,
         }
         const response = await APIService.editLob(data);
-        
-
-
         props.handleClose();
         props.fetchData();
      }
