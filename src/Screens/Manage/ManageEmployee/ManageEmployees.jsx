@@ -8,39 +8,102 @@ import downloadIcon from "../../../assets/download.png";
 import { useState ,useEffect } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal } from "@mui/material";
+import { Modal , Pagination, LinearProgress} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
-
+import { APIService } from '../../../services/API';
+import Pdf from "../../../assets/pdf.png";
+import Excel from "../../../assets/excel.png"
+import Edit from "../../../assets/edit.png"
+import Trash from "../../../assets/trash.png"
 const ManageEmployees = () => {
   // we have the module here
+    const [pageLoading,setPageLoading] = useState(false);
     const [existingEmployees,setExistingEmployees] = useState([]);
+    const [currentPages,setCurrentPages] = useState(15);
+    const [currentPage,setCurrentPage] = useState(1);
+    const [totalItems,setTotalItems] = useState(0);
+    const [downloadModal,setDownloadModal] = useState(false);
+    const fetchData = async () => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(currentPages)
+         };
+         const response = await APIService.getEmployees(data);
+         const temp = await response.json();
+         const result = temp.data;
+         console.log(result);
+         const t = temp.total_count;
+         setTotalItems(t);
+         setExistingEmployees(result);
+         setPageLoading(false);
+    } 
+    const fetchPageData = async (pageNumber) => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(pageNumber),
+            "pg_size" : Number(currentPages)
+         };
+         const response = await APIService.getEmployees(data);
+         const temp = await response.json();
+         const result = temp.data;
+         console.log(result);
+         const t = temp.total_count;
+         setTotalItems(t);
+         setExistingEmployees(result);
+         setPageLoading(false);
+    }
+    const fetchQuantityData = async (quantity) => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(quantity)
+         };
+         const response = await APIService.getEmployees(data);
+         const temp = await response.json();
+         const result = temp.data;
+         console.log(result);
+         const t = temp.total_count;
+         setTotalItems(t);
+         setExistingEmployees(result);
+         setPageLoading(false);
+    }
     useEffect(()=> {
-        fetch("/getEmployees")
-        .then((res) => res.json())
-        .then((data) =>{
-        setExistingEmployees(data)
-        
-        })
+        fetchData();
     },[]);
-    // hardcoded for dropdown instances ********* start*************
     const selectedCountry = [
       "India", "USA", "UK", "Germany", "France", "Italy"
-  ]
-  const selectedState = [
-      "State1", "State2", "State3", "State4"
-  ]
-  const selectedCity = [
-      "City1", "City2", "City3", "City4"
-  ]
-  const entity = [
-      "Entity1", "Entity1", "Entity1", "Entity1"
-  ]
-  const assignedRoles = [
-      "Role1", "Role2", "Role3", "Role4"
-  ]
-  const userName = [
-      "User1", "User2", "User3", "User4"
-  ]
+    ]
+    const selectedState = [
+        "State1", "State2", "State3", "State4"
+    ]
+    const selectedCity = [
+        "City1", "City2", "City3", "City4"
+    ]
+    const entity = [
+        "Entity1", "Entity1", "Entity1", "Entity1"
+    ]
+    const assignedRoles = [
+        "Role1", "Role2", "Role3", "Role4"
+    ]
+    const userName = [
+        "User1", "User2", "User3", "User4"
+    ]
   // hardcoded for dropdown instances ********* End*************
 
   const initialValues = {
@@ -65,15 +128,43 @@ const ManageEmployees = () => {
 const [formValues, setFormValues] = useState(initialValues);
 const [formErrors, setFormErrors] = useState({});
 
-// handle changes in input form
 const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
 };
 const handleSubmit = (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues)); // validate form and set error message
-    setIsSubmit(true);
+    setFormErrors(validate(formValues));
+    
+    // handle adding of data
+    const data = {
+        "user_id":1234,
+        "id":100,
+        "employeename":formValues.employeeName,
+        "employeeid":formValues.employeeId,
+        "roleid":2,
+        "dateofjoining":"13-01-2024 00:00:00",
+        "dob":"13-01-2001 00:00:00",
+        "panno":"abcd",
+        "status":false,
+        "phoneno":null,
+        "email":null,
+        "addressline1":"abcdefgh",
+        "addressline2":"ijklmnop",
+        "suburb":"Pune",
+        "city":847,
+        "state":"Maharashta",
+        "country":5,
+        "zip":null,
+        "dated":"20-01-2020  00:00:00",
+        "createdby":1234,
+        "isdeleted":false,
+        "entityid":10,
+        "lobid":100,
+        "lastdateofworking":"20-02-2020 00:00:00",
+        "designation":"New"}
+    
+    
 };
 // validate form and to throw Error message
 const validate = (values) => {
@@ -128,13 +219,46 @@ const validate = (values) => {
     }
     return errors;
 };
-    
+  
   const [isStateDialogue,setIsStateDialogue] = React.useState(false);
   const handleOpen = () => {
      setIsStateDialogue(true);
   };
   const handleClose = () => {
     setIsStateDialogue(false);
+  }
+  const handlePageChange = (event,value) => {
+    console.log(value);
+     setCurrentPage(value)
+     fetchPageData(value);
+  }
+  const handleRefresh = () => {
+    fetchData();
+  }
+  const openDownload = () => {
+    setDownloadModal(true);
+  }
+  const closeDownload = () => {
+    setDownloadModal(false);
+  }
+  const handleExcelDownload = async () => {
+    const data = { 
+        "user_id" : 1234,
+        "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
+        "filters" : [],
+        "sort_by" : [],
+        "order" : "asc",
+        "pg_no" : 0,
+        "pg_size" : 0
+     };
+    const response = await APIService.getEmployee(data)
+    const temp = await response.json();
+    const result = temp.data;
+    const worksheet = XLSX.utils.json_to_sheet(result);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
+    XLSX.writeFile(workbook,"EmployeeData.xlsx");
+    FileSaver.saveAs(workbook,"demo.xlsx");
   }
   return (
     <div>
@@ -247,119 +371,143 @@ const validate = (values) => {
                       </div>
                    </div>
                 </div>
-                <div className='w-full h-[350px] overflow-auto'> 
+                <div className='w-full h-[450px] overflow-auto'> 
                 {/* we map our items here */}
-                {existingEmployees.map((item,index) => {
-                    return  <div className='w-full h-12 bg-white flex justify-between'>
+                {pageLoading && <div className='ml-5 mt-5'><LinearProgress/></div> }
+                {!pageLoading && existingEmployees.map((item,index) => {
+                    return  <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-[4.33%] flex'>
                                 <div className='p-2'>
-                                    <p>{index+1}</p>
+                                    <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.empName} </p>
+                                    <p>{item.employeename} </p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.empId}</p>
+                                    <p>{item.employeeid}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.phoneNo}</p>
+                                    <p>{item.phoneno}</p>
                                 </div>
                                 </div>
-                                <div className='w-[12.33%]  flex'>
+                                <div className='w-[12.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.empEmail}</p>
+                                    <p>{item.email}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.role}</p>
+                                    <p>{item.roleid}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.panNo}</p>
+                                    <p>{item.panno}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
+                                <div className='p-2 ml-2'>
+                                    <p>{item.dateofjoining}</p>
+                                </div>
+                                </div>
+                                <div className='w-[8.33%]  flex  overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.dateJoining}</p>
+                                    <p>{item.lastdateofworking}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
+                                <div className='w-[8.33%]  flex overflow-hidden'>
+                                <div className='p-2 ml-2'>
+                                    <p> {item.status ? "active" : "not active"}</p>
+                                </div>
+                                </div>
+                                <div className='w-[4.33%]  flex overflow-hidden'>
                                 <div className='p-2'>
-                                    <p>{item.lastDate}</p>
+                                    <p>{item.id}</p>
                                 </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p> {item.empStatus}</p>
-                                </div>
-                                </div>
-                                <div className='w-[4.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>{item.empId}</p>
-                                </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Edit</p>
-                                </div>
+                                <div className='w-[8.33%]  flex overflow-hidden items-center space-x-4'>
+                                
+                                          <img className=' h-5' src={Edit} alt="edit" />
+                                            <button onClick={() => {}}><img className=' h-5' src={Trash} alt="trash" /></button>
+                               
                                 </div>
                             </div>
                 })}
             </div>
             </div>
             
-            <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
                 {/* footer component */}
                 <div className='ml-2'>
-                    <div className='flex items-center w-auto h-full'>
-                       {/* items */}
-                       <div className='h-12 flex justify-center items-center'>
-                          <img src={backLink} className='h-2/4'/>
-                       </div>
-                       <div className='flex space-x-1 mx-5'>
-                          {/* pages */}
-                          <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
-                              <p>1</p>  
-                          </div>
-                          <div className='w-6  p-1 pl-2'>
-                              <p>2</p> 
-                          </div>
-                          <div className='w-6 p-1 pl-2'>
-                              <p>3</p> 
-                          </div>
-                          <div className='w-6  p-1 pl-2'>
-                              <p>4</p> 
-                          </div>
-                       </div>
-                       <div className='h-12 flex justify-center items-center'>
-                        {/* right button */}
-                           <img src={nextIcon} className='h-2/4'/>
-                       </div>
-                    </div>
-                    <div>
-                        {/* items per page */}
-                    </div>
-                </div>
-                <div className='flex mr-10 justify-center items-center space-x-2 '>
-                    <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
-                       {/* refresh */}
-                       <p>Refresh</p>
-                       <img src={refreshIcon} className='h-1/2'/>
-                    </div>
-                    <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
-                        {/* download */}
-                        <p>Download</p>
-                        <img src={downloadIcon} className='h-1/2'/>
-                    </div>
-                </div>
+                            <div className='flex items-center w-auto h-full'>
+                                {/* items */}
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                
+                            </div>
+                        </div>
+                        <div className='flex mr-10 justify-center items-center space-x-2 '>
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-700">Items Per page</p>
+                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                                         name="currentPages"
+                                         value={currentPages}
+                                        //  defaultValue="Select State"
+                                         onChange={e => {
+                                            setCurrentPages(e.target.value);
+                                            console.log(e.target.value);
+                                            fetchQuantityData(e.target.value)
+                                         }}
+                               
+                               >
+                                <option>
+                                    15
+                                </option>
+                                <option>
+                                    25
+                                </option>
+                                <option>
+                                    50
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
+                            </div>
+                            {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                                <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4'/></button>
+                                
+                               <button>
+                                <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+                                    
+                                    <p>Download as pdf</p>
+                                    <img src={Pdf}/>
+                                </div>
+                               </button>
+                               <button onClick={handleExcelDownload}>
+                                <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                    <p>Download as Excel</p>
+                                    <img src={Excel}/>
+                                </div>
+                               </button>
+                            </div>}
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
+                                {/* refresh */}
+                                <button onClick={handleRefresh}><p>Refresh</p></button>
+                                <img src={refreshIcon} className="h-2/3" />
+                            </div>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
+                                {/* download */}
+                                <button onClick={openDownload}><p>Download</p></button>
+                                <img src={downloadIcon} className="h-2/3" />
+                            </div>
+                        </div> 
             </div>
         </div>
      
@@ -376,11 +524,11 @@ const validate = (values) => {
                             <div className="text-[16px]">Add New Employee</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <Link to="/manageemployees"><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></Link>
+                            <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                         </div>
                     </div>
                     <form onSubmit={handleSubmit}>
-                        <div className="h-auto w-full mt-[5px] ">
+                        <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">

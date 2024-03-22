@@ -105,8 +105,14 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getVendorAdmin`, METHOD_POST(data));
   return response;
  }
-
-
+ const getEmployees = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getEmployee`, METHOD_POST(data));
+  return response;
+ }
+ const addEmployee = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addEmployee`, METHOD_POST(data));
+  return response;
+ }
 
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob};
+  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees};
