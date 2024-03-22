@@ -10,86 +10,27 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
-import { APIService } from '../../../services/API';
-import { Modal, LinearProgress, Pagination } from "@mui/material";
+import { Modal } from "@mui/material";
 import EditProspect from './EditProspect';
 import DeleteProspect from './DeleteProspect';
-import Pdf from "../../../assets/pdf.png";
-import Excel from "../../../assets/excel.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 const Prospect = () => {
 
     // we have the module here
     const [existingProspect, setExistingProspect] = useState([]);
-    const [currentPages, setCurrentPages] = useState(15);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageLoading, setPageLoading] = useState(false);
-    const [totalItems, setTotalItems] = useState(0);
-    const [downloadModal, setDownloadModal] = useState(false);
-    const [prospectError, setProspectError] = useState("");
-    const [prospectName, setProspectName] = useState("");
-    const [currItem, setCurrItem] = useState({});
     useEffect(() => {
-        fetchData();
+        fetch("/getprospect")
+            .then((res) => res.json())
+            .then((data) => {
+                setExistingProspect(data)
+                console.log(data);
+            })
     }, []);
-    const fetchData = async () => {
-        setPageLoading(true);
-        const data = {
-            "user_id":1234,
-            "rows":["id","personname","suburb","city","country","propertylocation","possibleservices"],
-            "filters":[],
-            "sort_by":[],
-            "order":"asc",
-            "pg_no":0,
-            "pg_size":0
-        };
-        const response = await APIService.getProspects(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        console.log(result);
-        setExistingProspect(result);
-        setPageLoading(false);
-    }
-    const addProspect = async () => {
-        if (formValues.name == "") {
-            setProspectError("This Feild Is Mandatory");
-            return;
-        } else {
-            setProspectError("");
-        }
-        setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "personname": formValues.personName,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": formValues.state,
-            "country": formValues.country,
-            "propertylocation": formValues.propertyLocation,
-            "possibleservices": formValues.possibleservices,
-            "dated": "2024-01-01 00:00:00",
-            "createdby": 1234,
-            "isdeleted": false
-          }
-        const response = await APIService.addProspects(data);
-        setIsProspectDialogue(false);
-        setPageLoading(false);
-        fetchData();
-    }
     //Validation of the form
     const initialValues = {
         personName: "",
         country: "",
-        state:"",
-        city: "",
-        suburb: "",
-        propertyLocation:"",
-        requirement:"",
-        email:"",
-        phoneNumber:"",
     };
 
     const selectedCountry = [
@@ -134,9 +75,8 @@ const Prospect = () => {
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
-    const handleOpenEdit = (oldItem) => {
+    const handleOpenEdit = () => {
         setIsEditDialogue(true);
-        setCurrItem(oldItem)
     };
     const handleCloseEdit = () => {
         setIsEditDialogue(false);
@@ -149,26 +89,12 @@ const Prospect = () => {
     const handleCloseDelete = () => {
         setIsDeleteDialogue(false);
     }
-    const openDownload = () => {
-        setDownloadModal((prev) => !prev);
-    }
-    const handleExcelDownload = async () => {
-        const data = {
-            "user_id":1234,
-            "rows":["id","personname","suburb","city","country","propertylocation","possibleservices"],
-            "filters":[],
-            "sort_by":[],
-            "order":"asc",
-            "pg_no":0,
-            "pg_size":0
-        };
-        const response = await APIService.getProspects(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
+    const handleDownload = () => {
+        // we handle the download here
+        const worksheet = XLSX.utils.json_to_sheet(existingProspect);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ProspectsData.xlsx");
+        XLSX.writeFile(workbook, "ProspectData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleRefresh = async () => {
@@ -177,7 +103,6 @@ const Prospect = () => {
     return (
         <div>
             <Navbar />
-            {isEditDialogue && <EditProspect isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} fetchData={fetchData}/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -282,59 +207,57 @@ const Prospect = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[320px] overflow-auto'>
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingProspect.map((item, index) => {
+                        <div className='w-full h-80 '>
+                            {existingProspect.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
                                         <div className='w-[5%] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
                                         <div className='w-[25%]  p-4'>
-                                            <p>{item.personname}</p>
+                                            <p>{item.person_name}</p>
                                         </div>
                                         <div className='w-[15%]  p-4'>
-                                            <p>{item.suburb}</p>
+                                            <p>{item.suburb_name}</p>
                                         </div>
                                         <div className='w-[15%]  p-4'>
-                                            <p>{item.city}</p>
+                                            <p>{item.city_name}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.propertylocation}</p>
+                                            <p>{item.property_location}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.possibleservices}</p>
+                                            <p>{item.possible_location}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
                                         <div className='w-1/2  p-4'>
-                                            <p>{item.id}</p>
+                                            <p>{item.user_id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() =>handleOpenEdit(item)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={handleOpenEdit} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={handleOpenDelete} />
                                         </div>
                                     </div>
                                 </div>
                             })}
-                            
+                            <EditProspect openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} />
                             <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} />
                             {/* we get all the existing prospect here */}
 
                         </div>
                     </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
-                        {/* <div className="w-full h-[2px] bg-[#CBCBCB] mb-[2px]"></div> */}
+                    <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
                                 <div className='h-12 flex justify-center items-center'>
-                                    {/* <img src={backLink} className='h-2/4' /> */}
+                                    <img src={backLink} className='h-2/4' />
                                 </div>
                                 <div className='flex space-x-1 mx-5'>
                                     {/* pages */}
-                                    {/* <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
+                                    <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
                                         <p>1</p>
                                     </div>
                                     <div className='w-6  p-1 pl-2'>
@@ -345,33 +268,17 @@ const Prospect = () => {
                                     </div>
                                     <div className='w-6  p-1 pl-2'>
                                         <p>4</p>
-                                    </div> */}
+                                    </div>
                                 </div>
                                 <div className='h-12 flex justify-center items-center'>
                                     {/* right button */}
-                                    {/* <img src={nextIcon} className='h-2/4' /> */}
+                                    <img src={nextIcon} className='h-2/4' />
                                 </div>
                             </div>
                             <div>
                                 {/* items per page */}
                             </div>
                         </div>
-                        {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                                    <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
-
-                                    <button>
-                                        <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-                                            <p>Download as pdf</p>
-                                            <img src={Pdf} />
-                                        </div>
-                                    </button>
-                                    <button onClick={handleExcelDownload}>
-                                        <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
-                                            <p>Download as Excel</p>
-                                            <img src={Excel} />
-                                        </div>
-                                    </button>
-                                </div>}
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
                                 {/* refresh */}
@@ -380,7 +287,7 @@ const Prospect = () => {
                             </div>
                             <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
                                 {/* download */}
-                                <button onClick={openDownload}><p>Download</p></button>
+                                <button onClick={handleDownload}> <p>Download</p></button>
                                 <img src={downloadIcon} className='h-1/2' />
                             </div>
                         </div>
@@ -426,7 +333,7 @@ const Prospect = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state"  >
                                                 {selectedState.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -436,7 +343,7 @@ const Prospect = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city"  >
                                                 {selectedCity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -446,31 +353,33 @@ const Prospect = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Suburb</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Property Location</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">requirement</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="requirement" value={formValues.requirement} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="requirement" />
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Email</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email" />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone Number</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber" value={formValues.phoneNumber} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneNumber" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProspect}>Add</button>
+
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </form>

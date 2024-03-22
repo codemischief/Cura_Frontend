@@ -722,9 +722,6 @@ const ManageBankStatement = () => {
                                             </select>
                                            
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
-
-                                        </div>                   
-
                                         </div>
                                     </div>
                                 </div>
@@ -859,7 +856,7 @@ const ManageBankStatement = () => {
                                        
                                         
                                         
-
+                                       
                                     </div>
                                 </div>
                             </div>
