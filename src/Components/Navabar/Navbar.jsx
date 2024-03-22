@@ -12,14 +12,15 @@ const Navbar = () => {
    const [isToggledManage, setIsToggledManage] = useState(false);
    const [isToggledReport, setIsToggledReport] = useState(false);
    const [isToggledResearch, setIsToggledResearch] = useState(false);
+   const [isFirstOpen, setIsisFirstOpen] = useState(true);
    // const [isToggledManage, setIsToggledManage] = useState(false);
-   
+
    const menuRef = useRef();
 
    const logout = () => {
       authService.logOut();
    }
-     const handleAdminChange = () => {
+   const handleAdminChange = () => {
       if (isToggledDash) {
          handleDashChange();
       }
@@ -35,6 +36,7 @@ const Navbar = () => {
       setIsToggledAdmin((toggle) => {
          return !toggle;
       })
+      setIsisFirstOpen(false);
    };
 
    const handleDashChange = () => {
@@ -46,16 +48,17 @@ const Navbar = () => {
       }
       else if (isToggledResearch) {
          handleResearchChange();
-      }  
+      }
       else if (isToggledReport) {
          handleReportChange();
       }
       setIsToggledDash((toggle) => {
          return !toggle;
       })
+      setIsisFirstOpen(false);
    }
 
-   const handleReportChange= () => {
+   const handleReportChange = () => {
       if (isToggledAdmin) {
          handleAdminChange();
       }
@@ -71,6 +74,7 @@ const Navbar = () => {
       setIsToggledReport((toggle) => {
          return !toggle;
       })
+      setIsisFirstOpen(false);
    }
 
    const handleManageChange = () => {
@@ -89,6 +93,7 @@ const Navbar = () => {
       setIsToggledManage((toggle) => {
          return !toggle;
       })
+      setIsisFirstOpen(false);
    }
 
    const handleResearchChange = () => {
@@ -107,10 +112,11 @@ const Navbar = () => {
       setIsToggledResearch((toggle) => {
          return !toggle;
       })
+      setIsisFirstOpen(false);
    }
 
    useEffect(() => {
-            const handler = (e) => {
+      const handler = (e) => {
          if (!menuRef.current.contains(e.target)) {
             setIsToggledAdmin(false);
             setIsToggledDash(false);
@@ -122,8 +128,8 @@ const Navbar = () => {
 
       document.addEventListener("mousedown", handler);
 
-      return () =>{
-         document.removeEventListener("mousedown",handler);
+      return () => {
+         document.removeEventListener("mousedown", handler);
       };
    })
 
@@ -137,19 +143,19 @@ const Navbar = () => {
             </div>
             <div className='flex text-stone-50	space-x-9 items-center'>
                {/* this will have the center bar */}
-            <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledAdmin ? 'bg-white text-accent-blue' : ''}`}>
+               <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledAdmin ? 'bg-white text-accent-blue' : ''}`}>
                   <button onClick={handleAdminChange}>
                      <p className=' font-sans text-md' >Admin</p>
                   </button>
-               </div> 
+               </div>
                <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledManage ? 'bg-white text-accent-blue' : ''}`}>
                   <button onClick={handleManageChange}>
                      <p className='font-thin font-sans text-md'>Manage</p>
                   </button>
                </div>
-               <div className='w-24 h-7 flex items-center justify-center  rounded-sm  font-thin'>
-               <button onClick={handleReportChange}>
-                  <p className='font-thin font-sans text-md'>Report</p>
+               <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledReport ? 'bg-white text-accent-blue' : ''}`}>
+                  <button onClick={handleReportChange}>
+                     <p className='font-thin font-sans text-md'>Report</p>
                   </button>
                </div>
                <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledResearch ? 'bg-white text-accent-blue' : ''}`}>
@@ -160,7 +166,7 @@ const Navbar = () => {
             </div>
             <div className='flex  text-stone-50	space-x-5 items-center mr-4'>
                {/* this will have the right content */}
-               <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash ? 'bg-white text-accent-blue' : ''}`}>
+               <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash || isFirstOpen ? 'bg-white text-accent-blue' : ''}`}>
                   <button onClick={handleDashChange}>
                      <p className=' font-sans text-md'>Dashboard</p>
                   </button>
@@ -174,343 +180,405 @@ const Navbar = () => {
                </div>
             </div>
          </div>
-         {isToggledAdmin && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[200px] w-[1330px]  flex font-sans ml-5 absolute top-16 shadow-2xl'>
+         {isToggledAdmin && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[270px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
             <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] text-[#282828] '>Personnel</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/manageuser">Users</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'> <Link to="/admin/manageemployees">Employees</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Contractual Payment</p>
-
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl pl-1 '>Personnel</h1>
+                  <div className="space-y-2 text-[#505050] text-[11px]">
+                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageuser">Users</Link></p>
+                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'> <Link to="/admin/manageemployees">Employees</Link></p>
+                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Contractual Payment</p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]	'>Offerings </h1>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/LOB" >LOB (Line of business)</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/service">Services</Link></p>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl pl-1'>Offerings </h1>
+                  <div className="space-y-2 text-[#505050] text-[11px]">
+                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/LOB" >LOB (Line of business)</Link></p>
+                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/service">Services</Link></p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]	'>Locations</h1>
-
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/country">Country</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/state">State</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/city">City</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/locality">Locality</Link></p>
-
-
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl pl-1'>Locations</h1>
+                  <div className="space-y-2 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/country">Country</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/state">State</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/city">City</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/locality">Locality</Link></p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Data Management</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Delete by ID</p>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl pl-1'>Data Management</h1>
+                  <div className="space-y-2 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Delete by ID</p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] my-2"></div>
             <div className=' w-1/5 h-full'>
-            <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Margin Report</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>LOB- Receipts - Payments</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Entity-Receipts-Patments</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>LOB - Receipts-Payments-Consolidated</p>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl pl-1'>Margin Report</h1>
+                  <div className="space-y-2 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>LOB- Receipts - Payments</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Entity-Receipts-Patments</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>LOB - Receipts-Payments-Consolidated</p>
+                  </div>
                </div>
-               </div>
+            </div>
          </div>}
-         {isToggledDash && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[370px] w-[1330px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
+         {/* {isToggledDash && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[320px] flex font-sans ml-5 absolute top-16 shadow-2xl '>
             <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl'>Home </h1>
+                  <div className="space-y-3 text-[#505050] text-[11px] w-[80%]">
+                  <Link to="/dashboard"><p className='text-thin text-base'>Dashboard of all</p></Link>
+                  <p className='text-thin text-base'>Monthly Margins - LOB Receipts Payments</p>
+                  <p className='text-thin text-base'>Monthly Margins - Entity Receipts-Paymen</p>
+                  <p className='text-thin text-base'>Monthly Margins - LOB Receipts Payments Consolidated</p>
+                  </div>
+               </div>
+            </div>
+            <div class="  w-[1px] h-[73%] mt-16 bg-[#CBCBCB]"></div>
+            <div className=' w-1/5 h-full'>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl'>Personnel </h1>
+                  <div className="space-y-3 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base'>Users</p>
+                  <p className='text-thin text-base'>Employees</p>
+                  <p className='text-thin text-base'>Contractual Payment</p>
+                  </div>
+                  
+               </div>
+            </div>
+            <div class="  w-[1px] h-[72%] mt-16 bg-[#CBCBCB]"></div>
+            <div className=' w-1/5 h-full'>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl'>Offerings</h1>
+                  <div className="space-y-3 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base'>LOB (Line of business)</p>
+                  <p className='text-thin text-base'>Services</p>
+                  </div>
+                  
+               </div>
+            </div>
+            <div class="  w-[1px] h-[72%] mt-16 bg-[#CBCBCB]"></div>
+            <div className=' w-1/5 h-full'>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl	'>Locations</h1>
+                  <div className="space-y-3 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base'>Country</p>
+                  <p className='text-thin text-base'>State</p>
+                  <p className='text-thin text-base'>City</p>
+                  <p className='text-thin text-base'>Locality</p>
+                  </div>
+               </div>
+            </div>
+            <div class="  w-[1px] h-[72%] mt-16 bg-[#CBCBCB]"></div>
+            <div className=' w-1/5 h-full'>
+               <div className='ml-5 mt-4 flex-col space-y-6'>
+                  <h1 className='font-semibold text-xl'>Data Management</h1>
+                  <div className="space-y-3 text-[#505050] text-[11px]">
+                  <p className='text-thin text-base'>Delete by ID</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         } */}
+         {isToggledManage && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[340px] flex font-sans ml-5 absolute top-16 shadow-2xl '>
+            {/* <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <h1 className='font-semibold text-[18px]	'>Home </h1>
-                  <Link to="/dashboard"><p className='text-thin text-[11px]'>Dashboard of all</p></Link>
-                  <p className='text-thin text-[11px] text-[#505050]'>Monthly Margins - LOB Receipts Payments</p>
-                  <p className='text-thin text-[11px]text-[#505050]'>Monthly Margins - Entity Receipts-Paymen</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Monthly Margins - LOB Receipts Payments Consolidated</p>
+                  <Link to="/admin/managebuilder"><h1 className='text-thin text-base'>Manage Builder</h1></Link>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Personnel </h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Users</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Employees</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Contractual Payment</p>
+            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div> */}
+            <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-4'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Builder</h1>
+                  <div className="text-[11px] text-[#505050] space-y-1">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Builder</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Report</p>
+                  </div>
+               </div>
+               <div className='ml-5 mt-20 flex-col space-y-4'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Statement</h1>
+                  <div className="text-[11px] text-[#505050] space-y-1">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/bankstatement">Bank Statement</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Send Client Statement</p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]	'>Offerings</h1>
 
-                  <p className='text-thin text-[11px] text-[#505050]'>LOB (Line of business)</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Services</p>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
+            <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-4'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Client</h1>
+                  <div className="text-[11px] text-[#505050] space-y-1">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Client</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Property</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Invoice</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Recipt</p>
+                  </div> 
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]	'>Locations</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Country</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>State</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>City</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Locality</p>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
+            <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-4'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Order</h1>
+                  <div className="text-[11px] text-[#505050] space-y-1">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Order</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Order Recipt</p>
+                  </div>               
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full'>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]	'>Data Management</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Delete by ID</p>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
+            <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-4'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Vendor</h1>
+                  <div className="text-[11px] text-[#505050] space-y-1">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Vendor</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Vendor Invoice</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Vendor Payment</p>
+                  </div>
+               </div>
+            </div>
+            <div class="  w-[1px] h-[90%] bg-[#CBCBCB] mt-4"></div>
+            <div className=' w-1/5 h-full flex-col '>
+               <div className='ml-5 mt-4 flex-col space-y-4'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Service</h1>
+                  <div className="text-[11px] text-[#505050] space-y-1">
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>PMA Agreement</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>L&L Agreement</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>PMA Billing</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Email PMA Statement</p>
+                  </div>
                </div>
             </div>
          </div>
          }
-         {isToggledManage && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[370px] w-[1330px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
+
+         {isToggledReport && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[98%] h-[580px] flex font-sans ml-5 absolute top-16 shadow-2xl '>
             {/* <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <Link to="/admin/managebuilder"><h1 className='text-thin text-[11px]'>Manage Builder</h1></Link>
+                  <Link to="/admin/managebuilder"><h1 className='text-thin text-base'>Manage Builder</h1></Link>
                </div>
             </div>
             <div class="  w-[2px] h-full bg-[#CBCBCB]"></div> */}
-             <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Builder</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/managebuilder">Manage Builder</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Report</p>
-               </div>
-               <div className='ml-5 mt-20 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Statement</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/manage/bankstatement">Bank Statement</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Send Client Statement</p>
-               </div>
-            </div>
-            
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Client</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/managebuilder">Manage Client</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Client Property</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Client Invoice</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Client Recipt</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Bank Record</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Order Recipt Mismatch Details</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Bank Balance Reconciliation</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Monthly Bank Summary</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Bank Transfer Reconciliation</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Daily Bank Receipts Reconciliation</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Daily Bank Payments Reconciliation</p>
+                  </div>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Lists</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Recipt List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Invoice List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Payment List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Recipt List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>L and L List</p>
+                  </div> 
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Monthly Margin</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Recipts-Payments</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Entity-Recipt-Payments</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Statement-CI,CR and OR(All Entities)</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Recipts-Payments Consolidated</p>
+                  </div>
+                  
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+
+            <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Order</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'><Link to="/admin/managebuilder">Manage Order</Link></p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Order Recipt</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Client</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Statement</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Duplicate Client</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Bank Details</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>CURA Non PMA Client Statement</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>CURA Non PMA Client Receivables</p>
+                  </div>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2'>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>PMA</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Active PMA Agreements</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>All Project Contacts</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Details for Advance Holding Amount</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>PMA Client Statement-CI,CR and OR(All Entities)</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>CURA PMA Client Statement</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>CURA PMA Client Receivables</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>PMA Invoice List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>PMA Billing Trend Report</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Portal Report</p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Vendor</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Vendor</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Vendor Invoice</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Vendor Payment</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Contact</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>All Owner Email Ids </p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>All Tenant Email Ids</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Contacts</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Owners Phone No's</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Clients Phone No's</p>
+                  </div>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2'>
+                  <h1 className='font-semibold text-[18px] text-[#282828]'>Tally Report</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Receipt </p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment-DD</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment-B2C</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment-B2B</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Receipt-C2B</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>OR-Invoice-Service Tax/GST</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment Without TDS</p>
+                  </div>
+                 
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2'>
+                  <h1 className='font-semibold text-[18px] text-[#282828]'>Report Trace</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Trace</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Trace</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Trace</p>
+                  </div>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Service</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>PMA Agreement</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>L&L Agreement</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>PMA Billing</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Email PMA Statement</p>
-               </div>
-            </div>
-            
-         </div>
-         }
-         
-        {isToggledReport && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[550px] w-[1330px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
-            {/* <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <Link to="/admin/managebuilder"><h1 className='text-thin text-[11px]'>Manage Builder</h1></Link>
-               </div>
-            </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div> */}
-             <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Bank Record</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Order Recipt Mismatch Details</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Bank Balance Reconciliation</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Monthly Bank Summary</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Bank Transfer Reconciliation</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Daily Bank Receipts Reconciliation</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Daily Bank Payments Reconciliation</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Exceptions</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Manage Vendor</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Manage Vendor Invoice</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Manage Vendor Payment</p>
+                  </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Lists</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Payment List</p>
-                  <p className='text-thin text-[11px]text-[#505050]'>Order Receipt List</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Invoice List</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Vendor Payment List</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Receipt List</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>L and L List</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Vendor</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Summary</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Statement</p>
+                  </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Monthly Margin</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>LOB-Receipts-Payments</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Entity-Receipt-Payments</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Statement-CI,CR and OR(All Entities)</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>LOB-Receipts-Payments-Consolidated</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Service Tax Reports</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Agency Repair Service Receipts</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Service Tax Paid by Vendor</p>
+                  </div>
                </div>
             </div>
-            
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full flex-col '>
-            <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Client</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Statement</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Duplicate Client</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Bank Details</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>CURA Non PMA Client Statement</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>CURA Non PMA Client Receivables</p>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px] '>PMA</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Active PMA Agreements</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>All Project Contacts</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Details for Advance Holding Amount</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>PMA Client Statement-CI,CR and OR(All Entities)</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>CURA PMA Client Statement</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>CURA PMA Client Receivables</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>PMA Invoice List</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>PMA Billing Trend Report</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Portal Report</p>
-               </div>
-            </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
+            <div class="  w-[1px] h-[94%] bg-[#CBCBCB] mt-4"></div>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Contact</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>All Owner Email Ids </p>
-                  <p className='text-thin text-[11px] text-[#505050]'>All Tenant Email Ids</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Contacts</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Owners Phone No's</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Clients Phone No's</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Orders</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Aged Order</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Analysis</p>
+                  </div>
+                  
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Tally Report</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Receipt </p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Payment-DD</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Payment-B2C</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Payment-B2B</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Receipt-C2B</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>OR-Invoice-Service Tax/GST</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Payment Without TDS</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828]'>Legal</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Active L & L Agreement</p>
+                  </div>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Report Trace</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Client Trace</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Trace</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Vendor Trace</p>
-               </div>
-            </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Exceptions</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Vendor</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Vendor Invoice</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Manage Vendor Payment</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828] pl-1'>Statistics</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Statistics</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Statistics</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Statistics Report</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Owners Statistics Report</p>
+                  </div>
+                  
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Vendor</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Vendor Summary</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Vendor Statement</p>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Service Tax Reports</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Agency Repair Service Receipts</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Service Tax Paid by Vendor</p>
-               </div>
-            </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/5 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Orders</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Aged Order</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Analysis</p>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Legal</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Active L & L Agreement</p>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>Statistics</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>Order Statistics</p>
-                  <p className='text-thin text-[11px]text-[#505050]'>Client Statistics</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Statistics Report</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Owners Statistics Report</p>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2'>
-                  <h1 className='font-semibold text-[18px]'>TDS Report</h1>
-                  <p className='text-thin text-[11px] text-[#505050]'>TDS Paid By Vendor</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Vendor Payment Summary For Period</p>
-                  <p className='text-thin text-[11px] text-[#505050]'>Paid Paid to Government</p>
+                  <h1 className='font-semibold text-[18px] text-[#282828]'>TDS Report</h1>
+                  <div className="text-[11px] text-[#505050] space-y-[2px]">
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>TDS Paid By Vendor</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Payment Summary For Period</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Paid Paid to Government</p>
+                  </div>
+                  
                </div>
             </div>
          </div>
          }
-         {isToggledResearch && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-5/6 h-[250px] w-[1330px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
-            <div className=' w-1/4 h-full flex-col '>
+         {isToggledResearch && <div ref={menuRef} className='bg-white rounded-[15px] mt-2 w-[96.9%] h-[260px] flex font-sans ml-5 absolute top-16 shadow-2xl px-32 text-[#282828] text-[15px]'>
+            <div className=' w-1/4 h-full flex-col space-y-4 '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <Link to="/research/prospect"><h1 className='text-thin text-[11px] font-semibold'>Prospect</h1></Link>
+                  <Link to="/research/prospect"><h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Prospect</h1></Link>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2 '>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1 '>Employer</h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <h1 className='text-thin text-[11px] font-semibold'>Employer</h1>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[100%] rounded-md p-1'>Manage Govt Department </h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'>Manage Govt Department </h1>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'>Real Estate Agents</h1>
-               </div>
-            </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/4 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'><Link to="/research/owner"></Link>Manage Owners</h1>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <h1 className='text-thin text-[11px] font-semibold'>Service Appartments And Guest Houses </h1>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'>Friends</h1>
-               </div>
-              
-            </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/4 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'>Bank and Branches</h1>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <h1 className='text-thin text-[11px] font-semibold'>Business Group </h1>
-               </div>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'>Professionals </h1>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[90%] rounded-md p-1'>Real Estate Agents</h1>
                </div>
             </div>
-            <div class="  w-[2px] h-full bg-[#CBCBCB]"></div>
-            <div className=' w-1/4 h-full flex-col '>
-               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'>Mandals</h1>
+            <div class="  w-[1px] h-[88%] bg-[#CBCBCB] mt-4 mx-4"></div>
+            <div className=' w-[30%] h-full flex-col space-y-4 '>
+               <div className='ml-5 mt-4 flex-col space-y-2 w'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/research/owner">Manage Owners</Link></h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-                  <h1 className='text-thin text-[11px] font-semibold'><Link to="/research/architect">Architect</Link></h1>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[100%] rounded-md p-1'>Service Appartments And Guest Houses </h1>
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
-               <h1 className='text-thin text-[11px] font-semibold'><Link to="/research/educational">Educational Institute </Link></h1>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Friends </h1>
+               </div>
+            </div>
+            <div class="  w-[1px] h-[88%] bg-[#CBCBCB] mt-4 mx-4 "></div>
+            <div className=' w-1/4 h-full flex-col space-y-4'>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Bank and Branches</h1>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Business Group </h1>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Professionals </h1>
+               </div>
+            </div>
+            <div class="  w-[1px] h-[88%] bg-[#CBCBCB] mt-4 mx-4"></div>
+            <div className=' w-1/4 h-full flex-col space-y-4'>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Mandals</h1>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/research/architect">Architect</Link></h1>
+               </div>
+               <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
+                  <h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/research/educational">Educational Institute </Link></h1>
                </div>
             </div>
          </div>
