@@ -461,6 +461,7 @@ const validate = (values) => {
                                          onChange={e => {
                                             setCurrentPages(e.target.value);
                                             console.log(e.target.value);
+                                            c
                                             fetchQuantityData(e.target.value)
                                          }}
                                
