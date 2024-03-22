@@ -10,32 +10,23 @@ import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
-import { Modal , CircularProgress, Pagination} from "@mui/material";
+import { Modal , CircularProgress, LinearProgress , Pagination} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
 import Filter from "../../assets/filter.png"
+import Pdf from "../../assets/pdf.png";
+import Excel from "../../assets/excel.png"
 const LOB = () => {
-    // we have the module here
-
     const [existingLOB,setExistingLOB] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
     const [currentPage,setCurrentPage] = useState(1);
     const [pageLoading,setPageLoading] = useState(false);
     const [totalItems,setTotalItems] = useState(0);
     const [downloadModal,setDownloadModal] = useState(false);
-    const initialSelectedFields = {
-        name : {
-            selected : false,
-            queryType : "",
-        },
-        id : {
-            selected : false,
-            queryType : ""
-        }
-    }
-    const [selectedFields,setSelectedFields] = useState(initialSelectedFields);
-    
+    useEffect(() => {
+        fetchData();
+    }, []);
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
@@ -56,7 +47,7 @@ const LOB = () => {
         setExistingLOB(result);
         setPageLoading(false);
     }
-    const fetchSomeData = async (number) => {
+    const fetchQuantityData = async (number) => {
         setPageLoading(true);
         const data = { 
             "user_id" : 1234,
@@ -67,19 +58,55 @@ const LOB = () => {
             "pg_no" : Number(currentPage),
             "pg_size" : Number(number)
          };
-        // we need to do something about this
-
         const response = await APIService.getLob(data)
-        // console.log("we called this for" , currentPages);
-        // console.log(response);
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        // console.log(result);
-        // console.log(result);
         setExistingLOB(result);
         setPageLoading(false);
+    }
+    const fetchData = async () => {
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name","lob_head","company"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : 1,
+            "pg_size" : 15
+         };
+        const response = await APIService.getLob(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(t);
+        setExistingLOB(result);
+        setPageLoading(false);
+    }
+    const handleSort = async (field) => {
+            setPageLoading(true);
+            const data = { 
+                "user_id" : 1234,
+                "rows" : ["id","name"],
+                "filters" : [],
+                "sort_by" : [field],
+                "order" : flag ? "asc" : "desc",
+                "pg_no" : 1,
+                "pg_size" : Number(currentPages)
+            };
+            const response = await APIService.getLob(data)
+            const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
+            setTotalItems(t);
+            setExistingLOB(result);
+            setFlag((prev) => {
+                return !prev;
+            })
+            setPageLoading(false);
     }
     const addLob = async () => {
         setPageLoading(true);
@@ -104,47 +131,30 @@ const LOB = () => {
         const response = await APIService.deleteLob(data);
         setPageLoading(false);
     }
-    const fetchData = async () => {
-        setPageLoading(true);
+    const [isLobDialogue, setIsLobDialogue] = React.useState(false);
+    const handleOpen = () => {
+        setIsLobDialogue(true);
+    };
+    const handleClose = () => {
+        setIsLobDialogue(false);
+    }
+    const handleExcelDownload = async () => {
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
-            "pg_no" : 1,
-            "pg_size" : 15
+            "pg_no" : 0,
+            "pg_size" : 0
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
         const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        console.log(t);
-        setExistingLOB(result);
-        setPageLoading(false);
-    }
-    useEffect(() => {
-        fetchData();
-    }, []);
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsSubmit(true);
-    };
-
-    const [isCityDialogue, setIsCityDialogue] = React.useState(false);
-    const handleOpen = () => {
-        setIsCityDialogue(true);
-    };
-    const handleClose = () => {
-        setIsCityDialogue(false);
-    }
-    const handleDownload = () => {
-        // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingCities);
+        const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
-        XLSX.writeFile(workbook,"CityData.xlsx");
+        XLSX.writeFile(workbook,"LobData.xlsx");
         FileSaver.saveAs(workbook,"demo.xlsx");
       }
       const [lobName,setLobName] = useState("");
@@ -158,28 +168,6 @@ const LOB = () => {
         setLobName(value);
       }
       const [flag,setFlag] = useState(true);
-      const handleSort = async (field) => {
-            setPageLoading(true);
-            const data = { 
-                "user_id" : 1234,
-                "rows" : ["id","name"],
-                "filters" : [],
-                "sort_by" : [field],
-                "order" : flag ? "asc" : "desc",
-                "pg_no" : 1,
-                "pg_size" : Number(currentPages)
-             };
-            const response = await APIService.getLob(data)
-            const temp = await response.json();
-            const result = temp.data;
-            const t = temp.total_count;
-            setTotalItems(t);
-            setExistingLOB(result);
-            setFlag((prev) => {
-                return !prev;
-            })
-            setPageLoading(false);
-      }
       const handleSearch = async () => {
         
       }
@@ -215,6 +203,9 @@ const LOB = () => {
       const handlePageChange = (event,value) => {
         console.log(value);
          setCurrentPage(value)
+      }
+      const openDownload = () => {
+        setDownloadModal((prev) => !prev);
       }
     return (
         <div className=''>
@@ -331,7 +322,7 @@ const LOB = () => {
                             </div>
                         </div>
                            <div className='w-full h-[450px] overflow-auto'>
-                            {pageLoading && <div className='ml-5 mt-5'><CircularProgress/></div> }
+                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress/></div> }
                             {!pageLoading && existingLOB.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
@@ -380,7 +371,7 @@ const LOB = () => {
                                          onChange={e => {
                                             setCurrentPages(e.target.value);
                                             console.log(e.target.value);
-                                            fetchSomeData(e.target.value)
+                                            fetchQuantityData(e.target.value)
                                          }}
                                
                                >
@@ -388,25 +379,32 @@ const LOB = () => {
                                     15
                                 </option>
                                 <option>
-                                    20
+                                    25
                                 </option>
                                 <option>
-                                    25
+                                    50
                                 </option>
                                </select>
                             </div>
                             <div className="flex text-sm">
                                 <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
                             </div>
-                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
-                               
-                               <div className='flex'>
-                                 <p>Download as pdf</p>
-                                 {/* <img src=''/> */}
-                               </div>
-                               <div>
-                                  <p>Download as Excel</p>
-                               </div>
+                            {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                                <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4'/></button>
+                                
+                               <button>
+                                <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+                                    
+                                    <p>Download as pdf</p>
+                                    <img src={Pdf}/>
+                                </div>
+                               </button>
+                               <button onClick={handleExcelDownload}>
+                                <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                    <p>Download as Excel</p>
+                                    <img src={Excel}/>
+                                </div>
+                               </button>
                             </div>}
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
@@ -416,7 +414,7 @@ const LOB = () => {
                             </div>
                             <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
-                                <button onClick={handleDownload}><p>Download</p></button>
+                                <button onClick={openDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className="h-2/3" />
                             </div>
                         </div> 
@@ -428,7 +426,7 @@ const LOB = () => {
             </div>
 
             {/* modal goes here */}
-            <Modal open={isCityDialogue}
+            <Modal open={isLobDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[200px]'>
