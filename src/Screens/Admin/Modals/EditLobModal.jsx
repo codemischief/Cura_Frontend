@@ -25,7 +25,7 @@ const EditLobModal = (props) => {
 
         props.handleClose();
         props.fetchData();
-     }
+    }
   return (
     <Modal open={props.isOpen}
                 fullWidth={true}

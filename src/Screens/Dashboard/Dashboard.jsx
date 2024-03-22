@@ -38,7 +38,7 @@ const Dashboard = () => {
 
 
     return (
-        <div className="w-screen h-screen overflow-x-hidden">
+        <div className="w-screen h-screen overflow-x-hidden bg-[#F5F5F5]">
             <Navbar />
             <div className="w-screen p-5">
                 {/* this is the background container */}
@@ -163,8 +163,8 @@ const Dashboard = () => {
                             </div>
 
                             {/* map the items here */}
-                            <div className="h-10 overflow-auto">
-
+                            <div className="h-10 overflow-auto p-2">
+                                No records to show
                             </div>
                         </div>
                     </div>
