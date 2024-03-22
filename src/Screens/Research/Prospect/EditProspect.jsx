@@ -3,47 +3,19 @@ import Cross from "../../../assets/cross.png";
 import { Link } from 'react-router-dom';
 import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
-import { APIService } from '../../../services/API';
 
 const EditProspect = (props) => {
-    const handleEdit = async () => {
-        const [editModalInput,setEditModalInput] = useState(props.item.personname);
-        const [errorMessage,setErrorMessage] = useState("");
-        if (editModalInput == "") {
-            setErrorMessage("Lob Name Cannot Be Empty")
-            return;
-        }
-        const data = {
-
-            "user_id": 1234,
-            "id": props.item.id,
-            "personname": props.item.personname,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": formValues.state,
-            "country": formValues.country,
-            "propertylocation": formValues.propertyLocation,
-            "possibleservices": formValues.possibleServices,
-            "dated": "2024-01-01 00:00:00",
-            "createdby": 1234,
-            "isdeleted": false
-
-        }
-        const response = await APIService.editLob(data);
-        props.handleClose();
-        props.fetchData();
-    }
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     }
 
-    const selectedCountry = [
-        "India", "USA", "UK", "Germany", "France", "Italy"
+    const selectedCountry =[
+        "India", "USA", "UK", "Germany", "France","Italy"
     ]
-    const selectedState = [
+    const selectedState =[
         "State1", "State2", "State3", "State4"
     ]
-    const selectedCity = [
+    const selectedCity =[
         "City1", "City2", "City3", "City4"
     ]
 
@@ -102,7 +74,7 @@ const EditProspect = (props) => {
     };
 
     return (
-        <Modal open={props.isOpen}
+        <Modal open={props.openDialog}
             fullWidth={true}
             maxWidth={'md'} >
 
@@ -113,10 +85,10 @@ const EditProspect = (props) => {
                             <div className="text-[16px]">Edit Prospect</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <img  onClick={props.handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
+                            <img onClick={handleDialogClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                         </div>
                     </div>
-                    <form >
+                    <form onSubmit={handleSubmit}>
                         <div className="h-auto w-full mt-[5px] ">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -129,34 +101,34 @@ const EditProspect = (props) => {
                                         <div className="text-[14px]">Country<label className="text-red-500">*</label></div>
                                         <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
                                             {selectedCountry.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                    ))}
+                                            </select>
                                         <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">State<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
                                             {selectedState.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                    ))}
+                                            </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
                                             {selectedCity.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                                    <option key={item} value={item}>
+                                                        {item}
+                                                    </option>
+                                                    ))}
+                                            </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
@@ -178,8 +150,8 @@ const EditProspect = (props) => {
                         </div>
 
                         <div className="my-5 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md'  onClick={handleEdit}>Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md'  onClick={props.handleClose}>Cancel</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                         </div>
                     </form>
                 </div>
