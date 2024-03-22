@@ -75,7 +75,10 @@ return response;
   const response = await fetch(`${env_URL_SERVER}addLob`, METHOD_POST(data));
   return response;
  }
-
+ const deleteLob = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteLob`, METHOD_POST(data));
+  return response;
+ }
  const getBankStatement = async (data) => {
   const response = await fetch(`${env_URL_SERVER}getBankSt`, METHOD_POST(data));
   return response;
@@ -102,4 +105,4 @@ return response;
 
 
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin};
+  getStatesAdmin, getCitiesAdmin,getLob,addLob,getBankStatement, editBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob};

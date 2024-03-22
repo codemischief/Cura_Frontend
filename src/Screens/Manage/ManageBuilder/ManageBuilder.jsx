@@ -395,7 +395,7 @@ const ManageBuilder = () => {
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData}/> }
                         </div>
                     </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
+                    <div className='w-full h-[250] flex justify-between justify-self-end px-6 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
