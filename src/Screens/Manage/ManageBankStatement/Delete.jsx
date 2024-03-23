@@ -5,17 +5,24 @@ import { Link } from 'react-router-dom';
 import { Modal , Button ,CircularProgress} from '@mui/material'
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
+import SucessfullModal from '../../../Components/modals/SucessfullModal';
 const Delete = (props) => {
     const [showLoading,setShowLoading] = useState(false);
+    const [showSucess,setShowSucess] = useState(false);
     const deleteStatement = async (item) =>{
         // props.setShowDelete(true);
-        // console.log(props.currentBuilder);
+        console.log(props);
         setShowLoading(true);
-        const data = {"user_id":1234,"builder_id": props.currentBuilder};
+        const data = {"user_id":1234,"id": props.currentStatement};
         console.log(data);
         const response = await APIService.deleteBankStatement(data);
           await props.fetchData();
           setShowLoading(false);
+        //   console.log(await response.json())
+        //   if((await response.json()).result == "success"){
+        //     setShowSucess(true);
+        //     props.closeDialog(false);
+        //   }
           props.closeDialog(false);
           
       }
@@ -23,7 +30,7 @@ const Delete = (props) => {
     <Modal open={props.isOpen}
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
-             >
+             >  
             <div className='bg-white'>
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] flex justify-center items-center">

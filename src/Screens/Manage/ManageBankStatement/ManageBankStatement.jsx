@@ -149,6 +149,7 @@ const ManageBankStatement = () => {
     }
     
     const deleteStatement = async (item) => {
+        console.log(item)
         setShowDelete(true);
         setCurrentStatementId(item);
         setDeleted(true);
@@ -476,7 +477,7 @@ const ManageBankStatement = () => {
     return (
         <div >
             <Navbar />
-            <SucessfullModal isOpen={showSucess} message={successMessage} />
+            <SucessfullModal isOpenSuccess={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />
             <div className='flex-col w-full h-full  bg-white'>
