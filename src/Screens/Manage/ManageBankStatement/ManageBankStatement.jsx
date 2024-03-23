@@ -47,6 +47,8 @@ const ManageBankStatement = () => {
     const [entity,setEntity]=useState([])
     const [howReceived,setHowReceived]=useState([])
     const [client,setClient]=useState([])
+    const [successMessage,setSuccessMessage]=useState("")
+    const [searchQuery,setSearchQuery] = useState("");
     // const [selectedBuilder,setSelectedBuilder] = useState();
     const getEmployees = async () => {
         const data = {
@@ -77,14 +79,8 @@ const ManageBankStatement = () => {
         setHowReceived((await howReceived1.json()).data)
         setClient((await client1.json()).data)
         setMode((await mode1.json()).data)
-        
-        console.log(client);
 
     }
-   const handleSortingChange = (option)=>{
-
-
-   }
     const fetchUserId = async() =>{
         const response = await authService.getUserID();
         setUserId(response)
@@ -98,12 +94,23 @@ const ManageBankStatement = () => {
 
     const openConfirmModal = () => {
         // set the state for true for some time
+        if(isConfirmManageStatementDialogue){
+            setSuccessMessage("New Bank Statement created succesfully ")
+        }else{
+            setSuccessMessage("New Credit Receipt created succesfully ")
+        }
         setIsManageStatementDialogue(false);
         setIsConfirmManageStatementDialogue(false)
         setShowSucess(true);
         setTimeout(function () {
             setShowSucess(false)
         }, 2000)
+    }
+    const isCredit=(item)=>{
+        if(item === "CR                  "){
+            return true;
+        }else return false;
+
     }
     const openSuccessModal = () => {
         // set the state for true for some time
@@ -239,7 +246,7 @@ const ManageBankStatement = () => {
         setPageLoading(true);
         const data = { 
             "user_id" : 1234,
-            "rows" : ["id", "modeofpayment", "amount", "crdr", "chequeno","date","particulars", "clientid"],
+            "rows" : ["id", "modeofpayment", "amount","date","particulars", "clientid","crdr"],
             "filters" : [],
             "sort_by" : [field],
             "order" : flag ? "asc" : "desc",
@@ -382,6 +389,25 @@ const ManageBankStatement = () => {
     }
     const [flag,setFlag] = useState(true);
     const handleSearch = async () => {
+            setPageLoading(true);
+            const data = { 
+                "user_id" : 1234,
+                "rows" : ["id", "modeofpayment", "amount","date","particulars", "clientid"],
+                "filters" : [],
+                "sort_by" : [],
+                "order" : "asc",
+                "pg_no" : Number(currentPage),
+                "pg_size" : Number(currentPages),
+                "search_key" : searchQuery
+             };
+             const response = await APIService.getBankStatement(data)
+             const temp = await response.json();
+             const result = temp.data;
+             const t = temp.total_count;
+             setTotalItems(t);
+             setExistingStatement(result);
+             setPageLoading(false);
+          
       
     }
     const [lobFilter,setLobFilter] = useState(false);
@@ -436,7 +462,7 @@ const ManageBankStatement = () => {
         setDownloadModal((prev) => !prev);
       }
     const handlePageChange = (event,value) => {
-      console.log(value);
+      
        setCurrentPage(value)
        fetchPageData(value);
     }
@@ -450,7 +476,7 @@ const ManageBankStatement = () => {
     return (
         <div >
             <Navbar />
-            <SucessfullModal isOpen={showSucess} message="New Bank Statement created succesfully " />
+            <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />
             <div className='flex-col w-full h-full  bg-white'>
@@ -472,12 +498,14 @@ const ManageBankStatement = () => {
                                 <div className='flex'>
                                     {/* search button */}
                                     <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878]"
-                                        type="text"
-                                        placeholder="  Search"
+                                       className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                                       type="text"
+                                       placeholder="Search"
+                                       value={searchQuery}
+                                       onChange={(e) => setSearchQuery(e.target.value) }
                                     />
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                                        <img onClick={handleSearch} className="h-[26px] " src={searchIcon} alt="search-icon" />
                                     </div>
                                 </div>
 
@@ -547,23 +575,23 @@ const ManageBankStatement = () => {
                                 <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
                                 </div>
-                                <div className='w-[20%]  p-4'>
-                                    <p>Mode <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[10%]  p-4'>
+                                    <p onClick={() => handleSort("modeofpayment")}>Mode <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p onClick={() => handleSortingChange("date")}>Date ↑↓</p>
+                                    <p onClick={() => handleSort("date")}>Date ↑↓</p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>Type ↑↓</p>
+                                    <p onClick={() => handleSort("crdr")}>Type</p>
                                 </div>
                                 <div className='w-[10%]  p-4'>
-                                    <p>Amount ↑↓</p>
+                                    <p onClick={() => handleSort("amount")}>Amount </p>
                                 </div>
                                 <div className='w-[10%]  p-4'>
-                                    <p>Client Name</p>
+                                    <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>Particulars</p>
+                                    <p onClick={() => handleSort("particulars")}>Particulars</p>
                                 </div>
                                 <div className='w-[5%]  p-4'>
                                     <p>Client Receipt</p>
@@ -571,7 +599,7 @@ const ManageBankStatement = () => {
                             </div>
                             <div className='w-[10%] flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID ↑↓</p>
+                                    <p onClick={() => handleSort("id")}>ID ↑↓</p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     <p>Edit</p>
@@ -588,34 +616,39 @@ const ManageBankStatement = () => {
                                         <div className='w-[5%] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
-                                        <div className='w-[20%]  p-4'>
+                                        <div className='w-[10%]  p-4'>
                                             <p>{item.modeofpayment}</p>
                                         </div>
                                         <div className='w-[15%]  p-4'>
                                             <p>{item.date}</p>
                                         </div>
                                         <div className='w-[15%]  p-4'>
-                                        <p>{item.crdr}</p>
-                                            {/* <p>{(item.crdr==='CR') ?"credit" : "Debit"}</p> */}
+                                            <p>{item.crdr ==="CR                  "?"Credit" : "Debit"}</p>
                                         </div>
                                         <div className='w-[10%]  p-4'>
                                             <p>{item.amount}</p>
                                         </div>
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
                                             <p>{item.clientid}</p>
+                                            {/* {client && client.map(ele => {
+                                                if(ele[0]==item.clientid){
+                                                    <p>{ele[1]}</p> 
+                                                }
+                                            })} */}
                                         </div>
                                         <div className='w-[20%]  p-4 text-blue-500 cursor-pointer'>
                                             <p>{item.particulars}</p>
                                         </div>
                                         <div className='w-[5%]  p-4 text-blue-500 cursor-pointer'>
-                                            {(!(item.clientid) )&& <p onClick={openCreditRecipt}>Enter CR</p>}
+                                            {/* {(!(item.clientid) && item.crdr ==="CR                  " )&& <p onClick={openCreditRecipt}>Enter CR</p>} */}
                                            
-                                            {/* <p>{item.crdr}</p> */}
+                                            <p onClick={openCreditRecipt}>{item.crdr}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%] flex'>
                                         <div className='w-1/2  p-4'>
                                             <p>{item.id}</p>
+                                            
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item,vendorList)} />
@@ -647,7 +680,6 @@ const ManageBankStatement = () => {
                                         //  defaultValue="Select State"
                                          onChange={e => {
                                             setCurrentPages(e.target.value);
-                                            console.log(e.target.value);
                                             fetchQuantityData(e.target.value)
                                          }}
                                
