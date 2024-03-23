@@ -146,6 +146,13 @@ const ManageBankStatement = () => {
         setTotalItems(t);
         setPageLoading(false);
         setExistingStatement(result);
+        existingStatement.map(ele =>{
+            client.map(item =>{
+                if(ele.clientid === item[0]){
+                    console.log(item[1])
+                }
+            })
+        })
     }
     
     const deleteStatement = async (item) => {
@@ -366,8 +373,8 @@ const ManageBankStatement = () => {
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
-    const editStatement = (item,vendor) => {
-        const items={item,"vendorList":vendor}
+    const editStatement = (item,vendor,howReceived,mode) => {
+        const items={item,"vendorList":vendor,"how":howReceived,"mode":mode}
         setCurrentStatement(items);
         setIsEditDialogue(true);
     }
@@ -458,6 +465,7 @@ const ManageBankStatement = () => {
           return !prev;
       })
       setPageLoading(false);
+      existingBankSta
     }
     const openDownload = () => {
         setDownloadModal((prev) => !prev);
@@ -630,12 +638,10 @@ const ManageBankStatement = () => {
                                             <p>{item.amount}</p>
                                         </div>
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <p>{item.clientid}</p>
-                                            {/* {client && client.map(ele => {
-                                                if(ele[0]==item.clientid){
-                                                    <p>{ele[1]}</p> 
-                                                }
-                                            })} */}
+                                            {/* <p>{item.clientid}</p> */}
+                                            {client &&client.map(ele => (
+                                                (item.clientid === ele[0])?
+                                                    <p>ele[1]</p> :<p>NA</p> ))}
                                         </div>
                                         <div className='w-[20%]  p-4 text-blue-500 cursor-pointer'>
                                             <p>{item.particulars}</p>
@@ -652,7 +658,7 @@ const ManageBankStatement = () => {
                                             
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item,vendorList)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item,vendorList,howReceived,mode)} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteStatement(item.id)} />
                                         </div>
                                     </div>

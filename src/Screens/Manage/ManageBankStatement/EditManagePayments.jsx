@@ -13,8 +13,15 @@ const EditManageStatement = (props) => {
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [employeeId, setEmployeeId] =useState(Number);
     const crdr =["Credit","Debit"];
     const [vendorList,setVendorList]= useState(props.bankStatement.vendorList)
+    const [howReceived,sethowReceived]=useState(props.bankStatement.how)
+    const [mode,setMode]=useState(props.bankStatement.mode)
+    const [modeEdit,setModeEdit]=useState(Number)
+    const[receivedBy,setRecievedBy]=useState(Number);
+    const[vendorId,setVendorId]=useState(Number);
+
     const openSuccessModal = () => {
         // set the state for true for some time
         props.setOpenDialog(false);
@@ -32,10 +39,31 @@ const EditManageStatement = (props) => {
     }
 
     const editBankStatement = async () => {
+        vendorList.map(ele =>{
+                if(formValues.vendor === ele[1]){
+                    setVendorId(ele[0]);
+                    console.log(formValues.vendor)
+                    console.log(ele[1])
+                    console.log(formValues.vendor)
+                }
+            });
+            howReceived.map(ele =>{
+                if(formValues.how === ele[1]){
+                    setRecievedBy(ele[0]);
+                }
+            });
+            mode.map(ele =>{
+                if(formValues.modeofpayment === ele[1]){
+                    setModeEdit(ele[2]);
+                }
+            });
+
+        
+
         const data = {
             "user_id": 1234,
             "id": Number(props.bankStatement.item.id),
-            "modeofpayment": formValues.modeofpayment,
+            "modeofpayment": modeEdit,
             "date":String(formValues.date),
             "amount":formValues.amount,
             "particulars":String(formValues.particulars),
@@ -45,10 +73,10 @@ const EditManageStatement = (props) => {
             // "dateadded":"20-03-2024 00:00:01",
             // "clientid": 45000,
             // "orderid": 4040404,
-            // "receivedby":100,
+            "receivedby":receivedBy,
             // "details":"abcdefg",
-            "vendorid":String(formValues.vendor),
-            // "createdby":1234
+            "vendorid":vendorId,
+            "createdby":1234
         }
         const response = await APIService.editBankStatement(data);
         if (response.ok) {
@@ -135,7 +163,13 @@ const EditManageStatement = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} />
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                                {mode && mode.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
                                         </div>
                                         <div className="">
@@ -153,7 +187,7 @@ const EditManageStatement = (props) => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                 {vendorList && vendorList.map(item => (
                                                     <option key={item} value={item}>
-                                                        {item}
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -180,21 +214,12 @@ const EditManageStatement = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved(CR)? <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" 
-                                            defaultValue="Select CR or DR"
-                                            value={formValues.cr}
-                                            onChange={(e) => {
-                                               setFormValues((existing) => {
-                                                const newData = {...existing, city: e.target.value};
-                                                 return newData;
-                                               })
-                                            }}>
-                                            {crdr && crdr.map((item) => {
-                                                return <option value={item}>
-                                                      {item}
-                                                </option>
-                                                
-                                            })}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
+                                                {howReceived && howReceived.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
                                             </select>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
                                         </div>
