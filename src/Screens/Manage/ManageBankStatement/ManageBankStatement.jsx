@@ -590,19 +590,19 @@ const ManageBankStatement = () => {
                                 <div className='w-[15%]  p-4'>
                                     <p onClick={() => handleSort("date")}>Date ↑↓</p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
+                                <div className='w-[5%]  p-4'>
                                     <p onClick={() => handleSort("crdr")}>Type</p>
                                 </div>
-                                <div className='w-[10%]  p-4'>
+                                <div className='w-[8%]  p-4'>
                                     <p onClick={() => handleSort("amount")}>Amount </p>
                                 </div>
-                                <div className='w-[10%]  p-4'>
+                                <div className='w-[15%]  p-4'>
                                     <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
                                     <p onClick={() => handleSort("particulars")}>Particulars</p>
                                 </div>
-                                <div className='w-[5%]  p-4'>
+                                <div className='w-[10%]  p-4'>
                                     <p>Client Receipt</p>
                                 </div>
                             </div>
@@ -634,13 +634,13 @@ const ManageBankStatement = () => {
                                         <div className='w-[15%]  p-4'>
                                             <p>{item.date}</p>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
+                                        <div className='w-[5%]  p-4'>
                                             <p>{item.crdr ==="CR                  "?"Credit" : "Debit"}</p>
                                         </div>
-                                        <div className='w-[10%]  p-4'>
+                                        <div className='w-[8%]  p-4'>
                                             <p>{item.amount}</p>
                                         </div>
-                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[15%]  p-4 text-blue-500 cursor-pointer'>
                                             {/* <p>{item.clientid}</p> */}
                                             {client &&client.map(ele => (
                                                 (item.clientid === ele[0])?
@@ -649,7 +649,7 @@ const ManageBankStatement = () => {
                                         <div className='w-[20%]  p-4 text-blue-500 cursor-pointer'>
                                             <p>{item.particulars}</p>
                                         </div>
-                                        <div className='w-[5%]  p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
                                             {(!(item.clientid) && item.crdr ==="CR                  " )&& <p onClick={openCreditRecipt}>Enter CR</p>}
                                            
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
