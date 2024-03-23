@@ -640,9 +640,9 @@ const ManageBankStatement = () => {
                                             <p>{item.particulars}</p>
                                         </div>
                                         <div className='w-[5%]  p-4 text-blue-500 cursor-pointer'>
-                                            {/* {(!(item.clientid) && item.crdr ==="CR                  " )&& <p onClick={openCreditRecipt}>Enter CR</p>} */}
+                                            {(!(item.clientid) && item.crdr ==="CR                  " )&& <p onClick={openCreditRecipt}>Enter CR</p>}
                                            
-                                            <p onClick={openCreditRecipt}>{item.crdr}</p>
+                                            {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                         </div>
                                     </div>
                                     <div className='w-[10%] flex'>
