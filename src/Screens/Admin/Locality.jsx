@@ -32,6 +32,7 @@ const Locality = () => {
     const [allState,setAllState] = useState([]);
     const [allCity,setAllCity] = useState([]);
     const [currCountry,setCurrCountry] = useState(-1);
+    const [isSearchOn,setIsSearchOn] = useState(false);
     const initialValues = {
         country : 0,
         state : 0,
@@ -85,7 +86,8 @@ const Locality = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(pageNumber),
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
@@ -104,7 +106,8 @@ const Locality = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(number)
+            "pg_size" : Number(number),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
@@ -124,7 +127,8 @@ const Locality = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
@@ -144,7 +148,8 @@ const Locality = () => {
                 "sort_by" : [field],
                 "order" : flag ? "asc" : "desc",
                 "pg_no" : 1,
-                "pg_size" : Number(currentPages)
+                "pg_size" : Number(currentPages),
+                "search_key" : isSearchOn ? searchQuery : ""
             };
             const response = await APIService.getLocality(data)
             const temp = await response.json();
@@ -203,7 +208,8 @@ const Locality = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : 0,
-            "pg_size" : 0
+            "pg_size" : 0,
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -227,6 +233,7 @@ const Locality = () => {
       const [flag,setFlag] = useState(true);
       const handleSearch = async () => {
         setPageLoading(true);
+        setIsSearchOn(true);
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","country","state","city","locality"],
@@ -262,7 +269,8 @@ const Locality = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : 1,
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -287,6 +295,29 @@ const Locality = () => {
         setEditModal(true);
         setCurrItem(oldItem)
       }
+      const handleCloseSearch = async () => {
+         setPageLoading(true);
+         setSearchQuery("");
+         setIsSearchOn(false);
+         const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","country","state","city","locality"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(currentPages),
+            "search_key" : ""
+         };
+        const response = await APIService.getLocality(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(t);
+        setExistingLocalities(result);
+         setPageLoading(false);
+      }
     return (
         <div className=''>
             <Navbar />
@@ -309,7 +340,7 @@ const Locality = () => {
                             </div>
                             <div className='flex space-x-2 items-center'>
 
-                                <div className='flex'>
+                                <div className='flex relative'>
                                     {/* search button */}
                                     <input
                                         className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
@@ -318,6 +349,7 @@ const Locality = () => {
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value) }
                                     />
+                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2'/></button>
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                         <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                     </div>
