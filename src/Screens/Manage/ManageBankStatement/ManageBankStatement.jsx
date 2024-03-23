@@ -626,7 +626,10 @@ const ManageBankStatement = () => {
                                             <p>{index + 1}</p>
                                         </div>
                                         <div className='w-[10%]  p-4'>
-                                            <p>{item.modeofpayment}</p>
+                                            
+                                            {mode &&mode.map(ele => (
+                                                (item.modeofpayment === ele[0])?
+                                                    <p>{ele[1]}</p> :""))}
                                         </div>
                                         <div className='w-[15%]  p-4'>
                                             <p>{item.date}</p>
@@ -641,7 +644,7 @@ const ManageBankStatement = () => {
                                             {/* <p>{item.clientid}</p> */}
                                             {client &&client.map(ele => (
                                                 (item.clientid === ele[0])?
-                                                    <p>ele[1]</p> :<p>NA</p> ))}
+                                                    <p>{ele[1]}</p> :""))}
                                         </div>
                                         <div className='w-[20%]  p-4 text-blue-500 cursor-pointer'>
                                             <p>{item.particulars}</p>

@@ -54,7 +54,7 @@ const EditManageStatement = (props) => {
             });
             mode.map(ele =>{
                 if(formValues.modeofpayment === ele[1]){
-                    setModeEdit(ele[2]);
+                    setModeEdit(ele[0]);
                 }
             });
 
@@ -80,10 +80,8 @@ const EditManageStatement = (props) => {
         }
         const response = await APIService.editBankStatement(data);
         if (response.ok) {
-            
             openSuccessModal();
         } else {
-           
             openFailureModal();
         }
         
