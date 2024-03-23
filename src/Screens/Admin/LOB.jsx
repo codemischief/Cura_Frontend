@@ -28,6 +28,7 @@ const LOB = () => {
     const [editModal,setEditModal] = useState(false);
     const [lobError,setLobError] = useState("");
     const [currItem,setCurrItem] = useState({});
+    const [isSearchOn,setIsSearchOn] = useState(false);
     useEffect(() => {
         fetchData();
     }, []);
@@ -41,7 +42,8 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(pageNumber),
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -60,7 +62,8 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(number)
+            "pg_size" : Number(number),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -73,6 +76,7 @@ const LOB = () => {
     }
     const fetchData = async () => {
         setPageLoading(true);
+        console.log(isSearchOn);
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
@@ -80,7 +84,8 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -100,7 +105,8 @@ const LOB = () => {
                 "sort_by" : [field],
                 "order" : flag ? "asc" : "desc",
                 "pg_no" : 1,
-                "pg_size" : Number(currentPages)
+                "pg_size" : Number(currentPages),
+                "search_key" : isSearchOn ? searchQuery : ""
             };
             const response = await APIService.getLob(data)
             const temp = await response.json();
@@ -179,16 +185,18 @@ const LOB = () => {
       }
       const [flag,setFlag] = useState(true);
       const handleSearch = async () => {
+        setIsSearchOn(true);
         setPageLoading(true);
+        // await fetchData();
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
-            "pg_no" : Number(currentPage),
+            "pg_no" : 1,
             "pg_size" : Number(currentPages),
-            "search_key" : searchQuery
+            "search_key" : searchQuery 
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -215,7 +223,8 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : 1,
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchQuery : ""
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -240,6 +249,29 @@ const LOB = () => {
         setEditModal(true);
         setCurrItem(oldItem)
       }
+      const handleCloseSearch = async () => {
+        setPageLoading(true);
+        setIsSearchOn(false);
+        setSearchQuery("");
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name","lob_head","company"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : Number(currentPage),
+            "pg_size" : Number(currentPages),
+            "search_key" : ""
+         };
+        const response = await APIService.getLob(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(t);
+        setExistingLOB(result);
+        setPageLoading(false);
+      }
     return (
         <div className=''>
             <Navbar />
@@ -262,8 +294,9 @@ const LOB = () => {
                             </div>
                             <div className='flex space-x-2 items-center'>
 
-                                <div className='flex'>
+                                <div className='flex relative'>
                                     {/* search button */}
+
                                     <input
                                         className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                                         type="text"
@@ -271,6 +304,7 @@ const LOB = () => {
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value) }
                                     />
+                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2'/></button>
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                         <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                     </div>

@@ -25,6 +25,7 @@ const ManageEmployees = () => {
     const [totalItems,setTotalItems] = useState(0);
     const [downloadModal,setDownloadModal] = useState(false);
     const [searchInput,setSearchInput] = useState("");
+    const [isSearchOn,setIsSearchOn] = useState(false);
     const fetchData = async () => {
         setPageLoading(true);
         const data = { 
@@ -34,7 +35,8 @@ const ManageEmployees = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchInput : ""
          };
          const response = await APIService.getEmployees(data);
          const temp = await response.json();
@@ -54,7 +56,8 @@ const ManageEmployees = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(pageNumber),
-            "pg_size" : Number(currentPages)
+            "pg_size" : Number(currentPages),
+            "search_key" : isSearchOn ? searchInput : ""
          };
          const response = await APIService.getEmployees(data);
          const temp = await response.json();
@@ -67,6 +70,7 @@ const ManageEmployees = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
+        console.log(searchInput);
         const data = { 
             "user_id" : 1234,
             "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
@@ -74,7 +78,8 @@ const ManageEmployees = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(quantity)
+            "pg_size" : Number(quantity),
+            "search_key" : isSearchOn ? searchInput : ""
          };
          const response = await APIService.getEmployees(data);
          const temp = await response.json();
@@ -263,8 +268,9 @@ const validate = (values) => {
     FileSaver.saveAs(workbook,"demo.xlsx");
   }
   const handleSearch = async () => {
-    console.log("clicked")
+    // console.log("clicked")
     setPageLoading(true);
+    setIsSearchOn(true);
     const data = { 
         "user_id" : 1234,
         "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
@@ -281,6 +287,29 @@ const validate = (values) => {
      const t = temp.total_count;
      setTotalItems(t);
      setExistingEmployees(result);
+     setPageLoading(false);
+  }
+  const handleCloseSearch = async () => {
+     setIsSearchOn(false);
+     setPageLoading(true);
+     setSearchInput("");
+     const data = { 
+        "user_id" : 1234,
+        "rows" : ["id", "employeename","employeeid","phoneno","email","userid","roleid","panno", "dateofjoining","lastdateofworking","status"],
+        "filters" : [],
+        "sort_by" : [],
+        "order" : "asc",
+        "pg_no" : 1,
+        "pg_size" : Number(currentPages),
+        "search_key" : ""
+     };
+     const response = await APIService.getEmployees(data);
+     const temp = await response.json();
+     const result = temp.data;
+     const t = temp.total_count;
+     setTotalItems(t);
+     setExistingEmployees(result);
+
      setPageLoading(false);
   }
   return (
@@ -304,7 +333,7 @@ const validate = (values) => {
                    </div>
                    <div className='flex space-x-2 items-center'>
 
-                        <div className='flex'>
+                        <div className='flex relative'>
                             {/* search button */}
                                 <input
                                     className="h-[36px] bg-[#EBEBEB] text-[#787878]"
@@ -315,6 +344,7 @@ const validate = (values) => {
                                       setSearchInput(e.target.value);
                                     }}
                                 />
+                                <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2'/></button>
                                 <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                     <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                 </div>
@@ -562,7 +592,7 @@ const validate = (values) => {
                                          onChange={e => {
                                             setCurrentPages(e.target.value);
                                             console.log(e.target.value);
-                                            c
+                                            
                                             fetchQuantityData(e.target.value)
                                          }}
                                
