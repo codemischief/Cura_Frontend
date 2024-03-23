@@ -40,18 +40,7 @@ const Country = () => {
     const response = await authService.getUserId();
     setUserId(response)
 }
-  const initialSelectedFields = {
-      name : {
-          selected : false,
-          queryType : "",
-      },
-      id : {
-          selected : false,
-          queryType : ""
-      }
-  }
   const openSuccessModal = () => {
-    // set the state for true for some time
     setIsCountryDialogue(false);
     setShowSucess(true);
     setTimeout(function () {
@@ -65,9 +54,77 @@ const Country = () => {
       setShowFailure(false)
     }, 4000);
   }
-  const fetchCountryData = async (pageNumber) => {
+  
+  const fetchPageCountryData = async (pageNumber) => {
     setPageLoading(true);
     setCurrentPage(pageNumber);
+    // const user_id = await authService.getUserID();
+    const data = { 
+      "user_id" : 1234,
+      "rows" : ["id","name"],
+      "filters" : [],
+      "sort_by" : [],
+      "order" : "asc",
+      "pg_no" : Number(pageNumber),
+      "pg_size" : 15
+   };
+    const response = await APIService.getCountries(data)
+    
+    const temp =(await response.json());
+    console.log(pageNumber)
+    console.log(temp);
+    const result = temp.data.data;
+    const t = temp.total_count;
+  
+    setTotalItems(t);
+    console.log(t);
+    console.log(result);
+    
+    // setCountryValues(result);
+    setCountryValues(result.map(x => ({
+      sl: x[0],
+      country_name: x[1]
+    })))
+    setPageLoading(false);
+   
+  }
+  
+  const fetchQuantityData = async (quantity) => {
+    setPageLoading(true);
+    // setCurrentPage(pageNumber);
+    // const user_id = await authService.getUserID();
+    setCurrentPages(quantity);
+    const data = { 
+      "user_id" : 1234,
+      "rows" : ["id","name"],
+      "filters" : [],
+      "sort_by" : [],
+      "order" : "asc",
+      "pg_no" : Number(currentPage),
+      "pg_size" : Number(quantity)
+   };
+    const response = await APIService.getCountries(data)
+    
+    const temp =(await response.json());
+    // console.log(pageNumber)
+    console.log(temp);
+    const result = temp.data.data;
+    const t = temp.total_count;
+  
+    setTotalItems(t);
+    console.log(t);
+    console.log(result);
+    
+    // setCountryValues(result);
+    setCountryValues(result.map(x => ({
+      sl: x[0],
+      country_name: x[1]
+    })))
+    setPageLoading(false);
+  }
+  const fetchCountryData = async () => {
+    setPageLoading(true);
+    // setCurrentPage(pageNumber);
     const user_id = await authService.getUserID();
     const data = { 
       "user_id" : user_id || 1234,
@@ -79,11 +136,15 @@ const Country = () => {
       "pg_size" : 15
    };
     const response = await APIService.getCountries(data)
-    const result = (await response.json()).data;
-    const t = result.total_count;
+    const temp =(await response.json()).data;
+    const result = temp.data;
+    const t = temp.total_count;
+  
     setTotalItems(t);
-
+    console.log(t);
+    console.log(result);
     setPageLoading(false);
+    // setCountryValues(result);
     setCountryValues(result.map(x => ({
       sl: x[0],
       country_name: x[1]
@@ -94,14 +155,6 @@ const Country = () => {
   const addCountry = async () => {
     const data = { "user_id": userId ||  1234, "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
-    // const response = await fetch('http://192.168.10.133:8000/addCountry', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // });
-
     if (response.ok) {
       setIsLoading(false);
       openSuccessModal();
@@ -253,7 +306,8 @@ const Country = () => {
     setPageLoading(false);
   }
   const handlePageChange = (event,value) => {
-     setCurrentPage(value)
+     setCurrentPage(value);
+     fetchPageCountryData(value);
   }
 
   return (
@@ -306,7 +360,7 @@ const Country = () => {
                                 <div className='w-[10%] p-4'>
                                     
                                 </div>
-                                <div className='w-[20%] p-4'>
+                                <div className='w-[20%] p-4 ml-20'>
                                    <input className="w-14 bg-[#EBEBEB]" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleCountryFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
@@ -369,17 +423,17 @@ const Country = () => {
                 </div>
               </div>
             </div>
-            <div className='w-full h-80 overflow-auto'>
+            <div className='w-full h-[450px] overflow-auto'>
 
               {pageLoading && <div className='ml-11 mt-9'>
                 <CircularProgress />
               </div>}
               {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>}
-              {existingCountries.map((item, index) => {
+              {!pageLoading && existingCountries.map((item, index) => {
                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                   <div className='w-3/4 flex'>
                     <div className='w-1/6 p-4'>
-                      <p>{index + 1}</p>
+                      <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                     </div>
                     <div className='w-5/6  p-4'>
                       <p>{item.country_name}</p>
@@ -418,9 +472,10 @@ const Country = () => {
                                          value={currentPages}
                                         //  defaultValue="Select State"
                                          onChange={e => {
-                                            setCurrentPages(e.target.value);
+                                            // setCurrentPages(e.target.value);
                                             console.log(e.target.value);
-                                            fetchSomeData(e.target.value)
+                                            fetchQuantityData(e.target.value);
+                                            // fetchPageCountryData(e.target.value)
                                          }}
                                
                                >

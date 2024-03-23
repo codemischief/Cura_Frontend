@@ -68,8 +68,15 @@ const Locality = () => {
         const data = { "user_id": 1234, "state_id": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
+        console.log(result);
         if(Array.isArray(result)){
             setAllCity(result)
+            if(result.length > 0) {
+                setFormValues((existing) => {                                
+                    const newData = {...existing, city: result[0].id}
+                    return newData;
+                })
+            }
         }
     }
     useEffect(() => {
@@ -162,21 +169,17 @@ const Locality = () => {
             })
             setPageLoading(false);
     }
-    const addLob = async () => {
-        // if(lobName == "") {
-        //     setLobError("This Feild Is Mandatory");
-        //     return ;
-        // }else {
-        //     setLobError("");
-        // }
-        // const data = {
-        //     "user_id":1234,
-        //     "name":lobName,
-        // }
-        // const response =await APIService.addLob(data);
-        // setIsLobDialogue(false);
-        // fetchData();
-        // setPageLoading(false);
+    const addLocality = async () => {
+        const data = {
+            "user_id" : 1234,
+            "cityid" : formValues.city,
+            "locality" : formValues.locality
+        }
+        console.log(data);
+        const response = await APIService.addLocality(data);
+        const res = await response.json();
+        console.log(res);
+        fetchData();
     }
     const deleteLob = async (name) => {
         // we write delete lob logic here
@@ -718,7 +721,9 @@ const Locality = () => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
                                                     setFormValues((existing) => {
+                                                        
                                                         const newData = {...existing, city: e.target.value}
                                                         return newData;
                                                     })
@@ -736,6 +741,7 @@ const Locality = () => {
                                         <div className="">
                                             <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.locality} onChange={(e) => {
+                                                
                                                 setFormValues((existing) => {
                                                     const newData = {...existing, locality: e.target.value}
                                                     return newData;
@@ -749,7 +755,7 @@ const Locality = () => {
 
                             <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addLocality}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </form>
