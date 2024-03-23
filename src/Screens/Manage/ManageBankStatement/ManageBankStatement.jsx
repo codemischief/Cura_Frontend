@@ -31,7 +31,7 @@ const ManageBankStatement = () => {
     const [currentStatement, setCurrentStatement] = useState({});
     const [currentStatementId,setCurrentStatementId] = useState();
     const [deleted, setDeleted] = useState(false);
-    const [userId,setUserId]=useState(0);
+    const [userId,setUserId]=useState(1234);
     const crdr =["CR","DR"]
     const [sortField, setSortField] = useState("");
     const [order, setOrder] = useState("asc");
@@ -86,7 +86,7 @@ const ManageBankStatement = () => {
 
    }
     const fetchUserId = async() =>{
-        const response = await authService.getUserId();
+        const response = await authService.getUserID();
         setUserId(response)
     }
     const getVendorAdmin = async() =>{
@@ -160,6 +160,33 @@ const ManageBankStatement = () => {
         }
         setClientName(formValues.particulars);
         const response = await APIService.addBankStatement(data);
+        if (response.ok) {
+            setIsLoading(false);
+            openConfirmModal();
+        } else {
+            setIsLoading(false);
+            openFailureModal();
+        }
+        fetchBankStatement();
+    }
+    const addCreditRecipt = async () => {
+       
+        const data = {
+            "user_id": userId || 1234,
+            "receivedby": Number(formValues.employee),
+            "paymentmode": Number(formValues.modeofpayment),
+            "recddate": formValues.recddate,
+            "entityid": Number(formValues.entity),
+            "amount": Number(formValues.amount),
+            "howreceivedid":Number(formValues.how),
+            "clientid": Number(formValues.client),
+            "receiptdesc": formValues.desc,
+            "serviceamount":Number(formValues.serviceAmount),
+            "reimbursementamount":Number(formValues.reimbAmount),
+            "tds":Number(formValues.TDS)
+        }
+        setClientName(formValues.particulars);
+        const response = await APIService.addClientReceipt(data);
         if (response.ok) {
             setIsLoading(false);
             openConfirmModal();
@@ -267,6 +294,12 @@ const ManageBankStatement = () => {
         setIsManageStatementDialogue(false);
         // addBankStatement();
     };
+    const handleCR = (e) => {
+        e.preventDefault();
+        setFormErrors(validateCR(formValues)); 
+        setCreditReceipt(false)
+        addCreditRecipt();
+    };
     // validate form and to throw Error message
     const validate = (values) => {
         const errors = {};
@@ -284,6 +317,28 @@ const ManageBankStatement = () => {
         }
         if (!values.crdr) {
             errors.crdr = "Select CR or DR";
+        }
+        return errors;
+    };
+    const validateCR = (values) => {
+        const errors = {};
+        if (!values.modeofpayment) {
+            errors.modeofpayment = "Select a Mode";
+        }
+        if (!values.recieved) {
+            errors.recieved = "Enter recieved";
+        }
+        if (!values.amount) {
+            errors.amount = "Enter Amount";
+        }
+        if (!values.entity) {
+            errors.entity = "Select a entity";
+        }
+        if (!values.how) {
+            errors.how = "Select how recieved";
+        }
+        if (!values.client) {
+            errors.client = "Select how client";
         }
         return errors;
     };
@@ -665,7 +720,13 @@ const ManageBankStatement = () => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} />
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                                {mode && mode.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item[0]}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
                                         </div>
                                         <div className="">
@@ -741,7 +802,7 @@ const ManageBankStatement = () => {
 
             <Modal open={showCreditReceipt}
                 fullWidth={true}
-                maxWidth={'md'} bankStatement={currentStatement}>
+                maxwidth={'md'} bankStatement={currentStatement}>
                 <div className='flex justify-center mt-[20px]'>
                     <div className="w-[1100px] h-[600px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
@@ -752,7 +813,7 @@ const ManageBankStatement = () => {
                                 <img onClick={handleCloseCR} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                             </div>
                         </div>
-                        <form >
+                        <form onSubmit={handleCR} >
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -773,7 +834,7 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
                                                 {mode && mode.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[0]}
@@ -784,12 +845,12 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Recieved Date<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="particulars" value={formValues.modeofpayment} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="recddate" value={formValues.recddate} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.recddate}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Entity</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
                                                 {entity && entity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[0]} {item[1]}
@@ -805,53 +866,53 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved?<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
                                                 {howReceived && howReceived.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.vendor}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         
                                         <div className="">
                                             <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} >
                                                 {client && client.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.crdr}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.client}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Receipt Description <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.desc} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Pending Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="pending" value={formValues.pending} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.pending}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Service Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Reimbursement Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbAmount" value={formValues.reimbAmount} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.reimbAmount}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div>
                                         </div>
                                        
                                         
