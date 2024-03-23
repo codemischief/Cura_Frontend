@@ -18,6 +18,8 @@ import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
 import EditLobModal from './Modals/EditLobModal';
+import SucessfullModal from "../../Components/modals/SucessfullModal"
+import FailureModal from '../../Components/modals/FailureModal';
 const LOB = () => {
     const [existingLOB,setExistingLOB] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
@@ -28,7 +30,6 @@ const LOB = () => {
     const [editModal,setEditModal] = useState(false);
     const [lobError,setLobError] = useState("");
     const [currItem,setCurrItem] = useState({});
-    const [isSearchOn,setIsSearchOn] = useState(false);
     useEffect(() => {
         fetchData();
     }, []);
@@ -42,8 +43,7 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(pageNumber),
-            "pg_size" : Number(currentPages),
-            "search_key" : isSearchOn ? searchQuery : ""
+            "pg_size" : Number(currentPages)
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -62,8 +62,7 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(number),
-            "search_key" : isSearchOn ? searchQuery : ""
+            "pg_size" : Number(number)
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -76,7 +75,6 @@ const LOB = () => {
     }
     const fetchData = async () => {
         setPageLoading(true);
-        console.log(isSearchOn);
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
@@ -84,8 +82,7 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
-            "pg_size" : Number(currentPages),
-            "search_key" : isSearchOn ? searchQuery : ""
+            "pg_size" : Number(currentPages)
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -105,8 +102,7 @@ const LOB = () => {
                 "sort_by" : [field],
                 "order" : flag ? "asc" : "desc",
                 "pg_no" : 1,
-                "pg_size" : Number(currentPages),
-                "search_key" : isSearchOn ? searchQuery : ""
+                "pg_size" : Number(currentPages)
             };
             const response = await APIService.getLob(data)
             const temp = await response.json();
@@ -131,7 +127,12 @@ const LOB = () => {
             "name":lobName,
         }
         const response =await APIService.addLob(data);
-        setIsLobDialogue(false);
+        if(response.status) {
+            openSuccessModal();
+        }else {
+            // we open the failure modal
+            openFailureModal();
+        }
         fetchData();
         // setPageLoading(false);
     }
@@ -143,6 +144,9 @@ const LOB = () => {
             "name" : String(name)
         }
         const response = await APIService.deleteLob(data);
+        if(response.status) {
+            openDeleteSuccess();
+        }
         // fetchPageData();
         fetchData();
         setPageLoading(false);
@@ -185,27 +189,7 @@ const LOB = () => {
       }
       const [flag,setFlag] = useState(true);
       const handleSearch = async () => {
-        setIsSearchOn(true);
-        setPageLoading(true);
-        // await fetchData();
-        const data = { 
-            "user_id" : 1234,
-            "rows" : ["id","name","lob_head","company"],
-            "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
-            "pg_no" : 1,
-            "pg_size" : Number(currentPages),
-            "search_key" : searchQuery 
-         };
-        const response = await APIService.getLob(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        console.log(t);
-        setExistingLOB(result);
-        setPageLoading(false);
+        
       }
       const [lobFilter,setLobFilter] = useState(false);
       const [lobFilterInput,setLobFilterInput] = useState("");
@@ -223,8 +207,7 @@ const LOB = () => {
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : 1,
-            "pg_size" : Number(currentPages),
-            "search_key" : isSearchOn ? searchQuery : ""
+            "pg_size" : Number(currentPages)
          };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -249,33 +232,48 @@ const LOB = () => {
         setEditModal(true);
         setCurrItem(oldItem)
       }
-      const handleCloseSearch = async () => {
-        setPageLoading(true);
-        setIsSearchOn(false);
-        setSearchQuery("");
-        const data = { 
-            "user_id" : 1234,
-            "rows" : ["id","name","lob_head","company"],
-            "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
-            "pg_no" : Number(currentPage),
-            "pg_size" : Number(currentPages),
-            "search_key" : ""
-         };
-        const response = await APIService.getLob(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        console.log(t);
-        setExistingLOB(result);
-        setPageLoading(false);
+      const [isSuccessModal,setIsSuccessModal] = useState(false);
+      const [isFailureModal,setIsFailureModal] = useState(false);
+      const [showEditSuccess,setShowEditSuccess] = useState(false);
+      const openSuccessModal = () => {
+        // set the state for true for some time
+        setIsLobDialogue(false);
+        setIsSuccessModal(true);
+        setTimeout(function () {
+            setIsSuccessModal(false)
+        }, 2000)
+      }
+      const openFailureModal = () => {
+        setIsLobDialogue(false);
+        setIsFailureModal(true);
+        setTimeout(function () {
+            setIsFailureModal(false);
+        },2000)
+      }
+      const openSuccessEditModal = () => {
+        setEditModal(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        },2000)
+        fetchData();
+      }
+      const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
+      const openDeleteSuccess = () => {
+        // setIsLobDialogue(false);
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        },2000)
       }
     return (
         <div className=''>
             <Navbar />
-            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData}/>}
+            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal}/>}
+             {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="Successfull added Lob!"/>}
+             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!"/>}
+             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!"/>}
+             {showDeleteSuccess && <isSuccessModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!"/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -294,9 +292,8 @@ const LOB = () => {
                             </div>
                             <div className='flex space-x-2 items-center'>
 
-                                <div className='flex relative'>
+                                <div className='flex'>
                                     {/* search button */}
-
                                     <input
                                         className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                                         type="text"
@@ -304,7 +301,6 @@ const LOB = () => {
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value) }
                                     />
-                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2'/></button>
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                         <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                     </div>
