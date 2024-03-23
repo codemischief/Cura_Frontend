@@ -144,8 +144,12 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getHowReceivedAdmin`, METHOD_POST(data));
   return response;
  }
+ const addClientReceipt = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addClientReceipt`, METHOD_POST(data));
+  return response;
+ }
 
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
   getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
-  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin};
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt};
   
