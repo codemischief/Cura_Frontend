@@ -36,7 +36,6 @@ const ProjectDetails = () => {
   };
   return (
     <>
-      
         <div className="flex justify-center space-x-10 mt-5">
           <div>
             <div className="flex space-x-10">
