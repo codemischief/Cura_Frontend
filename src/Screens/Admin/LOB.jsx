@@ -18,6 +18,8 @@ import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
 import EditLobModal from './Modals/EditLobModal';
+import SucessfullModal from "../../Components/modals/SucessfullModal"
+import FailureModal from '../../Components/modals/FailureModal';
 const LOB = () => {
     const [existingLOB,setExistingLOB] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
@@ -125,7 +127,12 @@ const LOB = () => {
             "name":lobName,
         }
         const response =await APIService.addLob(data);
-        setIsLobDialogue(false);
+        if(response.status) {
+            openSuccessModal();
+        }else {
+            // we open the failure modal
+            openFailureModal();
+        }
         fetchData();
         // setPageLoading(false);
     }
@@ -137,6 +144,9 @@ const LOB = () => {
             "name" : String(name)
         }
         const response = await APIService.deleteLob(data);
+        if(response.status) {
+            openDeleteSuccess();
+        }
         // fetchPageData();
         fetchData();
         setPageLoading(false);
@@ -222,10 +232,48 @@ const LOB = () => {
         setEditModal(true);
         setCurrItem(oldItem)
       }
+      const [isSuccessModal,setIsSuccessModal] = useState(false);
+      const [isFailureModal,setIsFailureModal] = useState(false);
+      const [showEditSuccess,setShowEditSuccess] = useState(false);
+      const openSuccessModal = () => {
+        // set the state for true for some time
+        setIsLobDialogue(false);
+        setIsSuccessModal(true);
+        setTimeout(function () {
+            setIsSuccessModal(false)
+        }, 2000)
+      }
+      const openFailureModal = () => {
+        setIsLobDialogue(false);
+        setIsFailureModal(true);
+        setTimeout(function () {
+            setIsFailureModal(false);
+        },2000)
+      }
+      const openSuccessEditModal = () => {
+        setEditModal(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        },2000)
+        fetchData();
+      }
+      const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
+      const openDeleteSuccess = () => {
+        // setIsLobDialogue(false);
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        },2000)
+      }
     return (
         <div className=''>
             <Navbar />
-            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData}/>}
+            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal}/>}
+             {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="Successfull added Lob!"/>}
+             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!"/>}
+             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!"/>}
+             {showDeleteSuccess && <isSuccessModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!"/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}

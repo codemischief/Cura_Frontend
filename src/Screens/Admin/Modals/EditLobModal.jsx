@@ -3,7 +3,9 @@ import Cross from "../../../assets/cross.png"
 import { Modal } from '@mui/material'
 import { useState } from 'react'
 import { APIService } from '../../../services/API'
+import SucessfullModal from '../../../Components/modals/SucessfullModal'
 const EditLobModal = (props) => {
+    // const [showSuccess,setShowSuccess] = useState(false);
     const [editModalInput,setEditModalInput] = useState(props.item.name);
     const [errorMessage,setErrorMessage] = useState("");
     const handleEdit = async () => {
@@ -17,11 +19,19 @@ const EditLobModal = (props) => {
             "new_name":editModalInput,
         }
         const response = await APIService.editLob(data);
-        props.handleClose();
-        props.fetchData();
+        console.log(response);
+        if(response.ok) {
+            props.showSuccess();
+        }
+        
+        // props.handleClose();
+        // props.fetchData();
      }
+     
   return (
-    <Modal open={props.isOpen}
+    <>
+    
+     <Modal open={props.isOpen}
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[200px]'>
@@ -57,6 +67,7 @@ const EditLobModal = (props) => {
                     </div>
                 </div>
             </Modal>
+            </>
   )
 }
 
