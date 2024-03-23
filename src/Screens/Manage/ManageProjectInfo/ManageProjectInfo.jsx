@@ -49,7 +49,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["builderid", "projectname", "adressline1", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["projectname", "projectname", "adressline1", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
