@@ -49,6 +49,9 @@ const ManageBankStatement = () => {
     const [client,setClient]=useState([])
     const [successMessage,setSuccessMessage]=useState("")
     const [searchQuery,setSearchQuery] = useState("");
+    const [modeEdit,setModeEdit]=useState(Number)
+    const[receivedBy,setRecievedBy]=useState(Number);
+    const[vendorId,setVendorId]=useState(Number);
     // const [selectedBuilder,setSelectedBuilder] = useState();
     const getEmployees = async () => {
         const data = {
@@ -99,9 +102,10 @@ const ManageBankStatement = () => {
         }else{
             setSuccessMessage("New Credit Receipt created succesfully ")
         }
+        setShowSucess(true);
         setIsManageStatementDialogue(false);
         setIsConfirmManageStatementDialogue(false)
-        setShowSucess(true);
+        // setShowSucess(true);
         setTimeout(function () {
             setShowSucess(false)
         }, 2000)
@@ -163,14 +167,19 @@ const ManageBankStatement = () => {
     }
 
     const addBankStatement = async () => {
+        console.log(formValues.modeofpayment)
+        setVendorId((formValues.vendor).split(",", 1)[0]);
+        setModeEdit((formValues.modeofpayment).split(",", 1)[0])
+  
+        console.log(modeEdit, vendorId)
         const data = {
             "user_id": userId || 1234,
-            "modeofpayment": Number(formValues.modeofpayment),
+            "modeofpayment":Number(modeEdit),
             "date":formValues.date,
             "amount":Number(formValues.amount),
             "particulars":formValues.particulars,
             "crdr":formValues.crdr,
-            "vendorid":Number(formValues.vendor),
+            "vendorid":Number(vendorId),
             "createdby":userId || 1234
         }
         setClientName(formValues.particulars);
@@ -202,7 +211,7 @@ const ManageBankStatement = () => {
         }
         setClientName(formValues.particulars);
         const response = await APIService.addClientReceipt(data);
-        if (response.ok) {
+        if (await response.json().result === "success") {
             setIsLoading(false);
             openConfirmModal();
         } else {
@@ -485,7 +494,7 @@ const ManageBankStatement = () => {
     return (
         <div >
             <Navbar />
-            <SucessfullModal isOpenSuccess={showSucess} message={successMessage} />
+            <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />
             <div className='flex-col w-full h-full  bg-white'>
@@ -762,10 +771,10 @@ const ManageBankStatement = () => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
                                                 {mode && mode.map(item => (
                                                     <option key={item} value={item}>
-                                                        {item[0]}
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -786,7 +795,7 @@ const ManageBankStatement = () => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                 {vendorList && vendorList.map(item => (
                                                     <option key={item} value={item}>
-                                                        {item[0]}
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -812,16 +821,12 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved(CR)?<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="cr"
-                                            defaultValue="Select CR or DR"
-                                            value={formValues.cr}
-                                            onChange={handleChange} >
-                                            {crdr && crdr.map((item) => {
-                                                return <option value={item}>
-                                                      {item}
-                                                </option>
-                                                
-                                            })}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.h0w} onChange={handleChange} >
+                                                {howReceived && howReceived.map(item => (
+                                                    <option key={item} value={item}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
                                             </select>
                                            
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
@@ -992,7 +997,7 @@ const ManageBankStatement = () => {
                                       <div className="text-[14px]">Client:{clientName}</div>
                               </div>
                                     <div className="mt-4 w-full text-center">
-                                        <p className="text-[14px]">Are you sure you want to delete the Country</p>
+                                        <p className="text-[14px]">Are you sure you want to Add new Bank statement</p>
                                     </div>
                                 <div className="my-10 flex justify-center items-center gap-[10px]">
                                 <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Save</button>
