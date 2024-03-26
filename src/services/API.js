@@ -149,7 +149,7 @@ return response;
   return response;
  }
  const getPayment = async  (data) => {
-  const response = await fetch(`${env_URL_SERVER}getPayment`, METHOD_POST(data));
+  const response = await fetch(`${env_URL_SERVER}getPayments`, METHOD_POST(data));
   return response;
  }
  const getProjectInfo = async (data) => {
