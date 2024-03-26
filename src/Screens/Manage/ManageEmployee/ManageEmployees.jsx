@@ -129,8 +129,11 @@ const ManageEmployees = () => {
     state: "",
     city: "",
     suburb: "",
-    entity: ""
-
+    entity: "",
+    designation : "",
+    addressline1 : "",
+    addressline2 : "",
+    zip: ""
 };
 const [formValues, setFormValues] = useState(initialValues);
 const [formErrors, setFormErrors] = useState({});
@@ -146,30 +149,30 @@ const handleSubmit = (e) => {
     // handle adding of data
     const data = {
         "user_id":1234,
-        "id":100,
         "employeename":formValues.employeeName,
+        "panno":formValues.panNo,
         "employeeid":formValues.employeeId,
-        "roleid":2,
-        "dateofjoining":"13-01-2024 00:00:00",
-        "dob":"13-01-2001 00:00:00",
-        "panno":"abcd",
+        "roleid":formValues.role,
+        "dateofjoining":formValues.doj,
+        "dob":formValues.dob,
         "status":false,
         "phoneno":null,
-        "email":null,
-        "addressline1":"abcdefgh",
-        "addressline2":"ijklmnop",
-        "suburb":"Pune",
-        "city":847,
-        "state":"Maharashta",
-        "country":5,
-        "zip":null,
+        "email":formValues.email,
+        "addressline1":formValues.addressline1,
+        "addressline2":formValues.addressline2,
+        "suburb":formValues.suburb,
+        "city":formValues.city,
+        "state":formValues.state,
+        "country":formValues.country,
+        "zip":formValues.zip,
         "dated":"20-01-2020  00:00:00",
         "createdby":1234,
         "isdeleted":false,
         "entityid":10,
         "lobid":100,
         "lastdateofworking":"20-02-2020 00:00:00",
-        "designation":"New"}
+        "designation":formValues.designation
+    }
     
     
 };
