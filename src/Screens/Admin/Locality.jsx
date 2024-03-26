@@ -88,7 +88,7 @@ const Locality = () => {
         setCurrentPage(pageNumber);
         const data = { 
             "user_id" : 1234,
-            "rows" : ["id","country","city","state","locality"],
+            "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
@@ -108,7 +108,7 @@ const Locality = () => {
         setPageLoading(true);
         const data = { 
             "user_id" : 1234,
-            "rows" : ["id","country","state","city","locality"],
+            "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
@@ -129,7 +129,7 @@ const Locality = () => {
         setPageLoading(true);
         const data = { 
             "user_id" : 1234,
-            "rows" : ["id","country","state","city","locality"],
+            "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
@@ -137,12 +137,14 @@ const Locality = () => {
             "pg_size" : Number(currentPages),
             "search_key" : isSearchOn ? searchQuery : ""
          };
+         console.log(data);
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
         console.log(t);
+        console.log(result);
         setExistingLocalities(result);
         setPageLoading(false);
     }
@@ -150,7 +152,7 @@ const Locality = () => {
             setPageLoading(true);
             const data = { 
                 "user_id" : 1234,
-                "rows" : ["id","country","state","city","locality"],
+                "rows" : ["id","country","cityid","city","state","locality"],
                 "filters" : [],
                 "sort_by" : [field],
                 "order" : flag ? "asc" : "desc",
@@ -179,6 +181,7 @@ const Locality = () => {
         const response = await APIService.addLocality(data);
         const res = await response.json();
         console.log(res);
+        setIsLocalityDialogue(false);
         fetchData();
     }
     const deleteLob = async (name) => {
@@ -200,13 +203,10 @@ const Locality = () => {
     const handleClose = () => {
         setIsLocalityDialogue(false);
     }
-    const handleSubmit = () => {
-
-    }
     const handleExcelDownload = async () => {
         const data = { 
             "user_id" : 1234,
-            "rows" : ["id","country","state","locality"],
+            "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
@@ -239,7 +239,7 @@ const Locality = () => {
         setIsSearchOn(true);
         const data = { 
             "user_id" : 1234,
-            "rows" : ["id","country","state","city","locality"],
+            "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
@@ -304,7 +304,7 @@ const Locality = () => {
          setIsSearchOn(false);
          const data = { 
             "user_id" : 1234,
-            "rows" : ["id","country","state","city","locality"],
+            "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
             "sort_by" : [],
             "order" : "asc",
@@ -320,6 +320,16 @@ const Locality = () => {
         console.log(t);
         setExistingLocalities(result);
          setPageLoading(false);
+      }
+      const deleteLocality = async (id) => {
+        console.log(id);
+        const data = {
+            "user_id":1234,
+            "id":Number(id)
+        };
+        const response = await APIService.deleteLocality(data);
+        console.log(response);
+        fetchData();
       }
     return (
         <div className=''>
@@ -564,7 +574,7 @@ const Locality = () => {
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
-                                            <img className='w-5 h-5' src={Trash} alt="trash" />
+                                            <button onClick={() => deleteLocality(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
                                 </div>
@@ -658,7 +668,7 @@ const Locality = () => {
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -758,7 +768,7 @@ const Locality = () => {
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addLocality}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
-                        </form>
+                        
                     </div>
                 </div>
             </Modal>
