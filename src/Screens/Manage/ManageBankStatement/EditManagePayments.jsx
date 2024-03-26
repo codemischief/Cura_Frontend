@@ -156,7 +156,8 @@ const EditManageStatement = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Particulars <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} />
+                                            {/* <input className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs "  name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
+                                            <textarea className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
 
                                         </div>
