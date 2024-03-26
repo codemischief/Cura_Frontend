@@ -187,7 +187,7 @@ const Navbar = () => {
                   <div className="space-y-2 text-[#505050] text-[11px]">
                      <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageuser">Users</Link></p>
                      <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'> <Link to="/admin/manageemployees">Employees</Link></p>
-                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Contractual Payment</p>
+                     <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/payments">Contractual Payment</Link></p>
                   </div>
                </div>
             </div>
@@ -228,7 +228,7 @@ const Navbar = () => {
                   <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Margin Report</h1>
                   <div className="space-y-2 text-[#505050] text-[11px]">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>LOB- Receipts - Payments</p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Entity-Receipts-Patments</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Entity-Receipts-Payments</p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>LOB - Receipts-Payments-Consolidated</p>
                   </div>
                </div>
