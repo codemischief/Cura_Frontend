@@ -39,7 +39,7 @@ const ManageEmployees = () => {
     const [isEmployeeDialogue,setIsEmployeeDialogue] =useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
-    
+    const [showAddSuccess,setShowAddSuccess] = useState(false);
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -47,7 +47,6 @@ const ManageEmployees = () => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
-
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
@@ -260,7 +259,10 @@ const ManageEmployees = () => {
             "designation": formValues.designation
         }
         const response = await APIService.addEmployee(data);
+
         const result = (await response.json())
+        setIsEmployeeDialogue(false);
+        openAddSuccess();
         console.log(data);
         console.log(result);
         
@@ -429,12 +431,20 @@ const ManageEmployees = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     }
+    const openAddSuccess = () => {
+        // (false);
+        setShowAddSuccess(true);
+        setTimeout(function () {
+            setShowAddSuccess(false);
+        },2000)
+        fetchData();
+      }
     return (
         <div>
             <Navbar />
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}
                 fetchData={fetchData} />}
-            {<SucessfullModal message="successfully Added Employee"/>}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
