@@ -168,7 +168,7 @@ const Navbar = () => {
                {/* this will have the right content */}
                <div className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash || isFirstOpen ? 'bg-white text-accent-blue' : ''}`}>
                   <button onClick={handleDashChange}>
-                     <p className=' font-sans text-md'>Dashboard</p>
+                     <Link to="/dashboard"><p className=' font-sans text-md'>Dashboard</p></Link>
                   </button>
                </div>
 

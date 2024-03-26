@@ -38,13 +38,13 @@ const Dashboard = () => {
 
 
     return (
-        <div className="w-screen h-screen overflow-x-hidden">
+        <div className="w-screen h-screen overflow-x-hidden bg-[#F5F5F5]">
             <Navbar />
             <div className="w-screen p-5">
                 {/* this is the background container */}
                 <div className="flex justify-between">
                     <div >
-                        <h1 className="text-3xl font-sans">Checkout</h1>
+                        <h1 className="text-3xl font-sans">Dashboard</h1>
                     </div>
                     <div className="flex w-[220px] h-[36px] items-center">
                         <input className="h-[36px] rounded-l-[5px]" type="text" placeholder="  Search" />

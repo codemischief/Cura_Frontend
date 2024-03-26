@@ -114,6 +114,10 @@ return response;
   const response = await fetch(`${env_URL_SERVER}addEmployee`, METHOD_POST(data));
   return response;
  }
+ const editEmployee = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}editEmployee`, METHOD_POST(data));
+  return response;
+ }
  const getLocality = async (data) => {
   const response = await fetch(`${env_URL_SERVER}getLocality`, METHOD_POST(data));
   return response;
@@ -149,7 +153,37 @@ return response;
   return response;
  }
 
+ const getProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+
+ const addProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+
+ const editProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}editResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+ const getUsers = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getUsersAdmin`, METHOD_POST(data));
+  return response;
+ }
+
+ const getRoles = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getRolesAdmin`, METHOD_POST(data));
+  return response;
+ }
+
+ const getEntites = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getEntityAdmin`, METHOD_POST(data));
+  return response;
+ }
+ 
+
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
-  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
-  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt};
+  getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,editEmployee,
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt ,getProspects,addProspects,editProspects,getUsers,getRoles,getEntites};
   
