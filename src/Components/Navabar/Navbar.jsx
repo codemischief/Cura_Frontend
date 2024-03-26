@@ -304,7 +304,7 @@ const Navbar = () => {
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Builder</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Builder</Link></p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Report</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageprojectinfo">Manage Project</Link></p>
                   </div>
                </div>
                <div className='ml-5 mt-20 flex-col space-y-4'>
