@@ -432,6 +432,61 @@ const ManageBankStatement = () => {
     const toggleLobFilter = () => {
          setLobFilter((prev) => !prev)
     }
+    const [modeFilter,setModeFilter] = useState(false);
+    const [modeFilterInput,setModeFilterInput] = useState("");
+    const toggleModeFilter = () => {
+         setModeFilter((prev) => !prev)
+    }
+    const [dateFilter,setDateFilter] = useState(false);
+    const [dateFilterInput,setDateFilterInput] = useState("");
+    const toggleDateFilter = () => {
+         setDateFilter((prev) => !prev)
+    }
+    const [amountFilter,setAmountFilter] = useState(false);
+    const [amountFilterInput,setAmountFilterInput] = useState("");
+    const toggleAmountFilter = () => {
+         setAmountFilter((prev) => !prev)
+    }
+    const [clientFilter,setClientFilter] = useState(false);
+    const [clientFilterInput,setClientFilterInput] = useState("");
+    const toggleClientFilter = () => {
+         setClientFilter((prev) => !prev)
+    }
+    const [particularsFilter,setParticularsFilter] = useState(false);
+    const [particularsFilterInput,setParticularsFilterInput] = useState("");
+    const toggleParticularsFilter = () => {
+         setParticularsFilter((prev) => !prev)
+    }
+    const [crFilter,setCRFilter] = useState(false);
+    const [crFilterInput,setCRFilterInput] = useState("");
+    const toggleCRFilter = () => {
+         setCRFilter((prev) => !prev)
+    }
+    const fetchFilteredMode = async (filterType,filterField) => {
+        const filterArray = [];
+        
+        setPageLoading(true);
+        const data = { 
+            "user_id" : 1234,
+            "rows" : ["id","name"],
+            "filters" : [["name",String(filterType),filterField]],
+            "sort_by" : [],
+            "order" : "asc",
+            "pg_no" : 1,
+            "pg_size" : Number(currentPages)
+         };
+        const response = await APIService.getBankStatement(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingStatement(result);
+        setFlag((prev) => {
+            return !prev;
+        })
+        setPageLoading(false);
+        existingBankSta
+      }
     const handleExcelDownload = async () => {
         const data = { 
             "user_id" : 1234,
@@ -451,31 +506,7 @@ const ManageBankStatement = () => {
         XLSX.writeFile(workbook,"bankStatement.xlsx");
         FileSaver.saveAs(workbook,"demo.xlsx");
       }
-    const fetchFiltered = async (filterType,filterField) => {
-      const filterArray = [];
-      
-      setPageLoading(true);
-      const data = { 
-          "user_id" : 1234,
-          "rows" : ["id","name"],
-          "filters" : [["name",String(filterType),lobFilterInput]],
-          "sort_by" : [],
-          "order" : "asc",
-          "pg_no" : 1,
-          "pg_size" : Number(currentPages)
-       };
-      const response = await APIService.getLob(data)
-      const temp = await response.json();
-      const result = temp.data;
-      const t = temp.total_count;
-      setTotalItems(t);
-      setExistingStatement(result);
-      setFlag((prev) => {
-          return !prev;
-      })
-      setPageLoading(false);
-      existingBankSta
-    }
+   
     const openDownload = () => {
         setDownloadModal((prev) => !prev);
       }
@@ -539,11 +570,71 @@ const ManageBankStatement = () => {
                         </div>
                         <div className='h-12 w-full bg-white flex justify-between'>
                              <div className='w-3/4 flex'>
-                                <div className='w-[10%] p-4'>
+                                <div className='w-[5%]'>
                                     
                                 </div>
-                                <div className='w-[20%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
+                                <div className='w-[14%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleModeFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {modeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFilteredMode('contains',modeFilterInput)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('contains',modeFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('startsWith',modeFilterInput)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFilteredMode('endsWith',modeFilterInput)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('exactMatch',modeFilterInput)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNull',modeFilterInput)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNotNull',modeFilterInput)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
+                                </div>
+                                <div className='w-[14%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleDateFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {dateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFilteredMode('contains',dateFilterInput)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('contains',dateFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('startsWith',dateFilterInput)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFilteredMode('endsWith',dateFilterInput)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('exactMatch',dateFilterInput)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNull',dateFilterInput)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNotNull',dateFilterInput)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
+                                </div>
+                                <div className='w-[10%] p-4'>
+                                   {/* <input className="w-11 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -569,6 +660,126 @@ const ManageBankStatement = () => {
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                                <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}  */}
+                                </div>
+                                <div className='w-[10%] p-4'>
+                                   <input className="w-8 bg-[#EBEBEB]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleAmountFilter}><img src={Filter} className='h-[15px] w-[15px]'/></button>
+                                   {amountFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFilteredMode('contains',amountFilterInput)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('contains',amountFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('startsWith',amountFilterInput)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFilteredMode('endsWith',amountFilterInput)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('exactMatch',amountFilterInput)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNull',amountFilterInput)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNotNull',amountFilterInput)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
+                                </div>
+                                <div className='w-[20%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleClientFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {clientFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFilteredMode('contains',clientFilterInput)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('contains',clientFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('startsWith',clientFilterInput)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFilteredMode('endsWith',clientFilterInput)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('exactMatch',clientFilterInput)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNull',clientFilterInput)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNotNull',clientFilterInput)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
+                                </div>
+                                <div className='w-[20%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleParticularsFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {particularsFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFilteredMode('contains',particularsFilterInput)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('contains',particularsFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('startsWith',particularsFilterInput)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFilteredMode('endsWith',particularsFilterInput)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('exactMatch',particularsFilterInput)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNull',particularsFilterInput)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNotNull',particularsFilterInput)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
+                                </div>
+                                <div className='w-[20%] p-4'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleCRFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {crFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFilteredMode('contains',crFilterInput)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('contains',crFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('startsWith',crFilterInput)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFilteredMode('endsWith',crFilterInput)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFilteredMode('exactMatch',crFilterInput)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNull',crFilterInput)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFilteredMode('isNotNull',crFilterInput)}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
@@ -649,13 +860,13 @@ const ManageBankStatement = () => {
                                         <div className='w-[8%]  p-4'>
                                             <p>{item.amount}</p>
                                         </div>
-                                        <div className='w-[15%]  p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[15%]  p-4 '>
                                             {/* <p>{item.clientid}</p> */}
                                             {client &&client.map(ele => (
                                                 (item.clientid === ele[0])?
                                                     <p>{ele[1]}</p> :""))}
                                         </div>
-                                        <div className='w-[20%]  p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[20%]  p-4 '>
                                             <p>{item.particulars}</p>
                                         </div>
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
@@ -772,6 +983,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                            <option >Select Mode</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
@@ -786,13 +998,14 @@ const ManageBankStatement = () => {
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Amount</div>
+                                            <div className="text-[14px]">Amount<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Vendor<label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Vendor</div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <option >Select Vendor List</option>
                                                 {vendorList && vendorList.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
@@ -811,6 +1024,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">CR/DR <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
+                                            <option >Select CR/DR</option>
                                                 {crdr && crdr.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -820,8 +1034,9 @@ const ManageBankStatement = () => {
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.crdr}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">How Recieved(CR)?<label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">How Recieved(CR)?</div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.h0w} onChange={handleChange} >
+                                            <option >Select how Received</option>
                                                 {howReceived && howReceived.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
@@ -850,6 +1065,7 @@ const ManageBankStatement = () => {
             <Modal open={showCreditReceipt}
                 fullWidth={true}
                 maxwidth={'md'} bankStatement={currentStatement}>
+                    {/* <h1>{currentStatement}</h1> */}
                 <div className='flex justify-center mt-[20px]'>
                     <div className="w-[1100px] h-[600px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
@@ -871,6 +1087,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Recieved By<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                            <option >Select Employee</option>
                                                 {employees && employees.map(item => (
                                                     <option key={item} value={item}>
                                                         {item.employeename}
@@ -882,6 +1099,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                            <option >Select Mode</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[0]}
@@ -898,6 +1116,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Entity</div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
+                                            <option >Select Entity</option>
                                                 {entity && entity.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[0]} {item[1]}
@@ -914,6 +1133,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">How Recieved?<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
+                                            <option >Select How Recieved</option>
                                                 {howReceived && howReceived.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
@@ -928,6 +1148,7 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} >
+                                            <option >Select Client</option>
                                                 {client && client.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
