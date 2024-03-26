@@ -10,21 +10,144 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
-import { Modal } from "@mui/material";
+import { Modal , Pagination, LinearProgress} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-const Payments = () => {
+import { APIService } from '../../../services/API';
 
+const Payments = () => {
+    const [totalItems,setTotalItems] = useState(0);
+    const [currentPages,setCurrentPages] = useState(15);
+    const [currentPage,setCurrentPage] = useState(1);
+    const [downloadModal,setDownloadModal] = useState(false);
+
+    const [pageLoading,setPageLoading] = useState(false);
+    const openDownload = () => {
+        setDownloadModal(true);
+    }
     // we have the module here
+    const handlePageChange = (event,value) => {
+        setCurrentPage(value)
+        fetchPageData(value);
+    }
     const [existingPayments, setExistingPayments] = useState([]);
     useEffect(() => {
-        fetch("/getprospect")
-            .then((res) => res.json())
-            .then((data) => {
-                setExistingPayments(data)
-                console.log(data);
-            })
+       fetchData();
     }, []);
+    const fetchData = async () => {
+        setPageLoading(true);
+        const data = {
+                "user_id": 1234,
+                "rows": [
+                    "id",
+                    "paymentto",
+                    "paymentby",
+                    "amount",
+                    "paidon",
+                    "paymentmode",
+                    "paymentstatus",
+                    "description",
+                    "banktransactionid",
+                    "paymentfor",
+                    "dated",
+                    "createdby",
+                    "isdeleted",
+                    "entityid",
+                    "officeid",
+                    "tds",
+                    "professiontax",
+                    "month",
+                    "deduction"
+                ],
+                "filters": [],
+                "sort_by": [],
+                "order": "asc",
+                "pg_no": 1,
+                "pg_size": 15
+        }
+        const response  = await APIService.getPayment(data);
+        const result = (await response.json());
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count)
+        setPageLoading(false);
+        console.log(result);
+    }
+    const fetchQuantityData = async (quantity) => {
+        setCurrentPages(quantity);
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+                ],
+                "filters": [],
+                "sort_by": [],
+                "order": "asc",
+                "pg_no": Number(currentPage),
+                "pg_size": Number(quantity)
+        }
+        const response  = await APIService.getPayment(data);
+        const result = (await response.json());
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count)
+        setPageLoading(false);
+    }
+    const fetchPageData = async (pageNumber) => {
+        setCurrentPage(pageNumber);
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+                ],
+                "filters": [],
+                "sort_by": [],
+                "order": "asc",
+                "pg_no": Number(pageNumber),
+                "pg_size": Number(currentPages)
+        }
+        const response  = await APIService.getPayment(data);
+        const result = (await response.json());
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count)
+        setPageLoading(false);
+    }
     //Validation of the form
     const initialValues = {
         curaOffice: "",
@@ -231,8 +354,8 @@ const Payments = () => {
                     </div>
 
                     <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                    <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
                                 </div>
@@ -270,59 +393,120 @@ const Payments = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 '>
-                            {existingPayments.map((item, index) => {
+                        <div className='w-full h-[450px] overflow-auto'>
+                            {pageLoading && <LinearProgress/>}
+                            {!pageLoading && existingPayments.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                                    <div className='w-[85%] flex'>
+                                            <div className='w-[5%] p-4'>
+                                                <p>{index + 1 + (currentPage - 1)*currentPages} </p>
+                                            </div>
+                                            <div className='w-[13%]  p-4'>
+                                                <p>{item.paymentto}</p>
+                                            </div>
+                                            <div className='w-[13%]  p-4'>
+                                                <p>{item.paymentby}</p>
+                                            </div>
+                                            <div className='w-[10%]  p-4'>
+                                                <p>{item.amount}</p>
+                                            </div>
+                                            <div className='w-[10%]  p-4'>
+                                                <p>{item.paidon}</p>
+                                            </div>
+                                            <div className='w-[14%]  p-4'>
+                                                <p>{item.paymentmode}</p>
+                                            </div>
+                                            <div className='w-[13%]  p-4'>
+                                                <p>{item.paymentfor}</p>
+                                            </div>
+                                            <div className='w-[15%]  p-4'>
+                                                <p>{item.paymentstatus}</p>
+                                            </div>
+                                            <div className='w-[10%]  p-4'>
+                                                <p>{item.entityid}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[15%] flex'>
+                                            <div className='w-1/2  p-4'>
+                                                <p>{item.id}</p>
+                                            </div>
+                                            <div className='w-1/2 0 p-4 flex space-x-2'>
+                                               <img className=' w-5 h-5' src={Edit} alt="edit" />
+                                                <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                            </div>
+                                        </div>
                                 </div>
                             })}
                             {/* we get all the existing prospect here */}
 
                         </div>
                     </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 '>
+                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <div className='h-12 flex justify-center items-center'>
-                                    <img src={backLink} className='h-2/4' />
-                                </div>
-                                <div className='flex space-x-1 mx-5'>
-                                    {/* pages */}
-                                    <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
-                                        <p>1</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>2</p>
-                                    </div>
-                                    <div className='w-6 p-1 pl-2'>
-                                        <p>3</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>4</p>
-                                    </div>
-                                </div>
-                                <div className='h-12 flex justify-center items-center'>
-                                    {/* right button */}
-                                    <img src={nextIcon} className='h-2/4' />
-                                </div>
-                            </div>
-                            <div>
-                                {/* items per page */}
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1' >
+                            <div className="flex mr-8 space-x-2 text-sm items-center">
+                               <p className="text-gray-700">Items Per page</p>
+                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                                         name="currentPages"
+                                         value={currentPages}
+                                        //  defaultValue="Select State"
+                                         onChange={e => {
+                                            setCurrentPages(e.target.value);
+                                            console.log(e.target.value);
+                                            fetchQuantityData(e.target.value)
+                                         }}
+                               
+                               >
+                                <option>
+                                    15
+                                </option>
+                                <option>
+                                    25
+                                </option>
+                                <option>
+                                    50
+                                </option>
+                               </select>
+                            </div>
+                            <div className="flex text-sm">
+                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
+                            </div>
+                            {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                                <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4'/></button>
+                                
+                               <button>
+                                <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+                                    
+                                    <p>Download as pdf</p>
+                                    <img src={Pdf}/>
+                                </div>
+                               </button>
+                               <button onClick={handleExcelDownload}>
+                                <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                    <p>Download as Excel</p>
+                                    <img src={Excel}/>
+                                </div>
+                               </button>
+                            </div>}
+                            
+                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className='h-1/2' />
+                                <img src={refreshIcon} className="h-2/3" />
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1'>
+                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                                 {/* download */}
-                                <button onClick={handleDownload}> <p>Download</p></button>
-                                <img src={downloadIcon} className='h-1/2' />
+                                <button onClick={openDownload}><p>Download</p></button>
+                                <img src={downloadIcon} className="h-2/3" />
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
 
