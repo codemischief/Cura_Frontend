@@ -59,6 +59,7 @@ const ManageProjectInfo = () => {
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
+        console.log(temp);
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
@@ -71,7 +72,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
+            "rows": ["id","buildername","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -93,7 +94,7 @@ const ManageProjectInfo = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"
+            "rows": ["id","buildername","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted"
         ],
             "filters": [],
             "sort_by": [],
@@ -518,20 +519,20 @@ const ManageProjectInfo = () => {
                             {/* we map our items here */}
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingProjectInfo.map((item, index) => {
-                                return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                                return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
                                     <div className='w-[3%] flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p>{index}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[11%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.buildername}</p>
+                                            <p>{index + 1}</p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex overflow-hidden'>
                                         <div className='p-3'>
                                             <p>{item.projectname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[11%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.buildername}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
