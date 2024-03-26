@@ -659,7 +659,7 @@ const validate = (values) => {
                             <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                         </div>
                     </div>
-                    <form onSubmit={handleSubmit}>
+                    {/* <form onSubmit={handleSubmit}> */}
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -804,10 +804,10 @@ const validate = (values) => {
                         </div>
                         <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}}>Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
-                    </form>
+                    {/* </form> */}
                 </div>
             </div>
     </Modal>
