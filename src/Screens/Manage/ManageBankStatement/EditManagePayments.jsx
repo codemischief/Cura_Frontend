@@ -145,6 +145,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                            <option >Select Mode</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
@@ -160,12 +161,13 @@ const EditManageStatement = (props) => {
 
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Amount </div>
+                                            <div className="text-[14px]">Amount<label className="text-red-500">*</label> </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Vendor</div> 
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <option >Select Vendor </option>
                                                 {vendorList && vendorList.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
@@ -185,6 +187,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">DR/CR <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="state" value={formValues.state} onChange={handleChange} >
+                                            <option >Select DR/CR</option>
                                                 {crdr && crdr.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -194,8 +197,9 @@ const EditManageStatement = (props) => {
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.crdr}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">How Recieved(CR)? <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">How Recieved(CR)? </div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
+                                            <option >Select How Recieved(CR)?</option>
                                                 {howReceived && howReceived.map(item => (
                                                     <option key={item} value={item}>
                                                         {item[1]}
