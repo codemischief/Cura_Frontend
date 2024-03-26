@@ -371,7 +371,7 @@ const Locality = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New LOB +
+                                        Add New Locality +
                                     </button>
                                 </div>
 
