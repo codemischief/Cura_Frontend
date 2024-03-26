@@ -20,12 +20,7 @@ const EditLobModal = (props) => {
         }
         const response = await APIService.editLob(data);
         console.log(response);
-        if(response.ok) {
-            props.showSuccess();
-        }
-        
-        // props.handleClose();
-        // props.fetchData();
+        props.showSuccess();
      }
      
   return (
