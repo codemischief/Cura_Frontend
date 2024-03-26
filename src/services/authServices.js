@@ -1,8 +1,8 @@
 // import jwt_decode  from 'jwt-decode';
 import { useState } from "react";
 import axios from "./axios";
-const env_URL_SERVER="http://192.168.10.133:8000/"
-// const env_URL_SERVER="http://192.168.10.183:8000/"
+const env_URL_SERVER=import.meta.env.VITE_ENV_URL_SERVER
+
 
 
 
