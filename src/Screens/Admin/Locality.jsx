@@ -18,6 +18,7 @@ import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
 import EditLobModal from './Modals/EditLobModal';
+import SucessfullModal from '../../Components/modals/SucessfullModal';
 const Locality = () => {
     const [existingLocalities,setExistingLocalities] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
@@ -33,6 +34,7 @@ const Locality = () => {
     const [allCity,setAllCity] = useState([]);
     const [currCountry,setCurrCountry] = useState(-1);
     const [isSearchOn,setIsSearchOn] = useState(false);
+    const [showSuccess,setShowSuccess] = useState(false);
     const initialValues = {
         country : 0,
         state : 0,
@@ -182,7 +184,15 @@ const Locality = () => {
         const res = await response.json();
         console.log(res);
         setIsLocalityDialogue(false);
+        
+        openSuccess();
         fetchData();
+    }
+    const openSuccess = () => {
+        setShowSuccess(true);
+        setTimeout(function () {
+            setShowSuccess(false);
+        },2000)
     }
     const deleteLob = async (name) => {
         // we write delete lob logic here
@@ -335,6 +345,7 @@ const Locality = () => {
         <div className=''>
             <Navbar />
             {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData}/>}
+            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality"/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -553,7 +564,7 @@ const Locality = () => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
                                         <div className='w-[5%] p-4'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                                         </div>
                                         <div className='w-[15%]  p-4'>
                                             <p>{item.country}</p>
