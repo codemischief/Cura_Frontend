@@ -107,6 +107,7 @@ const Payments = () => {
         const response  = await APIService.getPayment(data);
         const result = (await response.json());
         setExistingPayments(result.data);
+        setTotalItems(result.total_count)
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -144,6 +145,7 @@ const Payments = () => {
         const response  = await APIService.getPayment(data);
         const result = (await response.json());
         setExistingPayments(result.data);
+        setTotalItems(result.total_count)
         setPageLoading(false);
     }
     //Validation of the form
@@ -397,7 +399,7 @@ const Payments = () => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
                                             <div className='w-[5%] p-4'>
-                                                <p>{index + 1 } </p>
+                                                <p>{index + 1 + (currentPage - 1)*currentPages} </p>
                                             </div>
                                             <div className='w-[13%]  p-4'>
                                                 <p>{item.paymentto}</p>
@@ -428,7 +430,7 @@ const Payments = () => {
                                             <div className='w-1/2  p-4'>
                                                 <p>{item.id}</p>
                                             </div>
-                                            <div className='w-1/2 0 p-4 flex'>
+                                            <div className='w-1/2 0 p-4 flex space-x-2'>
                                                <img className=' w-5 h-5' src={Edit} alt="edit" />
                                                 <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                             </div>
