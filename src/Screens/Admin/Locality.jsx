@@ -17,7 +17,7 @@ import { APIService } from '../../services/API';
 import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
-import EditLobModal from './Modals/EditLobModal';
+import EditLocalityModal from './Modals/EditLocalityModal';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 const Locality = () => {
     const [existingLocalities,setExistingLocalities] = useState([]);
@@ -35,6 +35,8 @@ const Locality = () => {
     const [currCountry,setCurrCountry] = useState(-1);
     const [isSearchOn,setIsSearchOn] = useState(false);
     const [showSuccess,setShowSuccess] = useState(false);
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
     const initialValues = {
         country : 0,
         state : 0,
@@ -184,7 +186,6 @@ const Locality = () => {
         const res = await response.json();
         console.log(res);
         setIsLocalityDialogue(false);
-        
         openSuccess();
         fetchData();
     }
@@ -193,6 +194,14 @@ const Locality = () => {
         setTimeout(function () {
             setShowSuccess(false);
         },2000)
+    }
+    const openEditSuccess = () => {
+        setEditModal(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        },2000)
+        fetchData();
     }
     const deleteLob = async (name) => {
         // we write delete lob logic here
@@ -306,7 +315,7 @@ const Locality = () => {
       }
       const handleOpenEdit = (oldItem) => {
         setEditModal(true);
-        setCurrItem(oldItem)
+        setCurrItem(oldItem);
       }
       const handleCloseSearch = async () => {
          setPageLoading(true);
@@ -339,13 +348,24 @@ const Locality = () => {
         };
         const response = await APIService.deleteLocality(data);
         console.log(response);
+        openDeleteSuccess();
+        fetchData();
+      }
+      const openDeleteSuccess = () => {
+        // (false);
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        },2000)
         fetchData();
       }
     return (
         <div className=''>
             <Navbar />
-            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData}/>}
+            {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess}/>}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false) } message="Successfully Updated Locality" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false) } message="Successfully Deleted Locality"/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -478,10 +498,10 @@ const Locality = () => {
                                             <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1>isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1>NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
@@ -584,7 +604,7 @@ const Locality = () => {
                                             <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5' src={Edit} alt="edit" />
+                                            <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
                                             <button onClick={() => deleteLocality(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
