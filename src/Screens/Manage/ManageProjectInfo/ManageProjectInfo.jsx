@@ -22,7 +22,7 @@ import BankDetails from "./ManageProjectInfoForm/BankDetails"
 const ManageProjectInfo = () => {
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
-    const [existingEmployees, setExistingEmployees] = useState([]);
+    const [existingProjectInfo, setExistingProjectInfo] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -49,7 +49,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
+            "rows": ["builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -63,7 +63,7 @@ const ManageProjectInfo = () => {
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingProjectInfo(result);
         console.log(result);
         setPageLoading(false);
     }
@@ -71,7 +71,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
+            "rows": ["builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -85,7 +85,7 @@ const ManageProjectInfo = () => {
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingProjectInfo(result);
         setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
@@ -93,7 +93,7 @@ const ManageProjectInfo = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"
+            "rows": ["builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"
         ],
             "filters": [],
             "sort_by": [],
@@ -108,7 +108,7 @@ const ManageProjectInfo = () => {
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingProjectInfo(result);
         setPageLoading(false);
     }
     useEffect(() => {
@@ -331,7 +331,6 @@ const ManageProjectInfo = () => {
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
-
         setPageLoading(false);
     }
     return (
@@ -518,36 +517,36 @@ const ManageProjectInfo = () => {
                         <div className='w-full h-[450px] overflow-auto'>
                             {/* we map our items here */}
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingEmployees.map((item, index) => {
+                            {!pageLoading && existingProjectInfo.map((item, index) => {
                                 return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[3%] flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{index}</p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.buildername}</p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.projectname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.suburb}</p>
                                         </div>
                                     </div>
                                     <div className='w-[14.4%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.otherdetails}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.mailgroup1}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12.6%]  flex overflow-hidden'>
@@ -557,7 +556,7 @@ const ManageProjectInfo = () => {
                                     </div>
                                     <div className='w-[8%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.rules}</p>
                                         </div>
                                     </div>
                                     <div className='w-[8%]  flex overflow-hidden'>
