@@ -36,7 +36,6 @@ const ManageBuilder = () => {
     const [allCity, setAllCity] = useState([]);
     const [countryId,setcountryId]=useState("");
     const [userId,setUserId]=useState(0);
-    // const [selectedBuilder,setSelectedBuilder] = useState();
     const fetchUserId = async() =>{
         const response = await authService.getUserId()
         
@@ -61,7 +60,15 @@ const ManageBuilder = () => {
 
     const fetchBuilderData = async () => {
         setPageLoading(true);
-        const data = { "user_id": userId || 1234 };
+        const data = {
+            "user_id": 1234,
+            "rows": ["id","buildername","phone1","phone2","email1","addressline1"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 1,
+            "pg_size": 15
+          };
         const response = await APIService.getNewBuilderInfo(data)
         const result = (await response.json()).data.builder_info;
         setPageLoading(false);
