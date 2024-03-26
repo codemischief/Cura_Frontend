@@ -49,7 +49,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["projectname", "projectname", "adressline1", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -57,20 +57,21 @@ const ManageProjectInfo = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
         setExistingEmployees(result);
+        console.log(result);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -92,7 +93,8 @@ const ManageProjectInfo = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"
+        ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
