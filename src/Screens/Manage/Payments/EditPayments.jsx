@@ -16,9 +16,9 @@ const EditPayments = (props) => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [existingPayments, setExistingPayments] = useState([]);
-    const [paymentFor,setPaymentFor] = useState([]);
-    const [paymentMode,setPaymentMode] = useState([]);
-    const [entity,setEntity]=useState([])
+    const [paymentFor, setPaymentFor] = useState([]);
+    const [paymentMode, setPaymentMode] = useState([]);
+    const [entity, setEntity] = useState([])
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     };
@@ -42,7 +42,7 @@ const EditPayments = (props) => {
         if (Array.isArray(result)) {
             setAllUsername(result);
         }
-        const  response1 = await APIService.getModesAdmin(data);
+        const response1 = await APIService.getModesAdmin(data);
         const result1 = (await response1.json()).data;
         // console.log(result.data);
         setPaymentMode(result1);
@@ -87,7 +87,7 @@ const EditPayments = (props) => {
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
         console.log(result);
-        
+
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -118,15 +118,15 @@ const EditPayments = (props) => {
     }
 
     const fetchLobData = async () => {
-        const data = { 
-            "user_id" : 1234,
-            "rows" : ["id","name","lob_head","company"],
-            "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
-            "pg_no" : 0,
-            "pg_size" : 0
-         };
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "name", "lob_head", "company"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0
+        };
         const response = await APIService.getLob(data);
         const result = (await response.json()).data;
         console.log(result.data);
@@ -149,19 +149,25 @@ const EditPayments = (props) => {
         const data = {
             "user_id": 1234,
             "id": props.item.id,
-            "personname": formValues.personname,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": formValues.state,
-            "country": formValues.country,
-            "propertylocation": formValues.propertyLocation,
-            "possibleservices": formValues.possibleServices,
-            "dated": "2024-01-01 00:00:00",
-            "createdby": 1234,
-            "isdeleted": false
-
+            "paymentto" : formValues.paymentto,
+            "paymentby" : formValues.paymentby,
+            "amount" : Number(formValues.amount),
+            "paidon" : formValues.paidon,
+            "paymentmode" : formValues.paymentmode,
+            "description" : formValues.description,
+            "paymentfor" : formValues.paymentfor,
+            "dated" : "2021-01-01 12:00:00",
+            "createdby" : 1234,
+            "isdeleted" : false,
+            "entityid" : formValues.entity,
+            "officeid" : 10,
+            "tds" : formValues.tds,
+            "professiontax" : formValues.professiontax,
+            "month" : formValues.month,
+            "deduction" : 10,
         }
-        // const response = await APIService.editPayments(data);
+        const response = await APIService.editPayment(data);
+        console.log(response);
         props.handleClose();
         props.fetchData();
     }
@@ -173,14 +179,14 @@ const EditPayments = (props) => {
         paymentto: "",
         paymentby: "",
         amount: "",
-        description:"",
-        paymentfor:"",
-        paymentmode:"",
-        entity:"",
-        paidon:"",
-        month:"january",
-        tds:"",
-        professiontax:"",
+        description: "",
+        paymentfor: "",
+        paymentmode: "",
+        entity: "",
+        paidon: "",
+        month: "january",
+        tds: "",
+        professiontax: "",
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -244,51 +250,51 @@ const EditPayments = (props) => {
     };
     const selectedMonth = [
         {
-            id : 1,
+            id: 1,
             month: "january"
         },
         {
-            id : 2,
+            id: 2,
             month: "february"
         },
         {
-            id : 3,
+            id: 3,
             month: "march"
         },
         {
-            id : 4,
+            id: 4,
             month: "april"
         },
         {
-            id : 5,
+            id: 5,
             month: "may"
         },
         {
-            id : 6,
+            id: 6,
             month: "june"
         },
         {
-            id : 7,
+            id: 7,
             month: "july"
         },
         {
-            id : 8,
+            id: 8,
             month: "august"
         },
         {
-            id : 9,
+            id: 9,
             month: "september"
         },
         {
-            id : 10,
+            id: 10,
             month: "october"
         },
         {
-            id : 11,
+            id: 11,
             month: "november"
         },
         {
-            id : 12,
+            id: 12,
             month: "december"
         },
     ]
@@ -299,130 +305,130 @@ const EditPayments = (props) => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                 <div className=''>
+                <div className=''>
                     <div className="w-6/7  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Contractual Payments </div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </div>
                         </div>
                         {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
-                            <div className="h-auto w-full mt-[5px] ">
-                                <div className="flex gap-[48px] justify-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Cura Office </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
-                                                {allUsername.map(item => (
-                                                    <option key={item.id} value={item.id}>
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Payment By <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
-                                                {allUsername.map(item => (
-                                                    <option key={item.id} value={item.id}>
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Description </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="description" value={formValues.description} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Payment For <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
-                                                {paymentFor.map(item => (
-                                                    <option key={item.id} value={item.id}>
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
-                                        </div>
+                        <div className="h-auto w-full mt-[5px] ">
+                            <div className="flex gap-[48px] justify-center">
+                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[14px]">Cura Office </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} />
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
-                                                {paymentMode.map(item => (
-                                                    <option key={item[0]} value={item[0]}>
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Entity <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
-                                                {allEntities.map(item => (
-                                                    <option key={item[0]} value={item[1]}>
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paidOn}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="month" value={formValues.month} onChange={handleChange} >
-                                                {selectedMonth.map(item => (
-                                                    <option key={item.id} value={item.month}>
-                                                        {item.month}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.month}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div> */}
-                                        </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                            {allUsername.map(item => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Payment By <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                            {allUsername.map(item => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Description </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Payment For <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                            {paymentFor.map(item => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
+                                    </div>
+                                </div>
+                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                            {paymentMode.map(item => (
+                                                <option key={item[0]} value={item[0]}>
+                                                    {item[1]}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Entity <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
+                                            {allEntities.map(item => (
+                                                <option key={item[0]} value={item[1]}>
+                                                    {item[1]}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paidOn}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="month" value={formValues.month} onChange={handleChange} >
+                                            {selectedMonth.map(item => (
+                                                <option key={item.id} value={item.month}>
+                                                    {item.month}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.month}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div> */}
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="flex space-x-2 items-center">
-                                    <input type="checkbox" />
-                                    <div className="text-[13px] font-semibold">Exclude from Mailing List</div>
-                                </div>
-                                <div className=" mb-2 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Add</button>
-                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
-                                </div>
+                        <div className="flex flex-col items-center gap-2">
+                            <div className="flex space-x-2 items-center">
+                                <input type="checkbox" />
+                                <div className="text-[13px] font-semibold">Exclude from Mailing List</div>
                             </div>
+                            <div className=" mb-2 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
+                            </div>
+                        </div>
                         {/* </form> */}
                     </div>
                 </div>
