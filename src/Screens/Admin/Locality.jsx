@@ -46,7 +46,56 @@ const Locality = () => {
         locality : ""
     }
     const [formValues,setFormValues] = useState(initialValues);
-    
+    const [formErrors,setFormErrors] = useState({
+        country : "",
+        state : "",
+        city : "",
+        locality : ""
+    });
+    const validate = ()  => {
+        var res = true;
+        if(!formValues.country) {
+            setFormErrors((existing) => {
+               return {...existing,country: "Select a Country"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,country: ""}
+             })
+        }
+        if(!formValues.state) {
+            setFormErrors((existing) => {
+               return  {...existing,state: "Select a State"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,state: ""}
+             })
+        }
+        if(!formValues.city) {
+            setFormErrors((existing) => {
+                return {...existing,city: "Select a City"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,city: ""}
+            })
+        }
+        if(!formValues.locality) {
+            setFormErrors((existing) => {
+                return {...existing,locality: "Enter a Locality"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,locality: ""}
+            })
+        }
+        return res;
+    }
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -218,6 +267,9 @@ const Locality = () => {
             setPageLoading(false);
     }
     const addLocality = async () => {
+        if(!validate()) {
+            return ;
+        }
         const data = {
             "user_id" : 1234,
             "cityid" : formValues.city,
@@ -872,7 +924,7 @@ const Locality = () => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[150px]'>
-                    <div className="w-6/7  h-[400px] bg-white rounded-lg">
+                    <div className="w-6/7  h-[450px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Add New Locality</div>
@@ -912,6 +964,7 @@ const Locality = () => {
                                                   
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                         <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
@@ -937,6 +990,7 @@ const Locality = () => {
                                                   
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
@@ -963,6 +1017,7 @@ const Locality = () => {
                                                   
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
@@ -973,6 +1028,7 @@ const Locality = () => {
                                                     return newData;
                                                 })
                                             }} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.locality}</div>
                                         </div>
 
                                     </div>

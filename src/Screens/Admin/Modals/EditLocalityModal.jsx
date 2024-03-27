@@ -6,7 +6,11 @@ import { APIService } from '../../../services/API'
 const EditLocalityModal = (props) => {
     // const [showSuccess,setShowSuccess] = useState(false);
     const [inputField,setInputField] = useState(props.item.locality);
+    
     const handleUpdate = async () => {
+        if(inputField == "") {
+            return ;
+        }
         const data = {
             "user_id" : 1234,
             "id" : props.item.id,
