@@ -468,7 +468,7 @@ const ManageEmployees = () => {
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee"/>}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Added Employee"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}

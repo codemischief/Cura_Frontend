@@ -416,11 +416,22 @@ const Payments = () => {
             setShowSuccess(false);
         }, 2000)
     }
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const openEditSuccess = () => {
+        setIsEditDialogue(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        }, 2000)
+        fetchData();
+    }
     return (
         <div>
             <Navbar />
-            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
+            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Payments" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
             <div className='flex-col w-full h-full  bg-white'>
+                
                 <div className='flex-col'>
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
@@ -588,7 +599,7 @@ const Payments = () => {
                             })}
                             {/* we get all the existing prospect here */}
                             {isEditDialogue && <EditPayments isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currentStatement}
-                                fetchData={fetchData} />}
+                                fetchData={fetchData} openPrompt={openEditSuccess}/>}
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetchData={fetchData} />}
                         </div>
                     </div>

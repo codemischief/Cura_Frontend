@@ -142,12 +142,10 @@ const EditManageEmployee = (props) => {
     }
     useEffect(() => {
         fetchEmployeeData();
-        // fetchCountryData();
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
-        fetchCountryStateCity()
     }, []);
 
     const handleEdit = async () => {

@@ -2,11 +2,11 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Cross from "../../../assets/cross.png";
 import { APIService } from '../../../services/API';
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal,CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
-
+// import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 const EditPayments = (props) => {
-    console.log(props.item);
+    console.log(props.item.item);
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
@@ -19,20 +19,11 @@ const EditPayments = (props) => {
     const [paymentFor, setPaymentFor] = useState([]);
     const [paymentMode, setPaymentMode] = useState([]);
     const [entity, setEntity] = useState([])
+    const [pageLoading,setPageLoading] = useState(false); 
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     };
-    const fetchCountryData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
-        const response = await APIService.getCountries(data)
-        const result = (await response.json()).data;
-        console.log(result.data);
-
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
-    }
+    
     const fetchAllData = async () => {
         // setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -54,32 +45,6 @@ const EditPayments = (props) => {
         const result3 = (await response3.json()).data;
         setEntity(result3)
     }
-    const fetchStateData = async (id) => {
-        console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
-        const response = await APIService.getState(data);
-        const result = (await response.json()).data;
-        console.log(result)
-        if (Array.isArray(result)) {
-            setAllState(result)
-        }
-    }
-    const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_id": id };
-        const response = await APIService.getCities(data);
-        const result = (await response.json()).data;
-        console.log(result);
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
-        }
-    }
     const fetchUsersData = async () => {
         // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, };
@@ -92,17 +57,6 @@ const EditPayments = (props) => {
         }
     }
 
-    const fetchRoleData = async () => {
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234, };
-        const response = await APIService.getRoles(data)
-        const result = (await response.json()).data;
-        console.log(result.data);
-
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
-        }
-    }
 
     const fetchEntitiesData = async () => {
         // const data = { "user_id":  1234 };
@@ -134,11 +88,21 @@ const EditPayments = (props) => {
             setAllLOB(result.data);
         }
     }
-
+    const fetchPaymentData = async () => {
+        setPageLoading(true);
+       const data = {"user_id":1234,"table_name":"ref_contractual_payments","item_id": props.item.item.id};
+       const response = await APIService.getItembyId(data);
+       const result = await response.json();
+       setFormValues(result.data);
+       setFormValues((existing) => {
+        return {...existing, paidon : result.data.paidon.split('T')[0]}
+     })
+     setPageLoading(false);
+       console.log(result)
+    }
     useEffect(() => {
-        fetchCountryData();
+        fetchPaymentData();
         fetchEntitiesData();
-        fetchRoleData();
         fetchUsersData();
         fetchLobData();
         fetchAllData();
@@ -147,7 +111,7 @@ const EditPayments = (props) => {
     const handleEdit = async () => {
         const data = {
             "user_id": 1234,
-            "id": props.item.id,
+            "id": props.item.item.id,
             "paymentto" : formValues.paymentto,
             "paymentby" : formValues.paymentby,
             "amount" : Number(formValues.amount),
@@ -158,26 +122,28 @@ const EditPayments = (props) => {
             "dated" : "2021-01-01 12:00:00",
             "createdby" : 1234,
             "isdeleted" : false,
-            "entityid" : formValues.entity,
+            "entityid" : formValues.entityid,
             "officeid" : 10,
-            "tds" : formValues.tds,
+            "tds" : Number(formValues.tds),
             "professiontax" : formValues.professiontax,
             "month" : formValues.month,
             "deduction" : 10,
         }
         const response = await APIService.editPayment(data);
-        console.log(response);
-        props.handleClose();
-        props.fetchData();
+        const result = await response.json();
+        console.log(result);
+        props.openPrompt();
+        // props.handleClose();
+        // props.fetchData();
     }
     const handleClose = () => {
         props.setOpenDialog(false);
     };
     const initialValues = {
         curaoffice: "",
-        paymentto: "",
-        paymentby: "",
-        amount: "",
+        paymentto: props.item.item.paymentto,
+        paymentby: props.item.item.paymentby,
+        amount: props.item.item.amount,
         description: "",
         paymentfor: "",
         paymentmode: "",
@@ -187,7 +153,7 @@ const EditPayments = (props) => {
         tds: "",
         professiontax: "",
     };
-    const [formValues, setFormValues] = useState(initialValues);
+    const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
 
     const handleChange = (e) => {
@@ -314,8 +280,9 @@ const EditPayments = (props) => {
                                 <img onClick={props.handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </div>
                         </div>
+                        {pageLoading && <div className='flex justify-center items-center mt-9 space-x-7 mb-6'><CircularProgress/><h1>Fetching Payment Data</h1></div>}
                         {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
-                        <div className="h-auto w-full mt-[5px] ">
+                        {!pageLoading && <div className="h-auto w-full mt-[5px] ">
                             <div className="flex gap-[48px] justify-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
@@ -325,11 +292,18 @@ const EditPayments = (props) => {
                                     <div className="">
                                         <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>
                                         <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
-                                            {allUsername.map(item => (
-                                                <option key={item.id} value={item.id}>
+                                            {allUsername.map(item => {
+                                                if(item.name == formValues.paymentto) {
+                                                    return <option key={item.id} value={item.id} selected>
+                                                         {item.name}
+                                                    </option>
+                                                }else {
+                                                    return <option key={item.id} value={item.id}>
                                                     {item.name}
                                                 </option>
-                                            ))}
+                                                }
+                                                
+                                          })}
                                         </select>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
                                     </div>
@@ -416,7 +390,7 @@ const EditPayments = (props) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
 
                         <div className="flex flex-col items-center gap-2">
                             <div className="flex space-x-2 items-center">
