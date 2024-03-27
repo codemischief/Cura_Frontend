@@ -6,6 +6,7 @@ import { Modal , Button ,CircularProgress} from '@mui/material'
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import SucessImage from "../../../assets/SuccessImage.png";
 const Delete = (props) => {
     const [showLoading,setShowLoading] = useState(false);
     const [showSucess,setShowSucess] = useState(false);
@@ -18,15 +19,28 @@ const Delete = (props) => {
         const response = await APIService.deleteBankStatement(data);
           await props.fetchData();
           setShowLoading(false);
-        //   console.log(await response.json())
-        //   if((await response.json()).result == "success"){
-        //     setShowSucess(true);
-        //     props.closeDialog(false);
-        //   }
+          if((await response.json()).result === "success"){
+            setShowSucess(true);
+          }
+        setTimeout(function () {
+            setShowSucess(false)
+          }, 2000)
+          
           props.closeDialog(false);
           
       }
   return (
+    <div>
+     <Modal open={showSucess} fullWidth={true} >
+        <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
+           <div className='w-full h-64 pt-12'>
+                <img src={SucessImage} className='h-24 w-24  mx-auto '/>
+                <div className='w-full flex justify-center mt-6'>
+                    <h1>Bank Statement Deleted successfully</h1>
+                </div>
+           </div>
+        </div>
+    </Modal>
     <Modal open={props.isOpen}
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
@@ -56,6 +70,7 @@ const Delete = (props) => {
             </div>
 
         </Modal>
+        </div>
   )
 }
 

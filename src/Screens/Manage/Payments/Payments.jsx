@@ -15,6 +15,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../../services/API';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import EditPayments from './EditPayments';
 const Payments = () => {
     const [totalItems,setTotalItems] = useState(0);
     const [currentPages,setCurrentPages] = useState(15);
@@ -23,6 +24,9 @@ const Payments = () => {
     const [allUsername,setAllUsername] = useState([]);
     const [pageLoading,setPageLoading] = useState(false);
     const [allEntities,setAllEntites] = useState([]);
+    const [currentStatement, setCurrentStatement] = useState({});
+    const [currentStatementId,setCurrentStatementId] = useState();
+    const [showDelete, setShowDelete] = useState(false);
     const openDownload = () => {
         setDownloadModal(true);
     }
@@ -38,8 +42,8 @@ const Payments = () => {
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
-        console.log(result.data);
-       console.log('hey')
+        // console.log(result.data);
+    //    console.log('hey')
        setFormValues((existing) => {
             return {...existing,paymentto : result.data[0].id, paymentby : result.data[0].id}
        })
@@ -53,7 +57,7 @@ const Payments = () => {
         const data = { "user_id": 1234};
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
-        console.log(result.data);
+        // console.log(result.data);
         setFormValues((existing) => {
             return {...existing, entity : result.data[0][0]}
         })
@@ -70,7 +74,7 @@ const Payments = () => {
         }
         const  response = await APIService.getModesAdmin(data);
         const result = (await response.json());
-        console.log(result.data);
+        // console.log(result.data);
         setPaymentMode(result.data);
         setFormValues((existing) => {
            return {...existing, paymentmode : result.data[0][0]}
@@ -83,7 +87,7 @@ const Payments = () => {
         const response = await APIService.getPaymentFor(data);
         const result = (await response.json())
         setPaymentFor(result.data);
-        console.log(result.data);
+        // console.log(result.data);
         setFormValues((existing) => {
             return {...existing, paymentfor : result.data[0].id}
         })
@@ -132,7 +136,7 @@ const Payments = () => {
         setExistingPayments(result.data);
         setTotalItems(result.total_count)
         setPageLoading(false);
-        console.log(result);
+        // console.log(result);
     }
     const fetchQuantityData = async (quantity) => {
         setCurrentPages(quantity);
@@ -246,14 +250,24 @@ const Payments = () => {
             "month" : formValues.month,
             "deduction" : 10
         }
-        console.log(data);
+        // console.log(data);
         const response = await APIService.addPayment(data);
         const result = await response.json();
         setIsPaymentsDialogue(false);
         openSuccess();
 
-        console.log(result);
+        // console.log(result);
     }
+    const deletePayments = async (id) => {
+        console.log(id);
+        const data = {
+            "user_id":1234,
+            "id":Number(id)
+        };
+        const response = await APIService.deletePayment(data);
+        console.log(response);
+        fetchData();
+      }
     const selectedPaymentMode = [
         "1", "2", "3", "4"
     ]
@@ -364,6 +378,11 @@ const Payments = () => {
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
+    const editStatement = (item) => {
+        const items={item}
+        setCurrentStatement(items);
+        setIsEditDialogue(true);
+    }
     const handleOpenEdit = () => {
         setIsEditDialogue(true);
     };
@@ -561,14 +580,15 @@ const Payments = () => {
                                                 <p>{item.id}</p>
                                             </div>
                                             <div className='w-1/2 0 p-4 flex space-x-2'>
-                                               <img className=' w-5 h-5' src={Edit} alt="edit" />
-                                                <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                               <img className=' w-5 h-5' src={Edit} alt="edit" onClick={() => editStatement(item)} />
+                                                <button onClick={() => deletePayments(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                 </div>
                             })}
                             {/* we get all the existing prospect here */}
-
+                            {isEditDialogue && <EditPayments openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} payments={currentStatement} fetchData={fetchData}/>}
+                            {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetchData={fetchData}/> }
                         </div>
                     </div>
                     <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
@@ -589,7 +609,7 @@ const Payments = () => {
                                         //  defaultValue="Select State"
                                          onChange={e => {
                                             setCurrentPages(e.target.value);
-                                            console.log(e.target.value);
+                                            // console.log(e.target.value);
                                             fetchQuantityData(e.target.value)
                                          }}
                                

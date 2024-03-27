@@ -16,6 +16,10 @@ const EditManageEmployee = (props) => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [pageLoading,setPageLoading] = useState(false);
+    const [currentstate, setCurrentstate] = useState('')
+    const [currentcity, setCurrentcity] = useState("");
+    const [currentCountry, setCurrentCountry] = useState("");
+    const [allItem, setAllItem] = useState([]);
     const fetchCountryData = async () => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
@@ -143,6 +147,7 @@ const EditManageEmployee = (props) => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
+        fetchCountryStateCity()
     }, []);
 
     const handleEdit = async () => {

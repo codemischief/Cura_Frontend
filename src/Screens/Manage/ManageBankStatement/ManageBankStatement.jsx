@@ -20,6 +20,8 @@ import FileSaver from 'file-saver';
 import { authService } from "../../../services/authServices";
 import Filter from "../../../assets/filter.png"
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import dayjs from "dayjs";
+import DayJS from 'react-dayjs';
 const ManageBankStatement = () => {
     // we have the module here
     const [existingStatement, setExistingStatement] = useState([]);
@@ -52,7 +54,11 @@ const ManageBankStatement = () => {
     const [modeEdit,setModeEdit]=useState(Number)
     const[receivedBy,setRecievedBy]=useState(Number);
     const[vendorId,setVendorId]=useState(Number);
+    
     // const [selectedBuilder,setSelectedBuilder] = useState();
+    const convertDate = (data)=>{
+
+    }
     const getEmployees = async () => {
         const data = {
             "user_id": 1234,
@@ -569,12 +575,12 @@ const ManageBankStatement = () => {
 
                         </div>
                         <div className='h-12 w-full bg-white flex justify-between'>
-                             <div className='w-3/4 flex'>
-                                <div className='w-[5%]'>
+                             <div className='w-5/6 flex'>
+                                <div className='w-[5px] p-4'>
                                     
                                 </div>
-                                <div className='w-[14%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)}/>
+                                <div className='w-[120px] p-4'>
+                                   <input className="w-11 bg-[#EBEBEB]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleModeFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {modeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -603,8 +609,8 @@ const ManageBankStatement = () => {
                                             </div>
                                         </div>} 
                                 </div>
-                                <div className='w-[14%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)}/>
+                                <div className='w-[120px] p-4'>
+                                   <input className="w-11 bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleDateFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {dateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -633,39 +639,39 @@ const ManageBankStatement = () => {
                                             </div>
                                         </div>} 
                                 </div>
-                                <div className='w-[10%] p-4'>
-                                   {/* <input className="w-11 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                <div className='w-[100px] p-4'>
+                                   <input className="w-8 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[10px] w-[10px]'/></button>
                                    {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <h1 >No Filter</h1>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                              <button onClick={() => fetchFilteredMode('contains')}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => fetchFilteredMode('contains')}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => fetchFilteredMode('startsWith')}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => fetchFilteredMode('endsWith')}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => fetchFilteredMode('exactMatch')}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                               <button onClick={() => fetchFilteredMode('isNull')}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                               <button onClick={() => fetchFilteredMode('isNotNull')}><h1 >NotIsNull</h1></button>
                                             </div>
-                                        </div>}  */}
+                                        </div>} 
                                 </div>
-                                <div className='w-[10%] p-4'>
+                                <div className='w-[120px] p-4'>
                                    <input className="w-8 bg-[#EBEBEB]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleAmountFilter}><img src={Filter} className='h-[15px] w-[15px]'/></button>
+                                   <button className='p-1' onClick={toggleAmountFilter}><img src={Filter} className='h-[12px] w-[12px]'/></button>
                                    {amountFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <h1 >No Filter</h1>
@@ -693,7 +699,7 @@ const ManageBankStatement = () => {
                                             </div>
                                         </div>} 
                                 </div>
-                                <div className='w-[20%] p-4'>
+                                <div className='w-[500px] p-4'>
                                    <input className="w-14 bg-[#EBEBEB]" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleClientFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {clientFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
@@ -723,7 +729,7 @@ const ManageBankStatement = () => {
                                             </div>
                                         </div>} 
                                 </div>
-                                <div className='w-[20%] p-4'>
+                                <div className='w-[180px] p-4'>
                                    <input className="w-14 bg-[#EBEBEB]" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleParticularsFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {particularsFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
@@ -753,8 +759,8 @@ const ManageBankStatement = () => {
                                             </div>
                                         </div>} 
                                 </div>
-                                <div className='w-[20%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)}/>
+                                <div className='w-[120px] p-4'>
+                                   <input className="w-11 bg-[#EBEBEB]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleCRFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
                                    {crFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -786,10 +792,10 @@ const ManageBankStatement = () => {
                                 
                             </div>
                             <div className='w-1/6  flex'>
-                                <div className='w-[50%] p-2 mt-2'>
+                                {/* <div className='w-[100px] p-2 mt-2'>
                                    <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                </div>
+                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[14px]'/></button>
+                                </div> */}
                                 <div className='w-1/2 0 p-4'>
                                      
                                 </div>
@@ -800,29 +806,30 @@ const ManageBankStatement = () => {
 
                     <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
+                            <div className='w-[90%]  flex'>
+                                <div className='w-[5px] p-4'>
                                     <p>Sr. </p>
                                 </div>
-                                <div className='w-[10%]  p-4'>
+                                <div className='w-[120px]  p-4'>
                                     <p onClick={() => handleSort("modeofpayment")}>Mode <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
+                                <div className='w-[100px]  p-4'>
                                     <p onClick={() => handleSort("date")}>Date ↑↓</p>
                                 </div>
-                                <div className='w-[5%]  p-4'>
+                                <div className='w-[50px]  p-4'>
                                     <p onClick={() => handleSort("crdr")}>Type</p>
                                 </div>
-                                <div className='w-[8%]  p-4'>
+                                <div className='w-[100px]  p-4'>
                                     <p onClick={() => handleSort("amount")}>Amount </p>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
-                                </div>
-                                <div className='w-[20%]  p-4'>
+                                <div className='w-[400px] p-4 '>
                                     <p onClick={() => handleSort("particulars")}>Particulars</p>
                                 </div>
-                                <div className='w-[10%]  p-4'>
+                                <div className='w-[200px] p-4 '>
+                                    <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
+                                </div>
+                              
+                                <div className='w-[150px] p-4 '>
                                     <p>Client Receipt</p>
                                 </div>
                             </div>
@@ -840,42 +847,45 @@ const ManageBankStatement = () => {
                                 <CircularProgress />
                             </div>}
                             {existingStatement && existingStatement.map((item, index) => {
-                                return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
+                                return <div className='w-full   flex justify-between border-gray-400 border-b-[1px]'>
+                                    <div className='w-[85%] text-[11px]  flex'>
+                                        <div className='w-[5px] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
-                                        <div className='w-[10%]  p-4'>
+                                        <div className='w-[150px]  p-4'>
                                             
                                             {mode &&mode.map(ele => (
                                                 (item.modeofpayment === ele[0])?
                                                     <p>{ele[1]}</p> :""))}
                                         </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.date}</p>
+                                        <div className='w-[150px]  p-4'>
+                                            {/* <p>{item.date}</p> */}
+                                            <DayJS format="DD-MMM-YYYY">{item.date}</DayJS>
+                                            {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                         </div>
-                                        <div className='w-[5%]  p-4'>
+                                        <div className='w-[60px]  p-4'>
                                             <p>{item.crdr ==="CR                  "?"Credit" : "Debit"}</p>
                                         </div>
-                                        <div className='w-[8%]  p-4'>
+                                        <div className='w-[100px]  p-4'>
                                             <p>{item.amount}</p>
                                         </div>
-                                        <div className='w-[15%]  p-4 '>
+                                        <div className='w-[600px] break-all p-4 '>
+                                            <p>{item.particulars}</p>
+                                        </div>
+                                        <div className='w-[300px] break-all p-4 '>
                                             {/* <p>{item.clientid}</p> */}
                                             {client &&client.map(ele => (
                                                 (item.clientid === ele[0])?
                                                     <p>{ele[1]}</p> :""))}
                                         </div>
-                                        <div className='w-[20%]  p-4 '>
-                                            <p>{item.particulars}</p>
-                                        </div>
-                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
+                                        
+                                        <div className='w-[100px]  p-4 text-blue-500 cursor-pointer'>
                                             {(!(item.clientid) && item.crdr ==="CR                  " )&& <p onClick={openCreditRecipt}>Enter CR</p>}
                                            
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                         </div>
                                     </div>
-                                    <div className='w-[10%] flex'>
+                                    <div className='w-[150px] flex'>
                                         <div className='w-1/2  p-4'>
                                             <p>{item.id}</p>
                                             
@@ -994,7 +1004,8 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Particulars<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} />
+                                            {/* <input className="w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
+                                            <textarea className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
                                         </div>
                                         <div className="">
