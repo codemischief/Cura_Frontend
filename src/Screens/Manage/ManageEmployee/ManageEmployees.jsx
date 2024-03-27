@@ -256,7 +256,7 @@ const ManageEmployees = () => {
             "createdby": 1234,
             "isdeleted": false,
             "entityid": formValues.entity,
-            "lobid": formValues.lob,
+            "lobid": formValues.lob == null ? "" : formValues.lob ,
             "lastdateofworking": formValues.lastDOW,
             "designation": formValues.designation
         }
@@ -454,6 +454,7 @@ const ManageEmployees = () => {
         },2000)
         fetchData();
       }
+    
     return (
         <div>
             <Navbar />

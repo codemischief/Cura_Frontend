@@ -20,24 +20,25 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result.data);
 
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        // console.log(id);
         const data = { "user_id": 1234, "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        // console.log(result)
         if (Array.isArray(result)) {
             setAllState(result)
         }
     }
     const fetchCityData = async (id) => {
+        console.log(id);
         const data = { "user_id": 1234, "state_id": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
@@ -58,10 +59,10 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, };
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result);
         
-        if (Array.isArray(result.data)) {
-            setAllUsername(result.data);
+        if (Array.isArray(result)) {
+            setAllUsername(result);
         }
     }
 
@@ -70,10 +71,10 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, };
         const response = await APIService.getRoles(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        console.log(result);
 
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
+        if (Array.isArray(result)) {
+            setAllRoles(result);
         }
     }
 
@@ -82,10 +83,10 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        console.log(result);
 
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
+        if (Array.isArray(result)) {
+            setAllEntites(result);
         }
     }
 
@@ -101,10 +102,10 @@ const EditManageEmployee = (props) => {
          };
         const response = await APIService.getLob(data);
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result);
 
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
+        if (Array.isArray(result)) {
+            setAllLOB(result);
         }
     }
 
@@ -117,49 +118,43 @@ const EditManageEmployee = (props) => {
     }, []);
 
     const handleEdit = async () => {
+
         const data = {
             "user_id": 1234,
-            "id": props.item.id,
-            "personname": formValues.personname,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": formValues.state,
-            "country": formValues.country,
-            "propertylocation": formValues.propertyLocation,
-            "possibleservices": formValues.possibleServices,
-            "dated": "2024-01-01 00:00:00",
+            "id" : formValues.id,
+            "employeename": formValues.employeename == null ? "" : formValues.employeename,
+            "employeeid": formValues.employeeid,
+            "userid": 1236,
+            "roleid": 2,
+            "dateofjoining": formValues.doj == null ? null : formValues.doj,
+            "dob": formValues.dob == null ? "" : formValues.dob,
+            "panno": formValues.panno == null ? "" : formValues.panno,
+            "status": false,
+            "phoneno": Number(formValues.phoneno) == null ? "" : Number(formValues.phoneno),
+            "email": formValues.email,
+            "addressline1": formValues.addressLine1 == null ? "" : formValues.addressLine1,
+            "addressline2": formValues.addressLine2 == null ? "" : formValues.addressLine2,
+            "suburb": formValues.suburb == null ? "" : formValues.suburb, 
+            "city": 847,
+            "state": Number(formValues.state),
+            "country": 5,
+            "lobid": 5,
+            "zip": formValues.zip == null ? "" : formValues.zip ,
+            "dated": "20-01-2020  00:00:00",
             "createdby": 1234,
-            "isdeleted": false
-
+            "isdeleted": false,
+            "entityid": 1,
+            "lastdateofworking": formValues.lastdateofworking == null ? "" : formValues.lastdateofworking,
+            "designation": formValues.designation == null ? "" : formValues.designation
         }
-        const response = await APIService.editProspects(data);
-        props.handleClose();
-        props.fetchData();
+        console.log(data);
+        const response = await APIService.editEmployee(data);
+        const result = await response.json();
+        console.log(result);
+        // props.fetchData();
+        // props.handleClose();
     }
-
-    const initialValues = {
-        employeeName: "",
-        panNo: "",
-        userName: "",
-        doj: "",
-        designation: "",
-        email: "",
-        addressLine1:"",
-        employeeId: "",
-        lob: "",
-        dob: "",
-        lastDOW:"",
-        role: "",
-        phNo: "",
-        addressLine2:"",
-        country: "",
-        state: "",
-        city: "",
-        suburb: "",
-        zipCode:"",
-        entity: ""
-
-    };
+    console.log(props.item);
     const [formValues, setFormValues] = useState(props.item);
     const [formErrors, setFormErrors] = useState({});
 
@@ -237,7 +232,7 @@ const EditManageEmployee = (props) => {
                                 <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form >
+                        {/* <form > */}
                             <div className="h-auto w-full mt-[5px]">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -252,24 +247,17 @@ const EditManageEmployee = (props) => {
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.panNo}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Username <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Username: <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="userName"
-                                                value={formValues.userid}
-                                                defaultValue="Select Username"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                value={formValues.userName}
+                                                onChange={handleChange}
+                                            >{allUsername &&allUsername.map(ele => (
+                                                (formValues.userid === ele.id)?
+                                                <option>{ele.name}</option>:""))}
                                                 {allUsername && allUsername.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item.name} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
@@ -297,8 +285,8 @@ const EditManageEmployee = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Employee ID<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeId}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeid} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeid}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">LOB <label className="text-red-500">*</label></div>
@@ -306,19 +294,13 @@ const EditManageEmployee = (props) => {
                                                 name="lob"
                                                 value={formValues.lob}
                                                 defaultValue="Select lob"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                onChange={handleChange}
+                                            >{allLOB &&allLOB.map(ele => (
+                                                (formValues.lob === ele.id)?
+                                                <option>{ele.name}</option>:""))}
                                                 {allLOB && allLOB.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item.name} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
@@ -330,34 +312,28 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Last Date of Working</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastdateofworking" value={formValues.lastdateofworking} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Assign Role <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Assign Role {formValues.roleid}<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="role"
-                                                value={formValues.role}
+                                                value={formValues.roleid}
                                                 defaultValue="Select Role"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                onChange={handleChange}
+                                            >{allRoles &&allRoles.map(ele => (
+                                                (formValues.roleid === ele.name)?
+                                                <option>{ele.name}</option>:((formValues.roleid === "NA_None")?<option>NA_None</option>:" ")))}
                                                 {allRoles && allRoles.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item.name} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone Number<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div>
                                         </div>
                                         <div className="">
@@ -425,7 +401,7 @@ const EditManageEmployee = (props) => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    // console.log(e.target.value);
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, city: e.target.value }
                                                         return newData;
@@ -447,7 +423,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Zip Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zipcode" value={formValues.zipCode} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Entities <label className="text-red-500">*</label></div>
@@ -455,19 +431,11 @@ const EditManageEmployee = (props) => {
                                                 name="entity"
                                                 value={formValues.entity}
                                                 defaultValue="Select entity"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                onChange={handleChange}
+                                            ><option>Select Entity</option>
                                                 {allEntities && allEntities.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item[1]} >
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -480,7 +448,7 @@ const EditManageEmployee = (props) => {
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                             </div>
-                        </form>
+                        {/* </form> */}
                     </div>
                 </div>
             </Modal>
