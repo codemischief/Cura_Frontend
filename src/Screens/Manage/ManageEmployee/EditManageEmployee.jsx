@@ -20,24 +20,25 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result.data);
 
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
-        console.log(id);
+        // console.log(id);
         const data = { "user_id": 1234, "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
-        console.log(result)
+        // console.log(result)
         if (Array.isArray(result)) {
             setAllState(result)
         }
     }
     const fetchCityData = async (id) => {
+        console.log(id);
         const data = { "user_id": 1234, "state_id": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
@@ -58,10 +59,10 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, };
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result);
         
-        if (Array.isArray(result.data)) {
-            setAllUsername(result.data);
+        if (Array.isArray(result)) {
+            setAllUsername(result);
         }
     }
 
@@ -70,10 +71,10 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, };
         const response = await APIService.getRoles(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        console.log(result);
 
-        if (Array.isArray(result.data)) {
-            setAllRoles(result.data);
+        if (Array.isArray(result)) {
+            setAllRoles(result);
         }
     }
 
@@ -82,10 +83,10 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        console.log(result);
 
-        if (Array.isArray(result.data)) {
-            setAllEntites(result.data);
+        if (Array.isArray(result)) {
+            setAllEntites(result);
         }
     }
 
@@ -101,10 +102,10 @@ const EditManageEmployee = (props) => {
          };
         const response = await APIService.getLob(data);
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result);
 
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
+        if (Array.isArray(result)) {
+            setAllLOB(result);
         }
     }
 
@@ -117,6 +118,7 @@ const EditManageEmployee = (props) => {
     }, []);
 
     const handleEdit = async () => {
+
         const data = {
             "user_id": 1234,
             "id": props.item.id,
@@ -148,7 +150,7 @@ const EditManageEmployee = (props) => {
         employeeId: "",
         lob: "",
         dob: "",
-        lastDOW:"",
+        lastdateofworking:"",
         role: "",
         phNo: "",
         addressLine2:"",
@@ -252,24 +254,17 @@ const EditManageEmployee = (props) => {
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.panNo}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Username <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Username: <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="userName"
-                                                value={formValues.userid}
-                                                defaultValue="Select Username"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                value={formValues.userName}
+                                                onChange={handleChange}
+                                            >{allUsername &&allUsername.map(ele => (
+                                                (formValues.userid === ele.id)?
+                                                <option>{ele.name}</option>:""))}
                                                 {allUsername && allUsername.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item.name} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
@@ -297,8 +292,8 @@ const EditManageEmployee = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Employee ID<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeId}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeid} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeid}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">LOB <label className="text-red-500">*</label></div>
@@ -306,19 +301,13 @@ const EditManageEmployee = (props) => {
                                                 name="lob"
                                                 value={formValues.lob}
                                                 defaultValue="Select lob"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                onChange={handleChange}
+                                            >{allLOB &&allLOB.map(ele => (
+                                                (formValues.lob === ele.id)?
+                                                <option>{ele.name}</option>:""))}
                                                 {allLOB && allLOB.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item.name} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
@@ -330,27 +319,21 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Last Date of Working</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastdateofworking" value={formValues.lastdateofworking} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Assign Role <label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Assign Role {formValues.roleid}<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="role"
-                                                value={formValues.role}
+                                                value={formValues.roleid}
                                                 defaultValue="Select Role"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                onChange={handleChange}
+                                            >{allRoles &&allRoles.map(ele => (
+                                                (formValues.roleid === ele.name)?
+                                                <option>{ele.name}</option>:((formValues.roleid === "NA_None")?<option>NA_None</option>:" ")))}
                                                 {allRoles && allRoles.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item.name} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
@@ -425,7 +408,7 @@ const EditManageEmployee = (props) => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
+                                                    // console.log(e.target.value);
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, city: e.target.value }
                                                         return newData;
@@ -455,19 +438,11 @@ const EditManageEmployee = (props) => {
                                                 name="entity"
                                                 value={formValues.entity}
                                                 defaultValue="Select entity"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
+                                                onChange={handleChange}
+                                            ><option>Select Entity</option>
                                                 {allEntities && allEntities.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
+                                                    <option value={item[1]} >
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
