@@ -34,7 +34,7 @@ const Prospect = () => {
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-
+    const [searchInput,setSearchInput] = useState("");
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -86,7 +86,8 @@ const Prospect = () => {
             "sort_by": [],
             "order": "asc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getProspects(data)
         const temp = await response.json();
@@ -218,6 +219,50 @@ const Prospect = () => {
     const handleRefresh = async () => {
         await fetchData();
     }
+    const handleSearch = async () => {
+        setPageLoading(true);
+        
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "personname", "suburb", "city", "country", "propertylocation", "possibleservices"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key" : searchInput
+        };
+        const response = await APIService.getProspects(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(result);
+        setExistingProspect(result);
+        setPageLoading(false);
+    }
+    const handleCloseSearch = async () => {
+        setPageLoading(true);
+        setSearchInput("");
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "personname", "suburb", "city", "country", "propertylocation", "possibleservices"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key" : ""
+        };
+        const response = await APIService.getProspects(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(result);
+        setExistingProspect(result);
+        setPageLoading(false);
+    }
     return (
         <div>
             <Navbar />
@@ -240,7 +285,7 @@ const Prospect = () => {
                                     <p className='text-[14px]'>Research &gt; Prospect</p>
                                 </div>
                             </div>
-                            <div className='flex space-x-2 items-center'>
+                            <div className='flex space-x-2 items-center relative'>
 
                                 <div className='flex'>
                                     {/* search button */}
@@ -248,9 +293,12 @@ const Prospect = () => {
                                         className="h-[36px] bg-[#EBEBEB] text-[#787878]"
                                         type="text"
                                         placeholder="  Search"
+                                        value={searchInput}
+                                        onChange={(e) => setSearchInput(e.target.value)}
                                     />
+                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                                        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                     </div>
                                 </div>
 
