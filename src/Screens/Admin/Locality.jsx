@@ -5,7 +5,7 @@ import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,useRef} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
@@ -20,6 +20,7 @@ import Excel from "../../assets/excel.png"
 import EditLocalityModal from './Modals/EditLocalityModal';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 const Locality = () => {
+    const menuRef = useRef();
     const [existingLocalities,setExistingLocalities] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
     const [currentPage,setCurrentPage] = useState(1);
@@ -37,6 +38,7 @@ const Locality = () => {
     const [showSuccess,setShowSuccess] = useState(false);
     const [showEditSuccess,setShowEditSuccess] = useState(false);
     const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
+    const [filterArray,setFilterArray] = useState([["country","contains",""],["state","contains",""],["city","contains",""],["locality","contains",""]]);
     const initialValues = {
         country : 0,
         state : 0,
@@ -86,14 +88,34 @@ const Locality = () => {
     useEffect(() => {
         fetchData();
         fetchCountryData();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+               setCountryFilter(false);
+               setStateFilter(false);
+               setCityFilter(false);
+               setLocalityFilter(false);
+               
+            }
+         }
+   
+         document.addEventListener("mousedown", handler);
+         return () => {
+            document.removeEventListener("mousedown", handler);
+         };
     }, []);
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
+        const tempFilters = [];
+            for(var i=0;i<4;i++) {
+                if(filterArray[i][2] != "") {
+                    tempFilters.push(filterArray[i]);
+                }
+            }
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
-            "filters" : [],
+            "filters" : tempFilters,
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(pageNumber),
@@ -110,10 +132,16 @@ const Locality = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
+        const tempFilters = [];
+            for(var i=0;i<4;i++) {
+                if(filterArray[i][2] != "") {
+                    tempFilters.push(filterArray[i]);
+                }
+            }
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
-            "filters" : [],
+            "filters" : tempFilters,
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
@@ -131,10 +159,16 @@ const Locality = () => {
     }
     const fetchData = async () => {
         setPageLoading(true);
+        const tempFilters = [];
+        for(var i=0;i<4;i++) {
+            if(filterArray[i][2] != "") {
+                tempFilters.push(filterArray[i]);
+            }
+        }
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
-            "filters" : [],
+            "filters" : tempFilters,
             "sort_by" : [],
             "order" : "asc",
             "pg_no" : Number(currentPage),
@@ -154,10 +188,16 @@ const Locality = () => {
     }
     const handleSort = async (field) => {
             setPageLoading(true);
+            const tempFilters = [];
+            for(var i=0;i<4;i++) {
+                if(filterArray[i][2] != "") {
+                    tempFilters.push(filterArray[i]);
+                }
+            }
             const data = { 
                 "user_id" : 1234,
                 "rows" : ["id","country","cityid","city","state","locality"],
-                "filters" : [],
+                "filters" : tempFilters,
                 "sort_by" : [field],
                 "order" : flag ? "asc" : "desc",
                 "pg_no" : 1,
@@ -204,16 +244,7 @@ const Locality = () => {
         fetchData();
     }
     const deleteLob = async (name) => {
-        // we write delete lob logic here
-        // setPageLoading(true);
-        // const data = {
-        //     "user_id" : 1234,
-        //     "name" : String(name)
-        // }
-        // const response = await APIService.deleteLob(data);
-        // // fetchPageData();
-        // fetchData();
-        // setPageLoading(false);
+        
     }
     const [isLocalityDialogue, setIsLocalityDialogue] = React.useState(false);
     const handleOpen = () => {
@@ -359,6 +390,155 @@ const Locality = () => {
         },2000)
         fetchData();
       }
+      const [countryFilter,setCountryFilter] = useState(false);
+      const [countryFilterInput,setCountryFilterInput] = useState("");
+      const [countryFilterType,setCountryFilterType] = useState("");
+      const [stateFilter,setStateFilter] = useState(false);
+      const [stateFilterInput,setStateFilterInput] = useState("");
+      const [stateFilterType,setStateFilterType] = useState("");
+      const [cityFilter,setCityFilter] = useState(false);
+      const [cityFilterInput,setCityFilterInput] = useState("");
+      const [cityFilterType,setCityFilterType] = useState("");
+      const [localityFilter,setLocalityFilter] = useState(false);
+      const [localityFilterInput,setLocalityFilterInput] = useState("");
+      const [localityFilterType,setLocalityFilterType] = useState("");
+    //   const [filterArray,setFilterArray] = useState([["country","nofilter",""],["state","nofilter",""],["city","nofilter",""],["locality","nofilter",""]]);
+      const handleFilter = (type,columnNo) => {
+        const existing = filterArray;
+        if(type == "noFilter") {
+            const existing = filterArray;
+             if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                setCountryFilterInput("");
+                existing[columnNo][2] = "";
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                setStateFilterInput("");
+                existing[columnNo][2] = "";
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                setCityFilterInput("");
+                existing[columnNo][2] = "";
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                setLocalityFilterInput("");
+                existing[columnNo][2] = "";
+                setFilterArray(existing);
+             }
+        }else if(type == "startsWith") {
+            if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = countryFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = stateFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = cityFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = localityFilterInput;
+                setFilterArray(existing);
+             }
+        }else if(type == "endsWith") {
+            if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = countryFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = stateFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = cityFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = localityFilterInput;
+                setFilterArray(existing);
+             }
+        }else if(type == "contains") {
+            if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = countryFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = stateFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = cityFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = localityFilterInput;
+                setFilterArray(existing);
+             }
+        }else if(type == "exactMatch") {
+            if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = countryFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = stateFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = cityFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = localityFilterInput;
+                setFilterArray(existing);
+             }
+        }else if(type == "isNull") {
+            if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = countryFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = stateFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = cityFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = localityFilterInput;
+                setFilterArray(existing);
+             }
+        }else if(type == "isNotNull") {
+            if(columnNo == 0) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = countryFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 1) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = stateFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 2) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = cityFilterInput;
+                setFilterArray(existing);
+             }else if(columnNo == 3) {
+                existing[columnNo][1] = type;
+                existing[columnNo][2] = localityFilterInput;
+                setFilterArray(existing);
+             }
+        }
+        fetchData();
+      }
     return (
         <div className=''>
             <Navbar />
@@ -378,7 +558,7 @@ const Locality = () => {
                                 </div>
 
                                 <div className='flex-col'>
-                                    <h1>LOB</h1>
+                                    <h1>Locality</h1>
                                     <p>Admin &gt; Localities</p>
                                 </div>
                             </div>
@@ -415,123 +595,123 @@ const Locality = () => {
                                     {/* <p>Sr. </p> */}
                                 </div>
                                 <div className='w-[15%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                   <input className="w-14 bg-[#EBEBEB]" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'ref={menuRef}>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
+                                              <button onClick={() => handleFilter('noFilter',0)}><h1 >No Filter</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                              <button onClick={() => handleFilter('contains',0)}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains',0)}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith',0)}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith',0)}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch',0)}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                               <button onClick={() => handleFilter('isNull',0)}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                               <button onClick={() => handleFilter('isNotNull',0)}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
                                 <div className='w-[20%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
+                                   <input className="w-14 bg-[#EBEBEB]" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                   <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => handleFilter('noFilter',1)}><h1 >No Filter</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                              <button onClick={() => handleFilter('contains',1)}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains',1)}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith',1)}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith',1)}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch',1)}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                               <button onClick={() => handleFilter('isNull',1)}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                               <button onClick={() => handleFilter('isNotNull',1)}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
 
                                 <div className='w-[20%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
+                                   <input className="w-14 bg-[#EBEBEB]" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                   <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => handleFilter('noFilter',2)}><h1 >No Filter</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                              <button onClick={() => handleFilter('contains',2)}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains',2)}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith',2)}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith',2)}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch',2)}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1>isNull</h1></button>
+                                               <button onClick={() => handleFilter('isNull',2)}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1>NotIsNull</h1></button>
+                                               <button onClick={() => handleFilter('isNotNull',2)}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
                                 <div className='w-[20%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
+                                   <input className="w-14 bg-[#EBEBEB]" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)}/>
+                                   <button className='p-1' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                   {localityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                   <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => handleFilter('noFilter',3)}><h1 >No Filter</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                              <button onClick={() => handleFilter('contains',3)}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains',3)}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith',3)}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith',3)}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch',3)}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                               <button onClick={() => handleFilter('isNull',3)}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                               <button onClick={() => handleFilter('isNotNull',3)}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>
