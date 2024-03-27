@@ -6,6 +6,7 @@ import { Modal, Pagination, LinearProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 
 const EditManageEmployee = (props) => {
+    console.log(props.item);
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
@@ -58,7 +59,7 @@ const EditManageEmployee = (props) => {
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
         console.log(result.data);
-
+        
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -79,7 +80,7 @@ const EditManageEmployee = (props) => {
     const fetchEntitiesData = async () => {
         // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, };
-        const response = await APIService.getEntites(data)
+        const response = await APIService.getEntityAdmin(data)
         const result = (await response.json()).data;
         console.log(result.data);
 
@@ -159,7 +160,7 @@ const EditManageEmployee = (props) => {
         entity: ""
 
     };
-    const [formValues, setFormValues] = useState(initialValues);
+    const [formValues, setFormValues] = useState(props.item);
     const [formErrors, setFormErrors] = useState({});
 
     const handleChange = (e) => {
@@ -230,10 +231,10 @@ const EditManageEmployee = (props) => {
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Employee</div>
+                                <div className="text-[16px]">Update Employee Details</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={props.handleClose()}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
                         <form >
@@ -242,19 +243,19 @@ const EditManageEmployee = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Employee Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeName}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeename" value={formValues.employeename} onChange={handleChange} />
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeName}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Pan No<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.panNo}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="panno" value={formValues.panno} onChange={handleChange} />
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.panNo}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Username <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="userName"
-                                                value={formValues.userName}
+                                                value={formValues.userid}
                                                 defaultValue="Select Username"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
@@ -477,7 +478,7 @@ const EditManageEmployee = (props) => {
                             <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose()}>Cancel</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                             </div>
                         </form>
                     </div>
