@@ -188,6 +188,8 @@ const Locality = () => {
     }
     const handleSort = async (field) => {
             setPageLoading(true);
+            // console.log(field);
+
             const tempFilters = [];
             for(var i=0;i<4;i++) {
                 if(filterArray[i][2] != "") {
@@ -740,13 +742,13 @@ const Locality = () => {
                                             <p>Country <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>State <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
+                                            <p>State <button onClick={() => handleSort("state")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>City <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
+                                            <p>City <button onClick={() => handleSort("city")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                         <div className='w-[25%]  p-4'>
-                                            <p>Locality <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
+                                            <p>Locality <button onClick={() => handleSort("locality")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>

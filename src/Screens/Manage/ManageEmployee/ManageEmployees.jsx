@@ -41,6 +41,7 @@ const ManageEmployees = () => {
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess,setShowAddSuccess] = useState(false);
     const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
+    // const [filterArray,setFilterArray] = useState([]);
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
