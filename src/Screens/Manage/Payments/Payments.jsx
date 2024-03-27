@@ -258,6 +258,16 @@ const Payments = () => {
 
         // console.log(result);
     }
+    const deletePayments = async (id) => {
+        console.log(id);
+        const data = {
+            "user_id":1234,
+            "id":Number(id)
+        };
+        const response = await APIService.deletePayment(data);
+        console.log(response);
+        fetchData();
+      }
     const selectedPaymentMode = [
         "1", "2", "3", "4"
     ]
@@ -571,7 +581,7 @@ const Payments = () => {
                                             </div>
                                             <div className='w-1/2 0 p-4 flex space-x-2'>
                                                <img className=' w-5 h-5' src={Edit} alt="edit" onClick={() => editStatement(item)} />
-                                                <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                                <button onClick={() => deletePayments(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                 </div>

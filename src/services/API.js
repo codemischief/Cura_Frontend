@@ -176,6 +176,10 @@ return response;
   const response = await fetch(`${env_URL_SERVER}addPayment`, METHOD_POST(data));
   return response;
  }
+ const deletePayment = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deletePayment`, METHOD_POST(data));
+  return response;
+ }
  const getPaymentFor = async (data) => {
   const response = await fetch(`${env_URL_SERVER}paymentForAdmin`, METHOD_POST(data));
   return response;
