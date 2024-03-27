@@ -40,6 +40,7 @@ const ManageEmployees = () => {
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess,setShowAddSuccess] = useState(false);
+    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -353,7 +354,14 @@ const ManageEmployees = () => {
         }
         return errors;
     };
-
+    const deleteEmployee = async (id) => {
+        const data = {
+            "user_id" : 1234,
+            "id" : id
+        }
+        const response = await APIService.deleteEmployee(data);
+        openDeleteSuccess();
+    }
     const handlePageChange = (event, value) => {
         console.log(value);
         setCurrentPage(value)
@@ -439,11 +447,19 @@ const ManageEmployees = () => {
         },2000)
         fetchData();
       }
+      const openDeleteSuccess = () => {
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        },2000)
+        fetchData();
+      }
     return (
         <div>
             <Navbar />
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee"/>}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -692,7 +708,7 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[8.33%]  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => { }}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                        <button onClick={() => deleteEmployee(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
                             })}
