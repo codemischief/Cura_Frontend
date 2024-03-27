@@ -184,7 +184,23 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getModesAdmin`, METHOD_POST(data));
   return response;
  }
+ const getProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+ const addProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+ const editProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}editResearchProspect`, METHOD_POST(data));
+  return response;
+ }
+ const deleteProspects = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteResearchProspect`, METHOD_POST(data));
+  return response;
+ }
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
   getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
-  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment};
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects};
   

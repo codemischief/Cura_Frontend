@@ -4,12 +4,16 @@ import Cross from "../../../assets/cross.png";
 import { Link } from 'react-router-dom';
 import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
-
+import { APIService } from '../../../services/API';
 const DeleteProspect = (props) => {
   const handleDialogClose = () => {
     props.setOpenDialog(false);
 };
-
+  const handleDelete = () => {
+    const data = {
+        
+    }
+  }
   return (
     <Modal open={props.openDialog}
             fullWidth={true}
