@@ -124,6 +124,17 @@ const Prospect = () => {
         setPageLoading(false);
         fetchData();
     }
+
+    const deleteProspects = async (id) => {
+        console.log(id);
+        const data = {
+            "user_id":1234,
+            "id":Number(id)
+        };
+        const response = await APIService.deleteProspects(data);
+        console.log(response);
+        fetchData();
+      }
     //Validation of the form
     const initialValues = {
         personName: "",
@@ -347,7 +358,7 @@ const Prospect = () => {
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleOpenDelete(item)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteProspects(item.id)} />
                                         </div>
                                     </div>
                                 </div>
