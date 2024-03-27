@@ -64,7 +64,7 @@ const ManageEmployees = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_id": id };
+        const data = { "user_id": 1234, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -982,7 +982,7 @@ const ManageEmployees = () => {
                                                 }}
                                             >
                                                 {allState && allState.map(item => (
-                                                    <option value={item[0]} >
+                                                    <option value={item[1]} >
                                                         {item[1]}
                                                     </option>
 
