@@ -80,7 +80,6 @@ const EditPayments = (props) => {
             }
         }
     }
-
     const fetchUsersData = async () => {
         // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, };
@@ -300,7 +299,7 @@ const EditPayments = (props) => {
     ]
     return (
         <>
-            <Modal open={props.openDialog}
+            <Modal open={props.isOpen}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -312,7 +311,7 @@ const EditPayments = (props) => {
                                 <div className="text-[16px]">Edit Contractual Payments </div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                <img onClick={props.handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </div>
                         </div>
                         {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
@@ -426,7 +425,7 @@ const EditPayments = (props) => {
                             </div>
                             <div className=" mb-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                             </div>
                         </div>
                         {/* </form> */}
