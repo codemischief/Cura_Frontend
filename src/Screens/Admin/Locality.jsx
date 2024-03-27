@@ -38,7 +38,7 @@ const Locality = () => {
     const [showSuccess,setShowSuccess] = useState(false);
     const [showEditSuccess,setShowEditSuccess] = useState(false);
     const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
-    const [filterArray,setFilterArray] = useState([["country","contains",""],["state","contains",""],["city","contains",""],["locality","contains",""]]);
+    const [filterArray,setFilterArray] = useState([["name","contains",""],["state","contains",""],["city","contains",""],["locality","contains",""]]);
     const initialValues = {
         country : 0,
         state : 0,
@@ -914,9 +914,9 @@ const Locality = () => {
                                         <div className="">
                                         <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
+                                                name="state"
                                                 value={formValues.state}
-                                                defaultValue="Select State"
+                                                // defaultValue={formValues.state}
                                                 onChange={e => {
                                                     fetchCityData(e.target.value);
                                                     setFormValues((existing) => {
@@ -926,8 +926,8 @@ const Locality = () => {
                                                     
                                                 }}
                                             >
-                                                {allState && allState.map(item => (
-                                                    <option value={item[0]} >
+                                                {allState.length > 0 && allState.map(item => (
+                                                    <option value={item[1]} >
                                                         {item[1]}
                                                     </option>
                                                   
