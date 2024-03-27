@@ -14,14 +14,15 @@ import { Modal , Pagination, LinearProgress} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../../services/API';
-
+import SucessfullModal from '../../../Components/modals/SucessfullModal';
 const Payments = () => {
     const [totalItems,setTotalItems] = useState(0);
     const [currentPages,setCurrentPages] = useState(15);
     const [currentPage,setCurrentPage] = useState(1);
     const [downloadModal,setDownloadModal] = useState(false);
-
+    const [allUsername,setAllUsername] = useState([]);
     const [pageLoading,setPageLoading] = useState(false);
+    const [allEntities,setAllEntites] = useState([]);
     const openDownload = () => {
         setDownloadModal(true);
     }
@@ -30,9 +31,70 @@ const Payments = () => {
         setCurrentPage(value)
         fetchPageData(value);
     }
+    const fetchUsersData = async () => {
+        // setPageLoading(true);
+        // const data = { "user_id":  1234 };
+        const data = { "user_id": 1234 };
+        const response = await APIService.getUsers(data)
+        const result = (await response.json());
+
+        console.log(result.data);
+       console.log('hey')
+       setFormValues((existing) => {
+            return {...existing,paymentto : result.data[0].id, paymentby : result.data[0].id}
+       })
+        if (Array.isArray(result.data)) {
+            setAllUsername(result.data);
+        }
+    }
+    const fetchEntitiesData = async () => {
+        // setPageLoading(true);
+        // const data = { "user_id":  1234 };
+        const data = { "user_id": 1234};
+        const response = await APIService.getEntityAdmin(data)
+        const result = (await response.json());
+        console.log(result.data);
+        setFormValues((existing) => {
+            return {...existing, entity : result.data[0][0]}
+        })
+        if (Array.isArray(result.data)) {
+            setAllEntites(result.data);
+        }
+    }
     const [existingPayments, setExistingPayments] = useState([]);
+    const [paymentFor,setPaymentFor] = useState([]);
+    const [paymentMode,setPaymentMode] = useState([]);
+    const fetchPaymentMode = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const  response = await APIService.getModesAdmin(data);
+        const result = (await response.json());
+        console.log(result.data);
+        setPaymentMode(result.data);
+        setFormValues((existing) => {
+           return {...existing, paymentmode : result.data[0][0]}
+        })
+    }
+    const fetchPaymentFor = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getPaymentFor(data);
+        const result = (await response.json())
+        setPaymentFor(result.data);
+        console.log(result.data);
+        setFormValues((existing) => {
+            return {...existing, paymentfor : result.data[0].id}
+        })
+        // console.log(result);
+    }
     useEffect(() => {
        fetchData();
+       fetchUsersData();
+       fetchEntitiesData();
+       fetchPaymentFor();
+       fetchPaymentMode();
     }, []);
     const fetchData = async () => {
         setPageLoading(true);
@@ -150,41 +212,100 @@ const Payments = () => {
     }
     //Validation of the form
     const initialValues = {
-        curaOffice: "",
-        PaymentTo: "",
-        PaymentBy: "",
+        curaoffice: "",
+        paymentto: "",
+        paymentby: "",
         amount: "",
-        deduction:"",
-        tallyLedger:"",
         description:"",
-        paymentMode:"",
+        paymentfor:"",
+        paymentmode:"",
         entity:"",
-        paidOn:"",
-        month:"",
-        TDS:"",
-        professionTax:"",
+        paidon:"",
+        month:"january",
+        tds:"",
+        professiontax:"",
     };
+    
+    const addPayment = async () => {
+        const data = {
+            "user_id" : 1234,
+            "paymentto" : formValues.paymentto,
+            "paymentby" : formValues.paymentby,
+            "amount" : Number(formValues.amount),
+            "paidon" : formValues.paidon,
+            "paymentmode" : formValues.paymentmode,
+            "description" : formValues.description,
+            "paymentfor" : formValues.paymentfor,
+            "dated" : "2021-01-01 12:00:00",
+            "createdby" : 1234,
+            "isdeleted" : false,
+            "entityid" : formValues.entity,
+            "officeid" : 10,
+            "tds" : formValues.tds,
+            "professiontax" : formValues.professiontax,
+            "month" : formValues.month,
+            "deduction" : 10
+        }
+        console.log(data);
+        const response = await APIService.addPayment(data);
+        const result = await response.json();
+        setIsPaymentsDialogue(false);
+        openSuccess();
 
-    const selectedPaymentTo = [
-        "1", "2", "3", "4"
-    ]
-    const selectedPaymentBy = [
-        "1", "2", "3", "4"
-    ]
-    const selectedTallyLedger = [
-        "1", "2", "3", "4"
-    ]
-    const selectedentity = [
-        "1", "2", "3", "4"
-    ]
+        console.log(result);
+    }
     const selectedPaymentMode = [
         "1", "2", "3", "4"
     ]
-    const selectedPaymentEntity = [
-        "1", "2", "3", "4"
-    ]
     const selectedMonth = [
-        "1", "2", "3", "4"
+        {
+            id : 1,
+            month: "january"
+        },
+        {
+            id : 2,
+            month: "february"
+        },
+        {
+            id : 3,
+            month: "march"
+        },
+        {
+            id : 4,
+            month: "april"
+        },
+        {
+            id : 5,
+            month: "may"
+        },
+        {
+            id : 6,
+            month: "june"
+        },
+        {
+            id : 7,
+            month: "july"
+        },
+        {
+            id : 8,
+            month: "august"
+        },
+        {
+            id : 9,
+            month: "september"
+        },
+        {
+            id : 10,
+            month: "october"
+        },
+        {
+            id : 11,
+            month: "november"
+        },
+        {
+            id : 12,
+            month: "december"
+        },
     ]
 
     const [formValues, setFormValues] = useState(initialValues);
@@ -267,10 +388,19 @@ const Payments = () => {
     }
     const handleRefresh = async () => {
         await fetchData();
+
+    }
+    const [showSuccess,setShowSuccess] = useState(false);
+    const openSuccess = () => {
+        setShowSuccess(true);
+        setTimeout(function () {
+            setShowSuccess(false);
+        },2000)
     }
     return (
         <div>
             <Navbar />
+            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -528,91 +658,91 @@ const Payments = () => {
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit} className='space-y-2'>
+                        {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Cura Office </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="curaOffice" value={formValues.curaOffice} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="PaymentTo" value={formValues.PaymentTo} onChange={handleChange} >
-                                                {selectedPaymentTo.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                                {allUsername.map(item => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Payment By <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="PaymentBy" value={formValues.PaymentBy} onChange={handleChange} >
-                                                {selectedPaymentBy.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                                {allUsername.map(item => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Tally Ledger <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} >
-                                                {selectedTallyLedger.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Description </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                         </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Payment For <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                                {paymentFor.map(item => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
+                                        </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="PaymentMode" value={formValues.paymentMode} onChange={handleChange} >
-                                                {selectedPaymentMode.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                                {paymentMode.map(item => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Entity <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
-                                                {selectedentity.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                {allEntities.map(item => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidOn" value={formValues.paidOn} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.paidOn}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="month" value={formValues.month} onChange={handleChange} >
                                                 {selectedMonth.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                    <option key={item.id} value={item.month}>
+                                                        {item.month}
                                                     </option>
                                                 ))}
                                             </select>
@@ -620,13 +750,13 @@ const Payments = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professionTax" value={formValues.professionTax} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div> */}
                                         </div>
                                     </div>
                                 </div>
@@ -638,11 +768,11 @@ const Payments = () => {
                                     <div className="text-[13px] font-semibold">Exclude from Mailing List</div>
                                 </div>
                                 <div className=" mb-2 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addPayment}>Add</button>
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
                             </div>
-                        </form>
+                        {/* </form> */}
                     </div>
                 </div>
             </Modal>
