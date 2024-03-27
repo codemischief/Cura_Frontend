@@ -918,6 +918,7 @@ const Locality = () => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="state"
                                                 value={formValues.state}
+                                                defaultValue="Select State"
                                                 // defaultValue={formValues.state}
                                                 onChange={e => {
                                                     fetchCityData(e.target.value);
@@ -928,6 +929,7 @@ const Locality = () => {
                                                     
                                                 }}
                                             >
+                                                <option value="none" hidden={true}>Select a State</option>
                                                 {allState.length > 0 && allState.map(item => (
                                                     <option value={item[1]} >
                                                         {item[1]}
@@ -941,7 +943,7 @@ const Locality = () => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="country"
                                                 value={formValues.city}
-                                                defaultValue="Select State"
+                                                defaultValue="Select City"
                                                 onChange={e => {
                                                     // fetchCityData(e.target.value);
                                                     console.log(e.target.value);
@@ -953,6 +955,7 @@ const Locality = () => {
                                                     
                                                 }}
                                             >
+                                                <option value="none" hidden={true}>Select a City</option>
                                                 {allCity && allCity.map(item => (
                                                     <option value={item.id} >
                                                         {item.city}
