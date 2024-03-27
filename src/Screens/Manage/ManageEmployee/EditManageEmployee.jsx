@@ -2,11 +2,11 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Cross from "../../../assets/cross.png";
 import { APIService } from '../../../services/API';
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 
 const EditManageEmployee = (props) => {
-    console.log(props.item);
+    // console.log(props.item);
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
@@ -15,66 +15,44 @@ const EditManageEmployee = (props) => {
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
+    const [pageLoading,setPageLoading] = useState(false);
     const [currentstate, setCurrentstate] = useState('')
     const [currentcity, setCurrentcity] = useState("");
     const [currentCountry, setCurrentCountry] = useState("");
     const [allItem, setAllItem] = useState([]);
-    const fetchCountryStateCity=async () => {
-        // const data = { "user_id":  1234 };
-        const data = {
-            "user_id": 1234,
-            "table_name": "employee",
-            "item_id": props.item.id
-        }
-        const response = await APIService.getItembyId(data)
-        const result = (await response.json()).data;
-        console.log(result);
-        setCurrentstate(result[state]);
-        // setCurrentCountry(result.country)
-        // setCurrentcity(result.city)
-        // console.log(currentcity);
-        console.log(currentstate);
-        // console.log(currentCountry);
-      
-
-    }
     const fetchCountryData = async () => {
-        // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        // console.log(result.data);
-
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
     }
     const fetchStateData = async (id) => {
         // console.log(id);
-        const data = { "user_id": 1234, "country_id": id };
+        console.log(id);
+        const data = { "user_id": 1234, "country_id":  5};
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
+        console.log(result)
         // console.log(result)
+        
+        // await fetchCityData(formValues.state);
         if (Array.isArray(result)) {
             setAllState(result)
         }
     }
-    const fetchCityData = async (id) => {
-        console.log(id);
-        const data = { "user_id": 1234, "state_id": id };
+    const fetchCityData = async (name) => {
+        // console.log("Maharashtra");
+        console.log("hy")
+        console.log(name);
+        const data = { "user_id": 1234, "state_name" : name };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
-        if (Array.isArray(result)) {
-            setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
-        }
+        // console.log(result);
+        setAllCity(result);
     }
 
     const fetchUsersData = async () => {
@@ -131,9 +109,40 @@ const EditManageEmployee = (props) => {
             setAllLOB(result);
         }
     }
-
+    const fetchEmployeeData = async () => {
+        setPageLoading(true);
+        const data = {
+            "user_id" : 1234,
+            "table_name" : "employee",
+            "item_id" : props.item.id
+        }
+        console.log(data);
+        const response = await APIService.getItembyId(data);
+        const result = await response.json();
+        setFormValues(result.data);
+        // console.log(formValues.state);
+        await fetchCountryData();
+        // console.log(result.data.dateofjoining.split('T')[0]);
+       setFormValues((existing) => {
+          return {...existing, dateofjoining : result.data.dateofjoining.split('T')[0]}
+       })
+       setFormValues((existing) => {
+        return {...existing, dob : result.data.dob.split('T')[0]}
+     })
+     setFormValues((existing) => {
+        return {...existing, lastdateofworking : result.data.lastdateofworking.split('T')[0]}
+     })
+     setFormValues((existing) => {
+        return {...existing, dated : result.data.dated.split('T')[0]}
+     })
+        await fetchStateData(result.data.country);
+        await fetchCityData(result.data.state);
+        setPageLoading(false);
+        console.log(result);
+    }
     useEffect(() => {
-        fetchCountryData();
+        fetchEmployeeData();
+        // fetchCountryData();
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
@@ -146,40 +155,41 @@ const EditManageEmployee = (props) => {
         const data = {
             "user_id": 1234,
             "id" : formValues.id,
-            "employeename": formValues.employeename == null ? "" : formValues.employeename,
+            "employeename": formValues.employeename,
             "employeeid": formValues.employeeid,
             "userid": 1236,
-            "roleid": 2,
-            "dateofjoining": formValues.doj == null ? null : formValues.doj,
-            "dob": formValues.dob == null ? "" : formValues.dob,
-            "panno": formValues.panno == null ? "" : formValues.panno,
-            "status": false,
-            "phoneno": Number(formValues.phoneno) == null ? "" : Number(formValues.phoneno),
+            "roleid": formValues.roleid ,
+            "dateofjoining": formValues.dateofjoining,
+            "dob": formValues.dob,
+            "panno": formValues.panno,
+            "status": formValues.status,
+            "phoneno": formValues.phoneno,
             "email": formValues.email,
-            "addressline1": formValues.addressLine1 == null ? "" : formValues.addressLine1,
-            "addressline2": formValues.addressLine2 == null ? "" : formValues.addressLine2,
-            "suburb": formValues.suburb == null ? "" : formValues.suburb, 
-            "city": 847,
-            "state": Number(formValues.state),
-            "country": 5,
-            "lobid": 5,
-            "zip": formValues.zip == null ? "" : formValues.zip ,
-            "dated": "20-01-2020  00:00:00",
+            "addressline1": formValues.addressline1,
+            "addressline2": formValues.addressline2,
+            "suburb": formValues.suburb , 
+            "city": formValues.city,
+            "state": formValues.state,
+            "country": Number(formValues.country),
+            "lobid": formValues.lobid,
+            "zip": formValues.zip ,
+            "dated": formValues.dated,
             "createdby": 1234,
-            "isdeleted": false,
-            "entityid": 1,
-            "lastdateofworking": formValues.lastdateofworking == null ? "" : formValues.lastdateofworking,
-            "designation": formValues.designation == null ? "" : formValues.designation
+            "isdeleted": formValues.isdeleted,
+            "entityid": Number(formValues.entityid),
+            "lastdateofworking": formValues.lastdateofworking,
+            "designation": formValues.designation 
         }
         console.log(data);
         const response = await APIService.editEmployee(data);
         const result = await response.json();
+        props.showSuccess();
         console.log(result);
         // props.fetchData();
         // props.handleClose();
     }
     console.log(props.item);
-    const [formValues, setFormValues] = useState(props.item);
+    const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
 
     const handleChange = (e) => {
@@ -241,13 +251,16 @@ const EditManageEmployee = (props) => {
     };
     return (
         <div>
+            
             <Modal open={props.isOpen}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
+                
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
+                        
                         <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Update Employee Details</div>
@@ -256,8 +269,9 @@ const EditManageEmployee = (props) => {
                                 <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        {/* <form > */}
-                            <div className="h-auto w-full mt-[5px]">
+                        
+                        {pageLoading  &&  <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress/><h1>Fetching Employee Data</h1></div>  }
+                        {!pageLoading && <div className="h-auto w-full mt-[5px]">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
@@ -288,8 +302,8 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Date of joining<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.doj}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="dateofjoining" value={formValues.dateofjoining} onChange={handleChange} />
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.doj}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Designation<label className="text-red-500">*</label></div>
@@ -303,7 +317,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Address Line 1</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline1" value={formValues.addressline1} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -341,7 +355,7 @@ const EditManageEmployee = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Assign Role {formValues.roleid}<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="role"
+                                                name="roleid"
                                                 value={formValues.roleid}
                                                 defaultValue="Select Role"
                                                 onChange={handleChange}
@@ -362,7 +376,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline2" value={formValues.addressline2} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px] ">
@@ -373,9 +387,6 @@ const EditManageEmployee = (props) => {
                                                 value={formValues.country}
                                                 defaultValue="Select Country"
                                                 onChange={e => {
-                                                    // setselectedCountry(e.target.value);
-                                                    // fetchStateData(e);
-                                                    // console.log(e.target.value);
                                                     setCurrCountry(e.target.value);
                                                     fetchStateData(e.target.value);
                                                     setFormValues((existing) => {
@@ -390,16 +401,14 @@ const EditManageEmployee = (props) => {
                                                     <option value={item[0]} >
                                                         {item[1]}
                                                     </option>
-
                                                 ))}
                                             </select>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
+                                                name="state"
                                                 value={formValues.state}
-                                                defaultValue="Select State"
                                                 onChange={e => {
                                                     fetchCityData(e.target.value);
                                                     setFormValues((existing) => {
@@ -409,23 +418,26 @@ const EditManageEmployee = (props) => {
 
                                                 }}
                                             >
-                                                {allState && allState.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-
-                                                ))}
+                                                {allState && allState.map((item) => {
+                                                    // if(item[0])
+                                                    if(item[1] == formValues.state) {
+                                                        return <option value={item[1]} selected>
+                                                            {item[1]}
+                                                        </option>
+                                                    }else {
+                                                        return (<option value={item[1]} >
+                                                            {item[1]}
+                                                        </option>);
+                                                    }
+                                                 })}
                                             </select>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
+                                                name="city"
                                                 value={formValues.city}
-                                                defaultValue="Select State"
                                                 onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    // console.log(e.target.value);
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, city: e.target.value }
                                                         return newData;
@@ -433,11 +445,9 @@ const EditManageEmployee = (props) => {
 
                                                 }}
                                             >
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
-                                                    </option>
-                                                ))}
+                                                {allCity.map((item) => {
+                                                    return <option value={item.id}>{item.city}</option>
+                                                 })}
                                             </select>
                                         </div>
                                         <div className="">
@@ -452,13 +462,13 @@ const EditManageEmployee = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Entities <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="entity"
-                                                value={formValues.entity}
+                                                name="entityid"
+                                                value={formValues.entityid}
                                                 defaultValue="Select entity"
                                                 onChange={handleChange}
                                             ><option>Select Entity</option>
                                                 {allEntities && allEntities.map(item => (
-                                                    <option value={item[1]} >
+                                                    <option value={item[0]} >
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -466,7 +476,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                </div>}
                             <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>

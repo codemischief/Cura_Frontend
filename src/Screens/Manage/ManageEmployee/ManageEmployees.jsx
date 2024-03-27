@@ -294,7 +294,7 @@ const ManageEmployees = () => {
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
-
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -454,13 +454,21 @@ const ManageEmployees = () => {
         },2000)
         fetchData();
       }
-    
+      const openEditSuccess =() => {
+        setIsEditDialogue(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        },2000)
+        fetchData();
+      }
     return (
         <div>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}/>}
+            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee"/>}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Added Employee"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
