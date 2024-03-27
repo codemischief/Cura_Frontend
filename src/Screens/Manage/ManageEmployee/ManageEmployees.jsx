@@ -217,6 +217,7 @@ const ManageEmployees = () => {
     }, []);
 
     const handleOpenEdit = (oldItem) => {
+        console.log('called');
         setIsEditDialogue(true);
         setCurrItem(oldItem)
     };
@@ -265,7 +266,6 @@ const ManageEmployees = () => {
         openAddSuccess();
         console.log(data);
         console.log(result);
-        
     }
 
     const initialValues = {
@@ -442,8 +442,7 @@ const ManageEmployees = () => {
     return (
         <div>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}
-                fetchData={fetchData} />}
+            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
