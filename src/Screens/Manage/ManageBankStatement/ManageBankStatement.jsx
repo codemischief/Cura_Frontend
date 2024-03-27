@@ -647,25 +647,25 @@ const ManageBankStatement = () => {
                                               <h1 >No Filter</h1>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                              <button onClick={() => fetchFilteredMode('contains')}><h1 >Contains</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => fetchFilteredMode('contains')}><h1 >DoesNotContain</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => fetchFilteredMode('startsWith')}><h1 >StartsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => fetchFilteredMode('endsWith')}><h1 >EndsWith</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => fetchFilteredMode('exactMatch')}><h1 >EqualTo</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                               <button onClick={() => fetchFilteredMode('isNull')}><h1 >isNull</h1></button>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                               <button onClick={() => fetchFilteredMode('isNotNull')}><h1 >NotIsNull</h1></button>
                                             </div>
                                         </div>} 
                                 </div>

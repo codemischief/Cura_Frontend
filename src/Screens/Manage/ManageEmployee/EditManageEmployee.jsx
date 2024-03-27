@@ -15,6 +15,29 @@ const EditManageEmployee = (props) => {
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
+    const [currentstate, setCurrentstate] = useState('')
+    const [currentcity, setCurrentcity] = useState("");
+    const [currentCountry, setCurrentCountry] = useState("");
+    const [allItem, setAllItem] = useState([]);
+    const fetchCountryStateCity=async () => {
+        // const data = { "user_id":  1234 };
+        const data = {
+            "user_id": 1234,
+            "table_name": "employee",
+            "item_id": props.item.id
+        }
+        const response = await APIService.getItembyId(data)
+        const result = (await response.json()).data;
+        console.log(result);
+        setCurrentstate(result[state]);
+        // setCurrentCountry(result.country)
+        // setCurrentcity(result.city)
+        // console.log(currentcity);
+        console.log(currentstate);
+        // console.log(currentCountry);
+      
+
+    }
     const fetchCountryData = async () => {
         // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
@@ -115,6 +138,7 @@ const EditManageEmployee = (props) => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
+        fetchCountryStateCity()
     }, []);
 
     const handleEdit = async () => {
