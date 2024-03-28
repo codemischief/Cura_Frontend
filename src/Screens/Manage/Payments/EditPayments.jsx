@@ -109,6 +109,9 @@ const EditPayments = (props) => {
     }, []);
 
     const handleEdit = async () => {
+        if(!validate()) {
+            return ;
+        }
         const data = {
             "user_id": 1234,
             "id": props.item.item.id,
@@ -161,58 +164,111 @@ const EditPayments = (props) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const validate = (values) => {
-        const errors = {};
-        if (!values.employeeName) {
-            errors.employeeName = "Enter employee name";
+    const validate = ()  => {
+        var res = true;
+        if(!formValues.paymentto) {
+            setFormErrors((existing) => {
+               return {...existing,paymentto: "Select a name to pay"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paymentto: ""}
+             })
         }
-        if (!values.panNo) {
-            errors.panNo = "Enter PAN number";
+        if(!formValues.paymentby) {
+            setFormErrors((existing) => {
+               return  {...existing,paymentby: "Sealect a name to pay from"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,paymentby: ""}
+             })
         }
-        if (!values.userName) {
-            errors.userName = "select userName";
+        if(!formValues.amount || !Number.isInteger(formValues.amount)) {
+            setFormErrors((existing) => {
+                return {...existing,amount: "Amount is Mandatory"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,amount: ""}
+            })
         }
-        if (!values.doj) {
-            errors.doj = "Enter date of joining";
+        if(!formValues.paymentfor) {
+            setFormErrors((existing) => {
+                return {...existing,paymentfor: "This Feild is mandatory"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paymentfor: ""}
+            })
         }
-        if (!values.desc) {
-            errors.desc = "Enter Designamtion";
+        if(!formValues.paymentmode) {
+            setFormErrors((existing) => {
+                return {...existing,paymentmode: "Select a payment mode"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paymentmode: ""}
+            })
         }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
+        if(!formValues.entity) {
+            setFormErrors((existing) => {
+                return {...existing,entity: "Select entity"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,entity: ""}
+            })
         }
-        if (!values.employeeId) {
-            errors.employeeId = "Enter employee ID";
+        if(!formValues.paidon) {
+            setFormErrors((existing) => {
+                return {...existing,paidon: "Enter payment date"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paidon: ""}
+            })
         }
-        if (!values.lob) {
-            errors.lob = "Select LOB";
+        if(!formValues.month) {
+            setFormErrors((existing) => {
+                return {...existing,month: "Select payment month"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,month: ""}
+            })
         }
-        if (!values.dob) {
-            errors.dob = "Enter date of birth";
+        console.log(formValues.tds)
+        if(formValues.tds != 0  && !formValues.tds || !Number.isInteger(formValues.tds)) {
+            setFormErrors((existing) => {
+                return {...existing,tds: "Enter TDS amount"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,tds: ""}
+            })
         }
-        if (!values.role) {
-            errors.role = "select role";
+        if(formValues.professionTax != 0  &&!formValues.professiontax ||!Number.isInteger(formValues.professiontax)) {
+            setFormErrors((existing) => {
+                return {...existing,professiontax: "Enter profession Tax amount"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,professiontax: ""}
+            })
         }
-        if (!values.phNo) {
-            errors.phNo = "Enter phone number";
-        }
-        if (!values.country) {
-            errors.country = " Select country";
-        }
-        if (!values.state) {
-            errors.state = "Select state";
-        }
-        if (!values.city) {
-            errors.city = "Select city";
-        }
-        if (!values.suburb) {
-            errors.suburb = "Enter suburb";
-        }
-        if (!values.entity) {
-            errors.entity = "Enter entity";
-        }
-        return errors;
-    };
+        return res;
+    }
     const selectedMonth = [
         {
             id: 1,
@@ -321,7 +377,7 @@ const EditPayments = (props) => {
                                     <div className="">
                                         <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Description </div>
@@ -365,7 +421,7 @@ const EditPayments = (props) => {
                                     <div className="">
                                         <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paidOn}</div>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paidon}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
@@ -381,12 +437,12 @@ const EditPayments = (props) => {
                                     <div className="">
                                         <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.professiontax}</div>
                                     </div>
                                 </div>
                             </div>
