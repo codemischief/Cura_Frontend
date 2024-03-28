@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 
 const EditProspect = (props) => {
+    console.log(props.item);
     const [editModalInput,setEditModalInput] = useState(props.item.personname);
     const [errorMessage,setErrorMessage] = useState("");
     const [allCountry, setAllCountry] = useState([]);
@@ -79,13 +80,13 @@ const EditProspect = (props) => {
     }, []);
 
     const initialValues = {
-        personname: "",
-        country: "",
-        state: "",
-        city: "",
-        suburb: "",
-        propertyLocation: "",
-        possibleServices: "",
+        personname: props.item.personname,
+        country: props.item.country,
+        state: props.item.state,
+        city: props.item.city,
+        suburb: props.item.suburb,
+        propertyLocation: props.item.propertylocation,
+        possibleServices: props.item.possibleservices,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
