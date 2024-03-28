@@ -27,6 +27,7 @@ const Payments = () => {
     const [currentStatement, setCurrentStatement] = useState({});
     const [currentStatementId, setCurrentStatementId] = useState();
     const [showDelete, setShowDelete] = useState(false);
+    const [searchInput,setSearchInput] = useState("");
     const openDownload = () => {
         setDownloadModal(true);
     }
@@ -129,7 +130,8 @@ const Payments = () => {
             "sort_by": [],
             "order": "asc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": 15,
+            "search_key" : searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -168,7 +170,8 @@ const Payments = () => {
             "sort_by": [],
             "order": "asc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(quantity)
+            "pg_size": Number(quantity),
+            "search_key" : searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -206,7 +209,8 @@ const Payments = () => {
             "sort_by": [],
             "order": "asc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -425,6 +429,83 @@ const Payments = () => {
         }, 2000)
         fetchData();
     }
+    const handleSearch = async  () => {
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+            ],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key" : searchInput
+        }
+        const response = await APIService.getPayment(data);
+        const result = (await response.json());
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count)
+        setPageLoading(false);
+    }
+    const handleCloseSearch = async  () => {
+        setPageLoading(true);
+        setSearchInput("");
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+            ],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key" : ""
+        }
+        const response = await APIService.getPayment(data);
+        const result = (await response.json());
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count);
+        setPageLoading(false);
+    }
     return (
         <div>
             <Navbar />
@@ -448,15 +529,18 @@ const Payments = () => {
                             </div>
                             <div className='flex space-x-2 items-center'>
 
-                                <div className='flex'>
+                                <div className='flex relative '>
                                     {/* search button */}
                                     <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                                         type="text"
                                         placeholder="  Search"
+                                        value={searchInput}
+                                        onChange={(e) => setSearchInput(e.target.value)}
                                     />
+                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                                        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                                     </div>
                                 </div>
 
