@@ -207,7 +207,7 @@ const Prospect = () => {
         }
         if(!formValues.possibleServices) {
             setFormErrors((existing) => {
-               return  {...existing,possibleServices: "Enter Suburb Name"}
+               return  {...existing,possibleServices: "Enter Possible Services"}
             })
             res = false;
         }else {
@@ -217,7 +217,7 @@ const Prospect = () => {
         }
         if(!formValues.propertyLocation) {
             setFormErrors((existing) => {
-               return  {...existing,propertyLocation: "Enter Suburb Name"}
+               return  {...existing,propertyLocation: "Enter Property Location"}
             })
             res = false;
         }else {

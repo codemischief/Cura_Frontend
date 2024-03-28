@@ -368,9 +368,17 @@ const Payments = () => {
                 return  {...existing,paymentby: ""}
              })
         }
-        if(!formValues.amount || !Number.isInteger(formValues.amount)) {
+        // console.log(formValues.amount);
+        // const temp = Number(formValues.amount);
+        
+        if(!formValues.amount) {
             setFormErrors((existing) => {
                 return {...existing,amount: "Amount is Mandatory"}
+            })
+            res = false;
+        }else if(!Number.isInteger(Number(formValues.amount))){
+            setFormErrors((existing) => {
+                return {...existing,amount: "Enter A Numeric Value"}
             })
             res = false;
         }else {
@@ -428,10 +436,14 @@ const Payments = () => {
                 return {...existing,month: ""}
             })
         }
-        console.log(formValues.tds)
-        if(formValues.tds != 0  && !formValues.tds || !Number.isInteger(formValues.tds)) {
+        if(!formValues.tds ) {
             setFormErrors((existing) => {
                 return {...existing,tds: "Enter TDS amount"}
+            })
+            res = false;
+        }else if(!Number.isInteger(Number(formValues.tds))){
+            setFormErrors((existing) => {
+                return {...existing,tds: "Enter A Numeric Value!"}
             })
             res = false;
         }else {
@@ -439,9 +451,14 @@ const Payments = () => {
                 return {...existing,tds: ""}
             })
         }
-        if(formValues.professionTax != 0  &&!formValues.professiontax ||!Number.isInteger(formValues.professiontax)) {
+        if(!formValues.professiontax ) {
             setFormErrors((existing) => {
                 return {...existing,professiontax: "Enter profession Tax amount"}
+            })
+            res = false;
+        }else if(!Number.isInteger(Number(formValues.professiontax))){
+            setFormErrors((existing) => {
+                return {...existing,professiontax: "Enter A Numeric Value!"}
             })
             res = false;
         }else {
