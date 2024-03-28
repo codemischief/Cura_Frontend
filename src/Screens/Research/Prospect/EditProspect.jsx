@@ -14,6 +14,14 @@ const EditProspect = (props) => {
     const [allCity, setAllCity] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
     const [pageLoading,setPageLoading] = useState(false);
+    const [cityId,setCityId] = useState(0);
+    const fetchCityId = async (name) => {
+        const data = {"user_id":1234,"attr_name":"city","item_name":name,"table_name":"cities"};
+        const response = await APIService.getItemByAttr(data);
+        const result = await response.json();
+        setCityId(result.data.id);
+        // console.log(result);
+    }
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -81,6 +89,7 @@ const EditProspect = (props) => {
     }
 
     useEffect(() => {
+        fetchCityId(props.item.city);
         fetchCountryData();
     }, []);
 
@@ -276,12 +285,12 @@ const EditProspect = (props) => {
                                                 }}
                                             >
                                                 { allCity && allCity.map((item) => {
-                                                    if(item.id == props.item.city) {
-                                                        return <option value={item.id} selected>
+                                                    if(item.city == props.item.city) {
+                                                        return <option value={item.city} selected>
                                                             {item.city}
                                                         </option>
                                                     }else {
-                                                        return <option value={item.id} selected>
+                                                        return <option value={item.city} selected>
                                                             {item.city}
                                                         </option>
                                                     }

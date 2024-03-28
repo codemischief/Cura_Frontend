@@ -111,7 +111,7 @@ const Prospect = () => {
             "suburb": formValues.suburb,
             "city": formValues.city,
             "state": formValues.state,
-            "country": formValues.country,
+            "country": Number(formValues.country),
             "propertylocation": formValues.propertyLocation,
             "possibleservices": formValues.possibleServices,
             "dated": "2024-01-01 00:00:00",
@@ -655,7 +655,7 @@ const Prospect = () => {
                                             >
                                                 <option value="none" hidden={true}>Select a City</option>
                                                 {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
+                                                    <option value={item.city} >
                                                         {item.city}
                                                     </option>
                                                 ))}
