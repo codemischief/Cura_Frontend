@@ -550,7 +550,7 @@ const Prospect = () => {
                                                 }}
                                             >
                                                 {allState && allState.map(item => (
-                                                    <option value={item[0]} >
+                                                    <option value={item[1]} >
                                                         {item[1]}
                                                     </option>
 
