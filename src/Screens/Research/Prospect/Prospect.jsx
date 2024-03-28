@@ -18,6 +18,7 @@ import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import SucessfullModal from '../../../Components/modals/SucessfullModal';
 const Prospect = () => {
 
     // we have the module here
@@ -66,12 +67,12 @@ const Prospect = () => {
         console.log(result);
         if (Array.isArray(result)) {
             setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
+            // if (result.length > 0) {
+            //     setFormValues((existing) => {
+            //         const newData = { ...existing, city: result[0].id }
+            //         return newData;
+            //     })
+            // }
         }
     }
     useEffect(() => {
@@ -100,19 +101,16 @@ const Prospect = () => {
         setPageLoading(false);
     }
     const addProspect = async () => {
-        if (formValues.name == "") {
-            setProspectError("This Feild Is Mandatory");
-            return;
-        } else {
-            setProspectError("");
+        if(!validate()) {
+            return ;
         }
-        setPageLoading(true);
+        // setPageLoading(true);
         const data = {
             "user_id": 1234,
             "personname": formValues.personName,
             "suburb": formValues.suburb,
             "city": formValues.city,
-            "state": "Maharashtra",
+            "state": formValues.state,
             "country": formValues.country,
             "propertylocation": formValues.propertyLocation,
             "possibleservices": formValues.possibleServices,
@@ -123,7 +121,8 @@ const Prospect = () => {
         const response = await APIService.addProspects(data);
         console.log(response);
         setIsProspectDialogue(false);
-        setPageLoading(false);
+        // setPageLoading(false);
+        openAddSuccess();
         fetchData();
     }
 
@@ -154,20 +153,79 @@ const Prospect = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setFormErrors(validate(formValues)); // validate form and set error message
-    };
-    const validate = (values) => {
-        const errors = {};
-        if (!values.personName) {
-            errors.personName = "Enter the name of the person";
+    const validate = () => {
+        var res = true;
+        if(!formValues.personName) {
+            setFormErrors((existing) => {
+               return {...existing,personName: "Enter Person Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,personName: ""}
+             })
         }
-        if (!values.country) {
-            errors.country = "Select Country";
+        if(!formValues.country) {
+            setFormErrors((existing) => {
+               return  {...existing,country: "Enter Country Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,country: ""}
+             })
         }
-        return errors;
+        if(!formValues.state) {
+            setFormErrors((existing) => {
+               return  {...existing,state: "Enter State Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,state: ""}
+             })
+        }
+        if(!formValues.city) {
+            setFormErrors((existing) => {
+               return  {...existing,city: "Enter City Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,city: ""}
+             })
+        }
+        if(!formValues.suburb) {
+            setFormErrors((existing) => {
+               return  {...existing,suburb: "Enter Suburb Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,suburb: ""}
+             })
+        }
+        if(!formValues.possibleServices) {
+            setFormErrors((existing) => {
+               return  {...existing,possibleServices: "Enter Suburb Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,possibleServices: ""}
+             })
+        }
+        if(!formValues.propertyLocation) {
+            setFormErrors((existing) => {
+               return  {...existing,propertyLocation: "Enter Suburb Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,propertyLocation: ""}
+             })
+        }
+        return res;
     };
 
     const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
@@ -180,8 +238,8 @@ const Prospect = () => {
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const handleOpenEdit = (oldItem) => {
-        setIsEditDialogue(true);
         setCurrItem(oldItem)
+        setIsEditDialogue(true);
     };
     const handleCloseEdit = () => {
         setIsEditDialogue(false);
@@ -264,12 +322,30 @@ const Prospect = () => {
         setExistingProspect(result);
         setPageLoading(false);
     }
+    const [showAddSuccess,setShowAddSuccess] = useState(false);
+    const openAddSuccess = () => {
+        setShowAddSuccess(true);
+        setTimeout(function () {
+            setShowAddSuccess(false);
+        }, 2000)
+    }
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const openEditSuccess = () => {
+        setIsEditDialogue(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        }, 2000)
+        fetchData();
+    }
     return (
         <div>
             <Navbar />
             {isEditDialogue && <EditProspect isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}
-                fetchData={fetchData} />}
-            {isDeleteDialogue && <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} item={currItem}/>}
+                fetchData={fetchData} openPrompt={openEditSuccess}/>}
+            {isDeleteDialogue && <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} item={currItem} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="prospect added succesffuly"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="prospect edited succesffuly"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -532,7 +608,9 @@ const Prospect = () => {
                                                     </option>
 
                                                 ))}
+                                                
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
@@ -549,13 +627,15 @@ const Prospect = () => {
 
                                                 }}
                                             >
+                                                <option value="none" hidden={true}>Select a State</option>
                                                 {allState && allState.map(item => (
-                                                    <option value={item[1]} >
+                                                    <option value={item[1]}>
                                                         {item[1]}
                                                     </option>
 
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
@@ -564,7 +644,7 @@ const Prospect = () => {
                                                 value={formValues.city}
                                                 defaultValue="Select State"
                                                 onChange={e => {
-                                                    // fetchCityData(e.target.value);
+
                                                     console.log(e.target.value);
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, city: e.target.value }
@@ -573,24 +653,29 @@ const Prospect = () => {
 
                                                 }}
                                             >
+                                                <option value="none" hidden={true}>Select a City</option>
                                                 {allCity && allCity.map(item => (
                                                     <option value={item.id} >
                                                         {item.city}
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Property Location <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Possible Services <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.possibleServices}</div>
                                         </div>
                                     </div>
                                 </div>
