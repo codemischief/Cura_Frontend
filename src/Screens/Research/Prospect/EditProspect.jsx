@@ -233,7 +233,7 @@ const EditProspect = (props) => {
                                             >
                                                 {allCity && allCity.map((item) => {
                                                      
-                                                    if(item.id == formValues.city) {
+                                                    if(item.city == formValues.city) {
                                                         return <option value={item.id} selected>
                                                             {item.city}
                                                         </option>
