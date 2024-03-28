@@ -235,6 +235,11 @@ const Payments = () => {
     };
 
     const addPayment = async () => {
+
+        if(!validate()) {
+            return ;
+        }
+
         const data = {
             "user_id": 1234,
             "paymentto": formValues.paymentto,
@@ -338,40 +343,111 @@ const Payments = () => {
         setFormErrors(validate(formValues)); // validate form and set error message
         setIsSubmit(true);
     };
-    const validate = (values) => {
-        const errors = {};
-        if (!values.PaymentTo) {
-            errors.PaymentTo = "Select a name to pay ";
+   
+    const validate = ()  => {
+        var res = true;
+        if(!formValues.paymentto) {
+            setFormErrors((existing) => {
+               return {...existing,paymentto: "Select a name to pay"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paymentto: ""}
+             })
         }
-        if (!values.PaymentBy) {
-            errors.PaymentBy = "Select a name to pay from";
+        if(!formValues.paymentby) {
+            setFormErrors((existing) => {
+               return  {...existing,paymentby: "Sealect a name to pay from"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,paymentby: ""}
+             })
         }
-        if (!values.amount) {
-            errors.amount = "Enter the amount to pay";
+        if(!formValues.amount) {
+            setFormErrors((existing) => {
+                return {...existing,amount: "Enter amount to pay"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,amount: ""}
+            })
         }
-        if (!values.tallyLedger) {
-            errors.tallyLedger = "Select a tally Ledger";
+        if(!formValues.paymentfor) {
+            setFormErrors((existing) => {
+                return {...existing,paymentfor: "Select tally ledger"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paymentfor: ""}
+            })
         }
-        if (!values.paymentMode) {
-            errors.paymentMode = "Select a payment mode";
+        if(!formValues.paymentmode) {
+            setFormErrors((existing) => {
+                return {...existing,paymentmode: "Select a payment mode"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paymentmode: ""}
+            })
         }
-        if (!values.entity) {
-            errors.entity = "Select entity";
+        if(!formValues.entity) {
+            setFormErrors((existing) => {
+                return {...existing,entity: "Select entity"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,entity: ""}
+            })
         }
-        if (!values.paidOn) {
-            errors.paidOn = "Select payment date";
+        if(!formValues.paidon) {
+            setFormErrors((existing) => {
+                return {...existing,paidon: "Select payment date"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,paidon: ""}
+            })
         }
-        if (!values.month) {
-            errors.month = "Select payment month";
+        if(!formValues.month) {
+            setFormErrors((existing) => {
+                return {...existing,month: "Select payment month"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,month: ""}
+            })
         }
-        if (!values.TDS) {
-            errors.TDS = "enter TDS amount";
+        if(!formValues.tds) {
+            setFormErrors((existing) => {
+                return {...existing,tds: "Enter TDS amount"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,tds: ""}
+            })
         }
-        if (!values.professionTax) {
-            errors.professionTax = "enter Profession Tax amount";
+        if(!formValues.professiontax) {
+            setFormErrors((existing) => {
+                return {...existing,professiontax: "Enter profession Tax amount"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,professiontax: ""}
+            })
         }
-        return errors;
-    };
+        return res;
+    }
 
     const [isPaymentsDialogue, setIsPaymentsDialogue] = React.useState(false);
     const handleOpen = () => {

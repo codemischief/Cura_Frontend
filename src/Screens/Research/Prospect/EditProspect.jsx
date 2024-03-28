@@ -35,7 +35,7 @@ const EditProspect = (props) => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_id": id };
+        const data = { "user_id": 1234, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -67,7 +67,6 @@ const EditProspect = (props) => {
             "dated": "2024-01-01 00:00:00",
             "createdby": 1234,
             "isdeleted": false
-
         }
         const response = await APIService.editProspects(data);
         props.handleClose();

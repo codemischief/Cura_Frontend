@@ -150,6 +150,10 @@ const EditManageEmployee = (props) => {
 
     const handleEdit = async () => {
 
+        if(!validate()) {
+            return ;
+        }
+
         const data = {
             "user_id": 1234,
             "id" : formValues.id,
@@ -161,7 +165,7 @@ const EditManageEmployee = (props) => {
             "dob": formValues.dob,
             "panno": formValues.panno,
             "status": formValues.status,
-            "phoneno": formValues.phoneno,
+            "phoneno": formValues.phNo,
             "email": formValues.email,
             "addressline1": formValues.addressline1,
             "addressline2": formValues.addressline2,
@@ -195,58 +199,170 @@ const EditManageEmployee = (props) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const validate = (values) => {
-        const errors = {};
-        if (!values.employeeName) {
-            errors.employeeName = "Enter employee name";
+    const validate = ()  => {
+        var res = true;
+        if(!formValues.employeeName) {
+            setFormErrors((existing) => {
+               return {...existing,employeeName: "Enter Employee name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,employeeName: ""}
+             })
         }
-        if (!values.panNo) {
-            errors.panNo = "Enter PAN number";
+        if(!formValues.panNo) {
+            setFormErrors((existing) => {
+               return  {...existing,panNo: "Enter Pan Number"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,panNo: ""}
+             })
         }
-        if (!values.userName) {
-            errors.userName = "select userName";
+        if(!formValues.userName) {
+            setFormErrors((existing) => {
+                return {...existing,userName: "Select username"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,userName: ""}
+            })
         }
-        if (!values.doj) {
-            errors.doj = "Enter date of joining";
+        if(!formValues.doj) {
+            setFormErrors((existing) => {
+                return {...existing,doj: "Enter date of joining"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,doj: ""}
+            })
         }
-        if (!values.desc) {
-            errors.desc = "Enter Designamtion";
+        if(!formValues.designation) {
+            setFormErrors((existing) => {
+                return {...existing,designation: "Enter Designation"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,designation: ""}
+            })
         }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
+        if(!formValues.email) {
+            setFormErrors((existing) => {
+                return {...existing,email: "Enter email address"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,email: ""}
+            })
         }
-        if (!values.employeeId) {
-            errors.employeeId = "Enter employee ID";
+        if(!formValues.employeeId) {
+            setFormErrors((existing) => {
+                return {...existing,employeeId: "Enter Employee Id"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,employeeId: ""}
+            })
         }
-        if (!values.lob) {
-            errors.lob = "Select LOB";
+        if(!formValues.lob) {
+            setFormErrors((existing) => {
+                return {...existing,lob: "Select LOB"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,lob: ""}
+            })
         }
-        if (!values.dob) {
-            errors.dob = "Enter date of birth";
+        if(!formValues.dob) {
+            setFormErrors((existing) => {
+                return {...existing,dob: "enter date of birth"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,dob: ""}
+            })
         }
-        if (!values.role) {
-            errors.role = "select role";
+        if(!formValues.role) {
+            setFormErrors((existing) => {
+                return {...existing,role: "Select Role"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,role: ""}
+            })
         }
-        if (!values.phNo) {
-            errors.phNo = "Enter phone number";
+        if(!formValues.phNo) {
+            setFormErrors((existing) => {
+                return {...existing,phNo: "Enter phone number"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,phNo: ""}
+            })
         }
-        if (!values.country) {
-            errors.country = " Select country";
+        if(!formValues.country) {
+            setFormErrors((existing) => {
+                return {...existing,country: "Select country"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,country: ""}
+            })
         }
-        if (!values.state) {
-            errors.state = "Select state";
+        if(!formValues.state) {
+            setFormErrors((existing) => {
+                return {...existing,state: "Select state"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,state: ""}
+            })
         }
-        if (!values.city) {
-            errors.city = "Select city";
+        if(!formValues.city) {
+            setFormErrors((existing) => {
+                return {...existing,city: "Select city"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,city: ""}
+            })
         }
-        if (!values.suburb) {
-            errors.suburb = "Enter suburb";
+        if(!formValues.suburb) {
+            setFormErrors((existing) => {
+                return {...existing,suburb: "Enter suburb"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,suburb: ""}
+            })
         }
-        if (!values.entity) {
-            errors.entity = "Enter entity";
+        if(!formValues.entity) {
+            setFormErrors((existing) => {
+                return {...existing,entity: "Select Entity"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,entity: ""}
+            })
         }
-        return errors;
-    };
+        return res;
+    }
     return (
         <div>
             
@@ -369,7 +485,7 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone Number<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div>
                                         </div>
                                         <div className="">

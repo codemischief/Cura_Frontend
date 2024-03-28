@@ -42,6 +42,9 @@ const ManageEmployees = () => {
     const [showAddSuccess,setShowAddSuccess] = useState(false);
     const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
+
+    
+
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -233,6 +236,9 @@ const ManageEmployees = () => {
     }
 
     const addEmployee = async () => {
+        if(!validate()) {
+            return ;
+        }
         // setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -303,58 +309,172 @@ const ManageEmployees = () => {
     
 
     // validate form and to throw Error message
-    const validate = (values) => {
-        const errors = {};
-        if (!values.employeeName) {
-            errors.employeeName = "Enter employee name";
+    const validate = ()  => {
+        var res = true;
+        if(!formValues.employeeName) {
+            setFormErrors((existing) => {
+               return {...existing,employeeName: "Enter Employee name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,employeeName: ""}
+             })
         }
-        if (!values.panNo) {
-            errors.panNo = "Enter PAN number";
+        if(!formValues.panNo) {
+            setFormErrors((existing) => {
+               return  {...existing,panNo: "Enter Pan Number"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,panNo: ""}
+             })
         }
-        if (!values.userName) {
-            errors.userName = "select userName";
+        if(!formValues.userName) {
+            setFormErrors((existing) => {
+                return {...existing,userName: "Select username"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,userName: ""}
+            })
         }
-        if (!values.doj) {
-            errors.doj = "Enter date of joining";
+        if(!formValues.doj) {
+            setFormErrors((existing) => {
+                return {...existing,doj: "Enter date of joining"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,doj: ""}
+            })
         }
-        if (!values.desc) {
-            errors.desc = "Enter Designamtion";
+        if(!formValues.designation) {
+            setFormErrors((existing) => {
+                return {...existing,designation: "Enter Designation"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,designation: ""}
+            })
         }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
+        if(!formValues.email) {
+            setFormErrors((existing) => {
+                return {...existing,email: "Enter email address"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,email: ""}
+            })
         }
-        if (!values.employeeId) {
-            errors.employeeId = "Enter employee ID";
+        if(!formValues.employeeId) {
+            setFormErrors((existing) => {
+                return {...existing,employeeId: "Enter Employee Id"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,employeeId: ""}
+            })
         }
-        if (!values.lob) {
-            errors.lob = "Select LOB";
+        if(!formValues.lob) {
+            setFormErrors((existing) => {
+                return {...existing,lob: "Select LOB"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,lob: ""}
+            })
         }
-        if (!values.dob) {
-            errors.dob = "Enter date of birth";
+        if(!formValues.dob) {
+            setFormErrors((existing) => {
+                return {...existing,dob: "enter date of birth"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,dob: ""}
+            })
         }
-        if (!values.role) {
-            errors.role = "select role";
+        if(!formValues.role) {
+            setFormErrors((existing) => {
+                return {...existing,role: "Select Role"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,role: ""}
+            })
         }
-        if (!values.phNo) {
-            errors.phNo = "Enter phone number";
+        if(!formValues.phNo) {
+            setFormErrors((existing) => {
+                return {...existing,phNo: "Enter phone number"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,phNo: ""}
+            })
         }
-        if (!values.country) {
-            errors.country = " Select country";
+        if(!formValues.country) {
+            setFormErrors((existing) => {
+                return {...existing,country: "Select country"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,country: ""}
+            })
         }
-        if (!values.state) {
-            errors.state = "Select state";
+        console.log(!formValues.state);
+        if(!formValues.state) {
+            setFormErrors((existing) => {
+                return {...existing,state: "Select state"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,state: ""}
+            })
         }
-        if (!values.city) {
-            errors.city = "Select city";
+        if(!formValues.city) {
+            setFormErrors((existing) => {
+                return {...existing,city: "Select city"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,city: ""}
+            })
         }
-        if (!values.suburb) {
-            errors.suburb = "Enter suburb";
+        if(!formValues.suburb) {
+            setFormErrors((existing) => {
+                return {...existing,suburb: "Enter suburb"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,suburb: ""}
+            })
         }
-        if (!values.entity) {
-            errors.entity = "Enter entity";
+        if(!formValues.entity) {
+            setFormErrors((existing) => {
+                return {...existing,entity: "Select Entity"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,entity: ""}
+            })
         }
-        return errors;
-    };
+        return res;
+    }
+
     const deleteEmployee = async (id) => {
         const data = {
             "user_id" : 1234,
@@ -982,6 +1102,7 @@ const ManageEmployees = () => {
 
                                                 }}
                                             >
+                                                <option value="none" hidden={true}>Select a State</option>
                                                 {allState && allState.map(item => (
                                                     <option value={item[1]} >
                                                         {item[1]}
@@ -1006,6 +1127,7 @@ const ManageEmployees = () => {
 
                                                 }}
                                             >
+                                                <option value="none" hidden={true}>Select a City</option>
                                                 {allCity && allCity.map(item => (
                                                     <option value={item.id} >
                                                         {item.city}
