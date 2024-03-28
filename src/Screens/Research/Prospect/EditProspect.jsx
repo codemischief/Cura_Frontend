@@ -13,13 +13,17 @@ const EditProspect = (props) => {
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
+    const [pageLoading,setPageLoading] = useState(false);
     const fetchCountryData = async () => {
+        setPageLoading(true);
         // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
+        // await fetchCityId(props.item.city);
         await fetchStateData(props.item.countryid);
+        // setPageLoading(false);
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
@@ -40,21 +44,18 @@ const EditProspect = (props) => {
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
+        
         if (Array.isArray(result)) {
             setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
         }
+        setPageLoading(false);
     }
     const handleEdit = async () => {
-        if (editModalInput == "") {
-            setErrorMessage("Lob Name Cannot Be Empty")
-            return;
+        console.log('called');
+        if(!validate()) {
+            return ;
         }
+
         const data = {
             "user_id": 1234,
             "id": props.item.id,
@@ -69,9 +70,11 @@ const EditProspect = (props) => {
             "createdby": 1234,
             "isdeleted": false
         }
+        console.log('called')
         const response = await APIService.editProspects(data);
-        props.handleClose();
-        props.fetchData();
+        // props.handleClose();
+        props.openPrompt();
+        // props.fetchData();
     }
     const handleDialogClose = () => {
         props.setOpenDialog(false);
@@ -98,41 +101,80 @@ const EditProspect = (props) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setFormErrors(validate(formValues)); // validate form and set error message
-        setIsSubmit(true);
-    };
     // validate form and to throw Error message
-    const validate = (values) => {
-        const errors = {};
-        if (!values.builderName) {
-            errors.employeeName = "Enter Builder name";
+    const validate = () => {
+        var res = true;
+        if(!formValues.personname) {
+            setFormErrors((existing) => {
+               return {...existing,personname: "Enter Person Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,personname: ""}
+             })
         }
-        if (!values.phone1) {
-            errors.phone1 = "Enter Phone number";
+        if(!formValues.country) {
+            setFormErrors((existing) => {
+               return  {...existing,country: "Enter Country Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,country: ""}
+             })
         }
-        if (!values.email1) {
-            errors.email1 = "Enter Email";
+        if(!formValues.state) {
+            setFormErrors((existing) => {
+               return  {...existing,state: "Enter State Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,state: ""}
+             })
         }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
+        if(!formValues.city) {
+            setFormErrors((existing) => {
+               return  {...existing,city: "Enter City Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,city: ""}
+             })
         }
-        if (!values.address1) {
-            errors.address1 = "Enter Builder Adress";
+        if(!formValues.suburb) {
+            setFormErrors((existing) => {
+               return  {...existing,suburb: "Enter Suburb Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,suburb: ""}
+             })
         }
-        if (!values.country) {
-            errors.country = " Select country";
+        if(!formValues.possibleServices) {
+            setFormErrors((existing) => {
+               return  {...existing,possibleServices: "Enter Suburb Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,possibleServices: ""}
+             })
         }
-        if (!values.state) {
-            errors.state = "Select state";
+        if(!formValues.propertyLocation) {
+            setFormErrors((existing) => {
+               return  {...existing,propertyLocation: "Enter Suburb Name"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,propertyLocation: ""}
+             })
         }
-        if (!values.city) {
-            errors.city = "Select city";
-        }
-
-        return errors;
+        return res;
     };
 
     return (
@@ -150,8 +192,8 @@ const EditProspect = (props) => {
                             <img  onClick={props.handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                         </div>
                     </div>
-                    <form >
-                        <div className="h-auto w-full mt-[5px] ">
+                    {/* <form > */}
+                        {!pageLoading && <div className="h-auto w-full mt-[5px] ">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
@@ -185,6 +227,7 @@ const EditProspect = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
@@ -214,6 +257,7 @@ const EditProspect = (props) => {
                                                     }
                                                  })}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
@@ -231,19 +275,19 @@ const EditProspect = (props) => {
 
                                                 }}
                                             >
-                                                {allCity && allCity.map((item) => {
-                                                     
-                                                    if(item.city == formValues.city) {
+                                                { allCity && allCity.map((item) => {
+                                                    if(item.id == props.item.city) {
                                                         return <option value={item.id} selected>
                                                             {item.city}
                                                         </option>
                                                     }else {
-                                                        return (<option value={item.id} >
+                                                        return <option value={item.id} selected>
                                                             {item.city}
-                                                        </option>);
+                                                        </option>
                                                     }
                                                  })}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                     <div className="">
                                         <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
@@ -262,13 +306,13 @@ const EditProspect = (props) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
 
                         <div className="my-5 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md'  onClick={handleEdit}>Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md'  onClick={props.handleClose}>Cancel</button>
                         </div>
-                    </form>
+                    {/* </form> */}
                 </div>
             </div>
         </Modal>
