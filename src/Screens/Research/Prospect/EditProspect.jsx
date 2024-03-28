@@ -19,6 +19,7 @@ const EditProspect = (props) => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
+        await fetchStateData(props.item.countryid);
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
@@ -28,6 +29,7 @@ const EditProspect = (props) => {
         const data = { "user_id": 1234, "country_id": id };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
+        await fetchCityData(props.item.state);
         console.log(result)
         if (Array.isArray(result)) {
             setAllState(result)
@@ -81,7 +83,7 @@ const EditProspect = (props) => {
 
     const initialValues = {
         personname: props.item.personname,
-        country: props.item.country,
+        country: props.item.countryid,
         state: props.item.state,
         city: props.item.city,
         suburb: props.item.suburb,
@@ -199,12 +201,18 @@ const EditProspect = (props) => {
 
                                                 }}
                                             >
-                                                {allState && allState.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-
-                                                ))}
+                                                {allState && allState.map((item) => {
+                                                    // if(item[0])
+                                                    if(item[1] == formValues.state) {
+                                                        return <option value={item[1]} selected>
+                                                            {item[1]}
+                                                        </option>
+                                                    }else {
+                                                        return (<option value={item[1]} >
+                                                            {item[1]}
+                                                        </option>);
+                                                    }
+                                                 })}
                                             </select>
                                         </div>
                                         <div className="">
@@ -223,11 +231,18 @@ const EditProspect = (props) => {
 
                                                 }}
                                             >
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
-                                                    </option>
-                                                ))}
+                                                {allCity && allCity.map((item) => {
+                                                     
+                                                    if(item.id == formValues.city) {
+                                                        return <option value={item.id} selected>
+                                                            {item.city}
+                                                        </option>
+                                                    }else {
+                                                        return (<option value={item.id} >
+                                                            {item.city}
+                                                        </option>);
+                                                    }
+                                                 })}
                                             </select>
                                         </div>
                                     <div className="">
