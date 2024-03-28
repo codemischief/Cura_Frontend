@@ -6,7 +6,7 @@ import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/materi
 import Checkbox from '@mui/material/Checkbox';
 
 const EditManageEmployee = (props) => {
-    // console.log(props.item);
+    console.log(props.item);
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
@@ -149,9 +149,6 @@ const EditManageEmployee = (props) => {
     }, []);
 
     const handleEdit = async () => {
-        if(!validate()) {
-            return ;
-        }
         const data = {
             "user_id": 1234,
             "id" : formValues.id,
@@ -163,7 +160,7 @@ const EditManageEmployee = (props) => {
             "dob": formValues.dob,
             "panno": formValues.panno,
             "status": formValues.status,
-            "phoneno": formValues.phNo,
+            "phoneno": formValues.phoneno,
             "email": formValues.email,
             "addressline1": formValues.addressline1,
             "addressline2": formValues.addressline2,
@@ -180,6 +177,11 @@ const EditManageEmployee = (props) => {
             "lastdateofworking": formValues.lastdateofworking,
             "designation": formValues.designation 
         }
+        console.log(data);
+        if(!validate()) {
+            return ;
+        }
+        console.log('here');
         console.log(data);
         const response = await APIService.editEmployee(data);
         const result = await response.json();
@@ -199,44 +201,44 @@ const EditManageEmployee = (props) => {
 
     const validate = ()  => {
         var res = true;
-        if(!formValues.employeeName) {
+        if(!formValues.employeename) {
             setFormErrors((existing) => {
-               return {...existing,employeeName: "Enter Employee name"}
+               return {...existing,employeename: "Enter Employee name"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,employeeName: ""}
+                return {...existing,employeename: ""}
              })
         }
-        if(!formValues.panNo) {
+        if(!formValues.panno) {
             setFormErrors((existing) => {
-               return  {...existing,panNo: "Enter Pan Number"}
+               return  {...existing,panno: "Enter Pan Number"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return  {...existing,panNo: ""}
+                return  {...existing,panno: ""}
              })
         }
-        if(!formValues.userName) {
+        // if(!formValues.userName) {
+        //     setFormErrors((existing) => {
+        //         return {...existing,userName: "Select username"}
+        //     })
+        //     res = false;
+        // }else {
+        //     setFormErrors((existing) => {
+        //         return {...existing,userName: ""}
+        //     })
+        // }
+        if(!formValues.dateofjoining) {
             setFormErrors((existing) => {
-                return {...existing,userName: "Select username"}
+                return {...existing,dateofjoining: "Enter date of joining"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,userName: ""}
-            })
-        }
-        if(!formValues.doj) {
-            setFormErrors((existing) => {
-                return {...existing,doj: "Enter date of joining"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,doj: ""}
+                return {...existing,dateofjoining: ""}
             })
         }
         if(!formValues.designation) {
@@ -259,24 +261,24 @@ const EditManageEmployee = (props) => {
                 return {...existing,email: ""}
             })
         }
-        if(!formValues.employeeId) {
+        if(!formValues.employeeid) {
             setFormErrors((existing) => {
-                return {...existing,employeeId: "Enter Employee Id"}
+                return {...existing,employeeid: "Enter Employee Id"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,employeeId: ""}
+                return {...existing,employeeid: ""}
             })
         }
-        if(!formValues.lob) {
+        if(!formValues.lobid) {
             setFormErrors((existing) => {
-                return {...existing,lob: "Select LOB"}
+                return {...existing,lobid: "Select LOB"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,lob: ""}
+                return {...existing,lobid: ""}
             })
         }
         if(!formValues.dob) {
@@ -289,24 +291,24 @@ const EditManageEmployee = (props) => {
                 return {...existing,dob: ""}
             })
         }
-        if(!formValues.role) {
+        if(!formValues.roleid) {
             setFormErrors((existing) => {
-                return {...existing,role: "Select Role"}
+                return {...existing,roleid: "Select Role"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,role: ""}
+                return {...existing,roleid: ""}
             })
         }
-        if(!formValues.phNo) {
+        if(!formValues.phoneno) {
             setFormErrors((existing) => {
-                return {...existing,phNo: "Enter phone number"}
+                return {...existing,phoneno: "Enter phone number"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,phNo: ""}
+                return {...existing,phoneno: ""}
             })
         }
         if(!formValues.country) {
@@ -349,14 +351,14 @@ const EditManageEmployee = (props) => {
                 return {...existing,suburb: ""}
             })
         }
-        if(!formValues.entity) {
+        if(!formValues.entityid) {
             setFormErrors((existing) => {
-                return {...existing,entity: "Select Entity"}
+                return {...existing,entityid: "Select Entity"}
             })
             res = false;
         }else {
             setFormErrors((existing) => {
-                return {...existing,entity: ""}
+                return {...existing,entityid: ""}
             })
         }
         return res;
@@ -415,7 +417,7 @@ const EditManageEmployee = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Date of joining<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="dateofjoining" value={formValues.dateofjoining} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.doj}</div> */}
+                                            
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Designation<label className="text-red-500">*</label></div>
@@ -435,7 +437,7 @@ const EditManageEmployee = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Employee ID<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeid} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeid" value={formValues.employeeid} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeid}</div>
                                         </div>
                                         <div className="">
@@ -465,7 +467,7 @@ const EditManageEmployee = (props) => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastdateofworking" value={formValues.lastdateofworking} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Assign Role {formValues.roleid}<label className="text-red-500">*</label></div>
+                                            <div className="text-[14px]">Assign Role<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="roleid"
                                                 value={formValues.roleid}
@@ -480,12 +482,12 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.role}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.role}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone Number<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.phoneno}</div>
                                             
                                         </div>
                                         <div className="">
@@ -590,7 +592,7 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.entity}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.entity}</div> */}
                                         </div>
                                     </div>
                                 </div>
