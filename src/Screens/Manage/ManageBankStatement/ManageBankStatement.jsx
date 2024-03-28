@@ -906,7 +906,7 @@ const ManageBankStatement = () => {
                             {pageLoading && <div className='ml-11 mt-9'>
                                 <CircularProgress />
                             </div>}
-                            {existingStatement && existingStatement.map((item, index) => {
+                            {!pageLoading && existingStatement && existingStatement.map((item, index) => {
                                 return <div className='w-full   flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] text-[11px]  flex'>
                                         <div className='w-[5px] p-4'>
