@@ -16,6 +16,8 @@ import FileSaver from 'file-saver';
 import { APIService } from '../../../services/API';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import EditPayments from './EditPayments';
+import Pdf from "../../../assets/pdf.png"
+import Excel from "../../../assets/excel.png"
 const Payments = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [currentPages, setCurrentPages] = useState(15);
@@ -582,6 +584,9 @@ const Payments = () => {
         setExistingPayments(result.data);
         setTotalItems(result.total_count);
         setPageLoading(false);
+    }
+    const handleExcelDownload = () => {
+
     }
     return (
         <div>
