@@ -366,9 +366,9 @@ const Payments = () => {
                 return  {...existing,paymentby: ""}
              })
         }
-        if(!formValues.amount) {
+        if(!formValues.amount || !Number.isInteger(formValues.amount)) {
             setFormErrors((existing) => {
-                return {...existing,amount: "Enter amount to pay"}
+                return {...existing,amount: "Amount is Mandatory"}
             })
             res = false;
         }else {
@@ -378,7 +378,7 @@ const Payments = () => {
         }
         if(!formValues.paymentfor) {
             setFormErrors((existing) => {
-                return {...existing,paymentfor: "Select tally ledger"}
+                return {...existing,paymentfor: "This Feild is mandatory"}
             })
             res = false;
         }else {
@@ -408,7 +408,7 @@ const Payments = () => {
         }
         if(!formValues.paidon) {
             setFormErrors((existing) => {
-                return {...existing,paidon: "Select payment date"}
+                return {...existing,paidon: "Enter payment date"}
             })
             res = false;
         }else {
@@ -426,7 +426,8 @@ const Payments = () => {
                 return {...existing,month: ""}
             })
         }
-        if(!formValues.tds) {
+        console.log(formValues.tds)
+        if(formValues.tds != 0  && !formValues.tds || !Number.isInteger(formValues.tds)) {
             setFormErrors((existing) => {
                 return {...existing,tds: "Enter TDS amount"}
             })
@@ -436,7 +437,7 @@ const Payments = () => {
                 return {...existing,tds: ""}
             })
         }
-        if(!formValues.professiontax) {
+        if(formValues.professionTax != 0  &&!formValues.professiontax ||!Number.isInteger(formValues.professiontax)) {
             setFormErrors((existing) => {
                 return {...existing,professiontax: "Enter profession Tax amount"}
             })
@@ -666,7 +667,7 @@ const Payments = () => {
                                         <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                     </div>
                                     <div className='w-1/2 0 p-4'>
-                                        {/* <p>Edit</p> */}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -841,7 +842,7 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <div className=''>
-                    <div className="w-6/7  h-auto bg-white rounded-lg">
+                    <div className="w-6/7  h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Contractual Payments </div>
@@ -851,7 +852,7 @@ const Payments = () => {
                             </div>
                         </div>
                         {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
-                        <div className="h-auto w-full mt-[5px] ">
+                        <div className="h-auto w-full mt-[5px] p-6">
                             <div className="flex gap-[48px] justify-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
@@ -867,7 +868,7 @@ const Payments = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Payment By <label className="text-red-500">*</label></div>
@@ -878,12 +879,13 @@ const Payments = () => {
                                                 </option>
                                             ))}
                                         </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Description </div>
@@ -927,7 +929,7 @@ const Payments = () => {
                                     <div className="">
                                         <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paidOn}</div>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paidon}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
@@ -943,12 +945,12 @@ const Payments = () => {
                                     <div className="">
                                         <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.professionTax}</div> */}
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.professiontax}</div>
                                     </div>
                                 </div>
                             </div>
