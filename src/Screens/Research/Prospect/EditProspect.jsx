@@ -18,7 +18,6 @@ const EditProspect = (props) => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
-
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
@@ -26,7 +25,6 @@ const EditProspect = (props) => {
     const fetchStateData = async (id) => {
         console.log(id);
         const data = { "user_id": 1234, "country_id": id };
-        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
@@ -182,7 +180,6 @@ const EditProspect = (props) => {
                                                     <option value={item[0]} >
                                                         {item[1]}
                                                     </option>
-
                                                 ))}
                                             </select>
                                         </div>

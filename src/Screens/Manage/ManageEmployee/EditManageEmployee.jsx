@@ -149,11 +149,9 @@ const EditManageEmployee = (props) => {
     }, []);
 
     const handleEdit = async () => {
-
         if(!validate()) {
             return ;
         }
-
         const data = {
             "user_id": 1234,
             "id" : formValues.id,
@@ -482,11 +480,13 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.role}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone Number<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                            
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Address Line 2</div>
@@ -517,6 +517,7 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
@@ -545,6 +546,7 @@ const EditManageEmployee = (props) => {
                                                     }
                                                  })}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
@@ -563,6 +565,7 @@ const EditManageEmployee = (props) => {
                                                     return <option value={item.id}>{item.city}</option>
                                                  })}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Suburb</div>
@@ -587,6 +590,7 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.entity}</div>
                                         </div>
                                     </div>
                                 </div>
