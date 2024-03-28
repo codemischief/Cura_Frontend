@@ -359,7 +359,9 @@ const ManageBankStatement = () => {
                 return  {...existing,particulars: ""}
              })
         }
-        if(!formValues.amount || !Number.isInteger(formValues.amount)) {
+        console.log(formValues.amount);
+        // console.log(!Number.isInteger(formValues.amount));
+        if(!formValues.amount ) {
             setFormErrors((existing) => {
                 return {...existing,amount: "Amount is Mandatory"}
             })
@@ -1078,7 +1080,7 @@ const ManageBankStatement = () => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                 <option >Select Vendor List</option>
                                                 {vendorList && vendorList.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option  value={item}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -1097,7 +1099,7 @@ const ManageBankStatement = () => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
                                                 <option >Select CR/DR</option>
                                                 {crdr && crdr.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option  value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
@@ -1109,7 +1111,7 @@ const ManageBankStatement = () => {
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.h0w} onChange={handleChange} >
                                                 <option >Select how Received</option>
                                                 {howReceived && howReceived.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option  value={item}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
