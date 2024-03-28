@@ -42,10 +42,11 @@ const Prospect = () => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
-
+        
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
+        console.log(result.data);
     }
     const fetchStateData = async (id) => {
         console.log(id);
@@ -59,7 +60,7 @@ const Prospect = () => {
         }
     }
     const fetchCityData = async (id) => {
-        const data = { "user_id": 1234, "state_id": id };
+        const data = { "user_id": 1234, "state_name": id };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -85,8 +86,8 @@ const Prospect = () => {
             "filters": [],
             "sort_by": [],
             "order": "asc",
-            "pg_no": 0,
-            "pg_size": 0,
+            "pg_no": 1,
+            "pg_size": 15,
             "search_key" : searchInput
         };
         const response = await APIService.getProspects(data)
