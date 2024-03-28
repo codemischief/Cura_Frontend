@@ -82,7 +82,7 @@ const Prospect = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -201,7 +201,7 @@ const Prospect = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -225,7 +225,7 @@ const Prospect = () => {
         
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -247,7 +247,7 @@ const Prospect = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
