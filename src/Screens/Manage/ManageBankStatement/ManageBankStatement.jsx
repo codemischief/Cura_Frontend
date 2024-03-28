@@ -359,8 +359,7 @@ const ManageBankStatement = () => {
                 return  {...existing,particulars: ""}
              })
         }
-        console.log(formValues.amount);
-        // console.log(!Number.isInteger(formValues.amount));
+        
         if(!formValues.amount ) {
             setFormErrors((existing) => {
                 return {...existing,amount: "Amount is Mandatory"}
