@@ -91,6 +91,9 @@ const ManageEmployees = () => {
 
         console.log(result.data);
        console.log('hey')
+       setFormValues((existing) => {
+        return {...existing,userName : result.data[0].id}
+       })
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -141,7 +144,7 @@ const ManageEmployees = () => {
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
-            return {...existing,lob : result.data[0].id}
+            return {...existing, lob : result.data[0].id}
         })
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
@@ -330,16 +333,6 @@ const ManageEmployees = () => {
             setFormErrors((existing) => {
                 return  {...existing,panNo: ""}
              })
-        }
-        if(!formValues.userName) {
-            setFormErrors((existing) => {
-                return {...existing,userName: "Select username"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,userName: ""}
-            })
         }
         if(!formValues.doj) {
             setFormErrors((existing) => {
@@ -703,7 +696,7 @@ const ManageEmployees = () => {
                                 </div>
                                 <div className='w-[4.33%]  flex'>
                                     <div className='p-2'>
-
+                                         
                                     </div>
                                 </div>
                             </div>
