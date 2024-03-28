@@ -94,32 +94,70 @@ const EditManageStatement = (props) => {
 
     const handleSubmit = async  (e) => {
         e.preventDefault();
-        setFormErrors(validate(formValues)); // validate form and set error message
+        if(!validate()) {
+            return ;
+        }
+        // setFormErrors(validate(formValues)); // validate form and set error message
         setIsLoading(true);
         await editBankStatement();
          await props.fetchData();   
         setIsLoading(false);
     };
     // validate form and to throw Error message
-    const validate = (values) => {
-        const errors = {};
-        if (!values.modeofpayment) {
-            errors.modeofpayment = "Select a Mode";
+    const validate = ()  => {
+        var res = true;
+        if(!formValues.modeofpayment) {
+            setFormErrors((existing) => {
+               return {...existing, modeofpayment: "Select a mode"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,modeofpayment: ""}
+             })
         }
-        if (!values.particulars) {
-            errors.particulars = "Enter particulars";
+        if(!formValues.particulars) {
+            setFormErrors((existing) => {
+               return  {...existing,particulars: "Enter particulars"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,particulars: ""}
+             })
         }
-        if (!values.amount) {
-            errors.amount = "Enter Amount";
+        if(!formValues.amount || !Number.isInteger(formValues.amount)) {
+            setFormErrors((existing) => {
+                return {...existing,amount: "Amount is Mandatory"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,amount: ""}
+            })
         }
-        if (!values.date) {
-            errors.date = "Select a Date";
+        if(!formValues.date) {
+            setFormErrors((existing) => {
+                return {...existing,date: "Select a date"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,date: ""}
+            })
         }
-        if (!values.crdr) {
-            errors.crdr = "Select CR or DR";
+        if(!formValues.crdr) {
+            setFormErrors((existing) => {
+                return {...existing,crdr: "Select DR or CR"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,crdr: ""}
+            })
         }
-        return errors;
-    };
+        return res;
+    }
 
     return (
         <>
