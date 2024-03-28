@@ -431,8 +431,7 @@ const ManageEmployees = () => {
                 return {...existing,country: ""}
             })
         }
-        console.log(!formValues.state);
-        if(!formValues.state) {
+        if(formValues.state == "") {
             setFormErrors((existing) => {
                 return {...existing,state: "Select state"}
             })
@@ -978,7 +977,7 @@ const ManageEmployees = () => {
                                         <div className="">
                                             <div className="text-[14px]">Designation<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.designation}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Email<label className="text-red-500">*</label></div>
@@ -1086,6 +1085,7 @@ const ManageEmployees = () => {
 
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
@@ -1110,6 +1110,7 @@ const ManageEmployees = () => {
 
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
@@ -1134,11 +1135,12 @@ const ManageEmployees = () => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Suburb</div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Zip Code</div>
