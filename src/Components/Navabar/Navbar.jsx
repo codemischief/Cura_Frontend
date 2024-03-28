@@ -180,7 +180,7 @@ const Navbar = () => {
                </div>
             </div>
          </div>
-         {isToggledAdmin && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[270px] flex font-sans ml-5 absolute top-16 shadow-2xl'>
+         {isToggledAdmin && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[270px] flex font-sans ml-5 absolute top-16 shadow-2xl z-40'>
             <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-6'>
                   <h1 className='font-semibold text-xl pl-1 hover:underline decoration-sky-500 decoration-4'>Personnel</h1>
@@ -292,7 +292,7 @@ const Navbar = () => {
             </div>
          </div>
          } */}
-         {isToggledManage && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[340px] flex font-sans ml-5 absolute top-16 shadow-2xl '>
+         {isToggledManage && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[96.9%] h-[340px] flex font-sans ml-5 absolute top-16 shadow-2xl z-40'>
             {/* <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <Link to="/admin/managebuilder"><h1 className='text-thin text-base'>Manage Builder</h1></Link>
@@ -364,7 +364,7 @@ const Navbar = () => {
          </div>
          }
 
-         {isToggledReport && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[98%] h-[580px] flex font-sans ml-5 absolute top-16 shadow-2xl '>
+         {isToggledReport && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[98%] h-[580px] flex font-sans ml-5 absolute top-16 shadow-2xl z-40'>
             {/* <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <Link to="/admin/managebuilder"><h1 className='text-thin text-base'>Manage Builder</h1></Link>
@@ -530,7 +530,7 @@ const Navbar = () => {
             </div>
          </div>
          }
-         {isToggledResearch && <div ref={menuRef} className='bg-white rounded-[15px] mt-2 w-[96.9%] h-[260px] flex font-sans ml-5 absolute top-16 shadow-2xl px-32 text-[#282828] text-[15px]'>
+         {isToggledResearch && <div ref={menuRef} className='bg-white rounded-[15px] mt-2 w-[96.9%] h-[260px] flex font-sans ml-5 absolute top-16 shadow-2xl px-32 text-[#282828] text-[15px] z-40'>
             <div className=' w-1/4 h-full flex-col space-y-4 '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <Link to="/research/prospect"><h1 className='text-thin text-base font-semibold hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Prospect</h1></Link>
