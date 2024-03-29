@@ -39,6 +39,7 @@ const Locality = () => {
     const [showEditSuccess,setShowEditSuccess] = useState(false);
     const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
     const [filterArray,setFilterArray] = useState([["name","contains",""],["state","contains",""],["city","contains",""],["locality","contains",""]]);
+    const [sortField,setSortField] = useState("id");
     const initialValues = {
         country : 0,
         state : 0,
@@ -218,8 +219,8 @@ const Locality = () => {
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : tempFilters,
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(currentPages),
             "search_key" : isSearchOn ? searchQuery : ""
@@ -237,8 +238,7 @@ const Locality = () => {
     }
     const handleSort = async (field) => {
             setPageLoading(true);
-            // console.log(field);
-
+            setSortField(field);
             const tempFilters = [];
             for(var i=0;i<4;i++) {
                 if(filterArray[i][2] != "") {
@@ -260,11 +260,13 @@ const Locality = () => {
             const result = temp.data;
             const t = temp.total_count;
             setTotalItems(t);
-            // setExistingLOB(result);
+            console.log(result);
+            setExistingLocalities(result);
+            setPageLoading(false);
             setFlag((prev) => {
                 return !prev;
             })
-            setPageLoading(false);
+            
     }
     const addLocality = async () => {
         if(!validate()) {
