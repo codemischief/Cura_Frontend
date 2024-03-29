@@ -40,13 +40,14 @@ const EditManageStatement = (props) => {
 
     const editBankStatement = async () => {
         
-        setVendorId((formValues.vendor).split(",", 1)[0]);
-        setModeEdit((formValues.modeofpayment).split(",", 1)[0]);
-        setRecievedBy((formValues.how).split(",", 1)[0])
+        // setVendorId((formValues.vendor).split(",", 1)[0]);
+        // setModeEdit((formValues.modeofpayment).split(",", 1)[0]);
+        // setRecievedBy((formValues.how).split(",", 1)[0])
+        console.log(formValues.how);
             const data = {
             "user_id": 1234,
             "id": Number(props.bankStatement.item.id),
-            "modeofpayment": Number(modeEdit),
+            "modeofpayment": formValues.modeofpayment,
             "date":String(formValues.date),
             "amount":formValues.amount,
             "particulars":String(formValues.particulars),
@@ -56,9 +57,9 @@ const EditManageStatement = (props) => {
             // "dateadded":"20-03-2024 00:00:01",
             // "clientid": 45000,
             // "orderid": 4040404,
-            "receivedby":Number(receivedBy),
+            "receivedby":Number(formValues.how),
             // "details":"abcdefg",
-            "vendorid":Number(vendorId),
+            "vendorid":Number(formValues.vendor),
             "createdby":1234
         }
         const response = await APIService.editBankStatement(data);
@@ -100,7 +101,7 @@ const EditManageStatement = (props) => {
         // setFormErrors(validate(formValues)); // validate form and set error message
         setIsLoading(true);
         await editBankStatement();
-         await props.fetchData();   
+        await props.fetchData();   
         setIsLoading(false);
     };
     // validate form and to throw Error message
@@ -183,9 +184,9 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
-                                            <option >Select Mode</option>
+                                            <option>{formValues.modeofpayment}</option>
                                                 {mode && mode.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -206,9 +207,9 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Vendor</div> 
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                            <option >Select Vendor </option>
+                                            <option >{formValues.vendor}</option>
                                                 {vendorList && vendorList.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -225,8 +226,7 @@ const EditManageStatement = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">DR/CR <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="state" value={formValues.state} onChange={handleChange} >
-                                            <option >Select DR/CR</option>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} >
                                                 {crdr && crdr.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -238,9 +238,9 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">How Recieved(CR)? </div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
-                                            <option >Select How Recieved(CR)?</option>
+                                            <option >{formValues.how}</option>
                                                 {howReceived && howReceived.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
