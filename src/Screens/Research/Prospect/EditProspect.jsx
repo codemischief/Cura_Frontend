@@ -30,12 +30,11 @@ const EditProspect = (props) => {
         const result = (await response.json()).data;
         console.log(result.data);
         // await fetchCityId(props.item.city);
+        await fetchStateData(props.item.countryid);
+        // setPageLoading(false);
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
-        await fetchStateData(props.item.countryid);
-        // setPageLoading(false);
-        
     }
     const fetchStateData = async (id) => {
         console.log(id);
@@ -90,9 +89,8 @@ const EditProspect = (props) => {
     }
 
     useEffect(() => {
-        fetchCountryData();
         fetchCityId(props.item.city);
-        
+        fetchCountryData();
     }, []);
 
     const initialValues = {
@@ -219,7 +217,9 @@ const EditProspect = (props) => {
                                                 value={formValues.country}
                                                 defaultValue="Select Country"
                                                 onChange={e => {
-                                                   
+                                                    // setselectedCountry(e.target.value);
+                                                    // fetchStateData(e);
+                                                    // console.log(e.target.value);
                                                     setCurrCountry(e.target.value);
                                                     fetchStateData(e.target.value);
                                                     setFormValues((existing) => {
@@ -229,14 +229,12 @@ const EditProspect = (props) => {
                                                     // fetchStateData(res);
                                                 }}
                                             >
-                                                 {!pageLoading && allCountry && allCountry.map((item) => {
-                                                    if(item[1] == props.item.country) {
-                                                        return <option value={item[1]} selected>
-                                                            {item[1]}
-                                                        </option>
-                                                    }
-                                                 })}
-                            
+                                                <option value="none" hidden={true}>Select a Country</option>
+                                                {allCountry && allCountry.map(item => (
+                                                    <option value={item[0]} >
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
                                             </select>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
@@ -252,18 +250,19 @@ const EditProspect = (props) => {
                                                         const newData = { ...existing, state: e.target.value }
                                                         return newData;
                                                     })
+
                                                 }}
                                             >
                                                 {allState && allState.map((item) => {
                                                     // if(item[0])
-                                                    if(item[1] == props.item.state) {
+                                                    if(item[1] == formValues.state) {
                                                         return <option value={item[1]} selected>
                                                             {item[1]}
                                                         </option>
                                                     }else {
-                                                        // return (<option value={item[1]} >
-                                                        //     {item[1]}
-                                                        // </option>);
+                                                        return (<option value={item[1]} >
+                                                            {item[1]}
+                                                        </option>);
                                                     }
                                                  })}
                                             </select>
