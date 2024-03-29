@@ -372,7 +372,6 @@ const LOB = () => {
                                         Add New LOB 
                                         <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                         </div>
-                                        
                                     </button>
                                 </div>
 
@@ -472,7 +471,7 @@ const LOB = () => {
                                             <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 p-3 flex items-center ml-[17px]'>
-                                            <img className=' h-5 mr-3' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
+                                            <img className=' h-5 mr-3 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
                                             <button onClick={() => deleteLob(item.name)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
