@@ -30,6 +30,8 @@ const LOB = () => {
     const [editModal,setEditModal] = useState(false);
     const [lobError,setLobError] = useState("");
     const [currItem,setCurrItem] = useState({});
+    const [sortField,setSortField] = useState("id");
+    // const [flag,setFlag] = useState(false);
     useEffect(() => {
         fetchData();
     }, []);
@@ -40,8 +42,8 @@ const LOB = () => {
             "user_id" : 1234,
             "rows" : ["id","name"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : flag ? "asc" : "desc",
             "pg_no" : Number(pageNumber),
             "pg_size" : Number(currentPages)
          };
@@ -59,8 +61,8 @@ const LOB = () => {
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : flag ? "asc" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(number)
          };
@@ -79,8 +81,8 @@ const LOB = () => {
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(currentPages),
             "search_key" : searchQuery
@@ -96,6 +98,7 @@ const LOB = () => {
     }
     const handleSort = async (field) => {
             setPageLoading(true);
+            setSortField(field);
             const data = { 
                 "user_id" : 1234,
                 "rows" : ["id","name"],
@@ -197,7 +200,7 @@ const LOB = () => {
             "rows" : ["id","name","lob_head","company"],
             "filters" : [],
             "sort_by" : [],
-            "order" : "asc",
+            "order" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(currentPages),
             "search_key" : searchQuery
@@ -224,8 +227,8 @@ const LOB = () => {
             "user_id" : 1234,
             "rows" : ["id","name"],
             "filters" : [["name",String(filterType),lobFilterInput]],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : flag ? "asc" : "desc",
             "pg_no" : 1,
             "pg_size" : Number(currentPages)
          };
@@ -293,8 +296,8 @@ const LOB = () => {
             "user_id" : 1234,
             "rows" : ["id","name","lob_head","company"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : ["id"],
+            "order" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(currentPages),
             "search_key" : ""
