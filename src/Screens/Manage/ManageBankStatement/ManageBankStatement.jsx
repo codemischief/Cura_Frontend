@@ -961,7 +961,7 @@ const ManageBankStatement = () => {
                             })}
                             {/* we get all the existing builders here */}
                             {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} />}
-                            {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetchData={fetchBankStatement} />}
+                            {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} />}
                         </div>
                     </div>
                     <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
