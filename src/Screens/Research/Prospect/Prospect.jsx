@@ -10,6 +10,8 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
+import Add from "./../../../assets/add.png";
+import Filter from "../../../assets/filter.png"
 import { APIService } from '../../../services/API';
 import { Modal, LinearProgress, Pagination } from "@mui/material";
 import EditProspect from './EditProspect';
@@ -381,13 +383,16 @@ const Prospect = () => {
 
                                 <div>
                                     {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New Prospect +
+                                    <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                                        <div className="flex items-center justify-center gap-4">
+                                        Add New Prospect 
+                                        <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        </div>
                                     </button>
                                 </div>
 
                             </div>
-
+                            
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
@@ -396,24 +401,42 @@ const Prospect = () => {
                                         {/* <p>Sr. </p> */}
                                     </div>
                                     <div className='w-[25%]  px-4 py-3'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                     </div>
                                     <div className='w-[20%]  px-4 py-3'>
-                                        {/* <input className="w-14 bg-[#EBEBEB]"/> */}
+                                    <div className="w-[48%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                     </div>
                                     <div className='w-[20%]  px-4 py-3'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className="w-[48%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                     </div>
                                 </div>
                                 <div className='w-[15%] flex'>
                                     <div className='w-1/2  px-4 py-3'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className="w-full flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-8 bg-[#EBEBEB] rounded-[5px]" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                     </div>
                                     <div className='w-1/2 0 p-4'>
                                     </div>
@@ -441,7 +464,7 @@ const Prospect = () => {
                                     <p>Property Location</p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>Possible Location</p>
+                                    <p>Possible Services</p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
@@ -456,32 +479,32 @@ const Prospect = () => {
                         <div className='w-full h-[450px] overflow-auto'>
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingProspect.map((item, index) => {
-                                return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                                return <div className='w-full h-10 ml-1 flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
+                                        <div className='w-[5%] p-3'>
                                             <p>{index + 1}</p>
                                         </div>
-                                        <div className='w-[25%]  p-4'>
+                                        <div className='w-[25%]  p-3'>
                                             <p>{item.personname}</p>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
+                                        <div className='w-[15%]  p-3'>
                                             <p>{item.suburb}</p>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
+                                        <div className='w-[15%]  p-3'>
                                             <p>{item.city}</p>
                                         </div>
-                                        <div className='w-[20%]  p-4'>
+                                        <div className='w-[20%]  p-3'>
                                             <p>{item.propertylocation}</p>
                                         </div>
-                                        <div className='w-[20%]  p-4'>
+                                        <div className='w-[20%]  p-3'>
                                             <p>{item.possibleservices}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
+                                        <div className='w-1/2  p-3'>
                                             <p>{item.id}</p>
                                         </div>
-                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                        <div className='w-1/2 0 p-3 flex justify-between items-center'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteProspects(item.id)} />
                                         </div>
