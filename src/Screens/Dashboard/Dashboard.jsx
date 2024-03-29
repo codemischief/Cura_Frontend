@@ -46,7 +46,7 @@ const Dashboard = () => {
                     <div >
                         <h1 className="text-3xl font-sans">Dashboard</h1>
                     </div>
-                    <div className="flex w-[220px] h-[36px] items-center">
+                    <div className="flex w-[230px] h-[36px] items-center">
                         <input className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2" type="text" placeholder="  Search" />
                         <div className="h-[36px] w-[42px] bg-[#004DD7] flex items-center justify-center rounded-r-[5px]">
                             <img className="h-[26px] " src={searchIcon} alt="search-icon" />
