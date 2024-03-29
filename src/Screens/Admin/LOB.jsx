@@ -5,7 +5,7 @@ import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useRef} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
@@ -21,6 +21,7 @@ import EditLobModal from './Modals/EditLobModal';
 import SucessfullModal from "../../Components/modals/SucessfullModal"
 import FailureModal from '../../Components/modals/FailureModal';
 const LOB = () => {
+    const menuRef = useRef();
     const [existingLOB,setExistingLOB] = useState([]);
     const [currentPages,setCurrentPages] = useState(15);
     const [currentPage,setCurrentPage] = useState(1);
@@ -34,6 +35,17 @@ const LOB = () => {
     // const [flag,setFlag] = useState(false);
     useEffect(() => {
         fetchData();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+               setLobFilter(false);
+               
+            }
+         }
+   
+         document.addEventListener("mousedown", handler);
+         return () => {
+            document.removeEventListener("mousedown", handler);
+         };
     }, []);
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
@@ -370,9 +382,9 @@ const LOB = () => {
                                 <div className='w-[20%] p-4'>
                                    <input className="w-14 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}/>
                                    <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                   {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
+                                              <h1>No Filter</h1>
                                             </div>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
