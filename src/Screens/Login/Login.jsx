@@ -7,32 +7,35 @@ import bcrypt from 'bcryptjs'
 import useAuth from "../../context/useAuth";
 import { useLocation } from "react-router-dom";
 import { authService } from "../../services/authServices";
+import EyeHide from "./../../assets/eyeHide.png";
 
 
 const Login = () => {
 
+  const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
+  const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
 
-  const  {setAuth} =useAuth();
+  const { setAuth } = useAuth();
   const location = useLocation();
 
   const mockPostResponse = async () => {
-    
-    const username =formValues.username;
+
+    const username = formValues.username;
     // var salt = bcrypt.genSaltSync(12);
     // var password = bcrypt.hashSync(formValues.password, salt);
-      const password =formValues.password;
-      const company_key =formValues.comkey;
-   
-      const response = await authService.login({ username,password,company_key});
-        if(response.result == "success" && response.role_id == "1"){
-          navigate("/dashboard")
-        }else if(response.result == "success" && response.role_id == "2"){
-          navigate("/user")
-        }
-          else if (response.result == "failure"){
-          setIsError(true)
-          setErrorMessage(response.message);
-        }
+    const password = formValues.password;
+    const company_key = formValues.comkey;
+
+    const response = await authService.login({ username, password, company_key });
+    if (response.result == "success" && response.role_id == "1") {
+      navigate("/dashboard")
+    } else if (response.result == "success" && response.role_id == "2") {
+      navigate("/user")
+    }
+    else if (response.result == "failure") {
+      setIsError(true)
+      setErrorMessage(response.message);
+    }
 
   }
 
@@ -78,6 +81,7 @@ const Login = () => {
     } else {
       setType1("password");
     }
+    setOpenEyeIconPass((prev) => { return !prev });
   };
 
   const comkeyToggle = () => {
@@ -86,21 +90,22 @@ const Login = () => {
     } else {
       setType2("password");
     }
+    setOpenEyeIconCom((prev) => { return !prev });
   };
 
   const show = () => {
     const element = document.getElementById("inputError");
-    element.style.display="block";
+    element.style.display = "block";
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     // validate form and set error message
+    // validate form and set error message
     setIsSubmit(true);
     mockPostResponse();
     setFormErrors(validate(formValues));
 
-      
+
   };
 
   // validate form and to throw Error message
@@ -119,10 +124,10 @@ const Login = () => {
   };
 
   useEffect(() => {
- 
+
   }, [formErrors]);
   return (
-    <div className="flex w-screen h-screen  py-[20px] justify-center">
+    <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
       <img
         className="w-[140px] h-[64px]  absolute left-5 "
         src={Logo}
@@ -156,14 +161,27 @@ const Login = () => {
                     onChange={handleChange}
                     autoComplete="off"
                   />
-                  <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
-                    <img
-                      className='cursor-pointer'
-                      onClick={passwordToggle}
-                      src={eyeIcon}
-                      alt="eye-icon"
-                    />
-                  </span>
+                  {openEyeIconPass &&
+                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
+                      <img
+                        className='cursor-pointer'
+                        onClick={passwordToggle}
+                        src={eyeIcon}
+                        alt="eye-icon"
+                      />
+                    </span>
+                  }
+                  {!openEyeIconPass &&
+                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[4px]">
+                      <img
+                        className='cursor-pointer'
+                        onClick={passwordToggle}
+                        src={EyeHide}
+                        alt="eye-icon"
+                      />
+                    </span>
+                  }
+
                 </div>
 
                 <div className="text-[12px] text-[#CD0000] ">{formErrors.password}</div>
@@ -179,34 +197,46 @@ const Login = () => {
                     onChange={handleChange}
                     autoComplete="off"
                   />
-                  <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
-                    <img
-                      className='cursor-pointer'
-                      onClick={comkeyToggle}
-                      src={eyeIcon}
-                      alt="eye-icon"
-                    />
-                  </span>
+                  {openEyeIconCom &&
+                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
+                      <img
+                        className='cursor-pointer'
+                        onClick={comkeyToggle}
+                        src={eyeIcon}
+                        alt="eye-icon"
+                      />
+                    </span>
+                  }
+                  {!openEyeIconCom &&
+                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[4px]">
+                      <img
+                        className='cursor-pointer'
+                        onClick={comkeyToggle}
+                        src={EyeHide}
+                        alt="eye-icon"
+                      />
+                    </span>
+                  }
                 </div>
 
                 <div className="text-[12px] text-[#CD0000] ">{formErrors.comkey}</div>
               </div>
             </div>
 
-             {/* to create a space  */}
-            <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>  
+            {/* to create a space  */}
+            <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>
 
             {/* error message  */}
-           {isError && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
+            {isError && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
               {errorMessage}
             </div>}
 
             {/* forgot section */}
             <div className="flex flex-col items-center justify-center gap-[10px]">
-              <Link className="text-[#004DD7] text-[18px] cursor-pointer" to="/">Forget your password?</Link>
+              <Link className="text-[#004DD7] text-[18px] cursor-pointer" to="/">Forgot Password</Link>
               <button className="bg-[#004DD7] w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer">Login</button>
             </div>
-            
+
           </form>
         </div>
       </div>
