@@ -166,7 +166,7 @@ const Locality = () => {
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : tempFilters,
-            "sort_by" : [],
+            "sort_by" : [sortField],
             "order" : "asc",
             "pg_no" : Number(pageNumber),
             "pg_size" : Number(currentPages),
@@ -192,7 +192,7 @@ const Locality = () => {
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : tempFilters,
-            "sort_by" : [],
+            "sort_by" : [sortField],
             "order" : "asc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(number),
@@ -343,12 +343,13 @@ const Locality = () => {
       const handleSearch = async () => {
         setPageLoading(true);
         setIsSearchOn(true);
+        setSortField("id");
         const data = { 
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : ["id"],
+            "order" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(currentPages),
             "search_key" : searchQuery
@@ -408,12 +409,14 @@ const Locality = () => {
          setPageLoading(true);
          setSearchQuery("");
          setIsSearchOn(false);
+         setSortField("id");
+         setFlag(false)
          const data = { 
             "user_id" : 1234,
             "rows" : ["id","country","cityid","city","state","locality"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : ["id"],
+            "order" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(currentPages),
             "search_key" : ""
