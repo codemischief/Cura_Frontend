@@ -618,30 +618,30 @@ const Prospect = () => {
                     </div>
 
                     <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
-                                    <p>Sr. </p>
+                                    <p>Sr.</p>
                                 </div>
                                 <div className='w-[25%]  p-4'>
-                                    <p>Person Name</p>
+                                    <p>Person Name <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>Suburb</p>
+                                    <p>Suburb <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <p>City</p>
+                                    <p>City <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>Property Location</p>
+                                    <p>Property Location <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-[20%]  p-4'>
-                                    <p>Possible Services</p>
+                                    <p>Possible Services <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  p-4'>
-                                    <p>ID</p>
+                                    <p>ID <span className="font-extrabold">↑↓</span></p>
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     <p>Edit</p>

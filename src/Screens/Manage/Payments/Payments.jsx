@@ -31,7 +31,7 @@ const Payments = () => {
     const [currentStatement, setCurrentStatement] = useState({});
     const [currentStatementId, setCurrentStatementId] = useState();
     const [showDelete, setShowDelete] = useState(false);
-    const [searchInput,setSearchInput] = useState("");
+    const [searchInput, setSearchInput] = useState("");
     const openDownload = () => {
         setDownloadModal(true);
     }
@@ -135,7 +135,7 @@ const Payments = () => {
             "order": "asc",
             "pg_no": 1,
             "pg_size": 15,
-            "search_key" : searchInput
+            "search_key": searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -175,7 +175,7 @@ const Payments = () => {
             "order": "asc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -214,7 +214,7 @@ const Payments = () => {
             "order": "asc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -240,8 +240,8 @@ const Payments = () => {
 
     const addPayment = async () => {
 
-        if(!validate()) {
-            return ;
+        if (!validate()) {
+            return;
         }
 
         const data = {
@@ -347,125 +347,125 @@ const Payments = () => {
         setFormErrors(validate(formValues)); // validate form and set error message
         setIsSubmit(true);
     };
-   
-    const validate = ()  => {
+
+    const validate = () => {
         var res = true;
-        if(!formValues.paymentto) {
+        if (!formValues.paymentto) {
             setFormErrors((existing) => {
-               return {...existing,paymentto: "Select a name to pay"}
+                return { ...existing, paymentto: "Select a name to pay" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,paymentto: ""}
-             })
+                return { ...existing, paymentto: "" }
+            })
         }
-        if(!formValues.paymentby) {
+        if (!formValues.paymentby) {
             setFormErrors((existing) => {
-               return  {...existing,paymentby: "Sealect a name to pay from"}
+                return { ...existing, paymentby: "Sealect a name to pay from" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,paymentby: ""}
-             })
+                return { ...existing, paymentby: "" }
+            })
         }
         // console.log(formValues.amount);
         // const temp = Number(formValues.amount);
-        
-        if(!formValues.amount) {
+
+        if (!formValues.amount) {
             setFormErrors((existing) => {
-                return {...existing,amount: "Amount is Mandatory"}
+                return { ...existing, amount: "Amount is Mandatory" }
             })
             res = false;
-        }else if(!Number.isInteger(Number(formValues.amount))){
+        } else if (!Number.isInteger(Number(formValues.amount))) {
             setFormErrors((existing) => {
-                return {...existing,amount: "Enter A Numeric Value"}
+                return { ...existing, amount: "Enter A Numeric Value" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,amount: ""}
+                return { ...existing, amount: "" }
             })
         }
-        if(!formValues.paymentfor) {
+        if (!formValues.paymentfor) {
             setFormErrors((existing) => {
-                return {...existing,paymentfor: "This Feild is mandatory"}
+                return { ...existing, paymentfor: "This Feild is mandatory" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,paymentfor: ""}
+                return { ...existing, paymentfor: "" }
             })
         }
-        if(!formValues.paymentmode) {
+        if (!formValues.paymentmode) {
             setFormErrors((existing) => {
-                return {...existing,paymentmode: "Select a payment mode"}
+                return { ...existing, paymentmode: "Select a payment mode" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,paymentmode: ""}
+                return { ...existing, paymentmode: "" }
             })
         }
-        if(!formValues.entity) {
+        if (!formValues.entity) {
             setFormErrors((existing) => {
-                return {...existing,entity: "Select entity"}
+                return { ...existing, entity: "Select entity" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,entity: ""}
+                return { ...existing, entity: "" }
             })
         }
-        if(!formValues.paidon) {
+        if (!formValues.paidon) {
             setFormErrors((existing) => {
-                return {...existing,paidon: "Enter payment date"}
+                return { ...existing, paidon: "Enter payment date" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,paidon: ""}
+                return { ...existing, paidon: "" }
             })
         }
-        if(!formValues.month) {
+        if (!formValues.month) {
             setFormErrors((existing) => {
-                return {...existing,month: "Select payment month"}
+                return { ...existing, month: "Select payment month" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,month: ""}
+                return { ...existing, month: "" }
             })
         }
-        if(!formValues.tds ) {
+        if (!formValues.tds) {
             setFormErrors((existing) => {
-                return {...existing,tds: "Enter TDS amount"}
+                return { ...existing, tds: "Enter TDS amount" }
             })
             res = false;
-        }else if(!Number.isInteger(Number(formValues.tds))){
+        } else if (!Number.isInteger(Number(formValues.tds))) {
             setFormErrors((existing) => {
-                return {...existing,tds: "Enter A Numeric Value!"}
+                return { ...existing, tds: "Enter A Numeric Value!" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,tds: ""}
+                return { ...existing, tds: "" }
             })
         }
-        if(!formValues.professiontax ) {
+        if (!formValues.professiontax) {
             setFormErrors((existing) => {
-                return {...existing,professiontax: "Enter profession Tax amount"}
+                return { ...existing, professiontax: "Enter profession Tax amount" }
             })
             res = false;
-        }else if(!Number.isInteger(Number(formValues.professiontax))){
+        } else if (!Number.isInteger(Number(formValues.professiontax))) {
             setFormErrors((existing) => {
-                return {...existing,professiontax: "Enter A Numeric Value!"}
+                return { ...existing, professiontax: "Enter A Numeric Value!" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,professiontax: ""}
+                return { ...existing, professiontax: "" }
             })
         }
         return res;
@@ -518,7 +518,7 @@ const Payments = () => {
             setShowSuccess(false);
         }, 2000)
     }
-    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
     const openEditSuccess = () => {
         setIsEditDialogue(false);
         setShowEditSuccess(true);
@@ -527,7 +527,7 @@ const Payments = () => {
         }, 2000)
         fetchData();
     }
-    const handleSearch = async  () => {
+    const handleSearch = async () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -557,7 +557,7 @@ const Payments = () => {
             "order": "asc",
             "pg_no": 1,
             "pg_size": 15,
-            "search_key" : searchInput
+            "search_key": searchInput
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -565,7 +565,7 @@ const Payments = () => {
         setTotalItems(result.total_count)
         setPageLoading(false);
     }
-    const handleCloseSearch = async  () => {
+    const handleCloseSearch = async () => {
         setPageLoading(true);
         setSearchInput("");
         const data = {
@@ -596,7 +596,7 @@ const Payments = () => {
             "order": "asc",
             "pg_no": 1,
             "pg_size": 15,
-            "search_key" : ""
+            "search_key": ""
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -613,7 +613,7 @@ const Payments = () => {
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Payments" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
             <div className='flex-col w-full h-full  bg-white'>
-                
+
                 <div className='flex-col'>
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
@@ -648,15 +648,15 @@ const Payments = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[260px] rounded-lg text-[14px]" onClick={handleOpen}>
-                                    <div className="flex items-center justify-center gap-4">
-                                    Add Contractual Payments  
-                                        <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        <div className="flex items-center justify-center gap-4">
+                                            Add Contractual Payments
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                         </div>
                                     </button>
                                 </div>
 
                             </div>
-                            
+
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
@@ -671,43 +671,43 @@ const Payments = () => {
                                         </div>
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-[10%] px-4 py-3'>
-                                    <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  px-4 py-3'>
-                                    <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-[14%]  px-4 py-3'>
-                                    <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
-                                    <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  px-4 py-3'>
-                                    <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
@@ -715,13 +715,13 @@ const Payments = () => {
                                 </div>
                                 <div className='w-[15%] flex'>
                                     <div className='w-1/2  px-4 py-3'>
-                                    <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-9 bg-[#EBEBEB] rounded-[5px]" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>
                                     <div className='w-1/2 0 p-4'>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -814,7 +814,7 @@ const Payments = () => {
                             })}
                             {/* we get all the existing prospect here */}
                             {isEditDialogue && <EditPayments isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currentStatement}
-                                fetchData={fetchData} openPrompt={openEditSuccess}/>}
+                                fetchData={fetchData} openPrompt={openEditSuccess} />}
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetchData={fetchData} />}
                         </div>
                     </div>

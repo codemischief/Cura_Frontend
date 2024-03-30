@@ -16,6 +16,7 @@ import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
+import Add from "../../../assets/add.png";
 import EditManageEmployee from './EditManageEmployee';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 const ManageEmployees = () => {
@@ -36,14 +37,14 @@ const ManageEmployees = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isEmployeeDialogue,setIsEmployeeDialogue] =useState(false);
+    const [isEmployeeDialogue, setIsEmployeeDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
-    const [showAddSuccess,setShowAddSuccess] = useState(false);
-    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
+    const [showAddSuccess, setShowAddSuccess] = useState(false);
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
 
-    
+
 
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -90,10 +91,10 @@ const ManageEmployees = () => {
         const result = (await response.json());
 
         console.log(result.data);
-       console.log('hey')
-       setFormValues((existing) => {
-        return {...existing,userName : result.data[0].id}
-       })
+        console.log('hey')
+        setFormValues((existing) => {
+            return { ...existing, userName: result.data[0].id }
+        })
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -102,12 +103,12 @@ const ManageEmployees = () => {
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234};
+        const data = { "user_id": 1234 };
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
-            return {...existing, role : result.data[0].id}
+            return { ...existing, role: result.data[0].id }
         })
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
@@ -117,12 +118,12 @@ const ManageEmployees = () => {
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234};
+        const data = { "user_id": 1234 };
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
-            return {...existing, entity : result.data[0][0]}
+            return { ...existing, entity: result.data[0][0] }
         })
         if (Array.isArray(result.data)) {
             setAllEntites(result.data);
@@ -131,20 +132,20 @@ const ManageEmployees = () => {
 
     const fetchLobData = async () => {
         setPageLoading(true);
-        const data = { 
-            "user_id" : 1234,
-            "rows" : ["id","name","lob_head","company"],
-            "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
-            "pg_no" : Number(currentPage),
-            "pg_size" : Number(currentPages)
-         };
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "name", "lob_head", "company"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages)
+        };
         const response = await APIService.getLob(data);
         const result = (await response.json());
         console.log(result.data);
         setFormValues((existing) => {
-            return {...existing, lob : result.data[0].id}
+            return { ...existing, lob: result.data[0].id }
         })
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
@@ -239,8 +240,8 @@ const ManageEmployees = () => {
     }
 
     const addEmployee = async () => {
-        if(!validate()) {
-            return ;
+        if (!validate()) {
+            return;
         }
         // setPageLoading(true);
         const data = {
@@ -266,7 +267,7 @@ const ManageEmployees = () => {
             "createdby": 1234,
             "isdeleted": false,
             "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob ,
+            "lobid": formValues.lob == null ? "" : formValues.lob,
             "lastdateofworking": formValues.lastDOW,
             "designation": formValues.designation
         }
@@ -286,182 +287,182 @@ const ManageEmployees = () => {
         doj: "",
         designation: "",
         email: "",
-        addressLine1:"",
+        addressLine1: "",
         employeeId: "",
         lob: "",
         dob: "",
-        lastDOW:"",
+        lastDOW: "",
         role: "",
         phNo: "",
-        addressLine2:"",
+        addressLine2: "",
         country: "",
         state: "",
         city: "",
         suburb: "",
-        zipCode:"",
+        zipCode: "",
         entity: ""
 
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
-    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    
+
 
     // validate form and to throw Error message
-    const validate = ()  => {
+    const validate = () => {
         var res = true;
-        if(!formValues.employeeName) {
+        if (!formValues.employeeName) {
             setFormErrors((existing) => {
-               return {...existing,employeeName: "Enter Employee name"}
+                return { ...existing, employeeName: "Enter Employee name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,employeeName: ""}
-             })
-        }
-        if(!formValues.panNo) {
-            setFormErrors((existing) => {
-               return  {...existing,panNo: "Enter Pan Number"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return  {...existing,panNo: ""}
-             })
-        }
-        if(!formValues.doj) {
-            setFormErrors((existing) => {
-                return {...existing,doj: "Enter date of joining"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,doj: ""}
+                return { ...existing, employeeName: "" }
             })
         }
-        if(!formValues.designation) {
+        if (!formValues.panNo) {
             setFormErrors((existing) => {
-                return {...existing,designation: "Enter Designation"}
+                return { ...existing, panNo: "Enter Pan Number" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,designation: ""}
+                return { ...existing, panNo: "" }
             })
         }
-        if(!formValues.email) {
+        if (!formValues.doj) {
             setFormErrors((existing) => {
-                return {...existing,email: "Enter email address"}
+                return { ...existing, doj: "Enter date of joining" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,email: ""}
+                return { ...existing, doj: "" }
             })
         }
-        if(!formValues.employeeId) {
+        if (!formValues.designation) {
             setFormErrors((existing) => {
-                return {...existing,employeeId: "Enter Employee Id"}
+                return { ...existing, designation: "Enter Designation" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,employeeId: ""}
+                return { ...existing, designation: "" }
             })
         }
-        if(!formValues.lob) {
+        if (!formValues.email) {
             setFormErrors((existing) => {
-                return {...existing,lob: "Select LOB"}
+                return { ...existing, email: "Enter email address" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,lob: ""}
+                return { ...existing, email: "" }
             })
         }
-        if(!formValues.dob) {
+        if (!formValues.employeeId) {
             setFormErrors((existing) => {
-                return {...existing,dob: "enter date of birth"}
+                return { ...existing, employeeId: "Enter Employee Id" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,dob: ""}
+                return { ...existing, employeeId: "" }
             })
         }
-        if(!formValues.role) {
+        if (!formValues.lob) {
             setFormErrors((existing) => {
-                return {...existing,role: "Select Role"}
+                return { ...existing, lob: "Select LOB" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,role: ""}
+                return { ...existing, lob: "" }
             })
         }
-        if(!formValues.phNo) {
+        if (!formValues.dob) {
             setFormErrors((existing) => {
-                return {...existing,phNo: "Enter phone number"}
+                return { ...existing, dob: "enter date of birth" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,phNo: ""}
+                return { ...existing, dob: "" }
             })
         }
-        if(!formValues.country) {
+        if (!formValues.role) {
             setFormErrors((existing) => {
-                return {...existing,country: "Select country"}
+                return { ...existing, role: "Select Role" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,country: ""}
+                return { ...existing, role: "" }
             })
         }
-        if(formValues.state == "") {
+        if (!formValues.phNo) {
             setFormErrors((existing) => {
-                return {...existing,state: "Select state"}
+                return { ...existing, phNo: "Enter phone number" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,state: ""}
+                return { ...existing, phNo: "" }
             })
         }
-        if(!formValues.city) {
+        if (!formValues.country) {
             setFormErrors((existing) => {
-                return {...existing,city: "Select city"}
+                return { ...existing, country: "Select country" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,city: ""}
+                return { ...existing, country: "" }
             })
         }
-        if(!formValues.suburb) {
+        if (formValues.state == "") {
             setFormErrors((existing) => {
-                return {...existing,suburb: "Enter suburb"}
+                return { ...existing, state: "Select state" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,suburb: ""}
+                return { ...existing, state: "" }
             })
         }
-        if(!formValues.entity) {
+        if (!formValues.city) {
             setFormErrors((existing) => {
-                return {...existing,entity: "Select Entity"}
+                return { ...existing, city: "Select city" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,entity: ""}
+                return { ...existing, city: "" }
+            })
+        }
+        if (!formValues.suburb) {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter suburb" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+        if (!formValues.entity) {
+            setFormErrors((existing) => {
+                return { ...existing, entity: "Select Entity" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, entity: "" }
             })
         }
         return res;
@@ -469,8 +470,8 @@ const ManageEmployees = () => {
 
     const deleteEmployee = async (id) => {
         const data = {
-            "user_id" : 1234,
-            "id" : id
+            "user_id": 1234,
+            "id": id
         }
         const response = await APIService.deleteEmployee(data);
         openDeleteSuccess();
@@ -557,31 +558,31 @@ const ManageEmployees = () => {
         setShowAddSuccess(true);
         setTimeout(function () {
             setShowAddSuccess(false);
-        },2000)
+        }, 2000)
         fetchData();
-      }
-      const openDeleteSuccess = () => {
+    }
+    const openDeleteSuccess = () => {
         setShowDeleteSuccess(true);
         setTimeout(function () {
             setShowDeleteSuccess(false);
-        },2000)
+        }, 2000)
         fetchData();
-      }
-      const openEditSuccess =() => {
+    }
+    const openEditSuccess = () => {
         setIsEditDialogue(false);
         setShowEditSuccess(true);
         setTimeout(function () {
             setShowEditSuccess(false);
-        },2000)
+        }, 2000)
         fetchData();
-      }
+    }
     return (
         <div>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess}/>}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee"/>}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee"/>}
+            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -594,8 +595,8 @@ const ManageEmployees = () => {
                                 </div>
 
                                 <div className='flex-col'>
-                                    <h1>Manage Employee</h1>
-                                    <p>Admin &gt; Manage Employee</p>
+                                    <h1 className='text-[18px]'>Manage Employee</h1>
+                                    <p className='text-[14px]'>Admin &gt; Manage Employee</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -620,7 +621,10 @@ const ManageEmployees = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
-                                        Add New Employee +
+                                        <div className="flex items-center justify-center gap-4">
+                                            Add New Employee
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        </div>
                                     </button>
                                 </div>
 
@@ -629,209 +633,223 @@ const ManageEmployees = () => {
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='w-full h-12 bg-white flex justify-between'>
-                                <div className='w-[4.33%] flex'>
-                                    <div className='p-2'>
+                                <div className="w-[85%] flex">
+                                    <div className='w-[3%] flex'>
+                                        <div className='p-3'>
+                                            {/* <p>Sr.</p> */}
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[13%]  flex p-3'>
+                                        <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[14%]  flex p-3'>
+                                        <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[17%]  flex p-3'>
+                                        <div className="w-[57%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[15%] flex">
+                                    <div className='w-1/2  flex p-3'>
+                                        <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
 
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[9.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[11.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2 '>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[4.33%]  flex'>
-                                    <div className='p-2'>
-                                         
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6'>
+                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                            <div className='w-[4.33%] flex'>
-                                <div className='p-2'>
-                                    <p>Sr.</p>
+                            <div className="w-[85%] flex">
+                                <div className='w-[3%] flex'>
+                                    <div className='p-3'>
+                                        <p>Sr.</p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Employee <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[13%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Employee ID <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Phone <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Email <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Role <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Pan No <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[14%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Date of joining <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[17%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Last Date of working <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p> Status <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Employee </p>
+                            <div className="w-[15%] flex">
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>ID <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>Edit</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[9.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Employee ID</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Phone</p>
-                                </div>
-                            </div>
-                            <div className='w-[11.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Email</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Role</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Pan No</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Join Date</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Last Date</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p> Status</p>
-                                </div>
-                            </div>
-                            <div className='w-[4.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>ID</p>
-                                </div>
-                            </div>
-                            <div className='w-[8.33%]  flex'>
-                                <div className='p-2'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
+
                         </div>
                         <div className='w-full h-[450px] overflow-auto'>
                             {/* we map our items here */}
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingEmployees.map((item, index) => {
                                 return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[4.33%] flex'>
-                                        <div className='p-2'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                    <div className="w-[85%] flex">
+                                        <div className='w-[3%] flex'>
+                                            <div className='p-3'>
+                                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.employeename} </p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[13%]  flex overflow-hidden'>
+                                            <div className='p-3 '>
+                                                <p className='ml-3'>{item.employeeid}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.phoneno}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.email}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.roleid}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.panno}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[14%]  flex overflow-hidden'>
+                                            <div className='p-3 ml-2'>
+                                                <p>{item.dateofjoining}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[17%]  flex  overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.lastdateofworking}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3 ml-2 flex items-center space-x-2'>
+                                                {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                    <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                    <p> inactive</p></>}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden'>
-                                        <div className='p-2'>
-                                            <p>{item.employeename} </p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[9.33%]  flex overflow-hidden'>
-                                        <div className='p-2 '>
-                                            <p className='ml-3'>{item.employeeid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden'>
-                                        <div className='p-2'>
-                                            <p>{item.phoneno}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[11.33%]  flex overflow-hidden'>
-                                        <div className='p-2'>
-                                            <p>{item.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden'>
-                                        <div className='p-2'>
-                                            <p>{item.roleid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden'>
-                                        <div className='p-2'>
-                                            <p>{item.panno}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden'>
-                                        <div className='p-2 ml-2'>
-                                            <p>{item.dateofjoining}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8.33%]  flex  overflow-hidden'>
-                                        <div className='p-2'>
-                                            <p>{item.lastdateofworking}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden'>
-                                        <div className='p-2 ml-2 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
-                                        </div>
-                                    </div>
-                                    <div className='w-[4.33%]  flex overflow-hidden'>
-                                        <div className='p-2 ml-3'>
+                                    <div className="w-[15%] flex">
+                                    <div className='w-1/2  flex overflow-hidden'>
+                                        <div className='p-3 ml-3'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8.33%]  flex overflow-hidden items-center space-x-4 ml-3'>
+                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
                                         <button onClick={() => deleteEmployee(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                     </div>
+                                    </div>
+                                    
                                 </div>
                             })}
                         </div>
@@ -922,253 +940,253 @@ const ManageEmployees = () => {
                                 <div className="text-[16px]">Add New Employee</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img  onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        
-                            <div className="h-auto w-full mt-[5px]">
-                                <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Employee Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeName}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Pan No<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.panNo}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Username <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="userName"
-                                                value={formValues.userName}
-                                                defaultValue="Select Username"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, userName: e.target.value }
-                                                        return newData;
-                                                    })
 
-                                                }}
-                                            >
-                                                {allUsername && allUsername.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Date of joining<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.doj}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Designation<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.designation}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Email<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email" value={formValues.email} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.email}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Address Line 1</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-                                        </div>
+                        <div className="h-auto w-full mt-[5px]">
+                            <div className="flex gap-[48px] justify-center items-center">
+                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[14px]">Employee Name<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeName}</div>
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Employee ID<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeId}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">LOB <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="lob"
-                                                value={formValues.lob}
-                                                defaultValue="Select lob"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, lob: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                {allLOB && allLOB.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Date of birth<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.dob}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Last Date of Working</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Assign Role <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="role"
-                                                value={formValues.role}
-                                                defaultValue="Select Role"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, role: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                {allRoles && allRoles.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Phone Number<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
-                                        </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Pan No<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.panNo}</div>
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px] ">
-                                        <div className="">
-                                            <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
-                                                value={formValues.country}
-                                                defaultValue="Select Country"
-                                                onChange={e => {
-                                                    setCurrCountry(e.target.value);
-                                                    fetchStateData(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, country: e.target.value }
-                                                        return newData;
-                                                    })
-                                                    // fetchStateData(res);
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a Country</option>
-                                                {allCountry && allCountry.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
+                                    <div className="">
+                                        <div className="text-[14px]">Username <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="userName"
+                                            value={formValues.userName}
+                                            defaultValue="Select Username"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, userName: e.target.value }
+                                                    return newData;
+                                                })
 
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="state"
-                                                value={formValues.state}
-                                                defaultValue="Select State"
-                                                onChange={e => {
-                                                    fetchCityData(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, state: e.target.value }
-                                                        return newData;
-                                                    })
+                                            }}
+                                        >
+                                            {allUsername && allUsername.map(item => (
+                                                <option value={item.id} >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Date of joining<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.doj}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Designation<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.designation}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Email<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.email}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Address Line 1</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                    </div>
+                                </div>
+                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[14px]">Employee ID<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.employeeId}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">LOB <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="lob"
+                                            value={formValues.lob}
+                                            defaultValue="Select lob"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, lob: e.target.value }
+                                                    return newData;
+                                                })
 
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a State</option>
-                                                {allState && allState.map(item => (
-                                                    <option value={item[1]} >
-                                                        {item[1]}
-                                                    </option>
+                                            }}
+                                        >
+                                            {allLOB && allLOB.map(item => (
+                                                <option value={item.id} >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Date of birth<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.dob}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Last Date of Working</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Assign Role <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="role"
+                                            value={formValues.role}
+                                            defaultValue="Select Role"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, role: e.target.value }
+                                                    return newData;
+                                                })
 
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="city"
-                                                value={formValues.city}
-                                                defaultValue="Select City"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, city: e.target.value }
-                                                        return newData;
-                                                    })
+                                            }}
+                                        >
+                                            {allRoles && allRoles.map(item => (
+                                                <option value={item.id} >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Phone Number<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Address Line 2</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                    </div>
+                                </div>
+                                <div className=" space-y-[12px] py-[20px] px-[10px] ">
+                                    <div className="">
+                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="country"
+                                            value={formValues.country}
+                                            defaultValue="Select Country"
+                                            onChange={e => {
+                                                setCurrCountry(e.target.value);
+                                                fetchStateData(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, country: e.target.value }
+                                                    return newData;
+                                                })
+                                                // fetchStateData(res);
+                                            }}
+                                        >
+                                            <option value="none" hidden={true}>Select a Country</option>
+                                            {allCountry && allCountry.map(item => (
+                                                <option value={item[0]} >
+                                                    {item[1]}
+                                                </option>
 
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a City</option>
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Suburb</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Zip Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Entities <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="entity"
-                                                value={formValues.entity}
-                                                defaultValue="Select entity"
-                                                onChange={e => {
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-                                                }}
-                                            >
-                                                {allEntities && allEntities.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
+                                            ))}
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="state"
+                                            value={formValues.state}
+                                            defaultValue="Select State"
+                                            onChange={e => {
+                                                fetchCityData(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, state: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            <option value="none" hidden={true}>Select a State</option>
+                                            {allState && allState.map(item => (
+                                                <option value={item[1]} >
+                                                    {item[1]}
+                                                </option>
+
+                                            ))}
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="city"
+                                            value={formValues.city}
+                                            defaultValue="Select City"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, city: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            <option value="none" hidden={true}>Select a City</option>
+                                            {allCity && allCity.map(item => (
+                                                <option value={item.id} >
+                                                    {item.city}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Suburb</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Zip Code</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Entities <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="entity"
+                                            value={formValues.entity}
+                                            defaultValue="Select entity"
+                                            onChange={e => {
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, entity: e.target.value }
+                                                    return newData;
+                                                })
+                                            }}
+                                        >
+                                            {allEntities && allEntities.map(item => (
+                                                <option value={item[0]} >
+                                                    {item[1]}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
-                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addEmployee} >Save</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                            </div>
-                       
+                        </div>
+                        <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
+                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addEmployee} >Save</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                        </div>
+
                     </div>
                 </div>
             </Modal>
