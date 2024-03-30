@@ -19,8 +19,8 @@ const EditManageStatement = (props) => {
     const [howReceived,sethowReceived]=useState(props.bankStatement.how)
     const [mode,setMode]=useState(props.bankStatement.mode)
     const [modeEdit,setModeEdit]=useState(Number)
-    const[receivedBy,setRecievedBy]=useState(Number);
-    const[vendorId,setVendorId]=useState(Number);
+    // const[receivedBy,setRecievedBy]=useState(Number);
+    // const[vendorId,setVendorId]=useState(Number);
 
     const openSuccessModal = () => {
         // set the state for true for some time
@@ -39,15 +39,14 @@ const EditManageStatement = (props) => {
     }
 
     const editBankStatement = async () => {
-        
-        // setVendorId((formValues.vendor).split(",", 1)[0]);
+            // setVendorId((formValues.vendor).split(",", 1));
         // setModeEdit((formValues.modeofpayment).split(",", 1)[0]);
-        // setRecievedBy((formValues.how).split(",", 1)[0])
-        console.log(formValues.how);
+        // setRecievedBy((formValues.how).split(",", 1))
+       
             const data = {
             "user_id": 1234,
             "id": Number(props.bankStatement.item.id),
-            "modeofpayment": formValues.modeofpayment,
+            "modeofpayment": Number(formValues.modeofpayment),
             "date":String(formValues.date),
             "amount":formValues.amount,
             "particulars":String(formValues.particulars),
@@ -62,9 +61,9 @@ const EditManageStatement = (props) => {
             "vendorid":Number(formValues.vendor),
             "createdby":1234
         }
-        const response = await APIService.editBankStatement(data);
+                const response = await APIService.editBankStatement(data);
         if (response.ok) {
-            openSuccessModal();
+            props.showSuccess();
         } else {
             openFailureModal();
         }
@@ -104,6 +103,15 @@ const EditManageStatement = (props) => {
         await props.fetchData();   
         setIsLoading(false);
     };
+    const [currentMode,setCurrentMode]=useState("")
+    useEffect(() => {
+        const modeOfThisItem=props.bankStatement.item.modeofpayment;
+        mode.map(ele =>{
+            if( modeOfThisItem == ele[0]){
+                setCurrentMode(ele[1])
+            }
+        })
+    }, []);
     // validate form and to throw Error message
     const validate = ()  => {
         var res = true;
@@ -167,9 +175,9 @@ const EditManageStatement = (props) => {
             <Modal open={props.openDialog}
                 fullWidth={true}
                  >
-                <div className='flex justify-center mt-[150px] rounded-lg'>
-                    <div className="w-[1050px] h-[400px] bg-white ">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                <div className='flex justify-center items-center mt-[70px] '>
+                    <div className="w-[1050px] h-[500px] bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Bank Statement</div>
                             </div>
@@ -183,8 +191,8 @@ const EditManageStatement = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
-                                            <option>{formValues.modeofpayment}</option>
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                            <option>{currentMode}</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
@@ -196,20 +204,20 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Particulars <label className="text-red-500">*</label></div>
                                             {/* <input className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs "  name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
-                                            <textarea className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
+                                            <textarea className=" text-[12px] pl-4 break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
 
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Amount<label className="text-red-500">*</label> </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Vendor</div> 
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                            <option >{formValues.vendor}</option>
+                                            <select className=" text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            
                                                 {vendorList && vendorList.map(item => (
-                                                    <option key={item[0]} value={item[0]}>
+                                                    <option value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -221,12 +229,12 @@ const EditManageStatement = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Date <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} />
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">DR/CR <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} >
                                                 {crdr && crdr.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -237,10 +245,10 @@ const EditManageStatement = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved(CR)? </div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
-                                            <option >{formValues.how}</option>
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
+                                            
                                                 {howReceived && howReceived.map(item => (
-                                                    <option key={item[0]} value={item[0]}>
+                                                    <option value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -251,7 +259,7 @@ const EditManageStatement = (props) => {
                                 </div>
                             </div>
 
-                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                            <div className="my-[125px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                                 {isLoading && <CircularProgress />}

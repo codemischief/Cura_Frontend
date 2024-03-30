@@ -1,14 +1,13 @@
-import { CircularProgress, Modal, LinearProgress, Pagination } from "@mui/material";
+import { CircularProgress, Modal, Pagination } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
-import SaveModal from "../../../Components/modals/SaveModal";
+
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
 import Edit from "../../../assets/edit.png";
-import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import Trash from "../../../assets/trash.png";
@@ -22,7 +21,6 @@ import Filter from "../../../assets/filter.png"
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
-import dayjs from "dayjs";
 import DayJS from 'react-dayjs';
 const ManageBankStatement = () => {
     // we have the module here
@@ -36,8 +34,7 @@ const ManageBankStatement = () => {
     const [currentStatementId, setCurrentStatementId] = useState();
     const [deleted, setDeleted] = useState(false);
     const [userId, setUserId] = useState(1234);
-    const crdr = ["CR", "DR"]
-    const [sortField, setSortField] = useState("");
+    const crdr = ["CR", "DR"];
     const [order, setOrder] = useState("asc");
     const [vendorList, setVendorList] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
@@ -56,14 +53,15 @@ const ManageBankStatement = () => {
     const [modeEdit, setModeEdit] = useState(Number)
     const [receivedBy, setRecievedBy] = useState(Number);
     const [vendorId, setVendorId] = useState(Number);
+    const [filterArray, setFilterArray] = useState([["mode", "contains", ""], ["type", "contains", ""], ["amount", "contains", ""], ["particulars", "contains", ""],["clientname", "contains", ""],["clientrecipt", "contains", ""]]);
+    const [sortField, setSortField] = useState("id");
+    const [isSearchOn, setIsSearchOn] = useState(false);
 
     // const [selectedBuilder,setSelectedBuilder] = useState();
-    const convertDate = (data) => {
-
-    }
+  
     const getEmployees = async () => {
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "rows": ["employeename"],
             "filters": [],
             "sort_by": [],
@@ -77,11 +75,12 @@ const ManageBankStatement = () => {
         const t = temp.total_count;
         const result = temp.data;
         setEmployees(result);
-
     }
+
+
     const getCRDetails = async () => {
         const data = {
-            "user_id": 1234
+            "user_id": userId || 1234,
         }
         const mode1 = await APIService.getModesAdmin(data);
         const howReceived1 = await APIService.getHowReceivedAdmin(data);
@@ -112,27 +111,28 @@ const ManageBankStatement = () => {
             setSuccessMessage("New Credit Receipt created succesfully ")
         }
         setShowSucess(true);
+        setTimeout(function () {
+            setShowSucess(false)
+        }, 2000)
         setIsManageStatementDialogue(false);
         setIsConfirmManageStatementDialogue(false)
         // setShowSucess(true);
-        setTimeout(function () {
-            setShowSucess(false)
-        }, 2000)
+        
     }
-    const isCredit = (item) => {
-        if (item === "CR                  ") {
-            return true;
-        } else return false;
+    // const isCredit = (item) => {
+    //     if (item === "CR                  ") {
+    //         return true;
+    //     } else return false;
 
-    }
-    const openSuccessModal = () => {
-        // set the state for true for some time
-        setIsManageStatementDialogue(false);
-        setShowSucess(true);
-        setTimeout(function () {
-            setShowSucess(false)
-        }, 2000)
-    }
+    // }
+    // const openSuccessModal = () => {
+    //     // set the state for true for some time
+    //     setIsManageStatementDialogue(false);
+    //     setShowSucess(true);
+    //     setTimeout(function () {
+    //         setShowSucess(false)
+    //     }, 2000)
+    // }
     const openFailureModal = () => {
         setIsManageStatementDialogue(false);
         setShowFailure(true);
@@ -143,14 +143,22 @@ const ManageBankStatement = () => {
 
     const fetchBankStatement = async () => {
         setPageLoading(true);
+        const tempFilters = [];
+        for (var i = 0; i < 4; i++) {
+            if (filterArray[i][2] != "") {
+                tempFilters.push(filterArray[i]);
+            }
+        }
+        setPageLoading(true);
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "filters": tempFilters,
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": 15,
+            "search_key": isSearchOn ? searchQuery : ""
         }
         const response = await APIService.getBankStatement(data);
         const temp = await response.json();
@@ -159,13 +167,13 @@ const ManageBankStatement = () => {
         setTotalItems(t);
         setPageLoading(false);
         setExistingStatement(result);
-        existingStatement.map(ele => {
-            client.map(item => {
-                if (ele.clientid === item[0]) {
-                    console.log(item[1])
-                }
-            })
-        })
+        // existingStatement.map(ele => {
+        //     client.map(item => {
+        //         if (ele.clientid === item[0]) {
+        //             console.log(item[1])
+        //         }
+        //     })
+        // })
     }
 
     const deleteStatement = async (item) => {
@@ -191,7 +199,7 @@ const ManageBankStatement = () => {
             "vendorid": Number(vendorId),
             "createdby": userId || 1234
         }
-        setClientName(formValues.particulars);
+       
         const response = await APIService.addBankStatement(data);
         if (response.ok) {
             setIsLoading(false);
@@ -208,7 +216,7 @@ const ManageBankStatement = () => {
             "user_id": userId || 1234,
             "receivedby": Number(formValues.employee),
             "paymentmode": Number(formValues.modeofpayment),
-            "recddate": formValues.recddate,
+            "recddate": formValues.date,
             "entityid": Number(formValues.entity),
             "amount": Number(formValues.amount),
             "howreceivedid": Number(formValues.how),
@@ -218,28 +226,37 @@ const ManageBankStatement = () => {
             "reimbursementamount": Number(formValues.reimbAmount),
             "tds": Number(formValues.TDS)
         }
-        setClientName(formValues.particulars);
+        setClientName(formValues.client);
         const response = await APIService.addClientReceipt(data);
-        if (await response.json().result === "success") {
-            setIsLoading(false);
+        console.log(response)
+        if (response.ok) {
+            
             openConfirmModal();
         } else {
-            setIsLoading(false);
+            
             openFailureModal();
         }
         fetchBankStatement();
+        setCreditReceipt(false)
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
+        const tempFilters = [];
+        for (var i = 0; i < 4; i++) {
+            if (filterArray[i][2] != "") {
+                tempFilters.push(filterArray[i]);
+            }
+        }
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": [],
-            "sort_by": [],
+            "filters": tempFilters,
+            "sort_by": [sortField],
             "order": "asc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchQuery : ""
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -251,14 +268,21 @@ const ManageBankStatement = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
+        const tempFilters = [];
+        for (var i = 0; i < 4; i++) {
+            if (filterArray[i][2] != "") {
+                tempFilters.push(filterArray[i]);
+            }
+        }
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": [],
-            "sort_by": [],
+            "filters": tempFilters,
+            "sort_by": [sortField],
             "order": "asc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(number)
+            "pg_size": Number(number),
+            "search_key": isSearchOn ? searchQuery : ""
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -270,14 +294,22 @@ const ManageBankStatement = () => {
     }
     const handleSort = async (field) => {
         setPageLoading(true);
+        setSortField(field);
+        const tempFilters = [];
+        for (var i = 0; i < 4; i++) {
+            if (filterArray[i][2] != "") {
+                tempFilters.push(filterArray[i]);
+            }
+        }
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid", "crdr"],
-            "filters": [],
+            "filters": tempFilters,
             "sort_by": [field],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchQuery : ""
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -298,7 +330,22 @@ const ManageBankStatement = () => {
         getVendorAdmin();
         fetchBankStatement();
         getEmployees();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setModeFilter(false);
+                setDateFilter(false);
+                setAmountFilter(false);
+                setClientFilter(false);
+                setParticularsFilter(false);
+                setCRFilter(false);
 
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
     //Validation of the form
     const initialValues = {
@@ -328,13 +375,17 @@ const ManageBankStatement = () => {
         // setFormErrors(validate(formValues));
         setIsConfirmManageStatementDialogue(true);
         setIsManageStatementDialogue(false);
+        // setClientName((formValues.vendor).split(",", 1)[0])
+        setClientName(formValues.vendor);
         // addBankStatement();
     };
+    const [crValues, setCrValues]=useState(initialValues);
     const handleCR = (e) => {
         e.preventDefault();
         setFormErrors(validateCR(formValues));
-        setCreditReceipt(false)
+       
         addCreditRecipt();
+        // setCreditReceipt(false)
     };
     // validate form and to throw Error message
     const validate = ()  => {
@@ -418,6 +469,7 @@ const ManageBankStatement = () => {
     const [isConfirmManageStatementDialogue, setIsConfirmManageStatementDialogue] = React.useState(false);
     const [isManageStatementDialogue, setIsManageStatementDialogue] = React.useState(false);
     const handleOpen = () => {
+        setFormValues(initialValues);
         setIsManageStatementDialogue(true);
         setIsConfirmManageStatementDialogue(false);
     };
@@ -457,7 +509,7 @@ const ManageBankStatement = () => {
     const handleSearch = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": 1234,
+            "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid"],
             "filters": [],
             "sort_by": [],
@@ -529,30 +581,297 @@ const ManageBankStatement = () => {
     const toggleCRFilter = () => {
         setCRFilter((prev) => !prev)
     }
-    const fetchFilteredMode = async (filterType, filterField) => {
-        const filterArray = [];
+    const handleFilter = (type, columnNo) => {
+        switch (type){
+            case 'noFilter': 
+                            switch(columnNo){
+                                case 0: 
+                                        existing[columnNo][1] = type;
+                                        setModeFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                         break;
+                                case 1: 
+                                        existing[columnNo][1] = type;
+                                        setDateFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                        break;
+                                case 2: 
+                                        existing[columnNo][1] = type;
+                                        setLobFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                        break;
+                                case 3: 
+                                        existing[columnNo][1] = type;
+                                        setAmountFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                        break;
+                                case 4: 
+                                        existing[columnNo][1] = type;
+                                        setClientFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                        break;
+                                case 5: 
+                                        existing[columnNo][1] = type;
+                                        setParticularsFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                        break;
+                                case 6: 
+                                        existing[columnNo][1] = type;
+                                        setCRFilterInput("");
+                                        existing[columnNo][2] = "";
+                                        setFilterArray(existing);
+                                        break;
+                            }
 
-        setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "rows": ["id", "name"],
-            "filters": [["name", String(filterType), filterField]],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getBankStatement(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingStatement(result);
-        setFlag((prev) => {
-            return !prev;
-        })
-        setPageLoading(false);
-        existingBankSta
+                break;
+            case 'startsWith':
+                                switch(columnNo){
+                                case 0: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = modeFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 1: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = dateFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 2: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = lobFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 3: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = amountFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 4: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = clientFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 5: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = particularsFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 6: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = crFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                            }
+                break;
+            case 'endsWith':
+                            switch(columnNo){
+                                case 0: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = modeFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 1: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = dateFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 2: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = lobFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 3: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = amountFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 4: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = clientFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 5: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = particularsFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 6: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = crFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                            }
+                            break
+            case 'contains':
+                            switch(columnNo){
+                                case 0: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = modeFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 1: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = dateFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 2: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = lobFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 3: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = amountFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 4: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = clientFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 5: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = particularsFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 6: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = crFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                            }
+                break;
+            case 'exactMatch':
+                                switch(columnNo){
+                                    case 0: 
+                                            existing[columnNo][1] = type;
+                                            existing[columnNo][2] = modeFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 1: 
+                                            existing[columnNo][1] = type;
+                                            existing[columnNo][2] = dateFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 2: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = lobFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 3: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = amountFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 4: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = clientFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 5: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = particularsFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 6: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = crFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                }
+                break;
+            case 'exactMatch':
+                                switch(columnNo){
+                                    case 0: 
+                                            existing[columnNo][1] = type;
+                                            existing[columnNo][2] = modeFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 1: 
+                                            existing[columnNo][1] = type;
+                                            existing[columnNo][2] = dateFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 2: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = lobFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 3: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = amountFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 4: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = clientFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 5: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = particularsFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                    case 6: existing[columnNo][1] = type;
+                                            existing[columnNo][2] = crFilterInput;
+                                            setFilterArray(existing);
+                                            break;
+                                }
+                break;
+            case 'isNull':
+                            switch(columnNo){
+                                case 0: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = modeFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 1: 
+                                        existing[columnNo][1] = type;
+                                        existing[columnNo][2] = dateFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 2: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = lobFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 3: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = amountFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 4: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = clientFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 5: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = particularsFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                                case 6: existing[columnNo][1] = type;
+                                        existing[columnNo][2] = crFilterInput;
+                                        setFilterArray(existing);
+                                        break;
+                            }
+                break;
+            case 'isNotNull':
+                switch(columnNo){
+                    case 0: 
+                            existing[columnNo][1] = type;
+                            existing[columnNo][2] = modeFilterInput;
+                            setFilterArray(existing);
+                            break;
+                    case 1: 
+                            existing[columnNo][1] = type;
+                            existing[columnNo][2] = dateFilterInput;
+                            setFilterArray(existing);
+                            break;
+                    case 2: existing[columnNo][1] = type;
+                            existing[columnNo][2] = lobFilterInput;
+                            setFilterArray(existing);
+                            break;
+                    case 3: existing[columnNo][1] = type;
+                            existing[columnNo][2] = amountFilterInput;
+                            setFilterArray(existing);
+                            break;
+                    case 4: existing[columnNo][1] = type;
+                            existing[columnNo][2] = clientFilterInput;
+                            setFilterArray(existing);
+                            break;
+                    case 5: existing[columnNo][1] = type;
+                            existing[columnNo][2] = particularsFilterInput;
+                            setFilterArray(existing);
+                            break;
+                    case 6: existing[columnNo][1] = type;
+                            existing[columnNo][2] = crFilterInput;
+                            setFilterArray(existing);
+                            break;
+                }
+                break;
+            
+        }
+       fetchBankStatement();
+
     }
     const handleExcelDownload = async () => {
         const data = {
@@ -582,19 +901,47 @@ const ManageBankStatement = () => {
         setCurrentPage(value)
         fetchPageData(value);
     }
-    const openCreditRecipt = () => {
+    const [currentMode,setCurrentMode]=useState("")
+    const openCreditRecipt = (item) => {
+        console.log(item)
+        const modeOfThisItem=item.modeofpayment;
+        mode.map(ele =>{
+            if( modeOfThisItem == ele[0]){
+                setCurrentMode(ele[1])
+            }
+        })
+        const initialValues = {
+            modeofpayment: currentMode,
+            particulars: item.particulars,
+            amount: item.amount,
+            vendor: item.vendor,
+            date: item.date,
+            crdr: item.crdr,
+            how: item.how,
+        };
+        setFormValues(initialValues);
         setCreditReceipt(true);
 
     }
     const handleCloseCR = () => {
         setCreditReceipt(false);
     }
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const openEditSuccess =() => {
+        setIsEditDialogue(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        },2000)
+        fetchBankStatement();
+      }
     return (
         <div >
             <Navbar />
             <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Bank Statement"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -642,212 +989,215 @@ const ManageBankStatement = () => {
 
                                 </div>
                                 <div className='w-[120px] p-4'>
-                                    <input className="w-11 bg-[#EBEBEB]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleModeFilter}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                
+                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
+                                        <button className='p-1 bg-[#EBEBEB]' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                    </div>
                                     {modeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', modeFilterInput)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', modeFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith', modeFilterInput)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith', modeFilterInput)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch', modeFilterInput)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull', modeFilterInput)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull', modeFilterInput)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
                                 <div className='w-[120px] p-4'>
                                     <input className="w-11 bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleDateFilter}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                    <button className='p-1' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
                                     {dateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 1)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', dateFilterInput)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 1)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', dateFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 1)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith', dateFilterInput)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 1)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith', dateFilterInput)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 1)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch', dateFilterInput)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 1)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull', dateFilterInput)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 1)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull', dateFilterInput)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 1)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
                                 <div className='w-[100px] p-4'>
                                     <input className="w-8 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[10px] w-[10px]' /></button>
+                                    <button className='p-1' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-[10px] w-[10px]' /></button>
                                     {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 2)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains')}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 2)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains')}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 2)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith')}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 2)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith')}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 2)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch')}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 2)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull')}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 2)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 2)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
                                 <div className='w-[120px] p-4'>
                                     <input className="w-8 bg-[#EBEBEB]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleAmountFilter}><img src={Filter} className='h-[12px] w-[12px]' /></button>
+                                    <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[12px] w-[12px]' /></button>
                                     {amountFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 3)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', amountFilterInput)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 3)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', amountFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 3)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith', amountFilterInput)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 3)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith', amountFilterInput)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 3)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch', amountFilterInput)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 3)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull', amountFilterInput)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 3)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull', amountFilterInput)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 3)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
                                 <div className='w-[500px] p-4'>
                                     <input className="w-14 bg-[#EBEBEB]" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleClientFilter}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                    <button className='p-1' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
                                     {clientFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 4)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', clientFilterInput)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 4)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', clientFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 4)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith', clientFilterInput)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 4)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith', clientFilterInput)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 4)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch', clientFilterInput)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 4)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull', clientFilterInput)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 4)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull', clientFilterInput)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 4)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
                                 <div className='w-[180px] p-4'>
                                     <input className="w-14 bg-[#EBEBEB]" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleParticularsFilter}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                    <button className='p-1' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
                                     {particularsFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 5)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', particularsFilterInput)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 5)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', particularsFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 5)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith', particularsFilterInput)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 5)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith', particularsFilterInput)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 5)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch', particularsFilterInput)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 5)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull', particularsFilterInput)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 5)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull', particularsFilterInput)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 5)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
                                 <div className='w-[120px] p-4'>
                                     <input className="w-11 bg-[#EBEBEB]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={toggleCRFilter}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                    <button className='p-1' onClick={() => setCRFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
                                     {crFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <h1 >No Filter</h1>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 6)}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', crFilterInput)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 6)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('contains', crFilterInput)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 6)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('startsWith', crFilterInput)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 6)}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFilteredMode('endsWith', crFilterInput)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 6)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('exactMatch', crFilterInput)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 6)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNull', crFilterInput)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 6)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFilteredMode('isNotNull', crFilterInput)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 6)}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
@@ -879,13 +1229,13 @@ const ManageBankStatement = () => {
                                     <p onClick={() => handleSort("date")}>Date ↑↓</p>
                                 </div>
                                 <div className='w-[50px]  p-4'>
-                                    <p onClick={() => handleSort("crdr")}>Type</p>
+                                    <p onClick={() => handleSort("crdr")}>Type ↑↓</p>
                                 </div>
                                 <div className='w-[100px]  p-4'>
-                                    <p onClick={() => handleSort("amount")}>Amount </p>
+                                    <p onClick={() => handleSort("amount")}>Amount ↑↓ </p>
                                 </div>
                                 <div className='w-[400px] p-4 '>
-                                    <p onClick={() => handleSort("particulars")}>Particulars</p>
+                                    <p onClick={() => handleSort("particulars")}>Particulars ↑↓</p>
                                 </div>
                                 <div className='w-[200px] p-4 '>
                                     <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
@@ -910,7 +1260,7 @@ const ManageBankStatement = () => {
                             </div>}
                             {!pageLoading && existingStatement && existingStatement.map((item, index) => {
                                 return <div className='w-full   flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[85%] text-[11px]  flex'>
+                                    <div className='w-[85%] text-[11px] min-h-0  flex'>
                                         <div className='w-[5px] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
@@ -942,7 +1292,7 @@ const ManageBankStatement = () => {
                                         </div>
 
                                         <div className='w-[100px]  p-4 text-blue-500 cursor-pointer'>
-                                            {(!(item.clientid) && item.crdr === "CR                  ") && <p onClick={openCreditRecipt}>Enter CR</p>}
+                                            {(!(item.clientid) && item.crdr === "CR                  ") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
 
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                         </div>
@@ -960,7 +1310,7 @@ const ManageBankStatement = () => {
                                 </div>
                             })}
                             {/* we get all the existing builders here */}
-                            {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} />}
+                            {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} />}
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} />}
                         </div>
                     </div>
@@ -1038,9 +1388,9 @@ const ManageBankStatement = () => {
             <Modal open={isManageStatementDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
-                <div className='flex justify-center mt-[150px]'>
-                    <div className="w-[1100px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                <div className='flex justify-center items-center mt-[70px]'>
+                    <div className="w-[1050px] h-[500px] bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Bank Statement</div>
                             </div>
@@ -1049,12 +1399,12 @@ const ManageBankStatement = () => {
                             </div>
                         </div>
                         <form onSubmit={handleSubmit}>
-                            <div className="h-auto w-full mt-[5px] ">
+                            <div className="w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
                                                 <option >Select Mode</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item} value={item}>
@@ -1067,17 +1417,17 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Particulars<label className="text-red-500">*</label></div>
                                             {/* <input className="w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
-                                            <textarea className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
+                                            <textarea className=" text-[12px] pl-4 break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} required/>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Amount<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} required />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Vendor</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                 <option >Select Vendor List</option>
                                                 {vendorList && vendorList.map(item => (
                                                     <option  value={item}>
@@ -1088,15 +1438,15 @@ const ManageBankStatement = () => {
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.vendor}</div>
                                         </div>
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className="space-y-[40px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Date <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} />
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} required/>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">CR/DR <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
                                                 <option >Select CR/DR</option>
                                                 {crdr && crdr.map(item => (
                                                     <option  value={item}>
@@ -1108,7 +1458,7 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved(CR)?</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.h0w} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.h0w} onChange={handleChange} >
                                                 <option >Select how Received</option>
                                                 {howReceived && howReceived.map(item => (
                                                     <option  value={item}>
@@ -1123,9 +1473,9 @@ const ManageBankStatement = () => {
                                 </div>
                             </div>
 
-                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                            <div className="my-[125px] flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 {isLoading && <CircularProgress />}
                             </div>
@@ -1139,8 +1489,8 @@ const ManageBankStatement = () => {
                 fullWidth={true}
                 maxwidth={'md'} bankStatement={currentStatement}>
                 {/* <h1>{currentStatement}</h1> */}
-                <div className='flex justify-center mt-[20px]'>
-                    <div className="w-[1100px] h-[600px] bg-white rounded-lg">
+                <div className='flex justify-center items-center mt-[70px]'>
+                    <div className="w-[1050px] h-[500px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Enter CR</div>
@@ -1150,19 +1500,19 @@ const ManageBankStatement = () => {
                             </div>
                         </div>
                         <form onSubmit={handleCR} >
-                            <div className="h-auto w-full mt-[5px] ">
+                            <div className="w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className=" space-y-[12px] py-[10px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Cura Office<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
+                                            <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Recieved By<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
                                                 <option >Select Employee</option>
                                                 {employees && employees.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item} value={item.id}>
                                                         {item.employeename}
                                                     </option>
                                                 ))}
@@ -1171,11 +1521,11 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
-                                                <option >Select Mode</option>
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
+                                               
                                                 {mode && mode.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item[0]}
+                                                    <option key={item} value={item[0]}>
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -1183,32 +1533,32 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Recieved Date<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="recddate" value={formValues.recddate} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.recddate}</div>
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} disabled/>
+                                            
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.recddate}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Entity</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
-                                                <option >Select Entity</option>
+                                            <div className="text-[14px]">Entity<label className="text-red-500">*</label></div>
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} required >
                                                 {entity && entity.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item[0]} {item[1]}
+                                                    <option key={item} value={item[0]}>
+                                                       {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Amount Recieved</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <div className="text-[14px]">Amount Recieved<label className="text-red-500">*</label></div>
+                                            <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="amount" value={formValues.amount} onChange={handleChange} required />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved?<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} required>
                                                 <option >Select How Recieved</option>
                                                 {howReceived && howReceived.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -1220,39 +1570,39 @@ const ManageBankStatement = () => {
 
                                         <div className="">
                                             <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} required >
                                                 <option >Select Client</option>
                                                 {client && client.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.client}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Receipt Description <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.desc} onChange={handleChange} />
+                                            <div className="text-[14px]">Receipt Description</div>
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.desc} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Pending Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="pending" value={formValues.pending} onChange={handleChange} />
+                                            <div className="text-[14px]">Pending Amount </div>
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="pending" value={formValues.pending} onChange={handleChange} disabled />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.pending}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Service Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                            <div className="text-[14px]">Service Amount</div>
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Reimbursement Amount <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbAmount" value={formValues.reimbAmount} onChange={handleChange} />
+                                            <div className="text-[14px]">Reimbursement Amount </div>
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbAmount" value={formValues.reimbAmount} onChange={handleChange}  />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.reimbAmount}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <div className="text-[14px]">TDS </div>
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange}  />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div>
                                         </div>
 
@@ -1265,7 +1615,7 @@ const ManageBankStatement = () => {
 
                             <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' >Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                 {isLoading && <CircularProgress />}
                             </div>
