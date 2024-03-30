@@ -157,16 +157,10 @@ const Locality = () => {
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempFilters,
+            "filters": filterArray,
             "sort_by": [sortField],
             "order": "asc",
             "pg_no": Number(pageNumber),
@@ -183,16 +177,10 @@ const Locality = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempFilters,
+            "filters": filterArray,
             "sort_by": [sortField],
             "order": "asc",
             "pg_no": Number(currentPage),
@@ -210,16 +198,11 @@ const Locality = () => {
     }
     const fetchData = async () => {
         setPageLoading(true);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
+
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempFilters,
+            "filters": filterArray,
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": Number(currentPage),
@@ -240,17 +223,12 @@ const Locality = () => {
     const handleSort = async (field) => {
         setPageLoading(true);
         setSortField(field);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
+        
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempFilters,
-            "sort_by": [field],
+            "filters": filterArray,
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
@@ -376,8 +354,8 @@ const Locality = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "name"],
-            "filters": [["name", String(filterType), lobFilterInput]],
-            "sort_by": [],
+            "filters": filterArray,
+            "sort_by": [sortField],
             "order": "asc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
@@ -432,7 +410,6 @@ const Locality = () => {
         setPageLoading(false);
     }
     const deleteLocality = async (id) => {
-        console.log(id);
         const data = {
             "user_id": 1234,
             "id": Number(id)
@@ -443,7 +420,6 @@ const Locality = () => {
         fetchData();
     }
     const openDeleteSuccess = () => {
-        // (false);
         setShowDeleteSuccess(true);
         setTimeout(function () {
             setShowDeleteSuccess(false);

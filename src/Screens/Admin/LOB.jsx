@@ -388,7 +388,7 @@ const LOB = () => {
                                         <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
-                                    {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                    {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <h1>No Filter</h1>
                                         </div>
