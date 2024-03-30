@@ -776,13 +776,13 @@ const Payments = () => {
                                         <div className='w-[5%] h-[50%] p-4'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                         </div>
-                                        <div className='w-[13%] h-[50%] px-4 py-2'>
+                                        <div className='w-[13%] h-[50%] px-4 py-2 ml-[4px]'>
                                             <p>{item.paymentto}</p>
                                         </div>
-                                        <div className='w-[13%] h-[50%] px-4 py-2 ml-[2px]'>
+                                        <div className='w-[13%] h-[50%] px-4 py-2 ml-[10px]'>
                                             <p>{item.paymentby}</p>
                                         </div>
-                                        <div className='w-[10%] h-[50%] px-4 py-2 ml-[18px]'>
+                                        <div className='w-[10%] h-[50%] px-4 py-2 ml-[8px]'>
                                             <p>{item.amount}</p>
                                         </div>
                                         <div className='w-[10%] h-[50%] px-4 py-2 ml-[8px]'>
@@ -797,7 +797,7 @@ const Payments = () => {
                                         <div className='w-[15%] h-[50%] px-4 py-2 ml-[10px]'>
                                             <p>{item.paymentstatus}</p>
                                         </div>
-                                        <div className='w-[10%] h-[50%] px-4 py-2'>
+                                        <div className='w-[10%] h-[50%] pl-6 pr-4 py-2'>
                                             <p>{item.entityid}</p>
                                         </div>
                                     </div>
