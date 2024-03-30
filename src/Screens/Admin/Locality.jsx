@@ -223,12 +223,11 @@ const Locality = () => {
     const handleSort = async (field) => {
         setPageLoading(true);
         setSortField(field);
-        
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterArray,
-            "sort_by": [sortField],
+            "sort_by": [field],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
