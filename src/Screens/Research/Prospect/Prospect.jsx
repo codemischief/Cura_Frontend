@@ -37,7 +37,7 @@ const Prospect = () => {
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [searchInput,setSearchInput] = useState("");
+    const [searchInput, setSearchInput] = useState("");
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -45,7 +45,7 @@ const Prospect = () => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result.data);
-        
+
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
@@ -99,13 +99,13 @@ const Prospect = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 1,
             "pg_size": 15,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getProspects(data)
         const temp = await response.json();
@@ -117,8 +117,8 @@ const Prospect = () => {
         setPageLoading(false);
     }
     const addProspect = async () => {
-        if(!validate()) {
-            return ;
+        if (!validate()) {
+            return;
         }
         // setPageLoading(true);
         const data = {
@@ -150,13 +150,13 @@ const Prospect = () => {
         // console.log(id);
         // setIsDeleteDialogue(false);
         const data = {
-            "user_id":1234,
-            "id":Number(id)
+            "user_id": 1234,
+            "id": Number(id)
         };
         const response = await APIService.deleteProspects(data);
+
         // console.log(response);
         openDeleteSuccess();
-        // fetchData();
     }
     //Validation of the form
     const initialValues = {
@@ -177,75 +177,75 @@ const Prospect = () => {
     };
     const validate = () => {
         var res = true;
-        if(!formValues.personName) {
+        if (!formValues.personName) {
             setFormErrors((existing) => {
-               return {...existing,personName: "Enter Person Name"}
+                return { ...existing, personName: "Enter Person Name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,personName: ""}
-             })
+                return { ...existing, personName: "" }
+            })
         }
-        if(!formValues.country) {
+        if (!formValues.country) {
             setFormErrors((existing) => {
-               return  {...existing,country: "Enter Country Name"}
+                return { ...existing, country: "Enter Country Name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,country: ""}
-             })
+                return { ...existing, country: "" }
+            })
         }
-        if(!formValues.state) {
+        if (!formValues.state) {
             setFormErrors((existing) => {
-               return  {...existing,state: "Enter State Name"}
+                return { ...existing, state: "Enter State Name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,state: ""}
-             })
+                return { ...existing, state: "" }
+            })
         }
-        if(!formValues.city) {
+        if (!formValues.city) {
             setFormErrors((existing) => {
-               return  {...existing,city: "Enter City Name"}
+                return { ...existing, city: "Enter City Name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,city: ""}
-             })
+                return { ...existing, city: "" }
+            })
         }
-        if(!formValues.suburb) {
+        if (!formValues.suburb) {
             setFormErrors((existing) => {
-               return  {...existing,suburb: "Enter Suburb Name"}
+                return { ...existing, suburb: "Enter Suburb Name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,suburb: ""}
-             })
+                return { ...existing, suburb: "" }
+            })
         }
-        if(!formValues.possibleServices) {
+        if (!formValues.possibleServices) {
             setFormErrors((existing) => {
-               return  {...existing,possibleServices: "Enter Possible Services"}
+                return { ...existing, possibleServices: "Enter Possible Services" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,possibleServices: ""}
-             })
+                return { ...existing, possibleServices: "" }
+            })
         }
-        if(!formValues.propertyLocation) {
+        if (!formValues.propertyLocation) {
             setFormErrors((existing) => {
-               return  {...existing,propertyLocation: "Enter Property Location"}
+                return { ...existing, propertyLocation: "Enter Property Location" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,propertyLocation: ""}
-             })
+                return { ...existing, propertyLocation: "" }
+            })
         }
         return res;
     };
@@ -281,7 +281,7 @@ const Prospect = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -302,16 +302,16 @@ const Prospect = () => {
     }
     const handleSearch = async () => {
         setPageLoading(true);
-        
+
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getProspects(data)
         const temp = await response.json();
@@ -327,13 +327,13 @@ const Prospect = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city","state", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key" : ""
+            "search_key": ""
         };
         const response = await APIService.getProspects(data)
         const temp = await response.json();
@@ -344,14 +344,14 @@ const Prospect = () => {
         setExistingProspect(result);
         setPageLoading(false);
     }
-    const [showAddSuccess,setShowAddSuccess] = useState(false);
+    const [showAddSuccess, setShowAddSuccess] = useState(false);
     const openAddSuccess = () => {
         setShowAddSuccess(true);
         setTimeout(function () {
             setShowAddSuccess(false);
         }, 3000)
     }
-    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
     const openEditSuccess = () => {
         setIsEditDialogue(false);
         setShowEditSuccess(true);
@@ -425,14 +425,14 @@ const Prospect = () => {
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
                                         <div className="flex items-center justify-center gap-4">
-                                        Add New Prospect 
-                                        <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                            Add New Prospect
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                         </div>
                                     </button>
                                 </div>
 
                             </div>
-                            
+
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
@@ -441,6 +441,7 @@ const Prospect = () => {
                                         {/* <p>Sr. </p> */}
                                     </div>
                                     <div className='w-[25%]  px-4 py-3'>
+
                                     <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                         <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={personFilterInput}onChange={(e) => setPersonFilterInput(e.target.value)} />
                                         <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setPersonFilter((prev) => !prev)}}/></button>
@@ -599,14 +600,15 @@ const Prospect = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+
                                     </div>
                                 </div>
                                 <div className='w-[15%] flex'>
                                     <div className='w-1/2  px-4 py-3'>
-                                    <div className="w-full flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-8 bg-[#EBEBEB] rounded-[5px]" />
-                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
+                                        <div className="w-full flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-8 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
                                     <div className='w-1/2 0 p-4'>
                                     </div>
@@ -767,116 +769,116 @@ const Prospect = () => {
                             </div>
                         </div>
                         {/* <form > */}
-                            <div className="h-auto w-full mt-[5px] ">
-                                <div className="flex gap-[48px] justify-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Person Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="personName" value={formValues.personName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.personName}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
-                                                value={formValues.country}
-                                                defaultValue="Select Country"
-                                                onChange={e => {
-                                                    // setselectedCountry(e.target.value);
-                                                    // fetchStateData(e);
-                                                    // console.log(e.target.value);
-                                                    setCurrCountry(e.target.value);
-                                                    fetchStateData(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, country: e.target.value }
-                                                        return newData;
-                                                    })
-                                                    // fetchStateData(res);
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a Country</option>
-                                                {allCountry && allCountry.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
+                        <div className="h-auto w-full mt-[5px] ">
+                            <div className="flex gap-[48px] justify-center">
+                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[14px]">Person Name<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="personName" value={formValues.personName} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.personName}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="country"
+                                            value={formValues.country}
+                                            defaultValue="Select Country"
+                                            onChange={e => {
+                                                // setselectedCountry(e.target.value);
+                                                // fetchStateData(e);
+                                                // console.log(e.target.value);
+                                                setCurrCountry(e.target.value);
+                                                fetchStateData(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, country: e.target.value }
+                                                    return newData;
+                                                })
+                                                // fetchStateData(res);
+                                            }}
+                                        >
+                                            <option value="none" hidden={true}>Select a Country</option>
+                                            {allCountry && allCountry.map(item => (
+                                                <option value={item[0]} >
+                                                    {item[1]}
+                                                </option>
 
-                                                ))}
-                                                
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
-                                                value={formValues.state}
-                                                defaultValue="Select State"
-                                                onChange={e => {
-                                                    fetchCityData(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, state: e.target.value }
-                                                        return newData;
-                                                    })
+                                            ))}
 
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a State</option>
-                                                {allState && allState.map(item => (
-                                                    <option value={item[1]}>
-                                                        {item[1]}
-                                                    </option>
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="country"
+                                            value={formValues.state}
+                                            defaultValue="Select State"
+                                            onChange={e => {
+                                                fetchCityData(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, state: e.target.value }
+                                                    return newData;
+                                                })
 
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
-                                                value={formValues.city}
-                                                defaultValue="Select State"
-                                                onChange={e => {
+                                            }}
+                                        >
+                                            <option value="none" hidden={true}>Select a State</option>
+                                            {allState && allState.map(item => (
+                                                <option value={item[1]}>
+                                                    {item[1]}
+                                                </option>
 
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, city: e.target.value }
-                                                        return newData;
-                                                    })
+                                            ))}
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            name="country"
+                                            value={formValues.city}
+                                            defaultValue="Select State"
+                                            onChange={e => {
 
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a City</option>
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.city} >
-                                                        {item.city}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Property Location <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Possible Services <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.possibleServices}</div>
-                                        </div>
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, city: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            <option value="none" hidden={true}>Select a City</option>
+                                            {allCity && allCity.map(item => (
+                                                <option value={item.city} >
+                                                    {item.city}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Property Location <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[14px]">Possible Services <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.possibleServices}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProspect}>Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                            </div>
+                        </div>
+                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProspect}>Add</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                        </div>
                         {/* </form> */}
                     </div>
                 </div>
