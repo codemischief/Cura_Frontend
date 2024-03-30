@@ -10,6 +10,8 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
+import Add from "../../../assets/add.png";
+import Filter from "../../../assets/filter.png"
 import { Modal, Pagination, LinearProgress } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
@@ -623,7 +625,7 @@ const Payments = () => {
                                 </div>
                                 <div className='flex-col'>
                                     <h1 className='text-[18px]'>Manage Contractual Payments</h1>
-                                    <p className='text-[14px]'>Research &gt; Contractual Payments</p>
+                                    <p className='text-[14px]'>Manage &gt; Contractual Payments</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -646,12 +648,15 @@ const Payments = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[260px] rounded-lg text-[14px]" onClick={handleOpen}>
-                                        Add Contractual Payments  +
+                                    <div className="flex items-center justify-center gap-4">
+                                    Add Contractual Payments  
+                                        <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        </div>
                                     </button>
                                 </div>
 
                             </div>
-
+                            
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
@@ -659,34 +664,61 @@ const Payments = () => {
                                     <div className='w-[5%] p-4'>
                                         {/* <p>Sr. </p> */}
                                     </div>
-                                    <div className='w-[13%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[13%]  px-4 py-3'>
+                                        <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[13%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[13%]  px-4 py-3'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[10%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[10%] px-4 py-3'>
+                                    <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[10%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[10%]  px-4 py-3'>
+                                    <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[14%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[14%]  px-4 py-3'>
+                                    <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[13%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[13%]  px-4 py-3'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[15%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[15%]  px-4 py-3'>
+                                    <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    <div className='w-[10%]  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-[10%]  px-4 py-3'>
+                                    <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='w-[15%] flex'>
-                                    <div className='w-1/2  p-4'>
-                                        <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                    <div className='w-1/2  px-4 py-3'>
+                                    <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-9 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
                                     <div className='w-1/2 0 p-4'>
                                         
@@ -736,41 +768,41 @@ const Payments = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-[325px] overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingPayments.map((item, index) => {
-                                return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
+                                return <div className='w-full min-h-8 h-auto  flex justify-between border-gray-400 border-b-[1px]'>
+                                    <div className='w-[85%] flex text-[11px]'>
+                                        <div className='w-[5%] h-[50%] p-4'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                         </div>
-                                        <div className='w-[13%]  p-4'>
+                                        <div className='w-[13%] h-[50%] px-4 py-2'>
                                             <p>{item.paymentto}</p>
                                         </div>
-                                        <div className='w-[13%]  p-4'>
+                                        <div className='w-[13%] h-[50%] px-4 py-2 ml-[2px]'>
                                             <p>{item.paymentby}</p>
                                         </div>
-                                        <div className='w-[10%]  p-4'>
+                                        <div className='w-[10%] h-[50%] px-4 py-2 ml-[18px]'>
                                             <p>{item.amount}</p>
                                         </div>
-                                        <div className='w-[10%]  p-4'>
+                                        <div className='w-[10%] h-[50%] px-4 py-2 ml-[8px]'>
                                             <p>{item.paidon}</p>
                                         </div>
-                                        <div className='w-[14%]  p-4'>
+                                        <div className='w-[14%] h-[50%] px-4 py-2 ml-[10px]'>
                                             <p>{item.paymentmode}</p>
                                         </div>
-                                        <div className='w-[13%]  p-4'>
+                                        <div className='w-[13%] h-[50%] px-4 py-2 ml-[8px]'>
                                             <p>{item.paymentfor}</p>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
+                                        <div className='w-[15%] h-[50%] px-4 py-2 ml-[10px]'>
                                             <p>{item.paymentstatus}</p>
                                         </div>
-                                        <div className='w-[10%]  p-4'>
+                                        <div className='w-[10%] h-[50%] px-4 py-2'>
                                             <p>{item.entityid}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
+                                        <div className='w-1/2 h-[50%] px-4 py-2 ml-[12px]'>
                                             <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex space-x-2'>
@@ -979,10 +1011,6 @@ const Payments = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-2">
-                            <div className="flex space-x-2 items-center">
-                                <input type="checkbox" />
-                                <div className="text-[13px] font-semibold">Exclude from Mailing List</div>
-                            </div>
                             <div className=" mb-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addPayment}>Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
