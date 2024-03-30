@@ -6,6 +6,7 @@ import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 const DeleteProspect = (props) => {
+    console.log(props);
   const handleDialogClose = () => {
     props.setOpenDialog(false);
 };
@@ -19,7 +20,7 @@ const DeleteProspect = (props) => {
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
-            <div className='bg-white'>
+            <div className='bg-white rounded-lg'>
                 <div className="w-auto h-auto  ">
                     <div className="h-[40px] justify-center flex items-center">
                         <div className="mr-[210px] ml-[210px]">
@@ -36,7 +37,7 @@ const DeleteProspect = (props) => {
                         <p>Are you sure you want to delete this prospect</p>
                     </div>
                     <div className="my-5 flex justify-center items-center gap-[10px]">
-                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' type="submit">Delete</button>
+                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => props.handleDelete(props.item.id)}>Delete</button>
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                     </div>
                 </div>

@@ -127,16 +127,22 @@ const Prospect = () => {
         openAddSuccess();
         fetchData();
     }
+    const handleDelete = (item) => {
+        setCurrItem(item);
+        setIsDeleteDialogue(true);
 
+    }
     const deleteProspects = async (id) => {
-        console.log(id);
+        // console.log(id);
+        // setIsDeleteDialogue(false);
         const data = {
             "user_id": 1234,
             "id": Number(id)
         };
         const response = await APIService.deleteProspects(data);
-        console.log(response);
-        fetchData();
+
+        // console.log(response);
+        openDeleteSuccess();
     }
     //Validation of the form
     const initialValues = {
@@ -329,7 +335,7 @@ const Prospect = () => {
         setShowAddSuccess(true);
         setTimeout(function () {
             setShowAddSuccess(false);
-        }, 2000)
+        }, 3000)
     }
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const openEditSuccess = () => {
@@ -337,17 +343,27 @@ const Prospect = () => {
         setShowEditSuccess(true);
         setTimeout(function () {
             setShowEditSuccess(false);
-        }, 2000)
+        }, 3000)
+        fetchData();
+    }
+    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false);
+    const openDeleteSuccess = () => {
+        setIsDeleteDialogue(false);
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        }, 3000)
         fetchData();
     }
     return (
         <div>
             <Navbar />
             {isEditDialogue && <EditProspect isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}
-                fetchData={fetchData} openPrompt={openEditSuccess} />}
-            {isDeleteDialogue && <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} item={currItem} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="prospect added succesffuly" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="prospect edited succesffuly" />}
+                fetchData={fetchData} openPrompt={openEditSuccess}/>}
+            {isDeleteDialogue && <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} item={currItem} handleDelete={deleteProspects}/>}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Prospect Created Successfully"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesffuly"/>}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Prospect Deleted Succesffuly!"/>}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -476,7 +492,7 @@ const Prospect = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-[450px] overflow-y-auto overflow-x-hidden'>
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingProspect.map((item, index) => {
                                 return <div className='w-full h-10 ml-1 flex justify-between border-gray-400 border-b-[1px]'>
@@ -506,7 +522,7 @@ const Prospect = () => {
                                         </div>
                                         <div className='w-1/2 0 p-3 flex justify-between items-center'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteProspects(item.id)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item)} />
                                         </div>
                                     </div>
                                 </div>
