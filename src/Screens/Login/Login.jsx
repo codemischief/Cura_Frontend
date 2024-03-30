@@ -32,7 +32,7 @@ const Login = () => {
     } else if (response.result == "success" && response.role_id == "2") {
       navigate("/user")
     }
-    else if (response.result == "failure") {
+    else if (response.result == "error") {
       setIsError(true)
       setErrorMessage(response.message);
     }
