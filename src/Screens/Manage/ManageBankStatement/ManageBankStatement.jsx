@@ -766,40 +766,6 @@ const ManageBankStatement = () => {
                                             break;
                                 }
                 break;
-            case 'exactMatch':
-                                switch(columnNo){
-                                    case 0: 
-                                            existing[columnNo][1] = type;
-                                            existing[columnNo][2] = modeFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                    case 1: 
-                                            existing[columnNo][1] = type;
-                                            existing[columnNo][2] = dateFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                    case 2: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = lobFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                    case 3: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = amountFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                    case 4: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = clientFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                    case 5: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = particularsFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                    case 6: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = crFilterInput;
-                                            setFilterArray(existing);
-                                            break;
-                                }
-                break;
             case 'isNull':
                             switch(columnNo){
                                 case 0: 
