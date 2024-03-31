@@ -1216,11 +1216,11 @@ const ManageBankStatement = () => {
                                     <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
                                 </div>
 
-                                <div className='w-[10%] p-4 '>
+                                <div className='w-[12%] p-4 '>
                                     <p>Client Receipt</p>
                                 </div>
                             </div>
-                            <div className='w-[10%] flex'>
+                            <div className='w-[15%] flex'>
                                 <div className='w-1/2  p-4'>
                                     <p onClick={() => handleSort("id")}>ID ↑↓</p>
                                 </div>
@@ -1272,7 +1272,7 @@ const ManageBankStatement = () => {
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                         </div>
                                     </div>
-                                    <div className='w-[150px] flex'>
+                                    <div className='w-[15%] flex'>
                                         <div className='w-1/2  p-4'>
                                             <p>{item.id}</p>
 
