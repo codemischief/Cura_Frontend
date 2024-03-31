@@ -40,7 +40,7 @@ const LOB = () => {
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setLobFilter(false);
-
+                setIdFilter(false);
             }
         }
 
