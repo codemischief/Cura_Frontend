@@ -20,6 +20,7 @@ import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
 import EditLocalityModal from './Modals/EditLocalityModal';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
+import DeleteLocalityModal from './Modals/DeleteLocalityModal';
 const Locality = () => {
     const menuRef = useRef();
     const [existingLocalities, setExistingLocalities] = useState([]);
@@ -145,7 +146,7 @@ const Locality = () => {
                 setStateFilter(false);
                 setCityFilter(false);
                 setLocalityFilter(false);
-
+                setIdFilter(false)
             }
         }
 
@@ -414,7 +415,7 @@ const Locality = () => {
             "id": Number(id)
         };
         const response = await APIService.deleteLocality(data);
-        console.log(response);
+        setShowDeleteModal(false);
         openDeleteSuccess();
         fetchData();
     }
@@ -437,6 +438,8 @@ const Locality = () => {
     const [localityFilter, setLocalityFilter] = useState(false);
     const [localityFilterInput, setLocalityFilterInput] = useState("");
     const [localityFilterType, setLocalityFilterType] = useState("");
+    const [idFilter,setIdFilter] = useState(false)
+    const [idFilterInput,setidFilterInput] = useState("");
     //   const [filterArray,setFilterArray] = useState([["country","nofilter",""],["state","nofilter",""],["city","nofilter",""],["locality","nofilter",""]]);
     const handleFilter = (type, columnNo) => {
         const existing = filterArray;
@@ -574,6 +577,12 @@ const Locality = () => {
         }
         fetchData();
     }
+    const [showDeleteModal,setShowDeleteModal] = useState(false);
+    const handleDelete = (item) => {
+       setCurrItem(item)
+       setShowDeleteModal(true);
+
+    }
     return (
         <div className=''>
             <Navbar />
@@ -581,6 +590,7 @@ const Locality = () => {
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
+            {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem}/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -766,9 +776,44 @@ const Locality = () => {
                             </div>
                             <div className='w-1/6 p-3 '>
                                 <div className='w-[45%] flex  items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}/>
+                                    <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
+                                {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                 <div className='w-1/2 0 p-4'>
 
                                 </div>
@@ -831,7 +876,7 @@ const Locality = () => {
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => deleteLocality(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
                                 </div>
