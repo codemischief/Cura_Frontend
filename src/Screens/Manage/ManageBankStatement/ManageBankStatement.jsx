@@ -1,5 +1,5 @@
 import { CircularProgress, Modal, Pagination } from "@mui/material";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
@@ -24,6 +24,7 @@ import Excel from "../../../assets/excel.png"
 import DayJS from 'react-dayjs';
 const ManageBankStatement = () => {
     // we have the module here
+    const menuRef = useRef();
     const [existingStatement, setExistingStatement] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -53,7 +54,7 @@ const ManageBankStatement = () => {
     const [modeEdit, setModeEdit] = useState(Number)
     const [receivedBy, setRecievedBy] = useState(Number);
     const [vendorId, setVendorId] = useState(Number);
-    const [filterArray, setFilterArray] = useState([["mode", "contains", ""], ["type", "contains", ""], ["amount", "contains", ""], ["particulars", "contains", ""],["clientname", "contains", ""],["clientrecipt", "contains", ""]]);
+    const [filterArray, setFilterArray] = useState([["modeofpayment", "contains", ""], ["date", "contains", ""], ["crdr", "contains", ""], ["amount", "contains", ""],["particulars", "contains", ""],["clientid", "contains", ""]]);
     const [sortField, setSortField] = useState("id");
     const [isSearchOn, setIsSearchOn] = useState(false);
 
@@ -143,17 +144,10 @@ const ManageBankStatement = () => {
 
     const fetchBankStatement = async () => {
         setPageLoading(true);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
-        setPageLoading(true);
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": tempFilters,
+            "filters": filterArray,
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": 1,
@@ -336,6 +330,7 @@ const ManageBankStatement = () => {
                 setDateFilter(false);
                 setAmountFilter(false);
                 setClientFilter(false);
+                setTypeFilter(false);
                 setParticularsFilter(false);
                 setCRFilter(false);
 
@@ -546,10 +541,10 @@ const ManageBankStatement = () => {
         setTotalItems(result.total_count);
         setPageLoading(false);
     }
-    const [lobFilter, setLobFilter] = useState(false);
-    const [lobFilterInput, setLobFilterInput] = useState("");
-    const toggleLobFilter = () => {
-        setLobFilter((prev) => !prev)
+    const [typeFilter, setTypeFilter] = useState(false);
+    const [typeFilterInput, setTypeFilterInput] = useState("");
+    const toggletypeFilter = () => {
+        setTypeFilter((prev) => !prev)
     }
     const [modeFilter, setModeFilter] = useState(false);
     const [modeFilterInput, setModeFilterInput] = useState("");
@@ -582,6 +577,7 @@ const ManageBankStatement = () => {
         setCRFilter((prev) => !prev)
     }
     const handleFilter = (type, columnNo) => {
+        const existing = filterArray;
         switch (type){
             case 'noFilter': 
                             switch(columnNo){
@@ -599,7 +595,7 @@ const ManageBankStatement = () => {
                                         break;
                                 case 2: 
                                         existing[columnNo][1] = type;
-                                        setLobFilterInput("");
+                                        setTypeFilterInput("");
                                         existing[columnNo][2] = "";
                                         setFilterArray(existing);
                                         break;
@@ -611,13 +607,13 @@ const ManageBankStatement = () => {
                                         break;
                                 case 4: 
                                         existing[columnNo][1] = type;
-                                        setClientFilterInput("");
+                                        setParticularsFilterInput("");
                                         existing[columnNo][2] = "";
                                         setFilterArray(existing);
                                         break;
                                 case 5: 
                                         existing[columnNo][1] = type;
-                                        setParticularsFilterInput("");
+                                        setClientFilterInput("");
                                         existing[columnNo][2] = "";
                                         setFilterArray(existing);
                                         break;
@@ -643,7 +639,7 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 2: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = lobFilterInput;
+                                        existing[columnNo][2] = typeFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 3: existing[columnNo][1] = type;
@@ -651,11 +647,11 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 4: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = clientFilterInput;
+                                        existing[columnNo][2] = particularsFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 5: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = particularsFilterInput;
+                                        existing[columnNo][2] = clientFilterInput ;
                                         setFilterArray(existing);
                                         break;
                                 case 6: existing[columnNo][1] = type;
@@ -677,7 +673,7 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 2: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = lobFilterInput;
+                                        existing[columnNo][2] = typeFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 3: existing[columnNo][1] = type;
@@ -685,11 +681,11 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 4: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = clientFilterInput;
+                                        existing[columnNo][2] = particularsFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 5: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = particularsFilterInput;
+                                        existing[columnNo][2] = clientFilterInput ;
                                         setFilterArray(existing);
                                         break;
                                 case 6: existing[columnNo][1] = type;
@@ -711,7 +707,7 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 2: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = lobFilterInput;
+                                        existing[columnNo][2] = typeFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 3: existing[columnNo][1] = type;
@@ -719,11 +715,11 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 4: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = clientFilterInput;
+                                        existing[columnNo][2] = particularsFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 5: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = particularsFilterInput;
+                                        existing[columnNo][2] =clientFilterInput ;
                                         setFilterArray(existing);
                                         break;
                                 case 6: existing[columnNo][1] = type;
@@ -745,7 +741,7 @@ const ManageBankStatement = () => {
                                             setFilterArray(existing);
                                             break;
                                     case 2: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = lobFilterInput;
+                                            existing[columnNo][2] = typeFilterInput;
                                             setFilterArray(existing);
                                             break;
                                     case 3: existing[columnNo][1] = type;
@@ -753,11 +749,11 @@ const ManageBankStatement = () => {
                                             setFilterArray(existing);
                                             break;
                                     case 4: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = clientFilterInput;
+                                            existing[columnNo][2] = particularsFilterInput ;
                                             setFilterArray(existing);
                                             break;
                                     case 5: existing[columnNo][1] = type;
-                                            existing[columnNo][2] = particularsFilterInput;
+                                            existing[columnNo][2] =clientFilterInput ;
                                             setFilterArray(existing);
                                             break;
                                     case 6: existing[columnNo][1] = type;
@@ -779,7 +775,7 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 2: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = lobFilterInput;
+                                        existing[columnNo][2] = typeFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 3: existing[columnNo][1] = type;
@@ -787,11 +783,11 @@ const ManageBankStatement = () => {
                                         setFilterArray(existing);
                                         break;
                                 case 4: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = clientFilterInput;
+                                        existing[columnNo][2] = particularsFilterInput;
                                         setFilterArray(existing);
                                         break;
                                 case 5: existing[columnNo][1] = type;
-                                        existing[columnNo][2] = particularsFilterInput;
+                                        existing[columnNo][2] =clientFilterInput ;
                                         setFilterArray(existing);
                                         break;
                                 case 6: existing[columnNo][1] = type;
@@ -813,7 +809,7 @@ const ManageBankStatement = () => {
                             setFilterArray(existing);
                             break;
                     case 2: existing[columnNo][1] = type;
-                            existing[columnNo][2] = lobFilterInput;
+                            existing[columnNo][2] = typeFilterInput;
                             setFilterArray(existing);
                             break;
                     case 3: existing[columnNo][1] = type;
@@ -821,11 +817,11 @@ const ManageBankStatement = () => {
                             setFilterArray(existing);
                             break;
                     case 4: existing[columnNo][1] = type;
-                            existing[columnNo][2] = clientFilterInput;
+                            existing[columnNo][2] = particularsFilterInput ;
                             setFilterArray(existing);
                             break;
                     case 5: existing[columnNo][1] = type;
-                            existing[columnNo][2] = particularsFilterInput;
+                            existing[columnNo][2] = clientFilterInput;
                             setFilterArray(existing);
                             break;
                     case 6: existing[columnNo][1] = type;
@@ -949,18 +945,18 @@ const ManageBankStatement = () => {
                             </div>
 
                         </div>
-                        <div className='h-12 w-full bg-white flex justify-between'>
-                            <div className='w-5/6 flex'>
-                                <div className='w-[5px] p-4'>
+                        <div className='h-12 w-full bg-white'>
+                            <div className='flex justify-between'>
+                            <div className='w-[85%] flex'>
+                                <div className='w-[5%] p-4'>
 
                                 </div>
-                                <div className='w-[120px] p-4'>
-                                
-                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
-                                        <button className='p-1 bg-[#EBEBEB]' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                <div className='w-[10%]  px-4 py-3'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-11 bg-[#EBEBEB] rounded-[5px]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
-                                    {modeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                    {modeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
                                         </div>
@@ -987,189 +983,201 @@ const ManageBankStatement = () => {
                                         </div>
                                     </div>}
                                 </div>
-                                <div className='w-[120px] p-4'>
-                                    <input className="w-11 bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    {dateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 1)}><h1 >No Filter</h1></button>
-                                        </div>
+                                <div className='w-[10%]  px-4 py-3'>
+                                    <div className='w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-11 bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        {dateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 1)}><h1 >Contains</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 1)}><h1 >DoesNotContain</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 1)}><h1 >StartsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 1)}><h1 >EndsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 1)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 1)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 1)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                                <button onClick={() => handleFilter('noFilter', 1)}><h1 >No Filter</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 1)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 1)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('startsWith', 1)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                                <button onClick={() => handleFilter('endsWith', 1)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('exactMatch', 1)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNull', 1)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNotNull', 1)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}
+                                    </div>
                                 </div>
-                                <div className='w-[100px] p-4'>
-                                    <input className="w-8 bg-[#EBEBEB]" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-[10px] w-[10px]' /></button>
-                                    {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 2)}><h1 >No Filter</h1></button>
-                                        </div>
+                                <div className='w-[10%]  px-4 py-3'>
+                                    <div className='w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-11 bg-[#EBEBEB]" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        {typeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 2)}><h1 >Contains</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 2)}><h1 >DoesNotContain</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 2)}><h1 >StartsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 2)}><h1 >EndsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 2)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 2)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 2)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                                <button onClick={() => handleFilter('noFilter', 2)}><h1 >No Filter</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 2)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 2)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('startsWith', 2)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                                <button onClick={() => handleFilter('endsWith', 2)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('exactMatch', 2)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNull', 2)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNotNull', 2)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}
+                                    </div>
                                 </div>
-                                <div className='w-[120px] p-4'>
-                                    <input className="w-8 bg-[#EBEBEB]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[12px] w-[12px]' /></button>
-                                    {amountFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 3)}><h1 >No Filter</h1></button>
-                                        </div>
+                                <div className='w-[10%]  px-4 py-3'>
+                                    <div className='w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-11 bg-[#EBEBEB]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[16px] w-[16px]' /></button>
+                                        {amountFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 3)}><h1 >Contains</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 3)}><h1 >DoesNotContain</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 3)}><h1 >StartsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 3)}><h1 >EndsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 3)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 3)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 3)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                                <button onClick={() => handleFilter('noFilter', 3)}><h1 >No Filter</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 3)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 3)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('startsWith', 3)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                                <button onClick={() => handleFilter('endsWith', 3)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('exactMatch', 3)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNull', 3)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNotNull', 3)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}
+                                    </div> 
                                 </div>
-                                <div className='w-[500px] p-4'>
-                                    <input className="w-14 bg-[#EBEBEB]" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    {clientFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 4)}><h1 >No Filter</h1></button>
-                                        </div>
+                                <div className='w-[30%]  px-4 py-3'>
+                                    <div className='w-[25%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-12 bg-[#EBEBEB]" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-[16px] w-[14px]' /></button>
+                                        {particularsFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 4)}><h1 >Contains</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 4)}><h1 >DoesNotContain</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 4)}><h1 >StartsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 4)}><h1 >EndsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 4)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 4)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 4)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                                <button onClick={() => handleFilter('noFilter', 4)}><h1 >No Filter</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 4)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 4)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('startsWith', 4)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                                <button onClick={() => handleFilter('endsWith', 4)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('exactMatch', 4)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNull', 4)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNotNull', 4)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}
+                                    </div>
                                 </div>
-                                <div className='w-[180px] p-4'>
-                                    <input className="w-14 bg-[#EBEBEB]" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    {particularsFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 5)}><h1 >No Filter</h1></button>
-                                        </div>
+                                <div className='w-[20%]  px-4 py-3'>
+                                    <div className='w-[38%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-12 bg-[#EBEBEB]" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[20px]' /></button>
+                                        {clientFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 5)}><h1 >Contains</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 5)}><h1 >DoesNotContain</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 5)}><h1 >StartsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 5)}><h1 >EndsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 5)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 5)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 5)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                                <button onClick={() => handleFilter('noFilter', 5)}><h1 >No Filter</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 5)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 5)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('startsWith',5)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                                <button onClick={() => handleFilter('endsWith', 5)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('exactMatch',5)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNull', 5)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNotNull', 5)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}
+                                    </div>
                                 </div>
-                                <div className='w-[120px] p-4'>
-                                    <input className="w-11 bg-[#EBEBEB]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setCRFilter((prev) => !prev)}><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    {crFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 6)}><h1 >No Filter</h1></button>
-                                        </div>
+                                <div className='w-[10%]  px-4 py-3'>
+                                    <div className='w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-11 bg-[#EBEBEB]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setCRFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        {crFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 6)}><h1 >Contains</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 6)}><h1 >DoesNotContain</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 6)}><h1 >StartsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 6)}><h1 >EndsWith</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 6)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 6)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 6)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                                <button onClick={() => handleFilter('noFilter', 6)}><h1 >No Filter</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 6)}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('contains', 6)}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('startsWith', 6)}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                                <button onClick={() => handleFilter('endsWith', 6)}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('exactMatch', 6)}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNull', 6)}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                                <button onClick={() => handleFilter('isNotNull', 6)}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>}
+                                    </div>
                                 </div>
 
                             </div>
-                            <div className='w-1/6  flex'>
+                            <div className='w-[15%] flex'>
                                 {/* <div className='w-[100px] p-2 mt-2'>
                                    <input className="w-14 bg-[#EBEBEB]"/>
                                    <button className='p-1'><img src={Filter} className='h-[17px] w-[14px]'/></button>
@@ -1179,35 +1187,36 @@ const ManageBankStatement = () => {
                                 </div>
                             </div>
                         </div>
+                        </div>
 
                     </div>
 
-                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[90%]  flex'>
-                                <div className='w-[5px] p-4'>
+                            <div className='w-[85%] flex'>
+                                <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
                                 </div>
-                                <div className='w-[120px]  p-4'>
+                                <div className='w-[10%]  p-4'>
                                     <p onClick={() => handleSort("modeofpayment")}>Mode <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[100px]  p-4'>
+                                <div className='w-[10%]  p-4'>
                                     <p onClick={() => handleSort("date")}>Date ↑↓</p>
                                 </div>
-                                <div className='w-[50px]  p-4'>
+                                <div className='w-[10%]  p-4'>
                                     <p onClick={() => handleSort("crdr")}>Type ↑↓</p>
                                 </div>
-                                <div className='w-[100px]  p-4'>
+                                <div className='w-[10%]  p-4'>
                                     <p onClick={() => handleSort("amount")}>Amount ↑↓ </p>
                                 </div>
-                                <div className='w-[400px] p-4 '>
+                                <div className='w-[30%]  p-4'>
                                     <p onClick={() => handleSort("particulars")}>Particulars ↑↓</p>
                                 </div>
-                                <div className='w-[200px] p-4 '>
+                                <div className='w-[20%] p-4 '>
                                     <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
                                 </div>
 
-                                <div className='w-[150px] p-4 '>
+                                <div className='w-[10%] p-4 '>
                                     <p>Client Receipt</p>
                                 </div>
                             </div>
@@ -1227,37 +1236,37 @@ const ManageBankStatement = () => {
                             {!pageLoading && existingStatement && existingStatement.map((item, index) => {
                                 return <div className='w-full   flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] text-[11px] min-h-0  flex'>
-                                        <div className='w-[5px] p-4'>
+                                        <div className='w-[5%] p-4'>
                                             <p>{index + 1}</p>
                                         </div>
-                                        <div className='w-[150px]  p-4'>
+                                        <div className='w-[10%]  p-4'>
 
                                             {mode && mode.map(ele => (
                                                 (item.modeofpayment === ele[0]) ?
                                                     <p>{ele[1]}</p> : ""))}
                                         </div>
-                                        <div className='w-[150px]  p-4'>
+                                        <div className='w-[10%]  p-4'>
                                             {/* <p>{item.date}</p> */}
                                             <DayJS format="DD-MMM-YYYY">{item.date}</DayJS>
                                             {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                         </div>
-                                        <div className='w-[60px]  p-4'>
+                                        <div className='w-[10%]  p-4'>
                                             <p>{item.crdr === "CR                  " ? "Credit" : "Debit"}</p>
                                         </div>
-                                        <div className='w-[100px]  p-4'>
+                                        <div className='w-[10%]  p-4'>
                                             <p>{item.amount}</p>
                                         </div>
-                                        <div className='w-[600px] break-all p-4 '>
+                                        <div className='w-[30%] break-all p-4 '>
                                             <p>{item.particulars}</p>
                                         </div>
-                                        <div className='w-[300px] break-all p-4 '>
+                                        <div className='w-[20%] break-all p-4 '>
                                             {/* <p>{item.clientid}</p> */}
                                             {client && client.map(ele => (
                                                 (item.clientid === ele[0]) ?
                                                     <p>{ele[1]}</p> : ""))}
                                         </div>
 
-                                        <div className='w-[100px]  p-4 text-blue-500 cursor-pointer'>
+                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
                                             {(!(item.clientid) && item.crdr === "CR                  ") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
 
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
@@ -1424,7 +1433,7 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">How Recieved(CR)?</div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.h0w} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
                                                 <option >Select how Received</option>
                                                 {howReceived && howReceived.map(item => (
                                                     <option  value={item}>
