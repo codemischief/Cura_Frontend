@@ -21,6 +21,7 @@ import Excel from "../../assets/excel.png"
 import EditLobModal from './Modals/EditLobModal';
 import SucessfullModal from "../../Components/modals/SucessfullModal"
 import FailureModal from '../../Components/modals/FailureModal';
+import DeleteLobModal from './Modals/DeleteLobModal';
 const LOB = () => {
     const menuRef = useRef();
     const [existingLOB, setExistingLOB] = useState([]);
@@ -162,10 +163,14 @@ const LOB = () => {
             "name": String(name)
         }
         const response = await APIService.deleteLob(data);
-        if (response.status) {
+        setDeleteLobModal(false);
+        const res = await response.json()
+        console.log("this is the error")
+        console.log(res.result)
+        if (res.result == 'success') {
             openDeleteSuccess();
+            // console.log('hi')
         }
-        // fetchPageData();
         fetchData();
         setPageLoading(false);
     }
@@ -297,6 +302,7 @@ const LOB = () => {
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const openDeleteSuccess = () => {
         // setIsLobDialogue(false);
+        console.log('hey')
         setShowDeleteSuccess(true);
         setTimeout(function () {
             setShowDeleteSuccess(false);
@@ -324,6 +330,11 @@ const LOB = () => {
         setExistingLOB(result);
         setPageLoading(false);
     }
+    const handleDelete = (item) => {
+        setCurrItem(item)
+        setDeleteLobModal(true);
+    }
+    const [deleteLobModal,setDeleteLobModal] = useState(false);
     return (
         <div className=''>
             <Navbar />
@@ -331,7 +342,8 @@ const LOB = () => {
             {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="Successfull added Lob!" />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
-            {showDeleteSuccess && <isSuccessModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
+            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem}/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -472,7 +484,7 @@ const LOB = () => {
                                         </div>
                                         <div className='w-1/2 p-3 flex items-center ml-[17px]'>
                                             <img className=' h-5 mr-3 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
-                                            <button onClick={() => deleteLob(item.name)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => handleDelete(item)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
                                 </div>
