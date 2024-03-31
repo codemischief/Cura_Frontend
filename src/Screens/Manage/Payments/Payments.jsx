@@ -32,6 +32,7 @@ const Payments = () => {
     const [currentStatementId, setCurrentStatementId] = useState();
     const [showDelete, setShowDelete] = useState(false);
     const [searchInput, setSearchInput] = useState("");
+    const [sortField,setSortField] = useState("id");
     const openDownload = () => {
         setDownloadModal(true);
     }
@@ -131,8 +132,8 @@ const Payments = () => {
                 "deduction"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
@@ -171,8 +172,8 @@ const Payments = () => {
                 "deduction"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
             "search_key": searchInput
@@ -210,8 +211,8 @@ const Payments = () => {
                 "deduction"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": searchInput
@@ -607,6 +608,21 @@ const Payments = () => {
     const handleExcelDownload = () => {
 
     }
+    const handleFilter = () => {
+
+    }
+    const [paymentToFilter,setPaymentToFilter] = useState(false);
+    const [paymentToFilterInput,setPaymentToFilterInput] = useState("");
+    const [paymentForFilter,setPaymentForFilter] = useState(false);
+    const [paymentForFilterInput,setPaymentForFilterInput] = useState("");
+    const [amountFilter,setAmountFilter] = useState(false)
+    const [amountFilterInput,setAmountFilterInput] = useState("");
+    const [paymentModeFilter,setPaymentModeFilter] = useState(false)
+    const [paymentModeFilterInput,setPaymentModeFilterInput] = useState("")
+    const [paymentByFilter,setPaymentByFilter] = useState(false)
+    const [paymentByFilterInput,setPaymentByFilterInput] = useState("");
+    const [paymentStatusFilter,setPaymentStatusFilter] = useState(false)
+    const [paymentStatusFilterInput,setPaymentStatusFilterInput] = useState("")
     return (
         <div>
             <Navbar />
@@ -666,15 +682,67 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)}/>
+                                            <button className='p-1' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
+                                        {paymentToFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentByFilterInput} onChange={(e) => setPaymentyByFilterInput(e.target.value)}/>
+                                            <button className='p-1' onClick={() => setPaymentByFilter((prev)=> !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
+                                        {paymentByFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     </div>
                                     <div className='w-[10%] px-4 py-3'>
                                         <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
@@ -690,21 +758,99 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[14%]  px-4 py-3'>
                                         <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentModeFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}/>
+                                            <button className='p-1' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
+                                        {paymentModeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}/>
+                                            <button className='p-1' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
+                                        {paymentForFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
                                         <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)}/>
+                                            <button className='p-1' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
+                                        {paymentStatusFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     </div>
                                     <div className='w-[10%]  px-4 py-3'>
                                         <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
@@ -768,7 +914,7 @@ const Payments = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[325px] overflow-auto'>
+                        <div className=' w-full h-[450px] overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingPayments.map((item, index) => {
                                 return <div className='w-full min-h-8 h-auto  flex justify-between border-gray-400 border-b-[1px]'>
