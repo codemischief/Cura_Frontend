@@ -771,12 +771,10 @@ const Locality = () => {
                                         </div>
                                     </div>}
                                 </div>
-
-
                             </div>
                             <div className='w-1/6 p-3 '>
-                                <div className='w-[45%] flex  items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}/>
+                                <div className='w-[37%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}/>
                                     <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
                                 {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -849,7 +847,7 @@ const Locality = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-80 overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingLocalities.map((item, index) => {
                                 return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
@@ -866,12 +864,12 @@ const Locality = () => {
                                         <div className='w-[20%]  p-4'>
                                             <p>{item.city}</p>
                                         </div>
-                                        <div className='w-[25%]  p-4'>
+                                        <div className='w-[25%]  p-4 ml-1'>
                                             <p>{item.locality}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
+                                        <div className='w-1/2  p-4 ml-1'>
                                             <p>{item.id}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
@@ -959,24 +957,26 @@ const Locality = () => {
             {/* modal goes here */}
             <Modal open={isLocalityDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[150px]'>
-                    <div className="w-6/7  h-[450px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
+                maxWidth={'md'}
+                className='flex justify-center items-center' 
+                >
+                <div className='flex justify-center bg-white'>
+                    <div className=" w-auto h-[450px] bg-white rounded-lg ">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[290px] ml-[290px]">
                                 <div className="text-[16px]">Add New Locality</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-
-                        <div className="h-auto w-full mt-[5px] ">
+                        <div className="space-y-10">
+                        <div className="h-auto w-full py-4 ">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                    <div className="">
-                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                    <div className="mb-2">
+                                        <div className="text-[14px]">Select Country <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]"
                                             name="country"
                                             value={formValues.country}
                                             defaultValue="Select Country"
@@ -1001,11 +1001,11 @@ const Locality = () => {
 
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                        <div className="text-[14px]">Select State <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]"
                                             name="state"
                                             value={formValues.state}
                                             defaultValue="Select State"
@@ -1027,11 +1027,11 @@ const Locality = () => {
 
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                        <div className="text-[14px]">Select City<label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]"
                                             name="country"
                                             value={formValues.city}
                                             defaultValue="Select City"
@@ -1054,30 +1054,27 @@ const Locality = () => {
 
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.city}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.locality} onChange={(e) => {
+                                        <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]" type="text" name="empName" value={formValues.locality} onChange={(e) => {
 
                                             setFormValues((existing) => {
                                                 const newData = { ...existing, locality: e.target.value }
                                                 return newData;
                                             })
                                         }} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.locality}</div>
+                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.locality}</div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
-                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-
+                        <div className=" flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addLocality}>Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
-
+                        </div>
                     </div>
                 </div>
             </Modal>

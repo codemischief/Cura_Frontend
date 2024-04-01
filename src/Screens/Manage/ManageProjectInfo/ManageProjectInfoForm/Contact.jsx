@@ -1,76 +1,70 @@
-import React from 'react';
+import React from 'react'
 import { useState } from 'react';
-import AddFeildBank from './AddFeildBank'
-const BankDetails = () => {
-  const [addField, setAddFeild] = useState([]);
-  const handleAdd = () => {
+import AddFeildContacts from './AddFeildContacts';
+const Contact = () => {
+    const [addField, setAddFeild] = useState([]);
+    const handleAdd = () => {
     const abc = [...addField, []];
     setAddFeild(abc);
   }
   return (
-        <div className='flex-col justify-center items-center mx-5 mt-10'>
+    <div className='flex-col justify-center items-center mx-5 mt-10'>
           <div className="w-full h-full">
             <div className="w-full h-[40px] bg-[#EBEBEB] flex border-[#CBCBCB] border-b-[1px] ">
               <div className="w-[2%] h-full p-3 text-[11px]" >
                 Sr.
               </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                Name
+              <div className="w-[13%] h-full p-3 text-[11px]" >
+                Contact Name
               </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                Branch
+              <div className="w-[13%] h-full p-3 text-[11px]" >
+                Phone 
               </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                City
+              <div className="w-[13%] h-full p-3 text-[11px]" >
+                Email
               </div>
-              <div className="w-[14%] h-full p-3 text-[11px]" >
-                Acc. Holder Name
+              <div className="w-[13%] h-full p-3 text-[11px]" >
+                Role
               </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                Acc. no
+              <div className="w-[16%] h-full p-3 text-[11px]" >
+                Effective Date
               </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                Account type
+              <div className="w-[17%] h-full p-3 text-[11px]" >
+                Tenure End Date
               </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                IFSC Code
-              </div>
-              <div className="w-[12%] h-full p-3 text-[11px]" >
-                MICR Code
+              <div className="w-[13%] h-full p-3 text-[11px]" >
+                Details
               </div>
             </div>
             <div className="w-full h-[40px] flex border-[#CBCBCB] border-b-[1px]">
               <div className="w-[2%] h-full p-3 text-[11px]" >
                 1
               </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
-              <div className="w-[14%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[16%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[17%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+              <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
             </div>
             {addField.map((data, index) => {
               return (
-                <AddFeildBank index={index} />
+                <AddFeildContacts index={index} />
               )
             })}
             <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
@@ -81,4 +75,4 @@ const BankDetails = () => {
   )
 }
 
-export default BankDetails
+export default Contact

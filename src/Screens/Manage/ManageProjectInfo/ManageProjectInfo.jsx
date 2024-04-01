@@ -17,8 +17,10 @@ import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
-import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails"
-import BankDetails from "./ManageProjectInfoForm/BankDetails"
+import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
+import BankDetails from "./ManageProjectInfoForm/BankDetails";
+import Contact from './ManageProjectInfoForm/Contact';
+import Photos from './ManageProjectInfoForm/Photos';
 const ManageProjectInfo = () => {
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -654,10 +656,12 @@ const ManageProjectInfo = () => {
             {/* modal goes here */}
             <Modal open={isStateDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
+                maxWidth={'md'}
+                className='flex justify-center items-center' 
+                >
                 <>
-                    <div className='flex justify-center mt-[50px]'>
-                        <div className="w-50 h-auto bg-white rounded-lg">
+                    <div className='flex justify-center'>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                                 <div className="mr-[410px] ml-[410px]">
                                     <div className="text-[16px]">New project</div>
@@ -683,18 +687,15 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                            <form>
                                 {selectedDialogue == 1 && <ProjectInformation />}
                                 {selectedDialogue == 2 && <ProjectDetails />}
                                 {selectedDialogue == 3 && <BankDetails />}
-                                {selectedDialogue == 4 && <BankDetails />}
-                                {selectedDialogue == 5 && <BankDetails />}
-
+                                {selectedDialogue == 4 && <Contact />}
+                                {selectedDialogue == 5 && <Photos />}
                                 <div className="my-8 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' >Save</button>
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </>
