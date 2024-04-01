@@ -172,15 +172,17 @@ const ManageEmployees = () => {
             setAllLOB(result.data);
         }
     }
-
+    const [sortField,setSortField]  = useState("id")
+    const [flag,setFlag] = useState(false)
     const fetchData = async () => {
+        console.log('ugm')
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
@@ -200,8 +202,8 @@ const ManageEmployees = () => {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
@@ -222,8 +224,8 @@ const ManageEmployees = () => {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
@@ -580,8 +582,8 @@ const ManageEmployees = () => {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": ""
@@ -685,8 +687,7 @@ const ManageEmployees = () => {
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmpNameInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]'  onClick={() => {setEmpNameFilter((prev) => !prev)}} /></button>
                                         </div>
-                                    </div>
-                                    {empNameFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -712,13 +713,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[13%]  flex p-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmpIdInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setEmpIdFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {empIdFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -744,13 +746,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPhoneInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setPhoneFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {phoneFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -776,13 +779,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmailInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setEmailFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {emailFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -808,13 +812,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setRoleInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setRoleFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {roleFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -840,13 +845,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPannoInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setPannoFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {pannoFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -872,13 +878,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[14%]  flex p-3'>
                                         <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setDojInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setDojFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {dojFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {dojFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -904,13 +911,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[17%]  flex p-3'>
                                         <div className="w-[57%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setLdowInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setLdowFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {ldowFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {ldowFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -936,13 +944,14 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setStatusInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setStatusFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {statusFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {statusFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -968,6 +977,8 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                 </div>
                                 <div className="w-[15%] flex">
                                     <div className='w-1/2  flex p-3'>
@@ -975,8 +986,7 @@ const ManageEmployees = () => {
                                             <input className="w-10 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setIdInput(e.target.value)}/>
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setIdFilter((prev) => !prev)}}/></button>
                                         </div>
-                                    </div>
-                                    {idFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => {}}><h1 >No Filter</h1></button>
                                         </div>
@@ -1002,6 +1012,8 @@ const ManageEmployees = () => {
                                             <button onClick={() => {}}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
+                                    </div>
+                                    
                                     <div className='w-1/2  flex'>
                                         <div className='p-3'>
 
@@ -1123,12 +1135,12 @@ const ManageEmployees = () => {
                                         </div>
                                         <div className='w-[14%]  flex overflow-hidden'>
                                             <div className='p-3 ml-1'>
-                                                <p>{item.dateofjoining}</p>
+                                                <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : ""}</p>
                                             </div>
                                         </div>
                                         <div className='w-[17%]  flex  overflow-hidden'>
                                             <div className='p-3 ml-1'>
-                                                <p>{item.lastdateofworking}</p>
+                                                <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : ""}</p>
                                             </div>
                                         </div>
                                         <div className='w-[10%]  flex overflow-hidden'>
