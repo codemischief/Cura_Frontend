@@ -6,7 +6,7 @@ import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
 import Cross from "../../assets/cross.png";
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useRef} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import { Modal, CircularProgress, Pagination } from "@mui/material";
 import Edit from '../../assets/edit.png';
@@ -22,6 +22,7 @@ import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
 const Country = () => {
   // we have the module here
+  const menuRef = useRef()
   const [existingCountries, setCountryValues] = useState([]);
   //   const [isSubmit, setIsSubmit] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -36,6 +37,10 @@ const Country = () => {
   const [currentPage,setCurrentPage] = useState(1);
   const [totalItems,setTotalItems] = useState(0);
   const [downloadModal,setDownloadModal] = useState(false);
+  const [sortField,setSortField] = useState("id")
+  const [flag,setFlag] = useState(false);
+  const [searchQuery,setSearchQuery] = useState(""); 
+  // const [flag,setFlag] = useState(false);
   const fetchUserId = async() =>{
     const response = await authService.getUserId();
     setUserId(response)
@@ -63,10 +68,11 @@ const Country = () => {
       "user_id" : 1234,
       "rows" : ["id","name"],
       "filters" : [],
-      "sort_by" : [],
-      "order" : "asc",
+      "sort_by" : [sortField],
+      "order" : flag ? "asc" : "desc",
       "pg_no" : Number(pageNumber),
-      "pg_size" : 15
+      "pg_size" : Number(currentPages),
+      "search_key" : searchQuery
    };
     const response = await APIService.getCountries(data)
     
@@ -92,16 +98,18 @@ const Country = () => {
   const fetchQuantityData = async (quantity) => {
     setPageLoading(true);
     // setCurrentPage(pageNumber);
+
     // const user_id = await authService.getUserID();
     setCurrentPages(quantity);
     const data = { 
       "user_id" : 1234,
       "rows" : ["id","name"],
       "filters" : [],
-      "sort_by" : [],
-      "order" : "asc",
+      "sort_by" : [sortField],
+      "order" : flag ? "asc" : "desc",
       "pg_no" : Number(currentPage),
-      "pg_size" : Number(quantity)
+      "pg_size" : Number(quantity),
+      "search_key" : searchQuery
    };
     const response = await APIService.getCountries(data)
     
@@ -125,15 +133,16 @@ const Country = () => {
   const fetchCountryData = async () => {
     setPageLoading(true);
     // setCurrentPage(pageNumber);
-    const user_id = await authService.getUserID();
+    // const user_id = await authService.getUserID();
     const data = { 
-      "user_id" : user_id || 1234,
+      "user_id" :  1234,
       "rows" : ["id","name"],
       "filters" : [],
-      "sort_by" : [],
-      "order" : "asc",
+      "sort_by" : [sortField],
+      "order" : "desc",
       "pg_no" : 1,
-      "pg_size" : 15
+      "pg_size" : 15,
+      "search_key" : searchQuery
    };
     const response = await APIService.getCountries(data)
     const temp =(await response.json()).data;
@@ -178,8 +187,19 @@ const Country = () => {
   }
   // /edit country modal
   useEffect(() => {
-    fetchUserId()
+    // fetchUserId()
     fetchCountryData()
+    const handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+          setCountryFilter(false)
+          setIdFilter(false)
+      }
+  }
+
+  document.addEventListener("mousedown", handler);
+  return () => {
+      document.removeEventListener("mousedown", handler);
+  };
   }, []);
   //Validation of the form
   const initialValues = {
@@ -248,9 +268,10 @@ const Country = () => {
   const handleRefresh = () => {
     fetchCountryData();
   }
-  const [flag,setFlag] = useState(true);
+  
   const handleSort = async (field) => {
         setPageLoading(true);
+        setSortField(field)
         const data = { 
             "user_id" : userId|| 1234,
             "rows" : ["id","name"],
@@ -270,7 +291,31 @@ const Country = () => {
           country_name: x[1]
         })))
   }
-  const handleSearch = async () => {}
+  
+  const handleSearch = async () => {
+    setPageLoading(true)
+    const data = { 
+      "user_id" : 1234,
+      "rows" : ["id","name"],
+      "filters" : [],
+      "sort_by" : [field],
+      "order" : flag ? "asc" : "desc",
+      "pg_no" : 1,
+      "pg_size" : Number(currentPages),
+      "search_key" : searchQuery
+      };
+      const response = await APIService.getCountries(data)
+      const result = (await response.json()).data;
+      const t = temp.total_count;
+      setTotalItems(t);
+      setPageLoading(false);
+      setCountryValues(result.map(x => ({
+        sl: x[0],
+        country_name: x[1]
+      })))
+    setPageLoading(false)
+
+  }
   const [countryFilter,setCountryFilter] = useState(false);
   const [countryFilterInput,setCountryFilterInput] = useState("");
   const toggleCountryFilter = () => {
@@ -295,7 +340,7 @@ const Country = () => {
     const t = temp.total_count;
     setTotalItems(t);
 
-    setPageLoading(false);
+    // setPageLoading(false);
     setCountryValues(result.map(x => ({
       sl: x[0],
       country_name: x[1]
@@ -309,9 +354,36 @@ const Country = () => {
      setCurrentPage(value);
      fetchPageCountryData(value);
   }
+  const [idFilter,setIdFilter] = useState(false)
+  const [idFilterInput,setIdFilterInput] = useState("");
+  const handleCloseSearch = async  () => {
+       setSearchQuery("")
+       setPageLoading(true)
+       const data = { 
+        "user_id" : userId || 1234,
+        "rows" : ["id","name"],
+        "filters" : [],
+        "sort_by" : [sortField],
+        "order" : "desc",
+        "pg_no" : 1,
+        "pg_size" : Number(currentPages),
+        "search_key" : ""
+     };
+     const response = await APIService.getCountries(data)
+    const temp = await response.json();
+    const result = temp.data;
+    const t = temp.total_count;
+    setTotalItems(t);
 
+    // setPageLoading(false);
+    setCountryValues(result.map(x => ({
+      sl: x[0],
+      country_name: x[1]
+    })))
+     setPageLoading(false)
+  }
   return (
-    <div className='h-screen'>
+    <div className=''>
       <Navbar />
       <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
       <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country" />
@@ -334,15 +406,18 @@ const Country = () => {
               </div>
               <div className='flex space-x-2 items-center'>
 
-                <div className='flex'>
+                <div className='flex relative'>
                   {/* search button */}
                   <input
-                    className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                    className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                     type="text"
                     placeholder="  Search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
+                  <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
                   <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                    <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                    <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                   </div>
                 </div>
                 <div>
@@ -361,9 +436,11 @@ const Country = () => {
                                     
                                 </div>
                                 <div className='w-[20%] p-4 ml-20'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleCountryFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
-                                   {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                   {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <h1 >No Filter</h1>
                                             </div>
@@ -392,11 +469,46 @@ const Country = () => {
                                 </div>
                                 
                             </div>
-                            <div className='w-1/6  flex'>
-                                <div className='w-[50%] p-2 mt-2'>
-                                   <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                            <div className='w-1/6 p-3'>
+                                <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => {setIdFilterInput(e.target.value)}}/>
+                                    <button className='p-1' onClick={() => {setIdFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
+                                {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                 <div className='w-1/2 0 p-4'>
                                      
                                 </div>
@@ -428,7 +540,7 @@ const Country = () => {
               {pageLoading && <div className='ml-11 mt-9'>
                 <CircularProgress />
               </div>}
-              {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>}
+              {/* {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>} */}
               {!pageLoading && existingCountries.map((item, index) => {
                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                   <div className='w-3/4 flex'>
@@ -455,7 +567,7 @@ const Country = () => {
             </div>
           </div>
 
-          <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
+          <div className='w-full h-12 flex justify-between justify-self-end px-6  fixed bottom-0 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -483,10 +595,10 @@ const Country = () => {
                                     15
                                 </option>
                                 <option>
-                                    20
+                                    25
                                 </option>
                                 <option>
-                                    25
+                                   50
                                 </option>
                                </select>
                             </div>

@@ -36,15 +36,6 @@ const State = () => {
     const response = await authService.getUserId();
     setUserId(response)
 }
-  const initialSelectedFields = {
-      name : {
-          selected : false,
-          queryType : "",
-      },
-      id : {
-          selected : false,
-          queryType : ""
-      }}
   const openSuccessModal = () => {
     // set the state for true for some time
     setIsCountryDialogue(false);
@@ -63,7 +54,7 @@ const State = () => {
   const fetchStateData = async () => {
     setPageLoading(true);
     const data = { 
-        "user_id" : userId || 1234,
+        "user_id" : 1234,
         "rows" : ["id","name"],
         "filters" : [],
         "sort_by" : [],
@@ -72,8 +63,11 @@ const State = () => {
         "pg_size" : 15
      };
     const response = await APIService.getStatesAdmin(data)
-    const result = (await response.json()).data;
-    const t = result.total_count;
+    const temp = await response.json();
+    const result = temp.data;
+    const t = temp.total_count;
+    console.log(temp)
+    console.log(temp.total_count)
     setTotalItems(t);
     setPageLoading(false);
     setExistingState(result)
@@ -163,8 +157,9 @@ const State = () => {
                 "pg_size" : Number(currentPages)
              };
              const response = await APIService.getStatesAdmin(data)
-             const result = (await response.json()).data;
-             const t = result.total_count;
+             const temp = await response.json();
+            const result = temp.data;
+            const t = temp.total_count;
              setTotalItems(t);
              setPageLoading(false);
              setExistingState(result)
@@ -189,8 +184,9 @@ const State = () => {
             "pg_size" : Number(currentPages)
          };
          const response = await APIService.getStatesAdmin(data)
-         const result = (await response.json()).data;
-         const t = result.total_count;
+         const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
          setTotalItems(t);
          setPageLoading(false);
          setExistingState(result)
@@ -251,8 +247,10 @@ const State = () => {
                                     
                                 </div>
                                 <div className='w-[20%] p-4'>
-                                   <input className="w-14 bg-[#EBEBEB]" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)}/>
-                                   <button className='p-1' onClick={toggleStateFilter}><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                                    <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => {setStateFilterInput(e.target.value)}}/>
+                                        <button className='p-1' onClick={() => {setStateFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                    {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <h1 >No Filter</h1>
@@ -280,7 +278,38 @@ const State = () => {
                                             </div>
                                         </div>} 
                                 </div>
-                                
+                                <div className='w-[20%] p-4'>
+                                    <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => {setStateFilterInput(e.target.value)}}/>
+                                        <button className='p-1' onClick={() => {setStateFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                   {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
+                                </div>
                             </div>
                             <div className='w-1/6  flex'>
                                 <div className='w-[50%] p-2 mt-2'>
@@ -320,7 +349,7 @@ const State = () => {
                 <CircularProgress />
               </div>}
                         <div className='w-full h-[430px] overflow-auto'>
-                            {existingState
+                            {!pageLoading && existingState
                             .map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
@@ -336,7 +365,7 @@ const State = () => {
                                     </div>
                                     <div className='w-1/6  flex'>
                                         <div className='w-1/2  p-4'>
-                                            <p></p>
+                                            <p>{item[2]}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
