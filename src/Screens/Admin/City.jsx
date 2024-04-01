@@ -10,7 +10,7 @@ import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
-import { Modal } from "@mui/material";
+import { LinearProgress, Modal , Pagination} from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
@@ -25,6 +25,12 @@ const City = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage,setCurrentPage] = useState(1)
+  const [currentPages,setCurrentPages] = useState(15);
+  const [totalItems,setTotalItems] = useState(0)
+  const [sortField,setSortField] = useState("id")
+  const [flag,setFlag] = useState(false);
+  const [downloadModal,setDownloadModal] = useState(false)
   const openSuccessModal = () => {
     // set the state for true for some time
     setIsCountryDialogue(false);
@@ -42,15 +48,49 @@ const City = () => {
   }
   const fetchCityData = async () => {
     setPageLoading(true);
-    const user_id = await authService.getUserID();
-    console.log(user_id)
-    const data = { "user_id": user_id || 1234};
+    // const user_id = await authService.getUserID();
+    // console.log(user_id)
+    const data = {
+        "user_id":1234,
+        "rows":["id","city","state","countryid","country"],
+        "filters":[],
+        "sort_by":[sortField],
+        "order": flag ? "asc" : "desc",
+        "pg_no":1,
+        "pg_size":15
+    }
     const response = await APIService.getCitiesAdmin(data)
-    const result = (await response.json()).data;
+    const res = await response.json();
+    const result = res.data;
+    const t = res.total_count;
+    setTotalItems(t);
     setPageLoading(false);
+
     setExistingCities(result)
   }
-    
+  const fetchQuantityData = async (quantity) => {
+    setPageLoading(true);
+    // const user_id = await authService.getUserID();
+    // console.log(user_id)
+    setCurrentPages(quantity);
+    const data = {
+        "user_id":1234,
+        "rows":["id","city","state","countryid","country"],
+        "filters":[],
+        "sort_by":[sortField],
+        "order": flag ? "asc" : "desc",
+        "pg_no":Number(currentPage),
+        "pg_size":Number(quantity)
+    }
+    const response = await APIService.getCitiesAdmin(data)
+    const res = await response.json();
+    const result = res.data;
+    const t = res.total_count;
+    setTotalItems(t);
+    setPageLoading(false);
+
+    setExistingCities(result)
+  }
     useEffect(() => {
         fetchCityData();
     }, []);
@@ -86,6 +126,30 @@ const City = () => {
       }
       const handleRefresh = () => {
         fetchCityData();
+      }
+      const fetchPageData = async (page) => {
+        setPageLoading(true)
+        const data = {
+          "user_id":1234,
+          "rows":["id","city","state","countryid","country"],
+          "filters":[],
+          "sort_by":[sortField],
+          "order": flag ? "asc" : "desc",
+          "pg_no":Number(page),
+          "pg_size": Number(currentPages)
+      }
+      const response = await APIService.getCitiesAdmin(data)
+      const res = await response.json();
+      const result = res.data;
+      const t = res.total_count;
+      setTotalItems(t);
+      setExistingCities(result)
+      setPageLoading(false);
+      }
+      const handlePageChange =  (event,value) => {
+        setCurrentPage(value)
+        console.log('hey')
+        fetchPageData(value)  
       }
     return (
         <div>
@@ -160,15 +224,16 @@ const City = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 overflow-auto '>
-                            {existingCities.map((item, index) => {
+                        <div className='w-full h-[450px] overflow-auto '>
+                            {pageLoading && <LinearProgress/>}
+                            {!pageLoading && existingCities.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
                                         <div className='w-[10%] p-4'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p></p>
+                                            <p>{item.country}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
                                             <p>{item.state}</p>
@@ -197,48 +262,48 @@ const City = () => {
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <div className='h-12 flex justify-center items-center'>
-                                    <img src={backLink} className='h-2/4' />
-                                </div>
-                                <div className='flex space-x-1 mx-5'>
-                                    {/* pages */}
-                                    <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
-                                        <p>1</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>2</p>
-                                    </div>
-                                    <div className='w-6 p-1 pl-2'>
-                                        <p>3</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>4</p>
-                                    </div>
-                                </div>
-                                <div className='h-12 flex justify-center items-center'>
-                                    {/* right button */}
-                                    <img src={nextIcon} className='h-2/4' />
-                                </div>
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
-                               <p className="text-gray-400">Items Per page</p>
-                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                               <p className="text-gray-700">Items Per page</p>
+                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                                         name="currentPages"
+                                         value={currentPages}
+                                        //  defaultValue="Select State"
+                                         onChange={e => {
+                                            setCurrentPages(e.target.value);
+                                            // console.log(e.target.value);
+                                            fetchQuantityData(e.target.value)
+                                         }}
+                               
+                               >
                                 <option>
-                                    12
+                                    15
                                 </option>
                                 <option>
-                                    13
+                                    20
                                 </option>
                                 <option>
-                                    14
+                                    25
                                 </option>
                                </select>
                             </div>
                             <div className="flex text-sm">
-                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
                             </div>
+                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+                               
+                               <div className='flex'>
+                                 <p>Download as pdf</p>
+                                 {/* <img src=''/> */}
+                               </div>
+                               <div>
+                                  <p>Download as Excel</p>
+                               </div>
+                            </div>}
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
@@ -250,7 +315,7 @@ const City = () => {
                                 <button onClick={handleDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className="h-2/3" />
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
 
