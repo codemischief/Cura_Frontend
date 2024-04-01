@@ -1135,12 +1135,12 @@ const ManageEmployees = () => {
                                         </div>
                                         <div className='w-[14%]  flex overflow-hidden'>
                                             <div className='p-3 ml-1'>
-                                                <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : ""}</p>
+                                                <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
                                             </div>
                                         </div>
                                         <div className='w-[17%]  flex  overflow-hidden'>
                                             <div className='p-3 ml-1'>
-                                                <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : ""}</p>
+                                                <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
                                             </div>
                                         </div>
                                         <div className='w-[10%]  flex overflow-hidden'>
