@@ -1216,8 +1216,8 @@ const Payments = () => {
                             <div className="flex gap-[48px] justify-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Cura Office </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} />
+                                        <div className="text-[14px] text-[#787878]">Cura Office </div>
+                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-[11px] py-[1px] px-4 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>

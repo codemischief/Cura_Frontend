@@ -5,7 +5,7 @@ import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress } from "@mui/material";
@@ -20,6 +20,8 @@ import Add from "../../../assets/add.png";
 import EditManageEmployee from './EditManageEmployee';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 const ManageEmployees = () => {
+
+    const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -42,9 +44,28 @@ const ManageEmployees = () => {
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
+    const [empNameFilter,setEmpNameFilter] = useState(false); 
+    const [empNameInput,setEmpNameInput] = useState(""); 
+    const [empIdFilter,setEmpIdFilter] = useState(false); 
+    const [empIdInput,setEmpIdInput] = useState(""); 
+    const [phoneFilter,setPhoneFilter] = useState(false); 
+    const [phoneInput,setPhoneInput] = useState(""); 
+    const [emailFilter,setEmailFilter] = useState(false); 
+    const [emailInput,setEmailInput] = useState(""); 
+    const [roleFilter,setRoleFilter] = useState(false); 
+    const [roleInput,setRoleInput] = useState(""); 
+    const [pannoFilter,setPannoFilter] = useState(false); 
+    const [pannoInput,setPannoInput] = useState(""); 
+    const [dojFilter,setDojFilter] = useState(false); 
+    const [dojInput,setDojInput] = useState(""); 
+    const [ldowFilter,setLdowFilter] = useState(false); 
+    const [ldowInput,setLdowInput] = useState(""); 
+    const [statusFilter,setStatusFilter] = useState(false); 
+    const [statusInput,setStatusInput] = useState(""); 
+    const [idFilter,setIdFilter] = useState(false); 
+    const [idInput,setIdInput] = useState(""); 
     // const [filterArray,setFilterArray] = useState([]);
-
-
 
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -223,6 +244,26 @@ const ManageEmployees = () => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
+
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setEmpNameFilter(false);
+                setEmpIdFilter(false);
+                setPhoneFilter(false);
+                setEmailFilter(false);
+                setRoleFilter(false);
+                setPannoFilter(false);
+                setDojFilter(false);
+                setLdowFilter(false);
+                setStatusFilter(false);
+                setIdFilter(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
 
     const handleOpenEdit = (oldItem) => {
@@ -641,66 +682,326 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmpNameInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]'  onClick={() => {setEmpNameFilter((prev) => !prev)}} /></button>
                                         </div>
                                     </div>
+                                    {empNameFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[13%]  flex p-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmpIdInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setEmpIdFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {empIdFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPhoneInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setPhoneFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {phoneFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmailInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setEmailFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {emailFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setRoleInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setRoleFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {roleFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPannoInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setPannoFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {pannoFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[14%]  flex p-3'>
                                         <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setDojInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setDojFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {dojFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[17%]  flex p-3'>
                                         <div className="w-[57%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setLdowInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setLdowFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {ldowFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setStatusInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setStatusFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {statusFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                 </div>
                                 <div className="w-[15%] flex">
                                     <div className='w-1/2  flex p-3'>
                                         <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setIdInput(e.target.value)}/>
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setIdFilter((prev) => !prev)}}/></button>
                                         </div>
                                     </div>
+                                    {idFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >Contains</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >DoesNotContain</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >StartsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => {}}><h1 >EndsWith</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => {}}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                     <div className='w-1/2  flex'>
                                         <div className='p-3'>
 
@@ -797,7 +1098,7 @@ const ManageEmployees = () => {
                                         </div>
                                         <div className='w-[13%]  flex overflow-hidden'>
                                             <div className='p-3 '>
-                                                <p className='ml-3'>{item.employeeid}</p>
+                                                <p >{item.employeeid}</p>
                                             </div>
                                         </div>
                                         <div className='w-[10%]  flex overflow-hidden'>
@@ -816,22 +1117,22 @@ const ManageEmployees = () => {
                                             </div>
                                         </div>
                                         <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
+                                            <div className='p-3 ml-[3px]'>
                                                 <p>{item.panno}</p>
                                             </div>
                                         </div>
                                         <div className='w-[14%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-2'>
+                                            <div className='p-3 ml-1'>
                                                 <p>{item.dateofjoining}</p>
                                             </div>
                                         </div>
                                         <div className='w-[17%]  flex  overflow-hidden'>
-                                            <div className='p-3'>
+                                            <div className='p-3 ml-1'>
                                                 <p>{item.lastdateofworking}</p>
                                             </div>
                                         </div>
                                         <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-2 flex items-center space-x-2'>
+                                            <div className='p-3 ml-1 flex items-center space-x-2'>
                                                 {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
                                                     <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
                                                     <p> inactive</p></>}
@@ -840,7 +1141,7 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className="w-[15%] flex">
                                     <div className='w-1/2  flex overflow-hidden'>
-                                        <div className='p-3 ml-3'>
+                                        <div className='p-3 ml-[6px]'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
