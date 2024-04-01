@@ -377,7 +377,9 @@ const ManageBankStatement = () => {
     const [crValues, setCrValues]=useState(initialValues);
     const handleCR = (e) => {
         e.preventDefault();
-        setFormErrors(validateCR(formValues));
+        if(!validateCR()) {
+            return ;
+        }
        
         addCreditRecipt();
         // setCreditReceipt(false)
@@ -439,27 +441,81 @@ const ManageBankStatement = () => {
         }
         return res;
     }
-    const validateCR = (values) => {
-        const errors = {};
-        if (!values.modeofpayment) {
-            errors.modeofpayment = "Select a Mode";
+    const validateCR = () => {
+        var res = true;
+        if(!formValues.modeofpayment) {
+            setFormErrors((existing) => {
+               return {...existing, modeofpayment: "Select a mode"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,modeofpayment: ""}
+             })
         }
-        if (!values.recieved) {
-            errors.recieved = "Enter recieved";
+        if(!formValues.employee) {
+            setFormErrors((existing) => {
+               return  {...existing,employee: "Enter Employee"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return  {...existing,particulars: ""}
+             })
         }
-        if (!values.amount) {
-            errors.amount = "Enter Amount";
+        console.log(formValues.amount);
+        // console.log(!Number.isInteger(formValues.amount));
+        if(!formValues.amount ) {
+            setFormErrors((existing) => {
+                return {...existing,amount: "Amount is Mandatory"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,amount: ""}
+            })
         }
-        if (!values.entity) {
-            errors.entity = "Select a entity";
+        if(!formValues.date) {
+            setFormErrors((existing) => {
+                return {...existing,date: "Select a date"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,date: ""}
+            })
         }
-        if (!values.how) {
-            errors.how = "Select how recieved";
+        if(!formValues.entity) {
+            setFormErrors((existing) => {
+                return {...existing,entity: "Select entity"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,entity: ""}
+            })
         }
-        if (!values.client) {
-            errors.client = "Select how client";
+        if(!formValues.how) {
+            setFormErrors((existing) => {
+                return {...existing,how: "Select How paid"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,how: ""}
+            })
         }
-        return errors;
+        if(!formValues.client) {
+            setFormErrors((existing) => {
+                return {...existing,client: "Enter Client"}
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return {...existing,client: ""}
+            })
+        }
+        return res;
     };
     const [isConfirmManageStatementDialogue, setIsConfirmManageStatementDialogue] = React.useState(false);
     const [isManageStatementDialogue, setIsManageStatementDialogue] = React.useState(false);
@@ -1477,7 +1533,7 @@ const ManageBankStatement = () => {
                         <form onSubmit={handleCR} >
                             <div className="w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[10px] px-[10px]">
+                                    <div className=" space-y-[5px] py-[5px] px-[5px]">
                                         <div className="">
                                             <div className="text-[14px]">Cura Office<label className="text-red-500">*</label></div>
                                             <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />

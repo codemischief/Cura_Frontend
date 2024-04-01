@@ -191,7 +191,7 @@ const EditManageStatement = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
                                             <option>{currentMode}</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item[0]} value={item[0]}>
@@ -204,13 +204,13 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Particulars <label className="text-red-500">*</label></div>
                                             {/* <input className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs "  name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
-                                            <textarea className=" text-[12px] pl-4 break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
+                                            <textarea className=" text-[12px] pl-4 break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} required/>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
 
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Amount<label className="text-red-500">*</label> </div>
-                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} required/>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Vendor</div> 
@@ -229,12 +229,12 @@ const EditManageStatement = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[14px]">Date <label className="text-red-500">*</label></div>
-                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} />
+                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} required />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">DR/CR <label className="text-red-500">*</label></div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} >
+                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} required>
                                                 {crdr && crdr.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
