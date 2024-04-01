@@ -5,7 +5,7 @@ import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
-import { useState, useEffect } from 'react';
+import { useState, useEffect , useRef} from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
@@ -19,6 +19,7 @@ import Filter from "../../assets/filter.png"
 
 const State = () => {
     // we have the module here
+    const menuRef = useRef()
     const [existingState, setExistingState] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     
@@ -32,6 +33,7 @@ const State = () => {
   const [totalItems,setTotalItems] = useState(0);
   const [downloadModal,setDownloadModal] = useState(false);
   const [userId, setUserId]=useState(0);
+  const [sortField,setSortField] = useState("id");
   const fetchUserId = async() =>{
     const response = await authService.getUserId();
     setUserId(response)
@@ -57,8 +59,8 @@ const State = () => {
         "user_id" : 1234,
         "rows" : ["id","name"],
         "filters" : [],
-        "sort_by" : [],
-        "order" : "asc",
+        "sort_by" : [sortField],
+        "order" : "desc",
         "pg_no" : 1,
         "pg_size" : 15
      };
@@ -83,14 +85,16 @@ const State = () => {
             setAllCountry(result);
         }
     }
+
     const fetchSomeData = async (number) => {
         setPageLoading(true);
+        setCurrentPages(number)
         const data = { 
             "user_id" : userId || 1234,
             "rows" : ["id","name"],
             "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : flag ? "asc" : "desc",
             "pg_no" : Number(currentPage),
             "pg_size" : Number(number)
          };
@@ -109,6 +113,18 @@ const State = () => {
         fetchUserId()
         fetchStateData();
         fetchCountryData();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setCountryFilter(false)
+                setStateFilter(false)
+                setIdFilter(false)
+            }
+        }
+      
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
     //Validation of the form
     const initialValues = {
@@ -121,10 +137,10 @@ const State = () => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsSubmit(true);
-    };
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     setIsSubmit(true);
+    // };
 
     const [isStateDialogue, setIsStateDialogue] = React.useState(false);
     const handleOpen = () => {
@@ -147,8 +163,9 @@ const State = () => {
       const [flag,setFlag] = useState(true);
       const handleSort = async (field) => {
             setPageLoading(true);
+            setSortField(field)
             const data = { 
-                "user_id" : userId|| 1234,
+                "user_id" :  1234,
                 "rows" : ["id","name"],
                 "filters" : [],
                 "sort_by" : [field],
@@ -178,8 +195,8 @@ const State = () => {
             "user_id" : userId || 1234,
             "rows" : ["id","name"],
             "filters" : [["name",String(filterType),stateFilterInput]],
-            "sort_by" : [],
-            "order" : "asc",
+            "sort_by" : [sortField],
+            "order" : flag ? "asc" : "desc",
             "pg_no" : 1,
             "pg_size" : Number(currentPages)
          };
@@ -196,8 +213,34 @@ const State = () => {
         setPageLoading(false);
       }
       const handlePageChange = (event,value) => {
-         setCurrentPage(value)
+         setCurrentPage(value);
+         fetchPageCountryData(value);
       }
+      const fetchPageCountryData = async  (page) => {
+        setPageLoading(true)
+        setCurrentPage(page);
+        const data = { 
+            "user_id" :  1234,
+            "rows" : ["id","name"],
+            "filters" : [],
+            "sort_by" : [],
+            "order" : "desc",
+            "pg_no" : Number(page),
+            "pg_size" : Number(currentPages),
+            "search_key" : ""
+         };
+         const response = await APIService.getStatesAdmin(data)
+         const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+         setTotalItems(t);
+         setPageLoading(false);
+         setExistingState(result)
+      }
+      const [idFilter,setIdFilter] = useState(false);
+      const [idFilterInput,setIdFilterInput] = useState("");
+      const [countryFilter,setCountryFilter] = useState(false)
+      const [countryFilterInput,setCountryFilterInput] = useState("");
     return (
         <div>
             <Navbar />
@@ -248,10 +291,10 @@ const State = () => {
                                 </div>
                                 <div className='w-[20%] p-4'>
                                     <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => {setStateFilterInput(e.target.value)}}/>
-                                        <button className='p-1' onClick={() => {setStateFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => {setCountryFilterInput(e.target.value)}}/>
+                                        <button className='p-1' onClick={() => {setCountryFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
-                                   {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                   {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <h1 >No Filter</h1>
                                             </div>
@@ -283,7 +326,7 @@ const State = () => {
                                         <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => {setStateFilterInput(e.target.value)}}/>
                                         <button className='p-1' onClick={() => {setStateFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
-                                   {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm'>
+                                   {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                               <h1 >No Filter</h1>
                                             </div>
@@ -311,11 +354,46 @@ const State = () => {
                                         </div>} 
                                 </div>
                             </div>
-                            <div className='w-1/6  flex'>
-                                <div className='w-[50%] p-2 mt-2'>
-                                   <input className="w-14 bg-[#EBEBEB]"/>
-                                   <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]'/></button>
+                            <div className='w-1/6  flex p-3'>
+                            <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => {setIdFilterInput(e.target.value)}}/>
+                                    <button className='p-1' onClick={() => {setIdFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
+                                {idFilter && <div className='h-[360px] w-[150px] mt-8 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40 ' ref={menuRef}>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                 <div className='w-1/2 0 p-4'>
                                      
                                 </div>
@@ -354,7 +432,7 @@ const State = () => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
                                         <div className='w-[10%] p-4'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
                                             <p>{item[1]}</p>
@@ -456,7 +534,7 @@ const State = () => {
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        {/* <form onSubmit={handleSubmit}> */}
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -519,7 +597,7 @@ const State = () => {
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
-                        </form>
+                        {/* </form> */}
                     </div>
                 </div>
             </Modal>
