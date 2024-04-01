@@ -278,7 +278,6 @@ const City = () => {
                                             // console.log(e.target.value);
                                             fetchQuantityData(e.target.value)
                                          }}
-                               
                                >
                                 <option>
                                     15
