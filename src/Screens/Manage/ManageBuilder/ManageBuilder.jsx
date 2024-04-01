@@ -1,5 +1,5 @@
-import { CircularProgress, Modal } from "@mui/material";
-import React, { useEffect, useState } from 'react';
+import { CircularProgress, Modal ,Pagination} from "@mui/material";
+import React, { useEffect, useState , useRef } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
@@ -17,8 +17,10 @@ import Delete from './Delete';
 import EditManageBuilder from './EditManageBuilder';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import Filter from "../../../assets/filter.png"
 const ManageBuilder = () => {
     // we have the module here
+    const menuRef = useRef()
     const [existingBuilders, setExistingBuilders] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -36,6 +38,9 @@ const ManageBuilder = () => {
     const [allCity, setAllCity] = useState([]);
     const [countryId,setcountryId]=useState("");
     const [userId,setUserId]=useState(0);
+    const [totalItems,setTotalItems] = useState(0)
+    const [currentPage,setCurrentPage] = useState(1)
+    const [currentPages,setCurrentPages] = useState(15)
     const fetchUserId = async() =>{
         const response = await authService.getUserId()
         
@@ -62,7 +67,7 @@ const ManageBuilder = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","phone1","phone2","email1","addressline1"],
+            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -70,14 +75,17 @@ const ManageBuilder = () => {
             "pg_size": 15
           };
         const response = await APIService.getNewBuilderInfo(data)
-        const result = (await response.json()).data.builder_info;
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        
         setPageLoading(false);
         // console.log(result);
         setExistingBuilders(result);
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": userId || 1234 };
+        const data = { "user_id": 1234 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result);
@@ -145,11 +153,25 @@ const ManageBuilder = () => {
     }
 
     useEffect(() => {
-        fetchUserId();
+        // fetchUserId();
         fetchBuilderData();
         fetchCountryData();
         fetchCityData();
         fetchStateData();
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setCountryFilter(false)
+                setBuilderFilter(false)
+                setCityFilter(false)
+                setSuburbFilter(false)
+                setIdFilter(false)
+            }
+        }
+      
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
     //Validation of the form
     const initialValues = {
@@ -243,7 +265,22 @@ const ManageBuilder = () => {
         XLSX.writeFile(workbook,"BuilderData.xlsx");
         FileSaver.saveAs(workbook,"demo.xlsx");
     }
-    return (
+    const handlePageChange = () => {
+
+    }
+    const [downloadModal,setDownloadModal] = useState(false)
+    const [builderFilter,setBuilderFilter] = useState(false)
+    const [builderFilterInput,setBuilderFilterInput] = useState("")
+    const [countryFilter,setCountryFilter] = useState(false)
+    const [countryFilterInput,setCountryFilterInput] = useState("")
+    const [cityFilter,setCityFilter] = useState(false)
+    const [cityFilterInput,setCityFilterInput] = useState("")
+    const [suburbFilter,setSuburbFilter] = useState(false)
+    const [suburbFilterInput,setSuburbFilterInput] = useState("")
+    const [idFilter,setIdFilter] = useState(false)
+    const [idFilterInput,setIdFilterInput] = useState("")
+
+     return (
         <div >
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
@@ -293,17 +330,134 @@ const ManageBuilder = () => {
                                     {/* <p>Sr. </p> */}
                                 </div>
                                 <div className='w-[25%]  p-4'>
-                                     <input className="w-14 bg-[#EBEBEB]"/>
+                                    <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => {setBuilderFilterInput(e.target.value)}}/>
+                                    <button className='p-1' onClick={() => {setBuilderFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    {builderFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef} >
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                    <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => {setCountryFilterInput(e.target.value)}}/>
+                                    <button className='p-1' onClick={() => {setCountryFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    <input className="w-14 bg-[#EBEBEB]"/>
+                                   <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => {setCityFilterInput(e.target.value)}}/>
+                                    <button className='' onClick={() => {setCityFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
                                 </div>
                                 <div className='w-[15%]  p-4'>
-                                    < input className="w-14 bg-[#EBEBEB]"/>
+                                   <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => {setSuburbFilterInput(e.target.value)}}/>
+                                    <button className='' onClick={() => {setSuburbFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    {suburbFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <h1 >No Filter</h1>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                            </div>
+                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                            </div>
+                                        </div>} 
                                 </div>
+                               
                                 <div className='w-[10%]  p-4'>
                                     {/* <p>Contact</p> */}
                                 </div>
@@ -313,8 +467,46 @@ const ManageBuilder = () => {
                            </div>
                            <div className="w-[15%]  h-full flex">
                                 <div className='w-1/2  p-4'>
-                                     < input className="w-14 bg-[#EBEBEB]"/>
+                                   <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => {setIdFilterInput(e.target.value)}}/>
+                                    <button className='' onClick={() => {setIdFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
                                 </div>
+                                {idFilter && <div className='h-[360px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40 ' ref={menuRef}>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                        </div>
+                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        </div>
+                                    </div>}
                                 <div className='w-1/2 0 p-4'>
                                     {/* <p>Edit</p> */}
                                 </div>
@@ -357,7 +549,7 @@ const ManageBuilder = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 overflow-auto'>
+                        <div className='w-full h-[450px] overflow-auto'>
                             {pageLoading && <div className='ml-11 mt-9'>
                                 <CircularProgress />
                             </div>}
@@ -407,48 +599,49 @@ const ManageBuilder = () => {
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <div className='h-12 flex justify-center items-center'>
-                                    <img src={backLink} className='h-2/4' />
-                                </div>
-                                <div className='flex space-x-1 mx-5'>
-                                    {/* pages */}
-                                    <div className='w-6 bg-[#DAE7FF] p-1 pl-2 rounded-md'>
-                                        <p>1</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>2</p>
-                                    </div>
-                                    <div className='w-6 p-1 pl-2'>
-                                        <p>3</p>
-                                    </div>
-                                    <div className='w-6  p-1 pl-2'>
-                                        <p>4</p>
-                                    </div>
-                                </div>
-                                <div className='h-12 flex justify-center items-center'>
-                                    {/* right button */}
-                                    <img src={nextIcon} className='h-2/4' />
-                                </div>
+                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
-                               <p className="text-gray-400">Items Per page</p>
-                               <select className="text-gray-400 border-black border-[1px] rounded-md p-1">
+                               <p className="text-gray-700">Items Per page</p>
+                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                                         name="currentPages"
+                                         value={currentPages}
+                                        //  defaultValue="Select State"
+                                         onChange={e => {
+                                            // setCurrentPages(e.target.value);
+                                            console.log(e.target.value);
+                                            fetchQuantityData(e.target.value);
+                                            // fetchPageCountryData(e.target.value)
+                                         }}
+                               
+                               >
                                 <option>
-                                    12
+                                    15
                                 </option>
                                 <option>
-                                    13
+                                    25
                                 </option>
                                 <option>
-                                    14
+                                   50
                                 </option>
                                </select>
                             </div>
                             <div className="flex text-sm">
-                                <p className="mr-11 text-gray-400">219 Items in 19 Pages</p>
+                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
                             </div>
+                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+                               
+                               <div className='flex'>
+                                 <p>Download as pdf</p>
+                                 {/* <img src=''/> */}
+                               </div>
+                               <div>
+                                  <p>Download as Excel</p>
+                               </div>
+                            </div>}
                             
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
@@ -460,7 +653,7 @@ const ManageBuilder = () => {
                                 <button onClick={handleDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className="h-2/3" />
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
 

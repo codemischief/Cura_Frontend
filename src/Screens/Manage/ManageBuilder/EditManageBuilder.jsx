@@ -144,7 +144,7 @@ const EditManageBuilder = (props) => {
             <Modal open={props.openDialog}
                 fullWidth={true}
                 maxWidth={'md'} >
-                <div className='flex justify-center mt-[20px] rounded-lg'>
+                <div className='flex justify-center mt-[80px] rounded-lg'>
                     <div className="w-[1050px] h-auto bg-white ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
