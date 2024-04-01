@@ -20,11 +20,11 @@ const DeleteLobModal = (props) => {
                         <div className="ml-56 mr-52">
                             <div className="text-[16px]">Delete</div>
                         </div>
-                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <img onClick={() => {}} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white cursor-pointer">
+                            <img onClick={props.handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                         </div>
                     </div>
-                    <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
+                    <div className="mt-2 mr-4 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
                         <img className="h-10 w-10" src={DeleteImage} alt="delete photo" />
                     </div>
                     <div className="mt-4 w-full text-center">

@@ -345,7 +345,7 @@ const LOB = () => {
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
-            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem}/>}
+            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)}/>}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -497,10 +497,10 @@ const LOB = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-80 overflow-auto'>
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingLOB.map((item, index) => {
-                                return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
+                                return <div className='w-full flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-3/4 flex'>
                                         <div className='w-[10%] p-3 ml-[3px]'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -516,11 +516,11 @@ const LOB = () => {
                                         </div> */}
                                     </div>
                                     <div className='w-1/6  flex'>
-                                        <div className='w-1/2 p-3 flex ml-[17px]'>
+                                        <div className='w-1/2 p-3 flex ml-[9px]'>
                                             <p>{item.id}</p>
                                         </div>
-                                        <div className='w-1/2 p-3 flex items-center ml-[17px]'>
-                                            <img className=' h-5 mr-3 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
+                                        <div className='w-1/2 p-3 flex items-center ml-[9px]'>
+                                            <img className=' h-5 mr-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
                                             <button onClick={() => handleDelete(item)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
@@ -604,38 +604,38 @@ const LOB = () => {
             {/* modal goes here */}
             <Modal open={isLobDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[200px]'>
-                    <div className="w-6/7  h-[200px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
+                maxWidth={'md'}
+                className='flex justify-center items-center' 
+                >
+                <div className='flex justify-center'>
+                    <div className="w-[778px]  h-[255px] bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[290px] ml-[290px]">
                                 <div className="text-[16px]">New LOB</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-
-                        <div className="h-auto w-full mt-[5px] ">
+                        <div className="space-y-16">
+                        <div className="h-auto w-full mt-[15px] ">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">LOB Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={lobName} onChange={handleChange} />
+                                        <div className="text-[14px] text-[#505050]">LOB Name  <label className="text-red-500">*</label></div>
+                                        <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={lobName} onChange={handleChange} />
                                         <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addLob}>Save</button>
+                        <div className="flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addLob}>Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
-
+                        </div>
+                        
                     </div>
                 </div>
             </Modal>
