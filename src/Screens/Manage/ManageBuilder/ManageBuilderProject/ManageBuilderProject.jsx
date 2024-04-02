@@ -1,6 +1,6 @@
-import { CircularProgress, Modal ,Pagination} from "@mui/material";
-import React, { useEffect, useState , useRef } from 'react';
-import { Link } from "react-router-dom";
+import { CircularProgress, Modal ,Pagination, LinearProgress} from "@mui/material";
+import React, { useEffect, useState , useRef} from 'react';
+import { Link , useLocation} from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Navbar from "../../../../Components/Navabar/Navbar";
 import FailureModal from '../../../../Components/modals/FailureModal';
@@ -23,9 +23,11 @@ const ManageBuilderProject = () => {
     // we have the module here
     const menuRef = useRef()
     const params = useParams()
-    console.log(params.buildername)
+    let { state } = useLocation();
+    console.log(state)
+    console.log(params.builderid)
     // console.log(params)
-    const [existingBuilders, setExistingBuilders] = useState([]);
+    const [existingProjects, setExistingProjects] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -45,6 +47,7 @@ const ManageBuilderProject = () => {
     const [totalItems,setTotalItems] = useState(0)
     const [currentPage,setCurrentPage] = useState(1)
     const [currentPages,setCurrentPages] = useState(15)
+    const [currBuilderId,setCurrBuilderId] = useState(state.builderid)
     const fetchUserId = async() =>{
         const response = await authService.getUserId()
         
@@ -71,21 +74,58 @@ const ManageBuilderProject = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
+            "rows": [
+              "buildername",
+              "builderid",
+              "projectname",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "nearestlandmark",
+              "project_type",
+              "mailgroup1",
+              "mailgroup2",
+              "website",
+              "project_legal_status",
+              "rules",
+              "completionyear",
+              "jurisdiction",
+              "taluka",
+              "corporationward",
+              "policechowkey",
+              "policestation",
+              "maintenance_details",
+              "numberoffloors",
+              "numberofbuildings",
+              "approxtotalunits",
+              "tenantstudentsallowed",
+              "tenantworkingbachelorsallowed",
+              "tenantforeignersallowed",
+              "otherdetails",
+              "duespayablemonth",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "id"
+            ],
+            "builderid": currBuilderId,
             "filters": [],
             "sort_by": [],
             "order": "asc",
-            "pg_no": 1,
-            "pg_size": 15
+            "pg_no": 0,
+            "pg_size": 0
           };
-        const response = await APIService.getNewBuilderInfo(data)
+        const response = await APIService.getProjectsByBuilderId(data)
         const res = await response.json()
         console.log(res)
-        const result = res.data.builder_info;
-        
+        const result = res.data;
         setPageLoading(false);
         // console.log(result);
-        setExistingBuilders(result);
+        setExistingProjects(result);
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -321,7 +361,7 @@ const ManageBuilderProject = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New Builder +
+                                        Add New Project +
                                     </button>
                                 </div>
 
@@ -331,276 +371,211 @@ const ManageBuilderProject = () => {
                         <div className="h-10 w-full flex items-center">
                               <h1>Builder Name : {params.buildername}</h1>
                         </div>
-                        <div className='h-12 w-full flex'>
-                           <div className="w-[85%] h-full flex">
-                               <div className='w-[5%] p-4'>
-                                    {/* <p>Sr. </p> */}
-                                </div>
-                                <div className='w-[25%]  p-4'>
-                                    <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => {setBuilderFilterInput(e.target.value)}}/>
-                                    <button className='p-1' onClick={() => {setBuilderFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                        <div className='h-12 w-full bg-white'>
+                            <div className='w-full h-12 bg-white flex justify-between'>
+                                <div className="w-[85%] flex">
+                                    <div className='w-[4%] flex'>
+
                                     </div>
-                                    {builderFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef} >
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => {setCountryFilterInput(e.target.value)}}/>
-                                    <button className='p-1' onClick={() => {setCountryFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%]  flex p-3'>
+                                        <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                   <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => {setCityFilterInput(e.target.value)}}/>
-                                    <button className='' onClick={() => {setCityFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                   <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => {setSuburbFilterInput(e.target.value)}}/>
-                                    <button className='' onClick={() => {setSuburbFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                    {suburbFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                               
-                                <div className='w-[10%]  p-4'>
-                                    {/* <p>Contact</p> */}
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    {/* <p>Projects</p> */}
-                                </div>
-                           </div>
-                           <div className="w-[15%]  h-full flex">
-                                <div className='w-1/2  p-4'>
-                                   <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => {setIdFilterInput(e.target.value)}}/>
-                                    <button className='' onClick={() => {setIdFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[14%]  flex p-3'>
+                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                    <div className="w-[87%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[71%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
                                 </div>
-                                {idFilter && <div className='h-[360px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40 ' ref={menuRef}>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                <div className="w-[15%] flex p-3">
+                                    <div className='w-1/2  flex'>
+                                    <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                    </div>
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
+
                                         </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
-                                <div className='w-1/2 0 p-4'>
-                                    {/* <p>Edit</p> */}
+                                    </div>
                                 </div>
-                           </div>
+                            </div>
                         </div>
                         
                     </div>
 
-                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[400px] bg-white px-6  text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    <p>Sr. </p>
+                            <div className="w-[85%] flex">
+                                <div className='w-[4%] flex'>
+                                    <div className='p-3'>
+                                        <p>Sr.</p>
+                                    </div>
                                 </div>
-                                <div className='w-[25%]  p-4'>
-                                    <p>Builder Name <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Project Name <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Country ↑↓</p>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Builder Name <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>City ↑↓</p>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Suburb <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Suburb ↑↓</p>
+                                <div className='w-[14%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Other details/issues </p>
+                                    </div>
                                 </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Contact</p>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Mail Group </p>
+                                    </div>
                                 </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Projects</p>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Subscribed email </p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Rules <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Tenet <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[15%] flex'>
-                                <div className='w-1/2  p-4'>
-                                    <p>ID ↑↓</p>
+                            <div className="w-[15%] flex">
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>ID</p>
+                                    </div>
                                 </div>
-                                <div className='w-1/2 0 p-4'>
-                                    <p>Edit</p>
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>Edit</p>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                         <div className='w-full h-[400px] overflow-auto'>
-                            {pageLoading && <div className='ml-11 mt-9'>
-                                <CircularProgress />
-                            </div>}
-                            {existingBuilders && existingBuilders.map((item, index) => {
-                                return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
-                                            <p>{index + 1}</p>
+                            {/* we map our items here */}
+                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                            {!pageLoading && existingProjects.map((item, index) => {
+                                return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
+                                    <div className="w-[85%] flex min-h-0">
+                                        <div className='w-[4%] flex  overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{index + 1}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-[25%]  p-4'>
-                                            <p>{item.buildername}</p>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.projectname}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.country}</p>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.buildername}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.city}</p>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.suburb}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.suburb}</p>
+                                        <div className='w-[14%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.otherdetails}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <p>Contact</p>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.mailgroup1}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <p>Projects</p>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.rules}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p></p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
-                                            <p>{item.id}</p>
+                                    <div className="w-[15%] flex">
+                                        <div className='w-1/2  flex overflow-hidden'>
+                                            <div className='p-3 ml-1'>
+                                                <p>{item.id}</p>
+                                            </div>
                                         </div>
-                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editBuilder(item)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
+                                        <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
+                                            <img className=' w-5 h-5' src={Edit} alt="edit" />
+                                            <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
+
                                 </div>
                             })}
-                            {/* we get all the existing builders here */}
-                            {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData}/>}
-                            {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData}/> }
                         </div>
                     </div>
+
                     <div className='w-full h-[250] flex justify-between justify-self-end px-6 fixed bottom-2 '>
                         {/* footer component */}
                         <div className='ml-2'>
@@ -612,29 +587,7 @@ const ManageBuilderProject = () => {
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
-                               {/* <p className="text-gray-700">Items Per page</p> */}
-                               {/* <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
-                                         name="currentPages"
-                                         value={currentPages}
-                                        //  defaultValue="Select State"
-                                         onChange={e => {
-                                            // setCurrentPages(e.target.value);
-                                            console.log(e.target.value);
-                                            fetchQuantityData(e.target.value);
-                                            // fetchPageCountryData(e.target.value)
-                                         }}
                                
-                               >
-                                <option>
-                                    15
-                                </option>
-                                <option>
-                                    25
-                                </option>
-                                <option>
-                                   50
-                                </option>
-                               </select> */}
                             </div>
                             <div className="flex text-sm">
                                 {/* <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p> */}
@@ -674,7 +627,7 @@ const ManageBuilderProject = () => {
                     <div className="w-[1100px] h-[600px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Builder</div>
+                                <div className="text-[16px]">Add New Project</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />

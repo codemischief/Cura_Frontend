@@ -80,11 +80,57 @@ const ManageBuilder = () => {
         const res = await response.json()
         console.log(res)
         const result = res.data.builder_info;
-        
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
         setPageLoading(false);
         // console.log(result);
         setExistingBuilders(result);
     }
+    const fetchPageData = async  (page) => {
+        setPageLoading(true);
+        setCurrentPage(page)
+        const data = {
+            "user_id": 1234,
+            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
+            "filters": [],
+            "sort_by": [sortField],
+            "order": "desc",
+            "pg_no": Number(page),
+            "pg_size": Number(currentPages)
+          };
+        const response = await APIService.getNewBuilderInfo(data)
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
+        setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
+    }
+    const fetchQuantityData = async (quantity) => {
+        setPageLoading(true);
+        setCurrentPages(quantity)
+        const data = {
+            "user_id": 1234,
+            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
+            "filters": [],
+            "sort_by": [sortField],
+            "order": "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages)
+          };
+        const response = await APIService.getNewBuilderInfo(data)
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
+        setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
+    }
+
     const fetchCountryData = async () => {
         setPageLoading(true);
         const data = { "user_id": 1234 };
@@ -267,8 +313,9 @@ const ManageBuilder = () => {
         XLSX.writeFile(workbook,"BuilderData.xlsx");
         FileSaver.saveAs(workbook,"demo.xlsx");
     }
-    const handlePageChange = () => {
-
+    const handlePageChange = (event,value) => {
+        setCurrentPage(value)
+        fetchPageData(value)
     }
     const [downloadModal,setDownloadModal] = useState(false)
     const [builderFilter,setBuilderFilter] = useState(false)
@@ -555,11 +602,11 @@ const ManageBuilder = () => {
                             {pageLoading && <div className='ml-11 mt-9'>
                                 <CircularProgress />
                             </div>}
-                            {existingBuilders && existingBuilders.map((item, index) => {
+                            {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] flex'>
                                         <div className='w-[5%] p-4'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                         <div className='w-[25%]  p-4'>
                                             <p>{item.buildername}</p>
@@ -577,7 +624,7 @@ const ManageBuilder = () => {
                                             <p>Contact</p>
                                         </div>
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <Link to={`${item.buildername.split(` `).join(`-`).toLowerCase()}`}><p>Projects</p></Link>
+                                            <Link to={`${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{builderid : item.id}}><p>Projects</p></Link>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
