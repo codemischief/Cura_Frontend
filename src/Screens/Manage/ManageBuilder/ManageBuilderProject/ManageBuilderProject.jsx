@@ -606,14 +606,14 @@ const ManageBuilderProject = () => {
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
-                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
+                                {/* <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/> */}
                                 
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
-                               <p className="text-gray-700">Items Per page</p>
-                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                               {/* <p className="text-gray-700">Items Per page</p> */}
+                               {/* <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
                                          name="currentPages"
                                          value={currentPages}
                                         //  defaultValue="Select State"
@@ -634,10 +634,10 @@ const ManageBuilderProject = () => {
                                 <option>
                                    50
                                 </option>
-                               </select>
+                               </select> */}
                             </div>
                             <div className="flex text-sm">
-                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
+                                {/* <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p> */}
                             </div>
                             {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
                                
