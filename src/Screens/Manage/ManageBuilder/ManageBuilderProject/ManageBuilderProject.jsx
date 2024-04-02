@@ -1,26 +1,30 @@
 import { CircularProgress, Modal ,Pagination} from "@mui/material";
 import React, { useEffect, useState , useRef } from 'react';
 import { Link } from "react-router-dom";
-import Navbar from "../../../Components/Navabar/Navbar";
-import FailureModal from '../../../Components/modals/FailureModal';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import backLink from "../../../assets/back.png";
-import Cross from "../../../assets/cross.png";
-import downloadIcon from "../../../assets/download.png";
-import Edit from "../../../assets/edit.png";
-import nextIcon from "../../../assets/next.png";
-import refreshIcon from "../../../assets/refresh.png";
-import searchIcon from "../../../assets/searchIcon.png";
-import Trash from "../../../assets/trash.png";
-import { APIService } from '../../../services/API';
-import Delete from './Delete';
-import EditManageBuilder from './EditManageBuilder';
+import { useParams } from "react-router-dom";
+import Navbar from "../../../../Components/Navabar/Navbar";
+import FailureModal from '../../../../Components/modals/FailureModal';
+import SucessfullModal from '../../../../Components/modals/SucessfullModal';
+import backLink from "../../../../assets/back.png";
+import Cross from "../../../../assets/cross.png";
+import downloadIcon from "../../../../assets/download.png";
+import Edit from "../../../../assets/edit.png";
+import nextIcon from "../../../../assets/next.png";
+import refreshIcon from "../../../../assets/refresh.png";
+import searchIcon from "../../../../assets/searchIcon.png";
+import Trash from "../../../../assets/trash.png";
+import { APIService } from '../../../../services/API';
+import Delete from '../Delete';
+import EditManageBuilder from '../EditManageBuilder';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-import Filter from "../../../assets/filter.png"
-const ManageBuilder = () => {
+import Filter from "../../../../assets/filter.png"
+const ManageBuilderProject = () => {
     // we have the module here
     const menuRef = useRef()
+    const params = useParams()
+    console.log(params.buildername)
+    // console.log(params)
     const [existingBuilders, setExistingBuilders] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -297,7 +301,7 @@ const ManageBuilder = () => {
                                     <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
                                 </div>
                                 <div className='flex-col'>
-                                    <h1>Manage Builder</h1>
+                                    <h1>Manage Builder Project</h1>
                                     <p>Manage &gt; Manage Builder</p>
                                 </div>
                             </div>
@@ -322,7 +326,10 @@ const ManageBuilder = () => {
                                 </div>
 
                             </div>
-
+                            
+                        </div>
+                        <div className="h-10 w-full flex items-center">
+                              <h1>Builder Name : {params.buildername}</h1>
                         </div>
                         <div className='h-12 w-full flex'>
                            <div className="w-[85%] h-full flex">
@@ -549,7 +556,7 @@ const ManageBuilder = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-[400px] overflow-auto'>
                             {pageLoading && <div className='ml-11 mt-9'>
                                 <CircularProgress />
                             </div>}
@@ -575,7 +582,7 @@ const ManageBuilder = () => {
                                             <p>Contact</p>
                                         </div>
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <Link to={`${item.buildername.split(` `).join(`-`).toLowerCase()}`}><p>Projects</p></Link>
+                                            <p>Projects</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
@@ -594,7 +601,7 @@ const ManageBuilder = () => {
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData}/> }
                         </div>
                     </div>
-                    <div className='w-full h-[250] flex justify-between justify-self-end px-6 '>
+                    <div className='w-full h-[250] flex justify-between justify-self-end px-6 fixed bottom-2 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -810,4 +817,4 @@ const ManageBuilder = () => {
     )
 }
 
-export default ManageBuilder
+export default ManageBuilderProject
