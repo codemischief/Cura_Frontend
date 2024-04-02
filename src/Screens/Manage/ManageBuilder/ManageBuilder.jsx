@@ -41,6 +41,8 @@ const ManageBuilder = () => {
     const [totalItems,setTotalItems] = useState(0)
     const [currentPage,setCurrentPage] = useState(1)
     const [currentPages,setCurrentPages] = useState(15)
+    const [sortField,setSortField] = useState("id")
+
     const fetchUserId = async() =>{
         const response = await authService.getUserId()
         
@@ -69,8 +71,8 @@ const ManageBuilder = () => {
             "user_id": 1234,
             "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15
           };

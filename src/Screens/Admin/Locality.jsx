@@ -847,7 +847,7 @@ const Locality = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 overflow-auto'>
+                        <div className='w-full h-[450px] overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingLocalities.map((item, index) => {
                                 return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
@@ -981,16 +981,13 @@ const Locality = () => {
                                             value={formValues.country}
                                             defaultValue="Select Country"
                                             onChange={e => {
-                                                // setselectedCountry(e.target.value);
-                                                // fetchStateData(e);
-                                                // console.log(e.target.value);
+
                                                 setCurrCountry(e.target.value);
                                                 fetchStateData(e.target.value);
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, country: e.target.value }
                                                     return newData;
                                                 })
-                                                // fetchStateData(res);
                                             }}
                                         >
                                             <option value="none" hidden={true}>Select a Country</option>
