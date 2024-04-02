@@ -16,6 +16,7 @@ import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
+import Add from "../../../assets/add.png";
 import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
 import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
 import BankDetails from "./ManageProjectInfoForm/BankDetails";
@@ -34,24 +35,24 @@ const ManageProjectInfo = () => {
     const [selectedDialogue, setSelectedDialogue] = useState(1);
     const selectFirst = () => {
         setSelectedDialogue(1);
-     }
-     const selectSecond = () => {
-         setSelectedDialogue(2);
-     }
-     const selectThird = () => {
-         setSelectedDialogue(3);
-     }
-     const selectFourth = () => {
-         setSelectedDialogue(4);
-     }
-     const selectFifth = () => {
-         setSelectedDialogue(5);
-     }
+    }
+    const selectSecond = () => {
+        setSelectedDialogue(2);
+    }
+    const selectThird = () => {
+        setSelectedDialogue(3);
+    }
+    const selectFourth = () => {
+        setSelectedDialogue(4);
+    }
+    const selectFifth = () => {
+        setSelectedDialogue(5);
+    }
     const fetchData = async () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"],
+            "rows": ["builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -74,7 +75,7 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted"],
+            "rows": ["id", "buildername", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -96,8 +97,8 @@ const ManageProjectInfo = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted"
-        ],
+            "rows": ["id", "buildername", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted"
+            ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -376,8 +377,11 @@ const ManageProjectInfo = () => {
 
                                 <div>
                                     {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New Project +
+                                    <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                                        <div className="flex items-center justify-center gap-4">
+                                            Add New Project
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        </div>
                                     </button>
                                 </div>
                             </div>
@@ -385,197 +389,203 @@ const ManageProjectInfo = () => {
                         </div>
                         <div className='h-12 w-full bg-white'>
                             <div className='w-full h-12 bg-white flex justify-between'>
-                                <div className='w-[4.33%] flex'>
-                                    <div className='p-2'>
+                                <div className="w-[85%] flex">
+                                    <div className='w-[4%] flex'>
 
                                     </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                    <div className='w-[12%]  flex p-3'>
+                                        <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[14%]  flex p-3'>
+                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex p-3'>
+                                    <div className="w-[87%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex p-3'>
+                                    <div className="w-[71%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
+                                <div className="w-[15%] flex p-3">
+                                    <div className='w-1/2  flex'>
+                                    <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
+                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[12.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2'>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[8.33%]  flex'>
-                                    <div className='p-2 '>
-                                        <input className="w-14 bg-[#EBEBEB]" />
-                                        <button className='p-1'><img src={Filter} className='h-[17px] w-[17px]' /></button>
-                                    </div>
-                                </div>
-                                <div className='w-[4.33%]  flex'>
-                                    <div className='p-2'>
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6'>
+                    <div className='w-full h-[400px] bg-white px-6  text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[3%] flex'>
-                                <div className='p-3'>
-                                    <p>Sr.</p>
+                            <div className="w-[85%] flex">
+                                <div className='w-[4%] flex'>
+                                    <div className='p-3'>
+                                        <p>Sr.</p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Project Name <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Builder Name <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Suburb <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[14%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Other details/issues </p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Mail Group </p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Subscribed email </p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Rules <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Tenet <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[11%]  flex'>
-                                <div className='p-3'>
-                                    <p>Project Name </p>
+                            <div className="w-[15%] flex">
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>ID</p>
+                                    </div>
+                                </div>
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>Edit</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[11%]  flex'>
-                                <div className='p-3'>
-                                    <p>Builder Name</p>
-                                </div>
-                            </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p>Suburb</p>
-                                </div>
-                            </div>
-                            <div className='w-[14.4%]  flex'>
-                                <div className='p-3'>
-                                    <p>Other details/issues</p>
-                                </div>
-                            </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p>Mail Group</p>
-                                </div>
-                            </div>
-                            <div className='w-[12.6%]  flex'>
-                                <div className='p-3'>
-                                    <p>Subscribed email</p>
-                                </div>
-                            </div>
-                            <div className='w-[8%]  flex'>
-                                <div className='p-3'>
-                                    <p>Rules</p>
-                                </div>
-                            </div>
-                            <div className='w-[8%]  flex'>
-                                <div className='p-3'>
-                                    <p>Tenet</p>
-                                </div>
-                            </div>
-                            <div className='w-[4%]  flex'>
-                                <div className='p-3'>
-                                    <p>ID</p>
-                                </div>
-                            </div>
-                            <div className='w-[8%]  flex'>
-                                <div className='p-3'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
+
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-80 overflow-auto'>
                             {/* we map our items here */}
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingProjectInfo.map((item, index) => {
-                                return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
-                                    <div className='w-[3%] flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{index + 1}</p>
+                                return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
+                                    <div className="w-[85%] flex min-h-0">
+                                        <div className='w-[4%] flex  overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{index + 1}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.projectname}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.buildername}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.suburb}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[14%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.otherdetails}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.mailgroup1}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[10%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p>{item.rules}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[12%]  flex overflow-hidden'>
+                                            <div className='p-3'>
+                                                <p></p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.projectname}</p>
+                                    <div className="w-[15%] flex">
+                                        <div className='w-1/2  flex overflow-hidden'>
+                                            <div className='p-3 ml-1'>
+                                                <p>{item.id}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
+                                            <img className=' w-5 h-5' src={Edit} alt="edit" />
+                                            <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.buildername}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.suburb}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[14.4%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.otherdetails}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.mailgroup1}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12.6%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.rules}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p></p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[4%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.id}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8%]  flex overflow-hidden items-center space-x-2 '>
-                                        <img className=' w-5 h-5' src={Edit} alt="edit" />
-                                        <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
-                                    </div>
+
                                 </div>
                             })}
                         </div>
@@ -657,8 +667,8 @@ const ManageProjectInfo = () => {
             <Modal open={isStateDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
-                className='flex justify-center items-center' 
-                >
+                className='flex justify-center items-center'
+            >
                 <>
                     <div className='flex justify-center'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
@@ -681,21 +691,21 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectThird}><div>Bank details</div></button>
                                 </div>
                                 <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
-                                    <button  onClick={selectFourth}><div>Contacts</div></button>
+                                    <button onClick={selectFourth}><div>Contacts</div></button>
                                 </div>
                                 <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                                {selectedDialogue == 1 && <ProjectInformation />}
-                                {selectedDialogue == 2 && <ProjectDetails />}
-                                {selectedDialogue == 3 && <BankDetails />}
-                                {selectedDialogue == 4 && <Contact />}
-                                {selectedDialogue == 5 && <Photos />}
-                                <div className="my-8 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' >Save</button>
-                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                                </div>
+                            {selectedDialogue == 1 && <ProjectInformation />}
+                            {selectedDialogue == 2 && <ProjectDetails />}
+                            {selectedDialogue == 3 && <BankDetails />}
+                            {selectedDialogue == 4 && <Contact />}
+                            {selectedDialogue == 5 && <Photos />}
+                            <div className="my-8 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' >Save</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </>

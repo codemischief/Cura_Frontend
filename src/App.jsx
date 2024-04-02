@@ -23,6 +23,7 @@ import Banks from './Screens/Research/Banks/Banks'
 import Friends from './Screens/Research/Friends/Friends';
 import Payments from './Screens/Manage/Payments/Payments';
 import RequireAuth from './context/RequireAuth';
+import ManageClientInfo from './Screens/Manage/ManageClientInfo/ManageClientInfo';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
@@ -85,6 +86,7 @@ const App = () => {
                     <Route path="/reasearch/employer" element={<Employer />}/>
                     <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
                     <Route path="/manage/bankstatement" element={<ManageBankStatement />}/>
+                    <Route path="/manage/manageclientinfo" element={<ManageClientInfo />}/>
                     <Route path="admin/managebuilder/:buildername" element={<ManageBuilderProject/>}/>
                {/* </Route>  */}
 
