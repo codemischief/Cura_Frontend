@@ -29,6 +29,7 @@ const ManageClientInfo = () => {
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
+    const [existingClientInfo,setExistingClientInfo] = useState([])
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -67,6 +68,7 @@ const ManageClientInfo = () => {
     const [EmployeeNameInput, setEmployeeNameInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idInput, setIdInput] = useState("");
+    const [sortField,setSortField] = useState("id")
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -174,71 +176,178 @@ const ManageClientInfo = () => {
             setAllLOB(result.data);
         }
     }
-    const [sortField, setSortField] = useState("id")
+    // const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        // console.log('ugm')
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "firstname",
+              "middlename",
+              "lastname",
+              "salutation",
+              "clienttype",
+              "clienttypename",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "homephone",
+              "workphone",
+              "mobilephone",
+              "email1",
+              "email2",
+              "employername",
+              "comments",
+              "photo",
+              "onlineaccreated",
+              "localcontact1name",
+              "localcontact1address",
+              "localcontact1details",
+              "localcontact2name",
+              "localcontact2address",
+              "localcontact2details",
+              "includeinmailinglist",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "entityid",
+              "tenantof"
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "pg_no": 1,
+            "pg_size": 15
+          };
+        const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientInfo(result.client_info);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        setCurrentPage(pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "firstname",
+              "middlename",
+              "lastname",
+              "salutation",
+              "clienttype",
+              "clienttypename",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "homephone",
+              "workphone",
+              "mobilephone",
+              "email1",
+              "email2",
+              "employername",
+              "comments",
+              "photo",
+              "onlineaccreated",
+              "localcontact1name",
+              "localcontact1address",
+              "localcontact1details",
+              "localcontact2name",
+              "localcontact2address",
+              "localcontact2details",
+              "includeinmailinglist",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "entityid",
+              "tenantof"
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "pg_size": Number(currentPages)
+          };
+        const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientInfo(result.client_info);
         setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
+        // console.log(searchInput);
+        setCurrentPages(quantity)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "firstname",
+              "middlename",
+              "lastname",
+              "salutation",
+              "clienttype",
+              "clienttypename",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "homephone",
+              "workphone",
+              "mobilephone",
+              "email1",
+              "email2",
+              "employername",
+              "comments",
+              "photo",
+              "onlineaccreated",
+              "localcontact1name",
+              "localcontact1address",
+              "localcontact1details",
+              "localcontact2name",
+              "localcontact2address",
+              "localcontact2details",
+              "includeinmailinglist",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "entityid",
+              "tenantof"
+            ],
             "filters": [],
             "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "order": field ? "asc" : "desc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "pg_size": Number(quantity)
+          };
+        const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientInfo(result.client_info);
         setPageLoading(false);
     }
     useEffect(() => {
@@ -248,7 +357,6 @@ const ManageClientInfo = () => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
-
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setClientNameFilter(false);
@@ -1015,7 +1123,7 @@ const ManageClientInfo = () => {
 
                     <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                            <div className="w-[85%] flex">
+                        <div className="w-[85%] flex">
                                 <div className='w-[3%] flex'>
                                     <div className='p-3'>
                                         <p>Sr.</p>
@@ -1058,7 +1166,7 @@ const ManageClientInfo = () => {
                                 </div>
                                 <div className='w-[13%]  flex'>
                                     <div className='p-3'>
-                                        <p>Employee name <span className="font-extrabold">↑↓</span></p>
+                                        <p>Employer name <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
                                 <div className='w-[6%]  flex'>
@@ -1086,82 +1194,86 @@ const ManageClientInfo = () => {
                             </div>
 
                         </div>
-                        <div className='w-full h-80 overflow-auto'>
+                        <div className='w-full h-[450px] overflow-auto'>
 
-                            {/* we map our items here */}
-                            {/* 
+                            
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingEmployees.map((item, index) => {
+                            {!pageLoading && existingClientInfo.map((item, index) => {
                                 return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className="w-[85%] flex">
-                                        <div className='w-[3%] flex'>
-                                            <div className='p-3'>
-                                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.employeename} </p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[13%]  flex overflow-hidden'>
-                                            <div className='p-3 '>
-                                                <p >{item.employeeid}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.phoneno}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.email}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.roleid}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-[3px]'>
-                                                <p>{item.panno}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[14%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-1'>
-                                                <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[17%]  flex  overflow-hidden'>
-                                            <div className='p-3 ml-1'>
-                                                <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-1 flex items-center space-x-2'>
-                                                {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                    <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                    <p> inactive</p></>}
-                                            </div>
-                                        </div>
+                                <div className='w-[3%] flex'>
+                                    <div className='p-3'>
+                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                     </div>
-                                    <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex overflow-hidden'>
-                                        <div className='p-3 ml-[6px]'>
-                                            <p>{item.id}</p>
-                                        </div>
+                                </div>
+                                <div className='w-[12%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.firstname + " " + item.middlename + " " + item.lastname} </p>
                                     </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => deleteEmployee(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p> {item.clienttype}</p>
                                     </div>
+                                </div>
+                                <div className='w-[9%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.tenantof} </p>
                                     </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.country}</p>
+                                    </div>
+                                </div>
+                                <div className='w-[7%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.city}</p>
+                                    </div>
+                                </div>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.mobilephone}</p>
+                                    </div>
+                                </div>
+                                <div className='w-[14%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.email1 || item.email2}</p>
+                                    </div>
+                                </div>
+                                <div className='w-[13%]  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.employername}</p>
+                                    </div>
+                                </div>
+                                <div className='w-[6%]  flex'>
+                                    <div className='p-3'>
+
+                                    </div>
+                                </div>
+                                <div className='w-[6%]  flex'>
+                                    <div className='p-3'>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-[15%] flex">
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3'>
+                                        <p>{item.id}</p>
+                                    </div>
+                                </div>
+                                <div className='w-1/2  flex'>
+                                    <div className='p-3 flex space-x-2'>
+                                           <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {}} />
+                                    </div>
+                                </div>
+                            </div>
                                     
                                 </div>
                             })}
-                             */}
+                             
 
                         </div>
                     </div>
