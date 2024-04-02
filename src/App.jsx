@@ -24,6 +24,7 @@ import Friends from './Screens/Research/Friends/Friends';
 import Payments from './Screens/Manage/Payments/Payments';
 import RequireAuth from './context/RequireAuth';
 import ManageClientInfo from './Screens/Manage/ManageClientInfo/ManageClientInfo';
+import ManageClientProperty from './Screens/Manage/ManageClientProperty/ManageClientProperty';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
@@ -87,6 +88,7 @@ const App = () => {
                     <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
                     <Route path="/manage/bankstatement" element={<ManageBankStatement />}/>
                     <Route path="/manage/manageclientinfo" element={<ManageClientInfo />}/>
+                    <Route path="/manage/manageclientproperty" element={<ManageClientProperty />}/>
                     <Route path="admin/managebuilder/:buildername" element={<ManageBuilderProject/>}/>
                {/* </Route>  */}
 

@@ -11,11 +11,10 @@ import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
-import ClientInformation from "./Forms/ClientInformation"
-import ClientPortal from "./Forms/ClientPortal";
-import BankDetails from "./Forms/BankDetails";
-import LegalInformation from "./Forms/LegalInformation"
-import POADetails from "./Forms/POADetails"
+import ProjectInformation from "./Forms/ProjectInformation"
+import Photos from "./Forms/Photos";
+import POADetails from "./Forms/POADetails";
+import OwnerDetails from "./Forms/OwnerDetails"
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
@@ -23,7 +22,7 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
-const ManageClientInfo = () => {
+const ManageClientProperty = () => {
 
     const menuRef = useRef();
     // we have the module here
@@ -341,10 +340,6 @@ const ManageClientInfo = () => {
         setSelectedDialogue(4);
     }
 
-    const selectFifth = () => {
-        setSelectedDialogue(5);
-    }
-
     const initialValues = {
         employeeName: "",
         panNo: "",
@@ -660,8 +655,8 @@ const ManageClientInfo = () => {
                                 </div>
 
                                 <div className='flex-col'>
-                                    <h1 className='text-[18px]'>Manage Client</h1>
-                                    <p className='text-[14px]'>Manage &gt; Manage Client</p>
+                                    <h1 className='text-[18px]'>Manage Client Property</h1>
+                                    <p className='text-[14px]'>Manage &gt; Manage Client property</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -704,8 +699,8 @@ const ManageClientInfo = () => {
                                             {/* <p>Sr.</p> */}
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                        <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <div className='w-[10%]  flex p-3'>
+                                        <div className="w-[87%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setClientNameInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                         </div>
@@ -770,9 +765,9 @@ const ManageClientInfo = () => {
                                         </div>}
                                     </div>
 
-                                    <div className='w-[9%]  flex p-3'>
+                                    <div className='w-[8%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-11 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setTenentOfInput(e.target.value)} />
+                                            <input className="w-9 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setTenentOfInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {tenentOfFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -836,8 +831,8 @@ const ManageClientInfo = () => {
                                         </div>}
                                     </div>
 
-                                    <div className='w-[7%]  flex p-3'>
-                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <div className='w-[9%]  flex p-3'>
+                                        <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-7 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setCityInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                         </div>
@@ -869,9 +864,9 @@ const ManageClientInfo = () => {
                                         </div>}
                                     </div>
 
-                                    <div className='w-[10%]  flex p-3'>
-                                        <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <div className='w-[17%]  flex p-3'>
+                                        <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPhoneInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -902,8 +897,8 @@ const ManageClientInfo = () => {
                                         </div>}
                                     </div>
 
-                                    <div className='w-[14%]  flex p-3'>
-                                        <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <div className='w-[17%]  flex p-3'>
+                                        <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                             <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmailInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
                                         </div>
@@ -934,40 +929,6 @@ const ManageClientInfo = () => {
                                             </div>
                                         </div>}
                                     </div>
-
-                                    <div className='w-[13%]  flex p-3'>
-                                        <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmployeeNameInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployeeNameFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {employeeNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                                <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                                <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>}
-                                    </div>
-
                                 </div>
                                 <div className="w-[15%] flex">
                                     <div className='w-1/2  flex p-3'>
@@ -1014,59 +975,62 @@ const ManageClientInfo = () => {
                     </div>
 
                     <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                        <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                             <div className="w-[85%] flex">
                                 <div className='w-[3%] flex'>
-                                    <div className='p-3'>
+                                    <div className='px-3 py-5'>
                                         <p>Sr.</p>
                                     </div>
                                 </div>
-                                <div className='w-[12%]  flex'>
+                                <div className='w-[10%]  flex'>
+                                    <div className='p-3 '>
+                                        <p>Client  </p>
+                                        <p>Name</p>
+                                    </div>
+                                    <div className="font-extrabold py-5">↑↓</div>
+                                </div>
+                                <div className='w-[10%]  flex'>
                                     <div className='p-3'>
-                                        <p>Client Name <span className="font-extrabold">↑↓</span></p>
+                                        <p>Property</p>
+                                        <p>Suburb</p>                         
+                                    </div>
+                                    <div className="font-extrabold py-5">↑↓</div>
+                                </div>
+                                <div className='w-[8%]  flex'>
+                                    <div className='p-3'>
+                                        <p>Property City </p>
                                     </div>
                                 </div>
                                 <div className='w-[10%]  flex'>
                                     <div className='p-3'>
-                                        <p>Client Type <span className="font-extrabold">↑↓</span></p>
+                                        <p>Property  </p>
+                                        <p>Type</p>
                                     </div>
+                                    <div className="font-extrabold py-5">↑↓</div>
                                 </div>
                                 <div className='w-[9%]  flex'>
                                     <div className='p-3'>
-                                        <p>Tenent of </p>
+                                        <p>Property</p>
+                                        <p>Status</p>
+                                    </div>
+                                    <div className="font-extrabold py-5">↑↓</div>
+                                </div>
+                                <div className='w-[17%]  flex'>
+                                    <div className='px-3 py-5'>
+                                        <p>Property Description <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Country <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[17%]  flex'>
+                                    <div className='px-3 py-5'>
+                                        <p>Society/Property Name <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
-                                <div className='w-[7%]  flex'>
-                                    <div className='p-3'>
-                                        <p>City <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Phone <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[14%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Email <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[13%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Employee name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[6%]  flex'>
+                                <div className='w-[8%]  flex'>
                                     <div className='p-3'>
 
                                     </div>
                                 </div>
-                                <div className='w-[6%]  flex'>
+                                <div className='w-[8%]  flex'>
                                     <div className='p-3'>
 
                                     </div>
@@ -1074,12 +1038,12 @@ const ManageClientInfo = () => {
                             </div>
                             <div className="w-[15%] flex">
                                 <div className='w-1/2  flex'>
-                                    <div className='p-3'>
+                                    <div className='px-3 py-5'>
                                         <p>ID <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
                                 <div className='w-1/2  flex'>
-                                    <div className='p-3'>
+                                    <div className='px-3 py-5'>
                                         <p>Edit</p>
                                     </div>
                                 </div>
@@ -1257,27 +1221,23 @@ const ManageClientInfo = () => {
 
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
                             <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFirst}>
-                                <div>Client Information</div>
+                                <div>Project Information</div>
                             </div>
                             <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectSecond}>
-                                <div>Client portal</div>
+                                <div>Photos</div>
                             </div>
                             <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectThird}>
-                                <div>Bank Details</div>
+                                <div>POA Details</div>
                             </div>
                             <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectForth}>
-                                <div>Legal Information</div>
-                            </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFifth}>
-                                <div>POA details</div>
+                                <div>Owner Details</div>
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation  />}
-                        {selectedDialog == 2 && <ClientPortal />}
-                        {selectedDialog == 3 && <BankDetails />}
-                        {selectedDialog == 4 && <LegalInformation />}
-                        {selectedDialog == 5 && <POADetails />}
+                        {selectedDialog == 1 && <ProjectInformation  />}
+                        {selectedDialog == 2 && <Photos />}
+                        {selectedDialog == 3 && <POADetails />}
+                        {selectedDialog == 4 && <OwnerDetails />}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>
@@ -1291,4 +1251,4 @@ const ManageClientInfo = () => {
     )
 }
 
-export default ManageClientInfo;
+export default ManageClientProperty;
