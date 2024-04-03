@@ -144,7 +144,7 @@ const Payments = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "entityid",
+                "entity",
                 "officeid",
                 "tds",
                 "professiontax",
@@ -184,7 +184,7 @@ const Payments = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "entityid",
+                "entity",
                 "officeid",
                 "tds",
                 "professiontax",
@@ -223,7 +223,7 @@ const Payments = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "entityid",
+                "entity",
                 "officeid",
                 "tds",
                 "professiontax",
@@ -566,7 +566,7 @@ const Payments = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "entityid",
+                "entity",
                 "officeid",
                 "tds",
                 "professiontax",
@@ -605,7 +605,7 @@ const Payments = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "entityid",
+                "entity",
                 "officeid",
                 "tds",
                 "professiontax",
@@ -1092,7 +1092,7 @@ const Payments = () => {
                                             <p>{item.amount}</p>
                                         </div>
                                         <div className='w-[10%] h-[50%] px-4 py-2 ml-[8px]'>
-                                            <p>{item.paidon}</p>
+                                            <p>{item.paidon.split('T')[0]}</p>
                                         </div>
                                         <div className='w-[14%] h-[50%] px-4 py-2 ml-[10px]'>
                                             <p>{item.paymentmode}</p>
@@ -1104,7 +1104,7 @@ const Payments = () => {
                                             <p>{item.paymentstatus}</p>
                                         </div>
                                         <div className='w-[10%] h-[50%] pl-6 pr-4 py-2'>
-                                            <p>{item.entityid}</p>
+                                            <p>{item.entity}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
