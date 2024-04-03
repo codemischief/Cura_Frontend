@@ -1024,7 +1024,7 @@ const ManageEmployees = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-3/4 bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                             <div className="w-[85%] flex">
                                 <div className='w-[3%] flex'>
@@ -1248,7 +1248,7 @@ const ManageEmployees = () => {
             >
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Add New Employee</div>
                             </div>

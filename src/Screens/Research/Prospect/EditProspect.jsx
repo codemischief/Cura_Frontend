@@ -101,6 +101,8 @@ const EditProspect = (props) => {
         suburb: props.item.suburb,
         propertyLocation: props.item.propertylocation,
         possibleServices: props.item.possibleservices,
+        email : props.item.email,
+        phoneNumber : props.item.phoneNumber
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -133,68 +135,20 @@ const EditProspect = (props) => {
                 return  {...existing,country: ""}
              })
         }
-        if(!formValues.state) {
-            setFormErrors((existing) => {
-               return  {...existing,state: "Enter State Name"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return  {...existing,state: ""}
-             })
-        }
-        if(!formValues.city) {
-            setFormErrors((existing) => {
-               return  {...existing,city: "Enter City Name"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return  {...existing,city: ""}
-             })
-        }
-        if(!formValues.suburb) {
-            setFormErrors((existing) => {
-               return  {...existing,suburb: "Enter Suburb Name"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return  {...existing,suburb: ""}
-             })
-        }
-        if(!formValues.possibleServices) {
-            setFormErrors((existing) => {
-               return  {...existing,possibleServices: "Enter Suburb Name"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return  {...existing,possibleServices: ""}
-             })
-        }
-        if(!formValues.propertyLocation) {
-            setFormErrors((existing) => {
-               return  {...existing,propertyLocation: "Enter Suburb Name"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return  {...existing,propertyLocation: ""}
-             })
-        }
         return res;
     };
 
     return (
         <Modal open={props.isOpen}
             fullWidth={true}
-            maxWidth={'md'} >
-
-            <div className='flex justify-center mt-[20px]'>
-                <div className="w-auto h-auto bg-white rounded-lg">
-                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                        <div className="mr-[410px] ml-[410px]">
+            maxWidth={'md'} 
+            className='flex justify-center items-center'
+            >
+                
+            <div className='flex justify-center items-center'>
+                <div className="w-[778px] h-auto bg-white rounded-lg">
+                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className="mr-[300px] ml-[300px]">
                             <div className="text-[16px]">Edit Prospect</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
@@ -204,15 +158,15 @@ const EditProspect = (props) => {
                     {/* <form > */}
                         {!pageLoading && <div className="h-auto w-full mt-[5px] ">
                             <div className="flex gap-[48px] justify-center items-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className=" space-y-[10px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Person name <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="personname" value={formValues.personname} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.personname}</div>
+                                        <div className="text-[13px]">Person name <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="personname" value={formValues.personname} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.personname}</div>
                                     </div>
                                     <div className="">
-                                            <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="country"
                                                 value={formValues.country}
                                                 defaultValue="Select Country"
@@ -236,11 +190,11 @@ const EditProspect = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">State Name<label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="country"
                                                 value={formValues.state}
                                                 defaultValue="Select State"
@@ -266,11 +220,11 @@ const EditProspect = (props) => {
                                                     }
                                                  })}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">City Name <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="country"
                                                 value={formValues.city}
                                                 defaultValue="Select State"
@@ -296,22 +250,34 @@ const EditProspect = (props) => {
                                                     }
                                                  })}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                     <div className="">
-                                        <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                        <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Property Location <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
+                                        <div className="text-[13px]">Property Location <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Possible Services <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.possibleServices}</div>
+                                        <div className="text-[13px]">Possible Services <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.possibleServices}</div>
+                                    </div>
+                                </div>
+                                <div className=" space-y-[10px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[13px]">Email </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                        
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Phone Number </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phoneNumber" value={formValues.phoneNumber} onChange={handleChange} />
+                                        
                                     </div>
                                 </div>
                             </div>

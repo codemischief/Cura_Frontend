@@ -166,7 +166,9 @@ const Prospect = () => {
         city: "",
         suburb: "",
         propertyLocation: "",
-        possibleServices: ""
+        possibleServices: "",
+        email:"",
+        phoneNumber:""
     };
 
     const [formValues, setFormValues] = useState(initialValues);
@@ -195,56 +197,6 @@ const Prospect = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, country: "" }
-            })
-        }
-        if (!formValues.state) {
-            setFormErrors((existing) => {
-                return { ...existing, state: "Enter State Name" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, state: "" }
-            })
-        }
-        if (!formValues.city) {
-            setFormErrors((existing) => {
-                return { ...existing, city: "Enter City Name" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, city: "" }
-            })
-        }
-        if (!formValues.suburb) {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "Enter Suburb Name" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "" }
-            })
-        }
-        if (!formValues.possibleServices) {
-            setFormErrors((existing) => {
-                return { ...existing, possibleServices: "Enter Possible Services" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, possibleServices: "" }
-            })
-        }
-        if (!formValues.propertyLocation) {
-            setFormErrors((existing) => {
-                return { ...existing, propertyLocation: "Enter Property Location" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, propertyLocation: "" }
             })
         }
         return res;
@@ -617,7 +569,7 @@ const Prospect = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-3/4 bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
@@ -757,11 +709,12 @@ const Prospect = () => {
             <Modal open={isProspectDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
+                className='flex justify-center items-center'
             >
-                <div className='flex justify-center mt-[10px]'>
-                    <div className="w-6/7  h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
+                <div className='flex justify-center items-center'>
+                    <div className="w-[778px]  h-auto bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[300px] ml-[300px]">
                                 <div className="text-[16px]">New Prospect</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
@@ -771,15 +724,15 @@ const Prospect = () => {
                         {/* <form > */}
                         <div className="h-auto w-full mt-[5px] ">
                             <div className="flex gap-[48px] justify-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className=" space-y-[10px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Person Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="personName" value={formValues.personName} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.personName}</div>
+                                        <div className="text-[13px]">Person Name<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="personName" value={formValues.personName} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.personName}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                        <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="country"
                                             value={formValues.country}
                                             defaultValue="Select Country"
@@ -805,11 +758,11 @@ const Prospect = () => {
                                             ))}
 
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                        <div className="text-[13px]">State Name</div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="country"
                                             value={formValues.state}
                                             defaultValue="Select State"
@@ -830,11 +783,11 @@ const Prospect = () => {
 
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">City Name <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                        <div className="text-[13px]">City Name </div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="country"
                                             value={formValues.city}
                                             defaultValue="Select State"
@@ -855,22 +808,34 @@ const Prospect = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                        <div className="text-[13px]">Suburb </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Property Location <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
+                                        <div className="text-[13px]">Property Location </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="propertyLocation" value={formValues.propertyLocation} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.propertyLocation}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Possible Services <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.possibleServices}</div>
+                                        <div className="text-[13px]">Possible Services </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="possibleServices" value={formValues.possibleServices} onChange={handleChange} />
+                                        
+                                    </div>
+                                </div>
+                                <div className=" space-y-[10px] py-[20px] px-[10px]">
+                                    <div className="">
+                                        <div className="text-[13px]">Email </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                        
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Phone Number </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phoneNumber" value={formValues.phoneNumber} onChange={handleChange} />
+                                        
                                     </div>
                                 </div>
                             </div>
