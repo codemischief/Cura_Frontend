@@ -27,9 +27,9 @@ const EditLocalityModal = (props) => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[150px]'>
-                    <div className="w-6/7  h-[400px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
+                    <div className="w-[700px]  h-auto bg-white rounded-lg mb-3">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[200px] ml-[200px]">
                                 <div className="text-[16px]">Update Locality Name</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
@@ -40,34 +40,34 @@ const EditLocalityModal = (props) => {
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
+                                        <div className="mb-4">
                                             <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                            <div className="w-[230px] hy-[10px]  rounded-sm">
+                                            <div className="w-[230px] hy-[10px]  rounded-sm px-2 py-[2px] text-[14px]">
                                                  {props.item.country}
                                             </div>
                                         </div>
-                                        <div className="">
+                                        <div className="mb-4">
                                         <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                            <div className="w-[230px] hy-[10px]  rounded-sm">
+                                            <div className="w-[230px] hy-[10px]  rounded-sm px-2 py-[2px] text-[14px]">
                                                {props.item.state}
                                             </div>
                                         </div>
-                                        <div className="">
+                                        <div className="mb-4">
                                             <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
-                                            <div className="w-[230px] hy-[10px]  rounded-sm">
+                                            <div className="w-[230px] hy-[10px]  rounded-sm px-2 py-[2px] text-[14px]">
                                                {props.item.city}
                                             </div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={inputField} onChange={(e) => setInputField(e.target.value)} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={inputField} onChange={(e) => setInputField(e.target.value)} />
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="mt-[10px] flex justify-center items-center gap-[10px]">
+                            <div className="mt-[10px] flex justify-center items-center gap-[10px] mb-3">
 
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleUpdate}>Update</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>

@@ -334,9 +334,9 @@ const LOB = () => {
         setCurrItem(item)
         setDeleteLobModal(true);
     }
-    const [deleteLobModal,setDeleteLobModal] = useState(false);
-    const [idFilter,setIdFilter] = useState(false)
-    const [idFilterInput,setIdFilterInput] = useState("");
+    const [deleteLobModal, setDeleteLobModal] = useState(false);
+    const [idFilter, setIdFilter] = useState(false)
+    const [idFilterInput, setIdFilterInput] = useState("");
     return (
         <div className=''>
             <Navbar />
@@ -345,7 +345,7 @@ const LOB = () => {
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
-            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)}/>}
+            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -383,8 +383,8 @@ const LOB = () => {
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
                                         <div className="flex items-center justify-center gap-4">
-                                        Add New LOB 
-                                        <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                            Add New LOB
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                         </div>
                                     </button>
                                 </div>
@@ -432,44 +432,44 @@ const LOB = () => {
                             </div>
                             <div className='w-1/6 p-3 '>
                                 <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}/>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
                                 {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                        <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                    </div>
+                                </div>}
                                 <div className='w-1/2 0 p-4'>
 
                                 </div>
@@ -605,10 +605,10 @@ const LOB = () => {
             <Modal open={isLobDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
-                className='flex justify-center items-center' 
-                >
+                className='flex justify-center items-center'
+            >
                 <div className='flex justify-center'>
-                    <div className="w-[778px]  h-[255px] bg-white rounded-lg">
+                    <div className="w-[778px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[290px] ml-[290px]">
                                 <div className="text-[16px]">New LOB</div>
@@ -617,25 +617,25 @@ const LOB = () => {
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <div className="space-y-16">
-                        <div className="h-auto w-full mt-[15px] ">
-                            <div className="flex gap-[48px] justify-center items-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                    <div className="">
-                                        <div className="text-[14px] text-[#505050]">LOB Name  <label className="text-red-500">*</label></div>
-                                        <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={lobName} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
+                        <div className="space-y-16 mb-3">
+                            <div className="h-auto w-full mt-[15px] ">
+                                <div className="flex gap-[48px] justify-center items-center">
+                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                        <div className="">
+                                            <div className="text-[14px] text-[#505050]">LOB Name  <label className="text-red-500">*</label></div>
+                                            <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={lobName} onChange={handleChange} />
+                                            <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="flex justify-center items-center gap-[10px] ">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addLob}>Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
                         </div>
 
-                        <div className="flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addLob}>Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-                        </div>
-                        
                     </div>
                 </div>
             </Modal>
