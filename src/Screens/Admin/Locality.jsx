@@ -186,7 +186,7 @@ const Locality = () => {
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterArray,
             "sort_by": [sortField],
-            "order": "asc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(number),
             "search_key": isSearchOn ? searchQuery : ""
@@ -334,7 +334,7 @@ const Locality = () => {
         console.log(value);
         setLobName(value);
     }
-    const [flag, setFlag] = useState(true);
+    const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
         setPageLoading(true);
         setIsSearchOn(true);
