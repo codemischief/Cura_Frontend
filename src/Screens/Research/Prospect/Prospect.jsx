@@ -38,6 +38,7 @@ const Prospect = () => {
     const [allCity, setAllCity] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
     const [searchInput, setSearchInput] = useState("");
+    const [sortField,setSortField] = useState("id");
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -101,8 +102,8 @@ const Prospect = () => {
             "user_id": 1234,
             "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
@@ -332,7 +333,7 @@ const Prospect = () => {
     const [possibleServicesFilter,setPossibleServicesFilter] = useState(false)
     const [possibleServicesFilterInput,setPossibleServicesFilterInput] = useState("");
     return (
-        <div>
+        <div >
             <Navbar />
             {isEditDialogue && <EditProspect isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}
                 fetchData={fetchData} openPrompt={openEditSuccess}/>}
@@ -340,8 +341,8 @@ const Prospect = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Prospect Created Successfully"/>}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesffuly"/>}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Prospect Deleted Succesffuly!"/>}
-            <div className='flex-col w-full h-full  bg-white'>
-                <div className='flex-col'>
+            <div className='flex-col w-full h-full bg-white'>
+                <div className='flex-col h-full '>
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
                         {/* the top section of the div */}
@@ -569,7 +570,7 @@ const Prospect = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[34rem] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[450px] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
@@ -600,7 +601,7 @@ const Prospect = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-4/5 overflow-y-auto overflow-x-hidden'>
+                        <div className='w-full h-[410px] overflow-y-auto overflow-x-hidden'>
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingProspect.map((item, index) => {
                                 return <div className='w-full h-10 ml-1 flex justify-between border-gray-400 border-b-[1px]'>
