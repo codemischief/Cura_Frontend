@@ -477,7 +477,9 @@ const LOB = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[34rem] px-6 text-[12px]'>
+
+                    <div className='w-full h-3/4  px-6 text-[12px]'>
+
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>

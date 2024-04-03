@@ -864,7 +864,7 @@ const Locality = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+                        <div className='w-full h-80 overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingLocalities.map((item, index) => {
                                 return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>

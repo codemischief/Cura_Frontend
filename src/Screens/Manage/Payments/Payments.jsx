@@ -1034,7 +1034,7 @@ const Payments = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+                    <div className='w-full h-3/4 bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
@@ -1074,7 +1074,7 @@ const Payments = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className=' w-full h-[450px] overflow-auto'>
+                        <div className=' w-full h-80 overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingPayments.map((item, index) => {
                                 return <div className='w-full min-h-8 h-auto  flex justify-between border-gray-400 border-b-[1px]'>
@@ -1202,8 +1202,8 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <div className=''>
-                    <div className="w-6/7  h-auto bg-white rounded-lg ">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                    <div className="w-[1100px]  h-auto bg-white rounded-lg ">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Contractual Payments </div>
                             </div>
@@ -1216,68 +1216,68 @@ const Payments = () => {
                             <div className="flex gap-[48px] justify-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px] text-[#787878]">Cura Office </div>
-                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-[11px] py-[1px] px-4 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        <div className="text-[13px] text-[#787878]">Cura Office </div>
+                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Payment To <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                        <div className="text-[13px]">Payment To <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentto}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Payment By <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        <div className="text-[13px]">Payment By <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentby}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Amount <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
+                                        <div className="text-[13px]">Amount <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Description </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                        <div className="text-[13px]">Description </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Payment For <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                        <div className="text-[13px]">Payment For <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
                                             {paymentFor.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
                                                 </option>
                                             ))}
                                         </select>
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
+                                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
                                     </div>
                                 </div>
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                        <div className="text-[13px]">Payment Mode <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
                                             {paymentMode.map(item => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
                                                 </option>
                                             ))}
                                         </select>
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
+                                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Entity <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} >
+                                        <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entity" value={formValues.entity} onChange={handleChange} >
                                             {allEntities.map(item => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
@@ -1287,30 +1287,30 @@ const Payments = () => {
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Paid On <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
+                                        <div className="text-[13px]">Paid On <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
                                         <div className="text-[12px] text-[#CD0000] ">{formErrors.paidon}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Month <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="month" value={formValues.month} onChange={handleChange} >
+                                        <div className="text-[13px]">Month <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
                                             {selectedMonth.map(item => (
                                                 <option key={item.id} value={item.month}>
                                                     {item.month}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.month}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.month}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">TDS <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.tds}</div>
+                                        <div className="text-[13px]">TDS <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Profession Tax <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.professiontax}</div>
+                                        <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.professiontax}</div>
                                     </div>
                                 </div>
                             </div>
