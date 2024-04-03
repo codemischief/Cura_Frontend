@@ -569,7 +569,7 @@ const Prospect = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-3/4 bg-white px-6 text-[12px]'>
+                    <div className='w-full h-[34rem] bg-white px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
@@ -600,7 +600,7 @@ const Prospect = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 overflow-y-auto overflow-x-hidden'>
+                        <div className='w-full h-4/5 overflow-y-auto overflow-x-hidden'>
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingProspect.map((item, index) => {
                                 return <div className='w-full h-10 ml-1 flex justify-between border-gray-400 border-b-[1px]'>
