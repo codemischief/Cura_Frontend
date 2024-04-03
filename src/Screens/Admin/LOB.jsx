@@ -347,7 +347,7 @@ const LOB = () => {
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
             <div className='flex-col w-full h-full '>
-                <div className='flex-col'>
+                <div className='flex-col h-full'>
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
                         {/* the top section of the div */}
@@ -477,7 +477,7 @@ const LOB = () => {
                         </div>
                     </div>
 
-                    <div className='w-full h-[400px]  px-6 text-[12px]'>
+                    <div className='w-full h-[34rem] px-6 text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -497,7 +497,7 @@ const LOB = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 overflow-auto'>
+                        <div className='w-full h-4/5 overflow-auto'>
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                             {!pageLoading && existingLOB.map((item, index) => {
                                 return <div className='w-full flex justify-between border-gray-400 border-b-[1px]'>
