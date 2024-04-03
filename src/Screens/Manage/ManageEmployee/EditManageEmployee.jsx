@@ -386,7 +386,7 @@ const EditManageEmployee = (props) => {
                         
                         {pageLoading  &&  <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress/><h1>Fetching Employee Data</h1></div>  }
                         {!pageLoading && <div className="h-auto w-full mt-[5px]">
-                                <div className="flex gap-[48px] justify-center items-center">
+                                <div className="flex gap-[48px] justify-center ">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[13px]">Employee Name<label className="text-red-500">*</label></div>
