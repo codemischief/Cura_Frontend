@@ -21,6 +21,7 @@ import Excel from "../../assets/excel.png"
 import EditLocalityModal from './Modals/EditLocalityModal';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 import DeleteLocalityModal from './Modals/DeleteLocalityModal';
+import FailureModal from '../../Components/modals/FailureModal';
 const Locality = () => {
     const menuRef = useRef();
     const [existingLocalities, setExistingLocalities] = useState([]);
@@ -40,6 +41,8 @@ const Locality = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+    const [failureModal,setFailureModal] = useState(false);
+    const [errorMessage,setErrorMessage] = useState("");
     const [filterArray, setFilterArray] = useState([["name", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
     const [sortField, setSortField] = useState("id");
     const initialValues = {
@@ -163,7 +166,7 @@ const Locality = () => {
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterArray,
             "sort_by": [sortField],
-            "order": "asc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
@@ -259,15 +262,28 @@ const Locality = () => {
         console.log(data);
         const response = await APIService.addLocality(data);
         const res = await response.json();
+        
         console.log(res);
         setIsLocalityDialogue(false);
-        openSuccess();
+        if(res.result == "success") {
+            openSuccess();
+        }else {
+            setErrorMessage(res.message)
+            openFailure();
+        }
+        
         fetchData();
     }
     const openSuccess = () => {
         setShowSuccess(true);
         setTimeout(function () {
             setShowSuccess(false);
+        }, 2000)
+    }
+    const openFailure = () => {
+        setFailureModal(true);
+        setTimeout(function () {
+            setFailureModal(false);
         }, 2000)
     }
     const openEditSuccess = () => {
@@ -588,6 +604,7 @@ const Locality = () => {
             <Navbar />
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} />}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
+            {failureModal && <FailureModal isOpen={failureModal} message={errorMessage}/>}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
             {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} />}
