@@ -53,6 +53,8 @@ const Country = () => {
     }, 2000)
   }
   const openFailureModal = () => {
+    // we have the error message hre
+
     setIsCountryDialogue(false);
     setShowFailure(true);
     setTimeout(function () {
@@ -164,11 +166,21 @@ const Country = () => {
   const addCountry = async () => {
     const data = { "user_id": userId ||  1234, "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
-    if (response.ok) {
+    const res = await response.json();
+    console.log(res)
+    // {
+    //   "result": "error",
+    //   "message": "Already Exists",
+    //   "user_id": 1234,
+    //   "role_id": 1,
+    //   "data": []
+    // }
+    if (res.result == "success") {
       setIsLoading(false);
       openSuccessModal();
     } else {
       setIsLoading(false);
+      setFailureMessage(res.message);
       openFailureModal();
     }
     fetchCountryData();
@@ -382,11 +394,12 @@ const Country = () => {
     })))
      setPageLoading(false)
   }
+  const [failureMessage,setFailureMessage] = useState("");
   return (
     <div className=''>
       <Navbar />
       <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
-      <FailureModal isOpen={showFailure} message="Error! Couldnt Add Country" />
+      <FailureModal isOpen={showFailure} message={failureMessage} />
       <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
       <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit}/>
       <div className='flex-col w-full h-full  bg-white'>
