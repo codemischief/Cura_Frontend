@@ -36,6 +36,7 @@ import Employer from './Screens/Research/Employer/Employer';
 import GovernmentDepartment from './Screens/Research/Government Department/GovernmentDepartment';
 import ManageBankStatement from './Screens/Manage/ManageBankStatement/ManageBankStatement';
 import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject';
+import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
 
 const App = () => {
   const ROLES = {
@@ -89,7 +90,8 @@ const App = () => {
                     <Route path="/manage/bankstatement" element={<ManageBankStatement />}/>
                     <Route path="/manage/manageclientinfo" element={<ManageClientInfo />}/>
                     <Route path="/manage/manageclientproperty" element={<ManageClientProperty />}/>
-                    <Route path="admin/managebuilder/:buildername" element={<ManageBuilderProject/>}/>
+                    <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
+                    <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                {/* </Route>  */}
 
 
