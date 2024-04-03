@@ -1237,7 +1237,7 @@ const ManageClientInfo = () => {
                                     </div>
                                 </div>
                                 <div className='w-[14%]  flex'>
-                                    <div className='p-3'>
+                                    <div className='p-3 overflow-hidden'>
                                         <p>{item.email1 || item.email2}</p>
                                     </div>
                                 </div>

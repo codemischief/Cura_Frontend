@@ -438,8 +438,8 @@ const Locality = () => {
     const [localityFilter, setLocalityFilter] = useState(false);
     const [localityFilterInput, setLocalityFilterInput] = useState("");
     const [localityFilterType, setLocalityFilterType] = useState("");
-    const [idFilter,setIdFilter] = useState(false)
-    const [idFilterInput,setidFilterInput] = useState("");
+    const [idFilter, setIdFilter] = useState(false)
+    const [idFilterInput, setidFilterInput] = useState("");
     //   const [filterArray,setFilterArray] = useState([["country","nofilter",""],["state","nofilter",""],["city","nofilter",""],["locality","nofilter",""]]);
     const handleFilter = (type, columnNo) => {
         const existing = filterArray;
@@ -577,10 +577,10 @@ const Locality = () => {
         }
         fetchData();
     }
-    const [showDeleteModal,setShowDeleteModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const handleDelete = (item) => {
-       setCurrItem(item)
-       setShowDeleteModal(true);
+        setCurrItem(item)
+        setShowDeleteModal(true);
 
     }
     return (
@@ -590,7 +590,7 @@ const Locality = () => {
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
-            {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem}/>}
+            {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} />}
             <div className='flex-col w-full h-full '>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -676,8 +676,8 @@ const Locality = () => {
                                 </div>
                                 <div className='w-[20%] p-3 ml-1'>
                                     <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -709,8 +709,8 @@ const Locality = () => {
 
                                 <div className='w-[20%] p-3 ml-1'>
                                     <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -741,8 +741,8 @@ const Locality = () => {
                                 </div>
                                 <div className='w-[20%] p-3 ml-[2px]'>
                                     <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
+                                        <button className='p-1' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {localityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -774,44 +774,44 @@ const Locality = () => {
                             </div>
                             <div className='w-1/6 p-3 '>
                                 <div className='w-[37%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}/>
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
                                 {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                        <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                    </div>
+                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                    </div>
+                                </div>}
                                 <div className='w-1/2 0 p-4'>
 
                                 </div>
@@ -958,119 +958,119 @@ const Locality = () => {
             <Modal open={isLocalityDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
-                className='flex justify-center items-center' 
-                >
-                <div className='flex justify-center bg-white'>
-                    <div className=" w-auto h-[450px] bg-white rounded-lg ">
+                className='flex justify-center items-center rounded-lg'
+            >
+                <div className='flex justify-center bg-white rounded-lg'>
+                    <div className=" w-[700px] h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[290px] ml-[290px]">
+                            <div className="mr-[250px] ml-[250px]">
                                 <div className="text-[16px]">Add New Locality</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        <div className="space-y-10">
-                        <div className="h-auto w-full py-4 ">
-                            <div className="flex gap-[48px] justify-center items-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                    <div className="mb-2">
-                                        <div className="text-[14px]">Select Country <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]"
-                                            name="country"
-                                            value={formValues.country}
-                                            defaultValue="Select Country"
-                                            onChange={e => {
+                        <div className="space-y-10 mb-3">
+                            <div className="h-auto w-full py-4 ">
+                                <div className="flex gap-[48px] justify-center items-center">
+                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                        <div className="mb-4">
+                                            <div className="text-[14px]">Select Country <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
+                                                name="country"
+                                                value={formValues.country}
+                                                defaultValue="Select Country"
+                                                onChange={e => {
 
-                                                setCurrCountry(e.target.value);
-                                                fetchStateData(e.target.value);
+                                                    setCurrCountry(e.target.value);
+                                                    fetchStateData(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, country: e.target.value }
+                                                        return newData;
+                                                    })
+                                                }}
+                                            >
+                                                <option value="none" hidden={true}>Select a Country</option>
+                                                {allCountry && allCountry.map(item => (
+                                                    <option value={item[0]} >
+                                                        {item[1]}
+                                                    </option>
+
+                                                ))}
+                                            </select>
+                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
+                                        </div>
+                                        <div className="mb-4">
+                                            <div className="text-[14px]">Select State <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
+                                                name="state"
+                                                value={formValues.state}
+                                                defaultValue="Select State"
+                                                // defaultValue={formValues.state}
+                                                onChange={e => {
+                                                    fetchCityData(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, state: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                <option value="none" hidden={true}>Select a State</option>
+                                                {allState.length > 0 && allState.map(item => (
+                                                    <option value={item[1]} >
+                                                        {item[1]}
+                                                    </option>
+
+                                                ))}
+                                            </select>
+                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
+                                        </div>
+                                        <div className="mb-4">
+                                            <div className="text-[14px]">Select City<label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
+                                                name="country"
+                                                value={formValues.city}
+                                                defaultValue="Select City"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+
+                                                        const newData = { ...existing, city: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                <option value="none" hidden={true}>Select a City</option>
+                                                {allCity && allCity.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.city}
+                                                    </option>
+
+                                                ))}
+                                            </select>
+                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.city}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={formValues.locality} onChange={(e) => {
+
                                                 setFormValues((existing) => {
-                                                    const newData = { ...existing, country: e.target.value }
+                                                    const newData = { ...existing, locality: e.target.value }
                                                     return newData;
                                                 })
-                                            }}
-                                        >
-                                            <option value="none" hidden={true}>Select a Country</option>
-                                            {allCountry && allCountry.map(item => (
-                                                <option value={item[0]} >
-                                                    {item[1]}
-                                                </option>
-
-                                            ))}
-                                        </select>
-                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Select State <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]"
-                                            name="state"
-                                            value={formValues.state}
-                                            defaultValue="Select State"
-                                            // defaultValue={formValues.state}
-                                            onChange={e => {
-                                                fetchCityData(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, state: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-                                            <option value="none" hidden={true}>Select a State</option>
-                                            {allState.length > 0 && allState.map(item => (
-                                                <option value={item[1]} >
-                                                    {item[1]}
-                                                </option>
-
-                                            ))}
-                                        </select>
-                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Select City<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]"
-                                            name="country"
-                                            value={formValues.city}
-                                            defaultValue="Select City"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-
-                                                    const newData = { ...existing, city: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-                                            <option value="none" hidden={true}>Select a City</option>
-                                            {allCity && allCity.map(item => (
-                                                <option value={item.id} >
-                                                    {item.city}
-                                                </option>
-
-                                            ))}
-                                        </select>
-                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.city}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-1 py-[2px] text-[11px]" type="text" name="empName" value={formValues.locality} onChange={(e) => {
-
-                                            setFormValues((existing) => {
-                                                const newData = { ...existing, locality: e.target.value }
-                                                return newData;
-                                            })
-                                        }} />
-                                        <div className="text-[11px] text-[#CD0000] ">{formErrors.locality}</div>
+                                            }} />
+                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.locality}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className=" flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addLocality}>Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
+                            <div className=" flex justify-center items-center gap-[10px] ">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addLocality}>Save</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
