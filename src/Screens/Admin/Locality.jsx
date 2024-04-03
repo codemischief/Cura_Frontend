@@ -166,7 +166,7 @@ const Locality = () => {
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
             "filters": filterArray,
             "sort_by": [sortField],
-            "order": "asc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
