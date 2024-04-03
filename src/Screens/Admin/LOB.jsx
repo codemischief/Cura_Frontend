@@ -146,14 +146,14 @@ const LOB = () => {
             "name": lobName,
         }
         const response = await APIService.addLob(data);
-        if (response.status) {
+        const res = await response.json()
+        console.log(res);
+        if (res.result == "success") {
             openSuccessModal();
         } else {
-            // we open the failure modal
             openFailureModal();
         }
         fetchData();
-        // setPageLoading(false);
     }
     const deleteLob = async (name) => {
         // we write delete lob logic here
