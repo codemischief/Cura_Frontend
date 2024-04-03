@@ -28,6 +28,7 @@ const ManageClientProperty = () => {
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
+    const [existingClientProperty,setExistingClientProperty] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -47,7 +48,6 @@ const ManageClientProperty = () => {
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
-
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [ClientNameInput, setClientNameInput] = useState("");
     const [ClientTypeFilter, setClientTypeFilter] = useState(false);
@@ -66,8 +66,6 @@ const ManageClientProperty = () => {
     const [EmployeeNameInput, setEmployeeNameInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idInput, setIdInput] = useState("");
-    // const [filterArray,setFilterArray] = useState([]);
-
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -176,69 +174,184 @@ const ManageClientProperty = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        // console.log('ugm')
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
+            ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 1,
+            "pg_size": 15
+          };
+        const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result)
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        // setExistingEmployees(result);
+        setExistingClientProperty(result);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        setCurrentPage(pageNumber);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
+            ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "sort_by": [],
+            "order": "asc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingEmployees(result);
-        setPageLoading(false);
+            "pg_size": Number(currentPages)
+          };
+          const response = await APIService.getClientProperty(data);
+          const temp = await response.json();
+          const result = temp.data;
+          console.log(result)
+          console.log(result);
+          const t = temp.total_count;
+          setTotalItems(t);
+          // setExistingEmployees(result);
+          setExistingClientProperty(result);
+          setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         console.log(searchInput);
+        setCurrentPages(quantity);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
+            ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingEmployees(result);
-        setPageLoading(false);
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": Number(pageNumber),
+            "pg_size": Number(quantity)
+          };
+          const response = await APIService.getClientProperty(data);
+          const temp = await response.json();
+          const result = temp.data;
+          console.log(result)
+          console.log(result);
+          const t = temp.total_count;
+          setTotalItems(t);
+          setExistingClientProperty(result);
+          setPageLoading(false);
     }
     useEffect(() => {
         fetchData();
@@ -247,7 +360,6 @@ const ManageClientProperty = () => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
-
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setClientNameFilter(false);
@@ -975,8 +1087,8 @@ const ManageClientProperty = () => {
                     </div>
 
                     <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                            <div className="w-[85%] flex">
+                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                        <div className="w-[85%] flex">
                                 <div className='w-[3%] flex'>
                                     <div className='px-3 py-5'>
                                         <p>Sr.</p>
@@ -1051,82 +1163,79 @@ const ManageClientProperty = () => {
 
                         </div>
                         <div className='w-full h-80 overflow-auto'>
-
-                            {/* we map our items here */}
-                            {/* 
-                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingEmployees.map((item, index) => {
-                                return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className="w-[85%] flex">
+                            {existingClientProperty.map((item,index) => {
+                                return  <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className="w-[85%] flex">
                                         <div className='w-[3%] flex'>
-                                            <div className='p-3'>
-                                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                            <div className='px-3 py-5'>
+                                                <p>{index+1}</p>
                                             </div>
                                         </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.employeename} </p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[13%]  flex overflow-hidden'>
+                                        <div className='w-[10%]  flex'>
                                             <div className='p-3 '>
-                                                <p >{item.employeeid}</p>
+                                                <p>Client  </p>
+                                                <p>Name</p>
                                             </div>
+                                            <div className="font-extrabold py-5">↑↓</div>
                                         </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
+                                        <div className='w-[10%]  flex'>
                                             <div className='p-3'>
-                                                <p>{item.phoneno}</p>
+                                                <p>{item.suburb}</p>    
                                             </div>
                                         </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
+                                        <div className='w-[8%]  flex'>
                                             <div className='p-3'>
-                                                <p>{item.email}</p>
+                                                <p>{item.city} </p>
                                             </div>
                                         </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
+                                        <div className='w-[10%]  flex'>
                                             <div className='p-3'>
-                                                <p>{item.roleid}</p>
+                                                <p>{item.propertytype}</p>
+                                            </div>
+                                           
+                                        </div>
+                                        <div className='w-[9%]  flex'>
+                                            <div className='p-3'>
+                                                <p>{item.propertystatus}</p>
+                                            </div>
+                                            <div className="font-extrabold py-5">↑↓</div>
+                                        </div>
+                                        <div className='w-[17%]  flex'>
+                                            <div className='px-3 py-5'>
+                                                <p>Property Description <span className="font-extrabold">↑↓</span></p>
                                             </div>
                                         </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-[3px]'>
-                                                <p>{item.panno}</p>
+                                        <div className='w-[17%]  flex'>
+                                            <div className='px-3 py-5'>
+                                                <p>Society/Property Name <span className="font-extrabold">↑↓</span></p>
                                             </div>
                                         </div>
-                                        <div className='w-[14%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-1'>
-                                                <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
+                                        <div className='w-[8%]  flex'>
+                                            <div className='p-3'>
+        
                                             </div>
                                         </div>
-                                        <div className='w-[17%]  flex  overflow-hidden'>
-                                            <div className='p-3 ml-1'>
-                                                <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3 ml-1 flex items-center space-x-2'>
-                                                {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                    <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                    <p> inactive</p></>}
+                                        <div className='w-[8%]  flex'>
+                                            <div className='p-3'>
+        
                                             </div>
                                         </div>
                                     </div>
                                     <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex overflow-hidden'>
-                                        <div className='p-3 ml-[6px]'>
-                                            <p>{item.id}</p>
+                                        <div className='w-1/2  flex'>
+                                            <div className='px-3 py-5'>
+                                                <p>ID <span className="font-extrabold">↑↓</span></p>
+                                            </div>
+                                        </div>
+                                        <div className='w-1/2  flex'>
+                                            <div className='px-3 py-5'>
+                                                <p>Edit</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => deleteEmployee(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
-                                    </div>
-                                    </div>
-                                    
+        
                                 </div>
                             })}
-                             */}
-
                         </div>
                     </div>
 
