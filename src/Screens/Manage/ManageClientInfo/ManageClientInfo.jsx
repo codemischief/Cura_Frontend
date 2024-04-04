@@ -23,7 +23,7 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
-const ManageClientInfo = () => {
+const ManageCountryInfo = () => {
 
     const menuRef = useRef();
     // we have the module here
@@ -810,15 +810,12 @@ const ManageClientInfo = () => {
     const handleAddClientInfo = () => {
         console.log(formValues);
     }
-    return (
+    return(
         <div className='h-screen'>
             <Navbar/>
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
-                  <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+
+            <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
+            <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
                                     <img className='w-5 h-5' src={backLink} />
@@ -863,7 +860,8 @@ const ManageClientInfo = () => {
                         </div>
 
 
-                        {/* filtering section */}
+
+
                         <div className='h-12 w-full bg-white'>
                             <div className='w-full h-12 bg-white flex justify-between'>
                                 <div className="w-[85%] flex">
@@ -1182,6 +1180,7 @@ const ManageClientInfo = () => {
 
 
 
+
                         <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                         <div className="w-[85%] flex">
@@ -1256,7 +1255,9 @@ const ManageClientInfo = () => {
 
                         </div>
 
-                               <div className='w-full h-[450px] overflow-auto'>
+
+
+                        <div className='w-full h-[450px] overflow-auto'>
 
                             
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
@@ -1339,100 +1340,19 @@ const ManageClientInfo = () => {
 
                         </div>
 
-                        <div className='w-full h-[calc(100vh_-_17rem)]overflow-auto'>
-
-                            
-                    {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                    {!pageLoading && existingClientInfo.map((item, index) => {
-                        return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                            <div className="w-[85%] flex">
-                        <div className='w-[3%] flex'>
-                            <div className='p-3'>
-                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                            </div>
-                        </div>
-                        <div className='w-[12%]  flex'>
-                            <div className='p-3'>
-                                <p>{item.firstname + " " + item.middlename + " " + item.lastname} </p>
-                            </div>
-                        </div>
-                        <div className='w-[10%]  flex'>
-                            <div className='p-3'>
-                                <p> {item.clienttype}</p>
-                            </div>
-                        </div>
-                        <div className='w-[9%]  flex'>
-                            <div className='p-3'>
-                                <p>{item.tenantof} </p>
-                            </div>
-                        </div>
-                        <div className='w-[10%]  flex'>
-                            <div className='p-3'>
-                                <p>{item.country}</p>
-                            </div>
-                        </div>
-                        <div className='w-[7%]  flex'>
-                            <div className='p-3'>
-                                <p>{item.city}</p>
-                            </div>
-                        </div>
-                        <div className='w-[10%]  flex'>
-                            <div className='p-3'>
-                                <p>{item.mobilephone}</p>
-                            </div>
-                        </div>
-                        <div className='w-[14%]  flex'>
-                            <div className='p-3 overflow-hidden'>
-                                <p>{item.email1 || item.email2}</p>
-                            </div>
-                        </div>
-                        <div className='w-[13%]  flex'>
-                            <div className='p-3'>
-                                <p>{item.employername}</p>
-                            </div>
-                        </div>
-                        <div className='w-[6%]  flex'>
-                            <div className='p-3'>
-
-                            </div>
-                        </div>
-                        <div className='w-[6%]  flex'>
-                            <div className='p-3'>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-[15%] flex">
-                        <div className='w-1/2  flex'>
-                            <div className='p-3'>
-                                <p>{item.id}</p>
-                            </div>
-                        </div>
-                        <div className='w-1/2  flex'>
-                            <div className='p-3 flex space-x-2'>
-                                <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
-                                    <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {}} />
-                            </div>
-                        </div>
-                </div>
-        
-    </div>
-})}
- 
-
-</div>
-
-
-
-                        </div>
 
 
 
 
 
+
+
+
+
+
+                        </div>
 
             </div>
-
 
 
 
@@ -1561,4 +1481,4 @@ const ManageClientInfo = () => {
     )
 }
 
-export default ManageClientInfo;
+export default ManageCountryInfo;
