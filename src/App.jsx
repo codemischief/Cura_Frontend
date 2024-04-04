@@ -37,6 +37,7 @@ import GovernmentDepartment from './Screens/Research/Government Department/Gover
 import ManageBankStatement from './Screens/Manage/ManageBankStatement/ManageBankStatement';
 import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject';
 import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
+import Example from './Screens/Admin/Example';
 
 const App = () => {
   const ROLES = {
@@ -92,6 +93,8 @@ const App = () => {
                     <Route path="/manage/manageclientproperty" element={<ManageClientProperty />}/>
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
+                    {/* <Route path="/admin/example" element={<Example />}/> */}
+                    <Route path="/admin/example" element={<Example/>}/>
                {/* </Route>  */}
 
 

@@ -530,7 +530,7 @@ const Country = () => {
           </div>
 
           <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
-          <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+           <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
               <div className='w-3/4 flex'>
                 <div className='w-1/6 p-4'>
                   <p>Sr. No</p>
@@ -575,7 +575,7 @@ const Country = () => {
                   </div>
                 </div>
               })}
-              {/* we get all the existing countries here */}
+              
 
             </div>
           </div>
@@ -589,6 +589,9 @@ const Country = () => {
                                 
                             </div>
                         </div>
+                        
+
+
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
                                <p className="text-gray-700">Items Per page</p>
@@ -641,8 +644,7 @@ const Country = () => {
                             </div>
                         </div> 
                     </div>
-        </div>
-
+            </div>
       </div>
 
       {/* modal goes here */}
