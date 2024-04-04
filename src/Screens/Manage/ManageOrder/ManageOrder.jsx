@@ -41,14 +41,13 @@ const ManageOrder = () => {
     setIsStateDialogue(false);
   }
   return (
-    <div>
-      <Navbar/>
-      <div className='flex-col w-full h-full  bg-white'>
-        <div className='flex-col'>
-            {/* this div will have all the content */}
-            <div className='w-full  flex-col px-6'>
-                {/* the top section of the div */}
-                <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+    <div className="h-screen">
+        <Navbar/>
+
+        <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+
+
+        <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                    <div className='flex items-center space-x-3'>
                       <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 '>
                           <img src={backLink} />
@@ -74,7 +73,7 @@ const ManageOrder = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[30px] w-[200px] rounded-lg" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
                                 Add New Order +
                             </button>
                         </div>
@@ -82,12 +81,14 @@ const ManageOrder = () => {
                    </div>
                    
                 </div>
+
+
                 <div className='h-12 w-full bg-white'>
                   
                 </div>
-            </div>
 
-            <div className='w-full h-[400px] bg-white px-6'>
+                <div className='h-[calc(100vh_-_14rem)] w-full '>
+
                 <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                    <div className='w-3/4 flex'>
                       <div className='w-1/6 p-4'>
@@ -106,8 +107,20 @@ const ManageOrder = () => {
                       </div>
                    </div>
                 </div>
-            </div>
-            <div className='w-full h-[250] flex justify-between justify-self-end px-6 '>
+
+
+                <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'></div>
+
+                </div>
+
+
+
+
+
+        </div>
+
+
+        <div className='w-full h-12 flex justify-between px-6 '>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>
@@ -152,12 +165,8 @@ const ManageOrder = () => {
                     </div>
                 </div>
             </div>
-        </div>
-     
-    </div>
 
-    {/* modal goes here */}
-    <Modal open={isStateDialogue} 
+            <Modal open={isStateDialogue} 
           fullWidth={true}
           maxWidth = {'md'} >
             <div className='flex justify-center mt-[20px] rounded-lg'>
@@ -188,6 +197,7 @@ const ManageOrder = () => {
                 </div>
             </div>
     </Modal>
+
     </div>
   )
 }
