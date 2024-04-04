@@ -1,11 +1,22 @@
 import React from 'react';
 import { useState } from 'react';
 import AddFeildBank from './AddFeildBanks'
-const BankDetails = () => {
-  const [addField, setAddFeild] = useState([]);
+const BankDetails = ({formValues,setFormValues}) => {
+
   const handleAdd = () => {
-    const abc = [...addField, []];
-    setAddFeild(abc);
+    setFormValues({...formValues,client_bank_info : [
+      ...formValues.client_bank_info, {
+        "bankname":"",
+        "bankbranch":"",
+        "bankcity":"",
+        "bankaccountno":"",
+        "bankaccountholdername":"",
+        "bankifsccode":"",
+        "bankmicrcode":"",
+        "bankaccounttype":"",
+        "description":""
+    }
+    ]})
   }
   return (
         <div className='flex-col justify-center items-center mx-5 mt-10'>
@@ -39,38 +50,10 @@ const BankDetails = () => {
                 MICR Code
               </div>
             </div>
-            <div className="w-full h-[40px] flex border-[#CBCBCB] border-b-[1px]">
-              <div className="w-[2%] h-full p-3 text-[11px]" >
-                1
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[14%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-              </div>
-            </div>
-            {addField.map((data, index) => {
+            
+            {formValues.client_bank_info.map((data, index) => {
               return (
-                <AddFeildBank index={index} />
+                <AddFeildBank index={index} formValues={formValues} setFormValues={setFormValues}/>
               )
             })}
             <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
