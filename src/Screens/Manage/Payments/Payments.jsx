@@ -650,17 +650,12 @@ const Payments = () => {
     const [idFilter,setIdFilter] = useState(false)
     const [idFilterInput,setIdFilterInput] = useState("");
     return (
-        <div>
-            <Navbar />
+        <div className='h-screen'>
+            <Navbar/>
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Payments" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
-            <div className='flex-col w-full h-full  bg-white'>
-
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+            <div className='h-[calc(100vh_-_14rem)] w-full px-10'>
+               <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
                                     <img className='h-5 w-5' src={backLink} />
@@ -700,6 +695,11 @@ const Payments = () => {
                             </div>
 
                         </div>
+
+
+
+
+                        {/* filters */}
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
                                 <div className='w-[85%] flex'>
@@ -1032,49 +1032,49 @@ const Payments = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className='w-full h-3/4 bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    <p>Sr. </p>
+
+                        <div className='h-[calc(100vh_-_14rem)] w-full'>
+                            <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                                <div className='w-[85%] flex'>
+                                    <div className='w-[5%] p-4'>
+                                        <p>Sr. </p>
+                                    </div>
+                                    <div className='w-[13%]  p-4'>
+                                        <p>Payment to<span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[13%]  p-4'>
+                                        <p>payment by <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[10%]  p-4'>
+                                        <p>Amount <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[10%]  p-4'>
+                                        <p>Paid On <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[14%]  p-4'>
+                                        <p>Payment mode <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[13%]  p-4'>
+                                        <p>Payment For <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[15%]  p-4'>
+                                        <p>Payment status <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-[10%]  p-4'>
+                                        <p>Entity <span className="font-extrabold">↑↓</span></p>
+                                    </div>
                                 </div>
-                                <div className='w-[13%]  p-4'>
-                                    <p>Payment to<span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[13%]  p-4'>
-                                    <p>payment by <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Amount <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Paid On <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[14%]  p-4'>
-                                    <p>Payment mode <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[13%]  p-4'>
-                                    <p>Payment For <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Payment status <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Entity <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[15%] flex'>
+                                    <div className='w-1/2  p-4'>
+                                        <p>ID <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                    <div className='w-1/2 0 p-4'>
+                                        <p>Edit</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className='w-[15%] flex'>
-                                <div className='w-1/2  p-4'>
-                                    <p>ID <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-1/2 0 p-4'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className=' w-full h-80 overflow-auto'>
+                            <div className=' w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                             {pageLoading && <LinearProgress />}
                             {!pageLoading && existingPayments.map((item, index) => {
                                 return <div className='w-full min-h-8 h-auto  flex justify-between border-gray-400 border-b-[1px]'>
@@ -1123,8 +1123,13 @@ const Payments = () => {
                                 fetchData={fetchData} openPrompt={openEditSuccess} />}
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetchData={fetchData} />}
                         </div>
-                    </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
+                            
+
+                        </div>
+            </div>
+
+
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -1191,12 +1196,7 @@ const Payments = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </div>
-
-            {/* modal goes here */}
-            <Modal open={isPaymentsDialogue}
+                    <Modal open={isPaymentsDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1326,7 +1326,7 @@ const Payments = () => {
                     </div>
                 </div>
             </Modal>
-        </div>
+        </div> 
     )
 }
 
