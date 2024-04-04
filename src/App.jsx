@@ -38,7 +38,7 @@ import ManageBankStatement from './Screens/Manage/ManageBankStatement/ManageBank
 import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject';
 import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
 import Example from './Screens/Admin/Example';
-
+import AnotherExample from './Screens/Admin/AnotherExample';
 const App = () => {
   const ROLES = {
     Registered: "3",
@@ -95,6 +95,7 @@ const App = () => {
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     {/* <Route path="/admin/example" element={<Example />}/> */}
                     <Route path="/admin/example" element={<Example/>}/>
+                    <Route path="/admin/anotherexample" element={<AnotherExample/>}/>
                {/* </Route>  */}
 
 
