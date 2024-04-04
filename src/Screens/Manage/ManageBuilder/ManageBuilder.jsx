@@ -1,5 +1,5 @@
-import { CircularProgress, Modal ,Pagination} from "@mui/material";
-import React, { useEffect, useState , useRef } from 'react';
+import { CircularProgress, Modal, Pagination } from "@mui/material";
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
@@ -28,24 +28,24 @@ const ManageBuilder = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [currentBuilder, setCurrentBuilder] = useState({});
-    const [currentBuilderId,setCurrentBuilderId] = useState();
+    const [currentBuilderId, setCurrentBuilderId] = useState();
     const [deleted, setDeleted] = useState(false);
     const [allCountry, setAllCountry] = useState([]);
     const [selectedCountry, setselectedCountry] = useState("");
     const [allState, setAllState] = useState([]);
     const [selectedState, setSelectedState] = useState("");
-    const [selectedCity,setSelectedCity] = useState("");
+    const [selectedCity, setSelectedCity] = useState("");
     const [allCity, setAllCity] = useState([]);
-    const [countryId,setcountryId]=useState("");
-    const [userId,setUserId]=useState(0);
-    const [totalItems,setTotalItems] = useState(0)
-    const [currentPage,setCurrentPage] = useState(1)
-    const [currentPages,setCurrentPages] = useState(15)
-    const [sortField,setSortField] = useState("id")
+    const [countryId, setcountryId] = useState("");
+    const [userId, setUserId] = useState(0);
+    const [totalItems, setTotalItems] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [currentPages, setCurrentPages] = useState(15)
+    const [sortField, setSortField] = useState("id")
 
-    const fetchUserId = async() =>{
+    const fetchUserId = async () => {
         const response = await authService.getUserId()
-        
+
         setUserId(response)
 
     }
@@ -69,13 +69,13 @@ const ManageBuilder = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": [],
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": 1,
             "pg_size": 15
-          };
+        };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
         console.log(res)
@@ -86,18 +86,18 @@ const ManageBuilder = () => {
         // console.log(result);
         setExistingBuilders(result);
     }
-    const fetchPageData = async  (page) => {
+    const fetchPageData = async (page) => {
         setPageLoading(true);
         setCurrentPage(page)
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": [],
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": Number(page),
             "pg_size": Number(currentPages)
-          };
+        };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
         console.log(res)
@@ -113,13 +113,13 @@ const ManageBuilder = () => {
         setCurrentPages(quantity)
         const data = {
             "user_id": 1234,
-            "rows": ["id","buildername","phone1","phone2","email1","email2","addressline1","addressline2","suburb","city","state","country","zip","website","comments","dated","createdby","isdeleted"],
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": [],
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages)
-          };
+        };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
         console.log(res)
@@ -137,18 +137,18 @@ const ManageBuilder = () => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result);
-        if(Array.isArray(result)) {
+        if (Array.isArray(result)) {
             setAllCountry(result);
         }
     }
 
     const fetchStateData = async (e) => {
-       
+
         const data = { "user_id": userId || 1234, "country_id": 5 };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         // console.log(result)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             setAllState(result)
         }
     }
@@ -157,11 +157,11 @@ const ManageBuilder = () => {
         const data = { "user_id": userId || 1234, "country_id": 5, "state_name": "Maharashtra" };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             setAllCity(result)
         }
     }
-   
+
     const deleteBuilder = async (item) => {
         setShowDelete(true);
         setCurrentBuilderId(item);
@@ -184,12 +184,12 @@ const ManageBuilder = () => {
             "zip": formValues.zip,
             "website": formValues.website,
             "comments": formValues.comment,
-            "dated": "10-03-2024 08:29:00", 
+            "dated": "10-03-2024 08:29:00",
             "createdby": 1234,
             "isdeleted": false
         };
         const response = await APIService.addNewBuilder(data);
-       
+
         if (response.ok) {
             setIsLoading(false);
             openSuccessModal();
@@ -215,7 +215,7 @@ const ManageBuilder = () => {
                 setIdFilter(false)
             }
         }
-      
+
         document.addEventListener("mousedown", handler);
         return () => {
             document.removeEventListener("mousedown", handler);
@@ -255,13 +255,13 @@ const ManageBuilder = () => {
         if (formValues.builderName == "") {
             return;
         }
-        if(formValues.address1 == "") {
-            return ;
+        if (formValues.address1 == "") {
+            return;
         }
-        if(formValues.phone1 == "") {
-            return ;
-        } 
-        
+        if (formValues.phone1 == "") {
+            return;
+        }
+
         // if(formValues.)
         setIsLoading(true);
         addNewBuilder();
@@ -303,412 +303,418 @@ const ManageBuilder = () => {
     const handleCloseDelete = () => {
         setIsDeleteDialogue(false);
     }
-    const handleRefresh = async  () => {
-       await fetchBuilderData();
+    const handleRefresh = async () => {
+        await fetchBuilderData();
     }
-    const handleDownload =  () => {
+    const handleDownload = () => {
         const worksheet = XLSX.utils.json_to_sheet(existingBuilders);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
-        XLSX.writeFile(workbook,"BuilderData.xlsx");
-        FileSaver.saveAs(workbook,"demo.xlsx");
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "BuilderData.xlsx");
+        FileSaver.saveAs(workbook, "demo.xlsx");
     }
-    const handlePageChange = (event,value) => {
+    const handlePageChange = (event, value) => {
         setCurrentPage(value)
         fetchPageData(value)
     }
-    const [downloadModal,setDownloadModal] = useState(false)
-    const [builderFilter,setBuilderFilter] = useState(false)
-    const [builderFilterInput,setBuilderFilterInput] = useState("")
-    const [countryFilter,setCountryFilter] = useState(false)
-    const [countryFilterInput,setCountryFilterInput] = useState("")
-    const [cityFilter,setCityFilter] = useState(false)
-    const [cityFilterInput,setCityFilterInput] = useState("")
-    const [suburbFilter,setSuburbFilter] = useState(false)
-    const [suburbFilterInput,setSuburbFilterInput] = useState("")
-    const [idFilter,setIdFilter] = useState(false)
-    const [idFilterInput,setIdFilterInput] = useState("")
+    const [downloadModal, setDownloadModal] = useState(false)
+    const [builderFilter, setBuilderFilter] = useState(false)
+    const [builderFilterInput, setBuilderFilterInput] = useState("")
+    const [countryFilter, setCountryFilter] = useState(false)
+    const [countryFilterInput, setCountryFilterInput] = useState("")
+    const [cityFilter, setCityFilter] = useState(false)
+    const [cityFilterInput, setCityFilterInput] = useState("")
+    const [suburbFilter, setSuburbFilter] = useState(false)
+    const [suburbFilterInput, setSuburbFilterInput] = useState("")
+    const [idFilter, setIdFilter] = useState(false)
+    const [idFilterInput, setIdFilterInput] = useState("")
 
-     return (
-        <div >
+    return (
+        <div className="h-screen">
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
             <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
-            <div className='flex-col w-full h-full  bg-white'>
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
-                            <div className='flex items-center space-x-3'>
-                                <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                                    <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
-                                </div>
-                                <div className='flex-col'>
-                                    <h1>Manage Builder</h1>
-                                    <p>Manage &gt; Manage Builder</p>
-                                </div>
-                            </div>
-                            <div className='flex space-x-2 items-center'>
-                                <div className='flex'>
-                                    {/* search button */}
-                                    <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878]"
-                                        type="text"
-                                        placeholder="  Search"
-                                    />
-                                    <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <img className="h-[26px] " src={searchIcon} alt="search-icon" />
-                                    </div>
-                                </div>
 
-                                <div>
-                                    {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New Builder +
-                                    </button>
-                                </div>
 
-                            </div>
+            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
+                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                    <div className='flex items-center space-x-3'>
+                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
+                            <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
                         </div>
-                        <div className='h-12 w-full flex'>
-                           <div className="w-[85%] h-full flex">
-                               <div className='w-[5%] p-4'>
-                                    {/* <p>Sr. </p> */}
-                                </div>
-                                <div className='w-[25%]  p-4'>
-                                    <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => {setBuilderFilterInput(e.target.value)}}/>
-                                    <button className='p-1' onClick={() => {setBuilderFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {builderFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef} >
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => {setCountryFilterInput(e.target.value)}}/>
-                                    <button className='p-1' onClick={() => {setCountryFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                   <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => {setCityFilterInput(e.target.value)}}/>
-                                    <button className='' onClick={() => {setCityFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                   <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => {setSuburbFilterInput(e.target.value)}}/>
-                                    <button className='' onClick={() => {setSuburbFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {suburbFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <h1 >No Filter</h1>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                              <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                            </div>
-                                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                               <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                            </div>
-                                        </div>} 
-                                </div>
-                               
-                                <div className='w-[10%]  p-4'>
-                                    {/* <p>Contact</p> */}
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    {/* <p>Projects</p> */}
-                                </div>
-                           </div>
-                           <div className="w-[15%]  h-full flex">
-                                <div className='w-1/2  p-4'>
-                                   <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => {setIdFilterInput(e.target.value)}}/>
-                                    <button className='' onClick={() => {setIdFilter((prev) => !prev)}}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                </div>
-                                {idFilter && <div className='h-[360px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40 ' ref={menuRef}>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
-                                        </div>
-                                        <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
-                                        </div>
-                                    </div>}
-                                <div className='w-1/2 0 p-4'>
-                                    {/* <p>Edit</p> */}
-                                </div>
-                           </div>
-                        </div>
-                        
-                    </div>
-
-                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    <p>Sr. </p>
-                                </div>
-                                <div className='w-[25%]  p-4'>
-                                    <p>Builder Name <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Country ↑↓</p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>City ↑↓</p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Suburb ↑↓</p>
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Contact</p>
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <p>Projects</p>
-                                </div>
-                            </div>
-                            <div className='w-[15%] flex'>
-                                <div className='w-1/2  p-4'>
-                                    <p>ID ↑↓</p>
-                                </div>
-                                <div className='w-1/2 0 p-4'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full h-[450px] overflow-auto'>
-                            {pageLoading && <div className='ml-11 mt-9'>
-                                <CircularProgress />
-                            </div>}
-                            {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {
-                                return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                        </div>
-                                        <div className='w-[25%]  p-4'>
-                                            <p>{item.buildername}</p>
-                                        </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.country}</p>
-                                        </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.city}</p>
-                                        </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>{item.suburb}</p>
-                                        </div>
-                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <p>Contact</p>
-                                        </div>
-                                        <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <Link to={`projects/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{builderid : item.id}}><p>Projects</p></Link>
-                                        </div>
-                                    </div>
-                                    <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
-                                            <p>{item.id}</p>
-                                        </div>
-                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editBuilder(item)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
-                                        </div>
-                                    </div>
-                                </div>
-                            })}
-                            {/* we get all the existing builders here */}
-                            {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData}/>}
-                            {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData}/> }
+                        <div className='flex-col'>
+                            <h1>Manage Builder</h1>
+                            <p>Manage &gt; Manage Builder</p>
                         </div>
                     </div>
-                    <div className='w-full h-[250] flex justify-between justify-self-end px-6 fixed bottom-2'>
-                        {/* footer component */}
-                        <div className='ml-2'>
-                            <div className='flex items-center w-auto h-full'>
-                                {/* items */}
-                                <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/>
-                                
+                    <div className='flex space-x-2 items-center'>
+                        <div className='flex'>
+                            {/* search button */}
+                            <input
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                type="text"
+                                placeholder="  Search"
+                            />
+                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <img className="h-[26px] " src={searchIcon} alt="search-icon" />
                             </div>
                         </div>
-                        <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className="flex mr-8 space-x-2 text-sm items-center">
-                               <p className="text-gray-700">Items Per page</p>
-                               <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
-                                         name="currentPages"
-                                         value={currentPages}
-                                        //  defaultValue="Select State"
-                                         onChange={e => {
-                                            // setCurrentPages(e.target.value);
-                                            console.log(e.target.value);
-                                            fetchQuantityData(e.target.value);
-                                            // fetchPageCountryData(e.target.value)
-                                         }}
-                               
-                               >
-                                <option>
-                                    15
-                                </option>
-                                <option>
-                                    25
-                                </option>
-                                <option>
-                                   50
-                                </option>
-                               </select>
+
+                        <div>
+                            {/* button */}
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
+                                Add New Builder +
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div className='h-12 w-full flex'>
+                    <div className="w-[85%] h-full flex">
+                        <div className='w-[5%] p-4'>
+                            {/* <p>Sr. </p> */}
+                        </div>
+                        <div className='w-[25%]  p-4'>
+                            <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
+                                <button className='p-1' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
-                            <div className="flex text-sm">
-                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p>
-                            </div>
-                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
-                               
-                               <div className='flex'>
-                                 <p>Download as pdf</p>
-                                 {/* <img src=''/> */}
-                               </div>
-                               <div>
-                                  <p>Download as Excel</p>
-                               </div>
+                            {builderFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef} >
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <h1 >No Filter</h1>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                    <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                </div>
                             </div>}
-                            
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
-                                {/* refresh */}
-                                <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className="h-2/3" />
+                        </div>
+                        <div className='w-[15%]  p-4'>
+                            <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
+                                <button className='p-1' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
-                                {/* download */}
-                                <button onClick={handleDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className="h-2/3" />
+                            {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <h1 >No Filter</h1>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                    <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                </div>
+                            </div>}
+                        </div>
+                        <div className='w-[15%]  p-4'>
+                            <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
+                                <button className='' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
-                        </div> 
+                            {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <h1 >No Filter</h1>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                    <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                </div>
+                            </div>}
+                        </div>
+                        <div className='w-[15%]  p-4'>
+                            <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }} />
+                                <button className='' onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            </div>
+                            {suburbFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <h1 >No Filter</h1>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                    <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
+                                </div>
+                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                    <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
+                                </div>
+                            </div>}
+                        </div>
+
+                        <div className='w-[10%]  p-4'>
+                            {/* <p>Contact</p> */}
+                        </div>
+                        <div className='w-[10%]  p-4'>
+                            {/* <p>Projects</p> */}
+                        </div>
+                    </div>
+                    <div className="w-[15%]  h-full flex">
+                        <div className='w-1/2  p-4'>
+                            <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
+                                <button className='' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            </div>
+                        </div>
+                        {idFilter && <div className='h-[360px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40 ' ref={menuRef}>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
+                                <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                            </div>
+                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
+                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                            </div>
+                        </div>}
+                        <div className='w-1/2 0 p-4'>
+                            {/* <p>Edit</p> */}
+                        </div>
                     </div>
                 </div>
 
+
+                <div className='h-[calc(100vh_-_14rem)] w-full '>
+
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                        <div className='w-[85%] flex'>
+                            <div className='w-[5%] p-4'>
+                                <p>Sr. </p>
+                            </div>
+                            <div className='w-[25%]  p-4'>
+                                <p>Builder Name <span className="font-extrabold">↑↓</span></p>
+                            </div>
+                            <div className='w-[15%]  p-4'>
+                                <p>Country ↑↓</p>
+                            </div>
+                            <div className='w-[15%]  p-4'>
+                                <p>City ↑↓</p>
+                            </div>
+                            <div className='w-[15%]  p-4'>
+                                <p>Suburb ↑↓</p>
+                            </div>
+                            <div className='w-[10%]  p-4'>
+                                <p>Contact</p>
+                            </div>
+                            <div className='w-[10%]  p-4'>
+                                <p>Projects</p>
+                            </div>
+                        </div>
+                        <div className='w-[15%] flex'>
+                            <div className='w-1/2  p-4'>
+                                <p>ID ↑↓</p>
+                            </div>
+                            <div className='w-1/2 0 p-4'>
+                                <p>Edit</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
+                        {pageLoading && <div className='ml-11 mt-9'>
+                            <CircularProgress />
+                        </div>}
+                        {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {
+                            return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className='w-[85%] flex'>
+                                    <div className='w-[5%] p-4'>
+                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                    </div>
+                                    <div className='w-[25%]  p-4'>
+                                        <p>{item.buildername}</p>
+                                    </div>
+                                    <div className='w-[15%]  p-4'>
+                                        <p>{item.country}</p>
+                                    </div>
+                                    <div className='w-[15%]  p-4'>
+                                        <p>{item.city}</p>
+                                    </div>
+                                    <div className='w-[15%]  p-4'>
+                                        <p>{item.suburb}</p>
+                                    </div>
+                                    <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
+                                        <p>Contact</p>
+                                    </div>
+                                    <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
+                                        <Link to={`projects/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Projects</p></Link>
+                                    </div>
+                                </div>
+                                <div className='w-[15%] flex'>
+                                    <div className='w-1/2  p-4'>
+                                        <p>{item.id}</p>
+                                    </div>
+                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                        <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editBuilder(item)} />
+                                        <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
+                                    </div>
+                                </div>
+                            </div>
+                        })}
+                        {/* we get all the existing builders here */}
+                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} />}
+                        {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData} />}
+                    </div>
+
+
+                </div>
+
+
             </div>
 
-            {/* modal goes here */}
+
+            <div className='w-full h-12 flex justify-between px-6'>
+                {/* footer component */}
+                <div className='ml-2'>
+                    <div className='flex items-center w-auto h-full'>
+                        {/* items */}
+                        <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
+
+                    </div>
+                </div>
+                <div className='flex mr-10 justify-center items-center space-x-2 '>
+                    <div className="flex mr-8 space-x-2 text-sm items-center">
+                        <p className="text-gray-700">Items Per page</p>
+                        <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                            name="currentPages"
+                            value={currentPages}
+                            //  defaultValue="Select State"
+                            onChange={e => {
+                                // setCurrentPages(e.target.value);
+                                console.log(e.target.value);
+                                fetchQuantityData(e.target.value);
+                                // fetchPageCountryData(e.target.value)
+                            }}
+
+                        >
+                            <option>
+                                15
+                            </option>
+                            <option>
+                                25
+                            </option>
+                            <option>
+                                50
+                            </option>
+                        </select>
+                    </div>
+                    <div className="flex text-sm">
+                        <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
+                    </div>
+                    {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+
+                        <div className='flex'>
+                            <p>Download as pdf</p>
+                            {/* <img src=''/> */}
+                        </div>
+                        <div>
+                            <p>Download as Excel</p>
+                        </div>
+                    </div>}
+
+                    <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
+                        {/* refresh */}
+                        <button onClick={handleRefresh}><p>Refresh</p></button>
+                        <img src={refreshIcon} className="h-2/3" />
+                    </div>
+                    <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
+                        {/* download */}
+                        <button onClick={handleDownload}><p>Download</p></button>
+                        <img src={downloadIcon} className="h-2/3" />
+                    </div>
+                </div>
+            </div>
+
             <Modal open={isManageBuidlerDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
@@ -855,6 +861,7 @@ const ManageBuilder = () => {
                     </div>
                 </div>
             </Modal>
+
         </div>
     )
 }
