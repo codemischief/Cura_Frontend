@@ -432,7 +432,7 @@ const ManageClientInfo = () => {
     }
 
     const [selectedDialog, setSelectedDialogue] = useState(1);
-
+   
     const selectFirst = () => {
         setSelectedDialogue(1);
     }
@@ -452,30 +452,102 @@ const ManageClientInfo = () => {
     const selectFifth = () => {
         setSelectedDialogue(5);
     }
-
     const initialValues = {
-        employeeName: "",
-        panNo: "",
-        userName: "",
-        doj: "",
-        designation: "",
-        email: "",
-        addressLine1: "",
-        employeeId: "",
-        lob: "",
-        dob: "",
-        lastDOW: "",
-        role: "",
-        phNo: "",
-        addressLine2: "",
-        country: "",
-        state: "",
-        city: "",
-        suburb: "",
-        zipCode: "",
-        entity: ""
-
-    };
+            "client_info": {
+                "firstname":"",
+                "middlename":"",
+                "lastname":"",
+                "salutation":"",
+                "clienttype": null,
+                "addressline1": "",
+                "addressline2":"",
+                "suburb":"",
+                "city":"",
+                "state":"",
+                "country":null,
+                "zip":"",
+                "homephone":"",
+                "workphone":"",
+                "mobilephone":"",
+                "email1":"",
+                "email2":"",
+                "employername":"",
+                "comments":"",
+                "photo":"",
+                "onlineaccreated":null,
+                "localcontact1name":"",
+                "localcontact1address":"",
+                "localcontact1details":"",
+                "localcontact2name":"",
+                "localcontact2address":"",
+                "localcontact2details":"",
+                "includeinmailinglist":null,
+                "entityid":null,
+                "tenantof":null,
+                "tenantofproperty":null
+            },
+            "client_access":[
+                {
+                    "onlinemailid":"",
+                    "onlinepwd":"",
+                    "onlineclue":""
+                },
+                {
+                    "onlinemailid":"",
+                    "onlinepwd":"",
+                    "onlineclue":""
+                }
+            ],
+            "client_bank_info":{
+                "bankname":"",
+                "bankbranch":"",
+                "bankcity":"",
+                "bankaccountno":"",
+                "bankaccountholdername":"",
+                "bankifsccode":"",
+                "bankmicrcode":"",
+                "bankaccounttype":"",
+                "description":""
+            },
+            "client_legal_info":{
+                "fulllegalname":"",
+                "panno":"",
+                "addressline1":"",
+                "addressline2":"",
+                "suburb":"",
+                "city":"",
+                "state":"",
+                "country":null,
+                "zip":"",
+                "occupation":"",
+                "birthyear":null,
+                "employername":"",
+                "relation":null,
+                "relationwith":""
+            },
+            "client_poa":{
+                "poalegalname":"",
+                "poapanno":"",
+                "poaaddressline1":"",
+                "poaaddressline2":"",
+                "poasuburb":"",
+                "poacity":"",
+                "poastate":"",
+                "poacountry":null,
+                "poazip":"",
+                "poaoccupation":"",
+                "poabirthyear":null,
+                "poaphoto":"",
+                "poaemployername":"",
+                "poarelation":null,
+                "poarelationwith":"",
+                "poaeffectivedate":"",
+                "poaenddate":"",
+                "poafor":"",
+                "scancopy":""
+            }	
+        
+    }
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [showEditSuccess, setShowEditSuccess] = useState(false);
@@ -750,18 +822,14 @@ const ManageClientInfo = () => {
         fetchData();
     }
     return (
-        <div>
-            <Navbar />
+        <div className='h-screen'>
+            <Navbar/>
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-            <div className='flex-col w-full h-full  bg-white'>
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+                  <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
                                     <img className='w-5 h-5' src={backLink} />
@@ -804,6 +872,9 @@ const ManageClientInfo = () => {
                             </div>
 
                         </div>
+
+
+                        {/* filtering section */}
                         <div className='h-12 w-full bg-white'>
                             <div className='w-full h-12 bg-white flex justify-between'>
                                 <div className="w-[85%] flex">
@@ -1119,9 +1190,10 @@ const ManageClientInfo = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className='w-full h-[400px] bg-white px-6 text-[12px]'>
+
+
+                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                         <div className="w-[85%] flex">
                                 <div className='w-[3%] flex'>
@@ -1194,7 +1266,8 @@ const ManageClientInfo = () => {
                             </div>
 
                         </div>
-                        <div className='w-full h-[450px] overflow-auto'>
+
+                               <div className='w-full h-[450px] overflow-auto'>
 
                             
                             {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
@@ -1276,9 +1349,107 @@ const ManageClientInfo = () => {
                              
 
                         </div>
-                    </div>
 
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
+                        <div className='w-full h-[calc(100vh_-_17rem)]overflow-auto'>
+
+                            
+                    {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                    {!pageLoading && existingClientInfo.map((item, index) => {
+                        return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            <div className="w-[85%] flex">
+                        <div className='w-[3%] flex'>
+                            <div className='p-3'>
+                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                            </div>
+                        </div>
+                        <div className='w-[12%]  flex'>
+                            <div className='p-3'>
+                                <p>{item.firstname + " " + item.middlename + " " + item.lastname} </p>
+                            </div>
+                        </div>
+                        <div className='w-[10%]  flex'>
+                            <div className='p-3'>
+                                <p> {item.clienttype}</p>
+                            </div>
+                        </div>
+                        <div className='w-[9%]  flex'>
+                            <div className='p-3'>
+                                <p>{item.tenantof} </p>
+                            </div>
+                        </div>
+                        <div className='w-[10%]  flex'>
+                            <div className='p-3'>
+                                <p>{item.country}</p>
+                            </div>
+                        </div>
+                        <div className='w-[7%]  flex'>
+                            <div className='p-3'>
+                                <p>{item.city}</p>
+                            </div>
+                        </div>
+                        <div className='w-[10%]  flex'>
+                            <div className='p-3'>
+                                <p>{item.mobilephone}</p>
+                            </div>
+                        </div>
+                        <div className='w-[14%]  flex'>
+                            <div className='p-3 overflow-hidden'>
+                                <p>{item.email1 || item.email2}</p>
+                            </div>
+                        </div>
+                        <div className='w-[13%]  flex'>
+                            <div className='p-3'>
+                                <p>{item.employername}</p>
+                            </div>
+                        </div>
+                        <div className='w-[6%]  flex'>
+                            <div className='p-3'>
+
+                            </div>
+                        </div>
+                        <div className='w-[6%]  flex'>
+                            <div className='p-3'>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-[15%] flex">
+                        <div className='w-1/2  flex'>
+                            <div className='p-3'>
+                                <p>{item.id}</p>
+                            </div>
+                        </div>
+                        <div className='w-1/2  flex'>
+                            <div className='p-3 flex space-x-2'>
+                                <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
+                                    <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {}} />
+                            </div>
+                        </div>
+                </div>
+        
+    </div>
+})}
+ 
+
+</div>
+
+
+
+                        </div>
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -1346,12 +1517,10 @@ const ManageClientInfo = () => {
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
 
-            {/* modal goes here */}
-            <Modal open={isClientInfoDialogue}
+
+                    <Modal open={isClientInfoDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1385,11 +1554,11 @@ const ManageClientInfo = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation  />}
-                        {selectedDialog == 2 && <ClientPortal />}
-                        {selectedDialog == 3 && <BankDetails />}
-                        {selectedDialog == 4 && <LegalInformation />}
-                        {selectedDialog == 5 && <POADetails />}
+                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} handleChange={handleChange}/>}
+                        {selectedDialog == 2 && <ClientPortal formValues={formValues} handleChange={handleChange}/>}
+                        {selectedDialog == 3 && <BankDetails formValues={formValues} handleChange={handleChange}/>}
+                        {selectedDialog == 4 && <LegalInformation formValues={formValues} handleChange={handleChange}/>}
+                        {selectedDialog == 5 && <POADetails formValues={formValues} handleChange={handleChange}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>

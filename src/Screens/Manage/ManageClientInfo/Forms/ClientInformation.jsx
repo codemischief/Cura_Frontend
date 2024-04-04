@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 
-const ClientInformation = () => {
+const ClientInformation = (props) => {
     const [Salutation, setSalutation] = useState([]);
     const [clientProperty, setClientProperty] = useState([]);
     const [country, setCountry] = useState([]);
@@ -12,6 +12,14 @@ const ClientInformation = () => {
     const [state, setState] = useState([]);
     const [source, setSource] = useState([]);
     const [employeeName, setEmployeeName] = useState([]);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({...formValues, client_info : {
+            ...formValues.client_info,
+            [name] : value
+        }})
+        // setFormValues({ ...formValues, a.[name] : value });
+    };
     return (
         <div className="h-auto w-full">
             <div className="flex gap-10 justify-center items-center">
@@ -71,7 +79,7 @@ const ClientInformation = () => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Address Line 1 </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="add1" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline1" />
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
