@@ -338,20 +338,17 @@ const LOB = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     return (
-        <div className=''>
-            <Navbar />
+        <div className='h-screen'>
+            <Navbar/>
             {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal} />}
             {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="Successfull added Lob!" />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
-            <div className='flex-col w-full h-full '>
-                <div className='flex-col h-full'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+            <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+               {/* we need the first banner */}
+               <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
                                     <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
@@ -392,7 +389,9 @@ const LOB = () => {
                             </div>
 
                         </div>
-                        <div className='h-12 w-full bg-white flex justify-between'>
+
+                    {/* filter component */}
+                    <div className='h-12 w-full bg-white flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
 
@@ -475,62 +474,71 @@ const LOB = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-
-                    <div className='w-full h-3/4  px-6 text-[12px]'>
-
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-3/4 flex'>
-                                <div className='w-[10%] p-4'>
-                                    <p>Sr. </p>
-                                </div>
-                                <div className='w-[20%]  p-4'>
-                                    <p>LOB Name <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-
-                            </div>
-                            <div className='w-1/6  flex'>
-                                <div className='w-1/2 p-4'>
-                                    <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                                <div className='w-1/2  p-4'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full h-4/5 overflow-auto'>
-                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingLOB.map((item, index) => {
-                                return <div className='w-full flex justify-between border-gray-400 border-b-[1px]'>
+                        {/* main table component */}
+                        <div className='h-[calc(100vh_-_14rem)] w-full'>
+                                <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                                     <div className='w-3/4 flex'>
-                                        <div className='w-[10%] p-3 ml-[3px]'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        <div className='w-[10%] p-4'>
+                                            <p>Sr. </p>
                                         </div>
-                                        <div className='w-[20%]  p-3 ml-[3px]'>
-                                            <p>{item.name}</p>
+                                        <div className='w-[20%]  p-4'>
+                                            <p>LOB Name <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
-                                        {/* <div className='w-[20%]  p-4'>
-                                            <p>{item.lob_head}</p>
-                                        </div>
-                                        <div className='w-[25%]  p-4'>
-                                            <p>{item.company}</p>
-                                        </div> */}
+
                                     </div>
                                     <div className='w-1/6  flex'>
-                                        <div className='w-1/2 p-3 flex ml-[9px]'>
-                                            <p>{item.id}</p>
+                                        <div className='w-1/2 p-4'>
+                                            <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
-                                        <div className='w-1/2 p-3 flex items-center ml-[9px]'>
-                                            <img className=' h-5 mr-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
-                                            <button onClick={() => handleDelete(item)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                        <div className='w-1/2  p-4'>
+                                            <p>Edit</p>
                                         </div>
                                     </div>
                                 </div>
-                            })}
-                            {/* we get all the existing cities here */}
+
+                                 <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
+                                    {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                                    {!pageLoading && existingLOB.map((item, index) => {
+                                        return <div className='w-full flex justify-between border-gray-400 border-b-[1px]'>
+                                            <div className='w-3/4 flex'>
+                                                <div className='w-[10%] p-3 ml-[3px]'>
+                                                    <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                                </div>
+                                                <div className='w-[20%]  p-3 ml-[3px]'>
+                                                    <p>{item.name}</p>
+                                                </div>
+                                                {/* <div className='w-[20%]  p-4'>
+                                                    <p>{item.lob_head}</p>
+                                                </div>
+                                                <div className='w-[25%]  p-4'>
+                                                    <p>{item.company}</p>
+                                                </div> */}
+                                            </div>
+                                            <div className='w-1/6  flex'>
+                                                <div className='w-1/2 p-3 flex ml-[9px]'>
+                                                    <p>{item.id}</p>
+                                                </div>
+                                                <div className='w-1/2 p-3 flex items-center ml-[9px]'>
+                                                    <img className=' h-5 mr-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleOpenEdit(item)} />
+                                                    <button onClick={() => handleDelete(item)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    })}
+                                    {/* we get all the existing cities here */}
+                                </div>
                         </div>
-                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
+                        
+
+                        {/* main data */}
+                        
+
+
+            </div>
+
+            {/* footer component */}
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
                             {/* footer component */}
                             <div className='ml-2'>
                                 <div className='flex items-center w-auto h-full'>
@@ -597,14 +605,10 @@ const LOB = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
 
-            </div>
-
-            {/* modal goes here */}
-            <Modal open={isLobDialogue}
+                {/* modal component */}
+                <Modal open={isLobDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
