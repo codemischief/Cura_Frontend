@@ -954,18 +954,14 @@ const ManageBankStatement = () => {
         fetchBankStatement();
       }
     return (
-        <div >
-            <Navbar />
+        <div className="h-screen">
+            <Navbar/>
             <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Bank Statement"/>}
-            <div className='flex-col w-full h-full  bg-white'>
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+            <div className="w-full h-[calc(100vh_-_7rem)] px-10">
+            <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
                                     <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
@@ -1001,6 +997,8 @@ const ManageBankStatement = () => {
                             </div>
 
                         </div>
+
+
                         <div className='h-12 w-full bg-white'>
                             <div className='flex justify-between'>
                             <div className='w-[85%] flex'>
@@ -1245,10 +1243,9 @@ const ManageBankStatement = () => {
                         </div>
                         </div>
 
-                    </div>
-
-                    <div className='w-full h-3/4 bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                         <div className="w-full h-[calc(100vh_-_14rem)] ">
+                               
+                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
                                     <p>Sr. </p>
@@ -1285,7 +1282,10 @@ const ManageBankStatement = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className='w-full h-80 overflow-auto'>
+                          
+
+
+                        <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                             {pageLoading && <div className='ml-11 mt-9'>
                                 <CircularProgress />
                             </div>}
@@ -1344,8 +1344,25 @@ const ManageBankStatement = () => {
                             {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} />}
                             {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} />}
                         </div>
-                    </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
+
+
+
+
+
+
+
+                         </div>
+
+
+
+
+
+
+
+            </div>
+
+
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -1411,12 +1428,10 @@ const ManageBankStatement = () => {
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
 
-            {/* modal goes here */}
-            <Modal open={isManageStatementDialogue}
+
+                    <Modal open={isManageStatementDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center items-center mt-[70px]'>
@@ -1514,6 +1529,7 @@ const ManageBankStatement = () => {
                     </div>
                 </div>
             </Modal>
+             
 
 
             <Modal open={showCreditReceipt}
@@ -1656,6 +1672,8 @@ const ManageBankStatement = () => {
             </Modal>
 
 
+
+
             <Modal open={isConfirmManageStatementDialogue} >
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                     <div className="h-[40px] flex justify-center items-center">
@@ -1680,6 +1698,15 @@ const ManageBankStatement = () => {
                     </div>
                 </div>
             </Modal>
+
+
+
+
+
+
+
+
+
         </div>
     )
 }
