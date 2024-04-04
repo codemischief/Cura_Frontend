@@ -600,61 +600,60 @@ const Locality = () => {
 
     }
     return (
-        <div className=''>
-            <Navbar />
+        <div className='h-screen'>
+            <Navbar/>
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} />}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
             {failureModal && <FailureModal isOpen={failureModal} message={errorMessage}/>}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
             {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} />}
-            <div className='flex-col w-full h-full '>
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
-                            <div className='flex items-center space-x-3'>
-                                <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                                    <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
-                                </div>
-
-                                <div className='flex-col'>
-                                    <h1 className='text-[18px]'>Locality</h1>
-                                    <p className='text-[14px]'>Admin &gt; Localities</p>
-                                </div>
-                            </div>
-                            <div className='flex space-x-2 items-center'>
-
-                                <div className='flex relative'>
-                                    {/* search button */}
-                                    <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
-                                        type="text"
-                                        placeholder="Search"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                                    <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
-                                        <div className="flex items-center justify-center gap-4">
-                                            Add New Locality
-                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+            <div className='h-[calc(100vh_-_7rem)] w-full px-7'>
+                    {/* search component */}
+                    <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                                    <div className='flex items-center space-x-3'>
+                                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
+                                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
                                         </div>
-                                    </button>
+
+                                        <div className='flex-col'>
+                                            <h1 className='text-[18px]'>Locality</h1>
+                                            <p className='text-[14px]'>Admin &gt; Localities</p>
+                                        </div>
+                                    </div>
+                                    <div className='flex space-x-2 items-center'>
+
+                                        <div className='flex relative'>
+                                            {/* search button */}
+                                            <input
+                                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                                                type="text"
+                                                placeholder="Search"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
+                                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            {/* button */}
+                                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                                                <div className="flex items-center justify-center gap-4">
+                                                    Add New Locality
+                                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                    </div>
+
                                 </div>
 
-                            </div>
-
-                        </div>
-                        <div className='h-12 w-full bg-white flex justify-between'>
+                           {/* filter component */}
+                           <div className='h-12 w-full bg-white flex justify-between'>
                             <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
                                     {/* <p>Sr. </p> */}
@@ -834,71 +833,78 @@ const Locality = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className='w-full h-3/4  px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    <p>Sr. </p>
-                                </div>
-                                <div className='w-[15%]  p-4'>
-                                    <p>Country <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                                <div className='w-[20%]  p-4'>
-                                    <p>State <button onClick={() => handleSort("state")}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                                <div className='w-[20%]  p-4'>
-                                    <p>City <button onClick={() => handleSort("city")}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                                <div className='w-[25%]  p-4'>
-                                    <p>Locality <button onClick={() => handleSort("locality")}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                            </div>
-                            <div className='w-[15%] flex'>
-                                <div className='w-1/2  p-4'>
-                                    <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button> </p>
-                                </div>
-                                <div className='w-1/2 0 p-4'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='w-full h-80 overflow-auto'>
-                            {pageLoading && <LinearProgress />}
-                            {!pageLoading && existingLocalities.map((item, index) => {
-                                return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
+
+
+                        {/* main component */}
+                        <div className='h-[calc(100vh_-_14rem)] w-full '>
+                            {/* clumns names */}
+                                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                                     <div className='w-[85%] flex'>
                                         <div className='w-[5%] p-4'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                            <p>Sr. </p>
                                         </div>
                                         <div className='w-[15%]  p-4'>
-                                            <p>{item.country}</p>
+                                            <p>Country <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.state}</p>
+                                            <p>State <button onClick={() => handleSort("state")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item.city}</p>
+                                            <p>City <button onClick={() => handleSort("city")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
-                                        <div className='w-[25%]  p-4 ml-1'>
-                                            <p>{item.locality}</p>
+                                        <div className='w-[25%]  p-4'>
+                                            <p>Locality <button onClick={() => handleSort("locality")}><span className="font-extrabold">↑↓</span></button></p>
                                         </div>
                                     </div>
                                     <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4 ml-1'>
-                                            <p>{item.id}</p>
+                                        <div className='w-1/2  p-4'>
+                                            <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button> </p>
                                         </div>
-                                        <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                            <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                        <div className='w-1/2 0 p-4'>
+                                            <p>Edit</p>
                                         </div>
                                     </div>
                                 </div>
-                            })}
-                            {/* we get all the existing localities here */}
+
+                                {/* main table */}
+                                <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
+                                        {pageLoading && <LinearProgress />}
+                                        {!pageLoading && existingLocalities.map((item, index) => {
+                                            return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
+                                                <div className='w-[85%] flex'>
+                                                    <div className='w-[5%] p-4'>
+                                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                                    </div>
+                                                    <div className='w-[15%]  p-4'>
+                                                        <p>{item.country}</p>
+                                                    </div>
+                                                    <div className='w-[20%]  p-4'>
+                                                        <p>{item.state}</p>
+                                                    </div>
+                                                    <div className='w-[20%]  p-4'>
+                                                        <p>{item.city}</p>
+                                                    </div>
+                                                    <div className='w-[25%]  p-4 ml-1'>
+                                                        <p>{item.locality}</p>
+                                                    </div>
+                                                </div>
+                                                <div className='w-[15%] flex'>
+                                                    <div className='w-1/2  p-4 ml-1'>
+                                                        <p>{item.id}</p>
+                                                    </div>
+                                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                                        <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
+                                                        <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        })}
+                                    </div>
                         </div>
-                        <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
+            </div>
+            {/* footer component */}
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
                             {/* footer component */}
                             <div className='ml-2'>
                                 <div className='flex items-center w-auto h-full'>
@@ -964,14 +970,7 @@ const Locality = () => {
                                     <img src={downloadIcon} className="h-2/3" />
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
-
-            {/* modal goes here */}
             <Modal open={isLocalityDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
