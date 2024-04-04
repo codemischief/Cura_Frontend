@@ -395,55 +395,49 @@ const Country = () => {
      setPageLoading(false)
   }
   const [failureMessage,setFailureMessage] = useState("");
-  return (
-    <div className=''>
-      <Navbar />
-      <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
-      <FailureModal isOpen={showFailure} message={failureMessage} />
-      <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
-      <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit}/>
-      <div className='flex-col w-full h-full  bg-white'>
-        <div className='flex-col'>
-          {/* this div will have all the content */}
-          <div className='w-full  flex-col px-6'>
-            {/* the top section of the div */}
-            <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
-              <div className='flex items-center space-x-3'>
-                <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                  <Link to="/dashboard"><img className="w-5 h-5" src={backLink} /></Link>
-                </div>
-                <div className='flex-col'>
-                  <h1>Country</h1>
-                  <p>Admin &gt; Country</p>
-                </div>
-              </div>
-              <div className='flex space-x-2 items-center'>
+  return ( 
+    <div className='h-screen w-full'>
+        <Navbar/>
+         <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+             
+             
+                    <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                    <div className='flex items-center space-x-3'>
+                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
+                        <Link to="/dashboard"><img className="w-5 h-5" src={backLink} /></Link>
+                        </div>
+                        <div className='flex-col'>
+                        <h1>Country</h1>
+                        <p>Admin &gt; Country</p>
+                        </div>
+                    </div>
+                    <div className='flex space-x-2 items-center'>
 
-                <div className='flex relative'>
-                  {/* search button */}
-                  <input
-                    className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
-                    type="text"
-                    placeholder="  Search"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                  <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                    <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
-                  </div>
-                </div>
-                <div>
-                  {/* button */}
-                  <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                    Add New Country +
-                  </button>
-                </div>
+                        <div className='flex relative'>
+                        {/* search button */}
+                        <input
+                            className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                            type="text"
+                            placeholder="  Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                        <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                            <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                        </div>
+                        </div>
+                        <div>
+                        {/* button */}
+                        <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
+                            Add New Country +
+                        </button>
+                        </div>
 
-              </div>
+                    </div>
 
-            </div>
-            <div className='h-12 w-full bg-white flex justify-between'>
+                    </div>
+                    <div className='h-12 w-full bg-white flex justify-between'>
                              <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
                                     
@@ -527,60 +521,60 @@ const Country = () => {
                                 </div>
                             </div>
                         </div>
-          </div>
+                       <div className='h-[calc(100vh_-_14rem)] w-full '>
+                                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                                        <div className='w-3/4 flex'>
+                                            <div className='w-1/6 p-4'>
+                                            <p>Sr. No</p>
+                                            </div>
+                                            <div className='w-5/6  p-4'>
+                                            <p>Country<button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
+                                            </div>
+                                        </div>
+                                        <div className='w-1/6  flex'>
+                                            <div className='w-1/2  p-4'>
+                                            <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
+                                            </div>
+                                            <div className='w-1/2 0 p-4'>
+                                            <p>Edit</p>
+                                            </div>
+                                        </div>
+                                        </div>
+                <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
+                               
 
-          <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
-          <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-              <div className='w-3/4 flex'>
-                <div className='w-1/6 p-4'>
-                  <p>Sr. No</p>
-                </div>
-                <div className='w-5/6  p-4'>
-                  <p>Country<button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
-                </div>
-              </div>
-              <div className='w-1/6  flex'>
-                <div className='w-1/2  p-4'>
-                  <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
-                </div>
-                <div className='w-1/2 0 p-4'>
-                  <p>Edit</p>
-                </div>
-              </div>
-            </div>
-            <div className='w-full h-[450px] overflow-auto'>
-
-              {pageLoading && <div className='ml-11 mt-9'>
+                {pageLoading && <div className='ml-11 mt-9'>
                 <CircularProgress />
-              </div>}
-              {/* {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>} */}
-              {!pageLoading && existingCountries.map((item, index) => {
+                </div>}
+                {/* {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>} */}
+                {!pageLoading && existingCountries.map((item, index) => {
                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                  <div className='w-3/4 flex'>
+                    <div className='w-3/4 flex'>
                     <div className='w-1/6 p-4'>
-                      <p>{index + 1 + (currentPage - 1)*currentPages}</p>
+                        <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                     </div>
                     <div className='w-5/6  p-4'>
-                      <p>{item.country_name}</p>
+                        <p>{item.country_name}</p>
                     </div>
-                  </div>
-                  <div className='w-1/6  flex'>
+                    </div>
+                    <div className='w-1/6  flex'>
                     <div className='w-1/2  p-4'>
-                      <p>{item.sl}</p>
+                        <p>{item.sl}</p>
                     </div>
                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                      <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
-                      <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                        <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
+                        <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button>
                     </div>
-                  </div>
+                    </div>
                 </div>
-              })}
-              {/* we get all the existing countries here */}
+                })}
 
-            </div>
-          </div>
 
-          <div className='w-full h-12 flex justify-between justify-self-end px-6  fixed bottom-0 '>
+                
+                 </div>
+             </div>
+         </div>
+         <div className='w-full h-12 flex justify-between justify-self-end px-6  fixed bottom-0 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -589,6 +583,9 @@ const Country = () => {
                                 
                             </div>
                         </div>
+                        
+
+
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
                                <p className="text-gray-700">Items Per page</p>
@@ -641,52 +638,6 @@ const Country = () => {
                             </div>
                         </div> 
                     </div>
-        </div>
-
-      </div>
-
-      {/* modal goes here */}
-      <Modal open={isCountryDialogue}
-        fullWidth={true}
-        maxWidth={'md'} >
-        <div className='flex justify-center mt-[200px]'>
-          <div className="w-6/7  h-[250px] bg-white rounded-lg">
-            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-              <div className="mr-[410px] ml-[410px]">
-                <div className="text-[16px]">Add New Country</div>
-              </div>
-              <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-              </div>
-            </div>
-            <form onSubmit={handleSubmit}>
-              <div className="h-auto w-full mt-[5px] ">
-                <div className="flex gap-[48px] justify-center items-center">
-                  <div className=" space-y-[12px] py-[20px] px-[10px]">
-                    <div className="">
-                      <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                      <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-                        type="text"
-                        name="countryName"
-                        value={formValues.countryName}
-                        onChange={handleChange}
-                        autoComplete="off"
-                      />
-                      <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                {isLoading && <CircularProgress />}
-              </div>
-            </form>
-          </div>
-        </div>
-      </Modal>
     </div>
   )
 }
