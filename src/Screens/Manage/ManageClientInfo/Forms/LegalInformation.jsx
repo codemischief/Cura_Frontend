@@ -1,12 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
 
-const LegalInformation = () => {
+const LegalInformation = ({relationData}) => {
 
   const [country, setCountry] = useState([]);
   const [city, setCity] = useState([]);
   const [state, setState] = useState([]);
-  const [relation, setRelation] = useState([]);
+  // const [relation, setRelation] = useState([]);
 
   return (
     <div className="h-auto w-full">
@@ -99,9 +99,9 @@ const LegalInformation = () => {
             <div className="text-[14px]">Relation </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
               <option >Select Relation</option>
-              {relation && relation.map(item => (
-                <option key={item} value={item}>
-                  {item[1]}
+              {relationData && relationData.map(item => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
                 </option>
               ))}
             </select>
