@@ -482,11 +482,6 @@ const ManageClientInfo = () => {
                     "onlinemailid":"",
                     "onlinepwd":"",
                     "onlineclue":""
-                },
-                {
-                    "onlinemailid":"",
-                    "onlinepwd":"",
-                    "onlineclue":""
                 }
             ],
             "client_bank_info":{

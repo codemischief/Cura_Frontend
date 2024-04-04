@@ -2,12 +2,26 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import AddClientPortal from "./AddClientPortal";
 
-const ClientPortal = () => {
-
-  const [addField,setAddFeild] = useState([]);
+const ClientPortal = ({formValues,setFormValues}) => {
+  
+  // const [addField,setAddFeild] = useState([{
+  //   onlinemailid : "",
+  //   onlinepwd : "",
+  //   onlineclue : ""
+  // }]);
     const handleAdd = () =>{
-        const abc=[...addField,[]];
-        setAddFeild(abc);
+        // const abc=[...formValues.client_access,{
+        //   onlinemailid : "",
+        //   onlinepwd : "",
+        //   onlineclue : ""
+        // }];
+        setFormValues({...formValues,client_access : [
+          ...formValues.client_access, {
+            onlinemailid : "",
+            onlinepwd : "",
+            onlineclue : ""
+          }
+        ]})
     }
 
   return (
@@ -27,23 +41,9 @@ const ClientPortal = () => {
             Online Clue
           </div>
         </div>
-        <div className="w-full h-[40px] flex border-[#CBCBCB] border-b-[1px]">
-          <div className="w-[7%] h-full p-3 text-[11px]" >
-            1
-          </div>
-          <div className="w-[31%] h-full py-1 px-3 text-[11px]" >
-            <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-          </div>
-          <div className="w-[31%] h-full py-1 px-3 text-[11px]" >
-            <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-          </div>
-          <div className="w-[31%] h-full py-1 px-3 text-[11px]" >
-            <input className='w-full h-full bg-[#F5F5F5]' type="text" />
-          </div>
-        </div>
-        {addField.map((data, index) => {
+        {formValues.client_access.map((data, index) => {
           return (
-            <AddClientPortal index={index} />
+            <AddClientPortal index={index} formValues={formValues} setFormValues={setFormValues}/>
           )
         })}
         <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
