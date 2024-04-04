@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const notFound = () => {
   return (
-    <div className="flex gap-[70px] mt-[28px]">
+    <div className="flex gap-[70px] p-5 bg-[#F5F5F5] h-screen">
       <img className="w-[152px] h-[64px] ml-[28px] " src={Logo} alt="company-logo" />
       <div className="bg-white w-[800px] h-[530px] rounded-lg flex flex-col justify-center items-center gap-[120px]">
         <div className="text-[40px]">
