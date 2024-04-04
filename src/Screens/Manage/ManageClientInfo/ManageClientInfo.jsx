@@ -49,7 +49,7 @@ const ManageClientInfo = () => {
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
-
+    const [tenentOfData,setTenentOfData] = useState([])
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [ClientNameInput, setClientNameInput] = useState("");
     const [ClientTypeFilter, setClientTypeFilter] = useState(false);
@@ -69,6 +69,7 @@ const ManageClientInfo = () => {
     const [idFilter, setIdFilter] = useState(false);
     const [idInput, setIdInput] = useState("");
     const [sortField,setSortField] = useState("id")
+    const [relationData,setRelationData] = useState([]);
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -154,7 +155,15 @@ const ManageClientInfo = () => {
             setAllEntites(result.data);
         }
     }
-
+    const fetchRelation = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getRelationAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setRelationData(res.data)
+    }
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
@@ -353,7 +362,10 @@ const ManageClientInfo = () => {
     useEffect(() => {
         fetchData();
         fetchCountryData();
+        fetchClientTypeData();
+        fetchTenentOfData();
         fetchEntitiesData();
+        fetchRelation();
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
@@ -389,48 +401,26 @@ const ManageClientInfo = () => {
     const handleClose = () => {
         setIsClientInfoDialogue(false);
     }
-
-    const addEmployee = async () => {
-        if (!validate()) {
-            return;
-        }
-        // setPageLoading(true);
+    const [clientTypeData,setClientTypeData] = useState([]);
+    const fetchClientTypeData = async () => {
         const data = {
-            "user_id": 1234,
-            "employeename": formValues.employeeName,
-            "employeeid": formValues.employeeId,
-            "userid": 1236,
-            "roleid": formValues.role,
-            "dateofjoining": formValues.doj,
-            "dob": formValues.dob,
-            "panno": formValues.panNo,
-            "status": false,
-            "phoneno": Number(formValues.phNo),
-            "email": formValues.email,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": Number(formValues.state),
-            "country": Number(formValues.country),
-            "zip": formValues.zipCode,
-            "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
-            "isdeleted": false,
-            "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob,
-            "lastdateofworking": formValues.lastDOW,
-            "designation": formValues.designation
+            "user_id": 1234
         }
-        const response = await APIService.addEmployee(data);
+        const response = await APIService.getClientTypeAdmin(data);
+        const res = await response.json()
+        console.log(res)
+        setClientTypeData(res.data)
 
-        const result = (await response.json())
-        setIsClientInfoDialogue(false);
-        openAddSuccess();
-        console.log(data);
-        console.log(result);
     }
-
+    const fetchTenentOfData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getTenantOfPropertyAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setTenentOfData(res.data)
+    }
     const [selectedDialog, setSelectedDialogue] = useState(1);
    
     const selectFirst = () => {
@@ -454,6 +444,7 @@ const ManageClientInfo = () => {
     }
     const initialValues = {
             "client_info": {
+                "clientname" : "",
                 "firstname":"",
                 "middlename":"",
                 "lastname":"",
@@ -820,6 +811,9 @@ const ManageClientInfo = () => {
             setShowEditSuccess(false);
         }, 2000)
         fetchData();
+    }
+    const handleAddClientInfo = () => {
+        console.log(formValues);
     }
     return (
         <div className='h-screen'>
@@ -1526,7 +1520,7 @@ const ManageClientInfo = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
+                    <div className="w-[1200px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Client</div>
@@ -1554,14 +1548,14 @@ const ManageClientInfo = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} handleChange={handleChange}/>}
-                        {selectedDialog == 2 && <ClientPortal formValues={formValues} handleChange={handleChange}/>}
-                        {selectedDialog == 3 && <BankDetails formValues={formValues} handleChange={handleChange}/>}
-                        {selectedDialog == 4 && <LegalInformation formValues={formValues} handleChange={handleChange}/>}
-                        {selectedDialog == 5 && <POADetails formValues={formValues} handleChange={handleChange}/>}
+                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities}/>}
+                        {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues}/>}
+                        {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
+                        {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData}/>}
+                        {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientInfo} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 

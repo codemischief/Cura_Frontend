@@ -1,13 +1,31 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
+import { APIService } from '../../../../services/API';
+const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData,tenentOfData,allEntities}) => {
+    const [Salutation, setSalutation] = useState([
+        {
+           id : 1,
+           name : "Mr"
+        },
+        {
+           id : 2,
+           name : "Mrs"
+        },
+        {
+            id: 3,
+            name : "Miss"
+        },
+        {
+            id : 4,
+            name : "Master"
+        }
 
-const ClientInformation = (props) => {
-    const [Salutation, setSalutation] = useState([]);
+    ]);
     const [clientProperty, setClientProperty] = useState([]);
     const [country, setCountry] = useState([]);
     const [city, setCity] = useState([]);
-    const [clientType, setClientType] = useState([]);
+    // const [clientType, setClientType] = useState([]);
     const [tenetOf, setTenetOf] = useState([]);
     const [state, setState] = useState([]);
     const [source, setSource] = useState([]);
@@ -20,17 +38,25 @@ const ClientInformation = (props) => {
         }})
         // setFormValues({ ...formValues, a.[name] : value });
     };
+
+    useEffect(() => {
+        
+    },[])
     return (
         <div className="h-auto w-full">
             <div className="flex gap-10 justify-center items-center">
                 <div className=" space-y-2 ">
                     <div className="">
                         <div className="text-[14px]">Salutation <label className="text-red-500">*</label></div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="salutation" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="salutation"
+                        value={formValues.client_info.salutation}
+                        onChange={
+                            handleChange
+                        }>
                             <option >Select Salutation</option>
                             {Salutation && Salutation.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
+                                <option key={item.id} value={item.name}>
+                                    {item.name}
                                 </option>
                             ))}
                         </select>
@@ -38,7 +64,7 @@ const ClientInformation = (props) => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Client Name <label className="text-red-500">*</label></div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="clientName" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="clientname" value={formValues.client_info.clientname} onChange={handleChange}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
@@ -55,10 +81,19 @@ const ClientInformation = (props) => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
+                            (e) => {
+                                setFormValues({...formValues, client_info : {
+                                    ...formValues.client_info,
+                                    country : e.target.value
+                                }})
+                            } 
+                        }
+                        value={formValues.client_info.country}
+                        >
                             <option >Select Country</option>
-                            {country && country.map(item => (
-                                <option key={item} value={item}>
+                            {allCountry && allCountry.map(item => (
+                                <option key={item[0]} value={item[0]}>
                                     {item[1]}
                                 </option>
                             ))}
@@ -79,23 +114,30 @@ const ClientInformation = (props) => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Address Line 1 </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline1" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline1" value={formValues.client_info.addressline1} onChange={handleChange}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Pin Code </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="pincode" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" onChange={handleChange} value={formValues.client_info.zip}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                 </div>
                 <div className="space-y-2">
                     <div className="">
                         <div className="text-[14px]">Client Type <label className="text-red-500">*</label></div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.clienttype} onChange={
+                            (e) => {
+                                setFormValues({...formValues, client_info : {
+                                    ...formValues.client_info,
+                                    clienttype : e.target.value
+                                }})
+                            }
+                        } >
                             <option >Select Client Type </option>
-                            {city && city.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
+                            {clientTypeData && clientTypeData.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
                                 </option>
                             ))}
                         </select>
@@ -103,11 +145,18 @@ const ClientInformation = (props) => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Tenent Of </div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentOf" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenentof} onChange={
+                            (e) => {
+                                setFormValues({...formValues, client_info : {
+                                    ...formValues.client_info,
+                                    tenentof : e.target.value
+                                }})
+                            }
+                        }>
                             <option >Select tenent of </option>
-                            {tenetOf && tenetOf.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
+                            {tenentOfData && tenentOfData.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.projectname}
                                 </option>
                             ))}
                         </select>
@@ -137,47 +186,54 @@ const ClientInformation = (props) => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Address Line 2 </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="add2" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline2" onChange={handleChange} value={formValues.client_info.addressline2}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                 </div>
                 <div className="space-y-2">
                     <div className="">
                         <div className="text-[14px]">Email 1 <label className="text-red-500">*</label></div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email1" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email1" onChange={handleChange} value={formValues.client_info.email1}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Mobile Phone </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="mobilePhone" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="mobilephone" onChange={handleChange} value={formValues.client_info.mobilephone}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Work Phone </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="workPhone" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="workphone" onChange={handleChange} value={formValues.client_info.workphone}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Local Contact 1 Name </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localContact1Name" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact1name" onChange={handleChange} value={formValues.client_info.localcontact1name}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Local Contact 1 Details </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localContact1Details" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact1details" onChange={handleChange} value={formValues.client_info.localcontact1details}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Local Contact 1 Address </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localContact1Address" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact1address" onChange={handleChange} value={formValues.client_info.localcontact1address}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Source <label className="text-red-500">*</label></div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="source" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="source" value={formValues.client_info.entityid}onChange={
+                            (e) => {
+                                setFormValues({...formValues, client_info : {
+                                    ...formValues.client_info,
+                                    entityid : e.target.value
+                                }})
+                            }
+                        }>
                             <option >Select entity </option>
-                            {source && source.map(item => (
-                                <option key={item} value={item}>
+                            {allEntities && allEntities.map(item => (
+                                <option key={item[0]} value={item[0]}>
                                     {item[1]}
                                 </option>
                             ))}
@@ -188,12 +244,12 @@ const ClientInformation = (props) => {
                 <div className="space-y-2">
                     <div className="">
                         <div className="text-[14px]">Email 2 </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email2" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email2" onChange={handleChange} value={formValues.client_info.email2}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">homePhone </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="homePhone" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="homephone" onChange={handleChange} value={formValues.client_info.homephone}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
@@ -210,22 +266,22 @@ const ClientInformation = (props) => {
                     </div>
                     <div className="">
                         <div className="text-[14px]">Local Contact 2 Name </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localContact2Name" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact2name" onChange={handleChange} value={formValues.client_info.localcontact2name}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Local Contact 2 Details </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localContact2Details" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact2details" onChange={handleChange} value={formValues.client_info.localcontact2details}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Local Contact 2 Address </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localContact2Address" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact2address" onChange={handleChange} value={formValues.client_info.localcontact2address}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">Comments </div>
-                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comments" />
+                        <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comments" onChange={handleChange} value={formValues.client_info.comments}/>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                 </div>
