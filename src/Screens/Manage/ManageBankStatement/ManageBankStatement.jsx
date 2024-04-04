@@ -1243,7 +1243,7 @@ const ManageBankStatement = () => {
                         </div>
                         </div>
 
-                         <div className="w-full h-[calc(100vh_-_14rem)] ">
+                         <div className="w-full h-[calc(100vh_-_14rem)] text-[12px]">
                                
                          <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-[85%] flex'>
