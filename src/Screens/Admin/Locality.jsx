@@ -837,7 +837,7 @@ const Locality = () => {
 
 
                         {/* main component */}
-                        <div className='h-[calc(100vh_-_14rem)] w-full '>
+                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                             {/* clumns names */}
                                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                                     <div className='w-[85%] flex'>
