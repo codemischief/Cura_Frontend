@@ -484,7 +484,7 @@ const ManageClientInfo = () => {
                     "onlineclue":""
                 }
             ],
-            "client_bank_info":{
+            "client_bank_info":[{
                 "bankname":"",
                 "bankbranch":"",
                 "bankcity":"",
@@ -494,7 +494,7 @@ const ManageClientInfo = () => {
                 "bankmicrcode":"",
                 "bankaccounttype":"",
                 "description":""
-            },
+            }],
             "client_legal_info":{
                 "fulllegalname":"",
                 "panno":"",
