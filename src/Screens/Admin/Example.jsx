@@ -541,7 +541,7 @@ const Example = () => {
                                         </div>
                                         </div>
                 <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
-                                <div className='w-full h-[450px] overflow-auto'>
+                               
 
                 {pageLoading && <div className='ml-11 mt-9'>
                 <CircularProgress />
@@ -570,7 +570,7 @@ const Example = () => {
                 })}
 
 
-                </div>
+                
                  </div>
              </div>
          </div>
