@@ -14,19 +14,20 @@ const Login = () => {
 
   const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
   const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
-
+  const [buttonLoading,setButtonLoading] = useState(false);
   const { setAuth } = useAuth();
   const location = useLocation();
 
   const mockPostResponse = async () => {
-
+    setButtonLoading(true);
     const username = formValues.username;
     // var salt = bcrypt.genSaltSync(12);
     // var password = bcrypt.hashSync(formValues.password, salt);
     const password = formValues.password;
     const company_key = formValues.comkey;
-
+    
     const response = await authService.login({ username, password, company_key });
+    setButtonLoading(false);
     if (response.result == "success" && response.role_id == "1") {
       navigate("/dashboard")
     } else if (response.result == "success" && response.role_id == "2") {
@@ -36,7 +37,7 @@ const Login = () => {
       setIsError(true)
       setErrorMessage(response.message);
     }
-
+    
   }
 
 
@@ -234,7 +235,7 @@ const Login = () => {
             {/* forgot section */}
             <div className="flex flex-col items-center justify-center gap-[10px]">
               <Link className="text-[#004DD7] text-[18px] cursor-pointer" to="/">Forgot Password</Link>
-              <button className="bg-[#004DD7] w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer">Login</button>
+              <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed": "bg-[#004DD7]"} w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer`}>Login</button>
             </div>
 
           </form>
