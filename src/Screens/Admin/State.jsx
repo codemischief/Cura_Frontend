@@ -242,14 +242,12 @@ const State = () => {
       const [countryFilter,setCountryFilter] = useState(false)
       const [countryFilterInput,setCountryFilterInput] = useState("");
     return (
-        <div>
-            <Navbar />
-            <div className='flex-col w-full h-full  bg-white'>
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+        <div className='h-screen'>
+           <Navbar/>
+           
+
+           <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
+                < div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 '>
                                 <Link to="/dashboard"><img src={backLink} /></Link>
@@ -284,6 +282,7 @@ const State = () => {
                             </div>
 
                         </div>
+                        
                         <div className='h-12 w-full bg-white flex justify-between'>
                              <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -399,9 +398,8 @@ const State = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
+                        <div className='h-[calc(100vh_-_14rem)] w-full  text-[12px]'>
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className='w-3/4 flex'>
                                 <div className='w-[10%] p-4'>
@@ -423,10 +421,12 @@ const State = () => {
                                 </div>
                             </div>
                         </div>
-                        {pageLoading && <div className='ml-11 mt-9'>
-                <CircularProgress />
-              </div>}
-                        <div className='w-full h-[430px] overflow-auto'>
+
+
+
+
+
+                        <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                             {!pageLoading && existingState
                             .map((item, index) => {
                                 return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
@@ -455,8 +455,19 @@ const State = () => {
                             {/* we get all the existing cities here */}
 
                         </div>
-                    </div>
-                    <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
+
+                        </div>
+
+           </div>
+
+
+
+
+
+
+
+
+           <div className='w-full h-12 flex justify-between px-6 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
@@ -516,12 +527,9 @@ const State = () => {
                             </div>
                         </div> 
                     </div>
-                </div>
 
-            </div>
 
-            {/* modal goes here */}
-            <Modal open={isStateDialogue}
+                    <Modal open={isStateDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[200px]'>
@@ -601,7 +609,7 @@ const State = () => {
                     </div>
                 </div>
             </Modal>
-        </div>
+        </div> 
     )
 }
 
