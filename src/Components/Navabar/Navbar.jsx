@@ -321,8 +321,8 @@ const Navbar = () => {
                <div className='ml-5 mt-4 flex-col space-y-4'>
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Client</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Client</Link></p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Property</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/manageclientinfo">Manage Client</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/manageclientproperty">Manage Client Property</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Invoice</p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Recipt</p>
                   </div> 
@@ -333,7 +333,7 @@ const Navbar = () => {
                <div className='ml-5 mt-4 flex-col space-y-4'>
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Order</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/managebuilder">Manage Order</Link></p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageorder">Manage Order</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Order Recipt</p>
                   </div>               
                </div>
