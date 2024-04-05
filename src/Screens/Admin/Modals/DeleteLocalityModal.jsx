@@ -22,7 +22,7 @@ const DeleteLocalityModal = (props) => {
                             <div className="text-[16px]">Delete</div>
                         </div>
                         <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                            <img onClick={() => {}} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                           <button onClick={props.handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button> 
                         </div>
                     </div>
                     <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">

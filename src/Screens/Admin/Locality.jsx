@@ -22,11 +22,13 @@ import EditLocalityModal from './Modals/EditLocalityModal';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 import DeleteLocalityModal from './Modals/DeleteLocalityModal';
 import FailureModal from '../../Components/modals/FailureModal';
+import SaveConfirmationLocality from './Modals/SaveConfirmationLocality';
 const Locality = () => {
     const menuRef = useRef();
     const [existingLocalities, setExistingLocalities] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
+    const [addConfirmation,setAddConfirmation] = useState(false)
     const [pageLoading, setPageLoading] = useState(false);
     const [totalItems, setTotalItems] = useState(0);
     const [downloadModal, setDownloadModal] = useState(false);
@@ -252,10 +254,15 @@ const Locality = () => {
         })
 
     }
-    const addLocality = async () => {
+    const handleAddLocality = () => {
         if (!validate()) {
             return;
         }
+        setIsLocalityDialogue(false);
+        setAddConfirmation(true);
+
+    }
+    const addLocality = async () => {
         const data = {
             "user_id": 1234,
             "cityid": formValues.city,
@@ -264,9 +271,11 @@ const Locality = () => {
         console.log(data);
         const response = await APIService.addLocality(data);
         const res = await response.json();
+        setAddConfirmation(false)
+
+        // console.log(res);
+
         
-        console.log(res);
-        setIsLocalityDialogue(false);
         if(res.result == "success") {
             openSuccess();
         }else {
@@ -610,6 +619,7 @@ const Locality = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
             {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} />}
+            {addConfirmation && <SaveConfirmationLocality handleClose={() => setAddConfirmation(false)} currentLocality={formValues.locality} addLocality={addLocality}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-7'>
                     {/* search component */}
                     <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -1100,7 +1110,7 @@ const Locality = () => {
                                 </div>
                             </div>
                             <div className=" flex justify-center items-center gap-[10px] ">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addLocality}>Add</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleAddLocality}>Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>
