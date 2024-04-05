@@ -407,7 +407,7 @@ const Prospect = () => {
                                     <div className='w-[25%]  px-4 py-3'>
 
                                     <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={personFilterInput}onChange={(e) => setPersonFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={personFilterInput}onChange={(e) => setPersonFilterInput(e.target.value)} />
                                         <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => {setPersonFilter((prev) => !prev)}}/></button>
                                     </div>
                                     {personFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -439,7 +439,7 @@ const Prospect = () => {
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
                                     <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)}/>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)}/>
                                         <button className='p-1' onClick={() => setSuburbFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {suburbFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -471,7 +471,7 @@ const Prospect = () => {
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
                                     <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput}onChange={(e) => setCityFilterInput(e.target.value)}/>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityFilterInput}onChange={(e) => setCityFilterInput(e.target.value)}/>
                                         <button className='p-1' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -503,7 +503,7 @@ const Prospect = () => {
                                     </div>
                                     <div className='w-[20%]  px-4 py-3'>
                                     <div className="w-[48%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={propertyLocationFilterInput}onChange={(e) => setPropertyLocationFilterInput(e.target.value)}/>
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={propertyLocationFilterInput}onChange={(e) => setPropertyLocationFilterInput(e.target.value)}/>
                                         <button className='p-1' onClick={() => setPropertyLocationFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {propertyLocationFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -535,7 +535,7 @@ const Prospect = () => {
                                     </div>
                                     <div className='w-[20%]  px-4 py-3'>
                                     <div className="w-[48%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={possibleServicesFilterInput} onChange={(e) => setPossibleServicesFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={possibleServicesFilterInput} onChange={(e) => setPossibleServicesFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setPossibleServicesFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {possibleServicesFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -570,7 +570,7 @@ const Prospect = () => {
                                 <div className='w-[15%] flex'>
                                     <div className='w-1/2  px-4 py-3'>
                                         <div className="w-full flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-8 bg-[#EBEBEB] rounded-[5px]" />
+                                            <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                     </div>

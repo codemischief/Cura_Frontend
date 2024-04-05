@@ -1011,7 +1011,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[10%]  p-3'>
                                     <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px]" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
+                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {modeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -1043,7 +1043,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[10%] p-3'>
                                     <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-12 rounded-[5px] bg-[#EBEBEB]" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)} />
+                                        <input className="w-12 rounded-[5px] bg-[#EBEBEB] text-[11px] pl-2" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         {dateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -1075,7 +1075,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[10%] p-3'>
                                     <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px]" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)} />
+                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         {typeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -1107,7 +1107,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[10%] p-3'>
                                     <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[16px] w-[16px]' /></button>
                                         {amountFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -1139,7 +1139,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[30%] p-3'>
                                     <div className='w-[29%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-[16px] w-[14px]' /></button>
                                         {particularsFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -1171,7 +1171,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[20%] p-3'>
                                     <div className='w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[20px]' /></button>
                                         {clientFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -1203,7 +1203,7 @@ const ManageBankStatement = () => {
                                 </div>
                                 <div className='w-[10%] p-3'>
                                     <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px]" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)} />
+                                        <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setCRFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         {crFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>

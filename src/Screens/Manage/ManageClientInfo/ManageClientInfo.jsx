@@ -998,7 +998,7 @@ const ManageCountryInfo = () => {
                                     </div>
                                     <div className='w-[12%]  flex p-3'>
                                         <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setClientNameInput(e.target.value)} />
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientNameInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {clientNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1031,7 +1031,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setClientTypeInput(e.target.value)} />
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientTypeInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {ClientTypeFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1064,7 +1064,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[9%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-11 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setTenentOfInput(e.target.value)} />
+                                            <input className="w-11 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setTenentOfInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {tenentOfFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1097,7 +1097,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setCountryInput(e.target.value)} />
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCountryInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {countryFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1130,7 +1130,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[7%]  flex p-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-7 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setCityInput(e.target.value)} />
+                                            <input className="w-7 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCityInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {cityFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1163,7 +1163,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[10%]  flex p-3'>
                                         <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPhoneInput(e.target.value)} />
+                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1196,7 +1196,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[14%]  flex p-3'>
                                         <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmailInput(e.target.value)} />
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1229,7 +1229,7 @@ const ManageCountryInfo = () => {
 
                                     <div className='w-[13%]  flex p-3'>
                                         <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setEmployeeNameInput(e.target.value)} />
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmployeeNameInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployeeNameFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {employeeNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1264,7 +1264,7 @@ const ManageCountryInfo = () => {
                                 <div className="w-[15%] flex">
                                     <div className='w-1/2  flex p-3'>
                                         <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setIdInput(e.target.value)} />
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                         </div>
                                         {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >

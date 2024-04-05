@@ -142,7 +142,7 @@ const Login = () => {
               <div className="space-y-[2px]">
                 <div className="text-[#505050] text-[18px]">Username</div>
                 <input
-                  className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050]"
+                  className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050] px-3 text-[12px]"
                   type="text"
                   name="username"
                   value={formValues.username}
@@ -155,7 +155,7 @@ const Login = () => {
                 <div className="text-[#505050] text-[18px] ">Password</div>
                 <div className="m-[0px] p-[0px] relative">
                   <input
-                    className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050]"
+                    className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050] px-3 text-[12px]"
                     name="password"
                     type={type1}
                     value={formValues.password}
@@ -191,7 +191,7 @@ const Login = () => {
                 <div className="text-[#505050] text-[18px]">Company Key</div>
                 <div className="m-[0px] p-[0px] relative">
                   <input
-                    className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050]"
+                    className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050] px-3 text-[12px]"
                     name="comkey"
                     type={type2}
                     value={formValues.comkey}
