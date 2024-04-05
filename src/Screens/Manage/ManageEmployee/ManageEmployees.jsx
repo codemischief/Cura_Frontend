@@ -242,6 +242,8 @@ const ManageEmployees = () => {
     useEffect(() => {
         fetchData();
         fetchCountryData();
+        fetchStateData(5)
+        fetchCityData("Maharashtra");
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
@@ -341,8 +343,8 @@ const ManageEmployees = () => {
         role: "",
         phNo: "",
         addressLine2: "",
-        country: "",
-        state: "",
+        country: 5,
+        state: "Maharashtra",
         city: "",
         suburb: "",
         zipCode: "",
@@ -1430,13 +1432,18 @@ const ManageEmployees = () => {
                                                 // fetchStateData(res);
                                             }}
                                         >
-                                            <option value="none" hidden={true}>Select a Country</option>
-                                            {allCountry && allCountry.map(item => (
-                                                <option value={item[0]} >
-                                                    {item[1]}
-                                                </option>
-
-                                            ))}
+                                            
+                                            {allCountry && allCountry.map(item => {
+                                                if(item[0] == 5) {
+                                                    return <option value={item[0]} selected>
+                                                       {item[1]}
+                                                    </option>
+                                                }else {
+                                                    return <option value={item[0]} >
+                                                        {item[1]}
+                                                    </option>
+                                                }
+})}
                                         </select>
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                     </div>
@@ -1455,13 +1462,20 @@ const ManageEmployees = () => {
 
                                             }}
                                         >
-                                            <option value="none" hidden={true}>Select a State</option>
-                                            {allState && allState.map(item => (
-                                                <option value={item[1]} >
-                                                    {item[1]}
-                                                </option>
+                                        
+                                            {allState && allState.map(item => {
+                                                if(item[0] === "Maharashtra") {
+                                                    return <option value={item[0]} selected>
+                                                              {item[0]}
+                                                        </option>
+                                                }else {
+                                                      return <option value={item[0]}>
+                                                        {item[0]}
+                                                      </option>
+                                               
+                                                }
 
-                                            ))}
+})}
                                         </select>
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                     </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
-const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData,tenentOfData,allEntities}) => {
+const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData,tenentOfData,allEntities,initialStates,initialCities}) => {
     const [Salutation, setSalutation] = useState([
         {
            id : 1,
@@ -24,11 +24,11 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
     ]);
     const [clientProperty, setClientProperty] = useState([]);
     const [country, setCountry] = useState([]);
-    const [allCity, setAllCity] = useState([]);
+    const [allCity, setAllCity] = useState(initialCities);
     // const [clientType, setClientType] = useState([]);
     const [tenetOf, setTenetOf] = useState([]);
     // const [state, setState] = useState([]);
-    const [allState,setAllState] = useState([]);
+    const [allState,setAllState] = useState(initialStates);
     const [source, setSource] = useState([]);
     const [employeeName, setEmployeeName] = useState([]);
     const handleChange = (e) => {
@@ -113,18 +113,25 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                         value={formValues.client_info.country}
                         >
                             <option >Select Country</option>
-                            {allCountry && allCountry.map(item => (
-                                <option key={item[0]} value={item[0]}>
+                            {allCountry && allCountry.map(item => {
+                                if(item[0] == 5) {
+                                    return <option key={item[0]} value={item[0]} selected>
                                     {item[1]}
                                 </option>
-                            ))}
+                                }else {
+                                    return <option key={item[0]} value={item[0]} >
+                                    {item[1]}
+                                </option>
+                                }
+                                
+})}
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[14px]">City <label className="text-red-500">*</label></div>
                         <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
-                            <option >Select City</option>
+                            <option value="none" hidden> Select A City</option>
                             {allCity && allCity.map(item => (
                                 <option key={item.id} value={item.id}>
                                     {item.city}
@@ -190,17 +197,25 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                     </div>
                     <div className="">
                         <div className="text-[14px]">State <label className="text-red-500">*</label></div>
+                        {/* <h1>{allState.length}</h1> */}
                         <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
                             (e) => {
                                 fetchCityData(e.target.value)
                             }
                         }>
-                            <option >Select State </option>
-                            {allState && allState.map(item => (
-                                <option key={item[0]} value={item[1]}>
-                                    {item[1]}
-                                </option>
-                            ))}
+                            {/* <option >Select State </option> */}
+
+                            {allState && allState.map(item => {
+                                if(item[0] == "Maharashtra") {
+                                   return <option key={item[0]} selected>
+                                          {item[0]}
+                                   </option>
+                                }else {
+                                    return <option key={item[0]}>
+                                        {item[0]}
+                                    </option>
+                                }
+})}
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>

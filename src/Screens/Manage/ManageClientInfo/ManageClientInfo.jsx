@@ -88,7 +88,7 @@ const ManageCountryInfo = () => {
     }
     const fetchStateData = async (id) => {
         console.log(id);
-        const data = { "user_id": 1234, "country_id": 5 };
+        const data = { "user_id": 1234, "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
@@ -365,6 +365,8 @@ const ManageCountryInfo = () => {
     useEffect(() => {
         fetchData();
         fetchCountryData();
+        fetchStateData(5);
+        fetchCityData("Maharashtra")
         fetchClientTypeData();
         fetchTenentOfData();
         fetchEntitiesData();
@@ -457,8 +459,8 @@ const ManageCountryInfo = () => {
                 "addressline2":"",
                 "suburb":"",
                 "city":"",
-                "state":"",
-                "country":null,
+                "state":"Maharashtra",
+                "country":5,
                 "zip":"",
                 "homephone":"",
                 "workphone":"",
@@ -1589,7 +1591,7 @@ const ManageCountryInfo = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} allState={allState}/>}
+                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} />}
                         {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry}/>}

@@ -1311,10 +1311,10 @@ const ManageBankStatement = () => {
                                             {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                         </div>
                                         <div className='w-[10%]  p-4'>
-                                            <p>{item.crdr === "CR                  " ? "Credit" : "Debit"}</p>
+                                            <p>{item.crdr === "CR" ? "Credit" : "Debit"}</p>
                                         </div>
                                         <div className='w-[10%]  p-4'>
-                                            <p>{item.amount}</p>
+                                            <p>{item.amount.toFixed(2)}</p>
                                         </div>
                                         <div className='w-[30%] break-all p-4 '>
                                             <p>{item.particulars}</p>
