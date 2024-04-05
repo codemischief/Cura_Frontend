@@ -8,6 +8,7 @@ import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
 import Edit from "../../../assets/edit.png";
+import Add from "./../../../assets/add.png";
 import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import searchIcon from "../../../assets/searchIcon.png";
@@ -41,7 +42,8 @@ const ManageBuilder = () => {
     const [totalItems, setTotalItems] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
     const [currentPages, setCurrentPages] = useState(15)
-    const [sortField, setSortField] = useState("id")
+    const [sortField, setSortField] = useState("id");
+    const [searchInput, setSearchInput] = useState("");
 
     const fetchUserId = async () => {
         const response = await authService.getUserId()
@@ -160,6 +162,52 @@ const ManageBuilder = () => {
         if (Array.isArray(result)) {
             setAllCity(result)
         }
+    }
+
+    const handleSearch = async () => {
+        setPageLoading(true);
+
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput
+        };
+        const response = await APIService.getProspects(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(result);
+        setExistingProspect(result);
+        setPageLoading(false);
+    }
+
+    const handleCloseSearch = async () => {
+        setPageLoading(true);
+        setSearchInput("");
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 1,
+            "pg_size": Number(currentPages),
+            "search_key": ""
+        };
+        const response = await APIService.getProspects(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(result);
+        setExistingProspect(result);
+        setPageLoading(false);
     }
 
     const deleteBuilder = async (item) => {
@@ -345,27 +393,33 @@ const ManageBuilder = () => {
                             <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
                         </div>
                         <div className='flex-col'>
-                            <h1>Manage Builder</h1>
-                            <p>Manage &gt; Manage Builder</p>
+                            <h1 className="text-[18px]">Manage Builder</h1>
+                            <p className="text-[14px]">Manage &gt; Manage Builder</p>
                         </div>
                     </div>
-                    <div className='flex space-x-2 items-center'>
+                    <div className='flex space-x-2 items-center relative'>
                         <div className='flex'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] px-2"
                                 type="text"
                                 placeholder="  Search"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
                             />
+                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                            <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                Add New Builder +
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                                <div className="flex items-center justify-center gap-4">
+                                    Add New Builder
+                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                </div>
                             </button>
                         </div>
 
@@ -375,12 +429,12 @@ const ManageBuilder = () => {
 
                 <div className='h-12 w-full flex'>
                     <div className="w-[85%] h-full flex">
-                        <div className='w-[5%] p-4'>
+                        <div className='w-[5%] p-3'>
                             {/* <p>Sr. </p> */}
                         </div>
-                        <div className='w-[25%]  p-4'>
-                            <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
+                        <div className='w-[25%]  p-3'>
+                            <div className='w-[46%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-20 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
                                 <button className='p-1' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                             {builderFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef} >
@@ -410,8 +464,8 @@ const ManageBuilder = () => {
                                 </div>
                             </div>}
                         </div>
-                        <div className='w-[15%]  p-4'>
-                            <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                        <div className='w-[15%]  p-3'>
+                            <div className='w-[64%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                 <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
                                 <button className='p-1' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
@@ -442,9 +496,9 @@ const ManageBuilder = () => {
                                 </div>
                             </div>}
                         </div>
-                        <div className='w-[15%]  p-4'>
-                            <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
+                        <div className='w-[15%]  p-3'>
+                            <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-16 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
                                 <button className='' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                             {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -474,9 +528,9 @@ const ManageBuilder = () => {
                                 </div>
                             </div>}
                         </div>
-                        <div className='w-[15%]  p-4'>
-                            <div className='w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-24 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }} />
+                        <div className='w-[15%]  p-3'>
+                            <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-16 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }} />
                                 <button className='' onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                             {suburbFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -515,9 +569,9 @@ const ManageBuilder = () => {
                         </div>
                     </div>
                     <div className="w-[15%]  h-full flex">
-                        <div className='w-1/2  p-4'>
+                        <div className='w-1/2  p-3'>
                             <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
+                                <input className="w-11 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
                                 <button className='' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                         </div>
@@ -563,7 +617,7 @@ const ManageBuilder = () => {
                 </div>
 
 
-                <div className='h-[calc(100vh_-_14rem)] w-full '>
+                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
 
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                         <div className='w-[85%] flex'>
@@ -583,10 +637,10 @@ const ManageBuilder = () => {
                                 <p>Suburb ↑↓</p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p>Contact</p>
+                                {/* <p>Contact</p> */}
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p>Projects</p>
+                                {/* <p>Projects</p> */}
                             </div>
                         </div>
                         <div className='w-[15%] flex'>
@@ -606,7 +660,7 @@ const ManageBuilder = () => {
                             <CircularProgress />
                         </div>}
                         {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {
-                            return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-[85%] flex'>
                                     <div className='w-[5%] p-4'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -717,10 +771,12 @@ const ManageBuilder = () => {
 
             <Modal open={isManageBuidlerDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[20px]'>
-                    <div className="w-[1100px] h-[600px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                maxWidth={'md'}
+                className='flex justify-center items-center'
+                 >
+                <div className='flex justify-center'>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Add New Builder</div>
                             </div>
@@ -733,45 +789,45 @@ const ManageBuilder = () => {
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Builder Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div>
+                                            <div className="text-[13px]">Builder Name<label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.builderName}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Phone 1<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                            <div className="text-[13px]">Phone 1 <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.phone1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Email 1<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.email1}</div>
+                                            <div className="text-[13px]">Email 1<label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
+                                            <div className="text-[13px]">Email 2</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Address 1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
+                                            <div className="text-[13px]">Address 1 <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.address1}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
+                                            <div className="text-[13px]">Address Line 2</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
                                             {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="country"
                                                 value={formValues.country}
                                                 defaultValue="Select Country"
@@ -779,7 +835,7 @@ const ManageBuilder = () => {
                                                     setselectedCountry(e.target.value);
                                                     fetchStateData(e);
                                                     setFormValues((existing) => {
-                                                        const newData = {...existing, country: e.target.value}
+                                                        const newData = { ...existing, country: e.target.value }
                                                         return newData;
                                                     })
                                                     // fetchStateData(res);
@@ -791,11 +847,11 @@ const ManageBuilder = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">State <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="state"
                                                 value={formValues.state}
                                                 defaultValue="Select State"
@@ -803,55 +859,55 @@ const ManageBuilder = () => {
                                                     setSelectedState(e.target.value);
                                                     fetchCityData(e)
                                                     setFormValues((existing) => {
-                                                        const newData = {...existing, state: e.target.value}
+                                                        const newData = { ...existing, state: e.target.value }
                                                         return newData;
                                                     })
                                                     // fetchCityData(selectedState);
                                                 }} >
                                                 {allState && allState.map(item => (
-                                                    <option  value={item}>
+                                                    <option value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" onChange={(e) => {
-                                               setFormValues((existing) => {
-                                                const newData = {...existing, city: e.target.value};
-                                                 return newData;
-                                               })
+                                            <div className="text-[13px]">City<label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" onChange={(e) => {
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, city: e.target.value };
+                                                    return newData;
+                                                })
                                             }}>
-                                            {allCity && allCity.map((item) => {
-                                                return <option value={item}>
-                                                      {item.city}
-                                                </option>
-                                                
-                                            })}
+                                                {allCity && allCity.map((item) => {
+                                                    return <option value={item}>
+                                                        {item.city}
+                                                    </option>
+
+                                                })}
                                             </select>
-                                           
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">ZIP Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
+                                            <div className="text-[13px]">ZIP Code</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Website</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="website" value={formValues.website} onChange={handleChange} />
+                                            <div className="text-[13px]">Website</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="website" value={formValues.website} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Comment</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
+                                            <div className="text-[13px]">Comment</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="mt-[10px] flex justify-center items-center gap-[10px]">
+                            <div className=" my-2 flex justify-center items-center gap-[10px]">
 
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
