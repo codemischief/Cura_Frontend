@@ -13,6 +13,7 @@ import searchIcon from "../../../assets/searchIcon.png";
 import Trash from "../../../assets/trash.png";
 import { APIService } from '../../../services/API';
 import Delete from './Delete';
+import Add from "./../../../assets/add.png";
 import EditManageStatement from "./EditManagePayments";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
@@ -967,8 +968,8 @@ const ManageBankStatement = () => {
                                     <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
                                 </div>
                                 <div className='flex-col'>
-                                    <h1>Manage Bank Statement</h1>
-                                    <p>Manage &gt; Manage Bank Statement</p>
+                                    <h1 className="text-[18px]">Manage Bank Statement</h1>
+                                    <p className="text-[14px]">Manage &gt; Manage Bank Statement</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -989,8 +990,11 @@ const ManageBankStatement = () => {
 
                                 <div>
                                     {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
-                                        Add New Bank Statement +
+                                    <button className="bg-[#004DD7] text-white h-[36px] w-[280px] rounded-lg" onClick={handleOpen}>
+                                        <div className="flex items-center justify-center gap-4">
+                                            Add New Bank Statement
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        </div>
                                     </button>
                                 </div>
 
