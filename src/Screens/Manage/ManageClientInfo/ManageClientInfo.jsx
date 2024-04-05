@@ -349,7 +349,7 @@ const ManageCountryInfo = () => {
             ],
             "filters": [],
             "sort_by": [sortField],
-            "order": field ? "asc" : "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity)
           };
