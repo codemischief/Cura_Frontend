@@ -1114,7 +1114,7 @@ const Payments = () => {
                                             <p>{item.paymentby}</p>
                                         </div>
                                         <div className='w-[10%] h-[50%] px-4 py-2 ml-[8px]'>
-                                            <p>{Math.round(item.amount * 100) / 100}</p>
+                                            <p>{item.amount.toFixed(2)}</p>
                                         </div>
                                         <div className='w-[10%] h-[50%] px-4 py-2 ml-[8px]'>
                                             <p>{item.paidon.split('T')[0]}</p>
