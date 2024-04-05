@@ -19,6 +19,8 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import EditManageEmployee from './EditManageEmployee';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import SaveConfirmationEmployee from './SaveConfirmationManageEmployee';
+import FailureModal from '../../../Components/modals/FailureModal';
 const ManageEmployees = () => {
 
     const menuRef = useRef();
@@ -65,6 +67,9 @@ const ManageEmployees = () => {
     const [statusInput,setStatusInput] = useState(""); 
     const [idFilter,setIdFilter] = useState(false); 
     const [idInput,setIdInput] = useState(""); 
+    const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
+    const [errorMessage,setErrorMessage] = useState("");
+    const [isFailureModal,setIsFailureModal] = useState(false)
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -283,9 +288,17 @@ const ManageEmployees = () => {
     const handleClose = () => {
         setIsEmployeeDialogue(false);
     }
+    const handleAddEmployee = () => {
+        if (!validate()) {
+            console.log('hu')
+            return;
+        }
+        setIsEmployeeDialogue(false);
+        setOpenAddConfirmation(true)
 
+    }
     const addEmployee = async () => {
-        console.log('clicked')
+        // console.log('clicked')
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
@@ -322,8 +335,16 @@ const ManageEmployees = () => {
         const response = await APIService.addEmployee(data);
 
         const result = (await response.json())
+        setOpenAddConfirmation(false);
+        console.log(result)
         setIsEmployeeDialogue(false);
-        openAddSuccess();
+        if(result.result == "success") {
+            openAddSuccess();
+        }else {
+            openFailureModal();
+            setErrorMessage(result.message)
+        }
+        
         console.log(data);
         console.log(result);
     }
@@ -628,6 +649,13 @@ const ManageEmployees = () => {
         }, 2000)
         fetchData();
     }
+    const openFailureModal = () => {
+        setIsFailureModal(true);
+        setTimeout(function () {
+            setIsFailureModal(false);
+        }, 2000)
+        fetchData();
+    }
     const openDeleteSuccess = () => {
         setShowDeleteSuccess(true);
         setTimeout(function () {
@@ -650,6 +678,8 @@ const ManageEmployees = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
+            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false) } currEmployee={formValues.employeeName} addEmployee={addEmployee}/>}
+            {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
             <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
@@ -1539,7 +1569,7 @@ const ManageEmployees = () => {
                         </div>
                         <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addEmployee} >Save</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddEmployee} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 

@@ -22,6 +22,7 @@ import EditLobModal from './Modals/EditLobModal';
 import SucessfullModal from "../../Components/modals/SucessfullModal"
 import FailureModal from '../../Components/modals/FailureModal';
 import DeleteLobModal from './Modals/DeleteLobModal';
+import SaveConfirmationLob from './Modals/SaveConfirmationLob';
 const LOB = () => {
     const menuRef = useRef();
     const [existingLOB, setExistingLOB] = useState([]);
@@ -34,6 +35,7 @@ const LOB = () => {
     const [lobError, setLobError] = useState("");
     const [currItem, setCurrItem] = useState({});
     const [sortField, setSortField] = useState("id");
+    const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
     // const [flag,setFlag] = useState(false);
     useEffect(() => {
         fetchData();
@@ -134,13 +136,20 @@ const LOB = () => {
         })
         setPageLoading(false);
     }
-    const addLob = async () => {
+    const handleAddLob  = () => {
         if (lobName == "") {
             setLobError("This Feild Is Mandatory");
             return;
         } else {
             setLobError("");
         }
+        setIsLobDialogue(false)
+        setOpenAddConfirmation(true);
+        // this is the validation logic
+
+    }
+    const addLob = async () => {
+        
         const data = {
             "user_id": 1234,
             "name": lobName,
@@ -148,6 +157,7 @@ const LOB = () => {
         const response = await APIService.addLob(data);
         const res = await response.json()
         console.log(res);
+        setOpenAddConfirmation(false);
         if (res.result == "success") {
             openSuccessModal();
         } else {
@@ -346,6 +356,7 @@ const LOB = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
+            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 {/* we need the first banner */}
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -637,7 +648,7 @@ const LOB = () => {
                             </div>
 
                             <div className="flex justify-center items-center gap-[10px] ">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addLob}>Add</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLob}>Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>
