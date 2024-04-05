@@ -37,7 +37,7 @@ const DeleteClientInfo = (props) => {
                         <p>Are you sure you want to delete ?</p>
                     </div>
                     <div className="my-5 flex justify-center items-center gap-[10px]">
-                        <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed" : "bg-red-700"} w-[100px] h-[35px]  text-white rounded-md`} onClick={handleDeleteClick}>Delete</button>
+                        <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled" : "bg-red-700"} w-[100px] h-[35px]  text-white rounded-md`} onClick={handleDeleteClick}>Delete</button>
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
                 </div>
