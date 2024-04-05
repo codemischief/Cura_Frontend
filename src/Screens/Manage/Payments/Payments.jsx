@@ -20,6 +20,8 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import EditPayments from './EditPayments';
 import Pdf from "../../../assets/pdf.png"
 import Excel from "../../../assets/excel.png"
+import SaveConfirmationPayments from './SaveConfirmationPayments';
+import FailureModal from '../../../Components/modals/FailureModal';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -34,6 +36,9 @@ const Payments = () => {
     const [showDelete, setShowDelete] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [sortField,setSortField] = useState("id");
+    const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
+    const [errorMessage,setErrorMessage] = useState("");
+    const [isFailureModal,setIsFailureModal] = useState(false);
     const openDownload = () => {
         setDownloadModal(true);
     }
@@ -258,12 +263,16 @@ const Payments = () => {
         tds: "",
         professiontax: "",
     };
-
-    const addPayment = async () => {
-
+    const handleAddPayment = () => {
         if (!validate()) {
             return;
         }
+        setIsPaymentsDialogue(false)
+        setOpenAddConfirmation(true)
+    }
+    const addPayment = async () => {
+
+        
 
         const data = {
             "user_id": 1234,
@@ -287,11 +296,19 @@ const Payments = () => {
         // console.log(data);
         const response = await APIService.addPayment(data);
         const result = await response.json();
+        setOpenAddConfirmation(false)
         setIsPaymentsDialogue(false);
-        openSuccess();
-
+        if(result.result == "success") {
+            openSuccess();
+        }else {
+            setErrorMessage(result.message)
+            openFailure();
+        }
+        
+        fetchData();
         // console.log(result);
     }
+    
     const deletePayments = async (id) => {
         console.log(id);
         const data = {
@@ -539,6 +556,12 @@ const Payments = () => {
             setShowSuccess(false);
         }, 2000)
     }
+    const openFailure  = () => {
+        setIsFailureModal(true);
+        setTimeout(function () {
+            setIsFailureModal(false);
+        }, 2000)
+    }
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const openEditSuccess = () => {
         setIsEditDialogue(false);
@@ -654,6 +677,8 @@ const Payments = () => {
             <Navbar/>
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Payments" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
+            {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPayment={formValues.paymentby} addPayment={addPayment}/>}
+            {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage}/>}
             <div className='h-[calc(100vh_-_14rem)] w-full px-10'>
                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
@@ -1318,7 +1343,7 @@ const Payments = () => {
 
                         <div className="flex flex-col items-center gap-2">
                             <div className=" mb-2 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addPayment}>Add</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleAddPayment}>Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>
