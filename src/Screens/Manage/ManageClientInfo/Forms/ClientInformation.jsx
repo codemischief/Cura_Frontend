@@ -24,10 +24,11 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
     ]);
     const [clientProperty, setClientProperty] = useState([]);
     const [country, setCountry] = useState([]);
-    const [city, setCity] = useState([]);
+    const [allCity, setAllCity] = useState([]);
     // const [clientType, setClientType] = useState([]);
     const [tenetOf, setTenetOf] = useState([]);
-    const [state, setState] = useState([]);
+    // const [state, setState] = useState([]);
+    const [allState,setAllState] = useState([]);
     const [source, setSource] = useState([]);
     const [employeeName, setEmployeeName] = useState([]);
     const handleChange = (e) => {
@@ -38,7 +39,26 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
         }})
         // setFormValues({ ...formValues, a.[name] : value });
     };
-
+    const fetchStateData = async (id) => {
+        console.log(id);
+        const data = { "user_id": 1234, "country_id": id };
+        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const response = await APIService.getState(data);
+        const result = (await response.json()).data;
+        console.log(result)
+        if (Array.isArray(result)) {
+            setAllState(result)
+        }
+    } 
+    const fetchCityData = async (id) => {
+        const data = { "user_id": 1234, "state_name": id };
+        const response = await APIService.getCities(data);
+        const result = (await response.json()).data;
+        console.log(result);
+        if (Array.isArray(result)) {
+            setAllCity(result)
+        }
+    }
     useEffect(() => {
         
     },[])
@@ -87,6 +107,7 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                                     ...formValues.client_info,
                                     country : e.target.value
                                 }})
+                                fetchStateData(e.target.value)
                             } 
                         }
                         value={formValues.client_info.country}
@@ -104,9 +125,9 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                         <div className="text-[14px]">City <label className="text-red-500">*</label></div>
                         <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
                             <option >Select City</option>
-                            {city && city.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
+                            {allCity && allCity.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.city}
                                 </option>
                             ))}
                         </select>
@@ -169,10 +190,14 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                     </div>
                     <div className="">
                         <div className="text-[14px]">State <label className="text-red-500">*</label></div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
+                            (e) => {
+                                fetchCityData(e.target.value)
+                            }
+                        }>
                             <option >Select State </option>
-                            {state && state.map(item => (
-                                <option key={item} value={item}>
+                            {allState && allState.map(item => (
+                                <option key={item[0]} value={item[1]}>
                                     {item[1]}
                                 </option>
                             ))}
