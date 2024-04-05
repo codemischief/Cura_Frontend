@@ -283,7 +283,10 @@ const ManageEmployees = () => {
     }
 
     const addEmployee = async () => {
+        console.log('clicked')
+        console.log(formValues)
         if (!validate()) {
+            console.log('hu')
             return;
         }
         // setPageLoading(true);
@@ -364,11 +367,14 @@ const ManageEmployees = () => {
             })
             res = false;
         } else {
+            console.log('issue is in empname')
             setFormErrors((existing) => {
                 return { ...existing, employeeName: "" }
             })
         }
+        console.log('employee ok')
         if (!formValues.panNo) {
+            console.log('issue is in panno')
             setFormErrors((existing) => {
                 return { ...existing, panNo: "Enter Pan Number" }
             })
@@ -378,7 +384,9 @@ const ManageEmployees = () => {
                 return { ...existing, panNo: "" }
             })
         }
+        console.log('panno ok')
         if (!formValues.doj) {
+            console.log('issue is in doj')
             setFormErrors((existing) => {
                 return { ...existing, doj: "Enter date of joining" }
             })
@@ -388,7 +396,9 @@ const ManageEmployees = () => {
                 return { ...existing, doj: "" }
             })
         }
+        console.log('date of joining okay')
         if (!formValues.designation) {
+            console.log('issue is in designation')
             setFormErrors((existing) => {
                 return { ...existing, designation: "Enter Designation" }
             })
@@ -398,7 +408,9 @@ const ManageEmployees = () => {
                 return { ...existing, designation: "" }
             })
         }
+        console.log('designation ok')
         if (!formValues.email) {
+            console.log('issue is in email')
             setFormErrors((existing) => {
                 return { ...existing, email: "Enter email address" }
             })
@@ -408,7 +420,9 @@ const ManageEmployees = () => {
                 return { ...existing, email: "" }
             })
         }
+        console.log('email ok')
         if (!formValues.employeeId) {
+            console.log('issue is in empid')
             setFormErrors((existing) => {
                 return { ...existing, employeeId: "Enter Employee Id" }
             })
@@ -418,7 +432,9 @@ const ManageEmployees = () => {
                 return { ...existing, employeeId: "" }
             })
         }
+        console.log('employeeId ok')
         if (!formValues.lob) {
+            console.log('issue is in lob')
             setFormErrors((existing) => {
                 return { ...existing, lob: "Select LOB" }
             })
@@ -428,7 +444,9 @@ const ManageEmployees = () => {
                 return { ...existing, lob: "" }
             })
         }
+        console.log('lob ok')
         if (!formValues.dob) {
+            console.log('issue is in dob')
             setFormErrors((existing) => {
                 return { ...existing, dob: "enter date of birth" }
             })
@@ -438,7 +456,9 @@ const ManageEmployees = () => {
                 return { ...existing, dob: "" }
             })
         }
+        console.log('dob ok')
         if (!formValues.role) {
+            console.log('issue is in role')
             setFormErrors((existing) => {
                 return { ...existing, role: "Select Role" }
             })
@@ -448,7 +468,9 @@ const ManageEmployees = () => {
                 return { ...existing, role: "" }
             })
         }
+        console.log('role ok')
         if (!formValues.phNo) {
+            console.log('issue is in phoneno')
             setFormErrors((existing) => {
                 return { ...existing, phNo: "Enter phone number" }
             })
@@ -458,7 +480,9 @@ const ManageEmployees = () => {
                 return { ...existing, phNo: "" }
             })
         }
+        console.log('phoneno ok')
         if (!formValues.country) {
+            console.log('issue is in country')
             setFormErrors((existing) => {
                 return { ...existing, country: "Select country" }
             })
@@ -468,7 +492,9 @@ const ManageEmployees = () => {
                 return { ...existing, country: "" }
             })
         }
+        console.log('country ok')
         if (formValues.state == "") {
+            console.log('issue is in state')
             setFormErrors((existing) => {
                 return { ...existing, state: "Select state" }
             })
@@ -478,7 +504,9 @@ const ManageEmployees = () => {
                 return { ...existing, state: "" }
             })
         }
+        console.log('state ok')
         if (!formValues.city) {
+            console.log('issue is in city')
             setFormErrors((existing) => {
                 return { ...existing, city: "Select city" }
             })
@@ -488,17 +516,9 @@ const ManageEmployees = () => {
                 return { ...existing, city: "" }
             })
         }
-        if (!formValues.suburb) {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "Enter suburb" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "" }
-            })
-        }
+
         if (!formValues.entity) {
+            console.log('issue is in entity')
             setFormErrors((existing) => {
                 return { ...existing, entity: "Select Entity" }
             })
@@ -508,6 +528,8 @@ const ManageEmployees = () => {
                 return { ...existing, entity: "" }
             })
         }
+
+
         return res;
     }
 
@@ -1503,7 +1525,7 @@ const ManageEmployees = () => {
                         </div>
                         <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addEmployee} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addEmployee} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 
