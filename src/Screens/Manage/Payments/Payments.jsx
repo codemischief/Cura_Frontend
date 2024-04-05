@@ -1034,7 +1034,7 @@ const Payments = () => {
                         </div>
 
 
-                        <div className='h-[calc(100vh_-_14rem)] w-full'>
+                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                             <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                                 <div className='w-[85%] flex'>
                                     <div className='w-[5%] p-4'>
