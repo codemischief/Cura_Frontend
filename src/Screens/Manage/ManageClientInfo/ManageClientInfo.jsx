@@ -791,8 +791,9 @@ const ManageCountryInfo = () => {
         setShowAddSuccess(true);
         setTimeout(function () {
             setShowAddSuccess(false);
+            fetchData();
         }, 2000)
-        fetchData();
+        
     }
     const openDeleteSuccess = () => {
         setShowDeleteSuccess(true);
@@ -904,10 +905,10 @@ const ManageCountryInfo = () => {
             }	
         };
         const response = await APIService.addClientInfo(data)
-        const res = await response.json()
-        console.log(res)
+        const res = await response.json();
+        // console.log(res)
         if(res.result == 'success') {
-            console.log('here')
+           
            setIsClientInfoDialogue(false);
            openAddSuccess();
            
