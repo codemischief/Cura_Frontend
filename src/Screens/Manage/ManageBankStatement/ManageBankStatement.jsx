@@ -58,7 +58,7 @@ const ManageBankStatement = () => {
     const [filterArray, setFilterArray] = useState([["modeofpayment", "contains", ""], ["date", "contains", ""], ["crdr", "contains", ""], ["amount", "contains", ""],["particulars", "contains", ""],["clientid", "contains", ""]]);
     const [sortField, setSortField] = useState("id");
     const [isSearchOn, setIsSearchOn] = useState(false);
-
+    
     // const [selectedBuilder,setSelectedBuilder] = useState();
   
     const getEmployees = async () => {
@@ -244,11 +244,11 @@ const ManageBankStatement = () => {
             }
         }
         const data = {
-            "user_id": userId || 1234,
+            "user_id":  1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
             "filters": tempFilters,
             "sort_by": [sortField],
-            "order": "asc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
@@ -274,7 +274,7 @@ const ManageBankStatement = () => {
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
             "filters": tempFilters,
             "sort_by": [sortField],
-            "order": "asc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(number),
             "search_key": isSearchOn ? searchQuery : ""
@@ -557,15 +557,15 @@ const ManageBankStatement = () => {
         XLSX.writeFile(workbook, "BankStatement.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
-    const [flag, setFlag] = useState(true);
+    const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
         setPageLoading(true);
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": searchQuery
