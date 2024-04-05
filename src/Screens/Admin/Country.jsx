@@ -21,6 +21,7 @@ import { APIService } from '../../services/API';
 import EditCountryModal from './Modals/EditCountryModal';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
+import SaveConfirmationCountry from './Modals/SaveConfirmationCountry';
 const Country = () => {
   // we have the module here
   const menuRef = useRef()
@@ -41,6 +42,7 @@ const Country = () => {
   const [sortField, setSortField] = useState("id")
   const [flag, setFlag] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
   // const [flag,setFlag] = useState(false);
   const fetchUserId = async () => {
     const response = await authService.getUserId();
@@ -163,6 +165,7 @@ const Country = () => {
   }
 
   const addCountry = async () => {
+    
     const data = { "user_id": userId || 1234, "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
     const res = await response.json();
@@ -174,6 +177,7 @@ const Country = () => {
     //   "role_id": 1,
     //   "data": []
     // }
+    setOpenAddConfirmation(false)
     if (res.result == "success") {
       setIsLoading(false);
       openSuccessModal();
@@ -229,8 +233,10 @@ const Country = () => {
     if (formValues.countryName == "") {
       return;
     }
-    setIsLoading(true);
-    addCountry();
+    setCurrentCountry(formValues.countryName)
+    setIsCountryDialogue(false);
+    setOpenAddConfirmation(true);
+    // addCountry();
   };
 
   const [isCountryDialogue, setIsCountryDialogue] = React.useState(false);
@@ -409,6 +415,7 @@ const Country = () => {
       <FailureModal isOpen={showFailure} message={failureMessage} />
       <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
       <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} />
+      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry}/>}
       <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
 
