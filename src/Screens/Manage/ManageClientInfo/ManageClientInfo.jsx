@@ -23,6 +23,7 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import DeleteClientInfo from './Modals/DeleteClientInfoModal';
 const ManageCountryInfo = () => {
 
     const menuRef = useRef();
@@ -70,6 +71,8 @@ const ManageCountryInfo = () => {
     const [idInput, setIdInput] = useState("");
     const [sortField,setSortField] = useState("id")
     const [relationData,setRelationData] = useState([]);
+    const [showDelete,setShowDelete] = useState(false);
+    const [buttonLoading,setButtonLoading] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -474,8 +477,8 @@ const ManageCountryInfo = () => {
                 "localcontact2details":"",
                 "includeinmailinglist":null,
                 "entityid":null,
-                "tenantof":null,
-                "tenantofproperty":null
+                "tenentof":null,
+                "tenentofproperty":null
             },
             "client_access":[
                 {
@@ -785,7 +788,6 @@ const ManageCountryInfo = () => {
         setPageLoading(false);
     }
     const openAddSuccess = () => {
-        // (false);
         setShowAddSuccess(true);
         setTimeout(function () {
             setShowAddSuccess(false);
@@ -807,13 +809,136 @@ const ManageCountryInfo = () => {
         }, 2000)
         fetchData();
     }
-    const handleAddClientInfo = () => {
+    const handleAddClientInfo = async () => {
+        setButtonLoading(true);
         console.log(formValues);
+        const temp = formValues.client_info.clientname.split(' ');
+        console.log(temp)
+        const  size = temp.length
+        var firstname = "";
+        var middlename = "";
+        var lastname = "";
+        if(size == 1) {
+           firstname = temp[0];
+        }else if(size == 2) {
+           firstname = temp[0]
+           lastname = temp[1]
+        }else if(size == 3) {
+            firstname = temp[0]
+            middlename = temp[1]
+            lastname = temp[2]
+        }
+        const data = {
+            "user_id": 1234,
+            "client_info": {
+                "firstname":firstname,
+                "middlename": middlename,
+                "lastname": lastname,
+                "salutation": formValues.client_info.salutation,
+                "clienttype": Number(formValues.client_info.clienttype),
+                "addressline1":formValues.client_info.addressline1,
+                "addressline2":formValues.client_info.addressline2,
+                "suburb":"sub",
+                "city":"Mumbai",
+                "state":"Maharashtra",
+                "country":5,
+                "zip":formValues.client_info.zip,
+                "homephone":formValues.client_info.homephone,
+                "workphone":formValues.client_info.workphone,
+                "mobilephone":formValues.client_info.mobilephone,
+                "email1":formValues.client_info.email1,
+                "email2":formValues.client_info.email2,
+                "employername":"Employer",
+                "comments":formValues.client_info.comments,
+                "photo":"efiufheu",
+                "onlineaccreated":false,
+                "localcontact1name":formValues.client_info.localcontact1name,
+                "localcontact1address":formValues.client_info.localcontact1address,
+                "localcontact1details":formValues.client_info.localcontact1details,
+                "localcontact2name":formValues.client_info.localcontact2name,
+                "localcontact2address":formValues.client_info.localcontact2address,
+                "localcontact2details":formValues.client_info.localcontact2details,
+                "includeinmailinglist":true,
+                "entityid":Number(formValues.client_info.entityid),
+                "tenantof":Number(formValues.client_info.tenentof),
+                "tenantofproperty":0
+            },
+            "client_access": formValues.client_access,
+            "client_bank_info":formValues.client_bank_info,
+            "client_legal_info":{
+                "fulllegalname":"ABC DEF GHI",
+                "panno":"12345670",
+                "addressline1":"hcegfegf efhiuhf",
+                "addressline2":"frufhruigh fhirf",
+                "suburb":"frhufh",
+                "city":"Mumbai",
+                "state":"Maharashtra",
+                "country":5,
+                "zip":"zipcode",
+                "occupation":"person",
+                "birthyear":2004,
+                "employername":"GHI JKL",
+                "relation":1,
+                "relationwith":"MNOP QRST"
+            },
+            "client_poa":{
+                "poalegalname":"abcdef ghijkl",
+                "poapanno":"647364873",
+                "poaaddressline1":"eyge rfhrughur rf",
+                "poaaddressline2":"jrijg fruhfur ijf",
+                "poasuburb":"sub",
+                "poacity":"Mumbai",
+                "poastate":"Maharashtra",
+                "poacountry":5,
+                "poazip":"zipcode",
+                "poaoccupation":"person",
+                "poabirthyear":2003,
+                "poaphoto":"fjr furhfusfufbrf",
+                "poaemployername":"frijiurgh nfr",
+                "poarelation":2,
+                "poarelationwith":"ABC DEF",
+                "poaeffectivedate":"2024-03-02",
+                "poaenddate":"2024-03-03",
+                "poafor":"ABC EFG",
+                "scancopy":"dhegfhuefu"
+            }	
+        };
+        const response = await APIService.addClientInfo(data)
+        const res = await response.json()
+        console.log(res)
+        if(res.result == 'success') {
+            console.log('here')
+           setIsClientInfoDialogue(false);
+           openAddSuccess();
+           
+        }else {
+             console.log('np')
+        } 
+        setButtonLoading(false);
     }
+    
+    const handleDelete = async  (id) => {
+        
+        const data = {
+            "user_id" : 1234,
+            "id" : id
+        }
+        const response = await APIService.deleteClientInfo(data)
+        const res = await response.json()
+        console.log(res)
+        setShowDelete(false); 
+        fetchData()
+    }
+    const openDelete = (id) => {
+        setCurrItem(id)
+        setShowDelete(true);
+    }
+    // const [showAddSuccess,setShowAddSuccess] = useState(false);
     return(
         <div className='h-screen'>
             <Navbar/>
-
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Client"/>}
+            {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
             <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
@@ -1329,7 +1454,7 @@ const ManageCountryInfo = () => {
                                 <div className='w-1/2  flex'>
                                     <div className='p-3 flex space-x-2'>
                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {}} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {openDelete(item.id)}} />
                                     </div>
                                 </div>
                             </div>
@@ -1470,7 +1595,7 @@ const ManageCountryInfo = () => {
                         {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientInfo} >Add</button>
+                            <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed"  : "bg-[#004DD7]" } w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 
