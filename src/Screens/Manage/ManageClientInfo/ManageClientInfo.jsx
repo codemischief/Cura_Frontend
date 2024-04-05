@@ -867,11 +867,11 @@ const ManageCountryInfo = () => {
             "client_access": formValues.client_access,
             "client_bank_info":formValues.client_bank_info,
             "client_legal_info":{
-                "fulllegalname":"ABC DEF GHI",
-                "panno":"12345670",
-                "addressline1":"hcegfegf efhiuhf",
-                "addressline2":"frufhruigh fhirf",
-                "suburb":"frhufh",
+                "fulllegalname":formValues.client_legal_info.fulllegalname,
+                "panno":formValues.client_legal_info.panno,
+                "addressline1":formValues.client_legal_info.addressline1,
+                "addressline2":formValues.client_legal_info.addressline2,
+                "suburb":formValues.client_legal_info.suburb,
                 "city":"Mumbai",
                 "state":"Maharashtra",
                 "country":5,
@@ -911,7 +911,7 @@ const ManageCountryInfo = () => {
            
            setIsClientInfoDialogue(false);
            openAddSuccess();
-           
+           setFormValues(initialValues)
         }else {
              console.log('np')
         } 
@@ -1596,7 +1596,7 @@ const ManageCountryInfo = () => {
                         {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed"  : "bg-[#004DD7]" } w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
+                            <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled"  : "bg-[#004DD7]" } w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 

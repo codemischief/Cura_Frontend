@@ -4,7 +4,8 @@ import { APIService } from '../../../../services/API';
 const LegalInformation = ({formValues,setFormValues,relationData,allCountry}) => {
 
   const [country, setCountry] = useState(allCountry);
-  const [city, setCity] = useState([]);
+  const [allCity, setAllCity] = useState([]);
+  
   const [allState, setAllState] = useState([]);
   // const [relation, setRelation] = useState([]);
   const handleChange = (e) => {
@@ -32,12 +33,6 @@ const fetchCityData = async (id) => {
   console.log(result);
   if (Array.isArray(result)) {
       setAllCity(result)
-      if (result.length > 0) {
-          setFormValues((existing) => {
-              const newData = { ...existing, city: result[0].id }
-              return newData;
-          })
-      }
   }
 }
   return (
@@ -74,9 +69,9 @@ const fetchCityData = async (id) => {
             <div className="text-[14px]">City </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
               <option >Select city</option>
-              {city && city.map(item => (
-                <option key={item} value={item}>
-                  {item[1]}
+              {allCity && allCity.map(item => (
+                <option key={item.id} value={item.city}>
+                  {item.city}
                 </option>
               ))}
             </select>
@@ -118,7 +113,7 @@ const fetchCityData = async (id) => {
             }>
               <option >Select state</option>
               {allState && allState.map(item => (
-                <option key={item} value={item}>
+                <option key={item[0]} value={item[1]}>
                   {item[1]}
                 </option>
               ))}
