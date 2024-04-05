@@ -46,8 +46,8 @@ const Locality = () => {
     const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
     const [sortField, setSortField] = useState("id");
     const initialValues = {
-        country: 0,
-        state: 0,
+        country: 5,
+        state: "Maharashtra",
         city: 0,
         locality: ""
     }
@@ -143,6 +143,8 @@ const Locality = () => {
     useEffect(() => {
         fetchData();
         fetchCountryData();
+        fetchStateData(5);
+        fetchCityData("Maharashtra")
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setCountryFilter(false);
@@ -1006,13 +1008,18 @@ const Locality = () => {
                                                     })
                                                 }}
                                             >
-                                                <option value="none" hidden={true}>Select a Country</option>
-                                                {allCountry && allCountry.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-
-                                                ))}
+                                                {/* <option value="none" hidden={true}>Select a Country</option> */}
+                                                {allCountry && allCountry.map(item => {
+                                                    if(item[1] == 5) {
+                                                      return <option value={item[0]} selected>
+                                                            {item[1]}
+                                                        </option>
+                                                    }else {
+                                                        return <option value={item[0]}>
+                                                              {item[1]}
+                                                        </option>
+                                                    }
+                                              })}
                                             </select>
                                             <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
@@ -1032,13 +1039,22 @@ const Locality = () => {
 
                                                 }}
                                             >
-                                                <option value="none" hidden={true}>Select a State</option>
-                                                {allState.length > 0 && allState.map(item => (
-                                                    <option value={item[1]} >
-                                                        {item[1]}
-                                                    </option>
-
-                                                ))}
+                                                {/* <option value="none" hidden={true}>Select a State</option> */}
+                                                {allState.map(item => {
+                                                
+                                                    if(item[0] === "Maharashtra") {
+                                                        return <option value={item[0]} selected>
+                                                                  {item[0]}
+                                                            </option>
+                                                    }else {
+                                                          return <option value={item[0]}>
+                                                            {item[0]}
+                                                          </option>
+                                                    //     return <option value={item[0]} >
+                                                    //     {item[0]}
+                                                    // </option>
+                                                    }
+})}
                                             </select>
                                             <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
