@@ -457,7 +457,7 @@ const ManageProjectInfo = () => {
                             </div>
                         </div>
 
-                        <div className='h-[calc(100vh_-_14rem)] w-full text-[14px]'>
+                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
 
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className="w-[85%] flex">
@@ -671,7 +671,7 @@ const ManageProjectInfo = () => {
                 <>
                     <div className='flex justify-center'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                 <div className="mr-[410px] ml-[410px]">
                                     <div className="text-[16px]">New project</div>
                                 </div>
@@ -701,7 +701,7 @@ const ManageProjectInfo = () => {
                             {selectedDialogue == 3 && <BankDetails />}
                             {selectedDialogue == 4 && <Contact />}
                             {selectedDialogue == 5 && <Photos />}
-                            <div className="my-8 flex justify-center items-center gap-[10px]">
+                            <div className="my-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>

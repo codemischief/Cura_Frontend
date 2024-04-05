@@ -80,116 +80,116 @@ const ProjectInformation = () => {
     const handleDialogClose = () => {
 
     }
-  return (
-              <>
-                        <div className="flex items-center justify-evenly mt-5 ">
-                            <div className="space-y-2">
-                                <div className="">
-                                    <div>Project Name <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="projectName" value={formValues.projectName} onChange={handleChange} />
-                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.projectName}</div> */}
-                                </div>
-                                <div className="">
-                                    <div>Project Type <label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="projectType" value={formValues.projectType} onChange={handleChange} >
-                                            {selectedProjectType.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.projectType}</div> */}
-                                </div>
-                                <div className="">
-                                    <div>Address Line 1 <label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="addressLine1" value={formValues.addressLine1} onChange={handleChange}/>
-                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.addressLine1}</div> */}
-                                </div>
-                                <div className="">
-                                    <div>Country<label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
-                                            {selectedCountry.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div> */}
-                                </div>
-                                <div className="">
-                                    <div>State<label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
-                                            {selectedState.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
-                                </div>
-                                <div className="">
-                                    <div>City<label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
-                                            {selectedCity.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
-                                </div>
-                                <div className="">
-                                    <div>Suburb<label className="text-red-500">*</label></div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" name="suburb" value={formValues.suburb} onChange={handleChange}/>
-                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <div className="">
-                                    <div>Builder Name <label className="text-red-500">*</label></div>
-                                    <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="builderName" value={formValues.builderName} onChange={handleChange} >
-                                            {selectedBuilderName.map(item => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                    </select>
-                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div> */}
-                                </div>
-                                <div className="">
-                                    <div>Mailing Group</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Address Line 2</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Zip code</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Nearest Landmark</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Subscribed E-mail</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                                <div className="">
-                                    <div>Website</div>
-                                    <input type="text" className="border-[#C6C6C6] border-[1px] rounded-md w-52 h-6" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex justify-center items-center space-x-2">
-                            <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet woking bachlors allowed</div>
-                            <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet student allowed</div>
-                            <div className="mt-[10px] flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet Foreigners allowed</div>
-                        </div>
-                        
-             </>       
-  )
+    return (
+        <>
+            <div className="flex items-center justify-evenly mt-5 ">
+                <div className="space-y-2">
+                    <div className="">
+                        <div className="text-[13px]">Project Name <label className="text-red-500">*</label></div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" name="projectName" value={formValues.projectName} onChange={handleChange} />
+                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.projectName}</div> */}
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Project Type <label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="projectType" value={formValues.projectType} onChange={handleChange} >
+                            {selectedProjectType.map(item => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.projectType}</div> */}
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Address Line 1 <label className="text-red-500">*</label></div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div> */}
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="country" value={formValues.country} onChange={handleChange} >
+                            {selectedCountry.map(item => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div> */}
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">State<label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="state" value={formValues.state} onChange={handleChange} >
+                            {selectedState.map(item => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                    </div>
+                    <div className="">
+                        <div>City<label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="city" value={formValues.city} onChange={handleChange} >
+                            {selectedCity.map(item => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Suburb<label className="text-red-500">*</label></div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
+                    </div>
+                </div>
+                <div className="space-y-2">
+                    <div className="">
+                        <div className="text-[13px]">Builder Name <label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="builderName" value={formValues.builderName} onChange={handleChange} >
+                            {selectedBuilderName.map(item => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.builderName}</div> */}
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Mailing Group</div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" />
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Address Line 2</div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" />
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Zip code</div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" />
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Nearest Landmark</div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"  />
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Subscribed E-mail</div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"   />
+                    </div>
+                    <div className="">
+                        <div className="text-[13px]">Website</div>
+                        <input type="text" className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]" />
+                    </div>
+                </div>
+            </div>
+            <div className="flex justify-center items-center space-x-2 mt-2">
+                <div className=" flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet woking bachlors allowed</div>
+                <div className=" flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet student allowed</div>
+                <div className=" flex justify-center items-center font-semibold text-[12px]"><Checkbox label="Active" />Tenet Foreigners allowed</div>
+            </div>
+
+        </>
+    )
 }
 
 export default ProjectInformation

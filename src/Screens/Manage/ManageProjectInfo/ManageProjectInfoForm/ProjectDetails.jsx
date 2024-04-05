@@ -103,78 +103,78 @@ const ProjectDetails = () => {
               </div>
             </div>
             <div className="mt-6">
-              <div className="text-[#505050] text-[14px] ">Other Amenities</div>
-              <input className='w-[200px] h-[20px] border-[#C6C6C6] border-[1px]' type="text" name="" id="" />
+              <div className="text-[#505050] text-[13px] ">Other Amenities</div>
+              <input className='w-52 h-5 border-[#C6C6C6] border-[1px] rounded-sm px-3 text-[11px]' type="text" name="" id="" />
             </div>
           </div>
           <div className="flex space-x-4">
             <div className="space-y-2">
               <div className="">
-                <div className="text-[14px]">Project Legal Status <label className="text-red-500">*</label></div>
-                <select className="w-[230px] h-[25px] border-[1px] border-[#C6C6C6] rounded-sm" name="projectLegalStatus" value={formValues.projectLegalStatus} onChange={handleChange} >
+                <div className="text-[13px]">Project Legal Status <label className="text-red-500">*</label></div>
+                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="projectLegalStatus" value={formValues.projectLegalStatus} onChange={handleChange} >
                   {selectedProjectLegalStatus.map(item => (
                     <option key={item} value={item}>
                       {item}
                     </option>
                   ))}
                 </select>
-                <div className="text-[12px] text-[#CD0000] ">{formErrors.projectLegalStatus}</div>
+                <div className="text-[10px] text-[#CD0000] ">{formErrors.projectLegalStatus}</div>
               </div>
               <div className="">
-                <div className="text-[14px]">Competition Year</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="competitionYear" />
+                <div className="text-[13px]">Competition Year</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="competitionYear" />
               </div>
               <div className="">
-                <div className="text-[14px]">Taluka</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="taluka" />
+                <div className="text-[13px]">Taluka</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="taluka" />
               </div>
               <div className="">
-                <div className="text-[14px]">Police Chowkey</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="policeChowkey" />
+                <div className="text-[13px]">Police Chowkey</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="policeChowkey" />
               </div>
               <div className="">
-                <div className="text-[14px]">Maintenance Detail</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="maintainanceDetail" />
+                <div className="text-[13px]">Maintenance Detail</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="maintainanceDetail" />
               </div>
               <div className="">
-                <div className="text-[14px]">Number of Buildings</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="numberOfBuildings" />
+                <div className="text-[13px]">Number of Buildings</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberOfBuildings" />
               </div>
               <div className="">
-                <div className="text-[14px]">Numbher of Floors</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="numberOfFloors" />
+                <div className="text-[13px]">Numbher of Floors</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberOfFloors" />
               </div>
             </div>
           </div>
           <div className="flex space-x-4">
             <div className="space-y-2">
               <div className="">
-                <div className="text-[14px]">Rules</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="rules" />
+                <div className="text-[13px]">Rules</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="rules" />
               </div>
               <div className="">
-                <div className="text-[14px]">Jurisdiction</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="jurisdiction" />
+                <div className="text-[13px]">Jurisdiction</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"  type="text" name="jurisdiction" />
               </div>
               <div className="">
-                <div className="text-[14px]">Corporation Ward</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="corporationWard" />
+                <div className="text-[13px]">Corporation Ward</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="corporationWard" />
               </div>
               <div className="">
-                <div className="text-[14px]">Police Station</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="policeStation" />
+                <div className="text-[13px]">Police Station</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="policeStation" />
               </div>
               <div className="">
-                <div className="text-[14px]">Dues Payable Month</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="duesPayableMonth" />
+                <div className="text-[13px]">Dues Payable Month</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="duesPayableMonth" />
               </div>
               <div className="">
-                <div className="text-[14px]">Approx Total Month</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="approxTotalMonth" />
+                <div className="text-[13px]">Approx Total Month</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="approxTotalMonth" />
               </div>
               <div className="">
-                <div className="text-[14px]">Other Details</div>
-                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Work phone" />
+                <div className="text-[13px]">Other Details</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="Work phone" />
               </div>
             </div>
           </div>
