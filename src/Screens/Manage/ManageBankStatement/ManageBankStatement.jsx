@@ -263,6 +263,7 @@ const ManageBankStatement = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
+        setCurrentPages(number)
         const tempFilters = [];
         for (var i = 0; i < 4; i++) {
             if (filterArray[i][2] != "") {
