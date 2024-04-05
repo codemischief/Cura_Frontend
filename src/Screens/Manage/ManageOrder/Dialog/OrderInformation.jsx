@@ -76,38 +76,38 @@ const orderInformation = (props) => {
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Cura office</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Cura Office" />
+                                        <div className="text-[13px]">Cura office</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="Cura Office" />
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Entity</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Entity" />
+                                        <div className="text-[13px]">Entity</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="Entity" />
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Assigned to <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="Assignedto" value={formValues.assignedTo} onChange={handleChange} >
+                                        <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="Assignedto" value={formValues.assignedTo} onChange={handleChange} >
                                             {selectedAssignedTo.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                     ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.assignedTo}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.assignedTo}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Status <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="Assignedto" value={formValues.status} onChange={handleChange}>
+                                        <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="Assignedto" value={formValues.status} onChange={handleChange}>
                                             {selectedStatus.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                     ))}
                                         </select>
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.status}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Client Property</div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="Assignedto" >
+                                        <div className="text-[13px]">Client Property</div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="Assignedto" >
                                             {selectedClientProperty.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -116,8 +116,8 @@ const orderInformation = (props) => {
                                         </select>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Service</div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="Assignedto" >
+                                        <div className="text-[13px]">Service</div>
+                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="Assignedto" >
                                             {selectedService.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -128,36 +128,36 @@ const orderInformation = (props) => {
                                 </div>
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Client Name<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="clientname" value={formValues.clientName} onChange={handleChange} >
+                                        <div className="text-[13px]">Client Name<label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="clientname" value={formValues.clientName} onChange={handleChange} >
                                             {selectedClient.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                     ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.clientName}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.clientName}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Order Date</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="OrderData" />  
+                                        <div className="text-[13px]">Order Date</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="OrderData" />  
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Start Date</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="StartDate" />
+                                        <div className="text-[13px]">Start Date</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="StartDate" />
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Explected Competition Date</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="ExplectedCompetitionDate" />
+                                        <div className="text-[13px]">Explected Competition Date</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="ExplectedCompetitionDate" />
                                         
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Actual Competition Date</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="ActualCompetitionDate" />
+                                        <div className="text-[13px]">Actual Competition Date</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="ActualCompetitionDate" />
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Vendor</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="Vendors" >
+                                        <div className="text-[13px]">Vendor</div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="Vendors" >
                                             {selectedVendors.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -168,8 +168,8 @@ const orderInformation = (props) => {
                                 </div>
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[14px]">Tally Ledger</div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tallyledger" >
+                                        <div className="text-[13px]">Tally Ledger</div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="tallyledger" >
                                             {selectedTallyLedger.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
@@ -178,17 +178,17 @@ const orderInformation = (props) => {
                                             </select>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Comments</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comments" />  
+                                        <div className="text-[13px]">Comments</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comments" />  
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Order Description <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="OrderDescription" value={formValues.orderDescription} onChange={handleChange}/>
+                                        <div className="text-[13px]">Order Description <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="OrderDescription" value={formValues.orderDescription} onChange={handleChange}/>
                                         <div className="text-[12px] text-[#CD0000] ">{formErrors.orderDescription}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">Additional Comments</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Additional Comments" />
+                                        <div className="text-[13px]">Additional Comments</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="Additional Comments" />
                                     </div>
                                 </div>
                             </div>

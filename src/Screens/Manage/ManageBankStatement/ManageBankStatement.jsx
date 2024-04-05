@@ -1362,7 +1362,7 @@ const ManageBankStatement = () => {
             </div>
 
 
-            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 '>
+            <div className='w-full h-12 flex justify-between px-6 '>
                         {/* footer component */}
                         <div className='ml-2'>
                             <div className='flex items-center w-auto h-full'>
