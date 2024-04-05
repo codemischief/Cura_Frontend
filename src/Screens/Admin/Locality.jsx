@@ -43,7 +43,7 @@ const Locality = () => {
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const [failureModal,setFailureModal] = useState(false);
     const [errorMessage,setErrorMessage] = useState("");
-    const [filterArray, setFilterArray] = useState([["name", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
+    const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
     const [sortField, setSortField] = useState("id");
     const initialValues = {
         country: 0,
@@ -371,7 +371,7 @@ const Locality = () => {
             "user_id": 1234,
             "rows": ["id", "name"],
             "filters": filterArray,
-            "sort_by": [sortField],
+            "sort_by": [],
             "order": "asc",
             "pg_no": 1,
             "pg_size": Number(currentPages),

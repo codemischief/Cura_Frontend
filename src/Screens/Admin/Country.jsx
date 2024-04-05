@@ -115,7 +115,6 @@ const Country = () => {
       "search_key": searchQuery
     };
     const response = await APIService.getCountries(data)
-   
     const temp = (await response.json());
     // console.log(pageNumber)
     console.log(temp);
