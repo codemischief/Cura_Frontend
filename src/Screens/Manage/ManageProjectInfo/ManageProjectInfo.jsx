@@ -33,6 +33,8 @@ const ManageProjectInfo = () => {
     const [searchInput, setSearchInput] = useState("");
     const [isSearchOn, setIsSearchOn] = useState(false);
     const [selectedDialogue, setSelectedDialogue] = useState(1);
+    const [sortField,setSortField] = useState("id");
+    const [flag,setFlag] = useState(false)
     const selectFirst = () => {
         setSelectedDialogue(1);
     }
@@ -54,8 +56,8 @@ const ManageProjectInfo = () => {
             "user_id": 1234,
             "rows": ["builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
@@ -77,13 +79,13 @@ const ManageProjectInfo = () => {
             "user_id": 1234,
             "rows": ["id", "buildername", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc": "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
@@ -100,13 +102,13 @@ const ManageProjectInfo = () => {
             "rows": ["id", "buildername", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
