@@ -434,7 +434,7 @@ const ManageBuilder = () => {
                         </div>
                         <div className='w-[25%]  p-3'>
                             <div className='w-[46%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-20 bg-[#EBEBEB] rounded-[5px]" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
+                                <input className="w-20 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
                                 <button className='p-1' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                             {builderFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef} >
@@ -466,7 +466,7 @@ const ManageBuilder = () => {
                         </div>
                         <div className='w-[15%]  p-3'>
                             <div className='w-[64%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
+                                <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
                                 <button className='p-1' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                             {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -498,7 +498,7 @@ const ManageBuilder = () => {
                         </div>
                         <div className='w-[15%]  p-3'>
                             <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-16 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
+                                <input className="w-16 bg-[#EBEBEB] rounded-[5px] " value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
                                 <button className='' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
                             {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>

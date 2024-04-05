@@ -660,7 +660,7 @@ const Locality = () => {
                                 </div>
                                 <div className='w-[15%] p-3'>
                                     <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -692,7 +692,7 @@ const Locality = () => {
                                 </div>
                                 <div className='w-[20%] p-3 ml-1'>
                                     <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -725,7 +725,7 @@ const Locality = () => {
 
                                 <div className='w-[20%] p-3 ml-1'>
                                     <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -757,7 +757,7 @@ const Locality = () => {
                                 </div>
                                 <div className='w-[20%] p-3 ml-[2px]'>
                                     <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
                                         <button className='p-1' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                     {localityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
@@ -790,7 +790,7 @@ const Locality = () => {
                             </div>
                             <div className='w-1/6 p-3 '>
                                 <div className='w-[37%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
                                 {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>

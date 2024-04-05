@@ -708,7 +708,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)}/>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {paymentToFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -740,7 +740,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)}/>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setPaymentByFilter((prev)=> !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {paymentByFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -772,7 +772,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[10%] px-4 py-3'>
                                         <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}/>
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {amountFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -813,7 +813,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[10%]  px-4 py-3'>
                                         <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)}/>
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {paidOnFilter && <div className='h-[300px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -848,7 +848,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[14%]  px-4 py-3'>
                                         <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentModeFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}/>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentModeFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {paymentModeFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -880,7 +880,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[13%]  px-4 py-3'>
                                         <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}/>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {paymentForFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -912,7 +912,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[15%]  px-4 py-3'>
                                         <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px]" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)}/>
+                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {paymentStatusFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -944,7 +944,7 @@ const Payments = () => {
                                     </div>
                                     <div className='w-[10%]  px-4 py-3'>
                                         <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" value={entityFilterInput} onChange={(e) => entityFilterInput(e.target.value)}/>
+                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={entityFilterInput} onChange={(e) => entityFilterInput(e.target.value)}/>
                                             <button className='p-1' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {entityFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
@@ -987,7 +987,7 @@ const Payments = () => {
                                 <div className='w-[15%] flex'>
                                     <div className='w-1/2  px-4 py-3'>
                                         <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-9 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => idFilterInput(e.target.value)} />
+                                            <input className="w-9 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => idFilterInput(e.target.value)} />
                                             <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                         </div>
                                         {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
