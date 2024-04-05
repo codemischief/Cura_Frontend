@@ -96,7 +96,7 @@ const LOB = () => {
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": searchQuery
@@ -210,15 +210,15 @@ const LOB = () => {
         console.log(value);
         setLobName(value);
     }
-    const [flag, setFlag] = useState(true);
+    const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": [],
-            "sort_by": [],
-            "order": "desc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": searchQuery
