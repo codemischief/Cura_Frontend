@@ -574,8 +574,8 @@ const Payments = () => {
                 "deduction"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": field  ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
@@ -613,10 +613,10 @@ const Payments = () => {
                 "deduction"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": ""
         }
         const response = await APIService.getPayment(data);
