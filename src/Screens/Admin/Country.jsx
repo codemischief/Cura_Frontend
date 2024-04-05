@@ -82,7 +82,7 @@ const Country = () => {
     const temp = (await response.json());
     console.log(pageNumber)
     console.log(temp);
-    const result = temp.data.data;
+    const result = temp.data;
     const t = temp.total_count;
 
     setTotalItems(t);
@@ -90,7 +90,7 @@ const Country = () => {
     console.log(result);
 
     // setCountryValues(result);
-    setCountryValues(result.map(x => ({
+    setCountryValues(result.data.map(x => ({
       sl: x[0],
       country_name: x[1]
     })))
@@ -115,19 +115,18 @@ const Country = () => {
       "search_key": searchQuery
     };
     const response = await APIService.getCountries(data)
-
+   
     const temp = (await response.json());
     // console.log(pageNumber)
     console.log(temp);
-    const result = temp.data.data;
+    const result = temp.data;
     const t = temp.total_count;
 
     setTotalItems(t);
     console.log(t);
     console.log(result);
 
-    // setCountryValues(result);
-    setCountryValues(result.map(x => ({
+    setCountryValues(result.data.map(x => ({
       sl: x[0],
       country_name: x[1]
     })))
@@ -283,46 +282,54 @@ const Country = () => {
   }
 
   const handleSort = async (field) => {
+    console.log('called')
     setPageLoading(true);
     setSortField(field)
     const data = {
-      "user_id": userId || 1234,
+      "user_id":  1234,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": [field],
       "order": flag ? "asc" : "desc",
-      "pg_no": 1,
+      "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
+    setFlag((prev) => !prev)
     const response = await APIService.getCountries(data)
-    const result = (await response.json()).data;
+    const temp = await response.json();
+    const result = temp.data;
     const t = temp.total_count;
     setTotalItems(t);
-    setPageLoading(false);
-    setCountryValues(result.map(x => ({
+    console.log(result);
+    // setCountryValues(result.data)
+    setCountryValues(result.data.map(x => ({
       sl: x[0],
       country_name: x[1]
     })))
+    setPageLoading(false)
+
   }
 
   const handleSearch = async () => {
     setPageLoading(true)
+    console.log('hey')
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
       "filters": [],
-      "sort_by": [field],
+      "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
       "pg_no": 1,
       "pg_size": Number(currentPages),
       "search_key": searchQuery
     };
     const response = await APIService.getCountries(data)
-    const result = (await response.json()).data;
+    const temp = await response.json()
+    const result = temp.data;
     const t = temp.total_count;
     setTotalItems(t);
     setPageLoading(false);
-    setCountryValues(result.map(x => ({
+    setCountryValues(result.data.map(x => ({
       sl: x[0],
       country_name: x[1]
     })))
@@ -389,7 +396,7 @@ const Country = () => {
     setTotalItems(t);
 
     // setPageLoading(false);
-    setCountryValues(result.map(x => ({
+    setCountryValues(result.data.map(x => ({
       sl: x[0],
       country_name: x[1]
     })))
