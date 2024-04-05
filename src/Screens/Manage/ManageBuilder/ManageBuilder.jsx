@@ -135,18 +135,19 @@ const ManageBuilder = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
-        const data = { "user_id": 1234 };
+        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result);
-        if (Array.isArray(result)) {
-            setAllCountry(result);
+        console.log(result.data);
+
+        if (Array.isArray(result.data)) {
+            setAllCountry(result.data);
         }
     }
 
     const fetchStateData = async (e) => {
 
-        const data = { "user_id": userId || 1234, "country_id": 5 };
+        const data = { "user_id": 1234, "country_id": e };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         // console.log(result)
@@ -156,7 +157,7 @@ const ManageBuilder = () => {
     }
 
     const fetchCityData = async (d) => {
-        const data = { "user_id": userId || 1234, "country_id": 5, "state_name": "Maharashtra" };
+        const data = { "user_id": 1234,"state_name": d };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         if (Array.isArray(result)) {
@@ -252,8 +253,8 @@ const ManageBuilder = () => {
         // fetchUserId();
         fetchBuilderData();
         fetchCountryData();
-        fetchCityData();
-        fetchStateData();
+        fetchStateData(5)
+        fetchCityData("Maharashtra")
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setCountryFilter(false)
@@ -278,8 +279,8 @@ const ManageBuilder = () => {
         email2: "",
         address1: "",
         address2: "",
-        country: "",
-        state: "",
+        country: 5,
+        state: "Maharashtra",
         city: "",
         zip: "",
         website: "",
@@ -841,11 +842,18 @@ const ManageBuilder = () => {
                                                     // fetchStateData(res);
                                                 }}
                                             >
-                                                {allCountry && allCountry.map(item => (
-                                                    <option value={item}>
+                                                {allCountry && allCountry.map(item => {
+                                                    if(item[0] == 5) {
+                                                        return <option value={item[0]} selected>
+                                                           {item[1]}
+                                                        </option>
+                                                    }else {
+                                                        return <option value={item[0]}>
                                                         {item[1]}
                                                     </option>
-                                                ))}
+                                                    }
+                                                    
+})}
                                             </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
@@ -864,11 +872,17 @@ const ManageBuilder = () => {
                                                     })
                                                     // fetchCityData(selectedState);
                                                 }} >
-                                                {allState && allState.map(item => (
-                                                    <option value={item}>
-                                                        {item}
-                                                    </option>
-                                                ))}
+                                                {allState && allState.map(item => {
+                                                    if(item[0] == "Maharashtra") {
+                                                       return <option value={item[0]} selected>
+                                                          {item[0]}
+                                                       </option>
+                                                    }else {
+                                                        return <option value={item[0]} >
+                                                        {item[0]}
+                                                     </option>
+                                                    }
+                                                })}
                                             </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
