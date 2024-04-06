@@ -19,6 +19,8 @@ import EditManageBuilder from './EditManageBuilder';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Filter from "../../../assets/filter.png"
+import SaveConfirmationBuilder from "./SaveConfirmationBuilder";
+import { ScreenSearchDesktopTwoTone } from "@mui/icons-material";
 const ManageBuilder = () => {
     // we have the module here
     const menuRef = useRef()
@@ -216,7 +218,15 @@ const ManageBuilder = () => {
         setCurrentBuilderId(item);
         setDeleted(true);
     }
+    const [errorMessage,setErrorMessage] = useState("");
+    const handleAddBuilder = async () => {
+        console.log('hey')
+        setCurrentBuilder(formValues.builderName)
+        setIsManageBuidlerDialogue(false)
+        
+        setAddConfirmation(true);
 
+    }
     const addNewBuilder = async () => {
         const data = {
             "user_id": userId || 1234,
@@ -227,9 +237,9 @@ const ManageBuilder = () => {
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
             "suburb": "deccan",
-            "city": 360,
-            "state": "maharastra",
-            "country": 5,
+            "city": formValues.city,
+            "state": formValues.state,
+            "country": formValues.country,
             "zip": formValues.zip,
             "website": formValues.website,
             "comments": formValues.comment,
@@ -238,12 +248,14 @@ const ManageBuilder = () => {
             "isdeleted": false
         };
         const response = await APIService.addNewBuilder(data);
-
-        if (response.ok) {
+        const res = await response.json();
+        setAddConfirmation(false);
+        if (res.result == "success") {
             setIsLoading(false);
             openSuccessModal();
         } else {
             setIsLoading(false);
+            setErrorMessage(res.message)
             openFailureModal();
         }
         fetchBuilderData();
@@ -313,7 +325,9 @@ const ManageBuilder = () => {
 
         // if(formValues.)
         setIsLoading(true);
-        addNewBuilder();
+        setCurrentBuilder(formValues.builderName)
+        handleAddBuilder();
+        // addNewBuilder();
     };
     // validate form and to throw Error message
     const validate = (values) => {
@@ -377,14 +391,14 @@ const ManageBuilder = () => {
     const [suburbFilterInput, setSuburbFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("")
-
+    const [addConfirmation,setAddConfirmation] = useState(false);
     return (
         <div className="h-screen">
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
-            <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
+            <FailureModal isOpen={showFailure} message={errorMessage} />
             <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
-
+            {addConfirmation && <SaveConfirmationBuilder handleClose={() => setAddConfirmation(false)} addBuilder={addNewBuilder} currentBuilder={currentBuilder}/>}
 
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
