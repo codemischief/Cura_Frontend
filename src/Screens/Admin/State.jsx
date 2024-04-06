@@ -57,13 +57,14 @@ const State = () => {
     setPageLoading(true);
     const data = { 
         "user_id" : 1234,
-        "rows" : ["id","name"],
+        "rows" : ["id","state","country"],
         "filters" : [],
         "sort_by" : [sortField],
         "order" : "desc",
         "pg_no" : 1,
         "pg_size" : 15
      };
+
     const response = await APIService.getStatesAdmin(data)
     const temp = await response.json();
     const result = temp.data;
@@ -78,7 +79,7 @@ const State = () => {
     const [allCountry,setAllCountry] = useState([]);
     const fetchCountryData = async () => {
         // setPageLoading(true);
-        const data = { "user_id": userId || 1234 };
+        const data = { "user_id":  1234 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         if(Array.isArray(result)) {
@@ -529,14 +530,14 @@ const State = () => {
                     </div>
 
 
-                    <Modal open={isStateDialogue}
+            <Modal open={isStateDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[200px]'>
                     <div className="w-6/7  h-[300px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New State</div>
+                                 <div className="text-[16px]">Add New State</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>

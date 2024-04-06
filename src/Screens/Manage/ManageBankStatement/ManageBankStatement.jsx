@@ -1298,7 +1298,7 @@ const ManageBankStatement = () => {
                                 return <div className='w-full   flex justify-between border-gray-400 border-b-[1px]'>
                                     <div className='w-[85%] text-[11px] min-h-0  flex'>
                                         <div className='w-[5%] p-4'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                         </div>
                                         <div className='w-[10%]  p-4'>
 
@@ -1456,9 +1456,9 @@ const ManageBankStatement = () => {
                                         <div className="">
                                             <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
                                             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
-                                                <option >Select Mode</option>
+                                                <option value="none" hidden >Select Mode</option>
                                                 {mode && mode.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}

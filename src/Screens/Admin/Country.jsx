@@ -195,8 +195,9 @@ const Country = () => {
   }
 
   const editCountry = async (item) => {
-    setShowEdit(true);
     setCurrentCountry(item.country_name);
+    setShowEdit(true);
+   
     // console.log(currentCountry);
 
   }

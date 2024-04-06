@@ -22,6 +22,7 @@ import Pdf from "../../../assets/pdf.png"
 import Excel from "../../../assets/excel.png"
 import SaveConfirmationPayments from './SaveConfirmationPayments';
 import FailureModal from '../../../Components/modals/FailureModal';
+import DeletePaymentModal from './DeletePaymentModal';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -308,7 +309,12 @@ const Payments = () => {
         fetchData();
         // console.log(result);
     }
-    
+    const [currPaymentId,setCurrPaymentId] = useState(-1);
+    const [deleteConfirmationModal,setDeleteConfirmationModal] = useState(false);
+    const handleDelete = (id) => {
+       setCurrPaymentId(id);
+       setDeleteConfirmationModal(true);
+    }
     const deletePayments = async (id) => {
         console.log(id);
         const data = {
@@ -317,7 +323,15 @@ const Payments = () => {
         };
         const response = await APIService.deletePayment(data);
         console.log(response);
+        setDeleteConfirmationModal(false);
+        openDeleteSuccess();
         fetchData();
+    }
+    const openDeleteSuccess = () => {
+        showDeleteSuccess(true);
+        setTimeout(function () {
+            showDeleteSuccess(false);
+        }, 2000)
     }
     const selectedPaymentMode = [
         "1", "2", "3", "4"
@@ -672,13 +686,16 @@ const Payments = () => {
     const [entityFilterInput,setEntityFilterInput] = useState("");
     const [idFilter,setIdFilter] = useState(false)
     const [idFilterInput,setIdFilterInput] = useState("");
+    const [showDeleteSuccess,setDeleteSuccess] = useState(false);
     return (
         <div className='h-screen'>
             <Navbar/>
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Payments" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="SuccessFully Deleted Payment"/>}
             {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPayment={formValues.paymentby} addPayment={addPayment}/>}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage}/>}
+            {deleteConfirmationModal && <DeletePaymentModal handleClose={() => setDeleteConfirmationModal(false)} item={currPaymentId} handleDelete={deletePayments} />}
             <div className='h-[calc(100vh_-_14rem)] w-full px-10'>
                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
@@ -1138,7 +1155,7 @@ const Payments = () => {
                                         </div>
                                         <div className='w-1/2 0 p-4 flex space-x-2'>
                                             <img className=' w-5 h-5' src={Edit} alt="edit" onClick={() => editStatement(item)} />
-                                            <button onClick={() => deletePayments(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
                                 </div>

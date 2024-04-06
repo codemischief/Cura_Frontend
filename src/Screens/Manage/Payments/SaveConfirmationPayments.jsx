@@ -17,7 +17,7 @@ const SaveConfirmationPayments = (props) => {
                         </div>
                     </div>
                     <div className="mt-8 w-full text-center">
-                        <div className="text-[14px]">Payment From : {props.currPayment}</div>
+                        <div className="text-[14px]">Payment From User ID : {props.currPayment}</div>
                     </div>
                     <div className="mt-4 w-full text-center">
                         <p className="text-[14px]">Are you sure you want to Add new Payment</p>

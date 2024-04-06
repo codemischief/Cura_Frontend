@@ -21,6 +21,7 @@ import EditManageEmployee from './EditManageEmployee';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import SaveConfirmationEmployee from './SaveConfirmationManageEmployee';
 import FailureModal from '../../../Components/modals/FailureModal';
+import DeleteEmployeeModal from './DeleteEmployeeModal';
 const ManageEmployees = () => {
 
     const menuRef = useRef();
@@ -70,6 +71,7 @@ const ManageEmployees = () => {
     const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
     const [errorMessage,setErrorMessage] = useState("");
     const [isFailureModal,setIsFailureModal] = useState(false)
+    const [deleteConfirmation,showDeleteConfirmation] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
 
     const fetchCountryData = async () => {
@@ -555,13 +557,19 @@ const ManageEmployees = () => {
 
         return res;
     }
-
+    const [currEmployeeId,setCurrEmployeeId] = useState("");
+    const handleDelete = (id) => {
+        setCurrEmployeeId(id);
+        showDeleteConfirmation(true);
+    }
     const deleteEmployee = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
         }
         const response = await APIService.deleteEmployee(data);
+        showDeleteConfirmation(false);
+        
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
@@ -680,6 +688,7 @@ const ManageEmployees = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
             {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false) } currEmployee={formValues.employeeName} addEmployee={addEmployee}/>}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
+            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
             <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
@@ -1216,7 +1225,7 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => deleteEmployee(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                     </div>
                                     

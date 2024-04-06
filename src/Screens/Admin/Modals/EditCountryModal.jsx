@@ -5,7 +5,7 @@ import { APIService } from '../../../services/API';
 const EditCountryModal = (props) => {
     // console.log(props.currentCountry);
     const [showLoading,setShowLoading] = useState(false);
-    const [countryName,setCountryName] =  useState("");
+    const [countryName,setCountryName] =  useState(props.currentCountry);
     
 const handleChange = (e) => {
     const { value } = e.target;
