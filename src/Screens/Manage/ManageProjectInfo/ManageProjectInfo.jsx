@@ -118,6 +118,7 @@ const ManageProjectInfo = () => {
         setPageLoading(false);
     }
     useEffect(() => {
+        console.log('called')
         fetchData();
     }, [1]);
     const selectedCountry = [

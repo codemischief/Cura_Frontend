@@ -17,7 +17,7 @@ deferRender().then( () =>{
     //   <App />
     // </React.StrictMode>,
 
- <React.StrictMode>
+//  <React.StrictMode>
     <BrowserRouter>
   
     <AuthProvider>
@@ -27,7 +27,7 @@ deferRender().then( () =>{
     </AuthProvider>
     </BrowserRouter>
 
-  </React.StrictMode>, 
+  // </React.StrictMode>, 
 
   )
 }
