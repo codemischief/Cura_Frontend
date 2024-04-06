@@ -119,7 +119,7 @@ const ManageProjectInfo = () => {
     }
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [1]);
     const selectedCountry = [
         "India", "USA", "UK", "Germany", "France", "Italy"
     ]
