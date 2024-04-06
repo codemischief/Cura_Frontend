@@ -63,7 +63,7 @@ const ManageBankStatement = () => {
   
     const getEmployees = async () => {
         const data = {
-            "user_id": userId || 1234,
+            "user_id":  1234,
             "rows": ["employeename"],
             "filters": [],
             "sort_by": [],
@@ -82,7 +82,7 @@ const ManageBankStatement = () => {
 
     const getCRDetails = async () => {
         const data = {
-            "user_id": userId || 1234,
+            "user_id":  1234,
         }
         const mode1 = await APIService.getModesAdmin(data);
         const howReceived1 = await APIService.getHowReceivedAdmin(data);
@@ -94,12 +94,12 @@ const ManageBankStatement = () => {
         setMode((await mode1.json()).data)
 
     }
-    const fetchUserId = async () => {
-        const response = await authService.getUserID();
-        setUserId(response)
-    }
+    // const fetchUserId = async () => {
+    //     const response = await authService.getUserID();
+    //     setUserId(response)
+    // }
     const getVendorAdmin = async () => {
-        const data = { "user_id": userId || 1234 }
+        const data = { "user_id":  1234 }
         const response = await APIService.getVendorAdmin(data);
         const result = (await response.json()).data;
         setVendorList(result)
@@ -146,7 +146,7 @@ const ManageBankStatement = () => {
     const fetchBankStatement = async () => {
         setPageLoading(true);
         const data = {
-            "user_id": userId || 1234,
+            "user_id": 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
             "filters": filterArray,
             "sort_by": [sortField],
@@ -185,7 +185,7 @@ const ManageBankStatement = () => {
 
         console.log(modeEdit, vendorId)
         const data = {
-            "user_id": userId || 1234,
+            "user_id":  1234,
             "modeofpayment": Number(modeEdit),
             "date": formValues.date,
             "amount": Number(formValues.amount),
@@ -208,7 +208,7 @@ const ManageBankStatement = () => {
     const addCreditRecipt = async () => {
 
         const data = {
-            "user_id": userId || 1234,
+            "user_id":  1234,
             "receivedby": Number(formValues.employee),
             "paymentmode": Number(formValues.modeofpayment),
             "recddate": formValues.date,
@@ -321,7 +321,7 @@ const ManageBankStatement = () => {
 
     useEffect(() => {
 
-        fetchUserId();
+        // fetchUserId();
         getCRDetails();
         getVendorAdmin();
         fetchBankStatement();
@@ -925,6 +925,7 @@ const ManageBankStatement = () => {
     const openCreditRecipt = (item) => {
         console.log(item)
         const modeOfThisItem=item.modeofpayment;
+        console.log(Date.now())
         mode.map(ele =>{
             if( modeOfThisItem == ele[0]){
                 setCurrentMode(ele[1])
@@ -940,7 +941,9 @@ const ManageBankStatement = () => {
             how: item.how,
         };
         setFormValues(initialValues);
+        console.log(Date.now())
         setCreditReceipt(true);
+        console.log(Date.now())
 
     }
     const handleCloseCR = () => {
@@ -1328,7 +1331,7 @@ const ManageBankStatement = () => {
                                         </div>
 
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            {(!(item.clientid) && item.crdr === "CR                  ") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
+                                            {(!(item.clientid) && item.crdr === "CR                  ") && <button onClick={() => openCreditRecipt(item)}><p >Enter CR</p></button>}
 
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                         </div>
@@ -1535,11 +1538,10 @@ const ManageBankStatement = () => {
                 </div>
             </Modal>
              
-
-
-            <Modal open={showCreditReceipt}
+             
+            {showCreditReceipt && <Modal open={true}
                 fullWidth={true}
-                maxwidth={'md'} bankStatement={currentStatement}>
+                maxwidth={'md'} >
                 {/* <h1>{currentStatement}</h1> */}
                 <div className='flex justify-center items-center mt-[70px]'>
                     <div className="w-[1050px] h-[500px] bg-white rounded-lg">
@@ -1564,7 +1566,7 @@ const ManageBankStatement = () => {
                                             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
                                                 <option >Select Employee</option>
                                                 {employees && employees.map(item => (
-                                                    <option key={item} value={item.id}>
+                                                    <option key={item.id} value={item.id}>
                                                         {item.employeename}
                                                     </option>
                                                 ))}
@@ -1576,7 +1578,7 @@ const ManageBankStatement = () => {
                                             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
                                                
                                                 {mode && mode.map(item => (
-                                                    <option key={item} value={item[0]}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -1593,7 +1595,7 @@ const ManageBankStatement = () => {
                                             <div className="text-[14px]">Entity<label className="text-red-500">*</label></div>
                                             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} required >
                                                 {entity && entity.map(item => (
-                                                    <option key={item} value={item[0]}>
+                                                    <option key={item[0]} value={item[0]}>
                                                        {item[1]}
                                                     </option>
                                                 ))}
@@ -1610,7 +1612,7 @@ const ManageBankStatement = () => {
                                             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} required>
                                                 <option >Select How Recieved</option>
                                                 {howReceived && howReceived.map(item => (
-                                                    <option key={item} value={item[0]}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -1674,7 +1676,8 @@ const ManageBankStatement = () => {
                         </form>
                     </div>
                 </div>
-            </Modal>
+            </Modal>}
+            
 
 
 

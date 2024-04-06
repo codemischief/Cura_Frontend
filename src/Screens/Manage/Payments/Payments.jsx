@@ -328,9 +328,9 @@ const Payments = () => {
         fetchData();
     }
     const openDeleteSuccess = () => {
-        showDeleteSuccess(true);
+        setDeleteSuccess(true);
         setTimeout(function () {
-            showDeleteSuccess(false);
+            setDeleteSuccess(false);
         }, 2000)
     }
     const selectedPaymentMode = [

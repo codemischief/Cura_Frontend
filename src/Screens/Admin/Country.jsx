@@ -40,9 +40,10 @@ const Country = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [downloadModal, setDownloadModal] = useState(false);
   const [sortField, setSortField] = useState("id")
-  const [flag, setFlag] = useState(false);
+  const [flag, setFlag] = useState(false)
   const [searchQuery, setSearchQuery] = useState("");
   const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
+  const [buttonLoading,setButtonLoading] = useState(false);
   // const [flag,setFlag] = useState(false);
   const fetchUserId = async () => {
     const response = await authService.getUserId();
@@ -230,8 +231,10 @@ const Country = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // setButtonLoading(true);
     setFormErrors(validate(formValues));
     if (formValues.countryName == "") {
+      // setButtonLoading(false);
       return;
     }
     setCurrentCountry(formValues.countryName)

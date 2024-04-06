@@ -120,6 +120,7 @@ const EditManageEmployee = (props) => {
         const response = await APIService.getItembyId(data);
         const result = await response.json();
         setFormValues(result.data);
+        console.log(result.data);
         // console.log(formValues.state);
         await fetchCountryData();
         // console.log(result.data.dateofjoining.split('T')[0]);
@@ -130,7 +131,7 @@ const EditManageEmployee = (props) => {
         return {...existing, dob : result.data.dob.split('T')[0]}
      })
      setFormValues((existing) => {
-        return {...existing, lastdateofworking : result.data.lastdateofworking.split('T')[0]}
+        return {...existing, lastdateofworking : result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : null}
      })
      setFormValues((existing) => {
         return {...existing, dated : result.data.dated.split('T')[0]}
@@ -222,16 +223,7 @@ const EditManageEmployee = (props) => {
                 return  {...existing,panno: ""}
              })
         }
-        // if(!formValues.userName) {
-        //     setFormErrors((existing) => {
-        //         return {...existing,userName: "Select username"}
-        //     })
-        //     res = false;
-        // }else {
-        //     setFormErrors((existing) => {
-        //         return {...existing,userName: ""}
-        //     })
-        // }
+       
         if(!formValues.dateofjoining) {
             setFormErrors((existing) => {
                 return {...existing,dateofjoining: "Enter date of joining"}
@@ -342,16 +334,7 @@ const EditManageEmployee = (props) => {
                 return {...existing,city: ""}
             })
         }
-        if(!formValues.suburb) {
-            setFormErrors((existing) => {
-                return {...existing,suburb: "Enter suburb"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,suburb: ""}
-            })
-        }
+        
         if(!formValues.entityid) {
             setFormErrors((existing) => {
                 return {...existing,entityid: "Select Entity"}
@@ -564,6 +547,7 @@ const EditManageEmployee = (props) => {
 
                                                 }}
                                             >
+                                                {/* <option value={null} hidden>Select A City</option> */}
                                                 {allCity.map((item) => {
                                                     if(item.id == formValues.city) {
 

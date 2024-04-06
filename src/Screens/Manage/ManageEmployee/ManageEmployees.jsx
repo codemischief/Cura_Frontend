@@ -291,6 +291,7 @@ const ManageEmployees = () => {
         setIsEmployeeDialogue(false);
     }
     const handleAddEmployee = () => {
+        console.log(formValues);
         if (!validate()) {
             console.log('hu')
             return;
@@ -323,7 +324,7 @@ const ManageEmployees = () => {
             "addressline2": formValues.addressLine2,
             "suburb": formValues.suburb,
             "city": formValues.city,
-            "state": Number(formValues.state),
+            "state": formValues.state,
             "country": Number(formValues.country),
             "zip": formValues.zipCode,
             "dated": "20-01-2020  00:00:00",
@@ -355,14 +356,14 @@ const ManageEmployees = () => {
         employeeName: "",
         panNo: "",
         userName: "",
-        doj: "",
+        doj: null,
         designation: "",
         email: "",
         addressLine1: "",
         employeeId: "",
         lob: "",
-        dob: "",
-        lastDOW: "",
+        dob: null,
+        lastDOW: null,
         role: "",
         phNo: "",
         addressLine2: "",
@@ -372,7 +373,6 @@ const ManageEmployees = () => {
         suburb: "",
         zipCode: "",
         entity: ""
-
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -386,13 +386,13 @@ const ManageEmployees = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.employeeName) {
+        if (formValues.employeeName == "" ) {
             setFormErrors((existing) => {
                 return { ...existing, employeeName: "Enter Employee name" }
             })
             res = false;
         } else {
-            console.log('issue is in empname')
+            // console.log('issue is in empname')
             setFormErrors((existing) => {
                 return { ...existing, employeeName: "" }
             })
@@ -1534,7 +1534,7 @@ const ManageEmployees = () => {
 
                                             }}
                                         >
-                                            <option value="none" hidden={true}>Select a City</option>
+                                            
                                             {allCity && allCity.map(item => (
                                                 <option value={item.id} >
                                                     {item.city}
