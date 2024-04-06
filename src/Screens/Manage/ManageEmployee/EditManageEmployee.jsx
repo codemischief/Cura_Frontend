@@ -45,7 +45,7 @@ const EditManageEmployee = (props) => {
     }
     const fetchCityData = async (name) => {
         // console.log("Maharashtra");
-        console.log("hy")
+        // console.log("hy")
         console.log(name);
         const data = { "user_id": 1234, "state_name" : name };
         const response = await APIService.getCities(data);
@@ -142,6 +142,7 @@ const EditManageEmployee = (props) => {
     }
     useEffect(() => {
         fetchEmployeeData();
+        fetchCityData(formValues.state);
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
@@ -538,12 +539,12 @@ const EditManageEmployee = (props) => {
                                                 {allState && allState.map((item) => {
                                                     // if(item[0])
                                                     if(item[1] == formValues.state) {
-                                                        return <option value={item[1]} selected>
-                                                            {item[1]}
+                                                        return <option value={item[0]} selected>
+                                                            {item[0]}
                                                         </option>
                                                     }else {
-                                                        return (<option value={item[1]} >
-                                                            {item[1]}
+                                                        return (<option value={item[0]} >
+                                                            {item[0]}
                                                         </option>);
                                                     }
                                                  })}
@@ -564,6 +565,16 @@ const EditManageEmployee = (props) => {
                                                 }}
                                             >
                                                 {allCity.map((item) => {
+                                                    if(item.id == formValues.city) {
+
+                                                        return <option value={item.id} selected>
+                                                            {item.city}
+                                                        </option>
+                                                    }else {
+                                                        return <option value={item.id}>
+                                                              {item.city}
+                                                        </option>
+                                                    }
                                                     return <option value={item.id}>{item.city}</option>
                                                  })}
                                             </select>
