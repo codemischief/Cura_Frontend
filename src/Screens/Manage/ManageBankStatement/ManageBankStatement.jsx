@@ -378,13 +378,14 @@ const ManageBankStatement = () => {
     };
     const [crValues, setCrValues]=useState(initialValues);
     const handleCR = (e) => {
+        console.log("started");
         e.preventDefault();
-        if(!validateCR()) {
-            return ;
-        }
+        // if(!validateCR()) {
+        //     return ;
+        // }
        
         addCreditRecipt();
-        // setCreditReceipt(false)
+        setCreditReceipt(false)
     };
     // validate form and to throw Error message
     const validate = ()  => {
