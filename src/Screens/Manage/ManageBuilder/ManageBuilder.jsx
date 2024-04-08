@@ -237,7 +237,7 @@ const ManageBuilder = () => {
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
             "suburb": "deccan",
-            "city": formValues.city,
+            "city": Number(formValues.city),
             "state": formValues.state,
             "country": formValues.country,
             "zip": formValues.zip,
@@ -293,7 +293,7 @@ const ManageBuilder = () => {
         address2: "",
         country: 5,
         state: "Maharashtra",
-        city: "",
+        city: 5,
         zip: "",
         website: "",
         comment: "",
@@ -908,8 +908,9 @@ const ManageBuilder = () => {
                                                     return newData;
                                                 })
                                             }}>
+                                                <option selected disabled hidden > Select A city</option>
                                                 {allCity && allCity.map((item) => {
-                                                    return <option value={item}>
+                                                    return <option value={item.id}>
                                                         {item.city}
                                                     </option>
 
