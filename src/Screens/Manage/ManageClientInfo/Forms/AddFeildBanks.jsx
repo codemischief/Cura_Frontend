@@ -32,8 +32,14 @@ const AddFeildBanks = ({index,formValues,setFormValues}) => {
     setFormValues({...formValues,client_bank_info : arrayClone})
   }
   const handleBankMicr = (e) => {
+    console.log('hey')
     const arrayClone = [...formValues.client_bank_info];
     arrayClone[index].bankmicrcode = e.target.value;
+    setFormValues({...formValues,client_bank_info : arrayClone})
+  }
+  const handleAccountType = (e) => {
+    const arrayClone = [...formValues.client_bank_info];
+    arrayClone[index].accounttype = e.target.value;
     setFormValues({...formValues,client_bank_info : arrayClone})
   }
   return (
@@ -58,13 +64,14 @@ const AddFeildBanks = ({index,formValues,setFormValues}) => {
               </div>
               
               <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+                <input className='w-full h-full bg-[#F5F5F5]' type="text" onChange={handleAccountType} value={formValues.client_bank_info[index].accounttype} />
+              </div>
+              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" onChange={handleBankIfscCode} value={formValues.client_bank_info[index].bankifsccode} />
               </div>
               <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
+                
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" value={formValues.client_bank_info[index].bankmicrcode} onChange={handleBankMicr}/>
-              </div>
-              <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" />
               </div>
             </div>
   )
