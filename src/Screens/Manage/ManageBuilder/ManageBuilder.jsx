@@ -78,7 +78,8 @@ const ManageBuilder = () => {
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": 15,
+            "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -100,7 +101,8 @@ const ManageBuilder = () => {
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": Number(page),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -122,7 +124,8 @@ const ManageBuilder = () => {
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -172,21 +175,21 @@ const ManageBuilder = () => {
 
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key": searchInput
+            "sort_by": [sortField],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key" : searchInput
         };
-        const response = await APIService.getProspects(data)
+        const response = await APIService.getNewBuilderInfo(data)
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
         console.log(result);
-        setExistingProspect(result);
+        setExistingBuilders(result.builder_info);
         setPageLoading(false);
     }
 
@@ -195,21 +198,21 @@ const ManageBuilder = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "personname", "suburb", "city", "state", "country", "propertylocation", "possibleservices"],
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": "desc",
             "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
+            "pg_size": 15,
+            "search_key" : ""
         };
-        const response = await APIService.getProspects(data)
+        const response = await APIService.getNewBuilderInfo(data)
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
         console.log(result);
-        setExistingProspect(result);
+        setExistingBuilders(result.builder_info);
         setPageLoading(false);
     }
 
