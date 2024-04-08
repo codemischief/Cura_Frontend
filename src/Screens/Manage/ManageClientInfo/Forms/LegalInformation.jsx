@@ -36,7 +36,7 @@ const fetchCityData = async (id) => {
 }
   return (
     <div className="h-auto w-full">
-      <div className="flex gap-10 justify-center items-center">
+      <div className="flex gap-10 justify-center">
         <div className=" space-y-2 ">
           <div className="">
             <div className="text-[14px]">Full Legal Name </div>
@@ -50,7 +50,7 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[14px]">Country </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
               (e) => {
                 // setAllCity([]);
                 setFormValues({...formValues,client_legal_info : {
@@ -77,7 +77,7 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[14px]">City </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.client_legal_info.city} onChange={
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.client_legal_info.city} onChange={
               (e) => {
                 setFormValues({...formValues,client_legal_info : {
                   ...formValues.client_legal_info,
@@ -123,7 +123,7 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[14px]">State </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
               (e) => {
                 setFormValues({...formValues,client_legal_info : {
                   ...formValues.client_legal_info,
@@ -159,7 +159,7 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[14px]">Relation </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="relation" value={formValues.client_legal_info.relation} onChange={handleChange} >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="relation" value={formValues.client_legal_info.relation} onChange={handleChange} >
               <option >Select Relation</option>
               {relationData && relationData.map(item => (
                 <option key={item.id} value={item.id}>

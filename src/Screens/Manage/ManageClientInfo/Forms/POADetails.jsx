@@ -16,7 +16,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
    }
   return (
     <div className="h-auto w-full">
-      <div className="flex gap-10 justify-center items-center">
+      <div className="flex gap-10 justify-center">
         <div className=" space-y-2 ">
           <div className="">
             <div className="text-[14px]">Full Legal Name </div>
@@ -30,7 +30,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">Country </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" >
               <option >Select country</option>
               {country && country.map(item => {
                 if(item[0] == 5) {
@@ -48,7 +48,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">City </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
               <option >Select city</option>
               {city && city.map(item => (
                 <option  value={item.id}>
@@ -87,7 +87,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">State </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
               <option >Select state</option>
               {state && state.map(item => {
                 if(item[0] == "Maharashtra") {
@@ -120,7 +120,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">Relation </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poarelation" value={formValues.client_poa.poarelation} onChange={handleChange}>
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="poarelation" value={formValues.client_poa.poarelation} onChange={handleChange}>
               <option >Select Relation</option>
               {relationData && relationData.map(item => (
                 <option key={item.id} value={item.id}>
