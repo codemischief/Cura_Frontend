@@ -507,8 +507,8 @@ const ManageCountryInfo = () => {
                 "addressline2":"",
                 "suburb":"",
                 "city":"",
-                "state":"",
-                "country":null,
+                "state":"Maharashtra",
+                "country":5,
                 "zip":"",
                 "occupation":"",
                 "birthyear":null,
@@ -523,8 +523,8 @@ const ManageCountryInfo = () => {
                 "poaaddressline2":"",
                 "poasuburb":"",
                 "poacity":"",
-                "poastate":"",
-                "poacountry":null,
+                "poastate":"Maharashtra",
+                "poacountry":5,
                 "poazip":"",
                 "poaoccupation":"",
                 "poabirthyear":null,
@@ -813,7 +813,7 @@ const ManageCountryInfo = () => {
         fetchData();
     }
     const handleAddClientInfo = async () => {
-        setButtonLoading(true);
+        // setButtonLoading(true);
         console.log(formValues);
         const temp = formValues.client_info.clientname.split(' ');
         console.log(temp)
@@ -842,9 +842,9 @@ const ManageCountryInfo = () => {
                 "addressline1":formValues.client_info.addressline1,
                 "addressline2":formValues.client_info.addressline2,
                 "suburb":"sub",
-                "city":"Mumbai",
-                "state":"Maharashtra",
-                "country":5,
+                "city":formValues.client_info.city,
+                "state":formValues.client_info.state,
+                "country":formValues.client_info.country,
                 "zip":formValues.client_info.zip,
                 "homephone":formValues.client_info.homephone,
                 "workphone":formValues.client_info.workphone,
@@ -877,47 +877,48 @@ const ManageCountryInfo = () => {
                 "city":"Mumbai",
                 "state":"Maharashtra",
                 "country":5,
-                "zip":"zipcode",
-                "occupation":"person",
-                "birthyear":2004,
+                "zip":formValues.client_legal_info.zip,
+                "occupation":formValues.client_legal_info.occupation,
+                "birthyear":formValues.client_legal_info.birthyear,
                 "employername":"GHI JKL",
-                "relation":1,
-                "relationwith":"MNOP QRST"
+                "relation":formValues.client_legal_info.relation,
+                "relationwith":formValues.client_legal_info.relationwith
             },
             "client_poa":{
-                "poalegalname":"abcdef ghijkl",
-                "poapanno":"647364873",
-                "poaaddressline1":"eyge rfhrughur rf",
-                "poaaddressline2":"jrijg fruhfur ijf",
-                "poasuburb":"sub",
+                "poalegalname":formValues.client_poa.poalegalname,
+                "poapanno":formValues.client_poa.poapanno,
+                "poaaddressline1":formValues.client_poa.poaaddressline1,
+                "poaaddressline2":formValues.client_poa.poaaddressline2,
+                "poasuburb":formValues.client_poa.poasuburb,
                 "poacity":"Mumbai",
                 "poastate":"Maharashtra",
                 "poacountry":5,
-                "poazip":"zipcode",
-                "poaoccupation":"person",
-                "poabirthyear":2003,
-                "poaphoto":"fjr furhfusfufbrf",
+                "poazip":formValues.client_poa.poazip,
+                "poaoccupation":formValues.client_poa.poaoccupation,
+                "poabirthyear":formValues.client_poa.poabirthyear,
+                "poaphoto":formValues.client_poa.poaphoto,
                 "poaemployername":"frijiurgh nfr",
-                "poarelation":2,
-                "poarelationwith":"ABC DEF",
-                "poaeffectivedate":"2024-03-02",
-                "poaenddate":"2024-03-03",
-                "poafor":"ABC EFG",
-                "scancopy":"dhegfhuefu"
+                "poarelation":formValues.client_poa.poarelation,
+                "poarelationwith":formValues.client_poa.poarelationwith,
+                "poaeffectivedate":formValues.client_poa.poaeffectivedate,
+                "poaenddate":formValues.client_poa.poaenddate,
+                "poafor":formValues.client_poa.poafor,
+                "scancopy":formValues.client_poa.scancopy
             }	
         };
-        const response = await APIService.addClientInfo(data)
-        const res = await response.json();
-        // console.log(res)
-        if(res.result == 'success') {
+        console.log(data);
+        // const response = await APIService.addClientInfo(data)
+        // const res = await response.json();
+        // // console.log(res)
+        // if(res.result == 'success') {
            
-           setIsClientInfoDialogue(false);
-           openAddSuccess();
-           setFormValues(initialValues)
-        }else {
-             console.log('np')
-        } 
-        setButtonLoading(false);
+        //    setIsClientInfoDialogue(false);
+        //    openAddSuccess();
+        //    setFormValues(initialValues)
+        // }else {
+        //      console.log('np')
+        // } 
+        // setButtonLoading(false);
     }
     
     const handleDelete = async  (id) => {
@@ -1594,8 +1595,8 @@ const ManageCountryInfo = () => {
                         {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} />}
                         {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
-                        {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry}/>}
-                        {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData}/>}
+                        {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity}/>}
+                        {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allState} initialCities={allCity}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
                             <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled"  : "bg-[#004DD7]" } w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>

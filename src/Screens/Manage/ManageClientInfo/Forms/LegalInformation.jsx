@@ -1,13 +1,13 @@
 import React from 'react'
 import { useState } from 'react';
 import { APIService } from '../../../../services/API';
-const LegalInformation = ({formValues,setFormValues,relationData,allCountry}) => {
+const LegalInformation = ({formValues,setFormValues,relationData,allCountry,allState,initialCities}) => {
 
   const [country, setCountry] = useState(allCountry);
-  const [allCity, setAllCity] = useState([]);
-  
-  const [allState, setAllState] = useState([]);
-  // const [relation, setRelation] = useState([]);
+  const [state,setState] = useState(allState);
+  // console.log(initialCities)
+  const [allCity, setAllCity] = useState(initialCities);
+  // const [allState, setAllState] = useState([]);
   const handleChange = (e) => {
     const {name,value} = e.target;
      setFormValues({...formValues,client_legal_info : {
@@ -18,7 +18,6 @@ const LegalInformation = ({formValues,setFormValues,relationData,allCountry}) =>
    const fetchStateData = async (id) => {
     console.log(id);
     const data = { "user_id": 1234, "country_id": id };
-    // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log(result)
@@ -53,21 +52,39 @@ const fetchCityData = async (id) => {
             <div className="text-[14px]">Country </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
               (e) => {
+                // setAllCity([]);
+                setFormValues({...formValues,client_legal_info : {
+                  ...formValues.client_legal_info,
+                  [country] : e.target.value
+              }})
                 fetchStateData(e.target.value);
               }
             }>
               <option >Select country</option>
-              {country && country.map(item => (
-                <option key={item[0]} value={item[0]}>
+              {country && country.map(item => {
+                if(item[0] == 5) {
+                  return <option key={item[0]} value={item[0]} selected>
                   {item[1]}
-                </option>
-              ))}
+                  </option>
+                  }else {
+                      return <option key={item[0]} value={item[0]} >
+                      {item[1]}
+                  </option>
+                  }
+})}
             </select>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
             <div className="text-[14px]">City </div>
-            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
+            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.client_legal_info.city} onChange={
+              (e) => {
+                setFormValues({...formValues,client_legal_info : {
+                  ...formValues.client_legal_info,
+                  [city] : e.target.value
+              }})
+              }
+            }>
               <option >Select city</option>
               {allCity && allCity.map(item => (
                 <option key={item.id} value={item.city}>
@@ -108,15 +125,25 @@ const fetchCityData = async (id) => {
             <div className="text-[14px]">State </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
               (e) => {
+                setFormValues({...formValues,client_legal_info : {
+                  ...formValues.client_legal_info,
+                  [state] : e.target.value
+                }})
                 fetchCityData(e.target.value)
               }
             }>
               <option >Select state</option>
-              {allState && allState.map(item => (
-                <option key={item[0]} value={item[1]}>
-                  {item[1]}
-                </option>
-              ))}
+              {state && state.map(item => {
+                if(item[0] == "Maharashtra") {
+                  return <option key={item[0]} selected>
+                         {item[0]}
+                  </option>
+               }else {
+                   return <option key={item[0]}>
+                       {item[0]}
+                   </option>
+               }
+})}
             </select>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
 
-const POADetails = ({formValues,setFormValues,relationData}) => {
+const POADetails = ({formValues,setFormValues,relationData,allCountries,initialStates,initialCities}) => {
 
-  const [country, setCountry] = useState([]);
-  const [city, setCity] = useState([]);
-  const [state, setState] = useState([]);
+  const [country, setCountry] = useState(allCountries);
+  const [city, setCity] = useState(initialCities);
+  const [state, setState] = useState(initialStates);
   // const [relation, setRelation] = useState([]);
    const handleChange = (e) => {
     const {name,value} = e.target;
@@ -32,11 +32,17 @@ const POADetails = ({formValues,setFormValues,relationData}) => {
             <div className="text-[14px]">Country </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" >
               <option >Select country</option>
-              {country && country.map(item => (
-                <option key={item} value={item}>
+              {country && country.map(item => {
+                if(item[0] == 5) {
+                  return <option key={item[0]} value={item[0]} selected>
                   {item[1]}
-                </option>
-              ))}
+                  </option>
+                  }else {
+                      return <option key={item[0]} value={item[0]} >
+                      {item[1]}
+                  </option>
+                  }
+})}
             </select>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
@@ -45,8 +51,8 @@ const POADetails = ({formValues,setFormValues,relationData}) => {
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
               <option >Select city</option>
               {city && city.map(item => (
-                <option key={item} value={item}>
-                  {item[1]}
+                <option  value={item.id}>
+                  {item.city}
                 </option>
               ))}
             </select>
@@ -54,7 +60,7 @@ const POADetails = ({formValues,setFormValues,relationData}) => {
           </div>
           <div className="">
             <div className="text-[14px]">Zip Code </div>
-            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zipcode" />
+            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="poazip" onChange={handleChange} />
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
@@ -83,11 +89,17 @@ const POADetails = ({formValues,setFormValues,relationData}) => {
             <div className="text-[14px]">State </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
               <option >Select state</option>
-              {state && state.map(item => (
-                <option key={item} value={item}>
-                  {item[1]}
-                </option>
-              ))}
+              {state && state.map(item => {
+                if(item[0] == "Maharashtra") {
+                  return <option key={item[0]} selected>
+                         {item[0]}
+                  </option>
+               }else {
+                   return <option key={item[0]}>
+                       {item[0]}
+                   </option>
+               }
+})}
             </select>
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>

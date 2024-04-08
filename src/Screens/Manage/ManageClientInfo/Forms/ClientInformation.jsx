@@ -130,10 +130,17 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                     </div>
                     <div className="">
                         <div className="text-[14px]">City <label className="text-red-500">*</label></div>
-                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
+                        <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" onChange={
+                            (e) => {
+                                setFormValues({...formValues, client_info : {
+                                    ...formValues.client_info,
+                                    city : e.target.value
+                                }})
+                            }
+                        }>
                             <option value="none" hidden> Select A City</option>
                             {allCity && allCity.map(item => (
-                                <option key={item.id} value={item.id}>
+                                <option  value={item.city}>
                                     {item.city}
                                 </option>
                             ))}
@@ -200,6 +207,10 @@ const ClientInformation = ({formValues,setFormValues, allCountry, clientTypeData
                         {/* <h1>{allState.length}</h1> */}
                         <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
                             (e) => {
+                                setFormValues({...formValues, client_info : {
+                                    ...formValues.client_info,
+                                    [state] : e.target.value
+                                }})
                                 fetchCityData(e.target.value)
                             }
                         }>
