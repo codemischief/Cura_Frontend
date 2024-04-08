@@ -1,6 +1,6 @@
-import { CircularProgress, Modal ,Pagination, LinearProgress} from "@mui/material";
-import React, { useEffect, useState , useRef} from 'react';
-import { Link , useLocation} from "react-router-dom";
+import { CircularProgress, Modal, Pagination, LinearProgress } from "@mui/material";
+import React, { useEffect, useState, useRef } from 'react';
+import { Link, useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Navbar from "../../../../Components/Navabar/Navbar";
 import FailureModal from '../../../../Components/modals/FailureModal';
@@ -11,6 +11,7 @@ import downloadIcon from "../../../../assets/download.png";
 import Edit from "../../../../assets/edit.png";
 import nextIcon from "../../../../assets/next.png";
 import refreshIcon from "../../../../assets/refresh.png";
+import Add from "./../../../../assets/add.png";
 import searchIcon from "../../../../assets/searchIcon.png";
 import Trash from "../../../../assets/trash.png";
 import { APIService } from '../../../../services/API';
@@ -34,23 +35,23 @@ const ManageBuilderContact = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [currentBuilder, setCurrentBuilder] = useState({});
-    const [currentBuilderId,setCurrentBuilderId] = useState();
+    const [currentBuilderId, setCurrentBuilderId] = useState();
     const [deleted, setDeleted] = useState(false);
     const [allCountry, setAllCountry] = useState([]);
     const [selectedCountry, setselectedCountry] = useState("");
     const [allState, setAllState] = useState([]);
     const [selectedState, setSelectedState] = useState("");
-    const [selectedCity,setSelectedCity] = useState("");
+    const [selectedCity, setSelectedCity] = useState("");
     const [allCity, setAllCity] = useState([]);
-    const [countryId,setcountryId]=useState("");
-    const [userId,setUserId]=useState(0);
-    const [totalItems,setTotalItems] = useState(0)
-    const [currentPage,setCurrentPage] = useState(1)
-    const [currentPages,setCurrentPages] = useState(15)
-    const [currBuilderId,setCurrBuilderId] = useState(state.builderid)
-    const fetchUserId = async() =>{
+    const [countryId, setcountryId] = useState("");
+    const [userId, setUserId] = useState(0);
+    const [totalItems, setTotalItems] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [currentPages, setCurrentPages] = useState(15)
+    const [currBuilderId, setCurrBuilderId] = useState(state.builderid)
+    const fetchUserId = async () => {
         const response = await authService.getUserId()
-        
+
         setUserId(response)
 
     }
@@ -75,42 +76,42 @@ const ManageBuilderContact = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-              "buildername",
-              "builderid",
-              "projectname",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "nearestlandmark",
-              "project_type",
-              "mailgroup1",
-              "mailgroup2",
-              "website",
-              "project_legal_status",
-              "rules",
-              "completionyear",
-              "jurisdiction",
-              "taluka",
-              "corporationward",
-              "policechowkey",
-              "policestation",
-              "maintenance_details",
-              "numberoffloors",
-              "numberofbuildings",
-              "approxtotalunits",
-              "tenantstudentsallowed",
-              "tenantworkingbachelorsallowed",
-              "tenantforeignersallowed",
-              "otherdetails",
-              "duespayablemonth",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "id"
+                "buildername",
+                "builderid",
+                "projectname",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "nearestlandmark",
+                "project_type",
+                "mailgroup1",
+                "mailgroup2",
+                "website",
+                "project_legal_status",
+                "rules",
+                "completionyear",
+                "jurisdiction",
+                "taluka",
+                "corporationward",
+                "policechowkey",
+                "policestation",
+                "maintenance_details",
+                "numberoffloors",
+                "numberofbuildings",
+                "approxtotalunits",
+                "tenantstudentsallowed",
+                "tenantworkingbachelorsallowed",
+                "tenantforeignersallowed",
+                "otherdetails",
+                "duespayablemonth",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "id"
             ],
             "builderid": currBuilderId,
             "filters": [],
@@ -118,7 +119,7 @@ const ManageBuilderContact = () => {
             "order": "asc",
             "pg_no": 0,
             "pg_size": 0
-          };
+        };
         const response = await APIService.getProjectsByBuilderId(data)
         const res = await response.json()
         console.log(res)
@@ -133,18 +134,18 @@ const ManageBuilderContact = () => {
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
         console.log(result);
-        if(Array.isArray(result)) {
+        if (Array.isArray(result)) {
             setAllCountry(result);
         }
     }
 
     const fetchStateData = async (e) => {
-       
+
         const data = { "user_id": userId || 1234, "country_id": 5 };
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         // console.log(result)
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             setAllState(result)
         }
     }
@@ -153,11 +154,11 @@ const ManageBuilderContact = () => {
         const data = { "user_id": userId || 1234, "country_id": 5, "state_name": "Maharashtra" };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
-        if(Array.isArray(result)){
+        if (Array.isArray(result)) {
             setAllCity(result)
         }
     }
-   
+
     const deleteBuilder = async (item) => {
         setShowDelete(true);
         setCurrentBuilderId(item);
@@ -180,12 +181,12 @@ const ManageBuilderContact = () => {
             "zip": formValues.zip,
             "website": formValues.website,
             "comments": formValues.comment,
-            "dated": "10-03-2024 08:29:00", 
+            "dated": "10-03-2024 08:29:00",
             "createdby": 1234,
             "isdeleted": false
         };
         const response = await APIService.addNewBuilder(data);
-       
+
         if (response.ok) {
             setIsLoading(false);
             openSuccessModal();
@@ -211,7 +212,7 @@ const ManageBuilderContact = () => {
                 setIdFilter(false)
             }
         }
-      
+
         document.addEventListener("mousedown", handler);
         return () => {
             document.removeEventListener("mousedown", handler);
@@ -251,13 +252,13 @@ const ManageBuilderContact = () => {
         if (formValues.builderName == "") {
             return;
         }
-        if(formValues.address1 == "") {
-            return ;
+        if (formValues.address1 == "") {
+            return;
         }
-        if(formValues.phone1 == "") {
-            return ;
-        } 
-        
+        if (formValues.phone1 == "") {
+            return;
+        }
+
         // if(formValues.)
         setIsLoading(true);
         addNewBuilder();
@@ -299,32 +300,32 @@ const ManageBuilderContact = () => {
     const handleCloseDelete = () => {
         setIsDeleteDialogue(false);
     }
-    const handleRefresh = async  () => {
-       await fetchBuilderData();
+    const handleRefresh = async () => {
+        await fetchBuilderData();
     }
-    const handleDownload =  () => {
+    const handleDownload = () => {
         const worksheet = XLSX.utils.json_to_sheet(existingBuilders);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook,worksheet,"Sheet1");
-        XLSX.writeFile(workbook,"BuilderData.xlsx");
-        FileSaver.saveAs(workbook,"demo.xlsx");
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "BuilderData.xlsx");
+        FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handlePageChange = () => {
 
     }
-    const [downloadModal,setDownloadModal] = useState(false)
-    const [builderFilter,setBuilderFilter] = useState(false)
-    const [builderFilterInput,setBuilderFilterInput] = useState("")
-    const [countryFilter,setCountryFilter] = useState(false)
-    const [countryFilterInput,setCountryFilterInput] = useState("")
-    const [cityFilter,setCityFilter] = useState(false)
-    const [cityFilterInput,setCityFilterInput] = useState("")
-    const [suburbFilter,setSuburbFilter] = useState(false)
-    const [suburbFilterInput,setSuburbFilterInput] = useState("")
-    const [idFilter,setIdFilter] = useState(false)
-    const [idFilterInput,setIdFilterInput] = useState("")
+    const [downloadModal, setDownloadModal] = useState(false)
+    const [builderFilter, setBuilderFilter] = useState(false)
+    const [builderFilterInput, setBuilderFilterInput] = useState("")
+    const [countryFilter, setCountryFilter] = useState(false)
+    const [countryFilterInput, setCountryFilterInput] = useState("")
+    const [cityFilter, setCityFilter] = useState(false)
+    const [cityFilterInput, setCityFilterInput] = useState("")
+    const [suburbFilter, setSuburbFilter] = useState(false)
+    const [suburbFilterInput, setSuburbFilterInput] = useState("")
+    const [idFilter, setIdFilter] = useState(false)
+    const [idFilterInput, setIdFilterInput] = useState("")
 
-     return (
+    return (
         <div >
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
@@ -335,14 +336,14 @@ const ManageBuilderContact = () => {
                     {/* this div will have all the content */}
                     <div className='w-full  flex-col px-6'>
                         {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                        <div className='h-1/2 w-full  flex justify-between items-center p-2 '>
                             <div className='flex items-center space-x-3'>
                                 <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
                                     <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
                                 </div>
                                 <div className='flex-col'>
-                                    <h1>Manage Builder Contact</h1>
-                                    <p>Manage &gt; Manage Builder</p>
+                                    <h1 className="text-[18px]">Manage Builder Contact</h1>
+                                    <p className="text-[14px]">Manage &gt; Manage Builder &gt; Builder Contact</p>
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
@@ -360,152 +361,88 @@ const ManageBuilderContact = () => {
 
                                 <div>
                                     {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[200px] rounded-lg" onClick={handleOpen}>
-                                        Add New Contact +
+                                    <button className="bg-[#004DD7] text-white h-[36px] w-[280px] rounded-lg" onClick={handleOpen}>
+                                        <div className="flex items-center justify-center gap-4">
+                                            Add New Buider Contact
+                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                        </div>
                                     </button>
                                 </div>
 
                             </div>
-                            
+
                         </div>
-                        <div className="h-10 w-full flex items-center">
-                              <h1>Builder Name : {params.buildername}</h1>
+                        <div className="h-10 w-full flex items-center border-gray-400 border-b-[1px]">
+                            <h1 className="font-bold text-[18px]">Builder Name : {params.buildername}</h1>
                         </div>
                         <div className='h-12 w-full bg-white'>
-                            <div className='w-full h-12 bg-white flex justify-between'>
-                                <div className="w-[85%] flex">
-                                    <div className='w-[4%] flex'>
+                            <div className='w-full h-12 flex items-center gap-52'>
+                                <div className=' flex '>
+                                    <div className='p-3'>
 
-                                    </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                        <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[14%]  flex p-3'>
-                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex p-3'>
-                                    <div className="w-[87%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[71%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
                                     </div>
                                 </div>
-                                <div className="w-[15%] flex p-3">
-                                    <div className='w-1/2  flex'>
-                                    <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                        </div>
+                                <div className="flex items-center gap-24 ml-7">
+                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
-                                    <div className='w-1/2  flex'>
-                                        <div className='p-3'>
-
-                                        </div>
+                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px] ml-5">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px] ml-5">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    </div>
+                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
+                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div className='w-full h-[400px] bg-white px-6  text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className="w-[85%] flex">
-                                <div className='w-[4%] flex'>
+                        <div className='w-full h-12 bg-[#F0F6FF] flex items-center gap-52'>
+                            <div className=' flex '>
+                                <div className='p-3'>
+                                    <p>Sr.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-20">
+                                <div className='  flex'>
                                     <div className='p-3'>
-                                        <p>Sr.</p>
+                                        <p>Contact Name <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Project Name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
+                                <div className='  flex'>
                                     <div className='p-3'>
                                         <p>Builder Name <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
-                                <div className='w-[12%]  flex'>
+                                <div className='  flex'>
+                                    <div className='p-3'>
+                                        <p>Job Title <span className="font-extrabold">↑↓</span></p>
+                                    </div>
+                                </div>
+                                <div className='  flex'>
                                     <div className='p-3'>
                                         <p>Suburb <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
-                                <div className='w-[14%]  flex'>
+                                <div className='  flex'>
                                     <div className='p-3'>
-                                        <p>Other details/issues </p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Mail Group </p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Subscribed email </p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Rules <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Tenet <span className="font-extrabold">↑↓</span></p>
+                                        <p>City </p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-[15%] flex">
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>ID</p>
-                                    </div>
-                                </div>
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>Edit</p>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                         <div className='w-full h-[400px] overflow-auto'>
                             {/* we map our items here */}
@@ -582,27 +519,27 @@ const ManageBuilderContact = () => {
                             <div className='flex items-center w-auto h-full'>
                                 {/* items */}
                                 {/* <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/> */}
-                                
+
                             </div>
                         </div>
                         <div className='flex mr-10 justify-center items-center space-x-2 '>
                             <div className="flex mr-8 space-x-2 text-sm items-center">
-                               
+
                             </div>
                             <div className="flex text-sm">
                                 {/* <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p> */}
                             </div>
                             {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
-                               
-                               <div className='flex'>
-                                 <p>Download as pdf</p>
-                                 {/* <img src=''/> */}
-                               </div>
-                               <div>
-                                  <p>Download as Excel</p>
-                               </div>
+
+                                <div className='flex'>
+                                    <p>Download as pdf</p>
+                                    {/* <img src=''/> */}
+                                </div>
+                                <div>
+                                    <p>Download as Excel</p>
+                                </div>
                             </div>}
-                            
+
                             <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                                 {/* refresh */}
                                 <button onClick={handleRefresh}><p>Refresh</p></button>
@@ -613,7 +550,7 @@ const ManageBuilderContact = () => {
                                 <button onClick={handleDownload}><p>Download</p></button>
                                 <img src={downloadIcon} className="h-2/3" />
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
 
@@ -684,7 +621,7 @@ const ManageBuilderContact = () => {
                                                     setselectedCountry(e.target.value);
                                                     fetchStateData(e);
                                                     setFormValues((existing) => {
-                                                        const newData = {...existing, country: e.target.value}
+                                                        const newData = { ...existing, country: e.target.value }
                                                         return newData;
                                                     })
                                                     // fetchStateData(res);
@@ -708,13 +645,13 @@ const ManageBuilderContact = () => {
                                                     setSelectedState(e.target.value);
                                                     fetchCityData(e)
                                                     setFormValues((existing) => {
-                                                        const newData = {...existing, state: e.target.value}
+                                                        const newData = { ...existing, state: e.target.value }
                                                         return newData;
                                                     })
                                                     // fetchCityData(selectedState);
                                                 }} >
                                                 {allState && allState.map(item => (
-                                                    <option  value={item}>
+                                                    <option value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
@@ -724,19 +661,19 @@ const ManageBuilderContact = () => {
                                         <div className="">
                                             <div className="text-[14px]">City<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" onChange={(e) => {
-                                               setFormValues((existing) => {
-                                                const newData = {...existing, city: e.target.value};
-                                                 return newData;
-                                               })
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, city: e.target.value };
+                                                    return newData;
+                                                })
                                             }}>
-                                            {allCity && allCity.map((item) => {
-                                                return <option value={item}>
-                                                      {item.city}
-                                                </option>
-                                                
-                                            })}
+                                                {allCity && allCity.map((item) => {
+                                                    return <option value={item}>
+                                                        {item.city}
+                                                    </option>
+
+                                                })}
                                             </select>
-                                           
+
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
