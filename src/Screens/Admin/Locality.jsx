@@ -49,23 +49,28 @@ const Locality = () => {
     const filterMapping = {
         country : {
             filterType : "",
-            filterValue : ""
+            filterValue : "",
+            filterData : "String"
         },
         state : {
             filterType : "",
-            filterValue : ""
+            filterValue : "",
+            filterData : "String"
         },
         city : {
             filterType : "",
-            filterValue : ""
+            filterValue : "",
+            filterData : "String"
         },
         locality : {
             filterType : "",
-            filterValue : ""
+            filterValue : "",
+            filterData : "String"
         },
         id : {
             filterType : "",
-            filterValue : ""
+            filterValue : "",
+            filterData : "Numeric"
         }
     }
     const [sortField, setSortField] = useState("id");
@@ -228,7 +233,14 @@ const Locality = () => {
     }
     const fetchData = async () => {
         setPageLoading(true);
-
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapping).forEach(key=> {
+            if(filterMapping[key].filterType != "") {
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+            }
+        }) 
+        console.log(tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
@@ -398,7 +410,13 @@ const Locality = () => {
     }
     const fetchFiltered = async (filterType, filterField) => {
         const filterArray = [];
-
+        // we need to query thru the object
+        Object.keys(filterMapping).forEach(key=> {
+            if(filterMapping[key].filterType != "") {
+                filterArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+            }
+        }) 
+        
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -490,8 +508,59 @@ const Locality = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setidFilterInput] = useState("");
     //   const [filterArray,setFilterArray] = useState([["country","nofilter",""],["state","nofilter",""],["city","nofilter",""],["locality","nofilter",""]]);
-    const handleFilter = (type, columnNo) => {
+    const handleFilter = (type,columnName) => {
+        console.log(type,columnName)
+        if(columnName == "country") {
+            if(type == "noFilter") {
+               filterMapping.country.filterType = "";
+               filterMapping.country.filterValue = "";
+               countryFilterInput("");
+            }else {
+                filterMapping.country.filterType = type;
+                filterMapping.country.filterValue = countryFilterInput;
+            }
+        }else if(columnName == "state") {
+            if(type == "noFilter") {
+                filterMapping.state.filterType = "";
+                filterMapping.state.filterValue = "";
+                stateFilterInput("");
+             }else {
+                filterMapping.state.filterType = type;
+                filterMapping.state.filterValue = stateFilterInput;
+             }
+        }else if(columnName == "city") {
+            if(type == "noFilter") {
+                filterMapping.city.filterType = "";
+                filterMapping.city.filterValue = "";
+                cityFilterInput("");
+             }else {
+                filterMapping.city.filterType = type;
+                filterMapping.city.filterValue = cityFilterInput;
+             }
+        }else if(columnName == "locality") {
+            if(type == "noFilter") {
+                filterMapping.locality.filterType = "";
+                filterMapping.locality.filterValue = "";
+                localityFilterInput("");
+             }else {
+                filterMapping.locality.filterType = type;
+                filterMapping.locality.filterValue = localityFilterInput;
+             }
+        }else if(columnName == "id") {
+            if(type == "noFilter") {
+                filterMapping.id.filterType = "";
+                filterMapping.id.filterValue = "";
+                idFilterInput("");
+             }else {
+                filterMapping.id.filterType = type;
+                filterMapping.id.filterValue = idFilterInput;
+             }
+        }
+        fetchData();
+    }
+    const handleFiltering = (type, columnNo) => {
         const existing = filterArray;
+        
         if (type == "noFilter") {
             const existing = filterArray;
             if (columnNo == 0) {
