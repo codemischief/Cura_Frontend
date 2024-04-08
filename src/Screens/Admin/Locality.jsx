@@ -46,6 +46,28 @@ const Locality = () => {
     const [failureModal,setFailureModal] = useState(false);
     const [errorMessage,setErrorMessage] = useState("");
     const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
+    const filterMapping = {
+        country : {
+            filterType : "",
+            filterValue : ""
+        },
+        state : {
+            filterType : "",
+            filterValue : ""
+        },
+        city : {
+            filterType : "",
+            filterValue : ""
+        },
+        locality : {
+            filterType : "",
+            filterValue : ""
+        },
+        id : {
+            filterType : "",
+            filterValue : ""
+        }
+    }
     const [sortField, setSortField] = useState("id");
     const initialValues = {
         country: 5,

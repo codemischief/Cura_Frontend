@@ -24,6 +24,7 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import DeleteClientInfo from './Modals/DeleteClientInfoModal';
+import EditClientInfoModal from './Modals/EditClientInfoModal';
 const ManageCountryInfo = () => {
 
     const menuRef = useRef();
@@ -814,29 +815,13 @@ const ManageCountryInfo = () => {
     }
     const handleAddClientInfo = async () => {
         // setButtonLoading(true);
-        console.log(formValues);
-        const temp = formValues.client_info.clientname.split(' ');
-        console.log(temp)
-        const  size = temp.length
-        var firstname = "";
-        var middlename = "";
-        var lastname = "";
-        if(size == 1) {
-           firstname = temp[0];
-        }else if(size == 2) {
-           firstname = temp[0]
-           lastname = temp[1]
-        }else if(size == 3) {
-            firstname = temp[0]
-            middlename = temp[1]
-            lastname = temp[2]
-        }
+        
         const data = {
             "user_id": 1234,
             "client_info": {
-                "firstname":firstname,
-                "middlename": middlename,
-                "lastname": lastname,
+                "firstname":formValues.client_info.firstname,
+                "middlename": formValues.client_info.middlename,
+                "lastname": formValues.client_info.lastname,
                 "salutation": formValues.client_info.salutation,
                 "clienttype": Number(formValues.client_info.clienttype),
                 "addressline1":formValues.client_info.addressline1,
@@ -907,17 +892,17 @@ const ManageCountryInfo = () => {
             }	
         };
         console.log(data);
-        // const response = await APIService.addClientInfo(data)
-        // const res = await response.json();
-        // // console.log(res)
-        // if(res.result == 'success') {
+        const response = await APIService.addClientInfo(data)
+        const res = await response.json();
+        // console.log(res)
+        if(res.result == 'success') {
            
-        //    setIsClientInfoDialogue(false);
-        //    openAddSuccess();
-        //    setFormValues(initialValues)
-        // }else {
-        //      console.log('np')
-        // } 
+           setIsClientInfoDialogue(false);
+           openAddSuccess();
+           setFormValues(initialValues)
+        }else {
+             console.log('np')
+        } 
         // setButtonLoading(false);
     }
     
@@ -938,9 +923,17 @@ const ManageCountryInfo = () => {
         setShowDelete(true);
     }
     // const [showAddSuccess,setShowAddSuccess] = useState(false);
+    const [showEditModal,setShowEditModal] = useState(false);
+    const [currClient,setCurrClient] = useState(-1);
+    const handleEdit = (id) => {
+        setCurrClient(id);
+        setShowEditModal(true);
+    }
     return(
         <div className='h-screen'>
             <Navbar/>
+            {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient}/>}
+            
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Client"/>}
             {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
@@ -1457,7 +1450,7 @@ const ManageCountryInfo = () => {
                                 </div>
                                 <div className='w-1/2  flex'>
                                     <div className='p-3 flex space-x-2'>
-                                           <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
+                                           <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {openDelete(item.id)}} />
                                     </div>
                                 </div>
@@ -1558,7 +1551,7 @@ const ManageCountryInfo = () => {
 
 
 
-                    <Modal open={isClientInfoDialogue}
+        <Modal open={isClientInfoDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
