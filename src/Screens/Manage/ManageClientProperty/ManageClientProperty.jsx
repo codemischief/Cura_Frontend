@@ -1323,7 +1323,7 @@ const ManageClientProperty = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
+                    <div className="w-[1150px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Client</div>
@@ -1353,7 +1353,7 @@ const ManageClientProperty = () => {
                         {selectedDialog == 3 && <POADetails />}
                         {selectedDialog == 4 && <OwnerDetails />}
 
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                        <div className="my-2 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>

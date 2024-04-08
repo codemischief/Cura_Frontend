@@ -12,10 +12,10 @@ const ProjectInformation = () => {
 
   return (
     <div className="h-auto w-full">
-      <div className="flex gap-10 justify-center items-center">
+      <div className="flex gap-10 justify-center mt-3">
         <div className=" space-y-2 ">
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               Client Name <label className="text-red-500">*</label>
             </div>
             <input
@@ -23,10 +23,10 @@ const ProjectInformation = () => {
               type="text"
               name="clientName"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               Property type <label className="text-red-500">*</label>
             </div>
             <select
@@ -41,10 +41,10 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               Level of Furnishing <label className="text-red-500">*</label>
             </div>
             <select
@@ -59,10 +59,10 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               Number Of Parking
             </div>
             <input
@@ -70,10 +70,10 @@ const ProjectInformation = () => {
               type="text"
               name="numberOfParking"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               State <label className="text-red-500">*</label>
             </div>
             <select
@@ -88,10 +88,10 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               City <label className="text-red-500">*</label>
             </div>
             <select
@@ -106,21 +106,21 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Suburb <label className="text-red-500">*</label></div>
+            <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="suburb"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
         </div>
         <div className="space-y-2">
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               Society/Project Name <label className="text-red-500">*</label>
             </div>
             <select
@@ -135,10 +135,10 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Status <label className="text-red-500">*</label></div>
+            <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="status"
@@ -151,57 +151,57 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Property Description <label className="text-red-500">*</label></div>
+            <div className="text-[13px]">Property Description <label className="text-red-500">*</label></div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="propertyDescription"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Layout Details (Sch A)</div>
+            <div className="text-[13px]">Layout Details (Sch A)</div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="layoutDetails"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Internal Furniture and fittings (Sch B) </div>
+            <div className="text-[13px]">Internal Furniture and fittings (Sch B) </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="furniture"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Subscribed E-mail </div>
+            <div className="text-[13px]">Subscribed E-mail </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="email"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Website </div>
+            <div className="text-[13px]">Website </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="website"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
         </div>
         <div className="space-y-2">
           <div className="">
-            <div className="text-[14px]">
+            <div className="text-[13px]">
               Initial Possesion Date
             </div>
             <input
@@ -209,28 +209,28 @@ const ProjectInformation = () => {
               type="date"
               name="initialPossesionDate"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Electricity Consumer Number </div>
+            <div className="text-[13px]">Electricity Consumer Number </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="electicityConsumerNumber"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Other Electricity Details </div>
+            <div className="text-[13px]">Other Electricity Details </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="otherElecticityDetails"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Electricity Bill Due Date <label className="text-red-500">*</label></div>
+            <div className="text-[13px]">Electricity Bill Due Date <label className="text-red-500">*</label></div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="electricityBillDueDate"
@@ -243,61 +243,61 @@ const ProjectInformation = () => {
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Property Tax Number </div>
+            <div className="text-[13px]">Property Tax Number </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="propertyTaxNumber"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Electricity Billing Unit </div>
+            <div className="text-[13px]">Electricity Billing Unit </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="electricityBillingUnit"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Comments </div>
+            <div className="text-[13px]">Comments </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="comments"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
         </div>
         <div className="space-y-2">
           <div className="">
-            <div className="text-[14px]">Gas Connection Details </div>
+            <div className="text-[13px]">Gas Connection Details </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="gasConnectionDetails"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[14px]">Text For Posting </div>
+            <div className="text-[13px]">Text For Posting </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="textForPosting"
             />
-            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
         </div>
       </div>
-      <div className="mt-[10px] flex justify-center items-center">
-        <div className="flex justify-center items-center"><Checkbox label="Active" />
+      <div className="mt-2 flex justify-center items-center gap-2">
+        <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
           Porperty Owner By Client Only</div>
-        <div className="flex justify-center items-center"><Checkbox label="Active" />
+        <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
           Index || Collected </div>
       </div>
     </div>
