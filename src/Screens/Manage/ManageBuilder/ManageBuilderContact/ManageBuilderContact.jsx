@@ -559,61 +559,63 @@ const ManageBuilderContact = () => {
             {/* modal goes here */}
             <Modal open={isManageBuidlerDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[20px]'>
-                    <div className="w-[1100px] h-[600px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Project</div>
+                maxWidth={'md'}
+                className="flex justify-center items-center"
+                 >
+                <div className='flex justify-center'>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[360px] ml-[360px]">
+                                <div className="text-[16px]">New Builder Contact</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        
                             <div className="h-auto w-full mt-[5px] ">
-                                <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className="flex gap-[48px] justify-center">
+                                    <div className=" space-y-[10px] pt-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Builder Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div>
+                                            <div className="text-[13px]">Builder Name<label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.builderName}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Phone 1<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.phone1}</div>
+                                            <div className="text-[13px]">Contact Name <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.phone1}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Phone 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
+                                            <div className="text-[13px]">Job Title <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Email 1<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.email1}</div>
+                                            <div className="text-[13px]">Email </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
+                                            <div className="text-[13px]">Business Phone <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Address 1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.address1}</div>
+                                            <div className="text-[13px]">Mobile Phone </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.address1}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
+                                            <div className="text-[13px]">Address Line 1</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
                                             {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="country"
                                                 value={formValues.country}
                                                 defaultValue="Select Country"
@@ -633,11 +635,11 @@ const ManageBuilderContact = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+                                            <div className="text-[13px]">State <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="state"
                                                 value={formValues.state}
                                                 defaultValue="Select State"
@@ -656,11 +658,11 @@ const ManageBuilderContact = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" onChange={(e) => {
+                                            <div className="text-[13px]">City <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" onChange={(e) => {
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, city: e.target.value };
                                                     return newData;
@@ -674,32 +676,39 @@ const ManageBuilderContact = () => {
                                                 })}
                                             </select>
 
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">ZIP Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
+                                            <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Website</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="website" value={formValues.website} onChange={handleChange} />
+                                            <div className="text-[13px]">Zip Code </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="website" value={formValues.website} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Comment</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
+                                            <div className="text-[13px]">Home Phone</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Address Line 2</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Notes</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="mt-[10px] flex justify-center items-center gap-[10px]">
+                            <div className="my-2 flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={() => {}}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 {isLoading && <CircularProgress />}
                             </div>
-                        </form>
                     </div>
                 </div>
             </Modal>
