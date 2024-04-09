@@ -19,7 +19,7 @@ const ClientPortal = ({formValues,setFormValues}) => {
           ...formValues.client_access, {
             onlinemailid : "",
             onlinepwd : "",
-            onlineclue : ""
+            onlineclue : null
           }
         ]})
     }

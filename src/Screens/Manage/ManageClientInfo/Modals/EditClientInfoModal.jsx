@@ -135,10 +135,7 @@ const EditClientInfoModal = (props) => {
   const [selectedDialog,setSelectedDialogue] = useState(1);
   
   function helper1(updateArrayAccess,insertArrayAccess, deleteArrayAccess,) {
-      // now we need to compare both the values
-      // compare formValues and intitialClientData
       var size = formValues.client_access.length
-    //   console.log(intialClientData.client_access)
       for(var i=0;i<size;i++) {
         const tempObj = formValues.client_access[i]
         if(tempObj.hasOwnProperty('id')) {
@@ -155,7 +152,10 @@ const EditClientInfoModal = (props) => {
                 updateArrayAccess.push(tempObj);
             }
         }else {
-            insertArrayAccess.push(tempObj);
+            if(tempObj.onlineclue != null && tempObj.onlinemailid != "" && tempObj.onlinepwd != "") {
+                insertArrayAccess.push(tempObj);
+            }
+            
         }
       }
   }
@@ -178,13 +178,14 @@ const EditClientInfoModal = (props) => {
             }
         }else {
             // we need to add the thing in the 
-            insertArrayBank.push(tempObj);
+            if(tempObj.onlineclue != null && tempObj.onlinemailid != "" && tempObj.onlinepwd != "") {
+                insertArrayBank.push(tempObj);
+            }
+           
         }
       }
   }
-  const handleAddClient = async () => {
-    // we need to do the process here
-    // console.log(intialClientData)
+  const handleEditClient = async () => {
     const updateArrayAccess =[]
     const insertArrayAccess = []
     const deleteArrayAccess = []
@@ -216,7 +217,8 @@ const EditClientInfoModal = (props) => {
     const res = await response.json();
     console.log(res);
     if(res.result == 'success') {
-        
+        // then we need to close the modal
+        props.openEditSuccess();
     }else {
 
     }
@@ -382,7 +384,7 @@ const fetchTenentOfData = async () => {
                         {selectedDialog == 5 && <EditPOADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allStates} initialCities={allCities}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className="bg-[#004DD7]  w-[100px] h-[35px]  text-white rounded-md" onClick={handleAddClient}>Update</button>
+                            <button className="bg-[#004DD7]  w-[100px] h-[35px]  text-white rounded-md" onClick={handleEditClient}>Update</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                         </div>
 

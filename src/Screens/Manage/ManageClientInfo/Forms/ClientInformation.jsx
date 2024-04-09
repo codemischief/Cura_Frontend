@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
-const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities }) => {
+const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities ,formErrors}) => {
     const [Salutation, setSalutation] = useState([
         {
             id: 1,
@@ -84,7 +84,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.salutation}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Client Type <label className="text-red-500">*</label></div>
@@ -105,7 +105,8 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <p>hey</p> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.clienttype}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Address Line 1 </div>
@@ -139,12 +140,18 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 })
                             }
                         }>
-                            <option >Select entity </option>
-                            {allEntities && allEntities.map(item => (
-                                <option key={item[0]} value={item[0]}>
+                            {/* <option >Select entity </option> */}
+                            {allEntities && allEntities.map(item => {
+                                if(item[0] == formValues.client_info.entityid) {
+                                    return <option key={item[0]} value={item[0]} selected>
                                     {item[1]}
                                 </option>
-                            ))}
+                                }else {
+                                  return  <option key={item[0]} value={item[0]}>
+                                    {item[1]}
+                                </option>
+                                }
+})}
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
@@ -153,7 +160,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     <div className="">
                         <div className="text-[13px]">First Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="firstname" onChange={handleChange} value={formValues.client_info.firstname} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.firstname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
@@ -218,7 +225,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     <div className="">
                         <div className="text-[12px]">Middle Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="middlename" onChange={handleChange} value={formValues.client_info.middlename} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.middlename}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">State <label className="text-red-500">*</label></div>
@@ -248,7 +255,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 }
                             })}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Pin Code </div>
@@ -288,7 +295,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.lastname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">City <label className="text-red-500">*</label></div>
@@ -309,7 +316,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Area/Locality </div>

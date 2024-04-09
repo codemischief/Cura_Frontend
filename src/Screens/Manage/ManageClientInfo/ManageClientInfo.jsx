@@ -25,6 +25,7 @@ import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import DeleteClientInfo from './Modals/DeleteClientInfoModal';
 import EditClientInfoModal from './Modals/EditClientInfoModal';
+import SaveConfirmationClient from './Modals/SaveConfirmationClient';
 const ManageCountryInfo = () => {
 
     const menuRef = useRef();
@@ -479,7 +480,7 @@ const ManageCountryInfo = () => {
                 "localcontact2address":"",
                 "localcontact2details":"",
                 "includeinmailinglist":null,
-                "entityid":null,
+                "entityid":1,
                 "tenentof":null,
                 "tenentofproperty":null
             },
@@ -541,7 +542,7 @@ const ManageCountryInfo = () => {
         
     }
     const [formValues, setFormValues] = useState(initialValues);
-    const [formErrors, setFormErrors] = useState({});
+    // const [formErrors, setFormErrors] = useState({});
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -639,19 +640,210 @@ const ManageCountryInfo = () => {
         }, 2000)
         fetchData();
     }
-    const openEditSuccess = () => {
-        setIsEditDialogue(false);
-        setShowEditSuccess(true);
-        setTimeout(function () {
-            setShowEditSuccess(false);
-        }, 2000)
-        fetchData();
-    }
+    const [formErrors,setFormErrors] = useState({
+        
+    });
+    const [formErrorsClientInfo,setFormErrorsClientInfo] = useState({});
     const validate = () => {
-         var res = false
+         var res = true
+         if(formValues.client_info.salutation === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                  ...existing,
+                  salutation : "Select Saluation"
+            }))
+
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                salutation : ""
+          }))
+         }
+
+
+         if(formValues.client_info.firstname === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                  ...existing,
+                  firstname : "Enter First Name"
+            }))
+
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                firstname : ""
+          }))
+         }
+         if(formValues.client_info.middlename === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                middlename : "Enter Middle Name"
+          }))
+            // console.log('hey')
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                middlename : ""
+            }))
+         }
+         if(formValues.client_info.lastname === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                lastname : "Enter Last Name"
+          }))
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                lastname : ""
+          }))
+         }
+
+         if(formValues.client_info.clienttype === null) {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                clienttype : "Select Client Type "
+          }))
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                clienttype : ""
+          }))
+         }
+         if(formValues.client_info.state === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                state : "Select State "
+          }))
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                state : ""
+          }))
+         }
+         if(formValues.client_info.city === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                city : "Select City "
+          }))
+         }else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                city : ""
+          }))
+         }
+        //  if(formValues.client_info.middlename == "") {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         middlename : "Enter Middle Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         middlename : ""
+        //     } 
+        //     }) 
+        //  }
+
+
+        //  if(formValues.client_info.lastname === "") {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : "Enter Last Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : ""
+        //     } 
+        //     }) 
+        //  }
+        //  if(formValues.client_info.lastname == "") {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : "Enter Last Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : ""
+        //     } 
+        //     }) 
+        //  }
+        //  if(formValues.client_info.clienttype === null) {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         clienttype : "Enter Client Type"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         clienttype : ""
+        //     } 
+        //     }) 
+        //  }
+
+        //  if(formValues.client_info.state == null) {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         state : "Enter Country Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         state : ""
+        //     } 
+        //     }) 
+        //  }
+         
+
+        //  if(formValues.client_info.city == null) {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         city : "Enter Country Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         city : ""
+        //       } 
+        //     }) 
+        //  }
+
+
+
+         return res;
+    }
+    const [showAddConfirmation,setShowAddConfirmation] = useState(false);
+    const handleAddClientInfo = () => {
+        if(!validate()) {
+            console.log(formErrors)
+            console.log(formErrorsClientInfo)
+            setSelectedDialogue(1);
+            return 
+        }
+        setIsClientInfoDialogue(false);
+        setCurrClientName(formValues.client_info.firstname);
+         setShowAddConfirmation(true);
 
     }
-    const handleAddClientInfo = async () => {
+    const addClientInfo = async () => {
         // setButtonLoading(true);
         
         const data = {
@@ -732,6 +924,8 @@ const ManageCountryInfo = () => {
         console.log(data);
         const response = await APIService.addClientInfo(data)
         const res = await response.json();
+        setShowAddConfirmation(false)
+
         if(res.result == 'success') {
            
            setIsClientInfoDialogue(false);
@@ -762,17 +956,28 @@ const ManageCountryInfo = () => {
     // const [showAddSuccess,setShowAddSuccess] = useState(false);
     const [showEditModal,setShowEditModal] = useState(false);
     const [currClient,setCurrClient] = useState(-1);
+    const [currClientName,setCurrClientName] = useState("");
     const handleEdit = (id) => {
         setCurrClient(id);
         setShowEditModal(true);
     }
+    const openEditSuccess = () => {
+        setShowEditModal(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+            fetchData();
+        }, 2000)
+    }
     return(
         <div className='h-screen'>
             <Navbar/>
-            {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient}/>}
+            {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} />}
             
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Client"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Edited Client"/>}
             {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)}/>}
+            {showAddConfirmation && <SaveConfirmationClient addClient={addClientInfo} handleClose={() => {setShowAddConfirmation(false)}} currClient={currClientName}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
             <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                             <div className='flex items-center space-x-3'>
@@ -1422,7 +1627,7 @@ const ManageCountryInfo = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} />}
+                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo}/>}
                         {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity}/>}
