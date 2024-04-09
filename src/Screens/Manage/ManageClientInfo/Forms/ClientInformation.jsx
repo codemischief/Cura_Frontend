@@ -49,6 +49,9 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         console.log(result)
         if (Array.isArray(result)) {
             setAllState(result)
+            if(result.length >= 1) {
+                fetchCityData(result[0][0])
+            }
         }
     }
     const fetchCityData = async (id) => {
@@ -162,7 +165,9 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                         country: e.target.value
                                     }
                                 })
+                                setAllCity([]);
                                 fetchStateData(e.target.value)
+                                
                             }
                         }
                             value={formValues.client_info.country}
@@ -266,21 +271,12 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
-                        <div className="text-[13px]">Tenent Of </div>
-                        <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenentof} onChange={
-                            (e) => {
-                                setFormValues({
-                                    ...formValues, client_info: {
-                                        ...formValues.client_info,
-                                        tenentof: e.target.value
-                                    }
-                                })
-                            }
-                        }>
-                            <option >Select tenent of </option>
-                            {tenentOfData && tenentOfData.map(item => (
-                                <option key={item.id} value={item.id}>
-                                    {item.projectname}
+                        <div className="text-[13px]">Tenant Of </div>
+                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employeeName" >
+                            <option > </option>
+                            {employeeName && employeeName.map(item => (
+                                <option key={item} value={item}>
+                                    {item[1]}
                                 </option>
                             ))}
                         </select>
@@ -342,13 +338,23 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
+
                     <div className="">
-                        <div className="text-[13px]">Tenant Of </div>
-                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employeeName" >
-                            <option > </option>
-                            {employeeName && employeeName.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
+                        <div className="text-[13px]">Tenent Of Property</div>
+                        <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenentofproperty} onChange={
+                            (e) => {
+                                setFormValues({
+                                    ...formValues, client_info: {
+                                        ...formValues.client_info,
+                                        tenentofproperty: e.target.value
+                                    }
+                                })
+                            }
+                        }>
+                            <option >Select tenent of </option>
+                            {tenentOfData && tenentOfData.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.projectname}
                                 </option>
                             ))}
                         </select>

@@ -4,7 +4,8 @@ import { APIService } from '../../../../services/API';
 const LegalInformation = ({formValues,setFormValues,relationData,allCountry,allState,initialCities}) => {
 
   const [country, setCountry] = useState(allCountry);
-  const [state,setState] = useState(allState);
+  // const [state,setState] = useState(allState);
+  const [allStates,setAllStates] = useState(allState);
   // console.log(initialCities)
   const [allCity, setAllCity] = useState(initialCities);
   // const [allState, setAllState] = useState([]);
@@ -22,7 +23,10 @@ const LegalInformation = ({formValues,setFormValues,relationData,allCountry,allS
     const result = (await response.json()).data;
     console.log(result)
     if (Array.isArray(result)) {
-        setAllState(result)
+        setAllStates(result)
+        if(result.length >= 1) {
+          fetchCityData(result[0][0]);
+        }
     }
 }  
 const fetchCityData = async (id) => {
@@ -55,8 +59,9 @@ const fetchCityData = async (id) => {
                 // setAllCity([]);
                 setFormValues({...formValues,client_legal_info : {
                   ...formValues.client_legal_info,
-                  [country] : e.target.value
+                  country : e.target.value
               }})
+                setAllCity([]);
                 fetchStateData(e.target.value);
               }
             }>
@@ -81,7 +86,7 @@ const fetchCityData = async (id) => {
               (e) => {
                 setFormValues({...formValues,client_legal_info : {
                   ...formValues.client_legal_info,
-                  [city] : e.target.value
+                  city : e.target.value
               }})
               }
             }>
@@ -127,13 +132,13 @@ const fetchCityData = async (id) => {
               (e) => {
                 setFormValues({...formValues,client_legal_info : {
                   ...formValues.client_legal_info,
-                  [state] : e.target.value
+                  state : e.target.value
                 }})
                 fetchCityData(e.target.value)
               }
             }>
               <option >Select state</option>
-              {state && state.map(item => {
+              {allStates && allStates.map(item => {
                 if(item[0] == "Maharashtra") {
                   return <option key={item[0]} selected>
                          {item[0]}

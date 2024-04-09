@@ -826,7 +826,7 @@ const ManageCountryInfo = () => {
                 "clienttype": Number(formValues.client_info.clienttype),
                 "addressline1":formValues.client_info.addressline1,
                 "addressline2":formValues.client_info.addressline2,
-                "suburb":"sub",
+                "suburb":formValues.client_info.suburb,
                 "city":formValues.client_info.city,
                 "state":formValues.client_info.state,
                 "country":formValues.client_info.country,
@@ -848,8 +848,8 @@ const ManageCountryInfo = () => {
                 "localcontact2details":formValues.client_info.localcontact2details,
                 "includeinmailinglist":true,
                 "entityid":Number(formValues.client_info.entityid),
-                "tenantof":Number(formValues.client_info.tenentof),
-                "tenantofproperty":0
+                "tenantof": 0,
+                "tenantofproperty": Number(formValues.client_info.tenentofproperty)
             },
             "client_access": formValues.client_access,
             "client_bank_info":formValues.client_bank_info,
@@ -859,9 +859,9 @@ const ManageCountryInfo = () => {
                 "addressline1":formValues.client_legal_info.addressline1,
                 "addressline2":formValues.client_legal_info.addressline2,
                 "suburb":formValues.client_legal_info.suburb,
-                "city":"Mumbai",
-                "state":"Maharashtra",
-                "country":5,
+                "city":formValues.client_legal_info.city,
+                "state":formValues.client_legal_info.state,
+                "country":formValues.client_legal_info.country,
                 "zip":formValues.client_legal_info.zip,
                 "occupation":formValues.client_legal_info.occupation,
                 "birthyear":formValues.client_legal_info.birthyear,
@@ -875,9 +875,9 @@ const ManageCountryInfo = () => {
                 "poaaddressline1":formValues.client_poa.poaaddressline1,
                 "poaaddressline2":formValues.client_poa.poaaddressline2,
                 "poasuburb":formValues.client_poa.poasuburb,
-                "poacity":"Mumbai",
-                "poastate":"Maharashtra",
-                "poacountry":5,
+                "poacity":formValues.client_poa.poacity,
+                "poastate":formValues.client_poa.poastate,
+                "poacountry":formValues.client_poa.poacountry,
                 "poazip":formValues.client_poa.poazip,
                 "poaoccupation":formValues.client_poa.poaoccupation,
                 "poabirthyear":formValues.client_poa.poabirthyear,
@@ -903,7 +903,7 @@ const ManageCountryInfo = () => {
         }else {
              console.log('np')
         } 
-        // setButtonLoading(false);
+        setButtonLoading(false);
     }
     
     const handleDelete = async  (id) => {

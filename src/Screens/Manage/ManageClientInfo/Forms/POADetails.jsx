@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
-
+import { APIService } from '../../../../services/API';
 const POADetails = ({formValues,setFormValues,relationData,allCountries,initialStates,initialCities}) => {
 
   const [country, setCountry] = useState(allCountries);
-  const [city, setCity] = useState(initialCities);
-  const [state, setState] = useState(initialStates);
+  const [allCity, setAllCity] = useState(initialCities);
+  const [allStates, setAllStates] = useState(initialStates);
   // const [relation, setRelation] = useState([]);
    const handleChange = (e) => {
     const {name,value} = e.target;
@@ -14,6 +14,30 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
          [name] : value
      }})
    }
+   const fetchStateData = async (id) => {
+    console.log(id);
+    console.log('this is being called')
+    const data = { "user_id": 1234, "country_id": id };
+    const response = await APIService.getState(data);
+    const result = (await response.json()).data;
+    console.log('here')
+    console.log(result)
+    if (Array.isArray(result)) {
+        setAllStates(result)
+        if(result.length >= 1) {
+          fetchCityData(result[0][0]);
+        }
+    }
+}  
+const fetchCityData = async (id) => {
+  const data = { "user_id": 1234, "state_name": id };
+  const response = await APIService.getCities(data);
+  const result = (await response.json()).data;
+  console.log(result);
+  if (Array.isArray(result)) {
+      setAllCity(result)
+  }
+}
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center">
@@ -30,7 +54,16 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">Country </div>
-            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.client_poa.poacountry} onChange={
+              (e) => {
+                setFormValues({...formValues,client_poa : {
+                  ...formValues.client_poa,
+                  poacountry : e.target.value
+              }})
+               setAllCity([]);
+               fetchStateData(e.target.value);
+              }
+            }>
               <option >Select country</option>
               {country && country.map(item => {
                 if(item[0] == 5) {
@@ -48,9 +81,14 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">City </div>
-            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.client_poa.poacity} onChange={(e) => {
+              setFormValues({...formValues,client_poa : {
+                  ...formValues.client_poa,
+                  poacity : e.target.value
+              }})
+            }}>
               <option >Select city</option>
-              {city && city.map(item => (
+              {allCity && allCity.map(item => (
                 <option  value={item.id}>
                   {item.city}
                 </option>
@@ -87,9 +125,15 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
           </div>
           <div className="">
             <div className="text-[14px]">State </div>
-            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.client_poa.poastate} onChange={(e) => {
+               setFormValues({...formValues,client_poa : {
+                ...formValues.client_poa,
+                    poastate : e.target.value
+                }})
+                fetchCityData(e.target.value);
+            }}>
               <option >Select state</option>
-              {state && state.map(item => {
+              {allStates && allStates.map(item => {
                 if(item[0] == "Maharashtra") {
                   return <option key={item[0]} selected>
                          {item[0]}
