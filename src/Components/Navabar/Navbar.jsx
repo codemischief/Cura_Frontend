@@ -117,14 +117,23 @@ const Navbar = () => {
 
    useEffect(() => {
       const handler = (e) => {
-         if (!menuRef.current.contains(e.target)) {
+         if(!menuRef.current) {
             setIsToggledAdmin(false);
             setIsToggledDash(false);
             setIsToggledManage(false);
             setIsToggledResearch(false);
             setIsToggledReport(false);
+          }else if(!menuRef.current.contains(e.target)) {
+               setIsToggledAdmin(false);
+               setIsToggledDash(false);
+               setIsToggledManage(false);
+               setIsToggledResearch(false);
+               setIsToggledReport(false);
+            
+          }
          }
-      }
+         
+      
 
       document.addEventListener("mousedown", handler);
 

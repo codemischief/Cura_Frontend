@@ -223,18 +223,18 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     <div className="">
                         <div className="text-[13px]">State <label className="text-red-500">*</label></div>
                         {/* <h1>{allState.length}</h1> */}
-                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" onChange={
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.state} name="state" onChange={
                             (e) => {
                                 setFormValues({
                                     ...formValues, client_info: {
                                         ...formValues.client_info,
-                                        [state]: e.target.value
+                                        state: e.target.value
                                     }
                                 })
                                 fetchCityData(e.target.value)
                             }
                         }>
-                            {/* <option >Select State </option> */}
+                            <option >Select State </option>
 
                             {allState && allState.map(item => {
                                 if (item[0] == "Maharashtra") {
@@ -292,7 +292,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     </div>
                     <div className="">
                         <div className="text-[13px]">City <label className="text-red-500">*</label></div>
-                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" onChange={
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" value={formValues.client_info.city}name="city" onChange={
                             (e) => {
                                 setFormValues({
                                     ...formValues, client_info: {

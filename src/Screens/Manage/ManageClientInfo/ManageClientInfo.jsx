@@ -829,7 +829,7 @@ const ManageCountryInfo = () => {
                 "suburb":formValues.client_info.suburb,
                 "city":formValues.client_info.city,
                 "state":formValues.client_info.state,
-                "country":formValues.client_info.country,
+                "country":Number(formValues.client_info.country),
                 "zip":formValues.client_info.zip,
                 "homephone":formValues.client_info.homephone,
                 "workphone":formValues.client_info.workphone,
@@ -875,7 +875,7 @@ const ManageCountryInfo = () => {
                 "poaaddressline1":formValues.client_poa.poaaddressline1,
                 "poaaddressline2":formValues.client_poa.poaaddressline2,
                 "poasuburb":formValues.client_poa.poasuburb,
-                "poacity":formValues.client_poa.poacity,
+                "poacity":formValues.client_poa.poacity || 5,
                 "poastate":formValues.client_poa.poastate,
                 "poacountry":formValues.client_poa.poacountry,
                 "poazip":formValues.client_poa.poazip,
@@ -894,7 +894,6 @@ const ManageCountryInfo = () => {
         console.log(data);
         const response = await APIService.addClientInfo(data)
         const res = await response.json();
-        // console.log(res)
         if(res.result == 'success') {
            
            setIsClientInfoDialogue(false);
