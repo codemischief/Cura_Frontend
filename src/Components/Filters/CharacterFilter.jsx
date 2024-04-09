@@ -25,7 +25,7 @@ const CharacterFilter = ({handleFilter,filterColumn,menuRef}) => {
                                             <button onClick={() => handleFilter('isNull', filterColumn)}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull',filterColumn)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull',filterColumn)}><h1 >isNotNull</h1></button>
                                         </div>
                                     </div>
   )

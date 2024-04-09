@@ -7,34 +7,34 @@ const NumericFilter = ({handleFilter,columnName,menuRef}) => {
                                         <button onClick={() => handleFilter('noFilter', columnName)}><h1 >No Filter</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('contains', columnName)}><h1 >EqualTo</h1></button>
+                                        <button onClick={() => handleFilter('equalTo', columnName)}><h1 >EqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('contains',columnName)}><h1 >NotEqualTo</h1></button>
+                                        <button onClick={() => handleFilter('notEqualTo',columnName)}><h1 >NotEqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('startsWith', columnName)}><h1 >GreaterThan</h1></button>
+                                        <button onClick={() => handleFilter('greaterThan', columnName)}><h1 >GreaterThan</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => handleFilter('endsWith', columnName)}><h1 >LessThan</h1></button>
+                                        <button onClick={() => handleFilter('lessThan', columnName)}><h1 >LessThan</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('exactMatch', columnName)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                        <button onClick={() => handleFilter('greaterThanOrEqualTo', columnName)}><h1 >GreaterThanOrEqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNull', columnName)}><h1 >LessThanOrEqualTo</h1></button>
+                                        <button onClick={() => handleFilter('lessThanOrEqualTo', columnName)}><h1 >LessThanOrEqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', columnName)}><h1 >Between</h1></button>
+                                        <button onClick={() => handleFilter('between', columnName)}><h1 >Between</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', columnName)}><h1 >NotBetween</h1></button>
+                                        <button onClick={() => handleFilter('notBetween', columnName)}><h1 >NotBetween</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', columnName)}><h1 >isNull</h1></button>
+                                        <button onClick={() => handleFilter('isNull', columnName)}><h1 >isNull</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', columnName)}><h1 >NotIsNull</h1></button>
+                                        <button onClick={() => handleFilter('isNotNull', columnName)}><h1 >isNotNull</h1></button>
                                     </div>
                                 </div>
   )
