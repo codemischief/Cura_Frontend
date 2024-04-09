@@ -23,6 +23,8 @@ import SucessfullModal from "../../Components/modals/SucessfullModal"
 import FailureModal from '../../Components/modals/FailureModal';
 import DeleteLobModal from './Modals/DeleteLobModal';
 import SaveConfirmationLob from './Modals/SaveConfirmationLob';
+import CharacterFilter from '../../Components/Filters/CharacterFilter';
+import NumericFilter from '../../Components/Filters/NumericFilter';
 const LOB = () => {
     const menuRef = useRef();
     const [existingLOB, setExistingLOB] = useState([]);
@@ -340,6 +342,9 @@ const LOB = () => {
         setExistingLOB(result);
         setPageLoading(false);
     }
+    const handleFilter = () => {
+
+    }
     const handleDelete = (item) => {
         setCurrItem(item)
         setDeleteLobModal(true);
@@ -412,32 +417,7 @@ const LOB = () => {
                                 <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
                                 <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
-                            {lobFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <h1>No Filter</h1>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                    <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                                </div>
-                                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                    <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                                </div>
-                            </div>}
+                            {lobFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='lob' menuRef={menuRef}/>}
                         </div>
                     </div>
                     <div className='w-1/6 p-3 '>
@@ -445,41 +425,7 @@ const LOB = () => {
                             <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                             <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                         </div>
-                        {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
-                            </div>
-                            <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
-                            </div>
-                        </div>}
+                        {idFilter && <NumericFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='id'/>}
                         <div className='w-1/2 0 p-4'>
 
                         </div>

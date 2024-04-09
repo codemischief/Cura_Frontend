@@ -182,7 +182,7 @@ const EditClientInfoModal = (props) => {
         }
       }
   }
-  const handleAddClient = () => {
+  const handleAddClient = async () => {
     // we need to do the process here
     // console.log(intialClientData)
     const updateArrayAccess =[]
@@ -193,7 +193,7 @@ const EditClientInfoModal = (props) => {
     const insertArrayBank = []
     const deleteArrayBank = []
     helper1(updateArrayAccess,insertArrayAccess, deleteArrayAccess)
-    // helper2(updateArrayBank,insertArrayBank,deleteArrayBank)
+    helper2(updateArrayBank,insertArrayBank,deleteArrayBank)
     const data = {
         "user_id" : 1234,
         client_id : props.currClient,
@@ -212,6 +212,14 @@ const EditClientInfoModal = (props) => {
         client_poa : formValues.client_poa
     }
     console.log(data);
+    const response = await APIService.editCLientInfo(data);
+    const res = await response.json();
+    console.log(res);
+    if(res.result == 'success') {
+        
+    }else {
+
+    }
   }
   const fetchInitialClientData = async () => {
     const data = {"user_id" : 1234, "id": props.currClient};
@@ -337,12 +345,12 @@ const fetchTenentOfData = async () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <div className="w-[1200px] h-auto bg-white rounded-lg">
+                    <div className="w-[1200px] h-auto bg-white rounded-lg relative">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Client</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                 <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>

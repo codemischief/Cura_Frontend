@@ -194,11 +194,19 @@ const Locality = () => {
     }, []);
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapping).forEach(key=> {
+            if(filterMapping[key].filterType != "") {
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+            }
+        }) 
+        console.log(tempArray)
         setCurrentPage(pageNumber);
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": filterArray,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -215,10 +223,18 @@ const Locality = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapping).forEach(key=> {
+            if(filterMapping[key].filterType != "") {
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+            }
+        }) 
+        console.log(tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": filterArray,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -247,7 +263,7 @@ const Locality = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": filterArray,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": Number(currentPage),
@@ -267,11 +283,19 @@ const Locality = () => {
     }
     const handleSort = async (field) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapping).forEach(key=> {
+            if(filterMapping[key].filterType != "") {
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+            }
+        }) 
+        console.log(tempArray)
         setSortField(field);
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": filterArray,
+            "filters": tempArray,
             "sort_by": [field],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -342,9 +366,6 @@ const Locality = () => {
         }, 2000)
         fetchData();
     }
-    const deleteLob = async (name) => {
-
-    }
     const [isLocalityDialogue, setIsLocalityDialogue] = React.useState(false);
     const handleOpen = () => {
         setIsLocalityDialogue(true);
@@ -412,19 +433,20 @@ const Locality = () => {
         setLobFilter((prev) => !prev)
     }
     const fetchFiltered = async (filterType, filterField) => {
-        const filterArray = [];
+        const tempArray = [];
         // we need to query thru the object
         Object.keys(filterMapping).forEach(key=> {
             if(filterMapping[key].filterType != "") {
-                filterArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
             }
         }) 
+        console.log(tempArray) 
         
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["id", "name"],
-            "filters": filterArray,
+            "filters": tempArray,
             "sort_by": [],
             "order": "asc",
             "pg_no": 1,
@@ -559,7 +581,7 @@ const Locality = () => {
                 filterMapping.id.filterValue = idFilterInput;
              }
         }
-        // fetchData();
+        fetchData();
     }
     const handleFilter = (type, columnNo) => {
         const existing = filterArray;

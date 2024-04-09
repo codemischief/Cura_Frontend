@@ -533,8 +533,8 @@ const ManageCountryInfo = () => {
                 "poaemployername":"",
                 "poarelation":null,
                 "poarelationwith":"",
-                "poaeffectivedate":"",
-                "poaenddate":"",
+                "poaeffectivedate":null,
+                "poaenddate":null,
                 "poafor":"",
                 "scancopy":""
             }	
@@ -547,172 +547,6 @@ const ManageCountryInfo = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-
-
-    // validate form and to throw Error message
-    const validate = () => {
-        var res = true;
-        if (!formValues.employeeName) {
-            setFormErrors((existing) => {
-                return { ...existing, employeeName: "Enter Employee name" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, employeeName: "" }
-            })
-        }
-        if (!formValues.panNo) {
-            setFormErrors((existing) => {
-                return { ...existing, panNo: "Enter Pan Number" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, panNo: "" }
-            })
-        }
-        if (!formValues.doj) {
-            setFormErrors((existing) => {
-                return { ...existing, doj: "Enter date of joining" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, doj: "" }
-            })
-        }
-        if (!formValues.designation) {
-            setFormErrors((existing) => {
-                return { ...existing, designation: "Enter Designation" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, designation: "" }
-            })
-        }
-        if (!formValues.email) {
-            setFormErrors((existing) => {
-                return { ...existing, email: "Enter email address" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, email: "" }
-            })
-        }
-        if (!formValues.employeeId) {
-            setFormErrors((existing) => {
-                return { ...existing, employeeId: "Enter Employee Id" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, employeeId: "" }
-            })
-        }
-        if (!formValues.lob) {
-            setFormErrors((existing) => {
-                return { ...existing, lob: "Select LOB" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, lob: "" }
-            })
-        }
-        if (!formValues.dob) {
-            setFormErrors((existing) => {
-                return { ...existing, dob: "enter date of birth" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, dob: "" }
-            })
-        }
-        if (!formValues.role) {
-            setFormErrors((existing) => {
-                return { ...existing, role: "Select Role" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, role: "" }
-            })
-        }
-        if (!formValues.phNo) {
-            setFormErrors((existing) => {
-                return { ...existing, phNo: "Enter phone number" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, phNo: "" }
-            })
-        }
-        if (!formValues.country) {
-            setFormErrors((existing) => {
-                return { ...existing, country: "Select country" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, country: "" }
-            })
-        }
-        if (formValues.state == "") {
-            setFormErrors((existing) => {
-                return { ...existing, state: "Select state" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, state: "" }
-            })
-        }
-        if (!formValues.city) {
-            setFormErrors((existing) => {
-                return { ...existing, city: "Select city" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, city: "" }
-            })
-        }
-        if (!formValues.suburb) {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "Enter suburb" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "" }
-            })
-        }
-        if (!formValues.entity) {
-            setFormErrors((existing) => {
-                return { ...existing, entity: "Select Entity" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, entity: "" }
-            })
-        }
-        return res;
-    }
-
-    const deleteEmployee = async (id) => {
-        const data = {
-            "user_id": 1234,
-            "id": id
-        }
-        const response = await APIService.deleteEmployee(data);
-        openDeleteSuccess();
-    }
     const handlePageChange = (event, value) => {
         console.log(value);
         setCurrentPage(value)
@@ -812,6 +646,10 @@ const ManageCountryInfo = () => {
             setShowEditSuccess(false);
         }, 2000)
         fetchData();
+    }
+    const validate = () => {
+         var res = false
+
     }
     const handleAddClientInfo = async () => {
         // setButtonLoading(true);
@@ -1397,7 +1235,7 @@ const ManageCountryInfo = () => {
                                 </div>
                                 <div className='w-[10%]  flex'>
                                     <div className='p-3'>
-                                        <p> {item.clienttype}</p>
+                                        <p> {item.clienttypename}</p>
                                     </div>
                                 </div>
                                 <div className='w-[9%]  flex'>
@@ -1557,12 +1395,12 @@ const ManageCountryInfo = () => {
             >
                 <div className='flex justify-center'>
                     <div className="w-[1200px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Client</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
