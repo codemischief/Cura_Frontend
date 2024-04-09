@@ -299,6 +299,7 @@ const Payments = () => {
         const result = await response.json();
         setOpenAddConfirmation(false)
         setIsPaymentsDialogue(false);
+        setFormValues(initialValues);
         if(result.result == "success") {
             openSuccess();
         }else {

@@ -81,6 +81,8 @@ const Prospect = () => {
     useEffect(() => {
         fetchData();
         fetchCountryData();
+        fetchStateData(5);
+        fetchCityData('Maharashtra')
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setPersonFilter(false);
@@ -163,9 +165,9 @@ const Prospect = () => {
     //Validation of the form
     const initialValues = {
         personName: "",
-        country: "",
-        state: "",
-        city: "",
+        country: 5,
+        state: "Maharashtra",
+        city: 'Pune',
         suburb: "",
         propertyLocation: "",
         possibleServices: "",
@@ -821,8 +823,8 @@ const Prospect = () => {
                                         >
                                             <option value="none" hidden={true}>Select a State</option>
                                             {allState && allState.map(item => (
-                                                <option value={item[1]}>
-                                                    {item[1]}
+                                                <option value={item[0]}>
+                                                    {item[0]}
                                                 </option>
 
                                             ))}
