@@ -48,6 +48,7 @@ const Locality = () => {
     const [failureModal,setFailureModal] = useState(false);
     const [errorMessage,setErrorMessage] = useState("");
     const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
+    
     const filterMapping = {
         country : {
             filterType : "",
@@ -80,6 +81,7 @@ const Locality = () => {
             filterInput : ""
         }
     }
+    const [filterMapState,setFilterMapState] = useState(filterMapping);
     const [sortField, setSortField] = useState("id");
     const initialValues = {
         country: 5,
@@ -201,9 +203,9 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapping).forEach(key=> {
-            if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -230,9 +232,9 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapping).forEach(key=> {
-            if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -259,11 +261,14 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapping).forEach(key=> {
-            if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         }) 
+        
+        console.log('here is the call') 
         console.log(tempArray)
         const data = {
             "user_id": 1234,
@@ -290,9 +295,9 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapping).forEach(key=> {
-            if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -440,9 +445,9 @@ const Locality = () => {
     const fetchFiltered = async (filterType, filterField) => {
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapping).forEach(key=> {
-            if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         }) 
         console.log(tempArray) 
@@ -541,48 +546,88 @@ const Locality = () => {
        
         if(columnName == "country") {
             if(type == "noFilter") {
-               filterMapping.country.filterType = "";
-               filterMapping.country.filterValue = "";
+                const existing = filterMapState;
+                existing.country.filterType = "";
+                existing.country.filterValue = "";
+                setFilterMapState(existing)
+            //    filterMapping.country.filterType = "";
+            //    filterMapping.country.filterValue = "";
                setCountryFilterInput("");
             }else {
-                filterMapping.country.filterType = type;
-                filterMapping.country.filterValue = countryFilterInput;
+                const existing = filterMapState;
+                existing.country.filterType = type;
+                existing.country.filterValue = countryFilterInput;
+                setFilterMapState(existing)
+                // filterMapping.country.filterType = type;
+                // filterMapping.country.filterValue = countryFilterInput;
             }
         }else if(columnName == "state") {
             if(type == "noFilter") {
-                filterMapping.state.filterType = "";
-                filterMapping.state.filterValue = "";
+                const existing = filterMapState;
+                existing.state.filterType = "";
+                existing.state.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.state.filterType = "";
+                // filterMapping.state.filterValue = "";
                 setStateFilterInput("");
              }else {
-                filterMapping.state.filterType = type;
-                filterMapping.state.filterValue = stateFilterInput;
+                const existing = filterMapState;
+                existing.state.filterType = type;
+                existing.state.filterValue = stateFilterInput;
+                setFilterMapState(existing)
+                // filterMapping.state.filterType = type;
+                // filterMapping.state.filterValue = stateFilterInput;
              }
         }else if(columnName == "city") {
             if(type == "noFilter") {
-                filterMapping.city.filterType = "";
-                filterMapping.city.filterValue = "";
+                const existing = filterMapState;
+                existing.city.filterType = "";
+                existing.city.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = "";
+                // filterMapping.city.filterValue = "";
                 setCityFilterInput("");
              }else {
-                filterMapping.city.filterType = type;
-                filterMapping.city.filterValue = cityFilterInput;
+                const existing = filterMapState;
+                existing.city.filterType = type;
+                existing.city.filterValue = cityFilterInput;
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = type;
+                // filterMapping.city.filterValue = cityFilterInput;
              }
         }else if(columnName == "locality") {
             if(type == "noFilter") {
-                filterMapping.locality.filterType = "";
-                filterMapping.locality.filterValue = "";
+                const existing = filterMapState;
+                existing.locality.filterType = "";
+                existing.locality.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.locality.filterType = "";
+                // filterMapping.locality.filterValue = "";
                 setLocalityFilterInput("");
              }else {
-                filterMapping.locality.filterType = type;
-                filterMapping.locality.filterValue = localityFilterInput;
+                const existing = filterMapState;
+                existing.locality.filterType = type;
+                existing.locality.filterValue = localityFilterInput;
+                setFilterMapState(existing)
+                // filterMapping.locality.filterType = type;
+                // filterMapping.locality.filterValue = localityFilterInput;
              }
         }else if(columnName == "id") {
             if(type == "noFilter") {
-                filterMapping.id.filterType = "";
-                filterMapping.id.filterValue = "";
+                const existing = filterMapState;
+                existing.id.filterType = "";
+                existing.id.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.id.filterType = "";
+                // filterMapping.id.filterValue = "";
                 setidFilterInput("");
              }else {
-                filterMapping.id.filterType = type;
-                filterMapping.id.filterValue = idFilterInput;
+                const existing = filterMapState;
+                existing.id.filterType = type;
+                existing.id.filterValue = Number(idFilterInput);
+                setFilterMapState(existing)
+                // filterMapping.id.filterType = type;
+                // filterMapping.id.filterValue = Number(idFilterInput);
              }
         }
         fetchData();
