@@ -52,27 +52,32 @@ const Locality = () => {
         country : {
             filterType : "",
             filterValue : "",
-            filterData : "String"
+            filterData : "String",
+            filterInput : ""
         },
         state : {
             filterType : "",
             filterValue : "",
-            filterData : "String"
+            filterData : "String",
+            filterInput : ""
         },
         city : {
             filterType : "",
             filterValue : "",
-            filterData : "String"
+            filterData : "String",
+            filterInput : ""
         },
         locality : {
             filterType : "",
             filterValue : "",
-            filterData : "String"
+            filterData : "String",
+            filterInput : ""
         },
         id : {
             filterType : "",
             filterValue : "",
-            filterData : "Numeric"
+            filterData : "Numeric",
+            filterInput : ""
         }
     }
     const [sortField, setSortField] = useState("id");
@@ -198,7 +203,7 @@ const Locality = () => {
         // we need to query thru the object
         Object.keys(filterMapping).forEach(key=> {
             if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -227,7 +232,7 @@ const Locality = () => {
         // we need to query thru the object
         Object.keys(filterMapping).forEach(key=> {
             if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -256,7 +261,7 @@ const Locality = () => {
         // we need to query thru the object
         Object.keys(filterMapping).forEach(key=> {
             if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -287,7 +292,7 @@ const Locality = () => {
         // we need to query thru the object
         Object.keys(filterMapping).forEach(key=> {
             if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
             }
         }) 
         console.log(tempArray)
@@ -437,7 +442,7 @@ const Locality = () => {
         // we need to query thru the object
         Object.keys(filterMapping).forEach(key=> {
             if(filterMapping[key].filterType != "") {
-                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterInput,filterMapping[key].filterData]);
+                tempArray.push([key,filterMapping[key].filterType,filterMapping[key].filterValue,filterMapping[key].filterData]);
             }
         }) 
         console.log(tempArray) 
@@ -532,14 +537,13 @@ const Locality = () => {
     const [localityFilterType, setLocalityFilterType] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setidFilterInput] = useState("");
-    //   const [filterArray,setFilterArray] = useState([["country","nofilter",""],["state","nofilter",""],["city","nofilter",""],["locality","nofilter",""]]);
     const handleFiltering = (type,columnName) => {
-        console.log(type,columnName)
+       
         if(columnName == "country") {
             if(type == "noFilter") {
                filterMapping.country.filterType = "";
                filterMapping.country.filterValue = "";
-               countryFilterInput("");
+               setCountryFilterInput("");
             }else {
                 filterMapping.country.filterType = type;
                 filterMapping.country.filterValue = countryFilterInput;
@@ -548,7 +552,7 @@ const Locality = () => {
             if(type == "noFilter") {
                 filterMapping.state.filterType = "";
                 filterMapping.state.filterValue = "";
-                stateFilterInput("");
+                setStateFilterInput("");
              }else {
                 filterMapping.state.filterType = type;
                 filterMapping.state.filterValue = stateFilterInput;
@@ -557,7 +561,7 @@ const Locality = () => {
             if(type == "noFilter") {
                 filterMapping.city.filterType = "";
                 filterMapping.city.filterValue = "";
-                cityFilterInput("");
+                setCityFilterInput("");
              }else {
                 filterMapping.city.filterType = type;
                 filterMapping.city.filterValue = cityFilterInput;
@@ -566,7 +570,7 @@ const Locality = () => {
             if(type == "noFilter") {
                 filterMapping.locality.filterType = "";
                 filterMapping.locality.filterValue = "";
-                localityFilterInput("");
+                setLocalityFilterInput("");
              }else {
                 filterMapping.locality.filterType = type;
                 filterMapping.locality.filterValue = localityFilterInput;
@@ -575,148 +579,11 @@ const Locality = () => {
             if(type == "noFilter") {
                 filterMapping.id.filterType = "";
                 filterMapping.id.filterValue = "";
-                idFilterInput("");
+                setidFilterInput("");
              }else {
                 filterMapping.id.filterType = type;
                 filterMapping.id.filterValue = idFilterInput;
              }
-        }
-        fetchData();
-    }
-    const handleFilter = (type, columnNo) => {
-        const existing = filterArray;
-        console.log(type,colu)
-        if (type == "noFilter") {
-            const existing = filterArray;
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                setCountryFilterInput("");
-                existing[columnNo][2] = "";
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                setStateFilterInput("");
-                existing[columnNo][2] = "";
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                setCityFilterInput("");
-                existing[columnNo][2] = "";
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                setLocalityFilterInput("");
-                existing[columnNo][2] = "";
-                setFilterArray(existing);
-            }
-        } else if (type == "startsWith") {
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = countryFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = stateFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = cityFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = localityFilterInput;
-                setFilterArray(existing);
-            }
-        } else if (type == "endsWith") {
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = countryFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = stateFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = cityFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = localityFilterInput;
-                setFilterArray(existing);
-            }
-        } else if (type == "contains") {
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = countryFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = stateFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = cityFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = localityFilterInput;
-                setFilterArray(existing);
-            }
-        } else if (type == "exactMatch") {
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = countryFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = stateFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = cityFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = localityFilterInput;
-                setFilterArray(existing);
-            }
-        } else if (type == "isNull") {
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = countryFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = stateFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = cityFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = localityFilterInput;
-                setFilterArray(existing);
-            }
-        } else if (type == "isNotNull") {
-            if (columnNo == 0) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = countryFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 1) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = stateFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 2) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = cityFilterInput;
-                setFilterArray(existing);
-            } else if (columnNo == 3) {
-                existing[columnNo][1] = type;
-                existing[columnNo][2] = localityFilterInput;
-                setFilterArray(existing);
-            }
         }
         fetchData();
     }
