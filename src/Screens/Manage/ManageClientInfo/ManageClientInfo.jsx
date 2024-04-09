@@ -587,20 +587,57 @@ const ManageCountryInfo = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "firstname",
+              "middlename",
+              "lastname",
+              "salutation",
+              "clienttype",
+              "clienttypename",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "homephone",
+              "workphone",
+              "mobilephone",
+              "email1",
+              "email2",
+              "employername",
+              "comments",
+              "photo",
+              "onlineaccreated",
+              "localcontact1name",
+              "localcontact1address",
+              "localcontact1details",
+              "localcontact2name",
+              "localcontact2address",
+              "localcontact2details",
+              "includeinmailinglist",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "entityid",
+              "tenantof"
+            ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientInfo(result.client_info);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
@@ -609,21 +646,57 @@ const ManageCountryInfo = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "firstname",
+              "middlename",
+              "lastname",
+              "salutation",
+              "clienttype",
+              "clienttypename",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "homephone",
+              "workphone",
+              "mobilephone",
+              "email1",
+              "email2",
+              "employername",
+              "comments",
+              "photo",
+              "onlineaccreated",
+              "localcontact1name",
+              "localcontact1address",
+              "localcontact1details",
+              "localcontact2name",
+              "localcontact2address",
+              "localcontact2details",
+              "includeinmailinglist",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "entityid",
+              "tenantof"
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getEmployees(data);
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingEmployees(result);
-        setPageLoading(false);
+            "pg_size": 15
+          };
+          const response = await APIService.getClientInfo(data);
+          const temp = await response.json();
+          const result = temp.data;
+          console.log(result);
+          const t = temp.total_count;
+          setTotalItems(t);
+          setExistingClientInfo(result.client_info);
+          setPageLoading(false);
     }
     const openAddSuccess = () => {
         setShowAddSuccess(true);
@@ -995,7 +1068,7 @@ const ManageCountryInfo = () => {
                                 <div className='flex relative'>
                                     {/* search button */}
                                     <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                                         type="text"
                                         placeholder="  Search"
                                         value={searchInput}
