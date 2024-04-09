@@ -768,28 +768,28 @@ const Locality = () => {
                                     </div>
                                     {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                            <button onClick={() => handleFilter('noFilter', 'country')}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'country')}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 0)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'country')}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 0)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 'country')}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 0)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 'country')}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 0)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 'country')}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 0)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 'country')}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 'country')}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
@@ -800,28 +800,28 @@ const Locality = () => {
                                     </div>
                                     {stateFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 1)}><h1 >No Filter</h1></button>
+                                            <button onClick={() => handleFilter('noFilter', 'state')}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 1)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'state')}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 1)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'state')}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 1)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 'state')}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 1)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 'state')}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 1)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 'state')}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 1)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 'state')}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 1)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 'state')}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
@@ -833,28 +833,28 @@ const Locality = () => {
                                     </div>
                                     {cityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 2)}><h1 >No Filter</h1></button>
+                                            <button onClick={() => handleFilter('noFilter', 'city')}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 2)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'city')}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 2)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'coty')}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 2)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 'city')}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 2)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 'city')}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 2)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 'city')}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 2)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 'cpty')}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 2)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 'city')}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
@@ -865,28 +865,28 @@ const Locality = () => {
                                     </div>
                                     {localityFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('noFilter', 3)}><h1 >No Filter</h1></button>
+                                            <button onClick={() => handleFilter('noFilter', 'locality')}><h1 >No Filter</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 3)}><h1 >Contains</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'locality')}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', 3)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('contains', 'locality')}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('startsWith', 3)}><h1 >StartsWith</h1></button>
+                                            <button onClick={() => handleFilter('startsWith', 'locality')}><h1 >StartsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                            <button onClick={() => handleFilter('endsWith', 3)}><h1 >EndsWith</h1></button>
+                                            <button onClick={() => handleFilter('endsWith', 'locality')}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch', 3)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('exactMatch', 'locality')}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNull', 3)}><h1 >isNull</h1></button>
+                                            <button onClick={() => handleFilter('isNull', 'locality')}><h1 >isNull</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('isNotNull', 3)}><h1 >NotIsNull</h1></button>
+                                            <button onClick={() => handleFilter('isNotNull', 'locality')}><h1 >NotIsNull</h1></button>
                                         </div>
                                     </div>}
                                 </div>
@@ -898,37 +898,37 @@ const Locality = () => {
                                 </div>
                                 {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
+                                        <button onClick={() => handleFilter('noFilter', 'id')}><h1 >No Filter</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
+                                        <button onClick={() => handleFilter('contains', 'id')}><h1 >EqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
+                                        <button onClick={() => handleFilter('contains', 'id')}><h1 >NotEqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
+                                        <button onClick={() => handleFilter('startsWith', 'id')}><h1 >GreaterThan</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
+                                        <button onClick={() => handleFilter('endsWith', 'id')}><h1 >LessThan</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
+                                        <button onClick={() => handleFilter('exactMatch', 'id')}><h1 >GreaterThanOrEqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
+                                        <button onClick={() => handleFilter('isNull', 'id')}><h1 >LessThanOrEqualTo</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
+                                        <button onClick={() => handleFilter('isNotNull', 'id')}><h1 >Between</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
+                                        <button onClick={() => handleFilter('isNotNull', 'id')}><h1 >NotBetween</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
+                                        <button onClick={() => handleFilter('isNotNull', 'id')}><h1 >isNull</h1></button>
                                     </div>
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
+                                        <button onClick={() => handleFilter('isNotNull', 'id')}><h1 >NotIsNull</h1></button>
                                     </div>
                                 </div>}
                                 <div className='w-1/2 0 p-4'>
