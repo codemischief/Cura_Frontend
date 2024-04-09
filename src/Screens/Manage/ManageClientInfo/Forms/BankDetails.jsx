@@ -49,6 +49,9 @@ const BankDetails = ({formValues,setFormValues}) => {
               <div className="w-[12%] h-full p-3 text-[11px]" >
                 MICR Code
               </div>
+              <div className="w-[12%] h-full p-3 text-[11px]" >
+                Description
+              </div>
             </div>
             
             {formValues.client_bank_info.map((data, index) => {

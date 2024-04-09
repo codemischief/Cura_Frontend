@@ -110,6 +110,7 @@ const EditPayments = (props) => {
 
     const handleEdit = async () => {
         if(!validate()) {
+            console.log('here')
             return ;
         }
         const data = {
@@ -193,11 +194,13 @@ const EditPayments = (props) => {
             setFormErrors((existing) => {
                 return {...existing,amount: "Amount is Mandatory"}
             })
+            console.log('here')
             res = false;
         }else if(!Number.isInteger(Number(formValues.amount))){
             setFormErrors((existing) => {
                 return {...existing,amount: "Enter A Numeric Value"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
@@ -208,6 +211,7 @@ const EditPayments = (props) => {
             setFormErrors((existing) => {
                 return {...existing,paymentfor: "This Feild is mandatory"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
@@ -218,26 +222,29 @@ const EditPayments = (props) => {
             setFormErrors((existing) => {
                 return {...existing,paymentmode: "Select a payment mode"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
                 return {...existing,paymentmode: ""}
             })
         }
-        if(!formValues.entity) {
-            setFormErrors((existing) => {
-                return {...existing,entity: "Select entity"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,entity: ""}
-            })
-        }
+        // if(!formValues.entity) {
+        //     setFormErrors((existing) => {
+        //         return {...existing,entity: "Select entity"}
+        //     })
+        //     console.log('here')
+        //     res = false;
+        // }else {
+        //     setFormErrors((existing) => {
+        //         return {...existing,entity: ""}
+        //     })
+        // }
         if(!formValues.paidon) {
             setFormErrors((existing) => {
                 return {...existing,paidon: "Enter payment date"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
@@ -248,36 +255,41 @@ const EditPayments = (props) => {
             setFormErrors((existing) => {
                 return {...existing,month: "Select payment month"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
                 return {...existing,month: ""}
             })
         }
-        if(!formValues.tds ) {
+        if(formValues.tds === '') {
             setFormErrors((existing) => {
                 return {...existing,tds: "Enter TDS amount"}
             })
+            console.log('here')
             res = false;
         }else if(!Number.isInteger(Number(formValues.tds))){
             setFormErrors((existing) => {
                 return {...existing,tds: "Enter A Numeric Value!"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
                 return {...existing,tds: ""}
             })
         }
-        if(!formValues.professiontax ) {
+        if(formValues.professiontax === '') {
             setFormErrors((existing) => {
                 return {...existing,professiontax: "Enter profession Tax amount"}
             })
+            console.log('here')
             res = false;
         }else if(!Number.isInteger(Number(formValues.professiontax))){
             setFormErrors((existing) => {
                 return {...existing,professiontax: "Enter A Numeric Value!"}
             })
+            console.log('here')
             res = false;
         }else {
             setFormErrors((existing) => {
@@ -466,12 +478,9 @@ const EditPayments = (props) => {
                         </div>}
 
                         <div className="flex flex-col items-center gap-2">
-                            <div className="flex space-x-2 items-center">
-                                <input type="checkbox" />
-                                <div className="text-[13px] font-semibold">Exclude from Mailing List</div>
-                            </div>
+                            
                             <div className=" mb-2 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Add</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                             </div>
                         </div>

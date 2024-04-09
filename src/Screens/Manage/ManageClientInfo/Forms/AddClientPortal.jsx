@@ -31,7 +31,7 @@ const AddClientPortal = ({index,formValues,setFormValues}) => {
                 <input className='w-full h-full bg-[#F5F5F5]' type="text" placeholder=' Enter Password here' value={formValues.client_access[index].onlinepwd} onChange={handlePassChange} />
             </div>
             <div className="w-[31%] h-full p-1 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' value={formValues.client_access[index].onlineclue} type="date" onChange={handleOnlineClueChange}/>
+                <input className='w-full h-full bg-[#F5F5F5]' value={formValues.client_access[index].onlineclue} type="text" onChange={handleOnlineClueChange}/>
             </div>
         </div>
     )

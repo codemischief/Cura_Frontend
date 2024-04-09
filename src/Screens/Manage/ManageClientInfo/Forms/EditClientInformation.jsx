@@ -380,7 +380,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                     
                 </div>
             </div>
-            <div className="mt-[10px] flex justify-center items-center font-semibold text-[14px]"><Checkbox label="Active" />Exclude from Mailing List</div>
+            
         </div>
     )
 }

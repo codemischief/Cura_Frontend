@@ -139,6 +139,7 @@ const Prospect = () => {
         console.log(response);
         setIsProspectDialogue(false);
         // setPageLoading(false);
+        setFormValues(initialValues)
         openAddSuccess();
         fetchData();
     }

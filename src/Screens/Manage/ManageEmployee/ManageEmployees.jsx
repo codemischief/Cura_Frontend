@@ -291,6 +291,7 @@ const ManageEmployees = () => {
         setIsEmployeeDialogue(false);
     }
     const handleAddEmployee = () => {
+        console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
@@ -316,7 +317,7 @@ const ManageEmployees = () => {
             "dateofjoining": formValues.doj,
             "dob": formValues.dob,
             "panno": formValues.panNo,
-            "status": false,
+            "status": formValues.status,
             "phoneno": Number(formValues.phNo),
             "email": formValues.email,
             "addressline1": formValues.addressLine1,
@@ -355,16 +356,17 @@ const ManageEmployees = () => {
         employeeName: "",
         panNo: "",
         userName: "",
-        doj: "",
+        doj: null,
         designation: "",
         email: "",
         addressLine1: "",
         employeeId: "",
         lob: "",
         dob: "",
-        lastDOW: "",
+        lastDOW: null,
         role: "",
         phNo: "",
+        status : false,
         addressLine2: "",
         country: 5,
         state: "Maharashtra",
@@ -1576,7 +1578,17 @@ const ManageEmployees = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
+                        <div className="mt-[10px] flex justify-center items-center "><input
+                        type="checkbox"
+                        checked={formValues.status}
+                        className='mr-3 h-4 w-4'
+                        onClick={(e) => {
+                            // console.log(e.target.checked)
+                            const existing = {...formValues};
+                            existing.status = !existing.status;
+                            setFormValues(existing)
+          }}
+        />Active</div>
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddEmployee} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
