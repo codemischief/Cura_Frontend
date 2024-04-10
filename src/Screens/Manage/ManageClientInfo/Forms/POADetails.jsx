@@ -89,7 +89,7 @@ const fetchCityData = async (id) => {
             }}>
               <option >Select city</option>
               {allCity && allCity.map(item => (
-                <option  value={item.id}>
+                <option  value={item.city}>
                   {item.city}
                 </option>
               ))}
