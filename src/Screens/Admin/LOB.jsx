@@ -161,6 +161,7 @@ const LOB = () => {
         console.log(res);
         setOpenAddConfirmation(false);
         if (res.result == "success") {
+            setLobName("");
             openSuccessModal();
         } else {
             openFailureModal();

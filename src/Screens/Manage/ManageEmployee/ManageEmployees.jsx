@@ -103,12 +103,12 @@ const ManageEmployees = () => {
         console.log(result);
         if (Array.isArray(result)) {
             setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
+            // if (result.length > 0) {
+            //     // setFormValues((existing) => {
+            //     //     const newData = { ...existing, city: result[0].id }
+            //     //     return newData;
+            //     // })
+            // }
         }
     }
     const fetchUsersData = async () => {
@@ -338,10 +338,12 @@ const ManageEmployees = () => {
         const response = await APIService.addEmployee(data);
 
         const result = (await response.json())
+
         setOpenAddConfirmation(false);
         console.log(result)
         setIsEmployeeDialogue(false);
         if(result.result == "success") {
+            setFormValues(initialValues);
             openAddSuccess();
         }else {
             openFailureModal();
@@ -370,7 +372,7 @@ const ManageEmployees = () => {
         addressLine2: "",
         country: 5,
         state: "Maharashtra",
-        city: "",
+        city: null,
         suburb: "",
         zipCode: "",
         entity: ""
@@ -1536,7 +1538,8 @@ const ManageEmployees = () => {
 
                                             }}
                                         >
-                                            <option value="none" hidden={true}>Select a City</option>
+                                            {/* <option value="none" hidden={true}>Select a City</option> */}
+                                            <option value="none" hidden> Select A City</option>
                                             {allCity && allCity.map(item => (
                                                 <option value={item.id} >
                                                     {item.city}

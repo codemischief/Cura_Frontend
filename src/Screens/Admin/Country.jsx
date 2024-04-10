@@ -180,6 +180,7 @@ const Country = () => {
     setOpenAddConfirmation(false)
     if (res.result == "success") {
       setIsLoading(false);
+      setFormValues(initialValues);
       openSuccessModal();
     } else {
       setIsLoading(false);
@@ -236,7 +237,7 @@ const Country = () => {
     }
     setCurrentCountry(formValues.countryName)
     setIsCountryDialogue(false);
-    setOpenAddConfirmation(true);
+    setOpenAddConfirmation(true);a
     // addCountry();
   };
 

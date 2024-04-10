@@ -1005,7 +1005,8 @@ const ManageCountryInfo = () => {
            openAddSuccess();
            setFormValues(initialValues)
         }else {
-             console.log('np')
+            //  we need to open an error prompt here
+            
         } 
         setButtonLoading(false);
     }

@@ -255,6 +255,7 @@ const ManageBuilder = () => {
         setAddConfirmation(false);
         if (res.result == "success") {
             setIsLoading(false);
+            setFormValues(initialValues);
             openSuccessModal();
         } else {
             setIsLoading(false);

@@ -343,11 +343,12 @@ const Locality = () => {
         const response = await APIService.addLocality(data);
         const res = await response.json();
         setAddConfirmation(false)
-
+        
         // console.log(res);
 
         
         if(res.result == "success") {
+            setFormValues(initialValues);
             openSuccess();
         }else {
             setErrorMessage(res.message)
