@@ -177,11 +177,7 @@ const EditClientInfoModal = (props) => {
                 updateArrayBank.push(tempObj);
             }
         }else {
-            // we need to add the thing in the 
-            if(tempObj.onlineclue != null && tempObj.onlinemailid != "" && tempObj.onlinepwd != "") {
-                insertArrayBank.push(tempObj);
-            }
-           
+            insertArrayBank.push(tempObj); 
         }
       }
   }

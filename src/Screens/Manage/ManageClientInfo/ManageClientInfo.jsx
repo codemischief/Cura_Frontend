@@ -460,7 +460,7 @@ const ManageCountryInfo = () => {
                 "addressline1": "",
                 "addressline2":"",
                 "suburb":"",
-                "city":"",
+                "city":"Pune",
                 "state":"Maharashtra",
                 "country":5,
                 "zip":"",
@@ -508,7 +508,7 @@ const ManageCountryInfo = () => {
                 "addressline1":"",
                 "addressline2":"",
                 "suburb":"",
-                "city":"",
+                "city":"Pune",
                 "state":"Maharashtra",
                 "country":5,
                 "zip":"",
@@ -524,7 +524,7 @@ const ManageCountryInfo = () => {
                 "poaaddressline1":"",
                 "poaaddressline2":"",
                 "poasuburb":"",
-                "poacity":"",
+                "poacity":"Pune",
                 "poastate":"Maharashtra",
                 "poacountry":5,
                 "poazip":"",
@@ -1006,7 +1006,7 @@ const ManageCountryInfo = () => {
            setFormValues(initialValues)
         }else {
             //  we need to open an error prompt here
-            
+
         } 
         setButtonLoading(false);
     }
