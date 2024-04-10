@@ -258,15 +258,15 @@ const ManageClientProperty = () => {
             "pg_no": 1,
             "pg_size": 15
           };
-        const response = await APIService.getClientProperty(data);
-        const temp = await response.json();
-        const result = temp.data;
-        console.log(result)
-        console.log(result);
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingClientProperty(result.client_info);
-        setPageLoading(false);
+        // const response = await APIService.getClientProperty(data);
+        // const temp = await response.json();
+        // const result = temp.data;
+        // console.log(result)
+        // console.log(result);
+        // const t = temp.total_count;
+        // setTotalItems(t);
+        // setExistingClientProperty(result.client_info);
+        // setPageLoading(false);
     }
     const fetchPageData = async  (page) => {
         setPageLoading(true);
@@ -389,9 +389,10 @@ const ManageClientProperty = () => {
         setPageLoading(false);
     }
     useEffect(() => {
-        fetchData();
+        // fetchClientData();
+        // fetchData();
         fetchStateData(5);
-        fetchClientData();
+        
         fetchCityData("Maharashtra");
         fetchPropertyStatus();
         fetchPropertyType();
@@ -494,14 +495,15 @@ const ManageClientProperty = () => {
     const selectForth = () => {
         setSelectedDialogue(4);
     }
+    const [clientData,setClientData] = useState([]);
     const fetchClientData = async () => {
         const data = {
             "user_id": 1234,
-
           }
-          const response = await APIService.getClientAdmin(data)
-          const res = await response.json();
+          const response =  await APIService.getClientAdmin(data)
+          const res =   await response.json();
           console.log(res)
+          setClientData(res.data);
     }
     const initialValues = {
     "client_property": {
@@ -509,8 +511,8 @@ const ManageClientProperty = () => {
       "propertytype": "Mr.",
       "leveloffurnishing": 2,
       "numberofparkings": 4,
-      "state": "GHI",
-      "city": 2,
+      "state": "Maharashtra",
+      "city": 847,
       "suburb": "ehfe",
       "country":5,
       "projectid":4373,
@@ -519,7 +521,7 @@ const ManageClientProperty = () => {
       "layoutdetails": "hijklmno",
       "email": "zipcode",
       "website": "sub",
-      "initialpossessiondate": "2024-01-01 00:00:00",
+      "initialpossessiondate": "2024-03-02",
       "electricityconsumernumber": "fjrg432u489",
       "otherelectricitydetails": "9855645531",
       "electricitybillingduedate": 24,
@@ -1481,10 +1483,10 @@ const ManageClientProperty = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ProjectInformation  initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData}/>}
-                        {selectedDialog == 2 && <Photos />}
-                        {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity}/>}
-                        {selectedDialog == 4 && <OwnerDetails />}
+                        {selectedDialog == 1 && <ProjectInformation  clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues}/>}
+                        {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues}/>}
+                        {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
+                        {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
 
                         <div className="my-2 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>

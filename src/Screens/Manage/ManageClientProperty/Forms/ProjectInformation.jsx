@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 
-const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
+const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues}) => {
   const [propertyType, setPropertyType] = useState([]);
   const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   const [state, setState] = useState(initialStates);
@@ -10,6 +10,14 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
   const [status, setStatus] = useState([]);
   const [electricity, setElectricity] = useState([]);
   const [existingSociety,setExistingSociety] = useState(initialSociety);
+  const [clientName,setClientName] = useState(clientData);
+  const handleChange = (e) => {
+    const {name,value} = e.target;
+     setFormValues({...formValues,client_property : {
+         ...formValues.client_property,
+         [name] : value
+     }})
+   }
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3">
@@ -18,11 +26,20 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <div className="text-[13px]">
                 Client Name <label className="text-red-500">*</label>
             </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="clientName"
-            />
+            <select
+              className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
+              name="clientid"
+              value={formValues.client_property.clientid}
+              onChange={handleChange}
+            >
+              <option>Select Client Name </option>
+              {clientName &&
+                clientName.map((item) => (
+                  <option key={item[0]} value={item[0]}>
+                    {item[1]}
+                  </option>
+                ))}
+            </select>
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
@@ -31,12 +48,14 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             </div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-              name="levelOfFurnishing"
+              name="leveloffurnishing"
+              onChange={handleChange}
+              value={formValues.client_property.leveloffurnishing}
             >
               <option>Select Level of Furnishing</option>
               {levelOfFurnishing &&
                 levelOfFurnishing.map((item) => (
-                  <option key={item} value={item}>
+                  <option key={item[0]} value={item[0]}>
                     {item[1]}
                   </option>
                 ))}
@@ -50,10 +69,12 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="state"
+              value={formValues.client_property.state}
+              onChange={handleChange}
             >
-              <option>Select State</option>
-              {state &&
-                state.map((item) => (
+              {/* <option>Select State</option> */}
+              {initialStates &&
+                initialStates.map((item) => (
                   <option key={item[0]} value={item[0]}>
                     {item[0]}
                   </option>
@@ -68,7 +89,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="date"
-              name="initialPossesionDate"
+              name="initialpossessiondata"
+              onChange={handleChange}
+              value={formValues.client_property.initialpossessiondate}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -77,7 +100,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="otherElecticityDetails"
+              name="otherelectricitydetails"
+              value={formValues.client_property.otherelectricitydetails}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -86,7 +111,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="propertyTaxNumber"
+              name="propertytaxnumber"
+              onChange={handleChange}
+              value={formValues.client_property.propertytaxnumber}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -105,12 +132,14 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             </div>
             <select
               className="text-[12px]  w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-              name="society"
+              name="projectid"
+              onChange={handleChange}
+              formValues={formValues.client_property.projectid}
             >
               <option>Select Builder </option>
               {existingSociety &&
                 existingSociety.map((item) => (
-                  <option key={item[0]} value={item.builderid} >
+                  <option key={item[0]} value={item.projectid} >
                        <p>{item.buildername}</p> 
                        &nbsp;
                        &nbsp;
@@ -126,7 +155,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="propertyDescription"
+              name="propertydescription"
+              value={formValues.client_property.propertydescription}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -137,11 +168,13 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="city"
+              onChange={handleChange}
+              value={formValues.client_property.city}
             >
               <option>Select City</option>
-              {city &&
-                city.map((item) => (
-                  <option key={item.id} value={item.city}>
+              {initialCities &&
+                initialCities.map((item) => (
+                  <option key={item.id} value={item.id}>
                     {item.city}
                   </option>
                 ))}
@@ -154,7 +187,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="gasConnectionDetails"
+              name="gasconnectiondetails"
+              value={formValues.client_property.gasconnectiondetails}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -165,7 +200,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="numberOfParking"
+              name="numberofparkings"
+              value={formValues.client_property.numberofparkings}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -174,7 +211,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="electricityBillingUnit"
+              name="electricitybillingunit"
+              value={formValues.client_property.electricitybillingunit}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -194,7 +233,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             </div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-              name="propertyType"
+              name="propertytype"
+              onChange={handleChange}
+              value={formValues.client_property.propertytype}
             >
               <option>Select Property Type</option>
               {propertyType &&
@@ -212,7 +253,10 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="email"
+              name="propertymanager"
+              value={formValues.client_property.propertymanager}
+              onChange={handleChange}
+
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -222,6 +266,8 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="suburb"
+              value={formValues.client_property.suburb}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -230,7 +276,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="electicityConsumerNumber"
+              name="electricityconsumernumber"
+              value={formValues.client_property.electricityconsumernumber}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -240,7 +288,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="layoutDetails"
+              name="layoutdetails"
+              value={formValues.client_property.layoutdetails}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -250,6 +300,8 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
               name="comments"
+              value={formValues.client_property.comments}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -261,6 +313,8 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="status"
+              value={formValues.client_property.status}
+              onChange={handleChange}
             >
               <option>Select Status </option>
               {status &&
@@ -277,7 +331,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="website"
+              name="clientservicemanager"
+              value={formValues.client_property.clientservicemanager}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -285,7 +341,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <div className="text-[13px]">Electricity Bill Due Date <label className="text-red-500">*</label></div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-              name="electricityBillDueDate"
+              name="electricitybillingduedate"
+              value={formValues.client_property.electricitybillingduedate}
+              onChange={handleChange}
             >
               <option>Select Status </option>
               {electricity &&
@@ -303,7 +361,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="textForPosting"
+              name="textforposting"
+              value={formValues.client_property.textforposting}
+              onChange={handleChange}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -312,7 +372,9 @@ const ProjectInformation = ({initialSociety,initialStates,initialCities}) => {
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
-              name="furniture"
+              name="internalfurnitureandfittings"
+              onChange={handleChange}
+              value={formValues.client_property.internalfurnitureandfittings}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div> 

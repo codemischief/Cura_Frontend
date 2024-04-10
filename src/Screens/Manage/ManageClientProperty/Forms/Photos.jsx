@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import AddFeildPhotos from "./AddFeildPhotos";
 
-const Photos = (props) => {
-  const handleClose = () => {
-    props.setIsStateDialogue(false);
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmit(true);
-  };
-
-  const [addField, setAddFeild] = useState([]);
+const Photos = ({formValues,setFormValues}) => {
   const handleAdd = () => {
-    const abc = [...addField, []];
-    setAddFeild(abc);
+     setFormValues({...formValues,client_property_photos : [
+      ...formValues.client_property_photos,{
+        "id": "",
+        "photolink": "",
+        "description": "",
+        "phototakenwhen": ""
+      }
+    ]})
   }
+  const [addField, setAddFeild] = useState([]);
+  // const handleAdd = () => {
+  //   const abc = [...addField, []];
+  //   setAddFeild(abc);
+  // }
 
 
   return (
@@ -35,7 +36,7 @@ const Photos = (props) => {
             Photo Taken Date
           </div>
         </div>
-        <div className="w-full h-[40px] flex border-[#CBCBCB] border-b-[1px]">
+        {/* <div className="w-full h-[40px] flex border-[#CBCBCB] border-b-[1px]">
           <div className="w-[7%] h-full p-3 text-[11px]" >
             1
           </div>
@@ -48,10 +49,10 @@ const Photos = (props) => {
           <div className="w-[31%] h-full p-1 text-[11px]" >
             <input className='w-full h-full bg-[#F5F5F5]' type="date" />
           </div>
-        </div>
-        {addField.map((data, index) => {
+        </div> */}
+        {formValues.client_property_photos.map((data, index) => {
           return (
-            <AddFeildPhotos index={index} />
+            <AddFeildPhotos index={index} formValues={formValues} setFormValues={setFormValues}/>
           )
         })}
         <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
