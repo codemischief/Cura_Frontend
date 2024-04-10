@@ -10,7 +10,7 @@ const CharacterFilter = ({handleFilter,filterColumn,menuRef}) => {
                                             <button onClick={() => handleFilter('contains', filterColumn)}><h1 >Contains</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('contains', filterColumn)}><h1 >DoesNotContain</h1></button>
+                                            <button onClick={() => handleFilter('doesNotContain', filterColumn)}><h1 >DoesNotContain</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => handleFilter('startsWith', filterColumn)}><h1 >StartsWith</h1></button>
@@ -19,7 +19,7 @@ const CharacterFilter = ({handleFilter,filterColumn,menuRef}) => {
                                             <button onClick={() => handleFilter('endsWith', filterColumn)}><h1 >EndsWith</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                            <button onClick={() => handleFilter('exactMatch',filterColumn)}><h1 >EqualTo</h1></button>
+                                            <button onClick={() => handleFilter('equalTo',filterColumn)}><h1 >EqualTo</h1></button>
                                         </div>
                                         <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                             <button onClick={() => handleFilter('isNull', filterColumn)}><h1 >isNull</h1></button>

@@ -261,8 +261,25 @@ return response;
   const response = await fetch(`${env_URL_SERVER}editClientInfo`, METHOD_POST(data));
   return response;
  }
+ const getBuildersAndProjectsList = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getBuildersAndProjectsList`, METHOD_POST(data));
+  return response;
+ }
+ const getPropertyStatusAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getPropertyStatusAdmin`, METHOD_POST(data));
+  return response;
+ }
+
+ const getLevelOfFurnishingAdmin = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getLevelOfFurnishingAdmin`, METHOD_POST(data));
+  return response;
+ }
+ const getPropertyType = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getPropertyType`, METHOD_POST(data));
+  return response;
+ }
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
   getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
-  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects,editEmployee,getItembyId,editPayment,deletePayment,getItemByAttr,getProjectsByBuilderId,getClientInfo,getClientProperty,getClientTypeAdmin,getTenantOfPropertyAdmin,getRelationAdmin,addClientInfo,deleteClientInfo,getClientInfoByClientId,editCLientInfo};
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects,editEmployee,getItembyId,editPayment,deletePayment,getItemByAttr,getProjectsByBuilderId,getClientInfo,getClientProperty,getClientTypeAdmin,getTenantOfPropertyAdmin,getRelationAdmin,addClientInfo,deleteClientInfo,getClientInfoByClientId,editCLientInfo,getBuildersAndProjectsList,getPropertyStatusAdmin,getLevelOfFurnishingAdmin,getPropertyType};
 
   

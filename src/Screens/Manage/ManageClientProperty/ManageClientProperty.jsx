@@ -9,7 +9,6 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import ProjectInformation from "./Forms/ProjectInformation"
 import Photos from "./Forms/Photos";
@@ -17,11 +16,12 @@ import POADetails from "./Forms/POADetails";
 import OwnerDetails from "./Forms/OwnerDetails"
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
-import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import Joystick from "../../../assets/four_direction_arrow.png";
+import Trash from "../../../assets/trash.png"
+import Edit from "../../../assets/edit.png"
 const ManageClientProperty = () => {
 
     const menuRef = useRef();
@@ -66,9 +66,9 @@ const ManageClientProperty = () => {
     const [EmployeeNameInput, setEmployeeNameInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idInput, setIdInput] = useState("");
+    const [clientTypeData,setClientTypeData] = useState([]);
     const fetchCountryData = async () => {
         setPageLoading(true);
-        // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
@@ -76,6 +76,16 @@ const ManageClientProperty = () => {
         if (Array.isArray(result.data)) {
             setAllCountry(result.data);
         }
+    }
+    const fetchClientTypeData = async () => {
+        const data = {
+            "user_id": 1234
+        }
+        const response = await APIService.getClientTypeAdmin(data);
+        const res = await response.json()
+        console.log(res)
+        setClientTypeData(res.data)
+
     }
     const fetchStateData = async (id) => {
         console.log(id);
@@ -119,7 +129,7 @@ const ManageClientProperty = () => {
             setAllUsername(result.data);
         }
     }
-
+   
     const fetchRoleData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -134,7 +144,7 @@ const ManageClientProperty = () => {
             setAllRoles(result.data);
         }
     }
-
+    
     const fetchEntitiesData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -149,7 +159,7 @@ const ManageClientProperty = () => {
             setAllEntites(result.data);
         }
     }
-
+    
     const fetchLobData = async () => {
         setPageLoading(true);
         const data = {
@@ -171,6 +181,32 @@ const ManageClientProperty = () => {
             setAllLOB(result.data);
         }
     }
+    const [existingSociety,setExistingSociety] = useState([]);
+    const getBuildersAndProjectsList = async () => {
+        const data = {"user_id" : 1234};
+        const response = await APIService.getBuildersAndProjectsList(data);
+        const res = await response.json();
+        console.log(res.data);
+        setExistingSociety(res.data);
+    }
+    const fetchPropertyStatus = async () => {
+        const data = {"user_id" : 1234};
+        const response = await APIService.getPropertyStatusAdmin(data);
+        const res = await response.json();
+        console.log(res);
+    }
+    const fetchLevelOfFurnishing = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getLevelOfFurnishingAdmin(data);
+        const res = await response.json()
+        console.log(res);
+    }
+    const fetchPropertyType = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getPropertyType(data)
+        const res = await response.json();
+        console.log(res);
+    }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
@@ -179,49 +215,49 @@ const ManageClientProperty = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
-                "client",
-                "clientid",
-                "project",
-                "projectid",
-                "propertytypeid",
-                "propertytype",
-                "suburb",
-                "cityid",
-                "city",
-                "state",
-                "countryid",
-                "country",
-                "layoutdetails",
-                "numberofparkings",
-                "internalfurnitureandfittings",
-                "leveloffurnishing",
-                "propertystatus",
-                "status",
-                "initialpossessiondate",
-                "poagiven",
-                "poaid",
-                "electricityconsumernumber",
-                "electricitybillingunit",
-                "otherelectricitydetails",
-                "gasconnectiondetails",
-                "propertytaxnumber",
-                "clientservicemanager",
-                "propertymanager",
-                "comments",
-                "propertyownedbyclientonly",
-                "textforposting",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "electricitybillingduedate"
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
             ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 1,
             "pg_size": 15
-        };
+          };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
@@ -229,59 +265,58 @@ const ManageClientProperty = () => {
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        // setExistingEmployees(result);
-        setExistingClientProperty(result);
+        setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
-    const fetchPageData = async (pageNumber) => {
+    const fetchPageData = async  (page) => {
         setPageLoading(true);
-        setCurrentPage(pageNumber);
+        setCurrentPage(page);
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
-                "client",
-                "clientid",
-                "project",
-                "projectid",
-                "propertytypeid",
-                "propertytype",
-                "suburb",
-                "cityid",
-                "city",
-                "state",
-                "countryid",
-                "country",
-                "layoutdetails",
-                "numberofparkings",
-                "internalfurnitureandfittings",
-                "leveloffurnishing",
-                "propertystatus",
-                "status",
-                "initialpossessiondate",
-                "poagiven",
-                "poaid",
-                "electricityconsumernumber",
-                "electricitybillingunit",
-                "otherelectricitydetails",
-                "gasconnectiondetails",
-                "propertytaxnumber",
-                "clientservicemanager",
-                "propertymanager",
-                "comments",
-                "propertyownedbyclientonly",
-                "textforposting",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "electricitybillingduedate"
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
             ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
-            "pg_no": Number(pageNumber),
+            "pg_no": Number(page),
             "pg_size": Number(currentPages)
-        };
+          };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
@@ -289,60 +324,60 @@ const ManageClientProperty = () => {
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        // setExistingEmployees(result);
-        setExistingClientProperty(result);
+        // setExistingClientProperty([1,2,3,4]);
+        setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
-    const fetchQuantityData = async (quantity) => {
+
+    const fetchQuantityData = async  (quantity) => {
         setPageLoading(true);
-        console.log(searchInput);
         setCurrentPages(quantity);
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
-                "client",
-                "clientid",
-                "project",
-                "projectid",
-                "propertytypeid",
-                "propertytype",
-                "suburb",
-                "cityid",
-                "city",
-                "state",
-                "countryid",
-                "country",
-                "layoutdetails",
-                "numberofparkings",
-                "internalfurnitureandfittings",
-                "leveloffurnishing",
-                "propertystatus",
-                "status",
-                "initialpossessiondate",
-                "poagiven",
-                "poaid",
-                "electricityconsumernumber",
-                "electricitybillingunit",
-                "otherelectricitydetails",
-                "gasconnectiondetails",
-                "propertytaxnumber",
-                "clientservicemanager",
-                "propertymanager",
-                "comments",
-                "propertyownedbyclientonly",
-                "textforposting",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "electricitybillingduedate"
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
             ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
-            "pg_no": Number(pageNumber),
+            "pg_no": Number(currentPage),
             "pg_size": Number(quantity)
-        };
+          };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
@@ -350,11 +385,19 @@ const ManageClientProperty = () => {
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingClientProperty(result);
+        setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
     useEffect(() => {
         fetchData();
+        fetchStateData(5);
+        fetchClientData();
+        fetchCityData("Maharashtra");
+        fetchPropertyStatus();
+        fetchPropertyType();
+        fetchLevelOfFurnishing();
+        fetchClientTypeData();
+        getBuildersAndProjectsList();
         fetchCountryData();
         fetchEntitiesData();
         fetchRoleData();
@@ -451,30 +494,115 @@ const ManageClientProperty = () => {
     const selectForth = () => {
         setSelectedDialogue(4);
     }
+    const fetchClientData = async () => {
+        const data = {
+            "user_id": 1234,
 
+          }
+          const response = await APIService.getClientAdmin(data)
+          const res = await response.json();
+          console.log(res)
+    }
     const initialValues = {
-        employeeName: "",
-        panNo: "",
-        userName: "",
-        doj: "",
-        designation: "",
-        email: "",
-        addressLine1: "",
-        employeeId: "",
-        lob: "",
-        dob: "",
-        lastDOW: "",
-        role: "",
-        phNo: "",
-        addressLine2: "",
-        country: "",
-        state: "",
-        city: "",
-        suburb: "",
-        zipCode: "",
-        entity: ""
-
-    };
+    "client_property": {
+      "clientid": 44598,
+      "propertytype": "Mr.",
+      "leveloffurnishing": 2,
+      "numberofparkings": 4,
+      "state": "GHI",
+      "city": 2,
+      "suburb": "ehfe",
+      "country":5,
+      "projectid":4373,
+      "status": 2,
+      "propertydescription": "abcdefg",
+      "layoutdetails": "hijklmno",
+      "email": "zipcode",
+      "website": "sub",
+      "initialpossessiondate": "2024-01-01 00:00:00",
+      "electricityconsumernumber": "fjrg432u489",
+      "otherelectricitydetails": "9855645531",
+      "electricitybillingduedate": 24,
+      "comments": "abcd",
+      "propertytaxnumber":"efrhgurg",
+      "clientservicemanager":1234,
+      "propertymanager":1234,
+      "propertyownedbyclientonly":true,
+      "gasconnectiondetails": "jwdiuheduhef",
+      "internalfurnitureandfittings":"efuhef",
+      "textforposting": "ghijklm",
+      "poagiven":true,
+      "poaid":202,
+      "electricitybillingunit":"feuihf"
+    },
+    "client_property_photos": [
+        {
+          "id": 36,
+          "photolink": "1",
+          "description": "desc",
+          "phototakenwhen": "10-04-2024 19:52:00"
+        },
+          {
+              "photolink": "1",
+              "description": "desc",
+              "phototakenwhen": "10-04-2024 19:52:00"
+          }
+      ],
+    "client_property_owner": {
+      "owner1name": "ABC DEF GHI",
+      "owner1addressline1": "12345670",
+      "owner1addressline2": "hcegfegf efhiuhf",
+      "owner1suburb": "frufhruigh fhirf",
+      "owner1city": "frhufh",
+      "owner1state": "Mumbai",
+      "owner1country": 5,
+      "owner1zip": "5",
+      "owner1panno": "zipcode",
+      "owner1occupation": "person",
+      "owner1employername": 2004,
+      "owner1relation":1,
+      "owner1birthyear":2003,
+      "owner1relationwith": 1234,
+      "owner2name": "ABC DEF GHI",
+      "owner2addressline1": "12345670",
+      "owner2addressline2": "hcegfegf efhiuhf",
+      "owner2suburb": "frufhruigh fhirf",
+      "owner2city": "frhufh",
+      "owner2state": "Mumbai",
+      "owner2country": 5,
+      "owner2zip": "5",
+      "owner2panno": "zipcode",
+      "owner2occupation": "person",
+      "owner2employername": 2004,
+      "owner2relation": 2,
+      "owner2relationwith": 1234,
+      "owner2birthyear":2002,
+      "owner3name":"Name",
+      "owner3panno":"3749873ef",
+      "otherownerdetails":"details"
+    },
+    "client_property_poa": {
+      "poalegalname": "abcdef ghijkl",
+      "poapanno": "647364873",
+      "poaaddressline1": "eyge rfhrughur rf",
+      "poaaddressline2": "jrijg fruhfur ijf",
+      "poasuburb": "sub",
+      "poacity": "Mumbai",
+      "poastate": "Maharashtra",
+      "poacountry": "5",
+      "poazip": "zipcode",
+      "poaoccupation": "person",
+      "poabirthyear": 2003,
+      "poaphoto": "fjr furhfusfufbrf",
+      "poaemployername": "frijiurgh nfr",
+      "poarelation": 2,
+      "poarelationwith": "ABC DEF",
+      "poaeffectivedate": "2024-03-02",
+      "poaenddate": "2024-03-03",
+      "poafor": "ABC EFG",
+      "scancopy": "dhegfhuefu"
+    }
+  }
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [showEditSuccess, setShowEditSuccess] = useState(false);
@@ -759,7 +887,7 @@ const ManageClientProperty = () => {
 
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
-                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                <div className='h-16 w-full  flex justify-between items-center p-2  '>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
                             <img className='w-5 h-5' src={backLink} />
@@ -792,9 +920,9 @@ const ManageClientProperty = () => {
                         <div>
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
-                                <div className="flex items-center justify-center gap-4">
-                                    Add New Client
-                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                <div className="flex items-center justify-center gap-2">
+                                    <p className='text-xs'>Add New Client Property</p>
+                                    <img className='h-[15px] w-[15px]' src={Add} alt="add" />
                                 </div>
                             </button>
                         </div>
@@ -802,7 +930,14 @@ const ManageClientProperty = () => {
                     </div>
 
                 </div>
-
+                {/* <div className='h-7 w-full bg-[#EBEBEB] border-gray-300 border-b-2 flex space-x-2 items-center'>
+                    <div className='ml-3'>
+                       <img src={Joystick}/>
+                    </div>
+                    <div>
+                        <p className='text-xs'> Drag a column header and drop it here to group by that column </p>
+                    </div>
+                </div> */}
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
                         <div className="w-[85%] flex">
@@ -1163,26 +1298,25 @@ const ManageClientProperty = () => {
                         </div>
 
                     </div>
-
-                    <div className='w-full h-[calc(100vh_-_17rem)] bg-stone-800 overflow-auto'>
-                        {existingClientProperty.map((item, index) => {
-                            return <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                    {/* <h1>{existingClientProperty.length}</h1> */}
+                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
+                        {!pageLoading && existingClientProperty.map((item, index) => {
+                            return <div className='w-full h-12 bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[3%] flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{index + 1}</p>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>
                                         <div className='p-3 '>
-                                            <p>Client  </p>
-                                            <p>Name</p>
+                                           <p>{item.client}</p>
                                         </div>
-                                        <div className="font-extrabold py-5">↑↓</div>
+                                       
                                     </div>
                                     <div className='w-[10%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.suburb}</p>
+                                            <p>{item.suburb}</p>    
                                         </div>
                                     </div>
                                     <div className='w-[8%]  flex'>
@@ -1198,18 +1332,18 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[9%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.propertystatus}</p>
+                                            <p>{item.status}</p>
                                         </div>
-                                        <div className="font-extrabold py-5">↑↓</div>
+                                        
                                     </div>
                                     <div className='w-[17%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                            <p>Property Description </p>
                                         </div>
                                     </div>
                                     <div className='w-[17%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>Society/Property Name <span className="font-extrabold">↑↓</span></p>
+                                            <p>{item.project}</p>
                                         </div>
                                     </div>
                                     <div className='w-[8%]  flex'>
@@ -1226,13 +1360,12 @@ const ManageClientProperty = () => {
                                 <div className="w-[15%] flex">
                                     <div className='w-1/2  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>ID <span className="font-extrabold">↑↓</span></p>
+                                            <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex'>
-                                        <div className='px-3 py-5'>
-                                            <p>Edit</p>
-                                        </div>
+                                    <div className='w-1/2  flex px-3 py-5 space-x-2'>
+                                            <button onClick={() => {}}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
+                                            <button onClick={() => {}}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 
@@ -1322,13 +1455,13 @@ const ManageClientProperty = () => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className='flex justify-center'>
+                <div className='flex justify-center relative'>
                     <div className="w-[1150px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Client</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
@@ -1348,9 +1481,9 @@ const ManageClientProperty = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ProjectInformation  />}
+                        {selectedDialog == 1 && <ProjectInformation  initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData}/>}
                         {selectedDialog == 2 && <Photos />}
-                        {selectedDialog == 3 && <POADetails />}
+                        {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity}/>}
                         {selectedDialog == 4 && <OwnerDetails />}
 
                         <div className="my-2 flex justify-center items-center gap-[10px]">

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
 
-const POADetails = () => {
+const POADetails = ({initialCountries,initialStates,initialCities}) => {
 
-  const [country, setCountry] = useState([]);
-  const [city, setCity] = useState([]);
-  const [state, setState] = useState([]);
+  const [country, setCountry] = useState(initialCountries);
+  const [city, setCity] = useState(initialCities);
+  const [state, setState] = useState(initialCities);
   const [relation, setRelation] = useState([]);
 
   return (
@@ -27,7 +27,7 @@ const POADetails = () => {
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" >
               <option >Select country</option>
               {country && country.map(item => (
-                <option key={item} value={item}>
+                <option key={item[0]} value={item[0]}>
                   {item[1]}
                 </option>
               ))}
@@ -39,8 +39,8 @@ const POADetails = () => {
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" >
               <option >Select city</option>
               {city && city.map(item => (
-                <option key={item} value={item}>
-                  {item[1]}
+                <option key={item.city} value={item.city}>
+                  {item.city}
                 </option>
               ))}
             </select>
@@ -72,9 +72,9 @@ const POADetails = () => {
             <div className="text-[13px]">State </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" >
               <option >Select state</option>
-              {state && state.map(item => (
-                <option key={item} value={item}>
-                  {item[1]}
+              {state && state.map((item) => (
+                <option key={item[0]} value={item[0]}>
+                  {item[0]}
                 </option>
               ))}
             </select>
