@@ -131,6 +131,7 @@ const Prospect = () => {
             "city": formValues.city,
             "state": formValues.state,
             "phoneno" : formValues.phoneNumber,
+            "email" : formValues.email,
             "country": Number(formValues.country),
             "propertylocation": formValues.propertyLocation,
             "possibleservices": formValues.possibleServices,
