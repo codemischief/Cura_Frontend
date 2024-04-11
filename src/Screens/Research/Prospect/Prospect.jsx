@@ -789,6 +789,7 @@ const Prospect = () => {
                                                 // console.log(e.target.value);
                                                 setCurrCountry(e.target.value);
                                                 fetchStateData(e.target.value);
+                                                setAllCity([]);
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, country: e.target.value }
                                                     return newData;
