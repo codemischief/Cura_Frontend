@@ -26,6 +26,7 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import DeleteClientInfo from './Modals/DeleteClientInfoModal';
 import EditClientInfoModal from './Modals/EditClientInfoModal';
 import SaveConfirmationClient from './Modals/SaveConfirmationClient';
+import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 const ManageClientInfo = () => {
 
     const menuRef = useRef();
@@ -1043,6 +1044,9 @@ const ManageClientInfo = () => {
             fetchData();
         }, 2000)
     }
+    const handleFilter = () => {
+   
+    }
     return(
         <div className='h-screen'>
             <Navbar/>
@@ -1113,6 +1117,7 @@ const ManageClientInfo = () => {
                                             <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientNameInput(e.target.value)} />
                                             <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                         </div>
+                                        {clientNameFilter && <CharacterFilter handleFilter={handleFilter}/>}
                                         {clientNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
                                                 <button onClick={() => { }}><h1 >No Filter</h1></button>
