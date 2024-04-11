@@ -121,25 +121,7 @@ const ManageProjectInfo = () => {
         console.log('called')
         fetchData();
     }, [1]);
-    const selectedCountry = [
-        "India", "USA", "UK", "Germany", "France", "Italy"
-    ]
-    const selectedState = [
-        "State1", "State2", "State3", "State4"
-    ]
-    const selectedCity = [
-        "City1", "City2", "City3", "City4"
-    ]
-    const entity = [
-        "Entity1", "Entity1", "Entity1", "Entity1"
-    ]
-    const assignedRoles = [
-        "Role1", "Role2", "Role3", "Role4"
-    ]
-    const userName = [
-        "User1", "User2", "User3", "User4"
-    ]
-    // hardcoded for dropdown instances ********* End*************
+    
 
     const initialValues = {
         employeeName: "",
@@ -153,9 +135,9 @@ const ManageProjectInfo = () => {
         dob: "",
         role: "",
         phNo: "",
-        country: "",
-        state: "",
-        city: "",
+        country: 5,
+        state: "Maharashtra",
+        city: null,
         suburb: "",
         entity: ""
 

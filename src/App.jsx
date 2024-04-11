@@ -25,6 +25,8 @@ import Payments from './Screens/Manage/Payments/Payments';
 import RequireAuth from './context/RequireAuth';
 import ManageClientInfo from './Screens/Manage/ManageClientInfo/ManageClientInfo';
 import ManageClientProperty from './Screens/Manage/ManageClientProperty/ManageClientProperty';
+import ManageClientReceipt from './Screens/Manage/ManageClientReceipt/ManageClientReceipt';
+import ManageLLAgreement from './Screens/Manage/ManageLLAgreement/ManageLLAgreement';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
@@ -90,6 +92,8 @@ const App = () => {
                     <Route path="/manage/bankstatement" element={<ManageBankStatement />}/>
                     <Route path="/manage/manageclientinfo" element={<ManageClientInfo />}/>
                     <Route path="/manage/manageclientproperty" element={<ManageClientProperty />}/>
+                    <Route path="/manage/manageclientreceipt" element={<ManageClientReceipt />}/>
+                    <Route path="/manage/managellagreement" element={<ManageLLAgreement />}/>
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                {/* </Route>  */}

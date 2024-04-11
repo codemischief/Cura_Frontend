@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -16,13 +16,12 @@ import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
+import DateFilter from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
-import EditManageEmployee from './EditManageEmployee';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import SaveConfirmationEmployee from './SaveConfirmationManageEmployee';
 import FailureModal from '../../../Components/modals/FailureModal';
-import DeleteEmployeeModal from './DeleteEmployeeModal';
-const ManageEmployees = () => {
+
+const ManageLLAgreement = () => {
 
     const menuRef = useRef();
     // we have the module here
@@ -42,7 +41,7 @@ const ManageEmployees = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isEmployeeDialogue, setIsEmployeeDialogue] = useState(false);
+    const [isLLAgreementDialogue, setIsLLAgreementDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
@@ -284,19 +283,28 @@ const ManageEmployees = () => {
     };
 
     const handleOpen = () => {
-        setIsEmployeeDialogue(true);
+        setIsLLAgreementDialogue(true);
     };
 
     const handleClose = () => {
-        setIsEmployeeDialogue(false);
+        setIsLLAgreementDialogue(false);
     }
-    const handleAddEmployee = () => {
+
+    // harcoded dropdown
+    const clientProperty = [1, 2, 3, 4];
+    const order = [1, 2, 3, 4];
+    const client = [1, 2, 3, 4];
+    const rentPaymentDate = [1, 2, 3, 4];
+    const registrationType = [1, 2, 3, 4];
+    //end
+
+    const handleAddLLAgreement = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
         }
-        setIsEmployeeDialogue(false);
+        setIsLLAgreementDialogue(false);
         setOpenAddConfirmation(true)
 
     }
@@ -341,7 +349,7 @@ const ManageEmployees = () => {
 
         setOpenAddConfirmation(false);
         console.log(result)
-        setIsEmployeeDialogue(false);
+        setIsClientReceiptDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -355,27 +363,19 @@ const ManageEmployees = () => {
     }
 
     const initialValues = {
-        employeeName: "",
-        panNo: "",
-        userName: "",
-        doj: null,
-        designation: "",
-        email: "",
-        addressLine1: "",
-        employeeId: "",
-        lob: "",
-        dob: "",
-        lastDOW: null,
-        role: "",
-        phNo: "",
-        status: false,
-        addressLine2: "",
-        country: 5,
-        state: "Maharashtra",
-        city: null,
-        suburb: "",
-        zipCode: "",
-        entity: ""
+        client: "",
+        clientProperty: "",
+        startDate: "",
+        rentAmount: "",
+        depositeAmount: "",
+        scan: "",
+        order: "",
+        durationInMonth: "",
+        endDate: "",
+        rentPaymentDate: "",
+        noticePeriod: "",
+        registrationType: "",
+        status:false
 
     };
     const [formValues, setFormValues] = useState(initialValues);
@@ -390,175 +390,67 @@ const ManageEmployees = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.employeeName) {
+        if (!formValues.client) {
             setFormErrors((existing) => {
-                return { ...existing, employeeName: "Enter Employee name" }
-            })
-            res = false;
-        } else {
-            console.log('issue is in empname')
-            setFormErrors((existing) => {
-                return { ...existing, employeeName: "" }
-            })
-        }
-        console.log('employee ok')
-        if (!formValues.panNo) {
-            console.log('issue is in panno')
-            setFormErrors((existing) => {
-                return { ...existing, panNo: "Enter Pan Number" }
+                return { ...existing, client: "Select Client" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, panNo: "" }
+                return { ...existing, client: "" }
             })
         }
-        console.log('panno ok')
-        if (!formValues.doj) {
-            console.log('issue is in doj')
+        if (!formValues.clientProperty) {
             setFormErrors((existing) => {
-                return { ...existing, doj: "Enter date of joining" }
+                return { ...existing, clientProperty: "Select Client Property" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, doj: "" }
+                return { ...existing, clientProperty: "" }
             })
         }
-        console.log('date of joining okay')
-        if (!formValues.designation) {
-            console.log('issue is in designation')
+        if (!formValues.startDate) {
             setFormErrors((existing) => {
-                return { ...existing, designation: "Enter Designation" }
+                return { ...existing, startDate: "Select Start Date" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, designation: "" }
+                return { ...existing, startDate: "" }
             })
         }
-        console.log('designation ok')
-        if (!formValues.email) {
-            console.log('issue is in email')
+        if (!formValues.order) {
             setFormErrors((existing) => {
-                return { ...existing, email: "Enter email address" }
+                return { ...existing, order: "Select Order" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, email: "" }
+                return { ...existing, order: "" }
             })
         }
-        console.log('email ok')
-        if (!formValues.employeeId) {
-            console.log('issue is in empid')
+        
+        if (!formValues.durationInMonth) {
             setFormErrors((existing) => {
-                return { ...existing, employeeId: "Enter Employee Id" }
+                return { ...existing, durationInMonth: "Enter Month Duration" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, employeeId: "" }
+                return { ...existing, durationInMonth: "" }
             })
         }
-        console.log('employeeId ok')
-        if (!formValues.lob) {
-            console.log('issue is in lob')
+        if (!formValues.endDate) {
             setFormErrors((existing) => {
-                return { ...existing, lob: "Select LOB" }
+                return { ...existing, endDate: "Enter End Date" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, lob: "" }
+                return { ...existing, endDate: "" }
             })
         }
-        console.log('lob ok')
-        if (!formValues.dob) {
-            console.log('issue is in dob')
-            setFormErrors((existing) => {
-                return { ...existing, dob: "enter date of birth" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, dob: "" }
-            })
-        }
-        console.log('dob ok')
-        if (!formValues.role) {
-            console.log('issue is in role')
-            setFormErrors((existing) => {
-                return { ...existing, role: "Select Role" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, role: "" }
-            })
-        }
-        console.log('role ok')
-        if (!formValues.phNo) {
-            console.log('issue is in phoneno')
-            setFormErrors((existing) => {
-                return { ...existing, phNo: "Enter phone number" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, phNo: "" }
-            })
-        }
-        console.log('phoneno ok')
-        if (!formValues.country) {
-            console.log('issue is in country')
-            setFormErrors((existing) => {
-                return { ...existing, country: "Select country" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, country: "" }
-            })
-        }
-        console.log('country ok')
-        if (formValues.state == "") {
-            console.log('issue is in state')
-            setFormErrors((existing) => {
-                return { ...existing, state: "Select state" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, state: "" }
-            })
-        }
-        console.log('state ok')
-        if (!formValues.city) {
-            console.log('issue is in city')
-            setFormErrors((existing) => {
-                return { ...existing, city: "Select city" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, city: "" }
-            })
-        }
-
-        if (!formValues.entity) {
-            console.log('issue is in entity')
-            setFormErrors((existing) => {
-                return { ...existing, entity: "Select Entity" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, entity: "" }
-            })
-        }
-
-
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
@@ -701,8 +593,8 @@ const ManageEmployees = () => {
                         </div>
 
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>Manage Employee</h1>
-                            <p className='text-[14px]'>Admin &gt; Manage Employee</p>
+                            <h1 className='text-[18px]'>Manage L&L Agreement </h1>
+                            <p className='text-[14px]'>Admin &gt; Manage Client Receipt</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
@@ -710,7 +602,7 @@ const ManageEmployees = () => {
                         <div className='flex relative'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
@@ -726,9 +618,9 @@ const ManageEmployees = () => {
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
-                                    Add New Employee
+                                    Add New L&L Agreement
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
                             </button>
@@ -745,14 +637,14 @@ const ManageEmployees = () => {
                 {/* filter component */}
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[85%] flex">
+                        <div className="w-[83%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='p-3'>
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                            <div className='w-[18%] flex p-3'>
+                                <div className="w-[52%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
                                 </div>
@@ -784,8 +676,8 @@ const ManageEmployees = () => {
                                 </div>}
                             </div>
 
-                            <div className='w-[13%]  flex p-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                            <div className='w-[19%]  flex p-3'>
+                                <div className="w-[52%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
                                 </div>
@@ -817,8 +709,8 @@ const ManageEmployees = () => {
                                 </div>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                            <div className='w-[15%]  flex p-3'>
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
@@ -850,8 +742,8 @@ const ManageEmployees = () => {
                                 </div>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                            <div className='w-[15%]  flex p-3'>
+                                <div className="w-[58%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
                                 </div>
@@ -883,10 +775,10 @@ const ManageEmployees = () => {
                                 </div>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                            <div className='w-[15%]  flex p-3'>
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                                    <button className='p-1'><img src={DateFilter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -916,10 +808,10 @@ const ManageEmployees = () => {
                                 </div>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                            <div className='w-[15%]  flex p-3'>
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                                    <button className='p-1'><img src={DateFilter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -949,110 +841,11 @@ const ManageEmployees = () => {
                                 </div>}
                             </div>
 
-                            <div className='w-[14%]  flex p-3'>
-                                <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setDojInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setDojFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {dojFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
-
-                            <div className='w-[17%]  flex p-3'>
-                                <div className="w-[57%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {ldowFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
-
-                            <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setStatusInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {statusFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
-
                         </div>
-                        <div className="w-[15%] flex">
+                        <div className="w-[17%] flex">
                             <div className='w-1/2  flex p-3'>
-                                <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
@@ -1093,67 +886,54 @@ const ManageEmployees = () => {
                 </div>
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
-                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[85%] flex">
+                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                        <div className="w-[83%] flex">
                             <div className='w-[3%] flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-5'>
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p>Employee <span className="font-extrabold">↑↓</span></p>
+                            <div className='w-[18%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
-                            <div className='w-[13%]  flex'>
-                                <div className='p-3'>
-                                    <p>Employee ID <span className="font-extrabold">↑↓</span></p>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Property Description <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[15%]  flex'>
                                 <div className='p-3'>
-                                    <p>Phone <span className="font-extrabold">↑↓</span></p>
+                                    <p>Property</p>
+                                    <p>Status</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[15%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Status <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p>Email <span className="font-extrabold">↑↓</span></p>
+                            <div className='w-[15%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Start date <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p>Role <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p>Pan No <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                            <div className='w-[14%]  flex'>
-                                <div className='p-3'>
-                                    <p>Date of joining <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                            <div className='w-[17%]  flex'>
-                                <div className='p-3'>
-                                    <p>Last Date of working <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='p-3'>
-                                    <p> Status <span className="font-extrabold">↑↓</span></p>
+                            <div className='w-[15%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>End date <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[15%] flex">
+                        <div className="w-[17%] flex">
                             <div className='w-1/2  flex'>
-                                <div className='p-3'>
-                                    <p>ID <span className="font-extrabold">↑↓</span></p>
+                                <div className='px-3 py-5'>
+                                    <p>Tenet</p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-5'>
                                     <p>Edit</p>
                                 </div>
                             </div>
@@ -1161,13 +941,18 @@ const ManageEmployees = () => {
 
                     </div>
 
+                    {/* 
 
-                    <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
+                    
+                     */}
+
+
+                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingEmployees.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex min-h-0">
+                                {/* <div className="w-[85%] flex min-h-0">
                                     <div className='w-[3%] flex'>
                                         <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -1231,10 +1016,14 @@ const ManageEmployees = () => {
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
                                         <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                     </div>
-                                </div>
+                                </div> */}
+
 
                             </div>
                         })}
+
+
+
                     </div>
 
 
@@ -1315,7 +1104,7 @@ const ManageEmployees = () => {
                 </div>
             </div>
 
-            <Modal open={isEmployeeDialogue}
+            <Modal open={isLLAgreementDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1324,7 +1113,7 @@ const ManageEmployees = () => {
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Employee</div>
+                                <div className="text-[16px]">New Client Receipt</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -1333,250 +1122,131 @@ const ManageEmployees = () => {
 
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Employee Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Pan No<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Username <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="userName"
-                                            value={formValues.userName}
-                                            defaultValue="Select Username"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, userName: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
+                                        <div className="text-[13px]">
+                                            Client <label className="text-red-500">*</label>
+                                        </div>
+                                        <select
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            name="client"
+                                            value={formValues.client}
+                                            onChange={handleChange}
                                         >
-                                            {allUsername && allUsername.map(item => (
-                                                <option value={item.id} >
-                                                    {item.name}
+                                            {client.map((item) => (
+                                                <option key={item} value={item}>
+                                                    {item}
                                                 </option>
                                             ))}
                                         </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Date of joining<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
+                                        <div className="text-[13px]">
+                                            Client Property <label className="text-red-500">*</label>
+                                        </div>
+                                        <select
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            name="clientProperty"
+                                            value={formValues.clientProperty}
+                                            onChange={handleChange}
+                                        >
+                                            {clientProperty.map((item) => (
+                                                <option key={item} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Designation<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
+                                        <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.startDate}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Email<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email" value={formValues.email} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
+                                        <div className="text-[13px]">Rent Amount </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
+
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Address Line 1</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                        <div className="text-[13px]">Deposite Amount </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
+
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">LL & PV Scan Copy </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
                                     </div>
                                 </div>
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Employee ID<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">LOB <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="lob"
-                                            value={formValues.lob}
-                                            defaultValue="Select lob"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, lob: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
+                                        <div className="text-[13px]">
+                                            Order <label className="text-red-500">*</label>
+                                        </div>
+                                        <select
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            name="order"
+                                            value={formValues.order}
+                                            onChange={handleChange}
                                         >
-                                            {allLOB && allLOB.map(item => (
-                                                <option value={item.id} >
-                                                    {item.name}
+                                            {order.map((item) => (
+                                                <option key={item} value={item}>
+                                                    {item}
                                                 </option>
                                             ))}
                                         </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Date of birth<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
+                                        <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.durationInMonth}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Last Date of Working</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                        <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.durationInMonth}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Assign Role <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="role"
-                                            value={formValues.role}
-                                            defaultValue="Select Role"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, role: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
+                                        <div className="text-[13px]">
+                                            Rent payment Date 
+                                        </div>
+                                        <select
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            name="rentPaymentDate"
+                                            value={formValues.rentPaymentDate}
+                                            onChange={handleChange}
                                         >
-                                            {allRoles && allRoles.map(item => (
-                                                <option value={item.id} >
-                                                    {item.name}
+                                            {rentPaymentDate.map((item) => (
+                                                <option key={item} value={item}>
+                                                    {item}
                                                 </option>
                                             ))}
                                         </select>
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Phone Number<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                        <div className="text-[13px]">Notice Period in Days </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Address Line 2</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
-                                    </div>
-                                </div>
-                                <div className=" space-y-[12px] py-[20px] px-[10px] ">
-                                    <div className="">
-                                        <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="country"
-                                            value={formValues.country}
-                                            defaultValue="Select Country"
-                                            onChange={e => {
-                                                setCurrCountry(e.target.value);
-                                                fetchStateData(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, country: e.target.value }
-                                                    return newData;
-                                                })
-                                                // fetchStateData(res);
-                                            }}
+                                        <div className="text-[13px]">
+                                            Registeration Type 
+                                        </div>
+                                        <select
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            name="registrationType"
+                                            value={formValues.registrationType}
+                                            onChange={handleChange}
                                         >
-
-                                            {allCountry && allCountry.map(item => {
-                                                if (item[0] == 5) {
-                                                    return <option value={item[0]} selected>
-                                                        {item[1]}
-                                                    </option>
-                                                } else {
-                                                    return <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                }
-                                            })}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">State Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="state"
-                                            value={formValues.state}
-                                            defaultValue="Select State"
-                                            onChange={e => {
-                                                fetchCityData(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, state: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-
-                                            {allState && allState.map(item => {
-                                                if (item[0] === "Maharashtra") {
-                                                    return <option value={item[0]} selected>
-                                                        {item[0]}
-                                                    </option>
-                                                } else {
-                                                    return <option value={item[0]}>
-                                                        {item[0]}
-                                                    </option>
-
-                                                }
-
-                                            })}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">City Name <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="city"
-                                            value={formValues.city}
-                                            defaultValue="Select City"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, city: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-                                            {/* <option value="none" hidden={true}>Select a City</option> */}
-                                            <option value="none" hidden> Select A City</option>
-                                            {allCity && allCity.map(item => (
-                                                <option value={item.id} >
-                                                    {item.city}
+                                            {registrationType.map((item) => (
+                                                <option key={item} value={item}>
+                                                    {item}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Suburb</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Zip Code</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Entities <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="entity"
-                                            value={formValues.entity}
-                                            defaultValue="Select entity"
-                                            onChange={e => {
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, entity: e.target.value }
-                                                    return newData;
-                                                })
-                                            }}
-                                        >
-                                            {allEntities && allEntities.map(item => (
-                                                <option value={item[0]} >
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -1592,11 +1262,10 @@ const ManageEmployees = () => {
                                 setFormValues(existing)
                             }}
                         />Active</div>
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddEmployee} >Save</button>
+                        <div className="my-3 flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLLAgreement} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
-
                     </div>
                 </div>
             </Modal>
@@ -1604,4 +1273,4 @@ const ManageEmployees = () => {
     )
 }
 
-export default ManageEmployees
+export default ManageLLAgreement;
