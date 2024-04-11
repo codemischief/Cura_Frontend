@@ -22,8 +22,8 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import Joystick from "../../../assets/four_direction_arrow.png";
 import Trash from "../../../assets/trash.png"
 import Edit from "../../../assets/edit.png"
+import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProperty';
 const ManageClientProperty = () => {
-
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -43,7 +43,7 @@ const ManageClientProperty = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isClientInfoDialogue, setIsClientInfoDialogue] = useState(false);
+    const [isClientPropertyDialogue, setIsClientPropertyDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
@@ -189,23 +189,29 @@ const ManageClientProperty = () => {
         console.log(res.data);
         setExistingSociety(res.data);
     }
+    const [propertyStatus,setPropertyStatus] = useState([]);
     const fetchPropertyStatus = async () => {
         const data = {"user_id" : 1234};
         const response = await APIService.getPropertyStatusAdmin(data);
         const res = await response.json();
         console.log(res);
+        setPropertyStatus(res);
     }
+    const [levelOfFurnishing,setLevelOfFurnishing] = useState([]);
     const fetchLevelOfFurnishing = async () => {
         const data = {"user_id" : 1234}
         const response = await APIService.getLevelOfFurnishingAdmin(data);
         const res = await response.json()
         console.log(res);
+        setLevelOfFurnishing(res);
     }
+    const [propertyType,setPropertyType] = useState([]);
     const fetchPropertyType = async () => {
         const data = {"user_id" : 1234}
         const response = await APIService.getPropertyType(data)
         const res = await response.json();
         console.log(res);
+        setPropertyType(res);
     }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
@@ -258,15 +264,15 @@ const ManageClientProperty = () => {
             "pg_no": 1,
             "pg_size": 15
           };
-        // const response = await APIService.getClientProperty(data);
-        // const temp = await response.json();
-        // const result = temp.data;
-        // console.log(result)
-        // console.log(result);
-        // const t = temp.total_count;
-        // setTotalItems(t);
-        // setExistingClientProperty(result.client_info);
-        // setPageLoading(false);
+        const response = await APIService.getClientProperty(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result)
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingClientProperty(result.client_info);
+        setPageLoading(false);
     }
     const fetchPageData = async  (page) => {
         setPageLoading(true);
@@ -390,7 +396,7 @@ const ManageClientProperty = () => {
     }
     useEffect(() => {
         // fetchClientData();
-        // fetchData();
+
         fetchStateData(5);
         
         fetchCityData("Maharashtra");
@@ -430,11 +436,11 @@ const ManageClientProperty = () => {
     };
 
     const handleOpen = () => {
-        setIsClientInfoDialogue(true);
+        setIsClientPropertyDialogue(true);
     };
 
     const handleClose = () => {
-        setIsClientInfoDialogue(false);
+        setIsClientPropertyDialogue(false);
     }
 
     const addEmployee = async () => {
@@ -508,101 +514,95 @@ const ManageClientProperty = () => {
     const initialValues = {
     "client_property": {
       "clientid": 44598,
-      "propertytype": "Mr.",
-      "leveloffurnishing": 2,
-      "numberofparkings": 4,
+      "propertytype": null,
+      "leveloffurnishing": null,
+      "numberofparkings": null,
       "state": "Maharashtra",
-      "city": 847,
-      "suburb": "ehfe",
+      "city": "Pune",
+      "suburb": "",
       "country":5,
-      "projectid":4373,
-      "status": 2,
-      "propertydescription": "abcdefg",
-      "layoutdetails": "hijklmno",
-      "email": "zipcode",
-      "website": "sub",
-      "initialpossessiondate": "2024-03-02",
-      "electricityconsumernumber": "fjrg432u489",
-      "otherelectricitydetails": "9855645531",
-      "electricitybillingduedate": 24,
-      "comments": "abcd",
-      "propertytaxnumber":"efrhgurg",
-      "clientservicemanager":1234,
-      "propertymanager":1234,
-      "propertyownedbyclientonly":true,
-      "gasconnectiondetails": "jwdiuheduhef",
-      "internalfurnitureandfittings":"efuhef",
-      "textforposting": "ghijklm",
+      "projectid":null,
+      "status": null,
+      "propertydescription": "",
+      "layoutdetails": "",
+      "email": "",
+      "website": "",
+      "initialpossessiondate": null,
+      "electricityconsumernumber": "",
+      "otherelectricitydetails": "",
+      "electricitybillingduedate": null,
+      "comments": "",
+      "propertytaxnumber":"",
+      "clientservicemanager":null,
+      "propertymanager":null,
+      "propertyownedbyclientonly":false,
+      "gasconnectiondetails": "",
+      "internalfurnitureandfittings":"",
+      "textforposting": "",
       "poagiven":true,
-      "poaid":202,
-      "electricitybillingunit":"feuihf"
+      "poaid":null,
+      "electricitybillingunit":""
     },
     "client_property_photos": [
-        {
-          "id": 36,
-          "photolink": "1",
-          "description": "desc",
-          "phototakenwhen": "10-04-2024 19:52:00"
-        },
           {
-              "photolink": "1",
-              "description": "desc",
-              "phototakenwhen": "10-04-2024 19:52:00"
+              "photolink": "",
+              "description": "",
+              "phototakenwhen": null
           }
       ],
     "client_property_owner": {
-      "owner1name": "ABC DEF GHI",
-      "owner1addressline1": "12345670",
-      "owner1addressline2": "hcegfegf efhiuhf",
-      "owner1suburb": "frufhruigh fhirf",
-      "owner1city": "frhufh",
-      "owner1state": "Mumbai",
-      "owner1country": 5,
-      "owner1zip": "5",
-      "owner1panno": "zipcode",
-      "owner1occupation": "person",
-      "owner1employername": 2004,
-      "owner1relation":1,
-      "owner1birthyear":2003,
-      "owner1relationwith": 1234,
-      "owner2name": "ABC DEF GHI",
-      "owner2addressline1": "12345670",
-      "owner2addressline2": "hcegfegf efhiuhf",
-      "owner2suburb": "frufhruigh fhirf",
-      "owner2city": "frhufh",
-      "owner2state": "Mumbai",
-      "owner2country": 5,
-      "owner2zip": "5",
-      "owner2panno": "zipcode",
-      "owner2occupation": "person",
-      "owner2employername": 2004,
-      "owner2relation": 2,
-      "owner2relationwith": 1234,
-      "owner2birthyear":2002,
-      "owner3name":"Name",
-      "owner3panno":"3749873ef",
+      "owner1name": "",
+      "owner1addressline1": "",
+      "owner1addressline2": "",
+      "owner1suburb": "",
+      "owner1city": "",
+      "owner1state": "",
+      "owner1country": null,
+      "owner1zip": null,
+      "owner1panno": "",
+      "owner1occupation": null,
+      "owner1employername": null,
+      "owner1relation":null,
+      "owner1birthyear":null,
+      "owner1relationwith": null,
+      "owner2name": "",
+      "owner2addressline1": "",
+      "owner2addressline2": "",
+      "owner2suburb": "",
+      "owner2city": null,
+      "owner2state": null,
+      "owner2country": null,
+      "owner2zip": null,
+      "owner2panno": "",
+      "owner2occupation": "",
+      "owner2employername": null,
+      "owner2relation": null,
+      "owner2relationwith": null,
+      "owner2birthyear":null,
+      "owner3name":"",
+      "owner3panno":"",
       "otherownerdetails":"details"
     },
     "client_property_poa": {
-      "poalegalname": "abcdef ghijkl",
-      "poapanno": "647364873",
-      "poaaddressline1": "eyge rfhrughur rf",
-      "poaaddressline2": "jrijg fruhfur ijf",
-      "poasuburb": "sub",
+      "poalegalname": "",
+      "poapanno": "",
+      "poaaddressline1": "",
+      "poaaddressline2": "",
+      "poasuburb": "",
       "poacity": "Mumbai",
       "poastate": "Maharashtra",
       "poacountry": "5",
-      "poazip": "zipcode",
-      "poaoccupation": "person",
-      "poabirthyear": 2003,
-      "poaphoto": "fjr furhfusfufbrf",
-      "poaemployername": "frijiurgh nfr",
-      "poarelation": 2,
-      "poarelationwith": "ABC DEF",
-      "poaeffectivedate": "2024-03-02",
-      "poaenddate": "2024-03-03",
-      "poafor": "ABC EFG",
-      "scancopy": "dhegfhuefu"
+      "poazip": "",
+      "poaoccupation": "",
+      "poabirthyear": null,
+      "poaphoto": "",
+      "poaemployername": "",
+      "poarelation": null,
+      "poarelationwith": "",
+      "poaeffectivedate": null,
+      "poaenddate": null,
+      "poafor": "",
+      "scancopy": ""
     }
   }
     const [formValues, setFormValues] = useState(initialValues);
@@ -878,12 +878,124 @@ const ManageClientProperty = () => {
         }, 2000)
         fetchData();
     }
-    return (
+    const handleAddClientProperty = () => {
+        console.log(formValues);
+        setIsClientInfoDialogue(false);
+        setCurrClientProperty(formValues.client_property.clientid)
+        showAddConfirmation(true);
+    }
+    const addClientProperty = async () => {
+        const data = {
+            "user_id": 1234,
+            "client_property": {
+              "clientid": 44598,
+              "propertytype": Number(formValues.client_property.propertytype),
+              "leveloffurnishing": Number(formValues.client_property.leveloffurnishing),
+              "numberofparkings": Number(formValues.client_property.numberofparkings),
+              "state": formValues.client_property.state,
+              "city": formValues.client_property.city,
+              "suburb": formValues.client_property.suburb,
+              "country": 5,
+              "projectid":formValues.client_property.projectid,
+              "status": Number(formValues.client_property.status),
+              "propertydescription": formValues.client_property.propertydescription,
+              "layoutdetails": formValues.client_property.layoutdetails,
+              "email": "",
+              "website": "",
+              "initialpossessiondate": formValues.client_property.initialpossessiondate,
+              "electricityconsumernumber": formValues.client_property.electricityconsumernumber,
+              "otherelectricitydetails": formValues.client_property.otherelectricitydetails,
+              "electricitybillingduedate": Number(formValues.client_property.electricitybillingduedate),
+              "comments": formValues.client_property.comments,
+              "propertytaxnumber":formValues.client_property.propertytaxnumber,
+              "clientservicemanager":formValues.client_property.clientservicemanager,
+              "propertymanager":formValues.client_property.propertymanager,
+              "propertyownedbyclientonly":formValues.client_property.propertyownedbyclientonly,
+              "gasconnectiondetails": formValues.client_property.gasconnectiondetails,
+              "internalfurnitureandfittings":formValues.client_property.internalfurnitureandfittings,
+              "textforposting": formValues.client_property.textforposting,
+              "poagiven":true,
+              "poaid":202,
+              "electricitybillingunit":formValues.client_property.electricitybillingunit
+            },
+            "client_property_photos": formValues.client_property_photos,
+            "client_property_owner": {
+              "owner1name": formValues.client_property_owner.owner1name,
+              "owner1addressline1": "",
+              "owner1addressline2": " ",
+              "owner1suburb": "",
+              "owner1city": "",
+              "owner1state": "",
+              "owner1country": null,
+              "owner1zip": "",
+              "owner1panno": formValues.client_property_owner.owner1panno,
+              "owner1occupation": "",
+              "owner1employername": "",
+              "owner1relation":1,
+              "owner1birthyear":2003,
+              "owner1relationwith": 1234,
+              "owner2name": formValues.client_property_owner.owner2name,
+              "owner2addressline1": "",
+              "owner2addressline2": "",
+              "owner2suburb": "",
+              "owner2city": "",
+              "owner2state": "",
+              "owner2country": null,
+              "owner2zip": "",
+              "owner2panno": formValues.client_property_owner.owner2panno,
+              "owner2occupation": "",
+              "owner2employername": null,
+              "owner2relation": null,
+              "owner2relationwith": null,
+              "owner2birthyear":null,
+              "owner3name":formValues.client_property_owner.owner3name,
+              "owner3panno":formValues.client_property_owner.owner3panno,
+              "otherownerdetails":""
+            },
+            "client_property_poa": {
+              "poalegalname": "abcdef ghijkl",
+              "poapanno": "647364873",
+              "poaaddressline1": "eyge rfhrughur rf",
+              "poaaddressline2": "jrijg fruhfur ijf",
+              "poasuburb": "sub",
+              "poacity": "Mumbai",
+              "poastate": "Maharashtra",
+              "poacountry": 5,
+              "poazip": "zipcode",
+              "poaoccupation": "person",
+              "poabirthyear": 2003,
+              "poaphoto": "fjr furhfusfufbrf",
+              "poaemployername": "frijiurgh nfr",
+              "poarelation": 2,
+              "poarelationwith": "ABC DEF",
+              "poaeffectivedate": "2024-03-02",
+              "poaenddate": "2024-03-03",
+              "poafor": "ABC EFG",
+              "scancopy": "dhegfhuefu"
+            }
+          }          
+    
+        console.log(data);
+
+        console.log('hey')
+        const response = await APIService.addClientProperty(data)
+        const res = await (response.json())
+        console.log(res);
+        if(res.result == "success") {
+            // we need to open the succcess modal
+            showAddConfirmation(false);
+            openAddSuccess();
+        }
+
+    }
+    const [addConfirmation,showAddConfirmation] = useState(false);
+    const [currClientProperty,setCurrClientProperty] = useState("");
+     return (
         <div className="h-screen">
             <Navbar />
-
+            {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientProperty={currClientProperty} addClientProperty={addClientProperty}/>}
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Property" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
 
@@ -1452,7 +1564,7 @@ const ManageClientProperty = () => {
                 </div>
             </div>
 
-            <Modal open={isClientInfoDialogue}
+            <Modal open={isClientPropertyDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1483,13 +1595,13 @@ const ManageClientProperty = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ProjectInformation  clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues}/>}
+                        {selectedDialog == 1 && <ProjectInformation  clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus}/>}
                         {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
 
                         <div className="my-2 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientProperty} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 

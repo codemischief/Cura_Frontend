@@ -26,7 +26,7 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import DeleteClientInfo from './Modals/DeleteClientInfoModal';
 import EditClientInfoModal from './Modals/EditClientInfoModal';
 import SaveConfirmationClient from './Modals/SaveConfirmationClient';
-const ManageCountryInfo = () => {
+const ManageClientInfo = () => {
 
     const menuRef = useRef();
     // we have the module here
@@ -1719,4 +1719,4 @@ const ManageCountryInfo = () => {
     )
 }
 
-export default ManageCountryInfo;
+export default ManageClientInfo;

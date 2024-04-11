@@ -79,7 +79,7 @@ const POADetails = ({initialCountries,initialStates,initialCities,formValues,set
             <div className="text-[13px]">State </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poastate" value={formValues.client_property_poa.poastate} onChange={handleChange}>
               <option >Select state</option>
-              {state && state.map((item) => (
+              {initialStates && initialStates.map((item) => (
                 <option key={item[0]} value={item[0]}>
                   {item[0]}
                 </option>

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 
-const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues}) => {
-  const [propertyType, setPropertyType] = useState([]);
-  const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
+const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus}) => {
+  // console.log(levelOfFurnishing)
+  // const [propertyType, setPropertyType] = useState([]);
+  // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   const [state, setState] = useState(initialStates);
   const [city, setCity] = useState(initialCities);
   const [society, setSociety] = useState([]);
@@ -11,6 +12,14 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
   const [electricity, setElectricity] = useState([]);
   const [existingSociety,setExistingSociety] = useState(initialSociety);
   const [clientName,setClientName] = useState(clientData);
+  const dueDate = [];
+  for(var i =1;i<=31;i++) {
+    dueDate.push({
+      id : i - 1,
+      date : i
+    })
+  }
+
   const handleChange = (e) => {
     const {name,value} = e.target;
      setFormValues({...formValues,client_property : {
@@ -33,12 +42,12 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               onChange={handleChange}
             >
               <option>Select Client Name </option>
-              {clientName &&
+              {/* {clientName &&
                 clientName.map((item) => (
                   <option key={item[0]} value={item[0]}>
                     {item[1]}
                   </option>
-                ))}
+                ))} */}
             </select>
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
@@ -55,8 +64,8 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               <option>Select Level of Furnishing</option>
               {levelOfFurnishing &&
                 levelOfFurnishing.map((item) => (
-                  <option key={item[0]} value={item[0]}>
-                    {item[1]}
+                  <option key={item.id} value={item.id}>
+                    {item.name}
                   </option>
                 ))}
             </select>
@@ -174,7 +183,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               <option>Select City</option>
               {initialCities &&
                 initialCities.map((item) => (
-                  <option key={item.id} value={item.id}>
+                  <option key={item.id} value={item.city}>
                     {item.city}
                   </option>
                 ))}
@@ -237,11 +246,11 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               onChange={handleChange}
               value={formValues.client_property.propertytype}
             >
-              <option>Select Property Type</option>
+              <option value="">Select Property Type </option>
               {propertyType &&
                 propertyType.map((item) => (
-                  <option key={item} value={item}>
-                    {item[1]}
+                  <option key={item.id} value={item.id}>
+                    {item.name}
                   </option>
                 ))}
             </select>
@@ -317,10 +326,10 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               onChange={handleChange}
             >
               <option>Select Status </option>
-              {status &&
-                status.map((item) => (
-                  <option key={item} value={item}>
-                    {item[1]}
+              {propertyStatus &&
+                propertyStatus.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
                   </option>
                 ))}
             </select>
@@ -345,13 +354,13 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               value={formValues.client_property.electricitybillingduedate}
               onChange={handleChange}
             >
-              <option>Select Status </option>
-              {electricity &&
-                electricity.map((item) => (
-                  <option key={item} value={item}>
-                    {item[1]}
+              <option>Select Date </option>
+               {dueDate &&
+                dueDate.map((item) => (
+                  <option key={item.id} value={item.date}>
+                    {item.date}
                   </option>
-                ))}
+                ))} 
             </select>
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
           </div>
@@ -383,8 +392,22 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
         </div>
       </div>
       <div className="mt-2 flex justify-center items-center gap-2">
-        <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
-          Prpperty Owner By Client Only</div>
+        <div className="flex justify-center items-center text-[13px] font-semibold"><input
+                        type="checkbox"
+                        checked={formValues.client_property.propertyownedbyclientonly}
+                        className='mr-3 h-4 w-4'
+                        onClick={(e) => {
+                            // console.log(e.target.checked)
+                            const existing = {...formValues};
+                            const temp = {...existing.client_property};
+                            temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly
+                            existing.client_property = temp;
+                            setFormValues(existing) 
+                            // existing.status = !existing.status;
+                            // setFormValues(existing)
+          }}
+        />
+          Property Owner By Client Only</div>
         <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
           Index || Collected </div>
       </div>

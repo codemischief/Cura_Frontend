@@ -1,17 +1,18 @@
 import React from 'react'
 
 const AddFeildPhotos = ({index,formValues,setFormValues}) => {
-  const handlePhotoLinkChange = () => {
+  const handlePhotoLinkChange = (e) => {
         const arrayClone = [...formValues.client_property_photos];
         arrayClone[index].photolink = e.target.value;
         setFormValues({...formValues,client_property_photos : arrayClone})
+        
   }
-  const handleDescriptionChange = () => {
+  const handleDescriptionChange = (e) => {
     const arrayClone = [...formValues.client_property_photos];
     arrayClone[index].description = e.target.value;
     setFormValues({...formValues,client_property_photos : arrayClone})
   }
-  const handleTakenWhenChange = () => {
+  const handleTakenWhenChange = (e) => {
     const arrayClone = [...formValues.client_property_photos];
     arrayClone[index].phototakenwhen = e.target.value;
     setFormValues({...formValues,client_property_photos : arrayClone})
@@ -22,13 +23,13 @@ const AddFeildPhotos = ({index,formValues,setFormValues}) => {
         {index + 1}
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5]' type="text" placeholder=' Paste the hyperlink here' value={formValues.client_property_photos.photolink} onChange={handlePhotoLinkChange}/>
+        <input className='w-full h-full bg-[#F5F5F5]' type="text" placeholder=' Paste the hyperlink here' value={formValues.client_property_photos[index].photolink} onChange={handlePhotoLinkChange}/>
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5]' type="text" onChange={handleDescriptionChange} value={formValues.client_property_photos.description}/>
+        <input className='w-full h-full bg-[#F5F5F5]' type="text" onChange={handleDescriptionChange} value={formValues.client_property_photos[index].description}/>
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5]' type="date" value={formValues.client_property_photos.phototakenwhen} onChange={handleTakenWhenChange} />
+        <input className='w-full h-full bg-[#F5F5F5]' type="date" value={formValues.client_property_photos[index].phototakenwhen} onChange={handleTakenWhenChange} />
       </div>
     </div>
   )
