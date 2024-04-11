@@ -22,7 +22,7 @@ import Filter from "../../../assets/filter.png"
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
-import DayJS from 'react-dayjs';
+// import DayJS from 'react-dayjs';
 const ManageBankStatement = () => {
     // we have the module here
     const menuRef = useRef();
