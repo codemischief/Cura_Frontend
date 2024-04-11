@@ -72,7 +72,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
     return (
         <div className="h-auto w-full">
             <div className="flex gap-10 justify-center items-center">
-                <div className=" space-y-2 py-2">
+                <div className=" space-y-3 py-2">
                     <div className="">
                         <div className="text-[13px]">Salutation <label className="text-red-500">*</label></div>
                         <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="salutation"
@@ -158,7 +158,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
                 </div>
-                <div className="space-y-2 py-2">
+                <div className="space-y-3 py-2">
                     <div className="">
                         <div className="text-[13px]">First Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="firstname" onChange={handleChange} value={formValues.client_info.firstname} />
@@ -222,7 +222,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                 </div>
-                <div className="space-y-2 py-2">
+                <div className="space-y-3 py-2">
                     <div className="">
                         <div className="text-[12px]">Middle Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="middlename" onChange={handleChange} value={formValues.client_info.middlename} />
@@ -289,7 +289,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                     </div>
 
                 </div>
-                <div className="space-y-2 py-2">
+                <div className="space-y-3 py-2">
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
@@ -372,7 +372,6 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                                      {item.projectname}
                                  </option>
                                 }
-                                
 })}
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}

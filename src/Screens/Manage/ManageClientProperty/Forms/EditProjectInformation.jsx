@@ -1,14 +1,10 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
-import Select from "react-select"
-import { APIService } from "../../../../services/API";
-const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus}) => {
+
+const EditProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus}) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
-  useEffect(() => {
-     fetchClientData();
-  },[])
   const [state, setState] = useState(initialStates);
   const [city, setCity] = useState(initialCities);
   const [society, setSociety] = useState([]);
@@ -23,32 +19,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
       date : i
     })
   }
-  // const options = [
-  //   { value: 'chocolate', label: 'Chocolate' },
-  //   { value: 'strawberry', label: 'Strawberry' },
-  //   { value: 'vanilla', label: 'Vanilla' }
-  // ]
-  const [options,setOptions] = useState([
-      { value: 'chocolate', label: 'Chocolate' },
-     { value: 'strawberry', label: 'Strawberry' },
-     { value: 'vanilla', label: 'Vanilla' }
-  ]);
-  const fetchClientData = async () => {
-     const data = {
-      "user_id" : 1234
-     }
-     const response = await APIService.getClientAdmin(data)
-     const res = await response.json();
-     console.log(res.data)
-    //  res.data.map((item) => {
-    //      value : item[0],
-    //      label : item[1]
-    //  })
-     setOptions(res.data.map(x => ({
-      value: x[0],
-      label: x[1]
-    })))
-  }
+
   const handleChange = (e) => {
     const {name,value} = e.target;
      setFormValues({...formValues,client_property : {
@@ -56,7 +27,6 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
          [name] : value
      }})
    }
-   const [selectedOption,setSelectedOption] = useState([]);
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3">
@@ -65,9 +35,6 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             <div className="text-[13px]">
                 Client Name <label className="text-red-500">*</label>
             </div>
-            <Select value={selectedOption}
-          onChange={setSelectedOption}
-          options={options}/> 
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
@@ -448,4 +415,4 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
   );
 };
 
-export default ProjectInformation;
+export default EditProjectInformation;
