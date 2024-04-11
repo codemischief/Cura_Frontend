@@ -1309,7 +1309,7 @@ const ManageBankStatement = () => {
                                         </div>
                                         <div className='w-[10%]  p-4'>
                                             {/* <p>{item.date}</p> */}
-                                            <DayJS format="DD-MMM-YYYY">{item.date}</DayJS>
+                                            {item.date}
                                             {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                         </div>
                                         <div className='w-[10%]  p-4'>
