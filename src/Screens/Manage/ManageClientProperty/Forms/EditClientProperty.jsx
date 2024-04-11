@@ -1,0 +1,164 @@
+import React from 'react'
+import {Modal} from "@mui/material"
+import Cross from "../../../../assets/cross.png"
+import { useSearchParams } from 'react-router-dom'
+import { useState } from 'react'
+import EditProjectInformation from './EditProjectInformation'
+import EditPhotos from './EditPhotos'
+import EditPOADetails from './EditPoaDetails'
+import EditOwnerDetails from './EditOwnerDetails'
+const EditClientProperty = (props) => {
+    const initialValues = {
+        "client_property": {
+          "clientid": 44598,
+          "propertytype": null,
+          "leveloffurnishing": null,
+          "numberofparkings": null,
+          "state": "Maharashtra",
+          "city": "Pune",
+          "suburb": "",
+          "country":5,
+          "projectid":null,
+          "status": null,
+          "propertydescription": "",
+          "layoutdetails": "",
+          "email": "",
+          "website": "",
+          "initialpossessiondate": null,
+          "electricityconsumernumber": "",
+          "otherelectricitydetails": "",
+          "electricitybillingduedate": null,
+          "comments": "",
+          "propertytaxnumber":"",
+          "clientservicemanager":null,
+          "propertymanager":null,
+          "propertyownedbyclientonly":false,
+          "gasconnectiondetails": "",
+          "internalfurnitureandfittings":"",
+          "textforposting": "",
+          "poagiven":true,
+          "poaid":null,
+          "electricitybillingunit":""
+        },
+        "client_property_photos": [
+              {
+                  "photolink": "",
+                  "description": "",
+                  "phototakenwhen": null
+              }
+          ],
+        "client_property_owner": {
+          "owner1name": "",
+          "owner1addressline1": "",
+          "owner1addressline2": "",
+          "owner1suburb": "",
+          "owner1city": "",
+          "owner1state": "",
+          "owner1country": null,
+          "owner1zip": null,
+          "owner1panno": "",
+          "owner1occupation": null,
+          "owner1employername": null,
+          "owner1relation":null,
+          "owner1birthyear":null,
+          "owner1relationwith": null,
+          "owner2name": "",
+          "owner2addressline1": "",
+          "owner2addressline2": "",
+          "owner2suburb": "",
+          "owner2city": null,
+          "owner2state": null,
+          "owner2country": null,
+          "owner2zip": null,
+          "owner2panno": "",
+          "owner2occupation": "",
+          "owner2employername": null,
+          "owner2relation": null,
+          "owner2relationwith": null,
+          "owner2birthyear":null,
+          "owner3name":"",
+          "owner3panno":"",
+          "otherownerdetails":"details"
+        },
+        "client_property_poa": {
+          "poalegalname": "",
+          "poapanno": "",
+          "poaaddressline1": "",
+          "poaaddressline2": "",
+          "poasuburb": "",
+          "poacity": "Mumbai",
+          "poastate": "Maharashtra",
+          "poacountry": "5",
+          "poazip": "",
+          "poaoccupation": "",
+          "poabirthyear": null,
+          "poaphoto": "",
+          "poaemployername": "",
+          "poarelation": null,
+          "poarelationwith": "",
+          "poaeffectivedate": null,
+          "poaenddate": null,
+          "poafor": "",
+          "scancopy": ""
+        }
+      }
+    const [selectedDialog,setSelectedDialogue] = useState(1);
+    const [clientData,setClientData] = useState([])
+    const [allCountry,setAllCountry] = useState([])
+    const [existingSociety,setExistingSociety] = useState([])
+    const [allState,setAllState] = useState([])
+    const [allCity,setAllCity] = useState([])
+    const [clientTypeData,setClientTypeData] = useState([])
+    const [formValues,setFormValues] = useState(initialValues)
+    const [propertyType,setPropertyType] = useState([])
+    const [levelOfFurnishing,setLevelOfFurnishing] = useState([])
+    const [propertyStatus,setPropertyStatus] = useState([])
+
+  return (
+    <Modal open={true}
+    fullWidth={true}
+    maxWidth={'md'}
+    className='flex justify-center items-center'
+>
+    <div className='flex justify-center relative'>
+        <div className="w-[1150px] h-auto bg-white rounded-lg">
+            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                <div className="mr-[410px] ml-[410px]">
+                    <div className="text-[16px]">Edit Client</div>
+                </div>
+                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                    <button onClick={props.handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                </div>
+            </div>
+
+            <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
+                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(1)}>
+                    <div>Project Information</div>
+                </div>
+                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(2)}>
+                    <div>Photos</div>
+                </div>
+                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(3)}>
+                    <div>POA Details</div>
+                </div>
+                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(4)}>
+                    <div>Owner Details</div>
+                </div>
+            </div>
+
+            {selectedDialog == 1 && <EditProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus}/>}
+            {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues}/>}
+            {selectedDialog == 3 && <EditPOADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
+            {selectedDialog == 4 && <EditOwnerDetails  formValues={formValues} setFormValues={setFormValues}/>}
+            <div className="my-2 flex justify-center items-center gap-[10px]">
+                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Update</button>
+                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</Modal>
+  )
+}
+
+export default EditClientProperty

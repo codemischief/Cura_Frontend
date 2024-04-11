@@ -343,17 +343,17 @@ const fetchTenentOfData = async () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <div className="w-[1200px] h-auto bg-white rounded-lg relative">
+                    <div className="w-[1300px] h-auto  bg-white rounded-lg relative">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Client</div>
+                                <div className="text-[16px]">Edit Client : Client Id : {props.currClient}</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                 <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
-                        <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
+                        <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9 ">
                             <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFirst}>
                                 <div>Client Information</div>
                             </div>
@@ -379,7 +379,7 @@ const fetchTenentOfData = async () => {
                        
                         {selectedDialog == 5 && <EditPOADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allStates} initialCities={allCities}/>}
 
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                        <div className="my-[10px] flex justify-center items-center gap-[10px] pb-8">
                             <button className="bg-[#004DD7]  w-[100px] h-[35px]  text-white rounded-md" onClick={handleEditClient}>Update</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                         </div>

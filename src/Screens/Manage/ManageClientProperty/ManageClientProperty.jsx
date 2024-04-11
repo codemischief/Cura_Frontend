@@ -23,6 +23,8 @@ import Joystick from "../../../assets/four_direction_arrow.png";
 import Trash from "../../../assets/trash.png"
 import Edit from "../../../assets/edit.png"
 import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProperty';
+import EditClientProperty from './Forms/EditClientProperty';
+import Select from "react-select"
 const ManageClientProperty = () => {
     const menuRef = useRef();
     // we have the module here
@@ -396,7 +398,7 @@ const ManageClientProperty = () => {
     }
     useEffect(() => {
         fetchClientData();
-        fetchData();
+        // fetchData();
         fetchStateData(5);
         
         fetchCityData("Maharashtra");
@@ -954,25 +956,25 @@ const ManageClientProperty = () => {
               "otherownerdetails":""
             },
             "client_property_poa": {
-              "poalegalname": "abcdef ghijkl",
-              "poapanno": "647364873",
-              "poaaddressline1": "eyge rfhrughur rf",
-              "poaaddressline2": "jrijg fruhfur ijf",
-              "poasuburb": "sub",
-              "poacity": "Mumbai",
-              "poastate": "Maharashtra",
-              "poacountry": 5,
-              "poazip": "zipcode",
-              "poaoccupation": "person",
-              "poabirthyear": 2003,
-              "poaphoto": "fjr furhfusfufbrf",
-              "poaemployername": "frijiurgh nfr",
-              "poarelation": 2,
-              "poarelationwith": "ABC DEF",
-              "poaeffectivedate": "2024-03-02",
-              "poaenddate": "2024-03-03",
-              "poafor": "ABC EFG",
-              "scancopy": "dhegfhuefu"
+              "poalegalname": formValues.client_property_poa.poalegalname,
+              "poapanno": formValues.client_property_poa.poapanno,
+              "poaaddressline1": formValues.client_property_poa.poaaddressline1,
+              "poaaddressline2": formValues.client_property_poa.poaaddressline2,
+              "poasuburb": formValues.client_property_poa.poasuburb,
+              "poacity": formValues.client_property_poa.poacity,
+              "poastate": formValues.client_property_poa.poastate,
+              "poacountry": formValues.client_property_poa.poacountry,
+              "poazip": formValues.client_property_poa.poazip,
+              "poaoccupation": formValues.client_property_poa.poaoccupation,
+              "poabirthyear": formValues.client_property_poa.poabirthyear,
+              "poaphoto": formValues.client_property_poa.poaphoto,
+              "poaemployername": formValues.client_property_poa.poaemployername,
+              "poarelation": formValues.client_property_poa.poarelation,
+              "poarelationwith": formValues.client_property_poa.poarelationwith,
+              "poaeffectivedate": formValues.client_property_poa.poaeffectivedate,
+              "poaenddate": formValues.client_property_poa.poaenddate,
+              "poafor": formValues.client_property_poa.poafor,
+              "scancopy": formValues.client_property_poa.scancopy
             }
           }          
     
@@ -989,20 +991,23 @@ const ManageClientProperty = () => {
         }
 
     }
+    
     const [addConfirmation,showAddConfirmation] = useState(false);
     const [currClientProperty,setCurrClientProperty] = useState("");
+    const [selectedOption,setSelectedOption] = useState("");
      return (
         <div className="h-screen">
             <Navbar />
             {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientProperty={currClientProperty} addClientProperty={addClientProperty}/>}
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem}/>}
+            {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Property" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
 
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
-                <div className='h-16 w-full  flex justify-between items-center p-2  '>
+                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
                             <img className='w-5 h-5' src={backLink} />
@@ -1479,7 +1484,7 @@ const ManageClientProperty = () => {
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex px-3 py-5 space-x-2'>
-                                            <button onClick={() => {}}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
+                                            <button onClick={() => {handleOpenEdit(item.id)}}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
                                             <button onClick={() => {}}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
@@ -1595,7 +1600,7 @@ const ManageClientProperty = () => {
                                 <div>Owner Details</div>
                             </div>
                         </div>
-
+                         
                         {selectedDialog == 1 && <ProjectInformation  clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus}/>}
                         {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}

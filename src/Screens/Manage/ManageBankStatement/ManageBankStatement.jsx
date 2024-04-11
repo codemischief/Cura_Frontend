@@ -182,11 +182,10 @@ const ManageBankStatement = () => {
         console.log(formValues.modeofpayment)
         setVendorId((formValues.vendor).split(",", 1)[0]);
         setModeEdit((formValues.modeofpayment).split(",", 1)[0])
-
         console.log(modeEdit, vendorId)
         const data = {
             "user_id": userId || 1234,
-            "modeofpayment": Number(modeEdit),
+            "modeofpayment": Number(formValues.modeofpayment),
             "date": formValues.date,
             "amount": Number(formValues.amount),
             "particulars": formValues.particulars,
