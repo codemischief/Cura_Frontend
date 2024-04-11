@@ -130,6 +130,7 @@ const Prospect = () => {
             "suburb": formValues.suburb,
             "city": formValues.city,
             "state": formValues.state,
+            "phoneno" : formValues.phoneNumber,
             "country": Number(formValues.country),
             "propertylocation": formValues.propertyLocation,
             "possibleservices": formValues.possibleServices,
@@ -788,6 +789,7 @@ const Prospect = () => {
                                                 // console.log(e.target.value);
                                                 setCurrCountry(e.target.value);
                                                 fetchStateData(e.target.value);
+                                                setAllCity([]);
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, country: e.target.value }
                                                     return newData;

@@ -395,8 +395,8 @@ const ManageClientProperty = () => {
         setPageLoading(false);
     }
     useEffect(() => {
-        // fetchClientData();
-
+        fetchClientData();
+        fetchData();
         fetchStateData(5);
         
         fetchCityData("Maharashtra");
@@ -880,7 +880,8 @@ const ManageClientProperty = () => {
     }
     const handleAddClientProperty = () => {
         console.log(formValues);
-        setIsClientInfoDialogue(false);
+        // setIsClientInfoDialogue(false);
+        setIsClientPropertyDialogue(false);
         setCurrClientProperty(formValues.client_property.clientid)
         showAddConfirmation(true);
     }
