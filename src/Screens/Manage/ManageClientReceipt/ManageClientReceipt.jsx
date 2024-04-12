@@ -638,9 +638,9 @@ const ManageClientReceipt = () => {
                                 </div>
                             </div>
                             <div className='w-[14%]  flex p-3'>
-                                <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[80%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
+                                    <button className='p-1 w-[20%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -672,8 +672,8 @@ const ManageClientReceipt = () => {
 
                             <div className='w-[10%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
+                                    <button className='p-1 w-[30%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -704,9 +704,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[13%]  flex p-3'>
-                                <div className="w-[67%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -737,9 +737,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[12%]  flex p-3'>
-                                <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -770,9 +770,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[12%]  flex p-3'>
-                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setRoleInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -803,9 +803,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[13%]  flex p-3'>
-                                <div className="w-[67%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[77%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPannoInput(e.target.value)} />
+                                    <button className='p-1 w-[23%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -836,9 +836,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[11%]  flex p-3'>
-                                <div className="w-[84%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setDojInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setDojFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setDojInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setDojFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {dojFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -870,8 +870,8 @@ const ManageClientReceipt = () => {
 
                             <div className='w-[7%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setLdowInput(e.target.value)} />
+                                    <button className='p-1 w-[45%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {ldowFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -904,9 +904,9 @@ const ManageClientReceipt = () => {
                         </div>
                         <div className="w-[13%] flex">
                             <div className='w-1/2  flex p-3'>
-                                <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[60%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
+                                    <button className='p-1 w-[40%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
