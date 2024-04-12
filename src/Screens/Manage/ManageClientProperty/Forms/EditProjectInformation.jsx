@@ -37,20 +37,20 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             <div className="text-[13px]">
                 Client Name <label className="text-red-500">*</label>
             </div>
-            {/* <select
+            <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
               value={formValues.client_property.clientid}
               onChange={handleChange}
-            > */}
+            >
               <option>Select Client Name </option>
-              {/* {clientName &&
-                clientName.map((item) => (
+              {clientData &&
+                clientData.map((item) => (
                   <option key={item[0]} value={item[0]}>
                     {item[1]}
                   </option>
-                ))} */}
-            {/* </select> */}
+                ))} 
+           </select> 
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
@@ -148,8 +148,8 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
               value={formValues.client_property.projectid}
             >
               <option>Select Builder </option>
-              {existingSociety &&
-                existingSociety.map((item) => (
+              {initialSociety &&
+                initialSociety.map((item) => (
                   <option key={item[0]} value={item.projectid} >
                        <p>{item.buildername}</p> 
                        &nbsp;

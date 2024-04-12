@@ -597,7 +597,7 @@ const ManageClientProperty = () => {
       "poasuburb": "",
       "poacity": "Mumbai",
       "poastate": "Maharashtra",
-      "poacountry": "5",
+      "poacountry": 5,
       "poazip": "",
       "poaoccupation": "",
       "poabirthyear": null,

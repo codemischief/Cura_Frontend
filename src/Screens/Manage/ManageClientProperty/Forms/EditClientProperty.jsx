@@ -13,6 +13,7 @@ const EditClientProperty = (props) => {
         fetchLevelOfFurnishing();
         getBuildersAndProjectsList();
         fetchPropertyType();
+        fetchClientData();
         fetchPropertyStatus();
         fetchStateData('5');
          fetchExistingData();
@@ -28,6 +29,15 @@ const EditClientProperty = (props) => {
         console.log(res);
         setFormValues(res.data);
         console.log(formValues);
+    }
+    const fetchClientData = async () => {
+        const data = {
+            "user_id": 1234,
+          }
+          const response =  await APIService.getClientAdmin(data)
+          const res =   await response.json();
+          console.log(res)
+          setClientData(res.data);
     }
     const initialValues = {
         "client_property": {
