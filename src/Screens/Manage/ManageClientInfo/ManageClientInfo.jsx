@@ -480,7 +480,7 @@ const ManageClientInfo = () => {
                 "localcontact2name":"",
                 "localcontact2address":"",
                 "localcontact2details":"",
-                "includeinmailinglist":null,
+                "includeinmailinglist":false,
                 "entityid":1,
                 "tenentof":null,
                 "tenentofproperty":null
@@ -940,7 +940,7 @@ const ManageClientInfo = () => {
                 "mobilephone":formValues.client_info.mobilephone,
                 "email1":formValues.client_info.email1,
                 "email2":formValues.client_info.email2,
-                "employername":"Employer",
+                "employername":formValues.client_info.employername,
                 "comments":formValues.client_info.comments,
                 "photo":"efiufheu",
                 "onlineaccreated":false,
@@ -950,7 +950,7 @@ const ManageClientInfo = () => {
                 "localcontact2name":formValues.client_info.localcontact2name,
                 "localcontact2address":formValues.client_info.localcontact2address,
                 "localcontact2details":formValues.client_info.localcontact2details,
-                "includeinmailinglist":true,
+                "includeinmailinglist":!formValues.client_info.includeinmailinglist,
                 "entityid":Number(formValues.client_info.entityid),
                 "tenantof": 0,
                 "tenantofproperty": Number(formValues.client_info.tenentofproperty)
