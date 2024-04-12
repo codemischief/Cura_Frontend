@@ -3,6 +3,8 @@ import Checkbox from '@mui/material/Checkbox';
 
 const EditProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus}) => {
   // console.log(levelOfFurnishing)
+  console.log(formValues)
+  console.log(formValues.client_property.leveloffurnishing)
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   const [state, setState] = useState(initialStates);
@@ -35,12 +37,12 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             <div className="text-[13px]">
                 Client Name <label className="text-red-500">*</label>
             </div>
-            <select
+            {/* <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
               value={formValues.client_property.clientid}
               onChange={handleChange}
-            >
+            > */}
               <option>Select Client Name </option>
               {/* {clientName &&
                 clientName.map((item) => (
@@ -48,7 +50,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                     {item[1]}
                   </option>
                 ))} */}
-            </select>
+            {/* </select> */}
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">

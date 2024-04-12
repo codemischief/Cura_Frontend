@@ -5,7 +5,7 @@ const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues
 
   const [country, setCountry] = useState(initialCountries);
   const [city, setCity] = useState(initialCities);
-  const [state, setState] = useState(initialCities);
+  const [state, setState] = useState(initialStates);
   const [relation, setRelation] = useState([]);
   const handleChange = (e) => {
     const {name,value} = e.target;
@@ -14,6 +14,27 @@ const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues
          [name] : value
      }})
    }
+   const fetchStateData = async (id) => {
+    console.log(id);
+    const data = { "user_id": 1234, "country_id": id };
+    // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+    const response = await APIService.getState(data);
+    const result = (await response.json()).data;
+    console.log(result)
+    if (Array.isArray(result)) {
+        setState(result)
+    }
+}
+const fetchCityData = async (id) => {
+  const data = { "user_id": 1234, "state_name": id };
+  const response = await APIService.getCities(data);
+  const result = (await response.json()).data;
+  console.log(result);
+  if (Array.isArray(result)) {
+      setCity(result)
+      
+  }
+}
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3 mb-5">
@@ -31,7 +52,11 @@ const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues
           <div className="">
             <div className="text-[13px]">Country </div>
             <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="poacountry"
-            value={formValues.client_property_poa.poacountry} onChange={handleChange} >
+            value={formValues.client_property_poa.poacountry} onChange={(e) => {
+              handleChange(e)
+              fetchStateData(e.target.value)
+              setCity([]);
+            }} >
               <option >Select country</option>
               {country && country.map(item => (
                 <option key={item[0]} value={item[0]}>

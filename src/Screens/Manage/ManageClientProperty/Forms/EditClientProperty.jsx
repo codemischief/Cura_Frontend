@@ -2,12 +2,33 @@ import React from 'react'
 import {Modal} from "@mui/material"
 import Cross from "../../../../assets/cross.png"
 import { useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useState , useEffect} from 'react'
 import EditProjectInformation from './EditProjectInformation'
 import EditPhotos from './EditPhotos'
 import EditPOADetails from './EditPoaDetails'
 import EditOwnerDetails from './EditOwnerDetails'
+import { APIService } from '../../../../services/API'
 const EditClientProperty = (props) => {
+    useEffect(() => {
+        fetchLevelOfFurnishing();
+        getBuildersAndProjectsList();
+        fetchPropertyType();
+        fetchPropertyStatus();
+        fetchStateData('5');
+         fetchExistingData();
+    },[])
+    const fetchExistingData = async () => {
+        // in this we fetch the data of the existing
+        const data = {
+            "user_id" : 1234,
+            "id" : props.clientId
+        }
+        const response = await APIService.getClientPropertyById(data);
+        const res = await response.json()
+        console.log(res);
+        setFormValues(res.data);
+        console.log(formValues);
+    }
     const initialValues = {
         "client_property": {
           "clientid": 44598,
@@ -102,7 +123,6 @@ const EditClientProperty = (props) => {
           "scancopy": ""
         }
       }
-      
     const [selectedDialog,setSelectedDialogue] = useState(1);
     const [clientData,setClientData] = useState([])
     const [allCountry,setAllCountry] = useState([])
@@ -114,7 +134,55 @@ const EditClientProperty = (props) => {
     const [propertyType,setPropertyType] = useState([])
     const [levelOfFurnishing,setLevelOfFurnishing] = useState([])
     const [propertyStatus,setPropertyStatus] = useState([])
-
+    const fetchLevelOfFurnishing = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getLevelOfFurnishingAdmin(data);
+        const res = await response.json()
+        console.log(res);
+        setLevelOfFurnishing(res);
+    }
+    const getBuildersAndProjectsList = async () => {
+        const data = {"user_id" : 1234};
+        const response = await APIService.getBuildersAndProjectsList(data);
+        const res = await response.json();
+        console.log(res.data);
+        setExistingSociety(res.data);
+    }
+    const fetchPropertyType = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getPropertyType(data)
+        const res = await response.json();
+        console.log(res);
+        setPropertyType(res);
+    }
+    const fetchPropertyStatus = async () => {
+        const data = {"user_id" : 1234};
+        const response = await APIService.getPropertyStatusAdmin(data);
+        const res = await response.json();
+        console.log(res);
+        setPropertyStatus(res);
+    }
+    const fetchStateData = async (id) => {
+        console.log(id);
+        const data = { "user_id": 1234, "country_id": id };
+        // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
+        const response = await APIService.getState(data);
+        const result = (await response.json()).data;
+        console.log(result)
+        fetchCityData(formValues.client_property.state);
+        if (Array.isArray(result)) {
+            setAllState(result)
+        }
+    }
+    const fetchCityData = async (id) => {
+        const data = { "user_id": 1234, "state_name": id };
+        const response = await APIService.getCities(data);
+        const result = (await response.json()).data;
+        console.log(result);
+        if (Array.isArray(result)) {
+            setAllCity(result)
+        }
+    }
   return (
     <Modal open={true}
     fullWidth={true}

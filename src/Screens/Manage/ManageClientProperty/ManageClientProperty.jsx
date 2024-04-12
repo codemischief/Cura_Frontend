@@ -139,9 +139,9 @@ const ManageClientProperty = () => {
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, role: result.data[0].id }
+        // })
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
         }
@@ -261,8 +261,8 @@ const ManageClientProperty = () => {
               "electricitybillingduedate"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15
           };
@@ -396,22 +396,24 @@ const ManageClientProperty = () => {
         setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
+
     useEffect(() => {
-        fetchClientData();
-        fetchData();
-        fetchStateData(5);
         
-        fetchCityData("Maharashtra");
-        fetchPropertyStatus();
-        fetchPropertyType();
-        fetchLevelOfFurnishing();
-        fetchClientTypeData();
-        getBuildersAndProjectsList();
-        fetchCountryData();
-        fetchEntitiesData();
-        fetchRoleData();
-        fetchUsersData();
-        fetchLobData();
+         fetchClientData();
+         fetchData();
+         fetchStateData(5);
+        
+         fetchCityData("Maharashtra");
+         fetchPropertyStatus();
+         fetchPropertyType();
+         fetchLevelOfFurnishing();
+         fetchClientTypeData();
+         getBuildersAndProjectsList();
+         fetchCountryData();
+         fetchEntitiesData();
+        // fetchRoleData();
+         fetchUsersData();        
+         fetchLobData();
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setClientNameFilter(false);
@@ -433,8 +435,10 @@ const ManageClientProperty = () => {
 
     const handleOpenEdit = (oldItem) => {
         console.log('called');
-        setIsEditDialogue(true);
+        console.log(oldItem)
         setCurrItem(oldItem)
+        setIsEditDialogue(true);
+        
     };
 
     const handleOpen = () => {
@@ -608,165 +612,85 @@ const ManageClientProperty = () => {
     }
   }
     const [formValues, setFormValues] = useState(initialValues);
-    const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({
+        clientid : "",
+        levelOfFurnishing : "",
+        propertytype  : "",
+        status : "",
+        city : "",
+        state : "",
+        suburb : "",
+        electricitybillingduedate : "",
+        projectid : ""
+    });
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
 
-
+   
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.employeeName) {
+        if (!formValues.client_property.clientid) {
             setFormErrors((existing) => {
-                return { ...existing, employeeName: "Enter Employee name" }
+                return { ...existing, clientid: "Enter Client Name" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, employeeName: "" }
+                return { ...existing, clientid: "Enter Client Name" }
             })
         }
-        if (!formValues.panNo) {
+        if (!formValues.client_property.leveloffurnishing) {
             setFormErrors((existing) => {
-                return { ...existing, panNo: "Enter Pan Number" }
+                return { ...existing, leveloffurnishing : "Select Level Of Furnishing" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, panNo: "" }
+                return { ...existing,  leveloffurnishing : "Select Level Of Furnishing" }
             })
         }
-        if (!formValues.doj) {
+        if (!formValues.client_property.propertydescription) {
             setFormErrors((existing) => {
-                return { ...existing, doj: "Enter date of joining" }
+                return { ...existing, propertydescription : "Enter Property Description" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, doj: "" }
+                return { ...existing,  propertydescription : ""}
             })
         }
-        if (!formValues.designation) {
+        if (!formValues.client_property.propertyid) {
             setFormErrors((existing) => {
-                return { ...existing, designation: "Enter Designation" }
+                return { ...existing, propertyid : "Enter Project Name" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, designation: "" }
+                return { ...existing,  propertyid : ""}
             })
         }
-        if (!formValues.email) {
+        if (!formValues.client_property.status) {
             setFormErrors((existing) => {
-                return { ...existing, email: "Enter email address" }
+                return { ...existing, status : "Enter Project Status" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, email: "" }
+                return { ...existing,  status : ""}
             })
         }
-        if (!formValues.employeeId) {
+        if (!formValues.client_property.city) {
             setFormErrors((existing) => {
-                return { ...existing, employeeId: "Enter Employee Id" }
+                return { ...existing, city : "Enter City " }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, employeeId: "" }
-            })
-        }
-        if (!formValues.lob) {
-            setFormErrors((existing) => {
-                return { ...existing, lob: "Select LOB" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, lob: "" }
-            })
-        }
-        if (!formValues.dob) {
-            setFormErrors((existing) => {
-                return { ...existing, dob: "enter date of birth" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, dob: "" }
-            })
-        }
-        if (!formValues.role) {
-            setFormErrors((existing) => {
-                return { ...existing, role: "Select Role" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, role: "" }
-            })
-        }
-        if (!formValues.phNo) {
-            setFormErrors((existing) => {
-                return { ...existing, phNo: "Enter phone number" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, phNo: "" }
-            })
-        }
-        if (!formValues.country) {
-            setFormErrors((existing) => {
-                return { ...existing, country: "Select country" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, country: "" }
-            })
-        }
-        if (formValues.state == "") {
-            setFormErrors((existing) => {
-                return { ...existing, state: "Select state" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, state: "" }
-            })
-        }
-        if (!formValues.city) {
-            setFormErrors((existing) => {
-                return { ...existing, city: "Select city" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, city: "" }
-            })
-        }
-        if (!formValues.suburb) {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "Enter suburb" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, suburb: "" }
-            })
-        }
-        if (!formValues.entity) {
-            setFormErrors((existing) => {
-                return { ...existing, entity: "Select Entity" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, entity: "" }
+                return { ...existing,  city : ""}
             })
         }
         return res;
@@ -880,6 +804,7 @@ const ManageClientProperty = () => {
         }, 2000)
         fetchData();
     }
+    
     const handleAddClientProperty = () => {
         console.log(formValues);
         // setIsClientInfoDialogue(false);
@@ -935,8 +860,8 @@ const ManageClientProperty = () => {
               "owner1occupation": "",
               "owner1employername": "",
               "owner1relation":1,
-              "owner1birthyear":2003,
-              "owner1relationwith": 1234,
+              "owner1birthyear":null,
+              "owner1relationwith": null,
               "owner2name": formValues.client_property_owner.owner2name,
               "owner2addressline1": "",
               "owner2addressline2": "",

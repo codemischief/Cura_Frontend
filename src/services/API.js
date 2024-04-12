@@ -286,8 +286,12 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getClientAdminPaginated`, METHOD_POST(data));
   return response;
  }
+ const getClientPropertyById = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getClientPropertyById`, METHOD_POST(data));
+  return response;
+ }
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
   getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
-  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects,editEmployee,getItembyId,editPayment,deletePayment,getItemByAttr,getProjectsByBuilderId,getClientInfo,getClientProperty,getClientTypeAdmin,getTenantOfPropertyAdmin,getRelationAdmin,addClientInfo,deleteClientInfo,getClientInfoByClientId,editCLientInfo,getBuildersAndProjectsList,getPropertyStatusAdmin,getLevelOfFurnishingAdmin,getPropertyType,addClientProperty,getClientAdminPaginated};
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects,editEmployee,getItembyId,editPayment,deletePayment,getItemByAttr,getProjectsByBuilderId,getClientInfo,getClientProperty,getClientTypeAdmin,getTenantOfPropertyAdmin,getRelationAdmin,addClientInfo,deleteClientInfo,getClientInfoByClientId,editCLientInfo,getBuildersAndProjectsList,getPropertyStatusAdmin,getLevelOfFurnishingAdmin,getPropertyType,addClientProperty,getClientAdminPaginated, getClientPropertyById};
 
   
