@@ -353,7 +353,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                     {item.suburb}
                                     &nbsp;
                                     &nbsp;
-                                    {item.propertydescription.substring(0,50)}
+                                    {item.propertydescription}
                                 </option>
                             ))}
                         </select>

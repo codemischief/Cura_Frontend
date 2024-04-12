@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, useScrollTrigger } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import ClientInformation from "./Forms/ClientInformation"
@@ -55,24 +55,7 @@ const ManageClientInfo = () => {
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const [tenentOfData, setTenentOfData] = useState([])
-    const [clientNameFilter, setClientNameFilter] = useState(false);
-    const [ClientNameInput, setClientNameInput] = useState("");
-    const [ClientTypeFilter, setClientTypeFilter] = useState(false);
-    const [ClientTypeInput, setClientTypeInput] = useState("");
-    const [tenentOfFilter, setTenentOfFilter] = useState(false);
-    const [tenentOfInput, setTenentOfInput] = useState("");
-    const [countryFilter, setCountryFilter] = useState(false);
-    const [countryInput, setCountryInput] = useState("");
-    const [cityFilter, setCityFilter] = useState(false);
-    const [cityInput, setCityInput] = useState("");
-    const [phoneFilter, setPhoneFilter] = useState(false);
-    const [PhoneInput, setPhoneInput] = useState("");
-    const [emailFilter, setEmailFilter] = useState(false);
-    const [EmailInput, setEmailInput] = useState("");
-    const [employeeNameFilter, setEmployeeNameFilter] = useState(false);
-    const [EmployeeNameInput, setEmployeeNameInput] = useState("");
-    const [idFilter, setIdFilter] = useState(false);
-    const [idInput, setIdInput] = useState("");
+    
     const [sortField, setSortField] = useState("id")
     const [relationData, setRelationData] = useState([]);
     const [showDelete, setShowDelete] = useState(false);
@@ -86,13 +69,20 @@ const ManageClientInfo = () => {
             filterData: "String",
             filterInput: ""
         },
-        clienttype: {
+        clienttypename: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        tenentof: {
+       
+        tenantofname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        tenantofpropertyname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -110,19 +100,19 @@ const ManageClientInfo = () => {
             filterData: "String",
             filterInput: ""
         },
-        phone: {
+        mobilephone: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        email: {
+        email1: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        employeename: {
+        employername : {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -304,7 +294,10 @@ const ManageClientInfo = () => {
                 "createdby",
                 "isdeleted",
                 "entityid",
-                "tenantof"
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -368,13 +361,17 @@ const ManageClientInfo = () => {
                 "createdby",
                 "isdeleted",
                 "entityid",
-                "tenantof"
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
@@ -433,13 +430,17 @@ const ManageClientInfo = () => {
                 "createdby",
                 "isdeleted",
                 "entityid",
-                "tenantof"
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(quantity)
+            "pg_size": Number(quantity),
+            "search_key" : searchInput
         };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
@@ -731,6 +732,7 @@ const ManageClientInfo = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
+        
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1130,6 +1132,26 @@ const ManageClientInfo = () => {
             fetchData();
         }, 2000)
     }
+    const [clientNameFilter,setClientNameFilter] = useState(false)
+    const [clientNameInput,setClientNameInput ] = useState("");
+    const [clientTypeNameFilter,setClientTypeNameFilter] = useState(false)
+    const [clientTypeNameInput,setClientTypeNameInput ] = useState("");
+    const [tenantOfTypeNameFilter,setTenantOfTypeNameFilter] = useState(false)
+    const [tenantOfTypeNameInput,setTenantOfTypeNameInput] = useState("");
+    const [tenantOfPropertyFilter,setTenantOfPropertyFilter] = useState(false)
+    const [tenantOfPropertyInput,setTenantOfPropertyInput] = useState("");
+    const [countryFilter,setCountryFilter] = useState(false)
+    const [countryInput,setCountryInput] = useState("");
+    const [cityFilter,setCityFilter] = useState(false)
+    const [cityInput,setCityInput] = useState("");
+    const [phoneFilter,setPhoneFilter] = useState(false)
+    const [phoneInput,setPhoneInput] = useState("");
+    const [email1Filter,setEmail1Filter] = useState(false)
+    const [email1Input,setEmail1Input] = useState("");
+    const [employerFilter,setEmployerFilter] = useState(false)
+    const [employerInput,setEmployerInput] = useState("");
+    const [idFilter,setIdFilter] = useState(false);
+    const [idFilterInput,setidFilterInput] = useState("");
     const handleFilter = (type, columnName) => {
         if (columnName == "clientname") {
             if (type == "noFilter") {
@@ -1143,7 +1165,7 @@ const ManageClientInfo = () => {
             } else {
                 const existing = filterMapState;
                 existing.clientname.filterType = type;
-                existing.clientname.filterValue = ClientNameInput;
+                existing.clientname.filterValue = clientNameInput;
                 setFilterMapState(existing)
                 // filterMapping.country.filterType = type;
                 // filterMapping.country.filterValue = countryFilterInput;
@@ -1151,33 +1173,34 @@ const ManageClientInfo = () => {
         } else if (columnName == "clienttype") {
             if (type == "noFilter") {
                 const existing = filterMapState;
-                existing.clienttype.filterType = "";
-                existing.clienttype.filterValue = "";
+                existing.clienttypename.filterType = "";
+                existing.clienttypename.filterValue = "";
                 setFilterMapState(existing)
                 // filterMapping.state.filterType = "";
                 // filterMapping.state.filterValue = "";
-                setClientTypeInput("");
+                setClientTypeNameInput("");
             } else {
                 const existing = filterMapState;
-                existing.clienttype.filterType = type;
-                existing.clienttype.filterValue = ClientTypeInput;
+                existing.clienttypename.filterType = type;
+                existing.clienttypename.filterValue = clientTypeNameInput;
                 setFilterMapState(existing)
                 // filterMapping.state.filterType = type;
                 // filterMapping.state.filterValue = stateFilterInput;
             }
-        } else if (columnName == "tenentof") {
+        } else if (columnName == "tenantof") {
             if (type == "noFilter") {
                 const existing = filterMapState;
-                existing.tenentof.filterType = "";
-                existing.tenentof.filterValue = "";
+                existing.tenantofname.filterType = "";
+                existing.tenantofname.filterValue = "";
                 setFilterMapState(existing)
                 // filterMapping.locality.filterType = "";
                 // filterMapping.locality.filterValue = "";
-                setTenentOfInput("");
+                // setTenentOfInput("");
+                setTenantOfTypeNameInput("");
             } else {
                 const existing = filterMapState;
-                existing.tenentof.filterType = type;
-                existing.tenentof.filterValue = tenentOfInput;
+                existing.tenantofname.filterType = type;
+                existing.tenantofname.filterValue = tenantOfTypeNameInput;
                 setFilterMapState(existing)
                 // filterMapping.locality.filterType = type;
                 // filterMapping.locality.filterValue = localityFilterInput;
@@ -1219,16 +1242,16 @@ const ManageClientInfo = () => {
         }else if (columnName == "phone") {
             if (type == "noFilter") {
                 const existing = filterMapState;
-                existing.phone.filterType = "";
-                existing.phone.filterValue = "";
+                existing.mobilephone.filterType = "";
+                existing.mobilephone.filterValue = "";
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = "";
                 // filterMapping.city.filterValue = "";
                 setPhoneInput("");
             } else {
                 const existing = filterMapState;
-                existing.phone.filterType = type;
-                existing.phone.filterValue = PhoneInput;
+                existing.mobilephone.filterType = type;
+                existing.mobilephone.filterValue = phoneInput;
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = type;
                 // filterMapping.city.filterValue = cityFilterInput;
@@ -1236,38 +1259,40 @@ const ManageClientInfo = () => {
         }else if (columnName == "email") {
             if (type == "noFilter") {
                 const existing = filterMapState;
-                existing.email.filterType = "";
-                existing.email.filterValue = "";
+                existing.email1.filterType = "";
+                existing.email1.filterValue = "";
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = "";
                 // filterMapping.city.filterValue = "";
-                setEmailInput("");
+                // setEmailInput("");
+                setEmail1Input("");
             } else {
                 const existing = filterMapState;
-                existing.email.filterType = type;
-                existing.email.filterValue = emailFilter;
+                existing.email1.filterType = type;
+                existing.email1.filterValue = email1Input;
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = type;
                 // filterMapping.city.filterValue = cityFilterInput;
             }
-        }else if (columnName == "employeename") {
+        }else if (columnName == "employername") {
             if (type == "noFilter") {
                 const existing = filterMapState;
-                existing.employeename.filterType = "";
-                existing.employeename.filterValue = "";
+                existing.employername.filterType = "";
+                existing.employername.filterValue = "";
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = "";
                 // filterMapping.city.filterValue = "";
                 setEmployeeNameInput("");
             } else {
                 const existing = filterMapState;
-                existing.employeename.filterType = type;
-                existing.employeename.filterValue = EmployeeNameInput;
+                existing.employername.filterType = type;
+                existing.employername.filterValue = employerInput;
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = type;
                 // filterMapping.city.filterValue = cityFilterInput;
             }
         }else if (columnName == "id") {
+            console.log(columnName,type)
             if (type == "noFilter") {
                 const existing = filterMapState;
                 existing.id.filterType = "";
@@ -1280,6 +1305,24 @@ const ManageClientInfo = () => {
                 const existing = filterMapState;
                 existing.id.filterType = type;
                 existing.id.filterValue = Number(idFilterInput);
+                setFilterMapState(existing)
+                // filterMapping.id.filterType = type;
+                // filterMapping.id.filterValue = Number(idFilterInput);
+            }
+        }else if(columnName == "tenantofproperty") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.tenantofpropertyname.filterType = "";
+                existing.tenantofpropertyname.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.id.filterType = "";
+                // filterMapping.id.filterValue = "";
+                // setidFilterInput("");
+                setTenantOfTypeNameFilter("");
+            } else {
+                const existing = filterMapState;
+                existing.tenantofpropertyname.filterType = type;
+                existing.tenantofpropertyname.filterValue = tenantOfPropertyInput;
                 setFilterMapState(existing)
                 // filterMapping.id.filterType = type;
                 // filterMapping.id.filterValue = Number(idFilterInput);
@@ -1354,7 +1397,7 @@ const ManageClientInfo = () => {
                             </div>
                             <div className='w-[13%] p-3 '>
                                 <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientNameInput(e.target.value)} />
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={clientNameInput} onChange={(e) => setClientNameInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
 
@@ -1364,34 +1407,35 @@ const ManageClientInfo = () => {
 
                             <div className='w-[11%]   p-3'>
                                 <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientTypeInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeFilter((prev) => !prev) }} /></button>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {ClientTypeFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clienttype' menuRef={menuRef} />}
+                                {clientTypeNameFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clienttype' menuRef={menuRef} />}
 
                             </div>
 
                             <div className='w-[8%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setTenentOfInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
+                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {tenentOfFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />}
+                                {tenantOfTypeNameFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenantof' />}
 
                             </div>
 
                             <div className='w-[8%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setTenentOfInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
+                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {/* {tenentOfFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} */}
+                                {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenantofproperty' />}
+                                {/* {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} } */}
 
                             </div>
 
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCountryInput(e.target.value)} />
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryInput} onChange={(e) => setCountryInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {countryFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='country' menuRef={menuRef} />}
@@ -1400,7 +1444,7 @@ const ManageClientInfo = () => {
 
                             <div className='w-[7%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-7 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCityInput(e.target.value)} />
+                                    <input className="w-7 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityInput}onChange={(e) => setCityInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {cityFilter && <CharacterFilter filterColumn='city' menuRef={menuRef} handleFilter={handleFilter} />}
@@ -1408,7 +1452,7 @@ const ManageClientInfo = () => {
 
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2"value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {phoneFilter && <CharacterFilter filterColumn='phone' handleFilter={handleFilter} menuRef={menuRef} />}
@@ -1417,29 +1461,29 @@ const ManageClientInfo = () => {
 
                             <div className='w-[11%]   p-3'>
                                 <div className="w-[88%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button>
                                 </div>
-                                {emailFilter && <CharacterFilter filterColumn='email' handleFilter={handleFilter} menuRef={menuRef} />}
+                                {email1Filter && <CharacterFilter filterColumn='email' handleFilter={handleFilter} menuRef={menuRef} />}
 
                             </div>
 
                             <div className='w-[9%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmployeeNameInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployeeNameFilter((prev) => !prev) }} /></button>
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employerInput} onChange={(e) => setEmployerInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployerFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {employeeNameFilter && <CharacterFilter filterColumn='employeename' handleFilter={handleFilter} menuRef={menuRef} />}
+                                {employerFilter && <CharacterFilter filterColumn='employername' handleFilter={handleFilter} menuRef={menuRef} />}
                             </div>
 
                         </div>
                         <div className="w-[15%] ">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <NumericFilter filterColumn='id' handleFilter={handleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter columnName='id' handleFilter={handleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1562,12 +1606,12 @@ const ManageClientInfo = () => {
                                     </div>
                                     <div className='w-[8%]  flex '>
                                         <div className='p-3'>
-                                            <p>{item.tenantof} </p>
+                                            <p>{item.tenantofname} </p>
                                         </div>
                                     </div>
                                     <div className='w-[8%]  flex'>
                                         <div className='p-3'>
-                                            <p></p>
+                                            <p>{item.tenantofpropertyname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex '>
