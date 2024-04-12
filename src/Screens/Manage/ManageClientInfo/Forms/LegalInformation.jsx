@@ -39,7 +39,7 @@ const fetchCityData = async (id) => {
   }
 }
   return (
-    <div className="h-auto w-full">
+    <div className="h-auto w-full pt-2 pb-5">
       <div className="flex gap-10 justify-center">
         <div className=" space-y-2 ">
           <div className="">

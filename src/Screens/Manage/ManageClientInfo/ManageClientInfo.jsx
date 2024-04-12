@@ -1090,7 +1090,7 @@ const ManageClientInfo = () => {
                                 <div>
                                     {/* button */}
                                     <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
-                                        <div className="flex items-center justify-center gap-4">
+                                        <div className="flex items-center justify-center gap-4 text-[14px]">
                                             Add New Client
                                             <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                         </div>
