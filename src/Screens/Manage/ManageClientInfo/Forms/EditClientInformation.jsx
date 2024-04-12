@@ -2,7 +2,8 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
-const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities }) => {
+const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities}) => {
+    console.log(formErrors)
     const [Salutation, setSalutation] = useState([
         {
             id: 1,
@@ -80,7 +81,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                             onChange={
                                 handleChange
                             }>
-                            <option >Select Salutation</option>
+                            <option value={""}> Select Salutation</option>
                             {Salutation && Salutation.map(item => {
                                 if(item.name == formValues.client_info.salutation) {
                                     return <option value={item.name} selected>
@@ -93,7 +94,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                                 }
 })}
                         </select>
-                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.salutation}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Client Type <label className="text-red-500">*</label></div>
@@ -107,14 +108,14 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                                 })
                             }
                         } >
-                            <option >Select Client Type </option>
+                            <option value={null}>Select Client Type </option>
                             {clientTypeData && clientTypeData.map(item => (
                                 <option key={item.id} value={item.id}>
                                     {item.name}
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.clienttype}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Address Line 1 </div>
@@ -162,7 +163,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                     <div className="">
                         <div className="text-[13px]">First Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="firstname" onChange={handleChange} value={formValues.client_info.firstname} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.firstname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
@@ -180,7 +181,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                         }
                             value={formValues.client_info.country}
                         >
-                            <option >Select Country</option>
+                            <option value={null}>Select Country</option>
                             {allCountry && allCountry.map(item => {
                                 if (item[0] == formValues.client_info.country) {
                                     return <option key={item[0]} value={item[0]} selected>
@@ -226,6 +227,9 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                     <div className="">
                         <div className="text-[12px]">Middle Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="middlename" onChange={handleChange} value={formValues.client_info.middlename} />
+                        <div className='text-[12px] text-[#CD0000] '>
+                            {formErrors.middlename}
+                        </div>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
@@ -293,7 +297,8 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        <div className="text-[12px] text-[#CD0000] ">{formErrors.lastname}</div>
+                        {/* <h1>this is an error</h1> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">City <label className="text-red-500">*</label></div>
@@ -351,25 +356,31 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                     
                     <div className="">
                         <div className="text-[13px]">Tenent Of Property</div>
-                        <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenentofProperty} onChange={
+                        <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenantofproperty} onChange={
                             (e) => {
                                 setFormValues({
                                     ...formValues, client_info: {
                                         ...formValues.client_info,
-                                        tenentofProperty: e.target.value
+                                        tenantofproperty: e.target.value
                                     }
                                 })
                             }
                         }>
                             {/* <option >Select tenent of </option> */}
                             {tenentOfData && tenentOfData.map(item => {
-                                if(item.id == formValues.client_info.tenentof) {
+                                if(item.id == formValues.client_info.tenantofproperty) {
                                     return <option key={item.id} value={item.id} selected>
-                                          {item.projectname}
+                                          {item.suburb}
+                                          &nbsp;
+                                          &nbsp;
+                                          {item.propertydescription}
                                     </option>
                                 }else {
                                      return <option key={item.id} value={item.id}>
-                                     {item.projectname}
+                                           {item.suburb}
+                                          &nbsp;
+                                          &nbsp;
+                                          {item.propertydescription}
                                  </option>
                                 }
 })}

@@ -463,8 +463,13 @@ const ManageClientInfo = () => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
+        const makeFalse = () => {
+            
+        }
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
+                // setOverAllFilter(false);
+                setTenantOfPropertyFilter(false);
                 setIdFilter(false)
                 setEmployerFilter(false);
                 setEmail1Filter(false);
@@ -473,9 +478,9 @@ const ManageClientInfo = () => {
                 setClientNameFilter(false);
                 setCountryFilter(false)
                 setClientNameFilter(false);
-                setTenentOfFilter(false);
-                setEmployerFilter(false)
-                setTenantOfPropertyFilter(false)
+                setTenantOfTypeNameFilter(false)
+                setEmployerFilter(false);
+                setClientTypeNameFilter(false)
                 setTenantOfTypeNameFilter(false)
             }
         }
@@ -485,7 +490,7 @@ const ManageClientInfo = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
-
+    
     const handleOpenEdit = (oldItem) => {
         console.log('called');
         setIsEditDialogue(true);
