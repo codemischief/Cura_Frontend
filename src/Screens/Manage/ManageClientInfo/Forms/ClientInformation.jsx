@@ -30,7 +30,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     // const [state, setState] = useState([]);
     const [allState, setAllState] = useState(initialStates);
     const [source, setSource] = useState([]);
-    const [employeeName, setEmployeeName] = useState([]);
+    // const [employeeName, setEmployeeName] = useState([]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({
@@ -279,13 +279,9 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     </div>
                     <div className="">
                         <div className="text-[13px]">Tenant Of </div>
-                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employeeName" >
+                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenantof" >
                             <option > </option>
-                            {employeeName && employeeName.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
-                                </option>
-                            ))}
+                            
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
@@ -334,15 +330,8 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
-                        <div className="text-[13px]">Employee Name </div>
-                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employeeName" >
-                            <option > </option>
-                            {employeeName && employeeName.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="text-[13px]">Employer Name </div>
+                        <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employername" onChange={handleChange} value={formValues.client_info.employername} />
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
 
@@ -370,7 +359,20 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     
                 </div>
             </div>
-            <div className="mt-[10px] flex justify-center items-center font-semibold text-[14px]"><Checkbox label="Active" />Exclude from Mailing List</div>
+            
+            <div className="mt-[10px] flex justify-center items-center font-semibold text-[14px]"><input
+                        type="checkbox"
+                        checked={formValues.client_info.includeinmailinglist}
+                        className='mr-3 h-4 w-4'
+                        onClick={(e) => {
+                            // console.log(e.target.checked)
+                            const existing = {...formValues};
+                            const temp = {...existing.client_info};
+                            temp.includeinmailinglist = !temp.includeinmailinglist
+                            existing.client_info = temp;
+                            setFormValues(existing) 
+                          }}
+        />Exclude From Mailing List</div>
         </div>
     )
 }

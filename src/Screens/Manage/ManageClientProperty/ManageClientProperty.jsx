@@ -398,7 +398,7 @@ const ManageClientProperty = () => {
     }
     useEffect(() => {
         fetchClientData();
-        // fetchData();
+        fetchData();
         fetchStateData(5);
         
         fetchCityData("Maharashtra");

@@ -28,11 +28,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
   //   { value: 'strawberry', label: 'Strawberry' },
   //   { value: 'vanilla', label: 'Vanilla' }
   // ]
-  const [options,setOptions] = useState([
-      { value: 'chocolate', label: 'Chocolate' },
-     { value: 'strawberry', label: 'Strawberry' },
-     { value: 'vanilla', label: 'Vanilla' }
-  ]);
+  const [options,setOptions] = useState([]);
   const fetchClientData = async () => {
      const data = {
       "user_id" : 1234
@@ -65,9 +61,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             <div className="text-[13px]">
                 Client Name <label className="text-red-500">*</label>
             </div>
-            <Select value={selectedOption}
-          onChange={setSelectedOption}
-          options={options}/> 
+            
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
