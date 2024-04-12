@@ -350,7 +350,10 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             <option >Select tenent of </option>
                             {tenentOfData && tenentOfData.map(item => (
                                 <option key={item.id} value={item.id}>
-                                    {item.projectname}
+                                    {item.suburb}
+                                    &nbsp;
+                                    &nbsp;
+                                    {item.propertydescription.substring(0,50)}
                                 </option>
                             ))}
                         </select>

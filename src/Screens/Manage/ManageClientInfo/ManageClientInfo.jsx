@@ -265,6 +265,7 @@ const ManageClientInfo = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
+        console.log(filterMapState);
         console.log(tempArray);
         const data = {
             "user_id": 1234,
@@ -1091,7 +1092,7 @@ const ManageClientInfo = () => {
             openAddSuccess();
             setFormValues(initialValues)
         } else {
-            //  we need to open an error prompt here
+            
 
         }
         setButtonLoading(false);
@@ -1504,7 +1505,7 @@ const ManageClientInfo = () => {
                             </div>
                             <div className='w-[9%]  flex'>
                                 <div className='p-3'>
-                                    <p>Employee </p>
+                                    <p>Employer </p>
                                     <p>Name </p>
                                 </div>
                                 <span className="font-extrabold py-5">↑↓</span>
