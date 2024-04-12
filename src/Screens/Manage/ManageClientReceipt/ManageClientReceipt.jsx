@@ -587,16 +587,16 @@ const ManageClientReceipt = () => {
                         </div>
 
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>Manage Client Receipt</h1>
-                            <p className='text-[14px]'>Admin &gt; Manage Client Receipt</p>
+                            <h1 className='text-lg'>Manage Client Receipt</h1>
+                            <p className='text-sm'>Manage &gt; Manage Client Receipt</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative'>
+                        <div className='flex items-center bg-[#EBEBEB] '>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3"
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 "
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
@@ -604,18 +604,18 @@ const ManageClientReceipt = () => {
                                     setSearchInput(e.target.value);
                                 }}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                            <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
+                            <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[300px] rounded-lg" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-9 w-80 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Client Receipt
-                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                    <img className='h-4 w-4' src={Add} alt="add" />
                                 </div>
                             </button>
                         </div>
@@ -638,9 +638,9 @@ const ManageClientReceipt = () => {
                                 </div>
                             </div>
                             <div className='w-[14%]  flex p-3'>
-                                <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md ">
+                                    <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
+                                    <button className='p-1 w-[22%]'><img src={Filter} className='h-4 w-4' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -671,9 +671,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[10%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
+                                    <button className='p-1 w-[30%]'><img src={Filter} className='h-4 w-4' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -704,9 +704,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[13%]  flex p-3'>
-                                <div className="w-[67%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -737,9 +737,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[12%]  flex p-3'>
-                                <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setEmailInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -770,9 +770,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[12%]  flex p-3'>
-                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setRoleInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -803,9 +803,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[13%]  flex p-3'>
-                                <div className="w-[67%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setPannoInput(e.target.value)} />
+                                    <button className='p-1 w-[23%]'><img src={Filter} className='h-4 w-4' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -836,9 +836,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[11%]  flex p-3'>
-                                <div className="w-[84%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setDojInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setDojFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setDojInput(e.target.value)} />
+                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setDojFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {dojFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -869,9 +869,9 @@ const ManageClientReceipt = () => {
                             </div>
 
                             <div className='w-[7%]  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setLdowInput(e.target.value)} />
+                                    <button className='p-1 w-[45%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {ldowFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -904,9 +904,9 @@ const ManageClientReceipt = () => {
                         </div>
                         <div className="w-[13%] flex">
                             <div className='w-1/2  flex p-3'>
-                                <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setIdInput(e.target.value)} />
+                                    <button className='p-1 w-[40%]'><img src={Filter} className='h-4 w-4' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
                                     <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
@@ -945,8 +945,8 @@ const ManageClientReceipt = () => {
                     </div>
                 </div>
 
-                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
-                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
+                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-t-[1px]'>
                         <div className="w-[87%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='px-3 py-5'>
@@ -1111,14 +1111,12 @@ const ManageClientReceipt = () => {
 
             </div>
 
-
-            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white  '>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>
                         {/* items */}
                         <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
-
                     </div>
                 </div>
                 <div className='flex mr-10 justify-center items-center space-x-2 '>
@@ -1189,32 +1187,32 @@ const ManageClientReceipt = () => {
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Client Receipt</div>
+                            <div className="mr-[370px] ml-[370px]">
+                                <div className="text-base">New Client Receipt</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
+                        <div className="h-auto w-full mt-1">
+                            <div className="flex gap-12 justify-center ">
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px] text-[#787878]">Cura Office </div>
-                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        <div className="text-sm text-[#787878]">Cura Office </div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Received Date<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
+                                        <div className="text-sm">Received Date<label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-sm">
                                             Received By <label className="text-red-500">*</label>
                                         </div>
                                         <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="receivedBy"
                                             value={formValues.receivedBy}
                                             onChange={handleChange}
@@ -1228,11 +1226,11 @@ const ManageClientReceipt = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-sm">
                                             Receipt Mode <label className="text-red-500">*</label>
                                         </div>
                                         <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="receiptMode"
                                             value={formValues.receiptMode}
                                             onChange={handleChange}
@@ -1246,11 +1244,11 @@ const ManageClientReceipt = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-sm">
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="client"
                                             value={formValues.client}
                                             onChange={handleChange}
@@ -1264,11 +1262,11 @@ const ManageClientReceipt = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-sm">
                                             How received <label className="text-red-500">*</label>
                                         </div>
                                         <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="howReceived"
                                             value={formValues.howReceived}
                                             onChange={handleChange}
@@ -1284,25 +1282,25 @@ const ManageClientReceipt = () => {
                                 </div>
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Service Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                        <div className="text-sm">Service Amount </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Reimbursement Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
+                                        <div className="text-sm">Reimbursement Amount </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Amount Recived <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                        <div className="text-sm">Amount Recived <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">TDS </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <div className="text-sm">TDS </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Receipt Description</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                        <div className="text-sm">Receipt Description</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
