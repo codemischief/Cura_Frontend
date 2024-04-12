@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-
+import { APIService } from '../../../../services/API';
 const POADetails = ({initialCountries,initialStates,initialCities,formValues,setFormValues}) => {
 
   const [country, setCountry] = useState(initialCountries);
@@ -19,10 +19,11 @@ const POADetails = ({initialCountries,initialStates,initialCities,formValues,set
     const data = { "user_id": 1234, "country_id": id };
     // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
     const response = await APIService.getState(data);
-    const result = (await response.json()).data;
+    const result = (await response.json())
     console.log(result)
-    if (Array.isArray(result)) {
-        setState(result)
+    console.log(result)
+    if (Array.isArray(result.data)) {
+        setState(result.data)
     }
 }
 const fetchCityData = async (id) => {

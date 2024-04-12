@@ -122,7 +122,7 @@ const EditClientInformation = ({ formValues, setFormValues, allCountry, clientTy
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
-                        <div className="text-[13px]">Email 1 <label className="text-red-500">*</label></div>
+                        <div className="text-[13px]">Email 1</div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email1" onChange={handleChange} value={formValues.client_info.email1} />
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>

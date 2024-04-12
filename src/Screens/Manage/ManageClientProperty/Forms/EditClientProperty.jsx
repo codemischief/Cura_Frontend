@@ -13,6 +13,7 @@ const EditClientProperty = (props) => {
         fetchLevelOfFurnishing();
         getBuildersAndProjectsList();
         fetchPropertyType();
+        fetchClientData();
         fetchPropertyStatus();
         fetchStateData('5');
          fetchExistingData();
@@ -27,11 +28,22 @@ const EditClientProperty = (props) => {
         const res = await response.json()
         console.log(res);
         setFormValues(res.data);
+        setInitialClientPropertyData({...res.data});
         console.log(formValues);
     }
+    const fetchClientData = async () => {
+        const data = {
+            "user_id": 1234,
+          }
+          const response =  await APIService.getClientAdmin(data)
+          const res =   await response.json();
+          console.log(res)
+          setClientData(res.data);
+    }
+    const [initialClientPropertyData,setInitialClientPropertyData] = useState({});
     const initialValues = {
         "client_property": {
-          "clientid": 44598,
+          "clientid": null,
           "propertytype": null,
           "leveloffurnishing": null,
           "numberofparkings": null,
@@ -183,6 +195,76 @@ const EditClientProperty = (props) => {
             setAllCity(result)
         }
     }
+    function helper1(updateArrayClientPhotos,insertArrayClientPhotos, deleteArrayClientPhotos,) {
+        var size = formValues.client_property_photos.length
+        for(var i=0;i<size;i++) {
+          const tempObj = formValues.client_property_photos[i]
+          if(tempObj.hasOwnProperty('id')) {
+              // it has a property id
+              var weNeed = {};
+              for(var j=0;j<initialClientPropertyData.client_property_photos.length;j++) {
+                   if(tempObj.id === initialClientPropertyData.client_property_photos[j].id) {
+                       weNeed = initialClientPropertyData.client_property_photos[j]
+                   }
+              }
+              const str1 = JSON.stringify(weNeed)
+              const str2 = JSON.stringify(tempObj);
+              if(str1 !== str2) {
+                updateArrayClientPhotos.push(tempObj);
+              }
+          }else {
+                insertArrayClientPhotos.push(tempObj);
+          }
+        }
+    }
+    const handleEdit = async () => {
+        const updateArrayClientPhotos = []
+        const insertArrayClientPhotos = []
+        const deleteArrayClientPhotos = []
+        helper1(updateArrayClientPhotos,insertArrayClientPhotos,deleteArrayClientPhotos)
+        console.log(formValues)
+        console.log(initialClientPropertyData)
+        console.log(formValues.client_property_owner.owner1name)
+        const data = {
+            "user_id": 1234,
+            "client_property_id": props.clientId,
+            "client_property_info": {
+              "clientid": 44598,
+              "propertytype": Number(formValues.client_property.propertytype),
+              "leveloffurnishing": Number(formValues.client_property.leveloffurnishing),
+              "numberofparkings": Number(formValues.client_property.numberofparkings),
+              "state": formValues.client_property.state,
+              "city": formValues.client_property.city,
+              "suburb": formValues.client_property.suburb,
+              "projectid":Number(formValues.client_property.projectid),
+              "status": Number(formValues.client_property.status),
+              "propertydescription": formValues.client_property.propertydescription,
+              "layoutdetails": formValues.client_property.layoutdetails,
+              "email": formValues.client_property.email,
+              "website": formValues.client_property.website,
+              "initialpossessiondate": formValues.client_property.initialpossessiondate,
+              "electricityconsumernumber": formValues.client_property.electricityconsumernumber,
+              "otherelectricitydetails": formValues.client_property.otherelectricitydetails,
+              "electricitybillingduedate": Number(formValues.client_property.electricitybillingduedate),
+              "comments": formValues.client_property.comments,
+              "gasconnectiondetails": formValues.client_property.gasconnectiondetails,
+              "textforposting": formValues.client_property.textforposting
+            },
+            "client_property_photos": {
+              "update" : updateArrayClientPhotos,
+              "insert" : insertArrayClientPhotos,
+              "delete" : deleteArrayClientPhotos
+            },
+            "client_property_owner": formValues.client_property_owner,
+            "client_property_poa": formValues.client_property_poa
+        };
+        const response = await APIService.editClientProperty(data)
+        const res = await response.json()
+        console.log(res);
+        if(res.result == 'success') {
+            props.openEditSuccess();
+        }
+    }
   return (
     <Modal open={true}
     fullWidth={true}
@@ -220,7 +302,7 @@ const EditClientProperty = (props) => {
             {selectedDialog == 3 && <EditPOADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
             {selectedDialog == 4 && <EditOwnerDetails  formValues={formValues} setFormValues={setFormValues}/>}
             <div className="my-2 flex justify-center items-center gap-[10px]">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Update</button>
+                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Update</button>
                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
             </div>
 
