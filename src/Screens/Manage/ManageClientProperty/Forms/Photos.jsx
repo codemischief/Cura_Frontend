@@ -5,7 +5,6 @@ const Photos = ({formValues,setFormValues}) => {
   const handleAdd = () => {
      setFormValues({...formValues,client_property_photos : [
       ...formValues.client_property_photos,{
-        "id": "",
         "photolink": "",
         "description": "",
         "phototakenwhen": ""

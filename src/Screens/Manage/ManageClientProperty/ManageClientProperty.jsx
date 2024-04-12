@@ -261,8 +261,8 @@ const ManageClientProperty = () => {
               "electricitybillingduedate"
             ],
             "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "sort_by": [sortField],
+            "order": flag  ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15
           };
@@ -320,8 +320,8 @@ const ManageClientProperty = () => {
               "electricitybillingduedate"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag  ? "asc" : "desc",
             "pg_no": Number(page),
             "pg_size": Number(currentPages)
           };
@@ -381,8 +381,8 @@ const ManageClientProperty = () => {
               "electricitybillingduedate"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag  ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity)
           };
@@ -801,6 +801,7 @@ const ManageClientProperty = () => {
         setShowEditSuccess(true);
         setTimeout(function () {
             setShowEditSuccess(false);
+            fetchData();
         }, 2000)
         fetchData();
     }
@@ -924,14 +925,12 @@ const ManageClientProperty = () => {
         <div className="h-screen">
             <Navbar />
             {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientProperty={currClientProperty} addClientProperty={addClientProperty}/>}
-            {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem}/>}
+            {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess}/>}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Property" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Client Property" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Updated Client Property" />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
-
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>

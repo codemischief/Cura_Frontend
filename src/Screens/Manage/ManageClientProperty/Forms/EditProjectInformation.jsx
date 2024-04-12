@@ -150,7 +150,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
               <option>Select Builder </option>
               {initialSociety &&
                 initialSociety.map((item) => (
-                  <option key={item[0]} value={item.projectid} >
+                  <option key={item.projectid} value={item.projectid} >
                        <p>{item.buildername}</p> 
                        &nbsp;
                        &nbsp;
