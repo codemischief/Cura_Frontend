@@ -343,14 +343,8 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                     </div>
                     <div className="">
                         <div className="text-[13px]">Employer Name </div>
-                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employeeName" >
-                            <option > </option>
-                            {employeeName && employeeName.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
-                                </option>
-                            ))}
-                        </select>
+                        
+                            <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employername" onChange={handleChange} value={formValues.client_info.employername} />
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
                     
