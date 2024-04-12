@@ -256,7 +256,7 @@ const EditClientProperty = (props) => {
               "delete" : deleteArrayClientPhotos
             },
             "client_property_owner": formValues.client_property_owner,
-            "client_property_poa": formValues.client_property_owner
+            "client_property_poa": formValues.client_property_poa
         };
         const response = await APIService.editClientProperty(data)
         const res = await response.json()
