@@ -465,15 +465,18 @@ const ManageClientInfo = () => {
         fetchLobData();
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
+                setIdFilter(false)
+                setEmployerFilter(false);
+                setEmail1Filter(false);
+                setPhoneFilter(false)
+                setCityFilter(false)
                 setClientNameFilter(false);
-                setClientTypeFilter(false);
+                setCountryFilter(false)
+                setClientNameFilter(false);
                 setTenentOfFilter(false);
-                setCountryFilter(false);
-                setCityFilter(false);
-                setPhoneFilter(false);
-                setEmailFilter(false);
-                setEmployeeNameFilter(false);
-                setIdFilter(false);
+                setEmployerFilter(false)
+                setTenantOfPropertyFilter(false)
+                setTenantOfTypeNameFilter(false)
             }
         }
 
@@ -672,6 +675,8 @@ const ManageClientInfo = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
+        setCurrentPage(1)
+    
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
@@ -716,7 +721,7 @@ const ManageClientInfo = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": currentPages,
             "search_key": searchInput
         };
         const response = await APIService.getClientInfo(data);
@@ -732,7 +737,7 @@ const ManageClientInfo = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
-        
+
         const data = {
             "user_id": 1234,
             "rows": [
@@ -898,6 +903,7 @@ const ManageClientInfo = () => {
                 city: ""
             }))
         }
+        
         //  if(formValues.client_info.middlename == "") {
         //     res = false
         //     setFormErrors({...formErrors,client_info : {
