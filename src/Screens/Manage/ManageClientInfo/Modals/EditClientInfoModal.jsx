@@ -181,7 +181,202 @@ const EditClientInfoModal = (props) => {
         }
       }
   }
+
+  const [formErrorsClientInfo, setFormErrorsClientInfo] = useState({});
+    const validate = () => {
+        var res = true
+        console.log(formValues)
+        if (formValues.client_info.salutation === 'Select Salutation' || formValues.client_info.salutation === '') {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                salutation: "Select Saluation"
+            }))
+
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                salutation: ""
+            }))
+        }
+
+
+        if (formValues.client_info.firstname === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                firstname: "Enter First Name"
+            }))
+
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                firstname: ""
+            }))
+        }
+        if (formValues.client_info.middlename === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                middlename: "Enter Middle Name"
+            }))
+            // console.log('hey')
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                middlename: ""
+            }))
+        }
+        if (formValues.client_info.lastname === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                lastname: "Enter Last Name"
+            }))
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                lastname: ""
+            }))
+        }
+
+        if (formValues.client_info.clienttype === 'Select Client Type') {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                clienttype: "Select Client Type "
+            }))
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                clienttype: ""
+            }))
+        }
+        if (formValues.client_info.state === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                state: "Select State "
+            }))
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                state: ""
+            }))
+        }
+        if (formValues.client_info.city === "") {
+            res = false
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                city: "Select City "
+            }))
+        } else {
+            setFormErrorsClientInfo((existing) => ({
+                ...existing,
+                city: ""
+            }))
+        }
+        
+        //  if(formValues.client_info.middlename == "") {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         middlename : "Enter Middle Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         middlename : ""
+        //     } 
+        //     }) 
+        //  }
+
+
+        //  if(formValues.client_info.lastname === "") {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : "Enter Last Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : ""
+        //     } 
+        //     }) 
+        //  }
+        //  if(formValues.client_info.lastname == "") {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : "Enter Last Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         lastname : ""
+        //     } 
+        //     }) 
+        //  }
+        //  if(formValues.client_info.clienttype === null) {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         clienttype : "Enter Client Type"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         clienttype : ""
+        //     } 
+        //     }) 
+        //  }
+
+        //  if(formValues.client_info.state == null) {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         state : "Enter Country Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         state : ""
+        //     } 
+        //     }) 
+        //  }
+
+
+        //  if(formValues.client_info.city == null) {
+        //     res = false
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         city : "Enter Country Name"
+        //     } 
+        //     }) 
+        //  }else {
+        //     setFormErrors({...formErrors,client_info : {
+        //         ...formErrors.client_info,
+        //         city : ""
+        //       } 
+        //     }) 
+        //  }
+
+
+
+        return res;
+    }
   const handleEditClient = async () => {
+    if(!validate()) {
+        console.log(formErrors)
+        setSelectedDialogue(1)
+        return ;
+    }
     const updateArrayAccess =[]
     const insertArrayAccess = []
     const deleteArrayAccess = []
@@ -371,7 +566,7 @@ const fetchTenentOfData = async () => {
                             </div>
                         </div>
                         
-                        {selectedDialog == 1 && <EditClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allStates} initialCities={allCities}/>}
+                        {selectedDialog == 1 && <EditClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allStates} initialCities={allCities} formErrors={formErrorsClientInfo}/>}
                         {selectedDialog == 2 && <EditClientPortal formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <EditBankDetails formValues={formValues} setFormValues={setFormValues}/>}
                         
