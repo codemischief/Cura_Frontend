@@ -363,7 +363,7 @@ const Navbar = () => {
                <div className='ml-5 mt-4 flex-col space-y-4'>
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Service</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>PMA Agreement</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/managepmaagreement" >PMA Agreement</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/managellagreement">L&L Agreement</Link> </p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>PMA Billing</p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Email PMA Statement</p>
@@ -373,7 +373,7 @@ const Navbar = () => {
          </div>
          }
 
-         {isToggledReport && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[98%] h-[580px] flex font-sans ml-5 absolute top-16 shadow-2xl z-40'>
+         {isToggledReport && <div ref={menuRef} className='bg-white rounded-lg mt-2 w-[97.5%] h-[500px] flex font-sans ml-5 absolute top-16 shadow-2xl z-40 overflow-auto'>
             {/* <div className=' w-1/5 h-full flex-col '>
                <div className='ml-5 mt-4 flex-col space-y-2 w-3/4'>
                   <Link to="/admin/managebuilder"><h1 className='text-thin text-base'>Manage Builder</h1></Link>

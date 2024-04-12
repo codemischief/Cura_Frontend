@@ -27,6 +27,7 @@ import ManageClientInfo from './Screens/Manage/ManageClientInfo/ManageClientInfo
 import ManageClientProperty from './Screens/Manage/ManageClientProperty/ManageClientProperty';
 import ManageClientReceipt from './Screens/Manage/ManageClientReceipt/ManageClientReceipt';
 import ManageLLAgreement from './Screens/Manage/ManageLLAgreement/ManageLLAgreement';
+import ManagePmaArgreement from './Screens/Manage/ManagePmaAgreement/ManagePmaAgreement';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
@@ -94,6 +95,7 @@ const App = () => {
                     <Route path="/manage/manageclientproperty" element={<ManageClientProperty />}/>
                     <Route path="/manage/manageclientreceipt" element={<ManageClientReceipt />}/>
                     <Route path="/manage/managellagreement" element={<ManageLLAgreement />}/>
+                    <Route path="/manage/managepmaagreement" element={<ManagePmaArgreement />}/>
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                {/* </Route>  */}
