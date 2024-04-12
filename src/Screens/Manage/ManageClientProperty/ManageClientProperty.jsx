@@ -628,7 +628,9 @@ const ManageClientProperty = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-
+    const handleDelete = async (id) => {
+        
+    }
    
     // validate form and to throw Error message
     const validate = () => {
