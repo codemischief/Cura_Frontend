@@ -34,7 +34,7 @@ const ManageClientInfo = () => {
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
-    const [existingClientInfo,setExistingClientInfo] = useState([])
+    const [existingClientInfo, setExistingClientInfo] = useState([])
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -54,7 +54,7 @@ const ManageClientInfo = () => {
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
-    const [tenentOfData,setTenentOfData] = useState([])
+    const [tenentOfData, setTenentOfData] = useState([])
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [ClientNameInput, setClientNameInput] = useState("");
     const [ClientTypeFilter, setClientTypeFilter] = useState(false);
@@ -73,11 +73,72 @@ const ManageClientInfo = () => {
     const [EmployeeNameInput, setEmployeeNameInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idInput, setIdInput] = useState("");
-    const [sortField,setSortField] = useState("id")
-    const [relationData,setRelationData] = useState([]);
-    const [showDelete,setShowDelete] = useState(false);
-    const [buttonLoading,setButtonLoading] = useState(false);
+    const [sortField, setSortField] = useState("id")
+    const [relationData, setRelationData] = useState([]);
+    const [showDelete, setShowDelete] = useState(false);
+    const [buttonLoading, setButtonLoading] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
+
+    const filterMapping = {
+        clientname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        clienttype: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        tenentof: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        country: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        city: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        phone: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        email: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        employeename: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+
+        id: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        }
+    }
+
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+
 
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -164,7 +225,7 @@ const ManageClientInfo = () => {
     }
     const fetchRelation = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
         const response = await APIService.getRelationAdmin(data)
         const res = await response.json()
@@ -197,51 +258,59 @@ const ManageClientInfo = () => {
     const fetchData = async () => {
         // console.log('ugm')
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        console.log(tempArray);
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "firstname",
-              "middlename",
-              "lastname",
-              "salutation",
-              "clienttype",
-              "clienttypename",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "homephone",
-              "workphone",
-              "mobilephone",
-              "email1",
-              "email2",
-              "employername",
-              "comments",
-              "photo",
-              "onlineaccreated",
-              "localcontact1name",
-              "localcontact1address",
-              "localcontact1details",
-              "localcontact2name",
-              "localcontact2address",
-              "localcontact2details",
-              "includeinmailinglist",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "entityid",
-              "tenantof"
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof"
             ],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15
-          };
+        };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
@@ -253,52 +322,59 @@ const ManageClientInfo = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
         setCurrentPage(pageNumber)
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "firstname",
-              "middlename",
-              "lastname",
-              "salutation",
-              "clienttype",
-              "clienttypename",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "homephone",
-              "workphone",
-              "mobilephone",
-              "email1",
-              "email2",
-              "employername",
-              "comments",
-              "photo",
-              "onlineaccreated",
-              "localcontact1name",
-              "localcontact1address",
-              "localcontact1details",
-              "localcontact2name",
-              "localcontact2address",
-              "localcontact2details",
-              "includeinmailinglist",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "entityid",
-              "tenantof"
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof"
             ],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
-          };
+        };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
@@ -310,53 +386,60 @@ const ManageClientInfo = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
         // console.log(searchInput);
         setCurrentPages(quantity)
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "firstname",
-              "middlename",
-              "lastname",
-              "salutation",
-              "clienttype",
-              "clienttypename",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "homephone",
-              "workphone",
-              "mobilephone",
-              "email1",
-              "email2",
-              "employername",
-              "comments",
-              "photo",
-              "onlineaccreated",
-              "localcontact1name",
-              "localcontact1address",
-              "localcontact1details",
-              "localcontact2name",
-              "localcontact2address",
-              "localcontact2details",
-              "includeinmailinglist",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "entityid",
-              "tenantof"
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof"
             ],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity)
-          };
+        };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
@@ -411,7 +494,7 @@ const ManageClientInfo = () => {
     const handleClose = () => {
         setIsClientInfoDialogue(false);
     }
-    const [clientTypeData,setClientTypeData] = useState([]);
+    const [clientTypeData, setClientTypeData] = useState([]);
     const fetchClientTypeData = async () => {
         const data = {
             "user_id": 1234
@@ -424,7 +507,7 @@ const ManageClientInfo = () => {
     }
     const fetchTenentOfData = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
         const response = await APIService.getTenantOfPropertyAdmin(data)
         const res = await response.json()
@@ -432,7 +515,7 @@ const ManageClientInfo = () => {
         setTenentOfData(res.data)
     }
     const [selectedDialog, setSelectedDialogue] = useState(1);
-   
+
     const selectFirst = () => {
         setSelectedDialogue(1);
     }
@@ -453,96 +536,96 @@ const ManageClientInfo = () => {
         setSelectedDialogue(5);
     }
     const initialValues = {
-            "client_info": {
-                "clientname" : "",
-                "firstname":"",
-                "middlename":"",
-                "lastname":"",
-                "salutation":"",
-                "clienttype": null,
-                "addressline1": "",
-                "addressline2":"",
-                "suburb":"",
-                "city":"Pune",
-                "state":"Maharashtra",
-                "country":5,
-                "zip":"",
-                "homephone":"",
-                "workphone":"",
-                "mobilephone":"",
-                "email1":"",
-                "email2":"",
-                "employername":"",
-                "comments":"",
-                "photo":"",
-                "onlineaccreated":null,
-                "localcontact1name":"",
-                "localcontact1address":"",
-                "localcontact1details":"",
-                "localcontact2name":"",
-                "localcontact2address":"",
-                "localcontact2details":"",
-                "includeinmailinglist":false,
-                "entityid":1,
-                "tenentof":null,
-                "tenentofproperty":null
-            },
-            "client_access":[
-                {
-                    "onlinemailid":"",
-                    "onlinepwd":"",
-                    "onlineclue":""
-                }
-            ],
-            "client_bank_info":[{
-                "bankname":"",
-                "bankbranch":"",
-                "bankcity":"",
-                "bankaccountno":"",
-                "bankaccountholdername":"",
-                "bankifsccode":"",
-                "bankmicrcode":"",
-                "bankaccounttype":"",
-                "description":""
-            }],
-            "client_legal_info":{
-                "fulllegalname":"",
-                "panno":"",
-                "addressline1":"",
-                "addressline2":"",
-                "suburb":"",
-                "city":"Pune",
-                "state":"Maharashtra",
-                "country":5,
-                "zip":"",
-                "occupation":"",
-                "birthyear":null,
-                "employername":"",
-                "relation":null,
-                "relationwith":""
-            },
-            "client_poa":{
-                "poalegalname":"",
-                "poapanno":"",
-                "poaaddressline1":"",
-                "poaaddressline2":"",
-                "poasuburb":"",
-                "poacity":"Pune",
-                "poastate":"Maharashtra",
-                "poacountry":5,
-                "poazip":"",
-                "poaoccupation":"",
-                "poabirthyear":null,
-                "poaphoto":"",
-                "poaemployername":"",
-                "poarelation":null,
-                "poarelationwith":"",
-                "poaeffectivedate":null,
-                "poaenddate":null,
-                "poafor":"",
-                "scancopy":""
-            }	
-        
+        "client_info": {
+            "clientname": "",
+            "firstname": "",
+            "middlename": "",
+            "lastname": "",
+            "salutation": "",
+            "clienttype": null,
+            "addressline1": "",
+            "addressline2": "",
+            "suburb": "",
+            "city": "Pune",
+            "state": "Maharashtra",
+            "country": 5,
+            "zip": "",
+            "homephone": "",
+            "workphone": "",
+            "mobilephone": "",
+            "email1": "",
+            "email2": "",
+            "employername": "",
+            "comments": "",
+            "photo": "",
+            "onlineaccreated": null,
+            "localcontact1name": "",
+            "localcontact1address": "",
+            "localcontact1details": "",
+            "localcontact2name": "",
+            "localcontact2address": "",
+            "localcontact2details": "",
+            "includeinmailinglist": false,
+            "entityid": 1,
+            "tenentof": null,
+            "tenentofproperty": null
+        },
+        "client_access": [
+            {
+                "onlinemailid": "",
+                "onlinepwd": "",
+                "onlineclue": ""
+            }
+        ],
+        "client_bank_info": [{
+            "bankname": "",
+            "bankbranch": "",
+            "bankcity": "",
+            "bankaccountno": "",
+            "bankaccountholdername": "",
+            "bankifsccode": "",
+            "bankmicrcode": "",
+            "bankaccounttype": "",
+            "description": ""
+        }],
+        "client_legal_info": {
+            "fulllegalname": "",
+            "panno": "",
+            "addressline1": "",
+            "addressline2": "",
+            "suburb": "",
+            "city": "Pune",
+            "state": "Maharashtra",
+            "country": 5,
+            "zip": "",
+            "occupation": "",
+            "birthyear": null,
+            "employername": "",
+            "relation": null,
+            "relationwith": ""
+        },
+        "client_poa": {
+            "poalegalname": "",
+            "poapanno": "",
+            "poaaddressline1": "",
+            "poaaddressline2": "",
+            "poasuburb": "",
+            "poacity": "Pune",
+            "poastate": "Maharashtra",
+            "poacountry": 5,
+            "poazip": "",
+            "poaoccupation": "",
+            "poabirthyear": null,
+            "poaphoto": "",
+            "poaemployername": "",
+            "poarelation": null,
+            "poarelationwith": "",
+            "poaeffectivedate": null,
+            "poaenddate": null,
+            "poafor": "",
+            "scancopy": ""
+        }
+
     }
     const [formValues, setFormValues] = useState(initialValues);
     // const [formErrors, setFormErrors] = useState({});
@@ -591,41 +674,41 @@ const ManageClientInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "firstname",
-              "middlename",
-              "lastname",
-              "salutation",
-              "clienttype",
-              "clienttypename",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "homephone",
-              "workphone",
-              "mobilephone",
-              "email1",
-              "email2",
-              "employername",
-              "comments",
-              "photo",
-              "onlineaccreated",
-              "localcontact1name",
-              "localcontact1address",
-              "localcontact1details",
-              "localcontact2name",
-              "localcontact2address",
-              "localcontact2details",
-              "includeinmailinglist",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "entityid",
-              "tenantof"
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -650,56 +733,56 @@ const ManageClientInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "firstname",
-              "middlename",
-              "lastname",
-              "salutation",
-              "clienttype",
-              "clienttypename",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "homephone",
-              "workphone",
-              "mobilephone",
-              "email1",
-              "email2",
-              "employername",
-              "comments",
-              "photo",
-              "onlineaccreated",
-              "localcontact1name",
-              "localcontact1address",
-              "localcontact1details",
-              "localcontact2name",
-              "localcontact2address",
-              "localcontact2details",
-              "includeinmailinglist",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "entityid",
-              "tenantof"
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof"
             ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15
-          };
-          const response = await APIService.getClientInfo(data);
-          const temp = await response.json();
-          const result = temp.data;
-          console.log(result);
-          const t = temp.total_count;
-          setTotalItems(t);
-          setExistingClientInfo(result.client_info);
-          setPageLoading(false);
+        };
+        const response = await APIService.getClientInfo(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingClientInfo(result.client_info);
+        setPageLoading(false);
     }
     const openAddSuccess = () => {
         setShowAddSuccess(true);
@@ -707,7 +790,7 @@ const ManageClientInfo = () => {
             setShowAddSuccess(false);
             fetchData();
         }, 2000)
-        
+
     }
     const openDeleteSuccess = () => {
         setShowDeleteSuccess(true);
@@ -716,102 +799,102 @@ const ManageClientInfo = () => {
         }, 2000)
         fetchData();
     }
-    const [formErrors,setFormErrors] = useState({
-        
+    const [formErrors, setFormErrors] = useState({
+
     });
-    const [formErrorsClientInfo,setFormErrorsClientInfo] = useState({});
+    const [formErrorsClientInfo, setFormErrorsClientInfo] = useState({});
     const validate = () => {
-         var res = true
-         if(formValues.client_info.salutation === "") {
+        var res = true
+        if (formValues.client_info.salutation === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
-                  ...existing,
-                  salutation : "Select Saluation"
+                ...existing,
+                salutation: "Select Saluation"
             }))
 
-         }else {
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                salutation : ""
-          }))
-         }
+                salutation: ""
+            }))
+        }
 
 
-         if(formValues.client_info.firstname === "") {
+        if (formValues.client_info.firstname === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
-                  ...existing,
-                  firstname : "Enter First Name"
+                ...existing,
+                firstname: "Enter First Name"
             }))
 
-         }else {
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                firstname : ""
-          }))
-         }
-         if(formValues.client_info.middlename === "") {
+                firstname: ""
+            }))
+        }
+        if (formValues.client_info.middlename === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                middlename : "Enter Middle Name"
-          }))
+                middlename: "Enter Middle Name"
+            }))
             // console.log('hey')
-         }else {
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                middlename : ""
+                middlename: ""
             }))
-         }
-         if(formValues.client_info.lastname === "") {
+        }
+        if (formValues.client_info.lastname === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                lastname : "Enter Last Name"
-          }))
-         }else {
+                lastname: "Enter Last Name"
+            }))
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                lastname : ""
-          }))
-         }
+                lastname: ""
+            }))
+        }
 
-         if(formValues.client_info.clienttype === null) {
+        if (formValues.client_info.clienttype === null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                clienttype : "Select Client Type "
-          }))
-         }else {
+                clienttype: "Select Client Type "
+            }))
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                clienttype : ""
-          }))
-         }
-         if(formValues.client_info.state === "") {
+                clienttype: ""
+            }))
+        }
+        if (formValues.client_info.state === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                state : "Select State "
-          }))
-         }else {
+                state: "Select State "
+            }))
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                state : ""
-          }))
-         }
-         if(formValues.client_info.city === "") {
+                state: ""
+            }))
+        }
+        if (formValues.client_info.city === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                city : "Select City "
-          }))
-         }else {
+                city: "Select City "
+            }))
+        } else {
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
-                city : ""
-          }))
-         }
+                city: ""
+            }))
+        }
         //  if(formValues.client_info.middlename == "") {
         //     res = false
         //     setFormErrors({...formErrors,client_info : {
@@ -885,7 +968,7 @@ const ManageClientInfo = () => {
         //     } 
         //     }) 
         //  }
-         
+
 
         //  if(formValues.client_info.city == null) {
         //     res = false
@@ -904,126 +987,126 @@ const ManageClientInfo = () => {
 
 
 
-         return res;
+        return res;
     }
-    const [showAddConfirmation,setShowAddConfirmation] = useState(false);
+    const [showAddConfirmation, setShowAddConfirmation] = useState(false);
     const handleAddClientInfo = () => {
-        if(!validate()) {
+        if (!validate()) {
             console.log(formErrors)
             console.log(formErrorsClientInfo)
             setSelectedDialogue(1);
-            return 
+            return
         }
         setIsClientInfoDialogue(false);
         setCurrClientName(formValues.client_info.firstname);
-         setShowAddConfirmation(true);
+        setShowAddConfirmation(true);
 
     }
     const addClientInfo = async () => {
         // setButtonLoading(true);
-        
+
         const data = {
             "user_id": 1234,
             "client_info": {
-                "firstname":formValues.client_info.firstname,
+                "firstname": formValues.client_info.firstname,
                 "middlename": formValues.client_info.middlename,
                 "lastname": formValues.client_info.lastname,
                 "salutation": formValues.client_info.salutation,
                 "clienttype": Number(formValues.client_info.clienttype),
-                "addressline1":formValues.client_info.addressline1,
-                "addressline2":formValues.client_info.addressline2,
-                "suburb":formValues.client_info.suburb,
-                "city":formValues.client_info.city,
-                "state":formValues.client_info.state,
-                "country":Number(formValues.client_info.country),
-                "zip":formValues.client_info.zip,
-                "homephone":formValues.client_info.homephone,
-                "workphone":formValues.client_info.workphone,
-                "mobilephone":formValues.client_info.mobilephone,
-                "email1":formValues.client_info.email1,
-                "email2":formValues.client_info.email2,
-                "employername":formValues.client_info.employername,
-                "comments":formValues.client_info.comments,
-                "photo":"efiufheu",
-                "onlineaccreated":false,
-                "localcontact1name":formValues.client_info.localcontact1name,
-                "localcontact1address":formValues.client_info.localcontact1address,
-                "localcontact1details":formValues.client_info.localcontact1details,
-                "localcontact2name":formValues.client_info.localcontact2name,
-                "localcontact2address":formValues.client_info.localcontact2address,
-                "localcontact2details":formValues.client_info.localcontact2details,
-                "includeinmailinglist":!formValues.client_info.includeinmailinglist,
-                "entityid":Number(formValues.client_info.entityid),
+                "addressline1": formValues.client_info.addressline1,
+                "addressline2": formValues.client_info.addressline2,
+                "suburb": formValues.client_info.suburb,
+                "city": formValues.client_info.city,
+                "state": formValues.client_info.state,
+                "country": Number(formValues.client_info.country),
+                "zip": formValues.client_info.zip,
+                "homephone": formValues.client_info.homephone,
+                "workphone": formValues.client_info.workphone,
+                "mobilephone": formValues.client_info.mobilephone,
+                "email1": formValues.client_info.email1,
+                "email2": formValues.client_info.email2,
+                "employername": formValues.client_info.employername,
+                "comments": formValues.client_info.comments,
+                "photo": "efiufheu",
+                "onlineaccreated": false,
+                "localcontact1name": formValues.client_info.localcontact1name,
+                "localcontact1address": formValues.client_info.localcontact1address,
+                "localcontact1details": formValues.client_info.localcontact1details,
+                "localcontact2name": formValues.client_info.localcontact2name,
+                "localcontact2address": formValues.client_info.localcontact2address,
+                "localcontact2details": formValues.client_info.localcontact2details,
+                "includeinmailinglist": !formValues.client_info.includeinmailinglist,
+                "entityid": Number(formValues.client_info.entityid),
                 "tenantof": 0,
                 "tenantofproperty": Number(formValues.client_info.tenentofproperty)
             },
             "client_access": formValues.client_access,
-            "client_bank_info":formValues.client_bank_info,
-            "client_legal_info":{
-                "fulllegalname":formValues.client_legal_info.fulllegalname,
-                "panno":formValues.client_legal_info.panno,
-                "addressline1":formValues.client_legal_info.addressline1,
-                "addressline2":formValues.client_legal_info.addressline2,
-                "suburb":formValues.client_legal_info.suburb,
-                "city":formValues.client_legal_info.city,
-                "state":formValues.client_legal_info.state,
-                "country":formValues.client_legal_info.country,
-                "zip":formValues.client_legal_info.zip,
-                "occupation":formValues.client_legal_info.occupation,
-                "birthyear":formValues.client_legal_info.birthyear,
-                "employername":"GHI JKL",
-                "relation":formValues.client_legal_info.relation,
-                "relationwith":formValues.client_legal_info.relationwith
+            "client_bank_info": formValues.client_bank_info,
+            "client_legal_info": {
+                "fulllegalname": formValues.client_legal_info.fulllegalname,
+                "panno": formValues.client_legal_info.panno,
+                "addressline1": formValues.client_legal_info.addressline1,
+                "addressline2": formValues.client_legal_info.addressline2,
+                "suburb": formValues.client_legal_info.suburb,
+                "city": formValues.client_legal_info.city,
+                "state": formValues.client_legal_info.state,
+                "country": formValues.client_legal_info.country,
+                "zip": formValues.client_legal_info.zip,
+                "occupation": formValues.client_legal_info.occupation,
+                "birthyear": formValues.client_legal_info.birthyear,
+                "employername": "GHI JKL",
+                "relation": formValues.client_legal_info.relation,
+                "relationwith": formValues.client_legal_info.relationwith
             },
-            "client_poa":{
-                "poalegalname":formValues.client_poa.poalegalname,
-                "poapanno":formValues.client_poa.poapanno,
-                "poaaddressline1":formValues.client_poa.poaaddressline1,
-                "poaaddressline2":formValues.client_poa.poaaddressline2,
-                "poasuburb":formValues.client_poa.poasuburb,
-                "poacity":formValues.client_poa.poacity || 5,
-                "poastate":formValues.client_poa.poastate,
-                "poacountry":formValues.client_poa.poacountry,
-                "poazip":formValues.client_poa.poazip,
-                "poaoccupation":formValues.client_poa.poaoccupation,
-                "poabirthyear":formValues.client_poa.poabirthyear,
-                "poaphoto":formValues.client_poa.poaphoto,
-                "poaemployername":"frijiurgh nfr",
-                "poarelation":formValues.client_poa.poarelation,
-                "poarelationwith":formValues.client_poa.poarelationwith,
-                "poaeffectivedate":formValues.client_poa.poaeffectivedate,
-                "poaenddate":formValues.client_poa.poaenddate,
-                "poafor":formValues.client_poa.poafor,
-                "scancopy":formValues.client_poa.scancopy
-            }	
+            "client_poa": {
+                "poalegalname": formValues.client_poa.poalegalname,
+                "poapanno": formValues.client_poa.poapanno,
+                "poaaddressline1": formValues.client_poa.poaaddressline1,
+                "poaaddressline2": formValues.client_poa.poaaddressline2,
+                "poasuburb": formValues.client_poa.poasuburb,
+                "poacity": formValues.client_poa.poacity || 5,
+                "poastate": formValues.client_poa.poastate,
+                "poacountry": formValues.client_poa.poacountry,
+                "poazip": formValues.client_poa.poazip,
+                "poaoccupation": formValues.client_poa.poaoccupation,
+                "poabirthyear": formValues.client_poa.poabirthyear,
+                "poaphoto": formValues.client_poa.poaphoto,
+                "poaemployername": "frijiurgh nfr",
+                "poarelation": formValues.client_poa.poarelation,
+                "poarelationwith": formValues.client_poa.poarelationwith,
+                "poaeffectivedate": formValues.client_poa.poaeffectivedate,
+                "poaenddate": formValues.client_poa.poaenddate,
+                "poafor": formValues.client_poa.poafor,
+                "scancopy": formValues.client_poa.scancopy
+            }
         };
         console.log(data);
         const response = await APIService.addClientInfo(data)
         const res = await response.json();
         setShowAddConfirmation(false)
 
-        if(res.result == 'success') {
-           
-           setIsClientInfoDialogue(false);
-           openAddSuccess();
-           setFormValues(initialValues)
-        }else {
+        if (res.result == 'success') {
+
+            setIsClientInfoDialogue(false);
+            openAddSuccess();
+            setFormValues(initialValues)
+        } else {
             //  we need to open an error prompt here
 
-        } 
+        }
         setButtonLoading(false);
     }
-    
-    const handleDelete = async  (id) => {
-        
+
+    const handleDelete = async (id) => {
+
         const data = {
-            "user_id" : 1234,
-            "id" : id
+            "user_id": 1234,
+            "id": id
         }
         const response = await APIService.deleteClientInfo(data)
         const res = await response.json()
         console.log(res)
-        setShowDelete(false); 
+        setShowDelete(false);
         fetchData()
     }
     const openDelete = (id) => {
@@ -1031,9 +1114,9 @@ const ManageClientInfo = () => {
         setShowDelete(true);
     }
     // const [showAddSuccess,setShowAddSuccess] = useState(false);
-    const [showEditModal,setShowEditModal] = useState(false);
-    const [currClient,setCurrClient] = useState(-1);
-    const [currClientName,setCurrClientName] = useState("");
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [currClient, setCurrClient] = useState(-1);
+    const [currClientName, setCurrClientName] = useState("");
     const handleEdit = (id) => {
         setCurrClient(id);
         setShowEditModal(true);
@@ -1046,325 +1129,501 @@ const ManageClientInfo = () => {
             fetchData();
         }, 2000)
     }
-    const handleFilter = () => {
-   
+    const handleFilter = (type, columnName) => {
+        if (columnName == "clientname") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.clientname.filterType = "";
+                existing.clientname.filterValue = "";
+                setFilterMapState(existing)
+                //    filterMapping.country.filterType = "";
+                //    filterMapping.country.filterValue = "";
+                setClientNameInput("");
+            } else {
+                const existing = filterMapState;
+                existing.clientname.filterType = type;
+                existing.clientname.filterValue = ClientNameInput;
+                setFilterMapState(existing)
+                // filterMapping.country.filterType = type;
+                // filterMapping.country.filterValue = countryFilterInput;
+            }
+        } else if (columnName == "clienttype") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.clienttype.filterType = "";
+                existing.clienttype.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.state.filterType = "";
+                // filterMapping.state.filterValue = "";
+                setClientTypeInput("");
+            } else {
+                const existing = filterMapState;
+                existing.clienttype.filterType = type;
+                existing.clienttype.filterValue = ClientTypeInput;
+                setFilterMapState(existing)
+                // filterMapping.state.filterType = type;
+                // filterMapping.state.filterValue = stateFilterInput;
+            }
+        } else if (columnName == "tenentof") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.tenentof.filterType = "";
+                existing.tenentof.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.locality.filterType = "";
+                // filterMapping.locality.filterValue = "";
+                setTenentOfInput("");
+            } else {
+                const existing = filterMapState;
+                existing.tenentof.filterType = type;
+                existing.tenentof.filterValue = tenentOfInput;
+                setFilterMapState(existing)
+                // filterMapping.locality.filterType = type;
+                // filterMapping.locality.filterValue = localityFilterInput;
+            }
+        }  else if (columnName == "country") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.country.filterType = "";
+                existing.country.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = "";
+                // filterMapping.city.filterValue = "";
+                setCountryInput("");
+            } else {
+                const existing = filterMapState;
+                existing.country.filterType = type;
+                existing.country.filterValue = countryInput;
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = type;
+                // filterMapping.city.filterValue = cityFilterInput;
+            }
+        }else if (columnName == "city") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.city.filterType = "";
+                existing.city.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = "";
+                // filterMapping.city.filterValue = "";
+                setCityInput("");
+            } else {
+                const existing = filterMapState;
+                existing.city.filterType = type;
+                existing.city.filterValue = cityInput;
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = type;
+                // filterMapping.city.filterValue = cityFilterInput;
+            }
+        }else if (columnName == "phone") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.phone.filterType = "";
+                existing.phone.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = "";
+                // filterMapping.city.filterValue = "";
+                setPhoneInput("");
+            } else {
+                const existing = filterMapState;
+                existing.phone.filterType = type;
+                existing.phone.filterValue = PhoneInput;
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = type;
+                // filterMapping.city.filterValue = cityFilterInput;
+            }
+        }else if (columnName == "email") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.email.filterType = "";
+                existing.email.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = "";
+                // filterMapping.city.filterValue = "";
+                setEmailInput("");
+            } else {
+                const existing = filterMapState;
+                existing.email.filterType = type;
+                existing.email.filterValue = emailFilter;
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = type;
+                // filterMapping.city.filterValue = cityFilterInput;
+            }
+        }else if (columnName == "employeename") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.employeename.filterType = "";
+                existing.employeename.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = "";
+                // filterMapping.city.filterValue = "";
+                setEmployeeNameInput("");
+            } else {
+                const existing = filterMapState;
+                existing.employeename.filterType = type;
+                existing.employeename.filterValue = EmployeeNameInput;
+                setFilterMapState(existing)
+                // filterMapping.city.filterType = type;
+                // filterMapping.city.filterValue = cityFilterInput;
+            }
+        }else if (columnName == "id") {
+            if (type == "noFilter") {
+                const existing = filterMapState;
+                existing.id.filterType = "";
+                existing.id.filterValue = "";
+                setFilterMapState(existing)
+                // filterMapping.id.filterType = "";
+                // filterMapping.id.filterValue = "";
+                setidFilterInput("");
+            } else {
+                const existing = filterMapState;
+                existing.id.filterType = type;
+                existing.id.filterValue = Number(idFilterInput);
+                setFilterMapState(existing)
+                // filterMapping.id.filterType = type;
+                // filterMapping.id.filterValue = Number(idFilterInput);
+            }
+        }
+        fetchData();
     }
-    return(
+    return (
         <div className='h-screen'>
-            <Navbar/>
+            <Navbar />
             {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} />}
-            
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Client"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Edited Client"/>}
-            {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)}/>}
-            {showAddConfirmation && <SaveConfirmationClient addClient={addClientInfo} handleClose={() => {setShowAddConfirmation(false)}} currClient={currClientName}/>}
-            <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
-            <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
-                            <div className='flex items-center space-x-3'>
-                                <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                                    <img className='w-5 h-5' src={backLink} />
-                                </div>
 
-                                <div className='flex-col'>
-                                    <h1 className='text-[18px]'>Manage Client</h1>
-                                    <p className='text-[14px]'>Manage &gt; Manage Client</p>
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Client" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Edited Client" />}
+            {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)} />}
+            {showAddConfirmation && <SaveConfirmationClient addClient={addClientInfo} handleClose={() => { setShowAddConfirmation(false) }} currClient={currClientName} />}
+            <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
+                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                    <div className='flex items-center space-x-3'>
+                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
+                            <img className='w-5 h-5' src={backLink} />
+                        </div>
+
+                        <div className='flex-col'>
+                            <h1 className='text-[18px]'>Manage Client</h1>
+                            <p className='text-[14px]'>Manage &gt; Manage Client</p>
+                        </div>
+                    </div>
+                    <div className='flex space-x-2 items-center'>
+
+                        <div className='flex relative'>
+                            {/* search button */}
+                            <input
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                                type="text"
+                                placeholder="  Search"
+                                value={searchInput}
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value);
+                                }}
+                            />
+                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                            </div>
+                        </div>
+
+                        <div>
+                            {/* button */}
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                                <div className="flex items-center justify-center gap-4 text-[14px]">
+                                    Add New Client
+                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                </div>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div className='h-12 w-full bg-white'>
+                    <div className='w-full h-12 bg-white flex justify-between'>
+                        <div className="w-[85%] flex">
+                            <div className='w-[3%] flex'>
+                                <div className='p-3'>
+                                    {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='flex space-x-2 items-center'>
-
-                                <div className='flex relative'>
-                                    {/* search button */}
-                                    <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
-                                        type="text"
-                                        placeholder="  Search"
-                                        value={searchInput}
-                                        onChange={(e) => {
-                                            setSearchInput(e.target.value);
-                                        }}
-                                    />
-                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                                    <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
-                                    </div>
+                            <div className='w-[13%] p-3 '>
+                                <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientNameInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
 
-                                <div>
-                                    {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
-                                        <div className="flex items-center justify-center gap-4 text-[14px]">
-                                            Add New Client
-                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
-                                        </div>
-                                    </button>
-                                </div>
+                                {clientNameFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clientname' menuRef={menuRef} />}
 
+                            </div>
+
+                            <div className='w-[11%]   p-3'>
+                                <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientTypeInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {ClientTypeFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clienttype' menuRef={menuRef} />}
+
+                            </div>
+
+                            <div className='w-[8%]  p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setTenentOfInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {tenentOfFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />}
+
+                            </div>
+
+                            <div className='w-[8%]  p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-8 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setTenentOfInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {/* {tenentOfFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} */}
+
+                            </div>
+
+                            <div className='w-[10%]   p-3'>
+                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCountryInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {countryFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='country' menuRef={menuRef} />}
+
+                            </div>
+
+                            <div className='w-[7%]   p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-7 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCityInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {cityFilter && <CharacterFilter filterColumn='city' menuRef={menuRef} handleFilter={handleFilter} />}
+                            </div>
+
+                            <div className='w-[10%]   p-3'>
+                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {phoneFilter && <CharacterFilter filterColumn='phone' handleFilter={handleFilter} menuRef={menuRef} />}
+
+                            </div>
+
+                            <div className='w-[11%]   p-3'>
+                                <div className="w-[88%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {emailFilter && <CharacterFilter filterColumn='email' handleFilter={handleFilter} menuRef={menuRef} />}
+
+                            </div>
+
+                            <div className='w-[9%]  p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmployeeNameInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployeeNameFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {employeeNameFilter && <CharacterFilter filterColumn='employeename' handleFilter={handleFilter} menuRef={menuRef} />}
                             </div>
 
                         </div>
+                        <div className="w-[15%] ">
+                            <div className='w-1/2   p-3'>
+                                <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {idFilter && <NumericFilter filterColumn='id' handleFilter={handleFilter} menuRef={menuRef} />}
+                            </div>
+
+                            <div className='w-1/2  flex'>
+                                <div className='p-3'>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
 
 
-                        <div className='h-12 w-full bg-white'>
-                            <div className='w-full h-12 bg-white flex justify-between'>
+                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                        <div className="w-[85%] flex">
+                            <div className='w-[3%] flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Sr.</p>
+                                </div>
+                            </div>
+                            <div className='w-[13%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Client Name <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[11%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Client Type <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[8%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Tenent of </p>
+                                </div>
+                            </div>
+                            <div className='w-[8%]  flex'>
+                                <div className='p-3'>
+                                    <p>Tenent of </p>
+                                    <p>Property </p>
+                                </div>
+                            </div>
+                            <div className='w-[10%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Country <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[7%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>City <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[10%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Phone <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[11%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Email <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[9%]  flex'>
+                                <div className='p-3'>
+                                    <p>Employee </p>
+                                    <p>Name </p>
+                                </div>
+                                <span className="font-extrabold py-5">↑↓</span>
+                            </div>
+                            <div className='w-[5%]  flex'>
+                                <div className='p-3'>
+
+                                </div>
+                            </div>
+                            <div className='w-[5%]  flex'>
+                                <div className='p-3'>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-[15%] flex">
+                            <div className='w-1/2  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>ID <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-1/2  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Edit</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
+
+
+                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingClientInfo.map((item, index) => {
+                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[3%] flex'>
                                         <div className='p-3'>
-                                            {/* <p>Sr.</p> */}
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]   p-3 '>
-                                        <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientNameInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
+                                    <div className='w-[13%]  flex '>
+                                        <div className='p-3'>
+                                            <p>{item.firstname + " " + item.middlename + " " + item.lastname} </p>
                                         </div>
-                                         
-                                        {clientNameFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clientname' menuRef={menuRef}/>}
+                                    </div>
+                                    <div className='w-[11%]  flex'>
+                                        <div className='p-3'>
+                                            <p> {item.clienttypename}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[8%]  flex '>
+                                        <div className='p-3'>
+                                            <p>{item.tenantof} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[8%]  flex'>
+                                        <div className='p-3'>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex '>
+                                        <div className='p-3 ml-2'>
+                                            <p>{item.country}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[7%]  flex overflow-hidden'>
+                                        <div className='p-3 ml-1'>
+                                            <p>{item.city}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.mobilephone}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[11%]  flex'>
+                                        <div className='p-3 overflow-hidden '>
+                                            <p>{item.email1 || item.email2}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[9%]  flex ml-2'>
+                                        <div className='p-3'>
+                                            <p>{item.employername}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[5%]  flex'>
+                                        <div className='p-3'>
 
-                                    </div>
-                                    
-                                    <div className='w-[10%]   p-3'>
-                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setClientTypeInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeFilter((prev) => !prev) }} /></button>
                                         </div>
-                                        {ClientTypeFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clienttype' menuRef={menuRef}/>}
-                                        
                                     </div>
-
-                                    <div className='w-[9%]  p-3'>
-                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-11 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setTenentOfInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenentOfFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {tenentOfFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof'/>}
-                                        
-                                    </div>
-
-                                    <div className='w-[10%]   p-3'>
-                                        <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCountryInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {countryFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='country' menuRef={menuRef}/>}
-                                        
-                                    </div>
-
-                                    <div className='w-[7%]   p-3'>
-                                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-7 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setCityInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {cityFilter && <CharacterFilter filterColumn='city' menuRef={menuRef} handleFilter={handleFilter}/>}
-                                    </div>
-
-                                    <div className='w-[10%]   p-3'>
-                                        <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {phoneFilter && <CharacterFilter filterColumn='phone' handleFilter={handleFilter} menuRef={menuRef}/>}
-                                        
-                                    </div>
-
-                                    <div className='w-[14%]   p-3'>
-                                        <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {emailFilter && <CharacterFilter filterColumn='email' handleFilter={handleFilter} menuRef={menuRef}/>}
-                                        
-                                    </div>
-
-                                    <div className='w-[13%]   p-3'>
-                                        <div className="w-[72%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmployeeNameInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployeeNameFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {employeeNameFilter && <CharacterFilter filterColumn='employeename' handleFilter={handleFilter} menuRef={menuRef}/>}
-                                    </div>
-
-                                </div>
-                                <div className="w-[15%] ">
-                                    <div className='w-1/2   p-3'>
-                                        <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
-                                        </div>
-                                        {idFilter && <NumericFilter filterColumn='id' handleFilter={handleFilter} menuRef={menuRef}/>}
-                                    </div>
-
-                                    <div className='w-1/2  flex'>
+                                    <div className='w-[5%]  flex'>
                                         <div className='p-3'>
 
                                         </div>
                                     </div>
                                 </div>
+                                <div className="w-[15%] flex">
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.id}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3 flex space-x-2'>
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} />
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+                        })}
 
 
-
-
-                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[85%] flex">
-                                <div className='w-[3%] flex'>
-                                    <div className='p-3'>
-                                        <p>Sr.</p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Client Name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Client Type <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[9%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Tenent of </p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Country <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[7%]  flex'>
-                                    <div className='p-3'>
-                                        <p>City <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Phone <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[14%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Email <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[13%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Employer name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[6%]  flex'>
-                                    <div className='p-3'>
-
-                                    </div>
-                                </div>
-                                <div className='w-[6%]  flex'>
-                                    <div className='p-3'>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-[15%] flex">
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>ID <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>Edit</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-                        <div className='w-full h-[450px] overflow-auto'>
-
-                            
-                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingClientInfo.map((item, index) => {
-                                return <div className='w-full h-14 bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                    <div className="w-[85%] flex">
-                                <div className='w-[3%] flex'>
-                                    <div className='p-3'>
-                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.firstname + " " + item.middlename + " " + item.lastname} </p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p> {item.clienttypename}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[9%]  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.tenantof} </p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.country}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[7%]  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.city}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.mobilephone}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[14%]  flex'>
-                                    <div className='p-3 overflow-hidden'>
-                                        <p>{item.email1 || item.email2}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[13%]  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.employername}</p>
-                                    </div>
-                                </div>
-                                <div className='w-[6%]  flex'>
-                                    <div className='p-3'>
-
-                                    </div>
-                                </div>
-                                <div className='w-[6%]  flex'>
-                                    <div className='p-3'>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-[15%] flex">
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>{item.id}</p>
-                                    </div>
-                                </div>
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3 flex space-x-2'>
-                                           <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => {openDelete(item.id)}} />
-                                    </div>
-                                </div>
-                            </div>
-                                    
-                                </div>
-                            })}
-                             
-
-                        </div>
+                    </div>
 
 
 
@@ -1376,7 +1635,7 @@ const ManageClientInfo = () => {
 
 
 
-                        </div>
+                </div>
 
             </div>
 
@@ -1385,77 +1644,77 @@ const ManageClientInfo = () => {
 
 
             <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
-                        {/* footer component */}
-                        <div className='ml-2'>
-                            <div className='flex items-center w-auto h-full'>
-                                {/* items */}
-                                <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
+                {/* footer component */}
+                <div className='ml-2'>
+                    <div className='flex items-center w-auto h-full'>
+                        {/* items */}
+                        <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
 
-                            </div>
-                        </div>
-                        <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className="flex mr-8 space-x-2 text-sm items-center">
-                                <p className="text-gray-700">Items Per page</p>
-                                <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
-                                    name="currentPages"
-                                    value={currentPages}
-                                    //  defaultValue="Select State"
-                                    onChange={e => {
-                                        setCurrentPages(e.target.value);
-                                        console.log(e.target.value);
-
-                                        fetchQuantityData(e.target.value)
-                                    }}
-
-                                >
-                                    <option>
-                                        15
-                                    </option>
-                                    <option>
-                                        25
-                                    </option>
-                                    <option>
-                                        50
-                                    </option>
-                                </select>
-                            </div>
-                            <div className="flex text-sm">
-                                <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
-                            </div>
-                            {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                                <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
-
-                                <button>
-                                    <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
-                                        <p>Download as pdf</p>
-                                        <img src={Pdf} />
-                                    </div>
-                                </button>
-                                <button onClick={handleExcelDownload}>
-                                    <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
-                                        <p>Download as Excel</p>
-                                        <img src={Excel} />
-                                    </div>
-                                </button>
-                            </div>}
-
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
-                                {/* refresh */}
-                                <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className="h-2/3" />
-                            </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
-                                {/* download */}
-                                <button onClick={openDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className="h-2/3" />
-                            </div>
-                        </div>
                     </div>
+                </div>
+                <div className='flex mr-10 justify-center items-center space-x-2 '>
+                    <div className="flex mr-8 space-x-2 text-sm items-center">
+                        <p className="text-gray-700">Items Per page</p>
+                        <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                            name="currentPages"
+                            value={currentPages}
+                            //  defaultValue="Select State"
+                            onChange={e => {
+                                setCurrentPages(e.target.value);
+                                console.log(e.target.value);
+
+                                fetchQuantityData(e.target.value)
+                            }}
+
+                        >
+                            <option>
+                                15
+                            </option>
+                            <option>
+                                25
+                            </option>
+                            <option>
+                                50
+                            </option>
+                        </select>
+                    </div>
+                    <div className="flex text-sm">
+                        <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
+                    </div>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+
+                        <button>
+                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+
+                                <p>Download as pdf</p>
+                                <img src={Pdf} />
+                            </div>
+                        </button>
+                        <button onClick={handleExcelDownload}>
+                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                <p>Download as Excel</p>
+                                <img src={Excel} />
+                            </div>
+                        </button>
+                    </div>}
+
+                    <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
+                        {/* refresh */}
+                        <button onClick={handleRefresh}><p>Refresh</p></button>
+                        <img src={refreshIcon} className="h-2/3" />
+                    </div>
+                    <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
+                        {/* download */}
+                        <button onClick={openDownload}><p>Download</p></button>
+                        <img src={downloadIcon} className="h-2/3" />
+                    </div>
+                </div>
+            </div>
 
 
 
-        <Modal open={isClientInfoDialogue}
+            <Modal open={isClientInfoDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1489,14 +1748,14 @@ const ManageClientInfo = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation  formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo}/>}
-                        {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues}/>}
-                        {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
-                        {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity}/>}
-                        {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allState} initialCities={allCity}/>}
+                        {selectedDialog == 1 && <ClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo} />}
+                        {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues} />}
+                        {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
+                        {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity} />}
+                        {selectedDialog == 5 && <POADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allState} initialCities={allCity} />}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled"  : "bg-[#004DD7]" } w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
+                            <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled" : "bg-[#004DD7]"} w-[100px] h-[35px]  text-white rounded-md`} onClick={handleAddClientInfo} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
 
