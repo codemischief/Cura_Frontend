@@ -69,12 +69,12 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               onChange={handleChange}
             >
               <option>Select Client Name </option>
-              {/* {clientName &&
+              {clientName &&
                 clientName.map((item) => (
                   <option key={item[0]} value={item[0]}>
                     {item[1]}
                   </option>
-                ))} */}
+                ))}
             </select>
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>

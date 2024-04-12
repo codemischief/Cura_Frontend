@@ -891,7 +891,7 @@ const ManageClientProperty = () => {
         const data = {
             "user_id": 1234,
             "client_property": {
-              "clientid": 44598,
+              "clientid": formValues.client_property.clientid,
               "propertytype": Number(formValues.client_property.propertytype),
               "leveloffurnishing": Number(formValues.client_property.leveloffurnishing),
               "numberofparkings": Number(formValues.client_property.numberofparkings),
