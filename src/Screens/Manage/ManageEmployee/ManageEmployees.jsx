@@ -377,8 +377,7 @@ const ManageEmployees = () => {
         city: 847,
         suburb: "",
         zipCode: "",
-        entity: ""
-
+        entity: 1
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -1470,6 +1469,11 @@ const ManageEmployees = () => {
                                             onChange={e => {
                                                 setCurrCountry(e.target.value);
                                                 fetchStateData(e.target.value);
+                                                setAllCity([]);
+                                                const existing = {...formValues}
+                                                existing.state = ""
+                                                existing.city = null;
+                                                setFormValues(existing)                                            
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, country: e.target.value }
                                                     return newData;
@@ -1500,25 +1504,20 @@ const ManageEmployees = () => {
                                             defaultValue="Select State"
                                             onChange={e => {
                                                 fetchCityData(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, state: e.target.value }
-                                                    return newData;
-                                                })
-
+                                                const existing = {...formValues}
+                                                existing.state = e.target.value
+                                                console.log(existing)
+                                                setFormValues(existing)
                                             }}
                                         >
-
+                                            <option value="" > Select A State</option>
                                             {allState && allState.map(item => {
-                                                if (item[0] === "Maharashtra") {
-                                                    return <option value={item[0]} selected>
+                                                
+                                                
+                                                    return <option value={item[0]} >
                                                         {item[0]}
                                                     </option>
-                                                } else {
-                                                    return <option value={item[0]}>
-                                                        {item[0]}
-                                                    </option>
-
-                                                }
+                                                
 
                                             })}
                                         </select>

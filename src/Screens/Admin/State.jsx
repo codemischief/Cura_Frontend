@@ -55,7 +55,7 @@ const State = () => {
     setPageLoading(true);
     const data = { 
         "user_id" : 1234,
-        "rows" : ["id","city","state","country"],
+        "rows" : ["id","state","country"],
         "filters" : [],
         "sort_by" : [sortField],
         "order" : "desc",
