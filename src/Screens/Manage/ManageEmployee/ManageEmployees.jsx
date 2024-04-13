@@ -25,6 +25,8 @@ import DeleteEmployeeModal from './DeleteEmployeeModal';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
+import DateFilter from '../../../Components/Filters/DateFilter';
+import NumericFilter from '../../../Components/Filters/NumericFilter';
 const ManageEmployees = () => {
 
     const menuRef = useRef();
@@ -196,7 +198,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -225,7 +227,7 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -255,7 +257,7 @@ const ManageEmployees = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -618,7 +620,7 @@ const ManageEmployees = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -640,10 +642,10 @@ const ManageEmployees = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
@@ -662,7 +664,7 @@ const ManageEmployees = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -732,6 +734,36 @@ const ManageEmployees = () => {
             filterValue : "",
             filterData : "String",
             filterInput : ""
+        },
+        role : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        dateofjoining : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        lastdateofworking : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        status : {
+            filterType : "",
+            filterValue : null,
+            filterData : "String",
+            filterInput : ""
+        },
+        id : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Numeric",
+            filterInput : ""
         }
     }
     const [filterMapState,setFilterMapState] = useState(filterMapping);
@@ -741,11 +773,14 @@ const ManageEmployees = () => {
     const [employeeIdInput,setEmployeeIdInput] = useState("")
     const [phoneFilter,setPhoneFilter] = useState(false)
     const [phoneFilterInput,setPhoneFilterInput] = useState("");
+    const [dateOfJoiningFilter,setDateOfJoiningFilter] = useState(false)
+    const [dateOfJoiningInput,setDateOfJoiningInput] = useState(false)
     const fetchFiltered = async  (mapState) => {
        setFilterMapState(mapState)
        const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
+        console.log(filterMapState)
         Object.keys(mapState).forEach(key=> {
             if(mapState[key].filterType != "") {
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
@@ -772,93 +807,78 @@ const ManageEmployees = () => {
         setPageLoading(false);
     } 
     const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
-        var existing = filterMapState;
-        existing = {...existing,[columnName] : {
-            ...existing[columnName],
-             filterType : type == 'noFilter' ? "" : type
-        }}
-        existing = {...existing, [columnName] : {
-            ...existing[columnName],
-             filterValue : type == 'noFilter' ? "" : inputVariable
-        }}    
+        console.log(columnName)
+        console.log(filterMapState);
+        if(columnName == 'status') {
+            var existing = filterMapState;
+            
+            if(inputVariable.toLowerCase() == 'active') {
+                existing = {...existing, [columnName] : {
+                    ...existing[columnName],
+                     filterValue : 'true'
+                }}
+                existing = {...existing,[columnName] : {
+                    ...existing[columnName],
+                     filterType : type == 'noFilter' ? "" : type
+                }}
+            }else if(inputVariable.toLowerCase() == 'inactive') {
+                existing = {...existing, [columnName] : {
+                    ...existing[columnName],
+                     filterValue : 'false'
+                }}
+                existing = {...existing,[columnName] : {
+                    ...existing[columnName],
+                     filterType : type == 'noFilter' ? "" : type
+                }}
+            }else {
+                return ;
+            }
+             
+        }else {
+            var existing = filterMapState;
+            existing = {...existing,[columnName] : {
+                ...existing[columnName],
+                 filterType : type == 'noFilter' ? "" : type
+            }}
+            existing = {...existing, [columnName] : {
+                ...existing[columnName],
+                 filterValue : type == 'noFilter' ? "" : inputVariable
+            }}
+        }
         if(type == 'noFilter') setInputVariable("");
         fetchFiltered(existing);
     } 
-    const handleFilter = (type,columnName) => {
-
-        if(columnName == 'employeename') {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                console.log(existing)
-                existing.employeename.filterType = "";
-                existing.employeename.filterValue = "";
-                setFilterMapState(existing)
-            //    filterMapping.country.filterType = "";
-            //    filterMapping.country.filterValue = "";
-               setEmployeeIdInput("");
-            }else {
-                const existing = filterMapState;
-                existing.employeename.filterType = type;
-                existing.employeename.filterValue = employeeNameInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
-        }else if(columnName == 'employeeid') {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.employeeid.filterType = "";
-                existing.employeeid.filterValue = "";
-                setFilterMapState(existing)
-            //    filterMapping.country.filterType = "";
-            //    filterMapping.country.filterValue = "";
-               setEmployeeIdInput("");
-            }else {
-                const existing = filterMapState;
-                existing.employeeid.filterType = type;
-                existing.employeeid.filterValue = employeeIdInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
-            }
-        }else if(columnName == 'phoneno') {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.phoneno.filterType = "";
-                existing.phoneno.filterValue = "";
-                setFilterMapState(existing)
-            //    filterMapping.country.filterType = "";
-            //    filterMapping.country.filterValue = "";
-               setPhoneFilterInput("");
-            }else {
-                const existing = filterMapState;
-                existing.phoneno.filterType = type;
-                existing.phoneno.filterValue = phoneFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
-            }
-        }else if(columnName == 'email') {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.email.filterType = "";
-                existing.email.filterValue = "";
-                setFilterMapState(existing)
-            //    filterMapping.country.filterType = "";
-            //    filterMapping.country.filterValue = "";
-               setEmailInput("");
-            }else {
-                const existing = filterMapState;
-                existing.email.filterType = type;
-                existing.email.filterValue = emailInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
-            }
-        }
-        fetchData();
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "filters": tempArray,
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getEmployees(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingEmployees(result);
+        setPageLoading(false);
     }
-
     return (
         <div className='h-screen'>
             <Navbar />
@@ -949,7 +969,7 @@ const ManageEmployees = () => {
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} />
                                     <button className='p-1'  onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {phoneFilter && <CharacterFilter inputVariable={phoneFilter} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter}/>}
+                                {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter}/>}
                             </div>
 
                             <div className='w-[10%]   pb-3 pt-3 pr-3'>
@@ -973,139 +993,39 @@ const ManageEmployees = () => {
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {pannoFilter && <CharacterFilter handleFilter={newHandleFilter} />}
+                                {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} />}
                             </div>
-
-                            <div className='w-[13%]  flex p-3'>
+                            
+                            <div className='w-[13%]   p-3'>
                                 <div className="w-[57%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type="date" onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
+                                    <button className='p-1'  onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {ldowFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setLdowInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[12%]  flex pt-3 pb-3 pr-5 '>
+                            <div className='w-[12%]   pt-3 pb-3 pr-5 '>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 relative" type='date' onChange={(e) => setStatusInput(e.target.value)} />
-                                    <button className='right-2 absolute'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[85%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 " type='date' value={ldowInput}onChange={(e) => setLdowInput(e.target.value)} />
+                                    <button className='w-[15%]' onClick={() => { setLdowFilter((prev) => !prev)}}> <img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {statusFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking'/>}
                             </div>
-                            <div className='w-[10%]  flex pt-3 pb-3 pl-9 relative'>
+                            <div className='w-[10%]   pt-3 pb-3 pl-9 '>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[90%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type='date' onChange={(e) => setStatusInput(e.target.value)} />
-                                    <button className='absolute right-2'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[90%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type='text' onChange={(e) => setStatusInput(e.target.value)} />
+                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {statusFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter}/>}
                             </div>
                         </div>
                         <div className="w-[15%] flex">
-                            <div className='w-1/2  flex pt-3 pb-3 pr-3'>
+                            <div className='w-1/2   pt-3 pb-3 pr-3'>
                                 <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
+                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(Number(e.target.value))} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter}/>}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1127,54 +1047,54 @@ const ManageEmployees = () => {
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p>Employee <span className="font-extrabold">↑↓</span></p>
+                                    <p>Employee <button onClick={() => handleSort('employeename')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
                                 <div className='p-3'>
-                                    <p>Employee ID <span className="font-extrabold">↑↓</span></p>
+                                    <p>Employee ID <button onClick={() => handleSort('employeeid')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p>Phone <span className="font-extrabold">↑↓</span></p>
+                                    <p>Phone <button onClick={() => handleSort('phoneno')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p>Email <span className="font-extrabold">↑↓</span></p>
+                                    <p>Email <button onClick={() => handleSort('email')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p>Role <span className="font-extrabold">↑↓</span></p>
+                                    <p>Role <button onClick={() => handleSort('role')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p>Pan No <span className="font-extrabold">↑↓</span></p>
+                                    <p>Pan No <button onClick={() => handleSort('panno')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='p-3'>
-                                    <p>Date of joining <span className="font-extrabold">↑↓</span></p>
+                                    <p>Date of joining <button onClick={() => handleSort('dateofjoining')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[17%]  flex'>
                                 <div className='p-3'>
-                                    <p>Last Date of working <span className="font-extrabold">↑↓</span></p>
+                                    <p>Last Date of working <button onClick={() => handleSort('lastdateofworking')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p> Status <span className="font-extrabold">↑↓</span></p>
+                                    <p> Status <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
                         <div className="w-[15%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
-                                    <p>ID <span className="font-extrabold">↑↓</span></p>
+                                    <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
@@ -1220,7 +1140,7 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
                                         <div className='p-3'>
-                                            <p>{item.rolename}</p>
+                                            <p>{item.role}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
