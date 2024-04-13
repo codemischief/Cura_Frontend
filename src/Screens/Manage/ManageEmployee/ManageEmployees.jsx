@@ -285,16 +285,16 @@ const ManageEmployees = () => {
         fetchLobData();
 
         const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setEmpNameFilter(false);
-                setEmpIdFilter(false);
-                setPhoneFilter(false);
-                setEmailFilter(false);
-                setRoleFilter(false);
-                setPannoFilter(false);
-                setDojFilter(false);
-                setLdowFilter(false);
-                setStatusFilter(false);
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setEmployeeNameFilter(false)
+                setEmployeeIdFilter(false)
+                setPannoFilter(false)
+                setPhoneFilter(false)
+                setEmailFilter(false)
+                setRoleFilter(false)
+                setDateOfJoiningFilter(false)
+                setLdowFilter(false)
+                setStatusFilter(false)
                 setIdFilter(false);
             }
         }
@@ -755,8 +755,8 @@ const ManageEmployees = () => {
         },
         status : {
             filterType : "",
-            filterValue : null,
-            filterData : "String",
+            filterValue : "",
+            filterData : "Numeric",
             filterInput : ""
         },
         id : {
@@ -808,10 +808,13 @@ const ManageEmployees = () => {
     } 
     const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
         console.log(columnName)
+        console.log('hey')
         console.log(filterMapState);
         if(columnName == 'status') {
             var existing = filterMapState;
-            
+            if(type == 'noFilter') {
+                setInputVariable(""); 
+            }
             if(inputVariable.toLowerCase() == 'active') {
                 existing = {...existing, [columnName] : {
                     ...existing[columnName],
@@ -844,8 +847,10 @@ const ManageEmployees = () => {
                 ...existing[columnName],
                  filterValue : type == 'noFilter' ? "" : inputVariable
             }}
+
+            if(type == 'noFilter') setInputVariable("");
         }
-        if(type == 'noFilter') setInputVariable("");
+        
         fetchFiltered(existing);
     } 
     const handleSort = async (field) => {
@@ -980,7 +985,7 @@ const ManageEmployees = () => {
                                 {emailFilter &&<CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput}filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter}/>}
                             </div>
 
-                            <div className='w-[10%]  flex pr-3 pt-3 pb-3'>
+                            <div className='w-[10%]   pr-3 pt-3 pb-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
@@ -988,7 +993,7 @@ const ManageEmployees = () => {
                                 {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[8%]  flex pr-3 pb-3 pt-3'>
+                            <div className='w-[8%]   pr-3 pb-3 pt-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
@@ -1009,14 +1014,14 @@ const ManageEmployees = () => {
                                     <input className="w-[85%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 " type='date' value={ldowInput}onChange={(e) => setLdowInput(e.target.value)} />
                                     <button className='w-[15%]' onClick={() => { setLdowFilter((prev) => !prev)}}> <img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking'/>}
+                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%]   pt-3 pb-3 pl-9 '>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[90%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type='text' onChange={(e) => setStatusInput(e.target.value)} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter}/>}
+                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
                         </div>
                         <div className="w-[15%] flex">
@@ -1025,7 +1030,7 @@ const ManageEmployees = () => {
                                     <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(Number(e.target.value))} />
                                     <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter}/>}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
                             <div className='w-1/2  flex'>
