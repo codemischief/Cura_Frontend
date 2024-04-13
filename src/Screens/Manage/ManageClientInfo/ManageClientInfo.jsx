@@ -8,8 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, useScrollTrigger } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
+import { Modal, Pagination, LinearProgress} from "@mui/material";
 import { APIService } from '../../../services/API';
 import ClientInformation from "./Forms/ClientInformation"
 import ClientPortal from "./Forms/ClientPortal";
@@ -28,6 +27,8 @@ import EditClientInfoModal from './Modals/EditClientInfoModal';
 import SaveConfirmationClient from './Modals/SaveConfirmationClient';
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 const ManageClientInfo = () => {
 
     const menuRef = useRef();
@@ -467,7 +468,8 @@ const ManageClientInfo = () => {
             
         }
         const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
+            console.log(menuRef)
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 // setOverAllFilter(false);
                 setTenantOfPropertyFilter(false);
                 setIdFilter(false)
@@ -709,12 +711,12 @@ const ManageClientInfo = () => {
         };
         const response = await APIService.getClientInfo(data)
         const temp = await response.json();
-        const result = temp.data.client_info;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ClientInfoData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+        const result = await temp.data.client_info;
+        const worksheet = await XLSX.utils.json_to_sheet(result);
+        const workbook =await XLSX.utils.book_new();
+        await XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        await XLSX.writeFile(workbook, "ClientInfoData.xlsx");
+        await FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
         // console.log("clicked")
