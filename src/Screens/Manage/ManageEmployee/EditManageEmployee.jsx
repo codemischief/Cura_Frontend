@@ -125,16 +125,16 @@ const EditManageEmployee = (props) => {
         await fetchCountryData();
         // console.log(result.data.dateofjoining.split('T')[0]);
        setFormValues((existing) => {
-          return {...existing, dateofjoining : result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : ""}
+          return {...existing, dateofjoining : result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : null}
        })
        setFormValues((existing) => {
-        return {...existing, dob : result.data.dob ? result.data.dob.split('T')[0] : ""}
+        return {...existing, dob : result.data.dob ? result.data.dob.split('T')[0] : null}
      })
      setFormValues((existing) => {
-        return {...existing, lastdateofworking : result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : ""}
+        return {...existing, lastdateofworking : result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : null}
      })
      setFormValues((existing) => {
-        return {...existing, dated :result.data.dated ?  result.data.dated.split('T')[0] : ""}
+        return {...existing, dated :result.data.dated ?  result.data.dated.split('T')[0] : null}
      })
         await fetchStateData(result.data.country);
         await fetchCityData(result.data.state);
@@ -341,16 +341,6 @@ const EditManageEmployee = (props) => {
         }else {
             setFormErrors((existing) => {
                 return {...existing,city: ""}
-            })
-        }
-        if(!formValues.suburb) {
-            setFormErrors((existing) => {
-                return {...existing,suburb: "Enter suburb"}
-            })
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,suburb: ""}
             })
         }
         if(!formValues.entityid) {
@@ -609,7 +599,17 @@ const EditManageEmployee = (props) => {
                                     </div>
                                 </div>
                                 </div>}
-                            <div className="mt-[10px] flex justify-center items-center"><Checkbox label="Active" />Active</div>
+                            <div className="mt-[10px] flex justify-center items-center"><input
+                            type="checkbox"
+                            checked={formValues.status}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = { ...formValues };
+                                existing.status = !existing.status;
+                                setFormValues(existing)
+                            }}
+                        />Active</div>
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>

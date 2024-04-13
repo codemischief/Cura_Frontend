@@ -24,6 +24,7 @@ import FailureModal from '../../../Components/modals/FailureModal';
 import DeleteEmployeeModal from './DeleteEmployeeModal';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 const ManageEmployees = () => {
 
     const menuRef = useRef();
@@ -54,7 +55,6 @@ const ManageEmployees = () => {
     const [empNameInput, setEmpNameInput] = useState("");
     const [empIdFilter, setEmpIdFilter] = useState(false);
     const [empIdInput, setEmpIdInput] = useState("");
-    const [phoneFilter, setPhoneFilter] = useState(false);
     const [phoneInput, setPhoneInput] = useState("");
     const [emailFilter, setEmailFilter] = useState(false);
     const [emailInput, setEmailInput] = useState("");
@@ -185,11 +185,19 @@ const ManageEmployees = () => {
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         console.log('ugm')
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -207,10 +215,18 @@ const ManageEmployees = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -228,11 +244,19 @@ const ManageEmployees = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
         console.log(searchInput);
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -326,7 +350,7 @@ const ManageEmployees = () => {
             "addressline2": formValues.addressLine2,
             "suburb": formValues.suburb,
             "city": formValues.city,
-            "state": Number(formValues.state),
+            "state": formValues.state,
             "country": Number(formValues.country),
             "zip": formValues.zipCode,
             "dated": "20-01-2020  00:00:00",
@@ -684,6 +708,113 @@ const ManageEmployees = () => {
         }, 2000)
         fetchData();
     }
+    const filterMapping = {
+        employeename : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        employeeid : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        phoneno : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        email : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        }
+    }
+    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [employeeNameFilter,setEmployeeNameFilter] = useState(false)
+    const [employeeNameInput,setEmployeeNameInput] = useState("");
+    const [employeeIdFilter,setEmployeeIdFilter] = useState(false)
+    const [employeeIdInput,setEmployeeIdInput] = useState("")
+    const [phoneFilter,setPhoneFilter] = useState(false)
+    const [phoneFilterInput,setPhoneFilterInput] = useState("");
+    const handleFilter = (type,columnName) => {
+
+        if(columnName == 'employeename') {
+            if(type == "noFilter") {
+                const existing = filterMapState;
+                existing.employeename.filterType = "";
+                existing.employeename.filterValue = "";
+                setFilterMapState(existing)
+            //    filterMapping.country.filterType = "";
+            //    filterMapping.country.filterValue = "";
+               setEmployeeIdInput("");
+            }else {
+                const existing = filterMapState;
+                existing.employeename.filterType = type;
+                existing.employeename.filterValue = employeeNameInput;
+                setFilterMapState(existing)
+                // filterMapping.country.filterType = type;
+                // filterMapping.country.filterValue = countryFilterInput;
+            }
+        }else if(columnName == 'employeeid') {
+            if(type == "noFilter") {
+                const existing = filterMapState;
+                existing.employeeid.filterType = "";
+                existing.employeeid.filterValue = "";
+                setFilterMapState(existing)
+            //    filterMapping.country.filterType = "";
+            //    filterMapping.country.filterValue = "";
+               setEmployeeIdInput("");
+            }else {
+                const existing = filterMapState;
+                existing.employeeid.filterType = type;
+                existing.employeeid.filterValue = employeeIdInput;
+                setFilterMapState(existing)
+                // filterMapping.country.filterType = type;
+                // filterMapping.country.filterValue = countryFilterInput;
+            }
+        }else if(columnName == 'phoneno') {
+            if(type == "noFilter") {
+                const existing = filterMapState;
+                existing.phoneno.filterType = "";
+                existing.phoneno.filterValue = "";
+                setFilterMapState(existing)
+            //    filterMapping.country.filterType = "";
+            //    filterMapping.country.filterValue = "";
+               setPhoneFilterInput("");
+            }else {
+                const existing = filterMapState;
+                existing.phoneno.filterType = type;
+                existing.phoneno.filterValue = phoneFilterInput;
+                setFilterMapState(existing)
+                // filterMapping.country.filterType = type;
+                // filterMapping.country.filterValue = countryFilterInput;
+            }
+        }else if(columnName == 'email') {
+            if(type == "noFilter") {
+                const existing = filterMapState;
+                existing.email.filterType = "";
+                existing.email.filterValue = "";
+                setFilterMapState(existing)
+            //    filterMapping.country.filterType = "";
+            //    filterMapping.country.filterValue = "";
+               setEmailInput("");
+            }else {
+                const existing = filterMapState;
+                existing.email.filterType = type;
+                existing.email.filterValue = emailInput;
+                setFilterMapState(existing)
+                // filterMapping.country.filterType = type;
+                // filterMapping.country.filterValue = countryFilterInput;
+            }
+        }
+        fetchData();
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
@@ -752,136 +883,37 @@ const ManageEmployees = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex p-3'>
+                            <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} />
+                                    <button className='p-1' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]'  /></button>
                                 </div>
-                                {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {employeeNameFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='employeename' menuRef={menuRef}/>}
+                                
                             </div>
 
-                            <div className='w-[13%]  flex p-3'>
+                            <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
+                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} />
+                                    <button className='p-1' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]'  /></button>
                                 </div>
-                                {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {employeeIdFilter && <CharacterFilter filterColumn='employeeid' handleFilter={handleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
+                            <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} />
+                                    <button className='p-1'  onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {phoneFilter && <CharacterFilter filterColumn="phoneno" menuRef={menuRef} handleFilter={handleFilter}/>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
+                            <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={emailInput}onChange={(e) => setEmailInput(e.target.value)} />
+                                    <button className='p-1' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]'  /></button>
                                 </div>
-                                {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {emailFilter &&<CharacterFilter filterColumn='email' menuRef={menuRef} handleFilter={handleFilter}/>}
                             </div>
 
                             <div className='w-[10%]  flex p-3'>
@@ -1483,15 +1515,16 @@ const ManageEmployees = () => {
                                         >
 
                                             {allCountry && allCountry.map(item => {
-                                                if (item[0] == 5) {
-                                                    return <option value={item[0]} selected>
-                                                        {item[1]}
-                                                    </option>
-                                                } else {
-                                                    return <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                }
+                                                return <option value={item[0]}> {item[1]}</option>
+                                                // if (item[0] == 5) {
+                                                //     return <option value={item[0]} selected>
+                                                //         {item[1]}
+                                                //     </option>
+                                                // } else {
+                                                //     return <option value={item[0]} >
+                                                //         {item[1]}
+                                                //     </option>
+                                                // }
                                             })}
                                         </select>
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
@@ -1506,6 +1539,7 @@ const ManageEmployees = () => {
                                                 fetchCityData(e.target.value);
                                                 const existing = {...formValues}
                                                 existing.state = e.target.value
+                                                existing.city = null
                                                 console.log(existing)
                                                 setFormValues(existing)
                                             }}

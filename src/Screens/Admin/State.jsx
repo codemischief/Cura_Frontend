@@ -55,7 +55,7 @@ const State = () => {
     setPageLoading(true);
     const data = { 
         "user_id" : 1234,
-        "rows" : ["id","state","country"],
+        "rows" : ["id","state","countryname"],
         "filters" : [],
         "sort_by" : [sortField],
         "order" : "desc",
@@ -89,7 +89,7 @@ const State = () => {
         setCurrentPages(number)
         const data = { 
             "user_id" :  1234,
-            "rows" : ["id","name"],
+            "rows" : ["id","state","countryname"],
             "filters" : [],
             "sort_by" : [sortField],
             "order" : flag ? "asc" : "desc",
@@ -164,7 +164,7 @@ const State = () => {
             setSortField(field)
             const data = { 
                 "user_id" :  1234,
-                "rows" : ["id","name"],
+                "rows" : ["id","state","countryname"],
                 "filters" : [],
                 "sort_by" : [field],
                 "order" : flag ? "asc" : "desc",
@@ -190,8 +190,8 @@ const State = () => {
         
         setPageLoading(true);
         const data = { 
-            "user_id" : userId || 1234,
-            "rows" : ["id","name"],
+            "user_id" :  1234,
+            "rows" : ["id","state","countryname"],
             "filters" : [["name",String(filterType),stateFilterInput]],
             "sort_by" : [sortField],
             "order" : flag ? "asc" : "desc",
@@ -219,7 +219,7 @@ const State = () => {
         setCurrentPage(page);
         const data = { 
             "user_id" :  1234,
-            "rows" : ["id","name"],
+            "rows" : ["id","state","countryname"],
             "filters" : [],
             "sort_by" : [],
             "order" : "desc",
@@ -433,15 +433,15 @@ const State = () => {
                                             <p>{index + 1 + (currentPage - 1)*currentPages}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item[1]}</p>
+                                            <p>{item[2]}</p>
                                         </div>
                                         <div className='w-[20%]  p-4'>
-                                            <p>{item[0]}</p>
+                                            <p>{item[1]}</p>
                                         </div>
                                     </div>
                                     <div className='w-1/6  flex'>
                                         <div className='w-1/2  p-4'>
-                                            <p>{item[2]}</p>
+                                            <p>{item[0]}</p>
                                         </div>
                                         <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                             <img className='w-5 h-5' src={Edit} alt="edit" />
