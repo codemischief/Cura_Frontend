@@ -17,13 +17,11 @@ import { APIService } from '../../services/API';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
 
-const State = () => {
-    // we have the module here
-    const menuRef = useRef()
-    const [existingState, setExistingState] = useState([]);
-    const [pageLoading, setPageLoading] = useState(false);
-    
-    const [showSucess, setShowSucess] = useState(false);
+const State = () => {  
+  const menuRef = useRef()
+  const [existingState, setExistingState] = useState([]);
+  const [pageLoading, setPageLoading] = useState(false);
+  const [showSucess, setShowSucess] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -34,10 +32,10 @@ const State = () => {
   const [downloadModal,setDownloadModal] = useState(false);
   const [userId, setUserId]=useState(0);
   const [sortField,setSortField] = useState("id");
-  const fetchUserId = async() =>{
-    const response = await authService.getUserId();
-    setUserId(response)
-}
+//   const fetchUserId = async() =>{
+//     const response = await authService.getUserId();
+//     setUserId(response)
+// }
   const openSuccessModal = () => {
     // set the state for true for some time
     setIsCountryDialogue(false);
@@ -57,14 +55,13 @@ const State = () => {
     setPageLoading(true);
     const data = { 
         "user_id" : 1234,
-        "rows" : ["id","state","country"],
+        "rows" : ["id","city","state","country"],
         "filters" : [],
         "sort_by" : [sortField],
         "order" : "desc",
         "pg_no" : 1,
         "pg_size" : 15
-     };
-
+    };
     const response = await APIService.getStatesAdmin(data)
     const temp = await response.json();
     const result = temp.data;
@@ -91,7 +88,7 @@ const State = () => {
         setPageLoading(true);
         setCurrentPages(number)
         const data = { 
-            "user_id" : userId || 1234,
+            "user_id" :  1234,
             "rows" : ["id","name"],
             "filters" : [],
             "sort_by" : [sortField],
@@ -111,7 +108,7 @@ const State = () => {
         setPageLoading(false);
     }
     useEffect(() => {
-        fetchUserId()
+        // fetchUserId()
         fetchStateData();
         fetchCountryData();
         const handler = (e) => {

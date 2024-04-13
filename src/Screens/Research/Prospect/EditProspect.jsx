@@ -209,13 +209,13 @@ const EditProspect = (props) => {
                                             >
                                                 {allState && allState.map((item) => {
                                                     // if(item[0])
-                                                    if(item[1] == formValues.state) {
-                                                        return <option value={item[1]} selected>
-                                                            {item[1]}
+                                                    if(item[0] == formValues.state) {
+                                                        return <option value={item[0]} selected>
+                                                            {item[0]}
                                                         </option>
                                                     }else {
-                                                        return (<option value={item[1]} >
-                                                            {item[1]}
+                                                        return (<option value={item[0]} >
+                                                            {item[0]}
                                                         </option>);
                                                     }
                                                  })}

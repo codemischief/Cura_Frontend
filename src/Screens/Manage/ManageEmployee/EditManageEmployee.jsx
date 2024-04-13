@@ -46,6 +46,7 @@ const EditManageEmployee = (props) => {
     const fetchCityData = async (name) => {
         // console.log("Maharashtra");
         // console.log("hy")
+        if(name == null) return 
         console.log(name);
         const data = { "user_id": 1234, "state_name" : name };
         const response = await APIService.getCities(data);
@@ -124,16 +125,16 @@ const EditManageEmployee = (props) => {
         await fetchCountryData();
         // console.log(result.data.dateofjoining.split('T')[0]);
        setFormValues((existing) => {
-          return {...existing, dateofjoining : result.data.dateofjoining.split('T')[0]}
+          return {...existing, dateofjoining : result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : ""}
        })
        setFormValues((existing) => {
-        return {...existing, dob : result.data.dob.split('T')[0]}
+        return {...existing, dob : result.data.dob ? result.data.dob.split('T')[0] : ""}
      })
      setFormValues((existing) => {
-        return {...existing, lastdateofworking : result.data.lastdateofworking.split('T')[0]}
+        return {...existing, lastdateofworking : result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : ""}
      })
      setFormValues((existing) => {
-        return {...existing, dated : result.data.dated.split('T')[0]}
+        return {...existing, dated :result.data.dated ?  result.data.dated.split('T')[0] : ""}
      })
         await fetchStateData(result.data.country);
         await fetchCityData(result.data.state);
