@@ -1382,6 +1382,67 @@ const ManageClientInfo = () => {
         }
         fetchData();
     }
+    const handleSort = async (field) => {
+         setPageLoading(true)
+         setSortField(field);
+         const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname"
+            ],
+            "filters": [],
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages)
+        };
+        setFlag((prev) => !prev)
+        const response = await APIService.getClientInfo(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingClientInfo(result.client_info);
+        setPageLoading(false);
+    }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1548,63 +1609,73 @@ const ManageClientInfo = () => {
                 </div>
 
 
-
-
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                     <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                         <div className="w-[85%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Sr.</p>
+                                    <p>Sr.</p> 
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client Name <span className="font-extrabold">↑↓</span></p>
+                                    <p>Client Name <button onClick={() => handleSort('clientname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[11%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client Type <span className="font-extrabold">↑↓</span></p>
+                                    <p>Client Type <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Tenent of </p>
+                                    <p>Tenant of <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
-                                <div className='p-3'>
-                                    <p>Tenent of </p>
-                                    <p>Property </p>
+                                <div className='p-3 flex space-x-2'>
+                                    <div>
+                                        <p>Tenent of </p>
+                                        <p>Property </p>
+                                    </div>
+                                    <div>
+                                      <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Country <span className="font-extrabold">↑↓</span></p>
+                                    <p>Country<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[7%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>City <span className="font-extrabold">↑↓</span></p>
+                                    <p>City<button onClick={() => handleSort('city')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Phone <span className="font-extrabold">↑↓</span></p>
+                                    <p>Phone <button onClick={() => handleSort('mobilephone')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[11%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Email <span className="font-extrabold">↑↓</span></p>
+                                    <p>Email <button onClick={() => handleSort('email1')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[9%]  flex'>
-                                <div className='p-3'>
+                                <div className='p-3 flex space-x-2'>
+                                    <div>
                                     <p>Employer </p>
                                     <p>Name </p>
+                                    </div>
+                                   
+                                    <div>
+                                      <button onClick={() => handleSort('employername')}> <span className="font-extrabold">↑↓</span></button>
+                                    </div>
+                                    
                                 </div>
-                                <span className="font-extrabold py-5">↑↓</span>
                             </div>
                             <div className='w-[5%]  flex'>
                                 <div className='p-3'>
@@ -1620,7 +1691,7 @@ const ManageClientInfo = () => {
                         <div className="w-[15%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>ID <span className="font-extrabold">↑↓</span></p>
+                                    <p>ID <button onClick={() => handleSort('id')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
