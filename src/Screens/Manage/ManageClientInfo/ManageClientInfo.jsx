@@ -661,16 +661,55 @@ const ManageClientInfo = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname"
+            ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getEmployees(data)
+        const response = await APIService.getClientInfo(data)
         const temp = await response.json();
-        const result = temp.data;
+        const result = temp.data.client_info;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -1293,7 +1332,7 @@ const ManageClientInfo = () => {
                 setFilterMapState(existing)
                 // filterMapping.city.filterType = "";
                 // filterMapping.city.filterValue = "";
-                setEmployeeNameInput("");
+                setEmployerInput("");
             } else {
                 const existing = filterMapState;
                 existing.employername.filterType = type;
