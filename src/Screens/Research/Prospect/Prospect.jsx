@@ -106,8 +106,8 @@ const Prospect = () => {
             "filters": [],
             "sort_by": [sortField],
             "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15,
+            "pg_no": 0,
+            "pg_size": 0,
             "search_key": searchInput
         };
         const response = await APIService.getProspects(data)
