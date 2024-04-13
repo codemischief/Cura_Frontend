@@ -589,6 +589,7 @@ const Payments = () => {
     }
     const handleSearch = async () => {
         setPageLoading(true);
+        
         const data = {
             "user_id": 1234,
             "rows": [

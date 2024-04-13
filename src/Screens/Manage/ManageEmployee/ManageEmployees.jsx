@@ -22,6 +22,8 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import SaveConfirmationEmployee from './SaveConfirmationManageEmployee';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeleteEmployeeModal from './DeleteEmployeeModal';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 const ManageEmployees = () => {
 
     const menuRef = useRef();
