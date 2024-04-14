@@ -27,6 +27,7 @@ import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
+
 const ManageEmployees = () => {
 
     const menuRef = useRef();
@@ -902,16 +903,16 @@ const ManageEmployees = () => {
                         </div>
 
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>Manage Employee</h1>
-                            <p className='text-[14px]'>Admin &gt; Manage Employee</p>
+                            <h1 className='text-lg'>Manage Employee</h1>
+                            <p className='text-sm'>Admin &gt; Manage Employee</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative'>
+                        <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
@@ -919,18 +920,18 @@ const ManageEmployees = () => {
                                     setSearchInput(e.target.value);
                                 }}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
+                            <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <button onClick={handleSearch}><img className="h-6" src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New Employee
-                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                    <img className='h-4 w-4' src={Add} alt="add" />
                                 </div>
                             </button>
                         </div>
@@ -953,82 +954,82 @@ const ManageEmployees = () => {
                                 </div>
                             </div>
                             <div className='w-[10%]  p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]'  /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} />
+                                    <button className='w-[32%] p-1' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-4 w-4'  /></button>
                                 </div>
                                 {employeeNameFilter && <CharacterFilter inputVariable={employeeNameInput} setInputVariable={setEmployeeNameInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef}/>}
                                 
                             </div>
 
                             <div className='w-[13%]  p-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]'  /></button>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} />
+                                    <button className='W-[30%] p-1' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-4 w-4'  /></button>
                                 </div>
                                 {employeeIdFilter && <CharacterFilter inputVariable={employeeIdInput} setInputVariable={setEmployeeIdInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[8%]  pt-3 pb-3 pr-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} />
-                                    <button className='p-1'  onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[10%]  p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} />
+                                    <button className='w-[38%] p-1'  onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-4 w-4' /></button>
                                 </div>
                                 {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter}/>}
                             </div>
 
-                            <div className='w-[10%]   pb-3 pt-3 pr-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]'  /></button>
+                            <div className='w-[10%] p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
+                                    <button className='w-[34%] p-1' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-4 w-4' /></button>
                                 </div>
                                 {emailFilter &&<CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput}filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter}/>}
                             </div>
 
-                            <div className='w-[10%]   pr-3 pt-3 pb-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                            <div className='w-[10%]  p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} />
+                                    <button className='w-[30%] p-1'><img src={Filter} className='h-4 w-4' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[8%]   pr-3 pb-3 pt-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                            <div className='w-[10%] p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} />
+                                    <button className='w-[30%] p-1'><img src={Filter} className='h-4 w-4' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} />}
                             </div>
                             
-                            <div className='w-[13%]   p-3'>
-                                <div className="w-[57%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
-                                    <button className='p-1'  onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[14%] p-3'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
+                                    <button className='p-1 w-[30%]'  onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-4 w-4' /></button>
                                 </div>
                                 {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setLdowInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[12%]   pt-3 pb-3 pr-5 '>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[85%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 " type='date' value={ldowInput}onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='w-[15%]' onClick={() => { setLdowFilter((prev) => !prev)}}> <img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[17%]  p-3 '>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput}onChange={(e) => setLdowInput(e.target.value)} />
+                                    <button className='w-[20%] p-1' onClick={() => { setLdowFilter((prev) => !prev)}}> <img src={Filter} className='h-4 w-4' /></button>
                                 </div>
                                 {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef}/>}
                             </div>
-                            <div className='w-[10%]   pt-3 pb-3 pl-9 '>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[90%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" type='text' onChange={(e) => setStatusInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
+                            <div className='w-[10%]  p-3 '>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' onChange={(e) => setStatusInput(e.target.value)} />
+                                    <button className='p-1 w-[30%]'><img src={Filter} className='h-4 w-4' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
                         </div>
                         <div className="w-[15%] flex">
-                            <div className='w-1/2   pt-3 pb-3 pr-3'>
-                                <div className="w-[97%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(Number(e.target.value))} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                            <div className='w-1/2 p-3'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" onChange={(e) => setIdInput(Number(e.target.value))} />
+                                    <button className='p-1 w-[35%] '><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
@@ -1042,7 +1043,7 @@ const ManageEmployees = () => {
                     </div>
                 </div>
 
-                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+                <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                         <div className="w-[85%] flex">
                             <div className='w-[3%] flex'>
@@ -1272,31 +1273,31 @@ const ManageEmployees = () => {
             >
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Employee</div>
+                                <div className="text-base">Add New Employee</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                        <div className="h-auto w-full mt-1 ">
+                            <div className="flex gap-12 justify-center">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Employee Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
+                                        <div className="text-sm">Employee Name <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Pan No<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
+                                        <div className="text-sm">Pan No <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Username <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">Username <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             name="userName"
                                             value={formValues.userName}
                                             defaultValue="Select Username"
@@ -1318,34 +1319,34 @@ const ManageEmployees = () => {
                                         </select>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Date of joining<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
+                                        <div className="text-sm">Date of joining <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Designation<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
+                                        <div className="text-sm">Designation <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Email<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                        <div className="text-sm">Email <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-4 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email" value={formValues.email} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Address Line 1</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                        <div className="text-sm">Address Line 1</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
                                     </div>
                                 </div>
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Employee ID<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
+                                        <div className="text-sm">Employee ID <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">LOB <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">LOB <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="lob"
                                             value={formValues.lob}
                                             defaultValue="Select lob"
@@ -1367,17 +1368,17 @@ const ManageEmployees = () => {
                                         </select>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Date of birth<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
+                                        <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Last Date of Working</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                        <div className="text-sm">Last Date of Working</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Assign Role <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             name="role"
                                             value={formValues.role}
                                             defaultValue="Select Role"
@@ -1399,19 +1400,19 @@ const ManageEmployees = () => {
                                         </select>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Phone Number<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
+                                        <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Address Line 2</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                        <div className="text-sm">Address Line 2</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
                                     </div>
                                 </div>
-                                <div className=" space-y-[12px] py-[20px] px-[10px] ">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             name="country"
                                             value={formValues.country}
                                             defaultValue="Select Country"
@@ -1447,8 +1448,8 @@ const ManageEmployees = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">State Name<label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">State Name<label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             name="state"
                                             value={formValues.state}
                                             defaultValue="Select State"
@@ -1475,8 +1476,8 @@ const ManageEmployees = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">City Name <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">City Name <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             name="city"
                                             value={formValues.city}
                                             defaultValue="Select City"
@@ -1501,17 +1502,17 @@ const ManageEmployees = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Suburb</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                        <div className="text-sm">Suburb</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Zip Code</div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                        <div className="text-sm">Zip Code</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Entities <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                        <div className="text-sm">Entities <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             name="entity"
                                             value={formValues.entity}
                                             defaultValue="Select entity"
@@ -1533,7 +1534,7 @@ const ManageEmployees = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-[10px] flex justify-center items-center "><input
+                        <div className="mt-3 flex justify-center items-center text-sm font-semibold"><input
                             type="checkbox"
                             checked={formValues.status}
                             className='mr-3 h-4 w-4'
@@ -1544,9 +1545,9 @@ const ManageEmployees = () => {
                                 setFormValues(existing)
                             }}
                         />Active</div>
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddEmployee} >Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                        <div className="my-3 flex justify-center items-center gap-3">
+                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddEmployee} >Add</button>
+                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
                         </div>
 
                     </div>

@@ -606,7 +606,7 @@ const ManageClientReceipt = () => {
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                                <button onClick={handleSearch}><img className="h-6" src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
@@ -1186,7 +1186,7 @@ const ManageClientReceipt = () => {
             >
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[370px] ml-[370px]">
                                 <div className="text-base">New Client Receipt</div>
                             </div>
@@ -1305,7 +1305,7 @@ const ManageClientReceipt = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
+                        <div className="my-3 flex justify-center items-center gap-3">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientReceipt} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
