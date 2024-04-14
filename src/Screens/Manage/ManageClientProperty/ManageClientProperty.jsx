@@ -450,6 +450,7 @@ const ManageClientProperty = () => {
     }
 
     const addEmployee = async () => {
+        
         if (!validate()) {
             return;
         }
