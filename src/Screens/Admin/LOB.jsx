@@ -37,7 +37,7 @@ const LOB = () => {
     const [lobError, setLobError] = useState("");
     const [currItem, setCurrItem] = useState({});
     const [sortField, setSortField] = useState("id");
-    const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
+    const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     // const [flag,setFlag] = useState(false);
     useEffect(() => {
         fetchData();
@@ -138,7 +138,7 @@ const LOB = () => {
         })
         setPageLoading(false);
     }
-    const handleAddLob  = () => {
+    const handleAddLob = () => {
         if (lobName == "") {
             setLobError("This Feild Is Mandatory");
             return;
@@ -151,7 +151,7 @@ const LOB = () => {
 
     }
     const addLob = async () => {
-        
+
         const data = {
             "user_id": 1234,
             "name": lobName,
@@ -250,30 +250,6 @@ const LOB = () => {
     const toggleLobFilter = () => {
         setLobFilter((prev) => !prev)
     }
-    const fetchFiltered = async (filterType, filterField) => {
-        const filterArray = [];
-
-        setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "rows": ["id", "name"],
-            "filters": [["name", String(filterType), lobFilterInput]],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        setExistingLOB(result);
-        setFlag((prev) => {
-            return !prev;
-        })
-        setPageLoading(false);
-    }
     const handlePageChange = (event, value) => {
         console.log(value);
         setCurrentPage(value)
@@ -350,6 +326,76 @@ const LOB = () => {
         setCurrItem(item)
         setDeleteLobModal(true);
     }
+
+    const filterMapping = {
+        lob_head : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        id : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Numeric",
+            filterInput : ""
+        }
+    }
+
+    const [filterMapState,setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+        if (type == 'noFilter') setInputVariable("");
+        fetchFiltered(existing);
+    }
+
+    const fetchFiltered = async  (mapState) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key=> {
+            if(mapState[key].filterType != "") {
+                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+            }
+        })
+        console.log('this is getting called')
+        console.log(tempArray)
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "name", "lob_head", "company"],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": searchQuery
+        };
+        const response = await APIService.getLob(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        console.log(t);
+        setExistingLOB(result);
+        setPageLoading(false);
+    }
+
     const [deleteLobModal, setDeleteLobModal] = useState(false);
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
@@ -362,7 +408,7 @@ const LOB = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
-            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob}/>}
+            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 {/* we need the first banner */}
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -418,7 +464,7 @@ const LOB = () => {
                                 <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
                                 <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                             </div>
-                            {lobFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='lob' menuRef={menuRef}/>}
+                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='lob_head' menuRef={menuRef} />}
                         </div>
                     </div>
                     <div className='w-1/6 p-3 '>
@@ -426,7 +472,7 @@ const LOB = () => {
                             <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                             <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                         </div>
-                        {idFilter && <NumericFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='id'/>}
+                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='id' />}
                         <div className='w-1/2 0 p-4'>
 
                         </div>

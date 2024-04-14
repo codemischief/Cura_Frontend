@@ -774,6 +774,7 @@ const Payments = () => {
     }
     const [filterMapState,setFilterMapState] = useState(filterMapping);
     const fetchFiltered = async  (mapState) => {
+        setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
@@ -1067,49 +1068,49 @@ const Payments = () => {
                                     <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {paymentByFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='paymentBy' menuRef={menuRef}/>}
+                                {paymentByFilter && <CharacterFilter inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} filterColumn='paymentby' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%] px-4 py-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {amountFilter && <NumericFilter handleFilter={handleFiltering} columnName='amount' menuRef={menuRef}/>}
+                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {paidOnFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='paidOn' menuRef={menuRef}/>}
+                                {paidOnFilter && <CharacterFilter inputVariable={paidOnFilterInput} setInputVariable={setPaidOnFilterInput} handleFilter={newHandleFilter} filterColumn='paidon' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[14%]  px-4 py-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {paymentModeFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='paymentMode' menuRef={menuRef}/>}
+                                {paymentModeFilter && <CharacterFilter inputVariable={paymentModeFilterInput} setInputVariable={setPaymentModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmode' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {paymentForFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='paymentFor' menuRef={menuRef}/>}
+                                {paymentForFilter && <CharacterFilter inputVariable={paymentForFilterInput} setInputVariable={setPaymentForFilterInput} handleFilter={newHandleFilter} filterColumn='paymentfor' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[15%]  px-4 py-3'>
                                 <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {paymentStatusFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='paymentStatus' menuRef={menuRef}/>}
+                                {paymentStatusFilter && <CharacterFilter inputVariable={paymentStatusFilterInput} setInputVariable={setPaymentStatusFilterInput} handleFilter={newHandleFilter} filterColumn='paymentstatus' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {entityFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='entity' menuRef={menuRef}/>}
+                                {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} handleFilter={newHandleFilter} filterColumn='entity' menuRef={menuRef}/>}
                             </div>
                         </div>
                         <div className='w-[15%] flex'>
@@ -1118,7 +1119,7 @@ const Payments = () => {
                                     <input className="w-9 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {idFilter && <NumericFilter handleFilter={handleFiltering} columnName='id' menuRef={menuRef}/>}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput}  handleFilter={newHandleFilter} columnName='id' menuRef={menuRef}/>}
                             </div>
                             <div className='w-1/2 0 p-4'>
 
