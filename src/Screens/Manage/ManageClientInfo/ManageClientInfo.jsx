@@ -579,7 +579,7 @@ const ManageClientInfo = () => {
             "localcontact2details": "",
             "includeinmailinglist": false,
             "entityid": 1,
-            "tenentof": null,
+            "tenantof": null,
             "tenentofproperty": null
         },
         "client_access": [
@@ -1092,7 +1092,7 @@ const ManageClientInfo = () => {
                 "localcontact2details": formValues.client_info.localcontact2details,
                 "includeinmailinglist": !formValues.client_info.includeinmailinglist,
                 "entityid": Number(formValues.client_info.entityid),
-                "tenantof": 0,
+                "tenantof": formValues.client_info.tenantof,
                 "tenantofproperty": Number(formValues.client_info.tenentofproperty)
             },
             "client_access": formValues.client_access,

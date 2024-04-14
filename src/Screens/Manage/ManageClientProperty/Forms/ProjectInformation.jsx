@@ -96,7 +96,6 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
    }
    const handleInputChange = (value) => {
       console.log(value)
-
    }
   return (
     <div className="h-auto w-full">
