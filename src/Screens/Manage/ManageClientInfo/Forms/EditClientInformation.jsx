@@ -2,7 +2,8 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
-const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities}) => {
+import AsyncSelect from "react-select/async"
+const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities,tenantofname}) => {
     console.log(formErrors)
     const [Salutation, setSalutation] = useState([
         {
@@ -69,7 +70,67 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
     useEffect(() => {
         setAllState(initialStates);
         setAllCity(initialCities);
-    }, [initialStates,initialCities])
+    }, [initialStates,initialCities,tenantofname])
+
+
+
+    const [options,setOptions] = useState([]);
+  const fetchClientData = async () => {
+     const data = {
+      "user_id" : 1234
+     }
+     const response = await APIService.getClientAdmin(data)
+     const res = await response.json();
+     console.log(res.data)
+    //  res.data.map((item) => {
+    //      value : item[0],
+    //      label : item[1]
+    //  })
+     setOptions(res.data.map(x => ({
+      value: x[0],
+      label: x[1]
+    })))
+  }
+  console.log(tenantofname)
+   const [selectedOption,setSelectedOption] = useState(tenantofname);
+   const [query,setQuery] = useState('')
+   const handleClientNameChange = (e) => {
+       console.log('hey')
+       console.log(e)
+      //  setFormValues({...formValues,client_property : {
+      //   ...formValues.client_property,
+      //   clientid : e.value
+      //  }})
+       const existing = {...formValues}
+       const temp = {...existing.client_info}
+       temp.tenantof = e.value
+       existing.client_info = temp;
+       setFormValues(existing)
+       console.log(formValues)
+       setSelectedOption(e)
+   }
+   const loadOptions = async (e) => {
+      console.log(e)
+      if(e.length < 3) return ;
+      const data = {
+        "user_id" : 1234,
+        "pg_no" : 0,
+        "pg_size" : 0,
+        "search_key" : e
+      }
+      const response = await APIService.getClientAdminPaginated(data)
+      const res = await response.json()
+      const results = res.data.map(e => {
+        return {
+          label : e[1],
+          value : e[0]
+        }
+      })
+      if(results === 'No Result Found') {
+        return []
+      }
+      return results
+   }
     return (
         <div className="h-auto w-full">
             <div className="flex gap-10 justify-center items-center">
@@ -281,14 +342,40 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                     </div>
                     <div className="">
                         <div className="text-[13px]">Tenant Of </div>
-                        <select className="text-[11px] px-3 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employeeName" >
-                            <option > </option>
-                            {employeeName && employeeName.map(item => (
-                                <option key={item} value={item}>
-                                    {item[1]}
-                                </option>
-                            ))}
-                        </select>
+                        <AsyncSelect
+                        onChange={handleClientNameChange}
+                        value={selectedOption}
+                        loadOptions={loadOptions}
+                        cacheOptions
+                        defaultOptions
+                        onInputChange={(value) => setQuery(value)}
+                 
+                 styles={{
+                  control: (provided, state) => ({
+                    ...provided,
+                    minHeight : 25,
+                    lineHeight : '1.3',
+                    height : 2,
+                    fontSize : 12,
+                    padding : '1px'
+                  }),
+                  // indicatorSeparator: (provided, state) => ({
+                  //   ...provided,
+                  //   lineHeight : '0.5',
+                  //   height : 2,
+                  //   fontSize : 12 // hide the indicator separator
+                  // }),
+                  dropdownIndicator: (provided, state) => ({
+                    ...provided,
+                    padding: '3px', // adjust padding for the dropdown indicator
+                  }),
+                  options : (provided, state) => ({
+                    ...provided,
+                    fontSize : 12 // adjust padding for the dropdown indicator
+                  })
+                 }}
+            />
+                        
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
 

@@ -1,6 +1,6 @@
 import React, { useState ,useEffect} from 'react'
 import Cross from "../../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 import ClientInformation from '../Forms/ClientInformation';
 import ClientPortal from '../Forms/ClientPortal';
 import BankDetails from "../Forms/BankDetails";
@@ -121,6 +121,7 @@ const EditClientInfoModal = (props) => {
         "scancopy":"dhegfhuefu"
 }        
   }
+  const [pageLoading,setPageLoading] = useState(false);
   const [updatedBankDetails,setUpdatedBankDetails] = useState([]);
   const [addedBankDetails,setAddedBankDetails] = useState([]);
   const [intitialClientData,setInitialClientData] = useState({});
@@ -414,11 +415,34 @@ const EditClientInfoModal = (props) => {
 
     }
   }
+  const [tenantofName,setTenantOfName] = useState({
+    label : "",
+    value : null
+  });
+  const fetchTenantOfData = async (id) => {
+    const data = {
+        "user_id":1234,
+        "table_name":"get_client_info_view",
+        "item_id": id
+    }
+    const response = await APIService.getItembyId(data)
+    const res = await (response.json());
+    console.log(res);
+    const existing = {...tenantofName};
+    existing.label = res.data.firstname + " " + res.data.middlename + " " + res.data.lastname;
+    existing.value = id;
+    setTenantOfName(existing);
+    // setTenantOfName(res.data.firstname + " " + res.data.middlename + " " + res.data.lastname)
+  }
   const fetchInitialClientData = async () => {
+    setPageLoading(true);
     const data = {"user_id" : 1234, "id": props.currClient};
      const response = await APIService.getClientInfoByClientId(data)
      const res = await response.json();
+     console.log(res.data)
+     await fetchTenantOfData(res.data.client_info.tenantof)
      setInitialClientData(res.data);
+     setPageLoading(false);
     //  setFormValues(res.data);
   }
   const fetchClientData = async () => {
@@ -566,7 +590,11 @@ const fetchTenentOfData = async () => {
                             </div>
                         </div>
                         
-                        {selectedDialog == 1 && <EditClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allStates} initialCities={allCities} formErrors={formErrorsClientInfo}/>}
+                        {pageLoading && <div className='flex justify-center items-center my-10 space-x-3'>
+                            <h1>Fetching Data</h1>
+                            <CircularProgress/>
+                        </div>}
+                        {!pageLoading && selectedDialog == 1 && <EditClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allStates} initialCities={allCities} formErrors={formErrorsClientInfo} tenantofname={tenantofName}/>}
                         {selectedDialog == 2 && <EditClientPortal formValues={formValues} setFormValues={setFormValues}/>}
                         {selectedDialog == 3 && <EditBankDetails formValues={formValues} setFormValues={setFormValues}/>}
                         

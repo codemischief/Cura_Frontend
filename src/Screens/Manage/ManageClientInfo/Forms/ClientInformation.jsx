@@ -66,7 +66,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     }
 
 
-    const [options,setOptions] = useState([]);
+  const [options,setOptions] = useState([]);
   const fetchClientData = async () => {
      const data = {
       "user_id" : 1234
