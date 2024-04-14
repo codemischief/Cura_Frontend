@@ -717,13 +717,13 @@ const Payments = () => {
     const [idFilterInput, setIdFilterInput] = useState("");
     const [showDeleteSuccess, setDeleteSuccess] = useState(false);
     const filterMapping = {
-        paymentTo : {
+        paymentto : {
             filterType : "",
             filterValue : "",
             filterData : "String",
             filterInput : ""
         },
-        paymentBy : {
+        paymentby : {
             filterType : "",
             filterValue : "",
             filterData : "String",
@@ -735,25 +735,25 @@ const Payments = () => {
             filterData : "Numeric",
             filterInput : ""
         },
-        paidOn : {
+        paidon : {
             filterType : "",
             filterValue : "",
             filterData : "String",
             filterInput : ""
         },
-        paymentMode : {
+        paymentmode : {
             filterType : "",
             filterValue : "",
             filterData : "String",
             filterInput : ""
         },
-        paymentFor : {
+        paymentfor : {
             filterType : "",
             filterValue : "",
             filterData : "String",
             filterInput : ""
         },
-        paymentStatus : {
+        paymentstatus : {
             filterType : "",
             filterValue : "",
             filterData : "String",
@@ -767,12 +767,75 @@ const Payments = () => {
         },
         id : {
             filterType : "",
-            filterValue : "",
+            filterValue : null,
             filterData : "Numeric",
             filterInput : ""
         }
     }
     const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const fetchFiltered = async  (mapState) => {
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key=> {
+            if(mapState[key].filterType != "") {
+                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+            }
+        })
+        console.log('this is getting called')
+        console.log(tempArray)
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entity",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+            ],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key": searchInput
+        }
+        const response = await APIService.getPayment(data);
+        const result = (await response.json());
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count)
+        setPageLoading(false);
+    }
+    const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
+        
+            var existing = filterMapState;
+            existing = {...existing,[columnName] : {
+                ...existing[columnName],
+                 filterType : type == 'noFilter' ? "" : type
+            }}
+            existing = {...existing, [columnName] : {
+                ...existing[columnName],
+                 filterValue : type == 'noFilter' ? "" : inputVariable
+            }}
+            if(type == 'noFilter') setInputVariable("");
+        
+        fetchFiltered(existing);
+    } 
     const handleFiltering = (type,columnName) => {
         if(columnName == "paymentTo") {
             if(type == "noFilter") {
@@ -997,7 +1060,7 @@ const Payments = () => {
                                     <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)} />
                                     <button className='p-1' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
                                 </div>
-                                {paymentToFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='paymentTo' menuRef={menuRef}/>}
+                                {paymentToFilter && <CharacterFilter inputVariable={paymentToFilterInput} setInputVariable={setPaymentToFilterInput} handleFilter={newHandleFilter} filterColumn='paymentto' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
