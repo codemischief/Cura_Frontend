@@ -74,7 +74,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
 
 
 
-    const [options,setOptions] = useState([]);
+  const [options,setOptions] = useState([]);
   const fetchClientData = async () => {
      const data = {
       "user_id" : 1234
@@ -82,16 +82,12 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
      const response = await APIService.getClientAdmin(data)
      const res = await response.json();
      console.log(res.data)
-    //  res.data.map((item) => {
-    //      value : item[0],
-    //      label : item[1]
-    //  })
      setOptions(res.data.map(x => ({
       value: x[0],
       label: x[1]
     })))
   }
-  console.log(tenantofname)
+   console.log(tenantofname)
    const [selectedOption,setSelectedOption] = useState(tenantofname);
    const [query,setQuery] = useState('')
    const handleClientNameChange = (e) => {

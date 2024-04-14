@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal} from "@mui/material"
+import {Modal, CircularProgress} from "@mui/material"
 import Cross from "../../../../assets/cross.png"
 import { useSearchParams } from 'react-router-dom'
 import { useState , useEffect} from 'react'
@@ -18,7 +18,29 @@ const EditClientProperty = (props) => {
         fetchStateData('5');
          fetchExistingData();
     },[])
+    const [clientName,setClientName] = useState({
+        label : "",
+        value : null
+    })
+    const fetchClientName = async (id) => { 
+            const data = {
+                "user_id":1234,
+                "table_name":"get_client_info_view",
+                "item_id": id
+            }
+            const response = await APIService.getItembyId(data)
+            const res = await (response.json());
+            console.log(res);
+            const existing = {...clientName};
+            existing.label = res.data.firstname + " " + res.data.middlename + " " + res.data.lastname;
+            existing.value = id;
+            console.log(existing)
+            setClientName(existing);
+          
+    }
+    const [pageLoading,setPageLoading] = useState(false)
     const fetchExistingData = async () => {
+        setPageLoading(true);
         // in this we fetch the data of the existing
         const data = {
             "user_id" : 1234,
@@ -27,8 +49,10 @@ const EditClientProperty = (props) => {
         const response = await APIService.getClientPropertyById(data);
         const res = await response.json()
         console.log(res);
+        await fetchClientName(res.data.client_property.clientid);
         setFormValues(res.data);
         setInitialClientPropertyData({...res.data});
+        setPageLoading(false);
         console.log(formValues);
     }
     const fetchClientData = async () => {
@@ -296,8 +320,11 @@ const EditClientProperty = (props) => {
                     <div>Owner Details</div>
                 </div>
             </div>
-
-            {selectedDialog == 1 && <EditProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus}/>}
+            {pageLoading && <div className='flex justify-center items-center my-10 space-x-3'>
+                            <h1>Fetching Data</h1>
+                            <CircularProgress/>
+                        </div>}
+            {!pageLoading && selectedDialog == 1 && <EditProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} clientNameOption={clientName}/>}
             {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues}/>}
             {selectedDialog == 3 && <EditPOADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
             {selectedDialog == 4 && <EditOwnerDetails  formValues={formValues} setFormValues={setFormValues}/>}

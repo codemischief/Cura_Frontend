@@ -25,6 +25,7 @@ import Edit from "../../../assets/edit.png"
 import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProperty';
 import EditClientProperty from './Forms/EditClientProperty';
 import Select from "react-select"
+import DeleteClientProperty from './DeleteClientProperty';
 const ManageClientProperty = () => {
     const menuRef = useRef();
     // we have the module here
@@ -629,9 +630,7 @@ const ManageClientProperty = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    const handleDelete = async (id) => {
-        
-    }
+    
    
     // validate form and to throw Error message
     const validate = () => {
@@ -699,14 +698,7 @@ const ManageClientProperty = () => {
         return res;
     }
 
-    const deleteEmployee = async (id) => {
-        const data = {
-            "user_id": 1234,
-            "id": id
-        }
-        const response = await APIService.deleteEmployee(data);
-        openDeleteSuccess();
-    }
+   
     const handlePageChange = (event, value) => {
         console.log(value);
         setCurrentPage(value)
@@ -793,6 +785,7 @@ const ManageClientProperty = () => {
         fetchData();
     }
     const openDeleteSuccess = () => {
+
         setShowDeleteSuccess(true);
         setTimeout(function () {
             setShowDeleteSuccess(false);
@@ -918,9 +911,27 @@ const ManageClientProperty = () => {
             showAddConfirmation(false);
             openAddSuccess();
         }
-
     }
-    
+    const handleDelete = (id) => {
+        setCurrItem(id)
+        setShowDeleteModal(true);
+    }
+    const deleteClientProperty = async (id) => {
+        const data = {
+            "user_id" : 1234,
+            "id" : id
+        }
+        const response = await APIService.deleteClientProperty(data)
+        const res = await response.json()
+        console.log(res);
+        if(res.result == 'success') {
+            setShowDeleteModal(false)
+            openDeleteSuccess();
+        }
+        fetchData();
+    }
+    // const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
+    const [showDeleteModal,setShowDeleteModal] = useState(false);
     const [addConfirmation,showAddConfirmation] = useState(false);
     const [currClientProperty,setCurrClientProperty] = useState("");
     const [selectedOption,setSelectedOption] = useState("");
@@ -933,6 +944,7 @@ const ManageClientProperty = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Property" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Client Property" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Updated Client Property" />}
+            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)}  handleDelete={deleteClientProperty} item={currItem}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1412,7 +1424,7 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-1/2  flex px-3 py-5 space-x-2'>
                                             <button onClick={() => {handleOpenEdit(item.id)}}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => {}}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => handleDelete(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 
