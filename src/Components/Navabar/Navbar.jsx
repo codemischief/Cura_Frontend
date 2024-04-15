@@ -333,7 +333,7 @@ const Navbar = () => {
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/manageclientinfo">Manage Client</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/manageclientproperty">Manage Client Property</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Client Invoice</p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to ="/manage/manageclientreceipt">Manage Client Recipt</Link> </p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to ="/manage/manageclientreceipt">Manage Client Receipt</Link> </p>
                   </div> 
                </div>
             </div>
@@ -343,7 +343,7 @@ const Navbar = () => {
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Order</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageorder">Manage Order</Link></p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Order Recipt</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Order Receipt</p>
                   </div>               
                </div>
             </div>
@@ -384,7 +384,7 @@ const Navbar = () => {
                <div className='ml-5 mt-4 flex-col space-y-2'>
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Bank Record</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
-                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Order Recipt Mismatch Details</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Order Receipt Mismatch Details</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Bank Balance Reconciliation</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Monthly Bank Summary</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Bank Transfer Reconciliation</p>
@@ -396,20 +396,20 @@ const Navbar = () => {
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Lists</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Payment List</p>
-                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Recipt List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Receipt List</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Order Invoice List</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Vendor Payment List</p>
-                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Recipt List</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Receipt List</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>L and L List</p>
                   </div> 
                </div>
                <div className='ml-5 mt-4 flex-col space-y-2'>
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Monthly Margin</h1>
                   <div className="text-[11px] text-[#505050] space-y-[2px]">
-                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Recipts-Payments</p>
-                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Entity-Recipt-Payments</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Receipts-Payments</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Entity-Receipt-Payments</p>
                   <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>Client Statement-CI,CR and OR(All Entities)</p>
-                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Recipts-Payments Consolidated</p>
+                  <p className='text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1'>LOB-Receipts-Payments Consolidated</p>
                   </div>
                   
                </div>

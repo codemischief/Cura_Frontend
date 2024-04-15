@@ -19,7 +19,9 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
-
+import AsyncSelect from "react-select/async"
+import DeleteClientReceipt from './deleteClientReceipt';
+import SaveConfirmationClientReceipt from './SaveConfirmationClientReceipt';
 const ManageClientReceipt = () => {
 
     const menuRef = useRef();
@@ -69,9 +71,11 @@ const ManageClientReceipt = () => {
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
-    const [deleteConfirmation, showDeleteConfirmation] = useState(false);
+    // const [deleteConfirmation, showDeleteConfirmation] = useState(false);
+    const [existingClientReceipt,setExistingClientReceipt] = useState([]);
+    // const [howReceivedData,setHowReceivedData] = useState([])
     // const [filterArray,setFilterArray] = useState([]);
-
+      
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -94,6 +98,26 @@ const ManageClientReceipt = () => {
             setAllState(result)
         }
     }
+    // const [howReceived,setHowReceivedData] = useState([])
+    const [modesData,setModesData] = useState([]);
+    const fetchHowReceivedData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getHowReceivedAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setHowReceivedData(res.data)
+    }
+    const fetchModesData = async () => {
+        const data = {
+            "user_id" : 1234
+         }
+         const response = await APIService.getModesAdmin(data)
+         const res = await response.json()
+         console.log(res)
+         setModesData(res.data)
+    }
     const fetchCityData = async (id) => {
         const data = { "user_id": 1234, "state_name": id };
         const response = await APIService.getCities(data);
@@ -109,22 +133,22 @@ const ManageClientReceipt = () => {
             // }
         }
     }
-    const fetchUsersData = async () => {
-        setPageLoading(true);
-        // const data = { "user_id":  1234 };
-        const data = { "user_id": 1234 };
-        const response = await APIService.getUsers(data)
-        const result = (await response.json());
+    // const fetchUsersData = async () => {
+    //     setPageLoading(true);
+    //     // const data = { "user_id":  1234 };
+    //     const data = { "user_id": 1234 };
+    //     const response = await APIService.getUsers(data)
+    //     const result = (await response.json());
 
-        console.log(result.data);
-        console.log('hey')
-        setFormValues((existing) => {
-            return { ...existing, userName: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllUsername(result.data);
-        }
-    }
+    //     console.log(result.data);
+    //     console.log('hey')
+    //     setFormValues((existing) => {
+    //         return { ...existing, userName: result.data[0].id }
+    //     })
+    //     if (Array.isArray(result.data)) {
+    //         setAllUsername(result.data);
+    //     }
+    // }
 
     const fetchRoleData = async () => {
         setPageLoading(true);
@@ -177,6 +201,7 @@ const ManageClientReceipt = () => {
             setAllLOB(result.data);
         }
     }
+
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
@@ -184,21 +209,42 @@ const ManageClientReceipt = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "receivedby",
+              "receivedbyname",
+              "amount",
+              "tds",
+              "paymentmode",
+              "paymentmodename",
+              "clientid",
+              "clientname",
+              "receiptdesc",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "serviceamount",
+              "reimbursementamount",
+              "entityid",
+              "entity",
+              "howreceived",
+              "howreceivedid",
+              "officeid",
+              "office"
+          ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "sort_by": ["id"],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15
+          };
+        const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientReceipt(result);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -246,6 +292,8 @@ const ManageClientReceipt = () => {
     }
     useEffect(() => {
         fetchData();
+        fetchHowReceivedData()
+        fetchModesData()
         fetchCountryData();
         fetchStateData(5)
         fetchCityData("Maharashtra");
@@ -293,16 +341,26 @@ const ManageClientReceipt = () => {
     const receivedBy = [1, 2, 3, 4];
     const receiptMode = [1, 2, 3, 4];
     const client = [1, 2, 3, 4];
-    const howReceived = [1, 2, 3, 4];
+    // const howReceived = [1, 2, 3, 4];
+    const [howReceivedData,setHowReceivedData] = useState([]);
     //end
-
+    const [usersData,setUsersData] = useState([]);
+    const fetchUsersData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getUsers(data)
+        const res = await response.json()
+        setUsersData(res.data)
+    }
     const handleAddClientReceipt = () => {
         console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
-        setIsEmployeeDialogue(false);
+        // if (!validate()) {
+        //     console.log('hu')
+        //     return;
+        // }
+        // setIsEmployeeDialogue(false);
+        setIsClientReceiptDialogue(false)
         setOpenAddConfirmation(true)
 
     }
@@ -448,10 +506,7 @@ const ManageClientReceipt = () => {
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
-    const handleDelete = (id) => {
-        setCurrEmployeeId(id);
-        showDeleteConfirmation(true);
-    }
+   
     const deleteEmployee = async (id) => {
         const data = {
             "user_id": 1234,
@@ -569,6 +624,75 @@ const ManageClientReceipt = () => {
         }, 2000)
         fetchData();
     }
+
+
+    const [options,setOptions] = useState([]);
+    const [selectedOption,setSelectedOption] = useState({
+        label : "Enter Client Name",
+        value : null
+       });
+       const [query,setQuery] = useState('')
+       const handleClientNameChange = (e) => {
+           console.log('hey')
+           console.log(e)
+          //  setFormValues({...formValues,client_property : {
+          //   ...formValues.client_property,
+          //   clientid : e.value
+          //  }})
+           setCurrClientName(e.label);
+           const existing = {...formValues}
+           const temp = {...existing.client_info}
+           temp.tenantof = e.value
+           existing.client_info = temp;
+           setFormValues(existing)
+           console.log(formValues)
+           setSelectedOption(e)
+       }
+       const loadOptions = async (e) => {
+          console.log(e)
+          if(e.length < 3) return ;
+          const data = {
+            "user_id" : 1234,
+            "pg_no" : 0,
+            "pg_size" : 0,
+            "search_key" : e
+          }
+          const response = await APIService.getClientAdminPaginated(data)
+          const res = await response.json()
+          const results = res.data.map(e => {
+            return {
+              label : e[1],
+              value : e[0]
+            }
+          })
+          if(results === 'No Result Found') {
+            return []
+          }
+          return results
+       }
+       const [currReceiptId,setCurrReceiptId] = useState(0);
+       const [deleteConfirmation,setDeleteConfirmation] = useState(false)
+       const handleDelete = (id) => {
+           setCurrReceiptId(id)
+           setDeleteConfirmation(true)
+       }
+       const addClientReceipt = async () => {
+        const data = {
+
+        }
+       }
+       const deleteClientRceipt = async (id) => {
+          const data = {
+            "user_id" : 1234,
+            "id" : id
+          }
+
+          const response = await APIService.deleteClientReceipt(data)
+          const res = await response.json()
+          setDeleteConfirmation(false)
+          fetchData()
+       }
+       const [currClientName,setCurrClientName]  = useState("")
     return (
         <div className='h-screen'>
             <Navbar />
@@ -576,9 +700,11 @@ const ManageClientReceipt = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />}
+            {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
+            {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName}/>}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} />}
+           
+            {deleteConfirmation && <DeleteClientReceipt handleClose={() => {setDeleteConfirmation(false)}} handleDelete={deleteClientRceipt} item={currReceiptId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1027,73 +1153,73 @@ const ManageClientReceipt = () => {
                         
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                        {!pageLoading && existingEmployees.map((item, index) => {
+                        {!pageLoading && existingClientReceipt.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                {/* <div className="w-[85%] flex min-h-0">
-                                    <div className='w-[3%] flex'>
-                                        <div className='p-3'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.employeename} </p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[13%]  flex overflow-hidden'>
-                                        <div className='p-3 '>
-                                            <p >{item.employeeid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.phoneno}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.roleid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-[3px]'>
-                                            <p>{item.panno}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[14%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[17%]  flex  overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
-                                        </div>
-                                    </div>
+                                <div className="w-[87%] flex">
+                            <div className='w-[3%] flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                 </div>
-                                <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex overflow-hidden'>
-                                        <div className='p-3 ml-[6px]'>
-                                            <p>{item.id}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
-                                    </div>
-                                </div> */}
+                            </div>
+                            <div className='w-[14%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.clientname}</p>
+                                </div>
+                            </div>
+                            <div className='w-[10%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.amount} </p>
+                                </div>
+                            </div>
+                            <div className='w-[13%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p> {item.serviceamount} </p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    {item.reimbursementamount}
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.dated}</p>
+                                </div>
+                            </div>
+                            <div className='w-[13%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.howreceived} </p>
+                                </div>
+                            </div>
+                            <div className='w-[11%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.receivedbyname}</p>
+                                </div>
+                            </div>
+                            <div className='w-[7%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.tds}</p>
+                                </div>
+                            </div>
+                            <div className='w-[5%]  flex'>
+                                <div className='p-3'>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-[13%] flex">
+                            <div className='w-1/2  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{item.id} </p>
+                                </div>
+                            </div>
+                            <div className='w-1/2  flex'>
+                                <div className='px-3 py-5 flex'>
+                                       <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {} }/>
+                                       <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                </div>
+                            </div>
+                        </div>
                                 
 
                             </div>
@@ -1217,9 +1343,9 @@ const ManageClientReceipt = () => {
                                             value={formValues.receivedBy}
                                             onChange={handleChange}
                                         >
-                                            {receivedBy.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {usersData.map((item) => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.name}
                                                 </option>
                                             ))}
                                         </select>
@@ -1235,9 +1361,9 @@ const ManageClientReceipt = () => {
                                             value={formValues.receiptMode}
                                             onChange={handleChange}
                                         >
-                                            {receiptMode.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {modesData.map((item) => (
+                                                <option key={item[0]} value={item[0]}>
+                                                    {item[1]}
                                                 </option>
                                             ))}
                                         </select>
@@ -1247,18 +1373,38 @@ const ManageClientReceipt = () => {
                                         <div className="text-sm">
                                             Client <label className="text-red-500">*</label>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="client"
-                                            value={formValues.client}
-                                            onChange={handleChange}
-                                        >
-                                            {client.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        <AsyncSelect
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+                                            styles={{
+                                            control: (provided, state) => ({
+                                                ...provided,
+                                                minHeight : 25,
+                                                lineHeight : '1.3',
+                                                height : 2,
+                                                fontSize : 12,
+                                                padding : '1px'
+                                            }),
+                                            // indicatorSeparator: (provided, state) => ({
+                                            //   ...provided,
+                                            //   lineHeight : '0.5',
+                                            //   height : 2,
+                                            //   fontSize : 12 // hide the indicator separator
+                                            // }),
+                                            dropdownIndicator: (provided, state) => ({
+                                                ...provided,
+                                                padding: '3px', // adjust padding for the dropdown indicator
+                                            }),
+                                            options : (provided, state) => ({
+                                                ...provided,
+                                                fontSize : 12 // adjust padding for the dropdown indicator
+                                            })
+                                            }}
+                                        />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -1271,9 +1417,9 @@ const ManageClientReceipt = () => {
                                             value={formValues.howReceived}
                                             onChange={handleChange}
                                         >
-                                            {howReceived.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {howReceivedData.map((item) => (
+                                                <option key={item[0]} value={item[0]}>
+                                                    {item[1]}
                                                 </option>
                                             ))}
                                         </select>
