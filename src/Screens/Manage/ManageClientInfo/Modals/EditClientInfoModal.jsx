@@ -440,7 +440,10 @@ const EditClientInfoModal = (props) => {
      const response = await APIService.getClientInfoByClientId(data)
      const res = await response.json();
      console.log(res.data)
-     await fetchTenantOfData(res.data.client_info.tenantof)
+     if(res.data.client_info.tenantof != null) {
+        await fetchTenantOfData(res.data.client_info.tenantof)
+     }
+     
      setInitialClientData(res.data);
      setPageLoading(false);
     //  setFormValues(res.data);
