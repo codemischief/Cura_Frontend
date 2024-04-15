@@ -1134,6 +1134,7 @@ const ManageClientProperty = () => {
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
+        setFilterMapState(mapState)
         console.log(filterMapState)
         Object.keys(mapState).forEach(key=> {
             if(mapState[key].filterType != "") {
@@ -1492,7 +1493,7 @@ const ManageClientProperty = () => {
                     </div>
                     {/* <h1>{existingClientProperty.length}</h1> */}
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
-                        {!pageLoading && existingClientProperty.map((item, index) => {
+                        {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[3%] flex'>
