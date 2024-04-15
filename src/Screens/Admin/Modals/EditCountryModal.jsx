@@ -27,7 +27,7 @@ const handleEdit = async () => {
           >
             <div className='flex justify-center '>
                 <div className="w-[778px]  h-[250px] bg-white rounded-lg">
-                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                         <div className="mr-[270px] ml-[270px]">
                             <div className="text-[20px]">Edit Country</div>
                         </div>

@@ -12,6 +12,8 @@ import { Modal, CircularProgress, Pagination } from "@mui/material";
 import Edit from '../../assets/edit.png';
 import Trash from "../../assets/trash.png";
 import Add from "./../../assets/add.png";
+import Pdf from "../../assets/pdf.png";
+import Excel from "../../assets/excel.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
@@ -19,6 +21,8 @@ import FailureModal from '../../Components/modals/FailureModal';
 import DeleteModal from '../../Components/modals/DeleteModal';
 import { APIService } from '../../services/API';
 import EditCountryModal from './Modals/EditCountryModal';
+import CharacterFilter from "../../Components/Filters/CharacterFilter"
+import NumericFilter from '../../Components/Filters/NumericFilter';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
 import SaveConfirmationCountry from './Modals/SaveConfirmationCountry';
@@ -42,7 +46,8 @@ const Country = () => {
   const [sortField, setSortField] = useState("id")
   const [flag, setFlag] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [openAddConfirmation,setOpenAddConfirmation] = useState(false);
+  const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
+  const [isSearchOn, setIsSearchOn] = useState(false);
   // const [flag,setFlag] = useState(false);
   const fetchUserId = async () => {
     const response = await authService.getUserId();
@@ -77,7 +82,7 @@ const Country = () => {
       "order": flag ? "asc" : "desc",
       "pg_no": Number(pageNumber),
       "pg_size": Number(currentPages),
-      "search_key": searchQuery
+      "search_key": isSearchOn ? searchQuery : ""
     };
     const response = await APIService.getCountries(data)
 
@@ -114,7 +119,7 @@ const Country = () => {
       "order": flag ? "asc" : "desc",
       "pg_no": Number(currentPage),
       "pg_size": Number(quantity),
-      "search_key": searchQuery
+      "search_key": isSearchOn ? searchQuery : ""
     };
     const response = await APIService.getCountries(data)
     const temp = (await response.json());
@@ -142,10 +147,10 @@ const Country = () => {
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": [sortField],
-      "order": "desc",
+      "order": flag ? "asc" : "desc",
       "pg_no": 1,
       "pg_size": 15,
-      "search_key": searchQuery
+      "search_key": isSearchOn ? searchQuery : ""
     };
     const response = await APIService.getCountries(data)
     const temp = (await response.json()).data;
@@ -165,7 +170,7 @@ const Country = () => {
   }
 
   const addCountry = async () => {
-    
+
     const data = { "user_id": userId || 1234, "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
     const res = await response.json();
@@ -198,7 +203,7 @@ const Country = () => {
   const editCountry = async (item) => {
     setCurrentCountry(item.country_name);
     setShowEdit(true);
-   
+
     // console.log(currentCountry);
 
   }
@@ -237,7 +242,7 @@ const Country = () => {
     }
     setCurrentCountry(formValues.countryName)
     setIsCountryDialogue(false);
-    setOpenAddConfirmation(true);a
+    setOpenAddConfirmation(true); a
     // addCountry();
   };
 
@@ -276,14 +281,7 @@ const Country = () => {
       country_name: x[1]
     })))
   }
-  const handleDownload = () => {
-    // we handle the download here
-    const worksheet = XLSX.utils.json_to_sheet(existingCountries);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(workbook, "CountryData.xlsx");
-    FileSaver.saveAs(workbook, "demo.xlsx");
-  }
+
   const handleRefresh = () => {
     fetchCountryData();
   }
@@ -293,7 +291,7 @@ const Country = () => {
     setPageLoading(true);
     setSortField(field)
     const data = {
-      "user_id":  1234,
+      "user_id": 1234,
       "rows": ["id", "name"],
       "filters": [],
       "sort_by": [field],
@@ -318,7 +316,8 @@ const Country = () => {
   }
 
   const handleSearch = async () => {
-    setPageLoading(true)
+    setPageLoading(true);
+    setIsSearchOn(true);
     console.log('hey')
     const data = {
       "user_id": 1234,
@@ -348,35 +347,6 @@ const Country = () => {
   const toggleCountryFilter = () => {
     setCountryFilter((prev) => !prev)
   }
-  const fetchFiltered = async (filterType, filterField) => {
-    const filterArray = [];
-
-    setPageLoading(true);
-    const data = {
-      "user_id": userId || 1234,
-      "rows": ["id", "name"],
-      "filters": [["name", String(filterType), countryFilterInput]],
-      "sort_by": [],
-      "order": "asc",
-      "pg_no": 1,
-      "pg_size": Number(currentPages)
-    };
-    const response = await APIService.getCountries(data)
-    const temp = await response.json();
-    const result = temp.data;
-    const t = temp.total_count;
-    setTotalItems(t);
-
-    // setPageLoading(false);
-    setCountryValues(result.map(x => ({
-      sl: x[0],
-      country_name: x[1]
-    })))
-    setFlag((prev) => {
-      return !prev;
-    })
-    setPageLoading(false);
-  }
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
     fetchPageCountryData(value);
@@ -385,6 +355,7 @@ const Country = () => {
   const [idFilterInput, setIdFilterInput] = useState("");
   const handleCloseSearch = async () => {
     setSearchQuery("")
+    setIsSearchOn(true);
     setPageLoading(true)
     const data = {
       "user_id": userId || 1234,
@@ -410,6 +381,143 @@ const Country = () => {
     setPageLoading(false)
   }
   const [failureMessage, setFailureMessage] = useState("");
+
+  const openDownload = () => {
+    setDownloadModal(true);
+  }
+
+  const handleExcelDownload = async () => {
+    const data = {
+      "user_id": 1234,
+      "rows": ["id", "name"],
+      "filters": [],
+      "sort_by": [sortField],
+      "order": "desc",
+      "pg_no": 0,
+      "pg_size": 0,
+      "search_key": searchQuery
+    };
+    const response = await APIService.getCountries(data)
+    const temp = (await response.json()).data;
+    const result = temp.data;
+    const worksheet = XLSX.utils.json_to_sheet(result);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "CountryData.xlsx");
+    FileSaver.saveAs(workbook, "demo.xlsx");
+  }
+
+  const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+    console.log(columnName)
+    console.log('hey')
+    console.log(filterMapState);
+    if (columnName == 'status') {
+      var existing = filterMapState;
+      if (type == 'noFilter') {
+        setInputVariable("");
+      }
+      if (inputVariable.toLowerCase() == 'active') {
+        existing = {
+          ...existing, [columnName]: {
+            ...existing[columnName],
+            filterValue: 'true'
+          }
+        }
+        existing = {
+          ...existing, [columnName]: {
+            ...existing[columnName],
+            filterType: type == 'noFilter' ? "" : type
+          }
+        }
+      } else if (inputVariable.toLowerCase() == 'inactive') {
+        existing = {
+          ...existing, [columnName]: {
+            ...existing[columnName],
+            filterValue: 'false'
+          }
+        }
+        existing = {
+          ...existing, [columnName]: {
+            ...existing[columnName],
+            filterType: type == 'noFilter' ? "" : type
+          }
+        }
+      } else {
+        return;
+      }
+
+    } else {
+      var existing = filterMapState;
+      existing = {
+        ...existing, [columnName]: {
+          ...existing[columnName],
+          filterType: type == 'noFilter' ? "" : type
+        }
+      }
+      existing = {
+        ...existing, [columnName]: {
+          ...existing[columnName],
+          filterValue: type == 'noFilter' ? "" : inputVariable
+        }
+      }
+
+      if (type == 'noFilter') setInputVariable("");
+    }
+
+    fetchFiltered(existing);
+  }
+
+  const filterMapping = {
+    name: {
+      filterType: "",
+      filterValue: "",
+      filterData: "String",
+      filterInput: ""
+    },
+    id: {
+      filterType: "",
+      filterValue: null,
+      filterData: "Numeric",
+      filterInput: ""
+    }
+  }
+  const [filterMapState, setFilterMapState] = useState(filterMapping);
+
+  const fetchFiltered = async (mapState) => {
+    setFilterMapState(mapState)
+    const tempArray = [];
+    // we need to query thru the object
+    // console.log(filterMapState);
+    console.log(filterMapState)
+    Object.keys(mapState).forEach(key => {
+      if (mapState[key].filterType != "") {
+        tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+      }
+    })
+    setPageLoading(true);
+    const data = {
+      "user_id": 1234,
+      "rows": ["id", "name"],
+      "filters": tempArray,
+      "sort_by": [sortField],
+      "order": flag ? "asc" : "desc",
+      "pg_no": Number(currentPage),
+      "pg_size": Number(currentPages),
+      "search_key": isSearchOn ? searchQuery : ""
+    };
+    const response = await APIService.getCountries(data)
+    const temp = (await response.json()).data;
+    const result = temp.data;
+    const t = temp.total_count;
+    console.log(result);
+    setTotalItems(t);
+    setCountryValues(result.map(x => ({
+      sl: x[0],
+      country_name: x[1]
+    })))
+    setPageLoading(false);
+  }
+
   return (
     <div className='h-screen w-full'>
       <Navbar />
@@ -417,7 +525,7 @@ const Country = () => {
       <FailureModal isOpen={showFailure} message={failureMessage} />
       <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
       <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} />
-      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry}/>}
+      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry} />}
       <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
 
@@ -459,105 +567,46 @@ const Country = () => {
           </div>
 
         </div>
-        <div className='h-12 w-full bg-white flex justify-between'>
-          <div className='w-3/4 flex'>
-            <div className='w-[10%] p-4'>
+        <div className='h-12 w-full bg-white flex justify-between text-xs'>
+          <div className='w-[80%] flex'>
+            <div className='w-[5%] px-3 py-4'>
 
             </div>
-            <div className='w-[20%] p-3 ml-16'>
-              <div className="w-[53%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
-                <button className='p-1' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+            <div className='w-[20%] px-3 py-2.5'>
+              <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
+                <button className='px-1 py-2 w-[25%]' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
               </div>
-              {countryFilter && <div className='h-[270px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm' ref={menuRef}>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <h1 >No Filter</h1>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <button onClick={() => fetchFiltered('contains')}><h1 >Contains</h1></button>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <button onClick={() => fetchFiltered('contains')}><h1 >DoesNotContain</h1></button>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <button onClick={() => fetchFiltered('startsWith')}><h1 >StartsWith</h1></button>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                  <button onClick={() => fetchFiltered('endsWith')}><h1 >EndsWith</h1></button>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <button onClick={() => fetchFiltered('exactMatch')}><h1 >EqualTo</h1></button>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <button onClick={() => fetchFiltered('isNull')}><h1 >isNull</h1></button>
-                </div>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                  <button onClick={() => fetchFiltered('isNotNull')}><h1 >NotIsNull</h1></button>
-                </div>
-              </div>}
+              {countryFilterInput && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef}/>}
             </div>
 
           </div>
-          <div className='w-1/6 p-3'>
+          <div className='w-[20%] px-3 py-2.5'>
             <div className='w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-              <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
-              <button className='p-1' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+              <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
+              <button className='px-1 py-2 w-[25%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
             </div>
-            {idFilter && <div className='h-[360px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef}>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('noFilter', 0)}><h1 >No Filter</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('contains', 0)}><h1 >EqualTo</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('contains', 0)}><h1 >NotEqualTo</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('startsWith', 0)}><h1 >GreaterThan</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                <button onClick={() => handleFilter('endsWith', 0)}><h1 >LessThan</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('exactMatch', 0)}><h1 >GreaterThanOrEqualTo</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('isNull', 0)}><h1 >LessThanOrEqualTo</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >Between</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotBetween</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >isNull</h1></button>
-              </div>
-              <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                <button onClick={() => handleFilter('isNotNull', 0)}><h1 >NotIsNull</h1></button>
-              </div>
-            </div>}
-            <div className='w-1/2 0 p-4'>
+            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
+            <div className='w-1/2 p-4'>
 
             </div>
           </div>
         </div>
-        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+        <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
           <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-            <div className='w-3/4 flex'>
-              <div className='w-1/6 p-4'>
+            <div className='w-[80%] flex'>
+              <div className='w-[5%] px-3 py-4'>
                 <p>Sr </p>
               </div>
-              <div className='w-5/6  p-4'>
+              <div className='w-[95%]  px-3 py-4'>
                 <p>Country<button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
               </div>
             </div>
-            <div className='w-1/6  flex'>
-              <div className='w-1/2  p-4'>
+            <div className='w-[20%]  flex'>
+              <div className='w-1/2  px-3 py-4'>
                 <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
               </div>
-              <div className='w-1/2 0 p-4'>
+              <div className='w-1/2 px-3 py-4'>
                 <p>Edit</p>
               </div>
             </div>
@@ -570,20 +619,20 @@ const Country = () => {
             </div>}
             {/* {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>} */}
             {!pageLoading && existingCountries.map((item, index) => {
-              return <div className='w-full h-12  flex justify-between border-gray-400 border-b-[1px]'>
-                <div className='w-3/4 flex'>
-                  <div className='w-1/6 p-4'>
+              return <div className='w-full h-10 flex justify-between border-gray-400 border-b-[1px] text-xs'>
+                <div className='w-[80%] flex'>
+                  <div className='w-[5%] px-3 py-2'>
                     <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                   </div>
-                  <div className='w-5/6  p-4'>
+                  <div className='w-[95%]  px-3 py-2'>
                     <p>{item.country_name}</p>
                   </div>
                 </div>
-                <div className='w-1/6  flex'>
-                  <div className='w-1/2  p-4'>
+                <div className='w-[20%] flex'>
+                  <div className='w-1/2  px-3 py-2 ml-1'>
                     <p>{item.sl}</p>
                   </div>
-                  <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                  <div className='w-1/2 px-3 py-2 flex items-center gap-5'>
                     <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
                     <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button>
                   </div>
@@ -637,15 +686,23 @@ const Country = () => {
           <div className="flex text-sm">
             <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
           </div>
-          {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+          {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5'>
 
-            <div className='flex'>
-              <p>Download as pdf</p>
-              {/* <img src=''/> */}
-            </div>
-            <div>
-              <p>Download as Excel</p>
-            </div>
+            <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+
+            <button>
+              <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+
+                <p>Download as pdf</p>
+                <img src={Pdf} />
+              </div>
+            </button>
+            <button onClick={handleExcelDownload}>
+              <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                <p>Download as Excel</p>
+                <img src={Excel} />
+              </div>
+            </button>
           </div>}
 
           <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
@@ -655,7 +712,7 @@ const Country = () => {
           </div>
           <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
             {/* download */}
-            <button onClick={handleDownload}><p>Download</p></button>
+            <button onClick={openDownload}><p>Download</p></button>
             <img src={downloadIcon} className="h-2/3" />
           </div>
         </div>
@@ -663,8 +720,8 @@ const Country = () => {
       <Modal open={isCountryDialogue}
         fullWidth={true}
         maxWidth={'md'}
-        className='flex justify-center items-center' 
-        >
+        className='flex justify-center items-center'
+      >
         <div className='flex justify-center '>
           <div className="w-[778px]  h-auto bg-white rounded-lg ">
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
@@ -678,10 +735,10 @@ const Country = () => {
             <form onSubmit={handleSubmit} className='mb-3 space-y-16'>
               <div className="h-auto w-full mt-2  ">
                 <div className="flex gap-[48px] justify-center items-center">
-                  <div className=" space-y-[12px] py-[20px] px-[10px]">
+                  <div className=" space-y-3 py-5 ">
                     <div className="">
-                      <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                      <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px]"
+                      <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
+                      <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] outline-none"
                         type="text"
                         name="countryName"
                         value={formValues.countryName}
