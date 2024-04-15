@@ -357,7 +357,7 @@ const EditPayments = (props) => {
             >
                 <div className=''>
                     <div className="w-[1100px]  h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Contractual Payments </div>
                             </div>

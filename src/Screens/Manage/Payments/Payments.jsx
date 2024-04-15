@@ -38,6 +38,7 @@ const Payments = () => {
     const [currentStatementId, setCurrentStatementId] = useState();
     const [showDelete, setShowDelete] = useState(false);
     const [searchInput, setSearchInput] = useState("");
+    const [isSearchOn, setIsSearchOn] = useState(false);
     const [sortField, setSortField] = useState("id");
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -134,6 +135,9 @@ const Payments = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
+
+    const [flag, setFlag] = useState(false)
+
     const fetchData = async () => {
         setPageLoading(true);
         const tempArray = [];
@@ -169,10 +173,10 @@ const Payments = () => {
             ],
             "filters": tempArray,
             "sort_by": [sortField],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15,
-            "search_key": searchInput
+            "order": flag ? "asc" : "desc",
+            "pg_no":  Number(currentPage),
+            "pg_size":  Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -217,10 +221,10 @@ const Payments = () => {
             ],
             "filters": tempArray,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
-            "search_key": searchInput
+            "search_key": isSearchOn ? searchInput : ""
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -264,10 +268,10 @@ const Payments = () => {
             ],
             "filters": tempArray,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key": searchInput
+            "search_key": isSearchOn ? searchInput : ""
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -614,7 +618,9 @@ const Payments = () => {
         fetchData();
     }
     const handleSearch = async () => {
+
         setPageLoading(true);
+        setIsSearchOn(true);
 
         const data = {
             "user_id": 1234,
@@ -641,7 +647,7 @@ const Payments = () => {
             ],
             "filters": [],
             "sort_by": [sortField],
-            "order": field ? "asc" : "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
@@ -654,6 +660,7 @@ const Payments = () => {
     }
     const handleCloseSearch = async () => {
         setPageLoading(true);
+        setIsSearchOn(false);
         setSearchInput("");
         const data = {
             "user_id": 1234,
@@ -691,8 +698,44 @@ const Payments = () => {
         setTotalItems(result.total_count);
         setPageLoading(false);
     }
-    const handleExcelDownload = () => {
-
+    const handleExcelDownload = async () => {
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entity",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+            ],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0
+        };
+        const response = await APIService.getPayment(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const worksheet = XLSX.utils.json_to_sheet(result);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "PaymentData.xlsx");
+        FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleFilter = () => {
 
@@ -811,10 +854,10 @@ const Payments = () => {
             ],
             "filters": tempArray,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
-            "search_key": searchInput
+            "search_key": isSearchOn ? searchInput : ""
         }
         const response = await APIService.getPayment(data);
         const result = (await response.json());
@@ -995,6 +1038,56 @@ const Payments = () => {
         fetchData();
     }
 
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "paymentto",
+                "paymentby",
+                "amount",
+                "paidon",
+                "paymentmode",
+                "paymentstatus",
+                "description",
+                "banktransactionid",
+                "paymentfor",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entity",
+                "officeid",
+                "tds",
+                "professiontax",
+                "month",
+                "deduction"
+            ],
+            "filters": tempArray,
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getPayment(data);
+        const result = (await response.json());
+        console.log(result);
+        setExistingPayments(result.data);
+        setTotalItems(result.total_count)
+        setPageLoading(false);
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1011,30 +1104,30 @@ const Payments = () => {
                             <img className='h-5 w-5' src={backLink} />
                         </div>
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>Manage Contractual Payments</h1>
-                            <p className='text-[14px]'>Manage &gt; Contractual Payments</p>
+                            <h1 className='text-lg'>Manage Contractual Payments</h1>
+                            <p className='text-sm'>Manage &gt; Contractual Payments</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative '>
+                        <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                            <button onClick={handleCloseSearch}><img src={Cross} className=' w-5 h-5 mx-2' /></button>
+                            <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[260px] rounded-lg text-[14px]" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-9 w-80 rounded-lg " onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add Contractual Payments
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
@@ -1051,73 +1144,73 @@ const Payments = () => {
 
                 {/* filters */}
                 <div className='h-12 w-full bg-white'>
-                    <div className='flex justify-between'>
-                        <div className='w-[85%] flex'>
+                    <div className='flex justify-between items-center '>
+                        <div className='w-[85%] flex items-center'>
                             <div className='w-[5%] p-4'>
                                 {/* <p>Sr. </p> */}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentToFilter && <CharacterFilter inputVariable={paymentToFilterInput} setInputVariable={setPaymentToFilterInput} handleFilter={newHandleFilter} filterColumn='paymentto' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%] ' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentByFilter && <CharacterFilter inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} filterColumn='paymentby' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%] px-4 py-3'>
-                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
-                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paidOnFilter && <CharacterFilter inputVariable={paidOnFilterInput} setInputVariable={setPaidOnFilterInput} handleFilter={newHandleFilter} filterColumn='paidon' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[14%]  px-4 py-3'>
-                                <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentModeFilter && <CharacterFilter inputVariable={paymentModeFilterInput} setInputVariable={setPaymentModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmode' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentForFilter && <CharacterFilter inputVariable={paymentForFilterInput} setInputVariable={setPaymentForFilterInput} handleFilter={newHandleFilter} filterColumn='paymentfor' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[15%]  px-4 py-3'>
-                                <div className="w-[68%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentStatusFilter && <CharacterFilter inputVariable={paymentStatusFilterInput} setInputVariable={setPaymentStatusFilterInput} handleFilter={newHandleFilter} filterColumn='paymentstatus' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
-                                <div className="w-[95%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} handleFilter={newHandleFilter} filterColumn='entity' menuRef={menuRef}/>}
                             </div>
                         </div>
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  px-4 py-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-9 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput}  handleFilter={newHandleFilter} columnName='id' menuRef={menuRef}/>}
                             </div>
@@ -1129,40 +1222,40 @@ const Payments = () => {
                 </div>
 
 
-                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+                <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                         <div className='w-[85%] flex'>
                             <div className='w-[5%] p-4'>
                                 <p>Sr. </p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>Payment to<span className="font-extrabold">↑↓</span></p>
+                                <p>Payment to <button onClick={() => handleSort('paymentto')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>payment by <span className="font-extrabold">↑↓</span></p>
+                                <p>payment by <button onClick={() => handleSort('paymentby')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p>Amount <span className="font-extrabold">↑↓</span></p>
+                                <p>Amount <button onClick={() => handleSort('amount')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p>Paid On <span className="font-extrabold">↑↓</span></p>
+                                <p>Paid On <button onClick={() => handleSort('paidon')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[14%]  p-4'>
-                                <p>Payment mode <span className="font-extrabold">↑↓</span></p>
+                                <p>Payment mode <button onClick={() => handleSort('paymentmode')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>Payment For <span className="font-extrabold">↑↓</span></p>
+                                <p>Payment For <button onClick={() => handleSort('paymentfor')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[15%]  p-4'>
-                                <p>Payment status <span className="font-extrabold">↑↓</span></p>
+                                <p>Payment status <button onClick={() => handleSort('paymentstatus')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p>Entity <span className="font-extrabold">↑↓</span></p>
+                                <p>Entity <button onClick={() => handleSort('entity')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                         </div>
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  p-4'>
-                                <p>ID <span className="font-extrabold">↑↓</span></p>
+                                <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-1/2 0 p-4'>
                                 <p>Edit</p>
@@ -1173,7 +1266,7 @@ const Payments = () => {
                         {pageLoading && <LinearProgress />}
                         {!pageLoading && existingPayments.map((item, index) => {
                             return <div className='w-full min-h-8 h-auto  flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className='w-[85%] flex text-[11px]'>
+                                <div className='w-[85%] flex text-xs'>
                                     <div className='w-[5%] h-[50%] p-4'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                     </div>
@@ -1203,7 +1296,7 @@ const Payments = () => {
                                     </div>
                                 </div>
                                 <div className='w-[15%] flex'>
-                                    <div className='w-1/2 h-[50%] px-4 py-2 ml-[12px]'>
+                                    <div className='w-1/2 h-[50%] px-4 py-2 ml-2'>
                                         <p>{item.id}</p>
                                     </div>
                                     <div className='w-1/2 0 p-4 flex space-x-2'>
@@ -1300,23 +1393,23 @@ const Payments = () => {
                     <div className="w-[1100px]  h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Contractual Payments </div>
+                                <div className="text-base">New Contractual Payments </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                <button onClick={handleClose}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
                         {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
-                        <div className="h-auto w-full mt-[5px] p-6">
-                            <div className="flex gap-[48px] justify-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                        <div className="h-auto w-full mt-1 ">
+                            <div className="flex gap-12 justify-center">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px] text-[#787878]">Cura Office </div>
-                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        <div className="text-sm text-[#787878]">Cura Office </div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Payment To <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                        <div className="text-sm">Payment To <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
@@ -1326,8 +1419,8 @@ const Payments = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Payment By <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
@@ -1338,17 +1431,17 @@ const Payments = () => {
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Amount <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                        <div className="text-sm">Amount <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Description </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                        <div className="text-sm">Description </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Payment For <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                        <div className="text-sm">Payment For <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
                                             {paymentFor.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
@@ -1358,10 +1451,10 @@ const Payments = () => {
                                         {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
                                     </div>
                                 </div>
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">Payment Mode <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                        <div className="text-sm">Payment Mode <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
                                             {paymentMode.map(item => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
@@ -1371,8 +1464,8 @@ const Payments = () => {
                                         {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entity" value={formValues.entity} onChange={handleChange} >
+                                        <div className="text-sm">Entity <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="entity" value={formValues.entity} onChange={handleChange} >
                                             {allEntities.map(item => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
@@ -1382,13 +1475,13 @@ const Payments = () => {
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Paid On <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.paidon}</div>
+                                        <div className="text-sm">Paid On <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.paidon}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Month <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
+                                        <div className="text-sm">Month <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
                                             {selectedMonth.map(item => (
                                                 <option key={item.id} value={item.month}>
                                                     {item.month}
@@ -1398,13 +1491,13 @@ const Payments = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.month}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">TDS <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                        <div className="text-sm">TDS <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                        <div className="text-sm">Profession Tax <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.professiontax}</div>
                                     </div>
                                 </div>
@@ -1412,7 +1505,7 @@ const Payments = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-2">
-                            <div className=" mb-2 flex justify-center items-center gap-[10px]">
+                            <div className=" mt-5 mb-3 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleAddPayment}>Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
