@@ -816,6 +816,7 @@ const Payments = () => {
         }
     }
     const [filterMapState,setFilterMapState] = useState(filterMapping);
+    
     const fetchFiltered = async  (mapState) => {
         setPageLoading(true);
         const tempArray = [];
