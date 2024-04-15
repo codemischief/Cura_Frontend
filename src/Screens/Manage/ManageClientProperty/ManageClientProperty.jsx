@@ -265,7 +265,8 @@ const ManageClientProperty = () => {
             "sort_by": [sortField],
             "order": flag  ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": 15,
+            "search_key" : searchInput
           };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
@@ -324,7 +325,8 @@ const ManageClientProperty = () => {
             "sort_by": [sortField],
             "order": flag  ? "asc" : "desc",
             "pg_no": Number(page),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
           };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
@@ -385,7 +387,8 @@ const ManageClientProperty = () => {
             "sort_by": [sortField],
             "order": flag  ? "asc" : "desc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(quantity)
+            "pg_size": Number(quantity),
+            "search_key" : searchInput
           };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
@@ -735,45 +738,121 @@ const ManageClientProperty = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
-        setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
+            ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag  ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
-            "search_key": searchInput
-        };
-        const response = await APIService.getEmployees(data);
+            "search_key" : searchInput
+          };
+        const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result)
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "client",
+              "clientid",
+              "project",
+              "projectid",
+              "propertytypeid",
+              "propertytype",
+              "suburb",
+              "cityid",
+              "city",
+              "state",
+              "countryid",
+              "country",
+              "layoutdetails",
+              "numberofparkings",
+              "internalfurnitureandfittings",
+              "leveloffurnishing",
+              "propertystatus",
+              "status",
+              "initialpossessiondate",
+              "poagiven",
+              "poaid",
+              "electricityconsumernumber",
+              "electricitybillingunit",
+              "otherelectricitydetails",
+              "gasconnectiondetails",
+              "propertytaxnumber",
+              "clientservicemanager",
+              "propertymanager",
+              "comments",
+              "propertyownedbyclientonly",
+              "textforposting",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "electricitybillingduedate"
+            ],
             "filters": [],
             "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "order": flag  ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": ""
-        };
-        const response = await APIService.getEmployees(data);
+            "pg_size": 15,
+            "search_key" : ""
+          };
+        const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result)
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
     const openAddSuccess = () => {

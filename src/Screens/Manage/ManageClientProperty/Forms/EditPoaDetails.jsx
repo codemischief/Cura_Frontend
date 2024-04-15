@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 
 const EditPOADetails = ({initialCountries,initialStates,initialCities,formValues,setFormValues}) => {
-
+  console.log(initialCountries)
   const [country, setCountry] = useState(initialCountries);
   const [city, setCity] = useState(initialCities);
   const [state, setState] = useState(initialStates);
