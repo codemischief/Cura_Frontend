@@ -1331,7 +1331,7 @@ const ManageClientProperty = () => {
                     </div>
                 </div> */}
                 <div className='h-12 w-full bg-white'>
-                    <div className='w-full h-12 bg-white flex justify-between'>
+                    <div className='w-full h-12 bg-white flex justify-between text-xs '>
                         <div className="w-[85%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='p-3'>
@@ -1340,7 +1340,7 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-[10%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setClientNameFilterInput(e.target.value)} /> 
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setClientNameFilterInput(e.target.value)} /> 
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} />}
@@ -1348,7 +1348,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[10%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPropertySuburbFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertySuburbFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} />}
@@ -1356,7 +1356,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[8%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPropertyCityFilterInput(e.target.value)} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyCityFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyCityFilter && <CharacterFilter inputVariable={propertyCityFilterInput} setInputVariable={setPropertyCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
@@ -1364,7 +1364,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[10%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPropertyTypeFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyTypeFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} />}
@@ -1372,7 +1372,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[9%]  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
@@ -1380,7 +1380,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[17%]  flex p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertyDescription' menuRef={menuRef} />}
@@ -1388,7 +1388,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[17%]  flex p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setPorjectNameFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPorjectNameFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPorjectNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} />}
@@ -1397,7 +1397,7 @@ const ManageClientProperty = () => {
                         <div className="w-[15%] flex">
                             <div className='w-1/2  flex p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px]" onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput}  handleFilter={newHandleFilter} columnName='id' menuRef={menuRef}/>}
