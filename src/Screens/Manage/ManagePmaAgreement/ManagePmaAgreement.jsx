@@ -181,26 +181,48 @@ const ManagePmaArgreement = () => {
     }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
+    const [existingPmaAgreement,setExistingPmaAgreement] = useState([]);
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "clientpropertyid",
+              "startdate",
+              "enddate",
+              "actualenddate",
+              "active",
+              "scancopy",
+              "reasonforearlyterminationifapplicable",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "description",
+              "rented",
+              "fixed",
+              "rentedtax",
+              "fixedtax",
+              "orderid",
+              "orderdescription",
+              "poastartdate",
+              "poaenddate",
+              "poaholder"
+            ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 1,
+            "pg_size": 15
+          };
+        const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingPmaAgreement(result);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -986,74 +1008,90 @@ const ManagePmaArgreement = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingEmployees.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                {/* <div className="w-[85%] flex min-h-0">
-                                    <div className='w-[3%] flex'>
-                                        <div className='p-3'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.employeename} </p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[13%]  flex overflow-hidden'>
-                                        <div className='p-3 '>
-                                            <p >{item.employeeid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.phoneno}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.email}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.roleid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-[3px]'>
-                                            <p>{item.panno}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[14%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[17%]  flex  overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
-                                        </div>
-                                    </div>
+                            return <div className='w-full h-12 bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                                 <div className="w-[90%] flex">
+                            <div className='w-[2%] flex'>
+                                <div className='px-3 py-5'>
+                                    <p>{index + 1}</p>
                                 </div>
-                                <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex overflow-hidden'>
-                                        <div className='p-3 ml-[6px]'>
-                                            <p>{item.id}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
-                                    </div>
-                                </div> */}
-
-
+                            </div>
+                            <div className='w-[10.8%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[14.8%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[9.8%]  flex '>
+                                <div className='p-3'>
+                                    <p>Order</p>
+                                    <p>Description</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[8.8%]  flex'>
+                                <div className='p-3'>
+                                    <p>Property</p>
+                                    <p>Status</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[9.8%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Description <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[7.8%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Status <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                            <div className='w-[9.8%]  flex'>
+                                <div className='p-3'>
+                                    <p>PMA</p>
+                                    <p>Start Date</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[8.8%]  flex'>
+                                <div className='p-3'>
+                                    <p>PMA</p>
+                                    <p>End Date</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[8.8%]  flex'>
+                                <div className='p-3'>
+                                    <p>POA</p>
+                                    <p>Start Date</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[8.8%]  flex'>
+                                <div className='p-3'>
+                                    <p>POA</p>
+                                    <p>End Date</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                        </div>
+                        <div className="w-[10%] flex">
+                            <div className='w-[65%]  flex'>
+                                <div className='p-3'>
+                                    <p>POA</p>
+                                    <p>Holder</p>
+                                </div>
+                                <div className="font-extrabold py-5">↑↓</div>
+                            </div>
+                            <div className='w-[35%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Edit</p>
+                                </div>
+                            </div>
+                        </div>
                             </div>
                         })}
 
