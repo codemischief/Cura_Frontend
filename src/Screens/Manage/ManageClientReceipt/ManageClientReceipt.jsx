@@ -22,6 +22,7 @@ import FailureModal from '../../../Components/modals/FailureModal';
 import AsyncSelect from "react-select/async"
 import DeleteClientReceipt from './deleteClientReceipt';
 import SaveConfirmationClientReceipt from './SaveConfirmationClientReceipt';
+import EditClientReceipt from './EditClientReceipt';
 const ManageClientReceipt = () => {
 
     const menuRef = useRef();
@@ -115,6 +116,10 @@ const ManageClientReceipt = () => {
          }
          const response = await APIService.getModesAdmin(data)
          const res = await response.json()
+         const existing = {...formValues}
+         console.log(res.data[0][0])
+         existing.receiptMode = res.data[0][0],
+         setFormValues(existing)
          console.log(res)
          setModesData(res.data)
     }
@@ -351,6 +356,9 @@ const ManageClientReceipt = () => {
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
+        const existing = {...formValues}
+        existing.receivedBy = res.data[0].id,
+        setFormValues(existing)
         setUsersData(res.data)
     }
     const handleAddClientReceipt = () => {
@@ -360,8 +368,8 @@ const ManageClientReceipt = () => {
         //     return;
         // }
         // setIsEmployeeDialogue(false);
-        setIsClientReceiptDialogue(false)
-        setOpenAddConfirmation(true)
+        // setIsClientReceiptDialogue(false)
+        // setOpenAddConfirmation(true)
 
     }
     const addEmployee = async () => {
@@ -419,7 +427,7 @@ const ManageClientReceipt = () => {
     }
 
     const initialValues = {
-        receivedDate: "",
+        receivedDate: null,
         receivedBy: "",
         receiptMode: "",
         client: "",
@@ -438,7 +446,13 @@ const ManageClientReceipt = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-
+    const [currClientReceipt,setCurrClientReceipt] = useState({});
+    
+    const handleEdit = (item) => {
+        // we need to handle opening the edit here
+        setCurrClientReceipt(item)
+        setIsEditDialogue(true);
+    }
 
     // validate form and to throw Error message
     const validate = () => {
@@ -507,16 +521,7 @@ const ManageClientReceipt = () => {
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
    
-    const deleteEmployee = async (id) => {
-        const data = {
-            "user_id": 1234,
-            "id": id
-        }
-        const response = await APIService.deleteEmployee(data);
-        showDeleteConfirmation(false);
-
-        openDeleteSuccess();
-    }
+    
     const handlePageChange = (event, value) => {
         console.log(value);
         setCurrentPage(value)
@@ -641,9 +646,7 @@ const ManageClientReceipt = () => {
           //  }})
            setCurrClientName(e.label);
            const existing = {...formValues}
-           const temp = {...existing.client_info}
-           temp.tenantof = e.value
-           existing.client_info = temp;
+           existing.client = e.value
            setFormValues(existing)
            console.log(formValues)
            setSelectedOption(e)
@@ -696,7 +699,8 @@ const ManageClientReceipt = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess}/>}
+            {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
@@ -1214,8 +1218,8 @@ const ManageClientReceipt = () => {
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
-                                <div className='px-3 py-5 flex'>
-                                       <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => {} }/>
+                                <div className='px-3 py-5 flex space-x-2'>
+                                       <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)}/>
                                        <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                 </div>
                             </div>
@@ -1343,6 +1347,7 @@ const ManageClientReceipt = () => {
                                             value={formValues.receivedBy}
                                             onChange={handleChange}
                                         >
+                                            {/* <option value="none" hidden >Select Received By</option> */}
                                             {usersData.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
