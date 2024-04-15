@@ -15,6 +15,7 @@ const EditClientProperty = (props) => {
         fetchPropertyType();
         fetchClientData();
         fetchPropertyStatus();
+        fetchCountryData();
         fetchStateData('5');
          fetchExistingData();
     },[])
@@ -22,6 +23,16 @@ const EditClientProperty = (props) => {
         label : "",
         value : null
     })
+    const fetchCountryData = async () => {
+        setPageLoading(true);
+        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries(data)
+        const result = (await response.json()).data;
+        console.log(result.data);
+        if (Array.isArray(result.data)) {
+            setAllCountry(result.data);
+        }
+    }
     const fetchClientName = async (id) => { 
             const data = {
                 "user_id":1234,
@@ -253,7 +264,7 @@ const EditClientProperty = (props) => {
             "user_id": 1234,
             "client_property_id": props.clientId,
             "client_property_info": {
-              "clientid": 44598,
+              "clientid": Number(formValues.client_property.clientid),
               "propertytype": Number(formValues.client_property.propertytype),
               "leveloffurnishing": Number(formValues.client_property.leveloffurnishing),
               "numberofparkings": Number(formValues.client_property.numberofparkings),
