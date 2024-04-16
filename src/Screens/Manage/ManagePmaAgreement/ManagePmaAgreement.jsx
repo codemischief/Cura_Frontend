@@ -208,14 +208,19 @@ const ManagePmaArgreement = () => {
               "orderdescription",
               "poastartdate",
               "poaenddate",
-              "poaholder"
+              "poaholder",
+              "clientname",
+              "status",
+              "propertystatus",
+              "propertydescription"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15
-          };
+          }
+          ;
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -229,21 +234,47 @@ const ManagePmaArgreement = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "clientpropertyid",
+              "startdate",
+              "enddate",
+              "actualenddate",
+              "active",
+              "scancopy",
+              "reasonforearlyterminationifapplicable",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "description",
+              "rented",
+              "fixed",
+              "rentedtax",
+              "fixedtax",
+              "orderid",
+              "orderdescription",
+              "poastartdate",
+              "poaenddate",
+              "poaholder",
+              "clientname",
+              "status",
+              "propertystatus",
+              "propertydescription"
+            ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "pg_size": 15
+          }
+          ;
+        const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingPmaAgreement(result);
         setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
@@ -1007,96 +1038,89 @@ const ManagePmaArgreement = () => {
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                        {!pageLoading && existingEmployees.map((item, index) => {
-                            return <div className='w-full h-12 bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                        {!pageLoading && existingPmaAgreement.map((item, index) => {
+                            return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                  <div className="w-[90%] flex">
                             <div className='w-[2%] flex'>
                                 <div className='px-3 py-5'>
-                                    <p>{index + 1}</p>
+                                   <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                 </div>
                             </div>
                             <div className='w-[10.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
+                                    <p>{item.clientname}</p>
                                 </div>
                             </div>
                             <div className='w-[14.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                    <p>{item.propertydescription}</p>
                                 </div>
                             </div>
                             <div className='w-[9.8%]  flex '>
                                 <div className='p-3'>
-                                    <p>Order</p>
-                                    <p>Description</p>
+                                    <p>{item.orderdescription}</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                               
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>Property</p>
                                     <p>Status</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                               
                             </div>
                             <div className='w-[9.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Description <span className="font-extrabold">↑↓</span></p>
+                                    <p>{item.description}</p>
                                 </div>
                             </div>
                             <div className='w-[7.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Status <span className="font-extrabold">↑↓</span></p>
+                                    <p>{item.status}</p>
                                 </div>
                             </div>
                             <div className='w-[9.8%]  flex'>
                                 <div className='p-3'>
-                                    <p>PMA</p>
-                                    <p>Start Date</p>
+                                    <p>{item.startdate}</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                               
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
-                                    <p>PMA</p>
-                                    <p>End Date</p>
+                                    <p>{item.enddate}</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                              
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
-                                    <p>POA</p>
-                                    <p>Start Date</p>
+                                    <p>{item.poastartdate}</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
-                                    <p>POA</p>
-                                    <p>End Date</p>
+                                     <p>{item.poaenddate}</p>
+                                    
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                
                             </div>
                         </div>
                         <div className="w-[10%] flex">
                             <div className='w-[65%]  flex'>
                                 <div className='p-3'>
-                                    <p>POA</p>
-                                    <p>Holder</p>
+                                    <p>{item.poaholder}</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                {/* <div className="font-extrabold py-5">↑↓</div> */}
                             </div>
-                            <div className='w-[35%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Edit</p>
+                            <div className='w-[35%] py-3  flex'>
+                                <div className='flex space-x-1'>
+                                      <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
+                                      <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => { }} />
                                 </div>
                             </div>
                         </div>
                             </div>
                         })}
-
-
-
                     </div>
 
 
