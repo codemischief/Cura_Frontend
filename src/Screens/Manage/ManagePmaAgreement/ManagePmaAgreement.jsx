@@ -21,7 +21,8 @@ import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { Description } from '@mui/icons-material';
-
+import AsyncSelect from "react-select/async"
+import DeletePmaAgreement from './DeletePmaAgreement';
 const ManagePmaArgreement = () => {
 
     const menuRef = useRef();
@@ -232,6 +233,7 @@ const ManagePmaArgreement = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        setCurrentPage(pageNumber)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -265,7 +267,7 @@ const ManagePmaArgreement = () => {
             "sort_by": ["id"],
             "order": "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": 15
+            "pg_size": Number(currentPages)
           }
           ;
         const response = await APIService.getPmaAgreement(data);
@@ -282,21 +284,48 @@ const ManagePmaArgreement = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+              "id",
+              "clientpropertyid",
+              "startdate",
+              "enddate",
+              "actualenddate",
+              "active",
+              "scancopy",
+              "reasonforearlyterminationifapplicable",
+              "dated",
+              "createdby",
+              "isdeleted",
+              "description",
+              "rented",
+              "fixed",
+              "rentedtax",
+              "fixedtax",
+              "orderid",
+              "orderdescription",
+              "poastartdate",
+              "poaenddate",
+              "poaholder",
+              "clientname",
+              "status",
+              "propertystatus",
+              "propertydescription"
+            ],
             "filters": [],
-            "sort_by": [sortField],
+            "sort_by": ["id"],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": Number(pageNumber),
             "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
-        };
-        const response = await APIService.getEmployees(data);
+            "search_key" : searchInput
+          }
+          ;
+        const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingPmaAgreement(result);
         setPageLoading(false);
     }
     useEffect(() => {
@@ -308,7 +337,7 @@ const ManagePmaArgreement = () => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
-
+     
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setEmpNameFilter(false);
@@ -350,14 +379,14 @@ const ManagePmaArgreement = () => {
     const client = [1, 2, 3, 4];
     //end
 
-    const handleAddLLAgreement = () => {
+    const handleAddPmaAgreement = () => {
         console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
-        setIsLLAgreementDialogue(false);
-        setOpenAddConfirmation(true)
+        // if (!validate()) {
+        //     console.log('hu')
+        //     return;
+        // }
+        // setIsLLAgreementDialogue(false);
+        // setOpenAddConfirmation(true)
 
     }
     const addEmployee = async () => {
@@ -510,10 +539,7 @@ const ManagePmaArgreement = () => {
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
-    const handleDelete = (id) => {
-        setCurrEmployeeId(id);
-        showDeleteConfirmation(true);
-    }
+   
     const deleteEmployee = async (id) => {
         const data = {
             "user_id": 1234,
@@ -601,6 +627,24 @@ const ManagePmaArgreement = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     }
+    const [showDeleteModal,setShowDeleteModal] = useState(false)
+    const [currPma,setCurrPma] = useState("");
+    const handleDelete = (id) => {
+        setCurrPma(id);
+        setShowDeleteModal(true)
+    }
+    const deletePma = async (id) => {
+        const data = {
+            "user_id" : 1234,
+            "id" : id
+        }
+        const response = await APIService.deletePmaAgreement(data)
+        const res = await response.json()
+        if(res.result == 'success') {
+            setShowDeleteModal(false);
+            openDeleteSuccess()
+        }
+    }
     const openAddSuccess = () => {
         // (false);
         setShowAddSuccess(true);
@@ -631,16 +675,64 @@ const ManagePmaArgreement = () => {
         }, 2000)
         fetchData();
     }
+
+
+    const [selectedOption,setSelectedOption] = useState({
+        label : "Enter Client Name",
+        value : null
+       });
+       const [query,setQuery] = useState('')
+       const handleClientNameChange = (e) => {
+           console.log('hey')
+           console.log(e)
+          //  setFormValues({...formValues,client_property : {
+          //   ...formValues.client_property,
+          //   clientid : e.value
+          //  }})
+          const existing = {...formValues}
+          existing.client = e.value
+          setFormValues(existing)
+        //    const existing = {...formValues}
+        //    const temp = {...existing.client_property}
+        //    temp.clientid = e.value
+        //    existing.client_property = temp;
+        //    setFormValues(existing)
+           console.log(formValues)
+           setSelectedOption(e)
+       }
+       const loadOptions = async (e) => {
+          console.log(e)
+          if(e.length < 3) return ;
+          const data = {
+            "user_id" : 1234,
+            "pg_no" : 0,
+            "pg_size" : 0,
+            "search_key" : e
+          }
+          const response = await APIService.getClientAdminPaginated(data)
+          const res = await response.json()
+          const results = res.data.map(e => {
+            return {
+              label : e[1],
+              value : e[0]
+            }
+          })
+          if(results === 'No Result Found') {
+            return []
+          }
+          return results
+       }
     return (
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
             {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} />}
+            
+            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1115,7 +1207,7 @@ const ManagePmaArgreement = () => {
                             <div className='w-[35%] py-3  flex'>
                                 <div className='flex space-x-1'>
                                       <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
-                                      <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => { }} />
+                                      <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                 </div>
                             </div>
                         </div>
@@ -1224,18 +1316,39 @@ const ManagePmaArgreement = () => {
                                         <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="client"
-                                            value={formValues.client}
-                                            onChange={handleChange}
-                                        >
-                                            {client.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        <AsyncSelect
+                 onChange={handleClientNameChange}
+                 value={selectedOption}
+                 loadOptions={loadOptions}
+                 cacheOptions
+                 defaultOptions
+                 onInputChange={(value) => setQuery(value)}
+                 
+                 styles={{
+                  control: (provided, state) => ({
+                    ...provided,
+                    minHeight : 25,
+                    lineHeight : '1.3',
+                    height : 2,
+                    fontSize : 12,
+                    padding : '1px'
+                  }),
+                  // indicatorSeparator: (provided, state) => ({
+                  //   ...provided,
+                  //   lineHeight : '0.5',
+                  //   height : 2,
+                  //   fontSize : 12 // hide the indicator separator
+                  // }),
+                  dropdownIndicator: (provided, state) => ({
+                    ...provided,
+                    padding: '3px', // adjust padding for the dropdown indicator
+                  }),
+                  options : (provided, state) => ({
+                    ...provided,
+                    fontSize : 12 // adjust padding for the dropdown indicator
+                  })
+                 }}
+            />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -1363,7 +1476,7 @@ const ManagePmaArgreement = () => {
                             }}
                         />Active</div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLLAgreement} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddPmaAgreement} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
