@@ -456,7 +456,7 @@ const State = () => {
                             {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef}/>}
                         </div>
                     </div>
-                    <div className='w-[20%]  flex px-4 py-2.5'>
+                    <div className='w-[20%]   px-4 py-2.5'>
                         <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px] '>
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
                             <button className='px-1 py-2 w-[30%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>

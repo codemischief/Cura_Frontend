@@ -148,7 +148,7 @@ const ManageBankStatement = () => {
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": filterArray,
+            "filters": [],
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": 1,

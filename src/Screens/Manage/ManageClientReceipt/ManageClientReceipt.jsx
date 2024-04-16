@@ -24,7 +24,30 @@ import DeleteClientReceipt from './deleteClientReceipt';
 import SaveConfirmationClientReceipt from './SaveConfirmationClientReceipt';
 import EditClientReceipt from './EditClientReceipt';
 const ManageClientReceipt = () => {
-
+    const initialRows =  [
+        "id",
+        "receivedby",
+        "receivedbyname",
+        "amount",
+         "recddate",   
+         "tds",
+        "paymentmode",
+        "paymentmodename",
+        "clientid",
+        "clientname",
+        "receiptdesc",
+        "dated",
+        "createdby",
+        "isdeleted",
+        "serviceamount",
+        "reimbursementamount",
+        "entityid",
+        "entity",
+        "howreceived",
+        "howreceivedid",
+        "officeid",
+        "office"
+    ]
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -116,12 +139,8 @@ const ManageClientReceipt = () => {
          }
          const response = await APIService.getModesAdmin(data)
          const res = await response.json()
-         const existing = {...formValues}
-         console.log(res.data[0][0])
-         existing.receiptMode = res.data[0][0],
-         setFormValues(existing)
-         console.log(res)
          setModesData(res.data)
+         console.log(res)
     }
     const fetchCityData = async (id) => {
         const data = { "user_id": 1234, "state_name": id };
@@ -185,27 +204,7 @@ const ManageClientReceipt = () => {
         }
     }
 
-    const fetchLobData = async () => {
-        setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
-        };
-        const response = await APIService.getLob(data);
-        const result = (await response.json());
-        console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
-        if (Array.isArray(result.data)) {
-            setAllLOB(result.data);
-        }
-    }
+    
 
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
@@ -214,29 +213,7 @@ const ManageClientReceipt = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-              "id",
-              "receivedby",
-              "receivedbyname",
-              "amount",
-              "tds",
-              "paymentmode",
-              "paymentmodename",
-              "clientid",
-              "clientname",
-              "receiptdesc",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "serviceamount",
-              "reimbursementamount",
-              "entityid",
-              "entity",
-              "howreceived",
-              "howreceivedid",
-              "officeid",
-              "office"
-          ],
+            "rows": initialRows,
             "filters": [],
             "sort_by": ["id"],
             "order": "desc",
@@ -256,7 +233,7 @@ const ManageClientReceipt = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": initialRows,
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -264,13 +241,13 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientReceipt(result);
         setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
@@ -278,7 +255,7 @@ const ManageClientReceipt = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": initialRows,
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -286,13 +263,13 @@ const ManageClientReceipt = () => {
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientReceipt(result);
         setPageLoading(false);
     }
     useEffect(() => {
@@ -305,7 +282,7 @@ const ManageClientReceipt = () => {
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
-        fetchLobData();
+     
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
@@ -358,81 +335,31 @@ const ManageClientReceipt = () => {
         const res = await response.json()
         const existing = {...formValues}
         existing.receivedBy = res.data[0].id,
+        console.log(existing.receivedBy)
         setFormValues(existing)
         setUsersData(res.data)
     }
     const handleAddClientReceipt = () => {
         console.log(formValues)
-        // if (!validate()) {
-        //     console.log('hu')
-        //     return;
-        // }
+        if (!validate()) {
+            console.log('hu')
+            return;
+        }
+        setIsClientReceiptDialogue(false)
+        setOpenAddConfirmation(true);
         // setIsEmployeeDialogue(false);
         // setIsClientReceiptDialogue(false)
         // setOpenAddConfirmation(true)
 
     }
-    const addEmployee = async () => {
-        // console.log('clicked')
-        console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
-        // setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "employeename": formValues.employeeName,
-            "employeeid": formValues.employeeId,
-            "userid": 1236,
-            "roleid": formValues.role,
-            "dateofjoining": formValues.doj,
-            "dob": formValues.dob,
-            "panno": formValues.panNo,
-            "status": formValues.status,
-            "phoneno": Number(formValues.phNo),
-            "email": formValues.email,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": Number(formValues.state),
-            "country": Number(formValues.country),
-            "zip": formValues.zipCode,
-            "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
-            "isdeleted": false,
-            "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob,
-            "lastdateofworking": formValues.lastDOW,
-            "designation": formValues.designation
-        }
-        const response = await APIService.addEmployee(data);
-
-        const result = (await response.json())
-
-        setOpenAddConfirmation(false);
-        console.log(result)
-        setIsClientReceiptDialogue(false);
-        if (result.result == "success") {
-            setFormValues(initialValues);
-            openAddSuccess();
-        } else {
-            openFailureModal();
-            setErrorMessage(result.message)
-        }
-
-        console.log(data);
-        console.log(result);
-    }
 
     const initialValues = {
         receivedDate: null,
-        receivedBy: "",
-        receiptMode: "",
+        receivedBy: 1,
+        receiptMode: 3,
         client: "",
-        howReceived: "",
-        serviceAmount: "",
+        howReceived: 1,
+        serviceAmount: null,
         reimbursementAmount: "",
         amountReceived: "",
         TDS: "",
@@ -467,26 +394,8 @@ const ManageClientReceipt = () => {
                 return { ...existing, receivedDate: "" }
             })
         }
-        if (!formValues.receivedBy) {
-            setFormErrors((existing) => {
-                return { ...existing, receivedBy: "Select Recived By" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, receivedBy: "" }
-            })
-        }
-        if (!formValues.receiptMode) {
-            setFormErrors((existing) => {
-                return { ...existing, receiptMode: "Select Receipt Mode" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, receiptMode: "" }
-            })
-        }
+       
+       
         if (!formValues.client) {
             setFormErrors((existing) => {
                 return { ...existing, client: "Select Client" }
@@ -497,24 +406,49 @@ const ManageClientReceipt = () => {
                 return { ...existing, client: "" }
             })
         }
-        if (!formValues.howReceived) {
-            setFormErrors((existing) => {
-                return { ...existing, howReceived: "Select How Received" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, howReceived: "" }
-            })
-        }
         if (!formValues.amountReceived) {
             setFormErrors((existing) => {
                 return { ...existing, amountReceived: "Enter Amount received" }
             })
             res = false;
+        }else if (!Number.isInteger(Number(formValues.amountReceived))) {
+            setFormErrors((existing) => {
+                return { ...existing, amountReceived: "Enter A Numeric Value" }
+            })
+            res = false;
         } else {
             setFormErrors((existing) => {
                 return { ...existing, amountReceived: "" }
+            })
+        }
+        if (!Number.isInteger(Number(formValues.TDS))) {
+            setFormErrors((existing) => {
+                return { ...existing, TDS: "Enter A Numeric Value" }
+            })
+            res = false;
+        }else if(Number.isInteger(Number(formValues.TDS))) {
+            setFormErrors((existing) => {
+                return { ...existing, TDS: "" }
+            })
+        }
+        if (!Number.isInteger(Number(formValues.serviceAmount))) {
+            setFormErrors((existing) => {
+                return { ...existing, serviceAmount: "Enter A Numeric Value" }
+            })
+            res = false;
+        }else if(Number.isInteger(Number(formValues.serviceAmount))) {
+            setFormErrors((existing) => {
+                return { ...existing, serviceAmount: "" }
+            })
+        }
+        if (!Number.isInteger(Number(formValues.reimbursementAmount))) {
+            setFormErrors((existing) => {
+                return { ...existing, reimbursementAmount: "Enter A Numeric Value" }
+            })
+            res = false;
+        }else if(Number.isInteger(Number(formValues.reimbursementAmount))) {
+            setFormErrors((existing) => {
+                return { ...existing, reimbursementAmount: "" }
             })
         }
         return res;
@@ -561,20 +495,21 @@ const ManageClientReceipt = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": initialRows,
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientReceipt(result);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
@@ -583,7 +518,7 @@ const ManageClientReceipt = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": initialRows,
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -591,12 +526,13 @@ const ManageClientReceipt = () => {
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientReceipt(result);
         setPageLoading(false);
     }
     const openAddSuccess = () => {
@@ -622,7 +558,7 @@ const ManageClientReceipt = () => {
         fetchData();
     }
     const openEditSuccess = () => {
-        setIsEditDialogue(false);
+        setIsEditDialogue(false)
         setShowEditSuccess(true);
         setTimeout(function () {
             setShowEditSuccess(false);
@@ -681,8 +617,28 @@ const ManageClientReceipt = () => {
        }
        const addClientReceipt = async () => {
         const data = {
-
+            "user_id":1234,
+            "receivedby":formValues.receivedBy,
+            "amount":Number(formValues.amountReceived),
+            "tds":Number(formValues.TDS),
+            "recddate" : formValues.receivedDate,
+            "paymentmode":Number(formValues.receiptMode),
+            "clientid":formValues.client,
+            "receiptdesc":formValues.receiptDescription,
+            "serviceamount":formValues.serviceAmount,
+            "reimbursementamount":formValues.reimbursementAmount,
+            "entityid":1,
+            "howreceivedid":formValues.howReceived,
+            "officeid":1
         }
+        const response = await APIService.addClientReceipt(data)
+        const res = await response.json()
+        if(res.result == 'success') {
+            setOpenAddConfirmation(false)
+            fetchData()
+        }
+        console.log(data)
+
        }
        const deleteClientRceipt = async (id) => {
           const data = {
@@ -703,7 +659,7 @@ const ManageClientReceipt = () => {
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Client Receipt" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName}/>}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
@@ -1187,7 +1143,7 @@ const ManageClientReceipt = () => {
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>{item.dated}</p>
+                                    <p>{item.recddate}</p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
@@ -1435,10 +1391,12 @@ const ManageClientReceipt = () => {
                                     <div className="">
                                         <div className="text-sm">Service Amount </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Reimbursement Amount </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.reimbursementAmount}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Amount Recived <label className="text-red-500">*</label></div>
@@ -1448,6 +1406,7 @@ const ManageClientReceipt = () => {
                                     <div className="">
                                         <div className="text-sm">TDS </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.TDS}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Receipt Description</div>

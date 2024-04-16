@@ -4,7 +4,8 @@ import Cross from "../../../assets/cross.png"
 import { useState } from 'react';
 import { APIService } from '../../../services/API';
 import { useEffect } from 'react';
-const EditClientReceipt = ({currClientReceipt,handleClose}) => {
+import AsyncSelect from "react-select/async"
+const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
     console.log(currClientReceipt)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -12,17 +13,17 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
     };
     const [formErrors,setFormErrors] = useState({})
     const [formValues,setFormValues] = useState({
-        curaoffice : "",
-        receivedDate : "",
-        receivedBy : currClientReceipt.receivedBy,
-        receiptMode : "",
-        client : "",
-        howreceived : "",
-        serviceamount : "",
-        reimbursementAmount : "",
-        amountReceived : "",
-        TDS : "",
-        receiptDescription : "",
+        curaoffice : 1,
+        receivedDate : currClientReceipt.recddate,
+        receivedBy : currClientReceipt.receivedby,
+        receiptMode : currClientReceipt.paymentmode,
+        client : currClientReceipt.clientid,
+        howreceived : currClientReceipt.howreceivedid,
+        serviceamount : currClientReceipt.serviceamount,
+        reimbursementAmount : currClientReceipt.reimbursementamount,
+        amountReceived : currClientReceipt.amount,
+        TDS : currClientReceipt.tds,
+        receiptDescription : currClientReceipt.receiptdesc,
    })
 
     const [usersData,setUsersData] = useState([])
@@ -35,13 +36,96 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
         setUsersData(res.data)
     }
     const [modesData,setModesData] = useState([])
-    const [howReceivedData,setHowReceivedData] = useState([])
-    const handleAddClientReceipt = () => {
-
+    const fetchModesData = async () => {
+        const data = {
+            "user_id" : 1234
+         }
+         const response = await APIService.getModesAdmin(data)
+         const res = await response.json()
+         setModesData(res.data)
+         console.log(res)
     }
+    const [howReceivedData,setHowReceivedData] = useState([])
+    const fetchHowReceivedData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getHowReceivedAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setHowReceivedData(res.data)
+    }
+ 
+    const handleEdit = async () => {
+        const data = {
+            "user_id":1234,
+            "receivedby":Number(formValues.receivedBy),
+            "amount": Number(formValues.amountReceived),
+            "tds":Number(formValues.TDS),
+            "paymentmode":Number(formValues.receiptMode),
+            "recddate":formValues.receivedDate,
+            "clientid":formValues.client,
+            "receiptdesc":formValues.receiptDescription,
+            "serviceamount":Number(formValues.serviceamount),
+            "reimbursementamount": Number(formValues.reimbursementAmount),
+            "entityid":1,
+            "howreceivedid": Number(formValues.howreceived),
+            "officeid":1,
+            "id":currClientReceipt.id
+        }
+        const response = await APIService.editClientReceipt(data)
+        const res = await response.json()
+        if(res.result == 'success') {
+            console.log('updated')
+            showSuccess()
+        }
+    }
+    const [selectedOption,setSelectedOption] = useState({
+        label : currClientReceipt.clientname,
+        value : currClientReceipt.client
+       });
+       const [query,setQuery] = useState('')
+       const handleClientNameChange = (e) => {
+           console.log('hey')
+           console.log(e)
+          //  setFormValues({...formValues,client_property : {
+          //   ...formValues.client_property,
+          //   clientid : e.value
+          //  }})
+        //    setCurrClientName(e.label);
+           const existing = {...formValues}
+           existing.client = e.value
+           setFormValues(existing)
+           console.log(formValues)
+           setSelectedOption(e)
+       }
+       const loadOptions = async (e) => {
+          console.log(e)
+          if(e.length < 3) return ;
+          const data = {
+            "user_id" : 1234,
+            "pg_no" : 0,
+            "pg_size" : 0,
+            "search_key" : e
+          }
+          const response = await APIService.getClientAdminPaginated(data)
+          const res = await response.json()
+          const results = res.data.map(e => {
+            return {
+              label : e[1],
+              value : e[0]
+            }
+          })
+          if(results === 'No Result Found') {
+            return []
+          }
+          return results
+       }
 
     useEffect(() => {
         fetchUsersData()
+        fetchModesData()
+        fetchHowReceivedData()
     },[])
   return (
     <Modal open={true}
@@ -69,7 +153,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Received Date<label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" value={formValues.receivedDate} name="receivedDate" onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
@@ -112,7 +196,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
                                         <div className="text-sm">
                                             Client <label className="text-red-500">*</label>
                                         </div>
-                                        {/* <AsyncSelect
+                                        <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
                                             loadOptions={loadOptions}
@@ -143,7 +227,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
                                                 fontSize : 12 // adjust padding for the dropdown indicator
                                             })
                                             }}
-                                        /> */}
+                                        />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -152,8 +236,8 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="howReceived"
-                                            value={formValues.howReceived}
+                                            name="howreceived"
+                                            value={formValues.howreceived}
                                             onChange={handleChange}
                                         >
                                             {howReceivedData.map((item) => (
@@ -168,7 +252,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
                                 <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-sm">Service Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceamount" value={formValues.serviceamount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Reimbursement Amount </div>
@@ -191,7 +275,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose}) => {
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientReceipt} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Update</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
