@@ -711,6 +711,7 @@ const ManageEmployees = () => {
         }, 2000)
         fetchData();
     }
+    
     const filterMapping = {
         employeename : {
             filterType : "",
@@ -776,6 +777,7 @@ const ManageEmployees = () => {
     const [phoneFilterInput,setPhoneFilterInput] = useState("");
     const [dateOfJoiningFilter,setDateOfJoiningFilter] = useState(false)
     const [dateOfJoiningInput,setDateOfJoiningInput] = useState(false)
+
     const fetchFiltered = async  (mapState) => {
        setFilterMapState(mapState)
        const tempArray = [];

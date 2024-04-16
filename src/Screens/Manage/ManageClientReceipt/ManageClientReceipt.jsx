@@ -23,14 +23,17 @@ import AsyncSelect from "react-select/async"
 import DeleteClientReceipt from './deleteClientReceipt';
 import SaveConfirmationClientReceipt from './SaveConfirmationClientReceipt';
 import EditClientReceipt from './EditClientReceipt';
+import CharacterFilter from "../../../Components/Filters/CharacterFilter"
+import DateFilter from '../../../Components/Filters/DateFilter';
+import NumericFilter from '../../../Components/Filters/NumericFilter';
 const ManageClientReceipt = () => {
-    const initialRows =  [
+    const initialRows = [
         "id",
         "receivedby",
         "receivedbyname",
         "amount",
-         "recddate",   
-         "tds",
+        "recddate",
+        "tds",
         "paymentmode",
         "paymentmodename",
         "clientid",
@@ -72,34 +75,33 @@ const ManageClientReceipt = () => {
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
-    const [empNameFilter, setEmpNameFilter] = useState(false);
-    const [empNameInput, setEmpNameInput] = useState("");
-    const [empIdFilter, setEmpIdFilter] = useState(false);
-    const [empIdInput, setEmpIdInput] = useState("");
-    const [phoneFilter, setPhoneFilter] = useState(false);
-    const [phoneInput, setPhoneInput] = useState("");
-    const [emailFilter, setEmailFilter] = useState(false);
-    const [emailInput, setEmailInput] = useState("");
-    const [roleFilter, setRoleFilter] = useState(false);
-    const [roleInput, setRoleInput] = useState("");
-    const [pannoFilter, setPannoFilter] = useState(false);
-    const [pannoInput, setPannoInput] = useState("");
-    const [dojFilter, setDojFilter] = useState(false);
-    const [dojInput, setDojInput] = useState("");
-    const [ldowFilter, setLdowFilter] = useState(false);
-    const [ldowInput, setLdowInput] = useState("");
-    const [statusFilter, setStatusFilter] = useState(false);
-    const [statusInput, setStatusInput] = useState("");
+    const [clientNameFilter, setClientNameFilter] = useState(false);
+    const [clientNameFilterInput, setClientNameFilterInput] = useState("");
+    const [amountFilter, setAmountFilter] = useState(false);
+    const [amountFilterInput, setAmountFilterInput] = useState("");
+    const [serviceAmountFilter, setServiceAmountFilter] = useState(false);
+    const [serviceAmountFilterInput, setServiceAmountFilterInput] = useState("");
+    const [reimbusmentAmountFilter, setReimbusmentAmountFilter] = useState(false);
+    const [reimbusmentAmountFilterInput, setReimbusmentAmountFilterInput] = useState("");
+    const [receivedDateFilter, setReceivedDateFilter] = useState(false);
+    const [receivedDateFilterInput, setReceivedDateFilterInput] = useState("");
+    const [receivedModeFilter, setReceivedModeFilter] = useState(false);
+    const [receivedModeFilterInput, setReceivedModeFilterInput] = useState("");
+    const [receivedByFilter, setReceivedByFilter] = useState(false);
+    const [receivedByFilterInput, setReceivedByFilterInput] = useState("");
+    const [TDSFilter, setTDSFilter] = useState(false);
+    const [TDSFilterInput, setTDSFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
-    const [idInput, setIdInput] = useState("");
+    const [idFilterInput, setIdFilterInput] = useState("");
+
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
     // const [deleteConfirmation, showDeleteConfirmation] = useState(false);
-    const [existingClientReceipt,setExistingClientReceipt] = useState([]);
+    const [existingClientReceipt, setExistingClientReceipt] = useState([]);
     // const [howReceivedData,setHowReceivedData] = useState([])
     // const [filterArray,setFilterArray] = useState([]);
-      
+
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -123,10 +125,10 @@ const ManageClientReceipt = () => {
         }
     }
     // const [howReceived,setHowReceivedData] = useState([])
-    const [modesData,setModesData] = useState([]);
+    const [modesData, setModesData] = useState([]);
     const fetchHowReceivedData = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
         const response = await APIService.getHowReceivedAdmin(data)
         const res = await response.json()
@@ -135,12 +137,12 @@ const ManageClientReceipt = () => {
     }
     const fetchModesData = async () => {
         const data = {
-            "user_id" : 1234
-         }
-         const response = await APIService.getModesAdmin(data)
-         const res = await response.json()
-         setModesData(res.data)
-         console.log(res)
+            "user_id": 1234
+        }
+        const response = await APIService.getModesAdmin(data)
+        const res = await response.json()
+        setModesData(res.data)
+        console.log(res)
     }
     const fetchCityData = async (id) => {
         const data = { "user_id": 1234, "state_name": id };
@@ -204,7 +206,7 @@ const ManageClientReceipt = () => {
         }
     }
 
-    
+
 
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
@@ -219,7 +221,7 @@ const ManageClientReceipt = () => {
             "order": "desc",
             "pg_no": 1,
             "pg_size": 15
-          };
+        };
         const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
@@ -282,19 +284,18 @@ const ManageClientReceipt = () => {
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
-     
+
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
-                setEmpNameFilter(false);
-                setEmpIdFilter(false);
-                setPhoneFilter(false);
-                setEmailFilter(false);
-                setRoleFilter(false);
-                setPannoFilter(false);
-                setDojFilter(false);
-                setLdowFilter(false);
-                setStatusFilter(false);
+                setClientNameFilter(false);
+                setAmountFilter(false);
+                setServiceAmountFilter(false);
+                setReimbusmentAmountFilter(false);
+                setReceivedDateFilter(false);
+                setReceivedModeFilter(false);
+                setReceivedByFilter(false);
+                setTDSFilter(false);
                 setIdFilter(false);
             }
         }
@@ -324,18 +325,18 @@ const ManageClientReceipt = () => {
     const receiptMode = [1, 2, 3, 4];
     const client = [1, 2, 3, 4];
     // const howReceived = [1, 2, 3, 4];
-    const [howReceivedData,setHowReceivedData] = useState([]);
+    const [howReceivedData, setHowReceivedData] = useState([]);
     //end
-    const [usersData,setUsersData] = useState([]);
+    const [usersData, setUsersData] = useState([]);
     const fetchUsersData = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
         const response = await APIService.getUsers(data)
         const res = await response.json()
-        const existing = {...formValues}
+        const existing = { ...formValues }
         existing.receivedBy = res.data[0].id,
-        console.log(existing.receivedBy)
+            console.log(existing.receivedBy)
         setFormValues(existing)
         setUsersData(res.data)
     }
@@ -373,8 +374,8 @@ const ManageClientReceipt = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    const [currClientReceipt,setCurrClientReceipt] = useState({});
-    
+    const [currClientReceipt, setCurrClientReceipt] = useState({});
+
     const handleEdit = (item) => {
         // we need to handle opening the edit here
         setCurrClientReceipt(item)
@@ -394,8 +395,8 @@ const ManageClientReceipt = () => {
                 return { ...existing, receivedDate: "" }
             })
         }
-       
-       
+
+
         if (!formValues.client) {
             setFormErrors((existing) => {
                 return { ...existing, client: "Select Client" }
@@ -411,7 +412,7 @@ const ManageClientReceipt = () => {
                 return { ...existing, amountReceived: "Enter Amount received" }
             })
             res = false;
-        }else if (!Number.isInteger(Number(formValues.amountReceived))) {
+        } else if (!Number.isInteger(Number(formValues.amountReceived))) {
             setFormErrors((existing) => {
                 return { ...existing, amountReceived: "Enter A Numeric Value" }
             })
@@ -426,7 +427,7 @@ const ManageClientReceipt = () => {
                 return { ...existing, TDS: "Enter A Numeric Value" }
             })
             res = false;
-        }else if(Number.isInteger(Number(formValues.TDS))) {
+        } else if (Number.isInteger(Number(formValues.TDS))) {
             setFormErrors((existing) => {
                 return { ...existing, TDS: "" }
             })
@@ -436,7 +437,7 @@ const ManageClientReceipt = () => {
                 return { ...existing, serviceAmount: "Enter A Numeric Value" }
             })
             res = false;
-        }else if(Number.isInteger(Number(formValues.serviceAmount))) {
+        } else if (Number.isInteger(Number(formValues.serviceAmount))) {
             setFormErrors((existing) => {
                 return { ...existing, serviceAmount: "" }
             })
@@ -446,7 +447,7 @@ const ManageClientReceipt = () => {
                 return { ...existing, reimbursementAmount: "Enter A Numeric Value" }
             })
             res = false;
-        }else if(Number.isInteger(Number(formValues.reimbursementAmount))) {
+        } else if (Number.isInteger(Number(formValues.reimbursementAmount))) {
             setFormErrors((existing) => {
                 return { ...existing, reimbursementAmount: "" }
             })
@@ -454,8 +455,8 @@ const ManageClientReceipt = () => {
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
-   
-    
+
+
     const handlePageChange = (event, value) => {
         console.log(value);
         setCurrentPage(value)
@@ -567,104 +568,251 @@ const ManageClientReceipt = () => {
     }
 
 
-    const [options,setOptions] = useState([]);
-    const [selectedOption,setSelectedOption] = useState({
-        label : "Enter Client Name",
-        value : null
-       });
-       const [query,setQuery] = useState('')
-       const handleClientNameChange = (e) => {
-           console.log('hey')
-           console.log(e)
-          //  setFormValues({...formValues,client_property : {
-          //   ...formValues.client_property,
-          //   clientid : e.value
-          //  }})
-           setCurrClientName(e.label);
-           const existing = {...formValues}
-           existing.client = e.value
-           setFormValues(existing)
-           console.log(formValues)
-           setSelectedOption(e)
-       }
-       const loadOptions = async (e) => {
-          console.log(e)
-          if(e.length < 3) return ;
-          const data = {
-            "user_id" : 1234,
-            "pg_no" : 0,
-            "pg_size" : 0,
-            "search_key" : e
-          }
-          const response = await APIService.getClientAdminPaginated(data)
-          const res = await response.json()
-          const results = res.data.map(e => {
-            return {
-              label : e[1],
-              value : e[0]
-            }
-          })
-          if(results === 'No Result Found') {
-            return []
-          }
-          return results
-       }
-       const [currReceiptId,setCurrReceiptId] = useState(0);
-       const [deleteConfirmation,setDeleteConfirmation] = useState(false)
-       const handleDelete = (id) => {
-           setCurrReceiptId(id)
-           setDeleteConfirmation(true)
-       }
-       const addClientReceipt = async () => {
+    const [options, setOptions] = useState([]);
+    const [selectedOption, setSelectedOption] = useState({
+        label: "Enter Client Name",
+        value: null
+    });
+    const [query, setQuery] = useState('')
+    const handleClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        //  setFormValues({...formValues,client_property : {
+        //   ...formValues.client_property,
+        //   clientid : e.value
+        //  }})
+        setCurrClientName(e.label);
+        const existing = { ...formValues }
+        existing.client = e.value
+        setFormValues(existing)
+        console.log(formValues)
+        setSelectedOption(e)
+    }
+    const loadOptions = async (e) => {
+        console.log(e)
+        if (e.length < 3) return;
         const data = {
-            "user_id":1234,
-            "receivedby":formValues.receivedBy,
-            "amount":Number(formValues.amountReceived),
-            "tds":Number(formValues.TDS),
-            "recddate" : formValues.receivedDate,
-            "paymentmode":Number(formValues.receiptMode),
-            "clientid":formValues.client,
-            "receiptdesc":formValues.receiptDescription,
-            "serviceamount":formValues.serviceAmount,
-            "reimbursementamount":formValues.reimbursementAmount,
-            "entityid":1,
-            "howreceivedid":formValues.howReceived,
-            "officeid":1
+            "user_id": 1234,
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": e
+        }
+        const response = await APIService.getClientAdminPaginated(data)
+        const res = await response.json()
+        const results = res.data.map(e => {
+            return {
+                label: e[1],
+                value: e[0]
+            }
+        })
+        if (results === 'No Result Found') {
+            return []
+        }
+        return results
+    }
+    const [currReceiptId, setCurrReceiptId] = useState(0);
+    const [deleteConfirmation, setDeleteConfirmation] = useState(false)
+    const handleDelete = (id) => {
+        setCurrReceiptId(id)
+        setDeleteConfirmation(true)
+    }
+    const addClientReceipt = async () => {
+        const data = {
+            "user_id": 1234,
+            "receivedby": formValues.receivedBy,
+            "amount": Number(formValues.amountReceived),
+            "tds": Number(formValues.TDS),
+            "recddate": formValues.receivedDate,
+            "paymentmode": Number(formValues.receiptMode),
+            "clientid": formValues.client,
+            "receiptdesc": formValues.receiptDescription,
+            "serviceamount": formValues.serviceAmount,
+            "reimbursementamount": formValues.reimbursementAmount,
+            "entityid": 1,
+            "howreceivedid": formValues.howReceived,
+            "officeid": 1
         }
         const response = await APIService.addClientReceipt(data)
         const res = await response.json()
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             setOpenAddConfirmation(false)
             fetchData()
         }
         console.log(data)
 
-       }
-       const deleteClientRceipt = async (id) => {
-          const data = {
-            "user_id" : 1234,
-            "id" : id
-          }
+    }
+    const deleteClientRceipt = async (id) => {
+        const data = {
+            "user_id": 1234,
+            "id": id
+        }
 
-          const response = await APIService.deleteClientReceipt(data)
-          const res = await response.json()
-          setDeleteConfirmation(false)
-          fetchData()
-       }
-       const [currClientName,setCurrClientName]  = useState("")
+        const response = await APIService.deleteClientReceipt(data)
+        const res = await response.json()
+        setDeleteConfirmation(false)
+        fetchData()
+    }
+    const [currClientName, setCurrClientName] = useState("")
+
+    const filterMapping = {
+        clientname : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        amount : {
+            filterType : "",
+            filterValue : "",
+            filterData : "Numeric",
+            filterInput : ""
+        },
+        serviceamount : {
+            filterType : "",
+            filterValue : "",
+            filterData : "Numeric",
+            filterInput : ""
+        },
+        reimbursementamount : {
+            filterType : "",
+            filterValue : "",
+            filterData : "Numeric",
+            filterInput : ""
+        },
+        tds : {
+            filterType : "",
+            filterValue : "",
+            filterData : "Numeric",
+            filterInput : ""
+        },
+        recddate : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        howreceived : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        receivedbyname : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        id : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Numeric",
+            filterInput : ""
+        }
+    }
+    const [filterMapState,setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+        console.log(columnName)
+        console.log('hey')
+        console.log(filterMapState);
+       
+            var existing = filterMapState;
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterType: type == 'noFilter' ? "" : type
+                }
+            }
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterValue: type == 'noFilter' ? "" : inputVariable
+                }
+            }
+
+            if (type == 'noFilter') setInputVariable("");
+        
+
+        fetchFiltered(existing);
+    }
+    const fetchFiltered = async (mapState) => {
+        setFilterMapState(mapState)
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": initialRows,
+            "filters": tempArray,
+            "sort_by": ["id"],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        const response = await APIService.getClientReceipt(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingClientReceipt(result);
+        setPageLoading(false);
+    }
+
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": initialRows,
+            "filters": [],
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getClientReceipt(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingClientReceipt(result);
+        setPageLoading(false);
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess}/>}
+            {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Client Receipt" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName}/>}
+            {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-           
-            {deleteConfirmation && <DeleteClientReceipt handleClose={() => {setDeleteConfirmation(false)}} handleDelete={deleteClientRceipt} item={currReceiptId} />}
+
+            {deleteConfirmation && <DeleteClientReceipt handleClose={() => { setDeleteConfirmation(false) }} handleDelete={deleteClientRceipt} item={currReceiptId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -715,311 +863,86 @@ const ManageClientReceipt = () => {
 
 
                 {/* filter component */}
-                <div className='h-12 w-full bg-white'>
+                
                     <div className='w-full h-12 bg-white flex justify-between'>
                         <div className="w-[87%] flex">
-                            <div className='w-[3%] flex'>
+                            <div className='w-[3%] '>
                                 <div className='p-3'>
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[14%]  flex p-3'>
+                            <div className='w-[14%]  px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md ">
-                                    <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
-                                    <button className='p-1 w-[22%]'><img src={Filter} className='h-4 w-4' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[22%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[10%]  flex p-3'>
+                            <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
-                                    <button className='p-1 w-[30%]'><img src={Filter} className='h-4 w-4' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setAmountFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} columnName='amount' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[13%]  flex p-3'>
+                            <div className='w-[13%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setServiceAmountFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {serviceAmountFilter && <NumericFilter inputVariable={serviceAmountFilterInput} setInputVariable={setServiceAmountFilterInput} columnName='serviceamount' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[12%]  flex p-3'>
+                            <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReimbusmentAmountFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {reimbusmentAmountFilter && <NumericFilter inputVariable={reimbusmentAmountFilterInput} setInputVariable={setReimbusmentAmountFilterInput} columnName='reimbursementamount' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[12%]  flex p-3'>
+                            <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type="date" />
+                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedDateFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[13%]  flex p-3'>
+                            <div className='w-[13%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1 w-[23%]'><img src={Filter} className='h-4 w-4' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={receivedModeFilterInput} onChange={(e) => setReceivedModeFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[23%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedModeFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='howreceived' menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[11%]  flex p-3'>
+                            <div className='w-[11%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setDojInput(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-4 w-4' onClick={() => { setDojFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedByFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {dojFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef}/>}
                             </div>
 
-                            <div className='w-[7%]  flex p-3'>
+                            <div className='w-[7%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='p-1 w-[45%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setLdowFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[45%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTDSFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {ldowFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {TDSFilter && <NumericFilter inputVariable={TDSFilterInput} setInputVariable={setTDSFilterInput} columnName='tds' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
                         </div>
                         <div className="w-[13%] flex">
-                            <div className='w-1/2  flex p-3'>
+                            <div className='w-1/2 px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2" onChange={(e) => setIdInput(e.target.value)} />
-                                    <button className='p-1 w-[40%]'><img src={Filter} className='h-4 w-4' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[40%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1029,7 +952,6 @@ const ManageClientReceipt = () => {
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-t-[1px]'>
@@ -1041,17 +963,17 @@ const ManageClientReceipt = () => {
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
+                                    <p>Client name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Amount <span className="font-extrabold">↑↓</span></p>
+                                    <p>Amount <button onClick={() => handleSort('amount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Service Amount <span className="font-extrabold">↑↓</span></p>
+                                    <p>Service Amount <button onClick={() => handleSort('serviceamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
@@ -1059,26 +981,26 @@ const ManageClientReceipt = () => {
                                     <p>Reimbusment</p>
                                     <p>Amount</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('reimbursementamount')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Received date <span className="font-extrabold">↑↓</span></p>
+                                    <p>Received date <button onClick={() => handleSort('recddate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Received Mode <span className="font-extrabold">↑↓</span></p>
+                                    <p>Received Mode <button onClick={() => handleSort('howreceived')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[11%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Received By <span className="font-extrabold">↑↓</span></p>
+                                    <p>Received By <button onClick={() => handleSort('receivedbyname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[7%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>TDS <span className="font-extrabold">↑↓</span></p>
+                                    <p>TDS <button onClick={() => handleSort('tds')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[5%]  flex'>
@@ -1090,7 +1012,7 @@ const ManageClientReceipt = () => {
                         <div className="w-[13%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>ID <span className="font-extrabold">↑↓</span></p>
+                                    <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
@@ -1109,84 +1031,84 @@ const ManageClientReceipt = () => {
 
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
-                        
-                        
+
+
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingClientReceipt.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[87%] flex">
-                            <div className='w-[3%] flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                    <div className='w-[3%] flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[14%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.clientname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.amount} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[13%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p> {item.serviceamount} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex'>
+                                        <div className='p-3'>
+                                            {item.reimbursementamount}
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.recddate}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[13%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.howreceived} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[11%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.receivedbyname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[7%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.tds}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[5%]  flex'>
+                                        <div className='p-3'>
+                                            <p></p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-[14%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.clientname}</p>
+                                <div className="w-[13%] flex">
+                                    <div className='w-1/2  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.id} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2  flex'>
+                                        <div className='px-3 py-5 flex space-x-2'>
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-[10%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.amount} </p>
-                                </div>
-                            </div>
-                            <div className='w-[13%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p> {item.serviceamount} </p>
-                                </div>
-                            </div>
-                            <div className='w-[12%]  flex'>
-                                <div className='p-3'>
-                                    {item.reimbursementamount}
-                                </div>
-                            </div>
-                            <div className='w-[12%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.recddate}</p>
-                                </div>
-                            </div>
-                            <div className='w-[13%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.howreceived} </p>
-                                </div>
-                            </div>
-                            <div className='w-[11%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.receivedbyname}</p>
-                                </div>
-                            </div>
-                            <div className='w-[7%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.tds}</p>
-                                </div>
-                            </div>
-                            <div className='w-[5%]  flex'>
-                                <div className='p-3'>
-                                    <p></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="w-[13%] flex">
-                            <div className='w-1/2  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.id} </p>
-                                </div>
-                            </div>
-                            <div className='w-1/2  flex'>
-                                <div className='px-3 py-5 flex space-x-2'>
-                                       <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)}/>
-                                       <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
-                                </div>
-                            </div>
-                        </div>
-                                
+
 
                             </div>
                         })}
-                        
-                        
-                        
+
+
+
                     </div>
 
 
@@ -1342,28 +1264,28 @@ const ManageClientReceipt = () => {
                                             defaultOptions
                                             onInputChange={(value) => setQuery(value)}
                                             styles={{
-                                            control: (provided, state) => ({
-                                                ...provided,
-                                                minHeight : 25,
-                                                lineHeight : '1.3',
-                                                height : 2,
-                                                fontSize : 12,
-                                                padding : '1px'
-                                            }),
-                                            // indicatorSeparator: (provided, state) => ({
-                                            //   ...provided,
-                                            //   lineHeight : '0.5',
-                                            //   height : 2,
-                                            //   fontSize : 12 // hide the indicator separator
-                                            // }),
-                                            dropdownIndicator: (provided, state) => ({
-                                                ...provided,
-                                                padding: '3px', // adjust padding for the dropdown indicator
-                                            }),
-                                            options : (provided, state) => ({
-                                                ...provided,
-                                                fontSize : 12 // adjust padding for the dropdown indicator
-                                            })
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 25,
+                                                    lineHeight: '1.3',
+                                                    height: 2,
+                                                    fontSize: 12,
+                                                    padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 12 // adjust padding for the dropdown indicator
+                                                })
                                             }}
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
