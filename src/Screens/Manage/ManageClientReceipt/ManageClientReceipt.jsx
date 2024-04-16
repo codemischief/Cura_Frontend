@@ -23,6 +23,8 @@ import AsyncSelect from "react-select/async"
 import DeleteClientReceipt from './deleteClientReceipt';
 import SaveConfirmationClientReceipt from './SaveConfirmationClientReceipt';
 import EditClientReceipt from './EditClientReceipt';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
@@ -474,20 +476,20 @@ const ManageClientReceipt = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": initialRows,
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getEmployees(data)
+        const response = await APIService.getClientReceipt(data)
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "EmployeeData.xlsx");
+        XLSX.writeFile(workbook, "CleintReceiptData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
@@ -830,7 +832,7 @@ const ManageClientReceipt = () => {
                         <div className='flex items-center bg-[#EBEBEB] '>
                             {/* search button */}
                             <input
-                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 "
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none "
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
