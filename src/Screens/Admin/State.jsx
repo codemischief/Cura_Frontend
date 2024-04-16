@@ -138,6 +138,7 @@ const State = () => {
         stateName: ""
     };
     const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -286,105 +287,144 @@ const State = () => {
     const [countryFilterInput, setCountryFilterInput] = useState("");
 
     const filterMapping = {
-        state : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        state: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        countryname : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        countryname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
 
-    const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if(columnName == 'status') {
+        if (columnName == 'status') {
             var existing = filterMapState;
-            if(type == 'noFilter') {
-                setInputVariable(""); 
+            if (type == 'noFilter') {
+                setInputVariable("");
             }
-            if(inputVariable.toLowerCase() == 'active') {
-                existing = {...existing, [columnName] : {
-                    ...existing[columnName],
-                     filterValue : 'true'
-                }}
-                existing = {...existing,[columnName] : {
-                    ...existing[columnName],
-                     filterType : type == 'noFilter' ? "" : type
-                }}
-            }else if(inputVariable.toLowerCase() == 'inactive') {
-                existing = {...existing, [columnName] : {
-                    ...existing[columnName],
-                     filterValue : 'false'
-                }}
-                existing = {...existing,[columnName] : {
-                    ...existing[columnName],
-                     filterType : type == 'noFilter' ? "" : type
-                }}
-            }else {
-                return ;
+            if (inputVariable.toLowerCase() == 'active') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'true'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else if (inputVariable.toLowerCase() == 'inactive') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'false'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else {
+                return;
             }
-             
-        }else {
-            var existing = filterMapState;
-            existing = {...existing,[columnName] : {
-                ...existing[columnName],
-                 filterType : type == 'noFilter' ? "" : type
-            }}
-            existing = {...existing, [columnName] : {
-                ...existing[columnName],
-                 filterValue : type == 'noFilter' ? "" : inputVariable
-            }}
 
-            if(type == 'noFilter') setInputVariable("");
+        } else {
+            var existing = filterMapState;
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterType: type == 'noFilter' ? "" : type
+                }
+            }
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterValue: type == 'noFilter' ? "" : inputVariable
+                }
+            }
+
+            if (type == 'noFilter') setInputVariable("");
         }
-        
+
         fetchFiltered(existing);
     }
-    
-    const fetchFiltered = async  (mapState) => {
+
+    const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
-         // we need to query thru the object
-         // console.log(filterMapState);
-         console.log(filterMapState)
-         Object.keys(mapState).forEach(key=> {
-             if(mapState[key].filterType != "") {
-                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
-             }
-         })
-         setPageLoading(true);
-         const data = {
-             "user_id": 1234,
-             "rows": ["id", "state", "countryname"],
-             "filters": tempArray,
-             "sort_by": [sortField],
-             "order": flag ? "asc" : "desc",
-             "pg_no": Number(currentPage),
-             "pg_size": Number(currentPages),
-             "search_key": isSearchOn ? searchInput : ""
-         };
-         const response = await APIService.getStatesAdmin(data)
-         const temp = await response.json();
-         const result = temp.data;
-         const t = temp.total_count;
-         setTotalItems(t);
-         setPageLoading(false);
-         setExistingState(result)
-     } 
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "state", "countryname"],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        const response = await APIService.getStatesAdmin(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        setPageLoading(false);
+        setExistingState(result)
+    }
+
+    const validate = () => {
+        var res = true;
+       
+        if (!formValues.country) {
+            setFormErrors((existing) => {
+                return { ...existing, country: "Select Country" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, country: "" }
+            })
+        }
+        if (!formValues.stateName) {
+            setFormErrors((existing) => {
+                return { ...existing, stateName: "Enter State" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, stateName: "" }
+            })
+        }
+
+        return res;
+    }
 
     return (
         <div className='h-screen'>
@@ -446,14 +486,14 @@ const State = () => {
                                 <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
                                 <button className='px-1 py-2 w-[30%]' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='countryname' menuRef={menuRef}/>}
+                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='countryname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[20%] px-4 py-2.5'>
                             <div className='w-[55%] flex items-center bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none'>
                                 <input className="w-[70%] bg-[#EBEBEB] rounded-[5px]" value={stateFilterInput} onChange={(e) => { setStateFilterInput(e.target.value) }} />
                                 <button className='px-1 py-2 w-[30%]' onClick={() => { setStateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef}/>}
+                            {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef} />}
                         </div>
                     </div>
                     <div className='w-[20%]   px-4 py-2.5'>
@@ -461,7 +501,7 @@ const State = () => {
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
                             <button className='px-1 py-2 w-[30%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                         </div>
-                        {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                        {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         <div className='w-1/2 p-4'>
 
                         </div>
@@ -607,21 +647,23 @@ const State = () => {
 
             <Modal open={isStateDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[200px]'>
-                    <div className="w-6/7  h-[300px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New State</div>
+                maxWidth={'md'}
+                className='flex justify-center items-center'
+            >
+                <div className='flex justify-center'>
+                    <div className="w-[800px]  h-auto bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[270px] ml-[270px]">
+                                <div className="text-base">Add New State</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                <button onClick={handleClose}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
                         {/* <form onSubmit={handleSubmit}> */}
-                        <div className="h-auto w-full mt-[5px] ">
-                            <div className="flex gap-[48px] justify-center items-center">
-                                <div className=" space-y-[12px] py-[20px] px-[10px]">
+                        <div className="h-auto w-full mt-4 mb-20 ">
+                            <div className="flex gap-12 justify-center items-center">
+                                <div className=" space-y-3 py-5">
                                     {/* <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
                                                 name="country"
                                                 value={formValues.country}
@@ -644,9 +686,9 @@ const State = () => {
                                             </select> */}
 
                                     <div className="">
-                                        <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
+                                        <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
                                         {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="empName" value={formValues.stateName} onChange={handleChange} /> */}
-                                        <select className='w-[230px] h-[25px] border-[1px] border-[#C6C6C6]'>
+                                        <select className='w-56 h-5 border-[1px] border-[#C6C6C6] px-3 text-xs outline-none'>
                                             {allCountry.map((item, index) => {
                                                 return (
                                                     <option name="country"
@@ -665,21 +707,21 @@ const State = () => {
                                                 )
                                             })}
                                         </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[25px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="stateName" value={formValues.stateName} onChange={handleChange} />
+                                        <div className="text-sm">State Name <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="stateName" value={formValues.stateName} onChange={handleChange} />
                                     </div>
-
-
+                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.stateName}</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-[10px] flex justify-center items-center gap-[10px]">
+                        <div className="my-2 flex justify-center items-center gap-2">
 
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                         {/* </form> */}
                     </div>

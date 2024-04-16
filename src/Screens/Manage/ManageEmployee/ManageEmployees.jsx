@@ -901,7 +901,7 @@ const ManageEmployees = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                        <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
