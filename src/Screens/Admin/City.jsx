@@ -5,18 +5,26 @@ import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
-import { useState, useEffect } from 'react';
+import { useState, useEffect ,useRef } from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
 import Add from "./../../assets/add.png";
+import Pdf from "../../assets/pdf.png";
+import Excel from "../../assets/excel.png"
+import Filter from "../../assets/filter.png"
 import { LinearProgress, Modal, Pagination } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
 import { authService } from '../../services/authServices';
+import CharacterFilter from "../../Components/Filters/CharacterFilter"
+import NumericFilter from '../../Components/Filters/NumericFilter';
+
 const City = () => {
+
+    const menuRef = useRef();
     // we have the module here
 
     const [existingCities, setExistingCities] = useState([]);
@@ -32,6 +40,8 @@ const City = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false);
     const [downloadModal, setDownloadModal] = useState(false)
+    const [searchInput, setSearchInput] = useState("");
+    const [isSearchOn, setIsSearchOn] = useState(false);
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsCountryDialogue(false);
@@ -67,7 +77,7 @@ const City = () => {
         setTotalItems(t);
         setPageLoading(false);
 
-        setExistingCities(result)
+        setExistingCities(result);
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
@@ -94,6 +104,20 @@ const City = () => {
     }
     useEffect(() => {
         fetchCityData();
+
+        const handler = (e) => {
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setCountryFilter(false)
+                setStateFilter(false)
+                setCityFilter(false)
+                setIdFilter(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
     //Validation of the form
     const initialValues = {
@@ -114,7 +138,8 @@ const City = () => {
     const handleOpen = () => {
         setIsCityDialogue(true);
     };
-    const handleClose = () => {w
+    const handleClose = () => {
+        w
         setIsCityDialogue(false);
     }
     const handleDownload = () => {
@@ -152,6 +177,197 @@ const City = () => {
         console.log('hey')
         fetchPageData(value)
     }
+
+    const handleSearch = async () => {
+        console.log("clicked")
+        setPageLoading(true);
+        setIsSearchOn(true);
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "city", "state", "countryid", "country"],
+            "filters": [],
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key": searchInput
+        };
+        const response = await APIService.getCitiesAdmin(data)
+        const res = await response.json();
+        const result = res.data;
+        const t = res.total_count;
+        setTotalItems(t);
+        setPageLoading(false);
+
+        setExistingCities(result);
+    }
+    const handleCloseSearch = async () => {
+        setIsSearchOn(false);
+        setPageLoading(true);
+        setSearchInput("");
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "city", "state", "countryid", "country"],
+            "filters": [],
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
+            "pg_size": 12,
+            "search_key": ""
+        };
+        const response = await APIService.getCitiesAdmin(data)
+        const res = await response.json();
+        const result = res.data;
+        const t = res.total_count;
+        setTotalItems(t);
+
+        setPageLoading(false);
+        setExistingCities(result);
+    }
+
+    const openDownload = () => {
+        setDownloadModal(true);
+    }
+
+    const handleExcelDownload = async () => {
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "city", "state", "countryid", "country"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0
+        };
+        const response = await APIService.getCitiesAdmin(data)
+        const res = await response.json();
+        const result = res.data;
+        const worksheet = XLSX.utils.json_to_sheet(result);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "CityData.xlsx");
+        FileSaver.saveAs(workbook, "demo.xlsx");
+    }
+
+    const filterMapping = {
+        country: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        state: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        city: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
+        }
+    }
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+    const [countryFilter, setCountryFilter] = useState(false)
+    const [countryFilterInput, setCountryFilterInput] = useState("");
+    const [stateFilter, setStateFilter] = useState(false)
+    const [stateFilterInput, setStateFilterInput] = useState("")
+    const [cityFilter, setCityFilter] = useState(false)
+    const [cityFilterInput, setCityFilterInput] = useState("");
+    const [idFilter, setIdFilter] = useState(false)
+    const [idFilterInput, setIdFilterInput] = useState("");
+
+    const fetchFiltered = async (mapState) => {
+        setFilterMapState(mapState)
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "city", "state", "countryid", "country"],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        const response = await APIService.getCitiesAdmin(data)
+        const res = await response.json();
+        const result = res.data;
+        const t = res.total_count;
+        setTotalItems(t);
+        setPageLoading(false);
+
+        setExistingCities(result);
+    }
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter') setInputVariable("");
+
+        fetchFiltered(existing);
+    }
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "city", "state", "countryid", "country"],
+            "filters": tempArray,
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getCitiesAdmin(data)
+        const res = await response.json();
+        const result = res.data;
+        const t = res.total_count;
+        setTotalItems(t);
+        setPageLoading(false);
+
+        setExistingCities(result);
+    }
+
     return (
         <div className="h-screen">
             <Navbar />
@@ -161,32 +377,37 @@ const City = () => {
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
-                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 '>
-                            <Link to="/dashboard"><img src={backLink} /></Link>
+                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
+                            <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>City</h1>
-                            <p className='text-[14px]'>Admin &gt; City</p>
+                            <h1 className='text-lg'>City</h1>
+                            <p className='text-sm'>Admin &gt; City</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex'>
+                        <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
+                                value={searchInput}
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value);
+                                }}
                             />
-                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                            <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
+                            <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <button onClick={handleSearch}><img className="h-6" src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
                         <div>
                             {/* button */}
-                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                            <button className="bg-[#004DD7] text-white h-9 w-64 rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4">
                                     Add New City
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
@@ -198,8 +419,45 @@ const City = () => {
 
                 </div>
 
-                <div className='h-12 w-full bg-white'>
-
+                <div className='w-full h-12 flex justify-between'>
+                    <div className='w-3/4 flex'>
+                        <div className='w-[10%] p-4'>
+                            {/* <p>Sr. </p> */}
+                        </div>
+                        <div className='w-[20%]  p-4'>
+                            <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[20%]  p-4'>
+                            <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => { setStateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[25%]  p-4'>
+                        <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3'  /></button>
+                                </div>
+                                {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef}/>}
+                        </div>
+                    </div>
+                    <div className='w-1/6  flex'>
+                        <div className='w-1/2  p-4'>
+                        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <button className='w-[35%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3'  /></button>
+                                </div>
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                        </div>
+                        <div className='w-1/2 p-4'>
+                            
+                        </div>
+                    </div>
                 </div>
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
@@ -210,20 +468,20 @@ const City = () => {
                                 <p>Sr. </p>
                             </div>
                             <div className='w-[20%]  p-4'>
-                                <p>Country</p>
+                                <p>Country <button onClick={() => handleSort('country')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[20%]  p-4'>
-                                <p>State</p>
+                                <p>State <button onClick={() => handleSort('state')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[25%]  p-4'>
-                                <p>City</p>
+                                <p>City <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                         </div>
                         <div className='w-1/6  flex'>
                             <div className='w-1/2  p-4'>
-                                <p>ID</p>
+                                <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-1/2 0 p-4'>
+                            <div className='w-1/2 p-4'>
                                 <p>Edit</p>
                             </div>
                         </div>
@@ -309,15 +567,22 @@ const City = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5'>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
 
-                        <div className='flex'>
-                            <p>Download as pdf</p>
-                            {/* <img src=''/> */}
-                        </div>
-                        <div>
-                            <p>Download as Excel</p>
-                        </div>
+                        <button>
+                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+
+                                <p>Download as pdf</p>
+                                <img src={Pdf} />
+                            </div>
+                        </button>
+                        <button onClick={handleExcelDownload}>
+                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                <p>Download as Excel</p>
+                                <img src={Excel} />
+                            </div>
+                        </button>
                     </div>}
 
                     <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
@@ -327,7 +592,7 @@ const City = () => {
                     </div>
                     <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                         {/* download */}
-                        <button onClick={handleDownload}><p>Download</p></button>
+                        <button onClick={openDownload}><p>Download</p></button>
                         <img src={downloadIcon} className="h-2/3" />
                     </div>
                 </div>
