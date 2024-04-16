@@ -23,6 +23,7 @@ import FailureModal from '../../../Components/modals/FailureModal';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeletePmaAgreement from './DeletePmaAgreement';
+import SaveConfirmationPmaAgreement from './SaveConfirmationPmaAgreement';
 const ManagePmaArgreement = () => {
 
     const menuRef = useRef();
@@ -213,7 +214,8 @@ const ManagePmaArgreement = () => {
               "clientname",
               "status",
               "propertystatus",
-              "propertydescription"
+              "propertydescription",
+              "propertystatusname"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -328,6 +330,30 @@ const ManagePmaArgreement = () => {
         setExistingPmaAgreement(result);
         setPageLoading(false);
     }
+    const addPmaAgreement = async () => {
+        const data = {
+            "user_id": 1234,
+            "clientpropertyid":18196,
+            "startdate":formValues.pmaStartDate,
+            "enddate": formValues.pmaEndDate,
+            "actualenddate":formValues.actualEndDate,
+            "active":formValues.status,
+            "scancopy":formValues.scan,
+            "reasonforearlyterminationifapplicable":formValues.reason,
+            "description":formValues.description,
+            "rented": 10,
+            "fixed":null,
+            "rentedtax":Number(formValues.rentFee),
+            "fixedtax":false,
+            "orderid":435229,
+            "poastartdate":formValues.poaStartDate,
+            "poaenddate": formValues.poaEndDate,
+            "poaholder": formValues.poaHolderName
+        }
+        const response = await APIService.addPmaAgreement(data)
+        const res = await response.json()
+        console.log(res)
+    }
     useEffect(() => {
         fetchData();
         fetchCountryData();
@@ -385,8 +411,9 @@ const ManagePmaArgreement = () => {
         //     console.log('hu')
         //     return;
         // }
+        setIsPmaAgreementDialogue(false);
         // setIsLLAgreementDialogue(false);
-        // setOpenAddConfirmation(true)
+        setOpenAddConfirmation(true)
 
     }
     const addEmployee = async () => {
@@ -426,7 +453,7 @@ const ManagePmaArgreement = () => {
         }
         const response = await APIService.addEmployee(data);
 
-        const result = (await response.json())
+        const result = await response.json()
 
         setOpenAddConfirmation(false);
         console.log(result)
@@ -446,13 +473,13 @@ const ManagePmaArgreement = () => {
     const initialValues = {
         client: "",
         clientProperty: "",
-        pmaStartDate: "",
-        pmaEndDate: "",
-        poaStartDate: "",
-        poaEndDate: "",
+        pmaStartDate: null,
+        pmaEndDate: null,
+        poaStartDate: null,
+        poaEndDate: null,
         order: "",
         poaHolderName: "",
-        actualEndDate: "",
+        actualEndDate: null,
         description: "",
         reason: "",
         scan: "",
@@ -729,7 +756,8 @@ const ManagePmaArgreement = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />}
+            {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
+            {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)}/>}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             
             {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma}/>}
@@ -1156,8 +1184,7 @@ const ManagePmaArgreement = () => {
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
-                                    <p>Property</p>
-                                    <p>Status</p>
+                                    {item.propertystatusname}
                                 </div>
                                
                             </div>
@@ -1400,7 +1427,7 @@ const ManagePmaArgreement = () => {
                                         onClick={(e) => {
                                             // console.log(e.target.checked)
                                             const existing = { ...formValues };
-                                            existing.status = !existing.status;
+                                            existing.gst1 = !existing.gst1;
                                             setFormValues(existing)
                                         }}
                                     />Gst Additional ?</div>
@@ -1452,12 +1479,12 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className=" flex items-center "><input
                                         type="checkbox"
-                                        checked={formValues.gst1}
+                                        checked={formValues.gst2}
                                         className='mr-3 h-4 w-4'
                                         onClick={(e) => {
                                             // console.log(e.target.checked)
                                             const existing = { ...formValues };
-                                            existing.status = !existing.status;
+                                            existing.gst2 = !existing.gst2;
                                             setFormValues(existing)
                                         }}
                                     />Gst Additional ?</div>
