@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Cross from "../../../assets/cross.png"
 import { Modal } from '@mui/material'
 import { APIService } from '../../../services/API'
-const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
+import AsyncSelect from "react-select/async"
+const EditPmaAgreement = ({handleClose,currPma}) => {
     console.log(currPma)
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
     }
     const initialValues = {
         pmaStartDate : null,
@@ -19,7 +21,8 @@ const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
         description : "spacious",
         scan : "example",
         fixedfee : 56,
-        status : false
+        status : false,
+        clientProperty : null
     }
     const fetchInitialData = async () => {
         const data = {
@@ -55,19 +58,116 @@ const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
         if(res.data.actualenddate) {
             existing.actualEndDate = res.data.actualenddate.split('T')[0]
         }
+        const temp = {...selectedOption}
+        temp.label = res.data.clientname
+        temp.value = res.data.clientid
+        setSelectedOption(temp)
         setFormValues(existing)
-        // existing.
+        getClientPropertyByClientId(res.data.clientid)
+        getOrdersByClientId(res.data.clientid)
     }
     const [formErrors,setFormErrors] = useState({})
     const [formValues,setFormValues] = useState(initialValues)
     const order = [];
-    const [clientProperty,setClientProperty] = useState(clientPropertyData);
-    const handleEdit = () => {
+    const [clientProperty,setClientProperty] = useState([]);
+    const handleEdit = async () => {
         const data = {
-            "user_id" : 1234,
-            
+            "user_id": 1234,
+            "clientpropertyid": formValues.clientProperty,
+            "startdate":formValues.pmaStartDate,
+            "enddate":formValues.pmaEndDate,
+            "actualenddate":formValues.actualEndDate,            
+            "active":formValues.status,
+            "scancopy":formValues.scan,
+            "reasonforearlyterminationifapplicable":formValues.reason,
+            "description":formValues.description,
+            "rented":formValues.rentFee,
+            "fixed":formValues.fixedfee,
+            "rentedtax":false,
+            "fixedtax":false,
+            "orderid":435229,
+            "poastartdate":formValues.poaStartDate,
+            "poaenddate":formValues.poaEndDate,
+            "poaholder":formValues.poaHolderName,
+            "id":currPma
         }
+        const response = await APIService.editClientPMAAgreement(data)
+        const res = await response.json()
+        console.log(res)
     }
+    const [clientPropertyData,setClientPropertyData] = useState([]);
+    const getClientPropertyByClientId = async (id) => {
+       const data = {
+        "user_id" : 1234,
+        "client_id" : id
+       }
+
+       const response = await APIService.getClientPropertyByClientId(data)
+       const res = await response.json()
+       console.log(res)
+       setClientPropertyData(res.data)
+    }
+    const [orders,setOrders] = useState([]);
+    const getOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id" :1234,
+            "client_id" : id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrders(res.data)
+    }
+
+    const [selectedOption, setSelectedOption] = useState({
+        label: "Enter Client Name",
+        value: null
+    });
+    const [query, setQuery] = useState('')
+    const handleClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        //  setFormValues({...formValues,client_property : {
+        //   ...formValues.client_property,
+        //   clientid : e.value
+        //  }})
+        const existing = { ...formValues }
+        existing.client = e.value
+        // getOrdersByClientId(e.value)
+        // getClientPropertyByClientId(e.value)
+        setFormValues(existing)
+        //    const existing = {...formValues}
+        //    const temp = {...existing.client_property}
+        //    temp.clientid = e.value
+        //    existing.client_property = temp;
+        //    setFormValues(existing)
+        console.log(formValues)
+        setSelectedOption(e)
+    }
+    const loadOptions = async (e) => {
+        console.log(e)
+        if (e.length < 3) return;
+        const data = {
+            "user_id": 1234,
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": e
+        }
+        const response = await APIService.getClientAdminPaginated(data)
+        const res = await response.json()
+        const results = res.data.map(e => {
+            return {
+                label: e[1],
+                value: e[0]
+            }
+        })
+        if (results === 'No Result Found') {
+            return []
+        }
+        return results
+    }
+
     useEffect(() => {
       fetchInitialData()
        
@@ -96,7 +196,7 @@ const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
                             <div className="text-[13px]">
                                 Client <label className="text-red-500">*</label>
                             </div>
-                            {/* <AsyncSelect
+                            <AsyncSelect
      onChange={handleClientNameChange}
      value={selectedOption}
      loadOptions={loadOptions}
@@ -128,7 +228,7 @@ const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
         fontSize : 12 // adjust padding for the dropdown indicator
       })
      }}
-/> */}
+/>
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                         </div>
                         <div className="">
@@ -151,9 +251,9 @@ const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
                                 value={formValues.order}
                                 onChange={handleChange}
                             >
-                                {order.map((item) => (
-                                    <option key={item} value={item}>
-                                        {item}
+                                {orders.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.ordername}
                                     </option>
                                 ))}
                             </select>
@@ -196,7 +296,7 @@ const EditPmaAgreement = ({handleClose,currPma,clientPropertyData}) => {
                                 value={formValues.clientProperty}
                                 onChange={handleChange}
                             >
-                                {clientProperty.map((item) => (
+                                {clientPropertyData.map((item) => (
                                     <option key={item.id} value={item.id}>
                                         {item.propertyname}
                                     </option>

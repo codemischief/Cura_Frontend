@@ -280,7 +280,6 @@ const ManagePmaArgreement = () => {
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
         }
-            ;
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
