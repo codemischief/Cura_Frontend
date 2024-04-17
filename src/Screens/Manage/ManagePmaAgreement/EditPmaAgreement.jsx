@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Cross from "../../../assets/cross.png"
 import { Modal } from '@mui/material'
-const EditPmaAgreement = ({handleClose}) => {
-    const handleChange = () => {
-
+import { APIService } from '../../../services/API'
+import AsyncSelect from "react-select/async"
+const EditPmaAgreement = ({handleClose,currPma}) => {
+    console.log(currPma)
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
     }
     const initialValues = {
         pmaStartDate : null,
@@ -17,11 +21,157 @@ const EditPmaAgreement = ({handleClose}) => {
         description : "spacious",
         scan : "example",
         fixedfee : 56,
+        status : false,
+        clientProperty : null
+    }
+    const fetchInitialData = async () => {
+        const data = {
+            "user_id" : 1234,
+            "item_id" : currPma,
+            "table_name" : "get_client_property_pma_view"
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await response.json()
+        console.log(res)
+        const existing = {...formValues}
+        existing.poaHolderName = res.data.poaholder
+        existing.reason = res.data.reasonforearlyterminationifapplicable
+        existing.rentFee = res.data.rented
+        existing.description = res.data.description
+        existing.scan = res.data.scancopy
+        existing.fixedfee = res.data.fixed
+        existing.status = res.data.active
+        existing.clientProperty = res.data.clientpropertyid
+        existing.actualEndDate = res.data.actualenddate
+        if(res.data.startdate) {
+            existing.pmaStartDate = res.data.startdate.split('T')[0]
+        }
+        if(res.data.enddate) {
+            existing.pmaEndDate = res.data.enddate.split('T')[0]
+        }
+        if(res.data.poastartdate) {
+            existing.poaStartDate = res.data.poastartdate.split('T')[0]
+        }
+        if(res.data.poaenddate) {
+            existing.poaEndDate = res.data.poaenddate.split('T')[0]
+        }
+        if(res.data.actualenddate) {
+            existing.actualEndDate = res.data.actualenddate.split('T')[0]
+        }
+        const temp = {...selectedOption}
+        temp.label = res.data.clientname
+        temp.value = res.data.clientid
+        setSelectedOption(temp)
+        setFormValues(existing)
+        getClientPropertyByClientId(res.data.clientid)
+        getOrdersByClientId(res.data.clientid)
     }
     const [formErrors,setFormErrors] = useState({})
     const [formValues,setFormValues] = useState(initialValues)
     const order = [];
-    const clientProperty = [];
+    const [clientProperty,setClientProperty] = useState([]);
+    const handleEdit = async () => {
+        const data = {
+            "user_id": 1234,
+            "clientpropertyid": formValues.clientProperty,
+            "startdate":formValues.pmaStartDate,
+            "enddate":formValues.pmaEndDate,
+            "actualenddate":formValues.actualEndDate,            
+            "active":formValues.status,
+            "scancopy":formValues.scan,
+            "reasonforearlyterminationifapplicable":formValues.reason,
+            "description":formValues.description,
+            "rented":formValues.rentFee,
+            "fixed":formValues.fixedfee,
+            "rentedtax":false,
+            "fixedtax":false,
+            "orderid":435229,
+            "poastartdate":formValues.poaStartDate,
+            "poaenddate":formValues.poaEndDate,
+            "poaholder":formValues.poaHolderName,
+            "id":currPma
+        }
+        const response = await APIService.editClientPMAAgreement(data)
+        const res = await response.json()
+        console.log(res)
+    }
+    const [clientPropertyData,setClientPropertyData] = useState([]);
+    const getClientPropertyByClientId = async (id) => {
+       const data = {
+        "user_id" : 1234,
+        "client_id" : id
+       }
+
+       const response = await APIService.getClientPropertyByClientId(data)
+       const res = await response.json()
+       console.log(res)
+       setClientPropertyData(res.data)
+    }
+    const [orders,setOrders] = useState([]);
+    const getOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id" :1234,
+            "client_id" : id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrders(res.data)
+    }
+
+    const [selectedOption, setSelectedOption] = useState({
+        label: "Enter Client Name",
+        value: null
+    });
+    const [query, setQuery] = useState('')
+    const handleClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        //  setFormValues({...formValues,client_property : {
+        //   ...formValues.client_property,
+        //   clientid : e.value
+        //  }})
+        const existing = { ...formValues }
+        existing.client = e.value
+        // getOrdersByClientId(e.value)
+        // getClientPropertyByClientId(e.value)
+        setFormValues(existing)
+        //    const existing = {...formValues}
+        //    const temp = {...existing.client_property}
+        //    temp.clientid = e.value
+        //    existing.client_property = temp;
+        //    setFormValues(existing)
+        console.log(formValues)
+        setSelectedOption(e)
+    }
+    const loadOptions = async (e) => {
+        console.log(e)
+        if (e.length < 3) return;
+        const data = {
+            "user_id": 1234,
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": e
+        }
+        const response = await APIService.getClientAdminPaginated(data)
+        const res = await response.json()
+        const results = res.data.map(e => {
+            return {
+                label: e[1],
+                value: e[0]
+            }
+        })
+        if (results === 'No Result Found') {
+            return []
+        }
+        return results
+    }
+
+    useEffect(() => {
+      fetchInitialData()
+       
+    },[])
   return (
     <Modal open={true}
     fullWidth={true}
@@ -46,7 +196,7 @@ const EditPmaAgreement = ({handleClose}) => {
                             <div className="text-[13px]">
                                 Client <label className="text-red-500">*</label>
                             </div>
-                            {/* <AsyncSelect
+                            <AsyncSelect
      onChange={handleClientNameChange}
      value={selectedOption}
      loadOptions={loadOptions}
@@ -78,7 +228,7 @@ const EditPmaAgreement = ({handleClose}) => {
         fontSize : 12 // adjust padding for the dropdown indicator
       })
      }}
-/> */}
+/>
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                         </div>
                         <div className="">
@@ -101,9 +251,9 @@ const EditPmaAgreement = ({handleClose}) => {
                                 value={formValues.order}
                                 onChange={handleChange}
                             >
-                                {order.map((item) => (
-                                    <option key={item} value={item}>
-                                        {item}
+                                {orders.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.ordername}
                                     </option>
                                 ))}
                             </select>
@@ -146,9 +296,9 @@ const EditPmaAgreement = ({handleClose}) => {
                                 value={formValues.clientProperty}
                                 onChange={handleChange}
                             >
-                                {clientProperty.map((item) => (
-                                    <option key={item} value={item}>
-                                        {item}
+                                {clientPropertyData.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.propertyname}
                                     </option>
                                 ))}
                             </select>
@@ -206,7 +356,7 @@ const EditPmaAgreement = ({handleClose}) => {
                 }}
             />Active</div>
             <div className="my-3 flex justify-center items-center gap-[10px]">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Update</button>
+                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Update</button>
                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
             </div>
         </div>

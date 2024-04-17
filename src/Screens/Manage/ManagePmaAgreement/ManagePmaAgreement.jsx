@@ -280,7 +280,6 @@ const ManagePmaArgreement = () => {
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
         }
-            ;
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -340,14 +339,28 @@ const ManagePmaArgreement = () => {
         setPageLoading(false);
     }
     const [clientPropertyData,setClientPropertyData] = useState([]);
-    const fetchClientPropertyData = async () => {
+    const getClientPropertyByClientId = async (id) => {
        const data = {
-        "user_id" : 1234
+        "user_id" : 1234,
+        "client_id" : id
        }
-       const response = await APIService.getClientPropertyAdmin(data)
+
+       const response = await APIService.getClientPropertyByClientId(data)
        const res = await response.json()
        console.log(res)
        setClientPropertyData(res.data)
+    }
+    const [orders,setOrders] = useState([]);
+    const getOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id" :1234,
+            "client_id" : id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrders(res.data)
     }
     const addPmaAgreement = async () => {
         const data = {
@@ -383,7 +396,7 @@ const ManagePmaArgreement = () => {
         fetchData();
         fetchCountryData();
         fetchStateData(5)
-        fetchClientPropertyData()
+        // fetchClientPropertyData()
         fetchCityData("Maharashtra");
         fetchEntitiesData();
         fetchRoleData();
@@ -428,9 +441,9 @@ const ManagePmaArgreement = () => {
 
     // harcoded dropdown
     const clientProperty = [1, 2, 3, 4];
-    const order = [1, 2, 3, 4];
+   
     const client = [1, 2, 3, 4];
-    //end
+    
     
     const handleAddPmaAgreement = () => {
         console.log(formValues)
@@ -764,6 +777,8 @@ const ManagePmaArgreement = () => {
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
+        getOrdersByClientId(e.value)
+        getClientPropertyByClientId(e.value)
         setFormValues(existing)
         //    const existing = {...formValues}
         //    const temp = {...existing.client_property}
@@ -1014,7 +1029,7 @@ const ManagePmaArgreement = () => {
         <div className='h-screen'>
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} />}
+            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
@@ -1509,9 +1524,9 @@ const ManagePmaArgreement = () => {
                                             value={formValues.order}
                                             onChange={handleChange}
                                         >
-                                            {order.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {orders.map((item) => (
+                                                <option key={item.id} value={item.ordername}>
+                                                    {item.ordername}
                                                 </option>
                                             ))}
                                         </select>
