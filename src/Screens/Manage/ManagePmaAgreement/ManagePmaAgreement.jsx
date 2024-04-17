@@ -431,13 +431,13 @@ const ManagePmaArgreement = () => {
     const order = [1, 2, 3, 4];
     const client = [1, 2, 3, 4];
     //end
-
+    
     const handleAddPmaAgreement = () => {
         console.log(formValues)
-        // if (!validate()) {
-        //     console.log('hu')
-        //     return;
-        // }
+        if (!validate()) {
+            console.log('hu')
+            return;
+        }
         setIsPmaAgreementDialogue(false);
         // setIsLLAgreementDialogue(false);
         setOpenAddConfirmation(true)
@@ -475,16 +475,6 @@ const ManagePmaArgreement = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.client) {
-            setFormErrors((existing) => {
-                return { ...existing, client: "Select Client" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, client: "" }
-            })
-        }
         if (!formValues.clientProperty) {
             setFormErrors((existing) => {
                 return { ...existing, clientProperty: "Select Client Property" }
@@ -505,16 +495,16 @@ const ManagePmaArgreement = () => {
                 return { ...existing, pmaStartDate: "" }
             })
         }
-        if (!formValues.order) {
-            setFormErrors((existing) => {
-                return { ...existing, order: "Select Order" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, order: "" }
-            })
-        }
+        // if (!formValues.order) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "Select Order" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "" }
+        //     })
+        // }
 
         if (!formValues.pmaEndDate) {
             setFormErrors((existing) => {
