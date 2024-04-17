@@ -24,6 +24,7 @@ import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeletePmaAgreement from './DeletePmaAgreement';
 import SaveConfirmationPmaAgreement from './SaveConfirmationPmaAgreement';
+import EditPmaAgreement from './EditPmaAgreement';
 const ManagePmaArgreement = () => {
 
     const menuRef = useRef();
@@ -353,6 +354,12 @@ const ManagePmaArgreement = () => {
         const response = await APIService.addPmaAgreement(data)
         const res = await response.json()
         console.log(res)
+    }
+    const [showEditModal,setShowEditModal] = useState(false);
+    const handleEdit = (id) => {
+        // we need to open the edit modal
+        setCurrPma(id)
+        setShowEditModal(true);
     }
     useEffect(() => {
         fetchData();
@@ -752,7 +759,8 @@ const ManagePmaArgreement = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
+            {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
+            {showEditModal && <EditPmaAgreement handleClose={() => {setShowEditModal(false)}} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
@@ -1233,7 +1241,7 @@ const ManagePmaArgreement = () => {
                             </div>
                             <div className='w-[35%] py-3  flex'>
                                 <div className='flex space-x-1'>
-                                      <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => {}} />
+                                      <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                       <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                 </div>
                             </div>

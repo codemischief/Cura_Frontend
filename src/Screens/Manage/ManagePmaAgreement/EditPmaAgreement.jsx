@@ -1,10 +1,27 @@
 import React, { useState } from 'react'
 import Cross from "../../../assets/cross.png"
-const EditPmaAgreement = () => {
+import { Modal } from '@mui/material'
+const EditPmaAgreement = ({handleClose}) => {
     const handleChange = () => {
 
     }
-    const [formValues,setFormValues] = useState({})
+    const initialValues = {
+        pmaStartDate : null,
+        poaStartDate : null,
+        actualEndDate : null,
+        reason : "Bugs",
+        rentFee : 100,
+        pmaEndDate : null,
+        poaEndDate : null,
+        poaHolderName : "Abhishek",
+        description : "spacious",
+        scan : "example",
+        fixedfee : 56,
+    }
+    const [formErrors,setFormErrors] = useState({})
+    const [formValues,setFormValues] = useState(initialValues)
+    const order = [];
+    const clientProperty = [];
   return (
     <Modal open={true}
     fullWidth={true}
@@ -15,10 +32,10 @@ const EditPmaAgreement = () => {
         <div className="w-[1050px] h-auto bg-white rounded-lg">
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                 <div className="mr-[410px] ml-[410px]">
-                    <div className="text-[16px]">New PMA Agreement</div>
+                    <div className="text-[16px]">Edit PMA Agreement</div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                    <button onClick={() => {}}><img onClick={() => {}} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                    <button onClick={handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                 </div>
             </div>
 
@@ -189,8 +206,8 @@ const EditPmaAgreement = () => {
                 }}
             />Active</div>
             <div className="my-3 flex justify-center items-center gap-[10px]">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Add</button>
-                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {}}>Cancel</button>
+                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Update</button>
+                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
             </div>
         </div>
     </div>
