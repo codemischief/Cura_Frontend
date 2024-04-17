@@ -339,6 +339,16 @@ const ManagePmaArgreement = () => {
         setExistingPmaAgreement(result);
         setPageLoading(false);
     }
+    const [clientPropertyData,setClientPropertyData] = useState([]);
+    const fetchClientPropertyData = async () => {
+       const data = {
+        "user_id" : 1234
+       }
+       const response = await APIService.getClientPropertyAdmin(data)
+       const res = await response.json()
+       console.log(res)
+       setClientPropertyData(res.data)
+    }
     const addPmaAgreement = async () => {
         const data = {
             "user_id": 1234,
@@ -350,10 +360,10 @@ const ManagePmaArgreement = () => {
             "scancopy": formValues.scan,
             "reasonforearlyterminationifapplicable": formValues.reason,
             "description": formValues.description,
-            "rented": 10,
-            "fixed": null,
-            "rentedtax": Number(formValues.rentFee),
-            "fixedtax": false,
+            "rented": Number(formValues.rentFee),
+            "fixed": Number(formValues.fixedfee),
+            "rentedtax": formValues.rentFee == null ? "false" : "true",
+            "fixedtax": formValues.fixedfee == null ? "false" : "true",
             "orderid": 435229,
             "poastartdate": formValues.poaStartDate,
             "poaenddate": formValues.poaEndDate,
@@ -373,6 +383,7 @@ const ManagePmaArgreement = () => {
         fetchData();
         fetchCountryData();
         fetchStateData(5)
+        fetchClientPropertyData()
         fetchCityData("Maharashtra");
         fetchEntitiesData();
         fetchRoleData();
@@ -432,60 +443,6 @@ const ManagePmaArgreement = () => {
         setOpenAddConfirmation(true)
 
     }
-    const addEmployee = async () => {
-        // console.log('clicked')
-        console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
-        // setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "employeename": formValues.employeeName,
-            "employeeid": formValues.employeeId,
-            "userid": 1236,
-            "roleid": formValues.role,
-            "dateofjoining": formValues.doj,
-            "dob": formValues.dob,
-            "panno": formValues.panNo,
-            "status": formValues.status,
-            "phoneno": Number(formValues.phNo),
-            "email": formValues.email,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": Number(formValues.state),
-            "country": Number(formValues.country),
-            "zip": formValues.zipCode,
-            "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
-            "isdeleted": false,
-            "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob,
-            "lastdateofworking": formValues.lastDOW,
-            "designation": formValues.designation
-        }
-        const response = await APIService.addEmployee(data);
-
-        const result = await response.json()
-
-        setOpenAddConfirmation(false);
-        console.log(result)
-        setIsPmaDialogue(false);
-        if (result.result == "success") {
-            setFormValues(initialValues);
-            openAddSuccess();
-        } else {
-            openFailureModal();
-            setErrorMessage(result.message)
-        }
-
-        console.log(data);
-        console.log(result);
-    }
-
     const initialValues = {
         client: "",
         clientProperty: "",
@@ -1607,9 +1564,12 @@ const ManagePmaArgreement = () => {
                                             value={formValues.clientProperty}
                                             onChange={handleChange}
                                         >
-                                            {clientProperty.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {clientPropertyData.map((item) => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.id} 
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    {item.propertyname}
                                                 </option>
                                             ))}
                                         </select>
