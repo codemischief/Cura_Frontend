@@ -809,7 +809,6 @@ const ManageEmployees = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     } 
-    
     const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
         console.log(columnName)
         console.log('hey')

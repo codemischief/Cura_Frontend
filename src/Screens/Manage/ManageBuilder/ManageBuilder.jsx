@@ -48,6 +48,7 @@ const ManageBuilder = () => {
     const [currentPages, setCurrentPages] = useState(15)
     const [sortField, setSortField] = useState("id");
     const [searchInput, setSearchInput] = useState("");
+    const [isSearchOn, setIsSearchOn] = useState(false);
 
     const fetchUserId = async () => {
         const response = await authService.getUserId()
@@ -174,6 +175,8 @@ const ManageBuilder = () => {
 
     const handleSearch = async () => {
         setPageLoading(true);
+        setIsSearchOn(true);
+
 
         const data = {
             "user_id": 1234,
@@ -198,6 +201,7 @@ const ManageBuilder = () => {
     const handleCloseSearch = async () => {
         setPageLoading(true);
         setSearchInput("");
+        setIsSearchOn(false);
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
@@ -481,7 +485,43 @@ const ManageBuilder = () => {
             if(type == 'noFilter') setInputVariable("");
         
         fetchFiltered(existing);
-    } 
+    }
+
+    const [flag, setFlag] = useState(false)
+    
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getNewBuilderInfo(data)
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
+        setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
+
+    }
 
 
     return (
@@ -504,17 +544,17 @@ const ManageBuilder = () => {
                             <p className="text-[14px]">Manage &gt; Manage Builder</p>
                         </div>
                     </div>
-                    <div className='flex space-x-2 items-center relative'>
-                        <div className='flex'>
+                    <div className='flex space-x-2 items-center '>
+                        <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] px-2"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                             <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
@@ -534,36 +574,36 @@ const ManageBuilder = () => {
 
                 </div>
 
-                <div className='h-12 w-full flex'>
+                <div className='h-12 w-full flex text-xs'>
                     <div className="w-[85%] h-full flex">
                         <div className='w-[5%] p-3'>
                             {/* <p>Sr. </p> */}
                         </div>
-                        <div className='w-[25%]  p-3'>
+                        <div className='w-[25%]  px-3 py-2.5'>
                             <div className='w-[46%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-20 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
-                                <button className='p-1' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <input className="w-[77%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
+                                <button className='w-[23%] px-1 py-2' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[15%]  p-3'>
-                            <div className='w-[64%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
-                                <button className='p-1' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                        <div className='w-[15%]  px-3 py-2.5'>
+                            <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
+                                <button className='px-1 py-2 w-[25%]' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[15%]  p-3'>
-                            <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-16 bg-[#EBEBEB] rounded-[5px] " value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
-                                <button className='' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                        <div className='w-[15%]  px-3 py-2.5'>
+                            <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none " value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
+                                <button className='px-1 py-2 w-[25%]' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[15%]  p-3'>
-                            <div className='w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-16 bg-[#EBEBEB] rounded-[5px]" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }} />
-                                <button className='' onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                        <div className='w-[15%]  px-3 py-2.5'>
+                            <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }} />
+                                <button className='px-1 py-2 w-[25%]' onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} />}
                         </div>
@@ -576,10 +616,10 @@ const ManageBuilder = () => {
                         </div>
                     </div>
                     <div className="w-[15%]  h-full flex">
-                        <div className='w-1/2  p-3'>
+                        <div className='w-1/2  px-3 py-2.5'>
                             <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-11 bg-[#EBEBEB] rounded-[5px]" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
-                                <button className='' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
+                                <button className='px-1 py-2 w-[33%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='id' />}
@@ -598,16 +638,16 @@ const ManageBuilder = () => {
                                 <p>Sr. </p>
                             </div>
                             <div className='w-[25%]  p-4'>
-                                <p>Builder Name <span className="font-extrabold">↑↓</span></p>
+                                <p>Builder Name <button onClick={() => handleSort('buildername')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[15%]  p-4'>
-                                <p>Country ↑↓</p>
+                                <p>Country <button onClick={() => handleSort('country')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[15%]  p-4'>
-                                <p>City ↑↓</p>
+                                <p>City <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[15%]  p-4'>
-                                <p>Suburb ↑↓</p>
+                                <p>Suburb <button onClick={() => handleSort('suburb')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
                                 {/* <p>Contact</p> */}
@@ -618,7 +658,7 @@ const ManageBuilder = () => {
                         </div>
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  p-4'>
-                                <p>ID ↑↓</p>
+                                <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-1/2 0 p-4'>
                                 <p>Edit</p>
