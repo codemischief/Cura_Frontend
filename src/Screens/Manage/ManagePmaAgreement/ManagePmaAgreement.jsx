@@ -16,7 +16,7 @@ import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
-import DateFilter from "../../../assets/dateFilter.png"
+import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
@@ -25,6 +25,11 @@ import AsyncSelect from "react-select/async"
 import DeletePmaAgreement from './DeletePmaAgreement';
 import SaveConfirmationPmaAgreement from './SaveConfirmationPmaAgreement';
 import EditPmaAgreement from './EditPmaAgreement';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
+import CharacterFilter from "../../../Components/Filters/CharacterFilter"
+import DateFilter from '../../../Components/Filters/DateFilter';
+import NumericFilter from '../../../Components/Filters/NumericFilter';
 const ManagePmaArgreement = () => {
 
     const menuRef = useRef();
@@ -51,26 +56,29 @@ const ManagePmaArgreement = () => {
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
-    const [empNameFilter, setEmpNameFilter] = useState(false);
-    const [empNameInput, setEmpNameInput] = useState("");
-    const [empIdFilter, setEmpIdFilter] = useState(false);
-    const [empIdInput, setEmpIdInput] = useState("");
-    const [phoneFilter, setPhoneFilter] = useState(false);
-    const [phoneInput, setPhoneInput] = useState("");
-    const [emailFilter, setEmailFilter] = useState(false);
-    const [emailInput, setEmailInput] = useState("");
-    const [roleFilter, setRoleFilter] = useState(false);
-    const [roleInput, setRoleInput] = useState("");
-    const [pannoFilter, setPannoFilter] = useState(false);
-    const [pannoInput, setPannoInput] = useState("");
-    const [dojFilter, setDojFilter] = useState(false);
-    const [dojInput, setDojInput] = useState("");
-    const [ldowFilter, setLdowFilter] = useState(false);
-    const [ldowInput, setLdowInput] = useState("");
+    const [clientNameFilter, setClientNameFilter] = useState(false);
+    const [clientNameFilterInput, setClientNameFilterInput] = useState("");
+    const [propertyDescriptionFilter, setPropertyDescriptionFilter] = useState(false);
+    const [propertyDescriptionFilterInput, setPropertyDescriptionFilterInput] = useState("");
+    const [orderDescriptionFilter, setOrderDescriptionFilter] = useState(false);
+    const [orderDescriptionFilterInput, setOrderDescriptionFilterInput] = useState("");
+    const [propertyStatusFilter, setPropertyStatusFilter] = useState(false);
+    const [propertyStatusFilterInput, setPropertyStatusFilterInput] = useState("");
+    const [descriptionFilter, setDescriptionFilter] = useState(false);
+    const [descriptionFilterInput, setDescriptionFilterInput] = useState("");
     const [statusFilter, setStatusFilter] = useState(false);
-    const [statusInput, setStatusInput] = useState("");
-    const [idFilter, setIdFilter] = useState(false);
-    const [idInput, setIdInput] = useState("");
+    const [statusFilterInput, setStatusFilterInput] = useState("");
+    const [pmaStartFilter, setPmaStartFilter] = useState(false);
+    const [pmaStartFilterInput, setPmaStartFilterInput] = useState("");
+    const [pmaEndFilter, setPmaEndFilter] = useState(false);
+    const [pmaEndFilterInput, setPmaEndFilterInput] = useState("");
+    const [poaStartFilter, setPoaStartFilter] = useState(false);
+    const [poaStartFilterInput, setPoaStartFilterInput] = useState("");
+    const [poaEndFilter, setPoaEndFilter] = useState(false);
+    const [poaEndFilterInput, setPoaEndFilterInput] = useState("");
+    const [poaHolderFilter, setPoaHolderFilter] = useState(false);
+    const [poaHolderFilterInput, setPoaHolderFilterInput] = useState("");
+
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -184,47 +192,47 @@ const ManagePmaArgreement = () => {
     }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
-    const [existingPmaAgreement,setExistingPmaAgreement] = useState([]);
+    const [existingPmaAgreement, setExistingPmaAgreement] = useState([]);
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "clientpropertyid",
-              "startdate",
-              "enddate",
-              "actualenddate",
-              "active",
-              "scancopy",
-              "reasonforearlyterminationifapplicable",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "description",
-              "rented",
-              "fixed",
-              "rentedtax",
-              "fixedtax",
-              "orderid",
-              "orderdescription",
-              "poastartdate",
-              "poaenddate",
-              "poaholder",
-              "clientname",
-              "status",
-              "propertystatus",
-              "propertydescription",
-              "propertystatusname"
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription",
+                "propertystatusname"
             ],
             "filters": [],
             "sort_by": ["id"],
             "order": "desc",
             "pg_no": 1,
             "pg_size": 15
-          }
-          ;
+        }
+            ;
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -240,39 +248,39 @@ const ManagePmaArgreement = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "clientpropertyid",
-              "startdate",
-              "enddate",
-              "actualenddate",
-              "active",
-              "scancopy",
-              "reasonforearlyterminationifapplicable",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "description",
-              "rented",
-              "fixed",
-              "rentedtax",
-              "fixedtax",
-              "orderid",
-              "orderdescription",
-              "poastartdate",
-              "poaenddate",
-              "poaholder",
-              "clientname",
-              "status",
-              "propertystatus",
-              "propertydescription"
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription"
             ],
             "filters": [],
             "sort_by": ["id"],
             "order": "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
-          }
-          ;
+        }
+            ;
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -288,40 +296,40 @@ const ManagePmaArgreement = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-              "id",
-              "clientpropertyid",
-              "startdate",
-              "enddate",
-              "actualenddate",
-              "active",
-              "scancopy",
-              "reasonforearlyterminationifapplicable",
-              "dated",
-              "createdby",
-              "isdeleted",
-              "description",
-              "rented",
-              "fixed",
-              "rentedtax",
-              "fixedtax",
-              "orderid",
-              "orderdescription",
-              "poastartdate",
-              "poaenddate",
-              "poaholder",
-              "clientname",
-              "status",
-              "propertystatus",
-              "propertydescription"
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription"
             ],
             "filters": [],
             "sort_by": ["id"],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(quantity),
-            "search_key" : searchInput
-          }
-          ;
+            "search_key": searchInput
+        }
+            ;
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -334,20 +342,20 @@ const ManagePmaArgreement = () => {
     const addPmaAgreement = async () => {
         const data = {
             "user_id": 1234,
-            "clientpropertyid":18196,
-            "startdate":formValues.pmaStartDate,
+            "clientpropertyid": 18196,
+            "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
-            "actualenddate":formValues.actualEndDate,
-            "active":formValues.status,
-            "scancopy":formValues.scan,
-            "reasonforearlyterminationifapplicable":formValues.reason,
-            "description":formValues.description,
+            "actualenddate": formValues.actualEndDate,
+            "active": formValues.status,
+            "scancopy": formValues.scan,
+            "reasonforearlyterminationifapplicable": formValues.reason,
+            "description": formValues.description,
             "rented": 10,
-            "fixed":null,
-            "rentedtax":Number(formValues.rentFee),
-            "fixedtax":false,
-            "orderid":435229,
-            "poastartdate":formValues.poaStartDate,
+            "fixed": null,
+            "rentedtax": Number(formValues.rentFee),
+            "fixedtax": false,
+            "orderid": 435229,
+            "poastartdate": formValues.poaStartDate,
             "poaenddate": formValues.poaEndDate,
             "poaholder": formValues.poaHolderName
         }
@@ -355,7 +363,7 @@ const ManagePmaArgreement = () => {
         const res = await response.json()
         console.log(res)
     }
-    const [showEditModal,setShowEditModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const handleEdit = (id) => {
         // we need to open the edit modal
         setCurrPma(id)
@@ -370,19 +378,20 @@ const ManagePmaArgreement = () => {
         fetchRoleData();
         fetchUsersData();
         fetchLobData();
-     
+
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
-                setEmpNameFilter(false);
-                setEmpIdFilter(false);
-                setPhoneFilter(false);
-                setEmailFilter(false);
-                setRoleFilter(false);
-                setPannoFilter(false);
-                setDojFilter(false);
-                setLdowFilter(false);
+                setClientNameFilter(false);
+                setPropertyDescriptionFilter(false);
+                setOrderDescriptionFilter(false);
+                setPropertyStatusFilter(false);
                 setStatusFilter(false);
-                setIdFilter(false);
+                setDescriptionFilter(false);
+                setPmaStartFilter(false);
+                setPmaEndFilter(false);
+                setPoaStartFilter(false);
+                setPoaEndFilter(false);
+                setPoaHolderFilter(false);
             }
         }
 
@@ -573,7 +582,7 @@ const ManagePmaArgreement = () => {
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
-   
+
     const deleteEmployee = async (id) => {
         const data = {
             "user_id": 1234,
@@ -601,20 +610,47 @@ const ManagePmaArgreement = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription",
+                "propertystatusname"
+            ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getEmployees(data)
+        const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "EmployeeData.xlsx");
+        XLSX.writeFile(workbook, "PmaAgreemenetData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
@@ -623,7 +659,34 @@ const ManagePmaArgreement = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription",
+                "propertystatusname"
+            ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
@@ -631,12 +694,13 @@ const ManagePmaArgreement = () => {
             "pg_size": 15,
             "search_key": searchInput
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingPmaAgreement(result);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
@@ -645,36 +709,64 @@ const ManagePmaArgreement = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription",
+                "propertystatusname"
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": Number(currentPages),
+            "pg_size": 15,
             "search_key": ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingPmaAgreement(result);
         setPageLoading(false);
     }
-    const [showDeleteModal,setShowDeleteModal] = useState(false)
-    const [currPma,setCurrPma] = useState("");
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [currPma, setCurrPma] = useState("");
     const handleDelete = (id) => {
         setCurrPma(id);
         setShowDeleteModal(true)
     }
     const deletePma = async (id) => {
         const data = {
-            "user_id" : 1234,
-            "id" : id
+            "user_id": 1234,
+            "id": id
         }
         const response = await APIService.deletePmaAgreement(data)
         const res = await response.json()
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             setShowDeleteModal(false);
             openDeleteSuccess()
         }
@@ -711,64 +803,279 @@ const ManagePmaArgreement = () => {
     }
 
 
-    const [selectedOption,setSelectedOption] = useState({
-        label : "Enter Client Name",
-        value : null
-       });
-       const [query,setQuery] = useState('')
-       const handleClientNameChange = (e) => {
-           console.log('hey')
-           console.log(e)
-          //  setFormValues({...formValues,client_property : {
-          //   ...formValues.client_property,
-          //   clientid : e.value
-          //  }})
-          const existing = {...formValues}
-          existing.client = e.value
-          setFormValues(existing)
+    const [selectedOption, setSelectedOption] = useState({
+        label: "Enter Client Name",
+        value: null
+    });
+    const [query, setQuery] = useState('')
+    const handleClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        //  setFormValues({...formValues,client_property : {
+        //   ...formValues.client_property,
+        //   clientid : e.value
+        //  }})
+        const existing = { ...formValues }
+        existing.client = e.value
+        setFormValues(existing)
         //    const existing = {...formValues}
         //    const temp = {...existing.client_property}
         //    temp.clientid = e.value
         //    existing.client_property = temp;
         //    setFormValues(existing)
-           console.log(formValues)
-           setSelectedOption(e)
-       }
-       const loadOptions = async (e) => {
-          console.log(e)
-          if(e.length < 3) return ;
-          const data = {
-            "user_id" : 1234,
-            "pg_no" : 0,
-            "pg_size" : 0,
-            "search_key" : e
-          }
-          const response = await APIService.getClientAdminPaginated(data)
-          const res = await response.json()
-          const results = res.data.map(e => {
+        console.log(formValues)
+        setSelectedOption(e)
+    }
+    const loadOptions = async (e) => {
+        console.log(e)
+        if (e.length < 3) return;
+        const data = {
+            "user_id": 1234,
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": e
+        }
+        const response = await APIService.getClientAdminPaginated(data)
+        const res = await response.json()
+        const results = res.data.map(e => {
             return {
-              label : e[1],
-              value : e[0]
+                label: e[1],
+                value: e[0]
             }
-          })
-          if(results === 'No Result Found') {
+        })
+        if (results === 'No Result Found') {
             return []
-          }
-          return results
-       }
+        }
+        return results
+    }
+
+    const filterMapping = {
+        clientname : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        propertydescription : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        orderdescription : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        propertystatusname : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        description : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        status : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+        startdate : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        enddate : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        poastartdate : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        poaenddate : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Date",
+            filterInput : ""
+        },
+        poaholder : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
+    }
+    const [filterMapState,setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+        console.log(columnName)
+        console.log('hey')
+        console.log(filterMapState);
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter') setInputVariable("");
+
+
+        fetchFiltered(existing);
+    }
+
+    const fetchFiltered = async  (mapState) => {
+        setFilterMapState(mapState)
+        const tempArray = [];
+         // we need to query thru the object
+         // console.log(filterMapState);
+         console.log(filterMapState)
+         Object.keys(mapState).forEach(key=> {
+             if(mapState[key].filterType != "") {
+                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+             }
+         })
+         setPageLoading(true);
+         const data = {
+             "user_id": 1234,
+             "rows": [
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription",
+                "propertystatusname"
+            ],
+             "filters": tempArray,
+             "sort_by": [sortField],
+             "order": flag ? "asc" : "desc",
+             "pg_no": Number(currentPage),
+             "pg_size": Number(currentPages),
+             "search_key": isSearchOn ? searchInput : ""
+         };
+         const response = await APIService.getPmaAgreement(data);
+         const temp = await response.json();
+         const result = temp.data;
+         console.log(result);
+         const t = temp.total_count;
+         setTotalItems(t);
+         setExistingPmaAgreement(result);
+         setPageLoading(false);
+     } 
+
+
+
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "startdate",
+                "enddate",
+                "actualenddate",
+                "active",
+                "scancopy",
+                "reasonforearlyterminationifapplicable",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "description",
+                "rented",
+                "fixed",
+                "rentedtax",
+                "fixedtax",
+                "orderid",
+                "orderdescription",
+                "poastartdate",
+                "poaenddate",
+                "poaholder",
+                "clientname",
+                "status",
+                "propertystatus",
+                "propertydescription",
+                "propertystatusname"
+            ],
+            "filters": tempArray,
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getPmaAgreement(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingPmaAgreement(result);
+        setPageLoading(false);
+    }
     return (
         <div className='h-screen'>
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => {setShowEditModal(false)}} />}
+            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)}/>}
+            {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            
-            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma}/>}
+
+            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -819,255 +1126,104 @@ const ManagePmaArgreement = () => {
 
 
                 {/* filter component */}
-                <div className='h-12 w-full bg-white'>
-                    <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[83%] flex">
-                            <div className='w-[3%] flex'>
-                                <div className='p-3'>
-                                    {/* <p>Sr.</p> */}
-                                </div>
-                            </div>
-                            <div className='w-[18%] flex p-3'>
-                                <div className="w-[52%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
 
-                            <div className='w-[19%]  flex p-3'>
-                                <div className="w-[52%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                <div className='w-full h-12 flex justify-between border-gray-400 border-b-[1px] text-xs'>
+                    <div className="w-[90%] flex">
+                        <div className='w-[2%] flex'>
+                            <div className='px-3 py-5'>
+                                {/* <p>Sr.</p> */}
                             </div>
-
-                            <div className='w-[15%]  flex p-3'>
-                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                        </div>
+                        <div className='w-[10.8%] px-3 py-2  '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-
-                            <div className='w-[15%]  flex p-3'>
-                                <div className="w-[58%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[14.8%] px-3 py-2 '>
+                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-
-                            <div className='w-[15%]  flex p-3'>
-                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1'><img src={DateFilter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                            {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[9.8%]  px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-
-                            <div className='w-[15%]  flex p-3'>
-                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1'><img src={DateFilter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
+                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='orderdescription' menuRef={menuRef} />}
 
                         </div>
-                        <div className="w-[10%] flex">
-                            <div className='w-1/2  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                        <div className='w-[8.8%] px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
+                            {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[9.8%] px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[7.8%] px-3 py-2'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[9.8%] px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date' />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef}/>}
+                        </div>
+                        <div className='w-[8.8%] px-3 py-2  '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date' />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef}/>}
+                        </div>
+                        <div className='w-[8.8%] px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date' />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef}/>}
+                        </div>
+                        <div className='w-[8.8%] px-3 py-2'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date' />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef}/>}
+                        </div>
+                    </div>
+                    <div className="w-[10%] flex">
 
-                            <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                        <div className='w-[65%] px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[35%]  flex'>
+                            <div className='px-3 py-5'>
 
-                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
+
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                     <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
@@ -1079,12 +1235,12 @@ const ManagePmaArgreement = () => {
                             </div>
                             <div className='w-[10.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
+                                    <p>Client name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[14.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                    <p>Property Description <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[9.8%]  flex '>
@@ -1092,23 +1248,23 @@ const ManagePmaArgreement = () => {
                                     <p>Order</p>
                                     <p>Description</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('orderdescription')}><span className="font-extrabold ">↑↓</span></button>
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>Property</p>
                                     <p>Status</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('propertystatusname')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[9.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Description <span className="font-extrabold">↑↓</span></p>
+                                    <p>Description <button onClick={() => handleSort('description')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[7.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Status <span className="font-extrabold">↑↓</span></p>
+                                    <p>Status <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[9.8%]  flex'>
@@ -1116,28 +1272,28 @@ const ManagePmaArgreement = () => {
                                     <p>PMA</p>
                                     <p>Start Date</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('startdate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>PMA</p>
                                     <p>End Date</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('enddate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>POA</p>
                                     <p>Start Date</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('poastartdate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>POA</p>
                                     <p>End Date</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('poaenddate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                         </div>
                         <div className="w-[10%] flex">
@@ -1146,7 +1302,7 @@ const ManagePmaArgreement = () => {
                                     <p>POA</p>
                                     <p>Holder</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('poaholder')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-5'>
@@ -1168,84 +1324,84 @@ const ManagePmaArgreement = () => {
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingPmaAgreement.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                 <div className="w-[90%] flex">
-                            <div className='w-[2%] flex'>
-                                <div className='px-3 py-5'>
-                                   <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                <div className="w-[90%] flex">
+                                    <div className='w-[2%] flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10.8%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.clientname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[14.8%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.propertydescription}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[9.8%]  flex '>
+                                        <div className='p-3'>
+                                            <p>{item.orderdescription}</p>
+                                        </div>
+
+                                    </div>
+                                    <div className='w-[8.8%]  flex'>
+                                        <div className='p-3'>
+                                            {item.propertystatusname}
+                                        </div>
+
+                                    </div>
+                                    <div className='w-[9.8%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.description}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[7.8%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.status}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[9.8%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.startdate}</p>
+                                        </div>
+
+                                    </div>
+                                    <div className='w-[8.8%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.enddate}</p>
+                                        </div>
+
+                                    </div>
+                                    <div className='w-[8.8%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.poastartdate}</p>
+                                        </div>
+
+                                    </div>
+                                    <div className='w-[8.8%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.poaenddate}</p>
+
+                                        </div>
+
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-[10.8%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.clientname}</p>
+                                <div className="w-[10%] flex">
+                                    <div className='w-[65%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.poaholder}</p>
+                                        </div>
+                                        {/* <div className="font-extrabold py-5">↑↓</div> */}
+                                    </div>
+                                    <div className='w-[35%] py-3  flex'>
+                                        <div className='flex space-x-1'>
+                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
+                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-[14.8%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.propertydescription}</p>
-                                </div>
-                            </div>
-                            <div className='w-[9.8%]  flex '>
-                                <div className='p-3'>
-                                    <p>{item.orderdescription}</p>
-                                </div>
-                               
-                            </div>
-                            <div className='w-[8.8%]  flex'>
-                                <div className='p-3'>
-                                    {item.propertystatusname}
-                                </div>
-                               
-                            </div>
-                            <div className='w-[9.8%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.description}</p>
-                                </div>
-                            </div>
-                            <div className='w-[7.8%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{item.status}</p>
-                                </div>
-                            </div>
-                            <div className='w-[9.8%]  flex'>
-                                <div className='p-3'>
-                                    <p>{item.startdate}</p>
-                                </div>
-                               
-                            </div>
-                            <div className='w-[8.8%]  flex'>
-                                <div className='p-3'>
-                                    <p>{item.enddate}</p>
-                                </div>
-                              
-                            </div>
-                            <div className='w-[8.8%]  flex'>
-                                <div className='p-3'>
-                                    <p>{item.poastartdate}</p>
-                                </div>
-                                
-                            </div>
-                            <div className='w-[8.8%]  flex'>
-                                <div className='p-3'>
-                                     <p>{item.poaenddate}</p>
-                                    
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div className="w-[10%] flex">
-                            <div className='w-[65%]  flex'>
-                                <div className='p-3'>
-                                    <p>{item.poaholder}</p>
-                                </div>
-                                {/* <div className="font-extrabold py-5">↑↓</div> */}
-                            </div>
-                            <div className='w-[35%] py-3  flex'>
-                                <div className='flex space-x-1'>
-                                      <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                      <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
-                                </div>
-                            </div>
-                        </div>
                             </div>
                         })}
                     </div>
@@ -1352,38 +1508,38 @@ const ManagePmaArgreement = () => {
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
-                 onChange={handleClientNameChange}
-                 value={selectedOption}
-                 loadOptions={loadOptions}
-                 cacheOptions
-                 defaultOptions
-                 onInputChange={(value) => setQuery(value)}
-                 
-                 styles={{
-                  control: (provided, state) => ({
-                    ...provided,
-                    minHeight : 25,
-                    lineHeight : '1.3',
-                    height : 2,
-                    fontSize : 12,
-                    padding : '1px'
-                  }),
-                  // indicatorSeparator: (provided, state) => ({
-                  //   ...provided,
-                  //   lineHeight : '0.5',
-                  //   height : 2,
-                  //   fontSize : 12 // hide the indicator separator
-                  // }),
-                  dropdownIndicator: (provided, state) => ({
-                    ...provided,
-                    padding: '3px', // adjust padding for the dropdown indicator
-                  }),
-                  options : (provided, state) => ({
-                    ...provided,
-                    fontSize : 12 // adjust padding for the dropdown indicator
-                  })
-                 }}
-            />
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 25,
+                                                    lineHeight: '1.3',
+                                                    height: 2,
+                                                    fontSize: 12,
+                                                    padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 12 // adjust padding for the dropdown indicator
+                                                })
+                                            }}
+                                        />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
