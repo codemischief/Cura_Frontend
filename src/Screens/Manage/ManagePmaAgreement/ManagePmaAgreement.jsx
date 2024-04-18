@@ -351,6 +351,7 @@ const ManagePmaArgreement = () => {
        setClientPropertyData(res.data)
     }
     const [orders,setOrders] = useState([]);
+
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
@@ -798,6 +799,7 @@ const ManagePmaArgreement = () => {
         console.log(formValues)
         setSelectedOption(e)
     }
+    
     const loadOptions = async (e) => {
         console.log(e)
         if (e.length < 3) return;

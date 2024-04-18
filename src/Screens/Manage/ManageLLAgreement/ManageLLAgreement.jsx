@@ -22,6 +22,7 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import SaveConfirmationLLAgreement from './SaveConfirmationLLAgreement';
 import DeleteLLAgreement from './DeleteLLAgreement';
+import AsyncSelect from "react-select/async"
 
 const ManageLLAgreement = () => {
     const initialRows = [
@@ -197,6 +198,84 @@ const ManageLLAgreement = () => {
             setAllLOB(result.data);
         }
     }
+
+    const [orders,setOrders] = useState([]);
+
+    const getOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id" :1234,
+            "client_id" : id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrders(res.data)
+    }
+
+    const [clientPropertyData,setClientPropertyData] = useState([]);
+    const getClientPropertyByClientId = async (id) => {
+       const data = {
+        "user_id" : 1234,
+        "client_id" : id
+       }
+
+       const response = await APIService.getClientPropertyByClientId(data)
+       const res = await response.json()
+       console.log(res)
+       setClientPropertyData(res.data)
+    }
+
+    const [selectedOption, setSelectedOption] = useState({
+        label: "Enter Client Name",
+        value: null
+    });
+    const [query, setQuery] = useState('')
+
+    const handleClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        //  setFormValues({...formValues,client_property : {
+        //   ...formValues.client_property,
+        //   clientid : e.value
+        //  }})
+        const existing = { ...formValues }
+        existing.client = e.value
+        getOrdersByClientId(e.value)
+        getClientPropertyByClientId(e.value)
+        setFormValues(existing)
+        //    const existing = {...formValues}
+        //    const temp = {...existing.client_property}
+        //    temp.clientid = e.value
+        //    existing.client_property = temp;
+        //    setFormValues(existing)
+        console.log(formValues)
+        setSelectedOption(e)
+    }
+
+    const loadOptions = async (e) => {
+        console.log(e)
+        if (e.length < 3) return;
+        const data = {
+            "user_id": 1234,
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": e
+        }
+        const response = await APIService.getClientAdminPaginated(data)
+        const res = await response.json()
+        const results = res.data.map(e => {
+            return {
+                label: e[1],
+                value: e[0]
+            }
+        })
+        if (results === 'No Result Found') {
+            return []
+        }
+        return results
+    }
+
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const [existingLLAgreement, setExistingLLAgreement] = useState([])
@@ -374,19 +453,152 @@ const ManageLLAgreement = () => {
     }
 
     // harcoded dropdown
-    const clientProperty = [1, 2, 3, 4];
-    const order = [1, 2, 3, 4];
-    const client = [1, 2, 3, 4];
-    const rentPaymentDate = [1, 2, 3, 4];
-    const registrationType = [1, 2, 3, 4];
+    const rentPaymentDate = [
+        {
+            id: 1,
+            day: 1
+        },
+        {
+            id: 2,
+            day : 2
+        },
+        {
+            id: 3,
+            day: 3
+        },
+        {
+            id: 4,
+            day: 4
+        },
+        {
+            id: 5,
+            day: 5
+        },
+        {
+            id: 6,
+            day: 6
+        },
+        {
+            id: 7,
+            day: 7
+        },
+        {
+            id: 8,
+            day: 8
+        },
+        {
+            id: 9,
+            day: 9
+        },
+        {
+            id: 10,
+            day: 10
+        },
+        {
+            id: 11,
+            day: 11
+        },
+        {
+            id: 12,
+            day : 12
+        },
+        {
+            id: 13,
+            day: 13
+        },
+        {
+            id: 14,
+            day: 14
+        },
+        {
+            id: 15,
+            day: 15
+        },
+        {
+            id: 16,
+            day: 16
+        },
+        {
+            id: 17,
+            day: 17
+        },
+        {
+            id: 18,
+            day: 18
+        },
+        {
+            id: 19,
+            day: 19
+        },
+        {
+            id: 20,
+            day: 20
+        },
+        {
+            id: 21,
+            day: 21
+        },
+        {
+            id: 22,
+            day : 22
+        },
+        {
+            id: 23,
+            day: 23
+        },
+        {
+            id: 24,
+            day: 24
+        },
+        {
+            id: 25,
+            day: 25
+        },
+        {
+            id: 26,
+            day: 26
+        },
+        {
+            id: 27,
+            day: 27
+        },
+        {
+            id: 28,
+            day: 28
+        },
+        {
+            id: 29,
+            day: 29
+        },
+        {
+            id: 30,
+            day: 30
+        },
+        {
+            id: 31,
+            day: 31
+        },
+    ];
+
+
+    const registrationType = [
+        {
+            id: 1,
+            type: "Registered"
+        },
+        {
+            id: 2,
+            type: "Not Registered"
+        }
+    ];
     //end
 
     const handleAddLLAgreement = () => {
         console.log(formValues)
-        // if (!validate()) {
-        //     console.log('hu')
-        //     return;
-        // }
+        if (!validate()) {
+            console.log('hu')
+            return;
+        }
         setIsLLAgreementDialogue(false);
         setOpenAddConfirmation(true)
 
@@ -397,18 +609,18 @@ const ManageLLAgreement = () => {
         // setPageLoading(true);
         const data = {
             "user_id":1234,
-            "clientpropertyid":18195,
-            "orderid":444258,
-            "durationinmonth":12,
-            "depositamount":25000,
-            "startdate":"2024-02-01",
-            "actualenddate":"2024-01-01",
-            "rentamount":25000,
-            "registrationtype":"type",
-            "rentpaymentdate":10,
-            "noticeperiodindays":15,
-            "active":true,
-            "llscancopy":"link"
+            "clientpropertyid": formValues.clientProperty,
+            "orderid": formValues.order,
+            "durationinmonth":formValues.durationInMonth,
+            "depositamount":formValues.depositeAmount,
+            "startdate": formValues.startDate,
+            "actualenddate":formValues.endDate,
+            "rentamount":formValues.rentAmount,
+            "registrationtype":formValues.registrationType,
+            "rentpaymentdate":formValues.rentPaymentDate,
+            "noticeperiodindays":formValues.noticePeriod,
+            "active":formValues.status,
+            "llscancopy":formValues.scan
         }
         const response = await APIService.addLLAgreement(data);
 
@@ -431,14 +643,14 @@ const ManageLLAgreement = () => {
 
     const initialValues = {
         client: "",
-        clientProperty: "",
-        startDate: "",
+        clientProperty: null,
+        startDate: null,
         rentAmount: "",
         depositeAmount: "",
         scan: "",
-        order: "",
+        order: null,
         durationInMonth: "",
-        endDate: "",
+        endDate: null,
         rentPaymentDate: "",
         noticePeriod: "",
         registrationType: "",
@@ -467,16 +679,16 @@ const ManageLLAgreement = () => {
                 return { ...existing, client: "" }
             })
         }
-        if (!formValues.clientProperty) {
-            setFormErrors((existing) => {
-                return { ...existing, clientProperty: "Select Client Property" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, clientProperty: "" }
-            })
-        }
+        // if (!formValues.clientProperty) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, clientProperty: "Select Client Property" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, clientProperty: "" }
+        //     })
+        // }
         if (!formValues.startDate) {
             setFormErrors((existing) => {
                 return { ...existing, startDate: "Select Start Date" }
@@ -487,16 +699,16 @@ const ManageLLAgreement = () => {
                 return { ...existing, startDate: "" }
             })
         }
-        if (!formValues.order) {
-            setFormErrors((existing) => {
-                return { ...existing, order: "Select Order" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, order: "" }
-            })
-        }
+        // if (!formValues.order) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "Select Order" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "" }
+        //     })
+        // }
 
         if (!formValues.durationInMonth) {
             setFormErrors((existing) => {
@@ -1043,7 +1255,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className='w-[15%]  flex'>
                                         <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                            {item.active ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
                                                 <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
                                                 <p> inactive</p></>}
                                         </div>
@@ -1173,22 +1385,43 @@ const ManageLLAgreement = () => {
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center ">
                                 <div className=" space-y-3 py-5">
-                                    <div className="">
+                                <div className="">
                                         <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="client"
-                                            value={formValues.client}
-                                            onChange={handleChange}
-                                        >
-                                            {client.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        <AsyncSelect
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 25,
+                                                    lineHeight: '1.3',
+                                                    height: 2,
+                                                    fontSize: 12,
+                                                    padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 12 // adjust padding for the dropdown indicator
+                                                })
+                                            }}
+                                        />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -1201,9 +1434,12 @@ const ManageLLAgreement = () => {
                                             value={formValues.clientProperty}
                                             onChange={handleChange}
                                         >
-                                            {clientProperty.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {clientPropertyData.map((item) => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.id} 
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    {item.propertyname}
                                                 </option>
                                             ))}
                                         </select>
@@ -1230,7 +1466,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
-                                    <div className="">
+                                <div className="">
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
                                         </div>
@@ -1240,9 +1476,9 @@ const ManageLLAgreement = () => {
                                             value={formValues.order}
                                             onChange={handleChange}
                                         >
-                                            {order.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                            {orders.map((item) => (
+                                                <option key={item.id} value={item.ordername}>
+                                                    {item.ordername}
                                                 </option>
                                             ))}
                                         </select>
@@ -1269,8 +1505,8 @@ const ManageLLAgreement = () => {
                                             onChange={handleChange}
                                         >
                                             {rentPaymentDate.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                                <option key={item.id} value={item.day}>
+                                                    {item.day}
                                                 </option>
                                             ))}
                                         </select>
@@ -1290,9 +1526,9 @@ const ManageLLAgreement = () => {
                                             value={formValues.registrationType}
                                             onChange={handleChange}
                                         >
-                                            {registrationType.map((item) => (
-                                                <option key={item} value={item}>
-                                                    {item}
+                                           {registrationType.map(item => (
+                                                <option key={item.id} value={item.type}>
+                                                    {item.type}
                                                 </option>
                                             ))}
                                         </select>
