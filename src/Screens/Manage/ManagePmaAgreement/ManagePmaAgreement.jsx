@@ -385,6 +385,16 @@ const ManagePmaArgreement = () => {
         const response = await APIService.addPmaAgreement(data)
         const res = await response.json()
         console.log(res)
+
+        setOpenAddConfirmation(false);
+        setIsPmaAgreementDialogue(false);
+        if (res.result == "success") {
+            setFormValues(initialValues);
+            openAddSuccess();
+        } else {
+            openFailureModal();
+            setErrorMessage(res.message)
+        }
     }
     const [showEditModal, setShowEditModal] = useState(false);
     const handleEdit = (id) => {
@@ -1029,7 +1039,7 @@ const ManagePmaArgreement = () => {
         <div className='h-screen'>
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData}/>}
+            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}

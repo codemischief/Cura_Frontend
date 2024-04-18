@@ -3,7 +3,7 @@ import Cross from "../../../assets/cross.png"
 import { Modal } from '@mui/material'
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
-const EditPmaAgreement = ({handleClose,currPma}) => {
+const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
     console.log(currPma)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -93,7 +93,9 @@ const EditPmaAgreement = ({handleClose,currPma}) => {
         }
         const response = await APIService.editClientPMAAgreement(data)
         const res = await response.json()
-        console.log(res)
+        console.log(res);
+        handleClose();
+        showSuccess();
     }
     const [clientPropertyData,setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {

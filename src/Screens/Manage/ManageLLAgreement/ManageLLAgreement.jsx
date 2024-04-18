@@ -203,7 +203,28 @@ const ManageLLAgreement = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": initialRows,
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+              ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -224,7 +245,28 @@ const ManageLLAgreement = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": initialRows,
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+              ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -246,7 +288,28 @@ const ManageLLAgreement = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": initialRows,
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+              ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -978,12 +1041,12 @@ const ManageLLAgreement = () => {
                             </div>
                             <div className='w-[18%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
+                                    {item.clientname}
                                 </div>
                             </div>
                             <div className='w-[19%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                    {item.propertydescription}
                                 </div>
                             </div>
                             <div className='w-[15%]  flex'>
