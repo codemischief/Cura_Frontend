@@ -21,6 +21,7 @@ import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import SaveConfirmationLLAgreement from './SaveConfirmationLLAgreement';
+import DeleteLLAgreement from './DeleteLLAgreement';
 
 const ManageLLAgreement = () => {
     const initialRows = [
@@ -382,10 +383,10 @@ const ManageLLAgreement = () => {
 
     const handleAddLLAgreement = () => {
         console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
+        // if (!validate()) {
+        //     console.log('hu')
+        //     return;
+        // }
         setIsLLAgreementDialogue(false);
         setOpenAddConfirmation(true)
 
@@ -393,45 +394,29 @@ const ManageLLAgreement = () => {
     const addLLAgreement = async () => {
         // console.log('clicked')
         console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
         // setPageLoading(true);
         const data = {
-            "user_id": 1234,
-            "employeename": formValues.employeeName,
-            "employeeid": formValues.employeeId,
-            "userid": 1236,
-            "roleid": formValues.role,
-            "dateofjoining": formValues.doj,
-            "dob": formValues.dob,
-            "panno": formValues.panNo,
-            "status": formValues.status,
-            "phoneno": Number(formValues.phNo),
-            "email": formValues.email,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": formValues.city,
-            "state": Number(formValues.state),
-            "country": Number(formValues.country),
-            "zip": formValues.zipCode,
-            "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
-            "isdeleted": false,
-            "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob,
-            "lastdateofworking": formValues.lastDOW,
-            "designation": formValues.designation
+            "user_id":1234,
+            "clientpropertyid":18195,
+            "orderid":444258,
+            "durationinmonth":12,
+            "depositamount":25000,
+            "startdate":"2024-02-01",
+            "actualenddate":"2024-01-01",
+            "rentamount":25000,
+            "registrationtype":"type",
+            "rentpaymentdate":10,
+            "noticeperiodindays":15,
+            "active":true,
+            "llscancopy":"link"
         }
-        const response = await APIService.addEmployee(data);
+        const response = await APIService.addLLAgreement(data);
 
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
         console.log(result)
-        setIsClientReceiptDialogue(false);
+        setIsLLAgreementDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -535,17 +520,17 @@ const ManageLLAgreement = () => {
         }
         return res;
     }
-    const [currEmployeeId, setCurrEmployeeId] = useState("");
+    const [currLL, setCurrLL] = useState("");
     const handleDelete = (id) => {
-        setCurrEmployeeId(id);
+        setCurrLL(id);
         showDeleteConfirmation(true);
     }
-    const deleteEmployee = async (id) => {
+    const deleteLLAgreement = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteEmployee(data);
+        const response = await APIService.deleteLLAgreement(data);
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -666,7 +651,7 @@ const ManageLLAgreement = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated LL Agreement" />}
             {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} />}
+            {deleteConfirmation && <DeleteLLAgreement handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteLLAgreement} item={currLL} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1178,7 +1163,7 @@ const ManageLLAgreement = () => {
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Client Receipt</div>
+                                <div className="text-[16px]">New L&L Agreement</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
