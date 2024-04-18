@@ -302,7 +302,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -344,7 +345,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -387,7 +389,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -778,7 +781,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": [],
             "sort_by": [],
@@ -821,7 +825,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": [],
             "sort_by": [],
@@ -865,7 +870,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -947,7 +953,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate"
             ],
             "filters": tempArray,
             "sort_by": [field],
@@ -998,7 +1005,7 @@ const ManageLLAgreement = () => {
             filterData: "Date",
             filterInput: ""
         },
-        enddate: {
+        actualenddate: {
             filterType: "",
             filterValue: null,
             filterData: "Date",
@@ -1011,7 +1018,7 @@ const ManageLLAgreement = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if (columnName == 'status') {
+        if (columnName == 'active') {
             var existing = filterMapState;
             if (type == 'noFilter') {
                 setInputVariable("");
@@ -1101,7 +1108,8 @@ const ManageLLAgreement = () => {
                 "llscancopy",
                 "dated",
                 "createdby",
-                "isdeleted"
+                "isdeleted",
+                "actualenddate",
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1123,7 +1131,7 @@ const ManageLLAgreement = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess}/>}
+            {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added LL Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted LL Agreement" />}
@@ -1234,7 +1242,7 @@ const ManageLLAgreement = () => {
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={endFilterInput} onChange={(e) => setEndFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setEndFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {endFilter && <DateFilter inputVariable={endFilterInput} setInputVariable={setEndFilterInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef} />}
+                                {endFilter && <DateFilter inputVariable={endFilterInput} setInputVariable={setEndFilterInput} handleFilter={newHandleFilter} columnName='actualenddate' menuRef={menuRef} />}
                             </div>
 
                         </div>
@@ -1354,7 +1362,9 @@ const ManageLLAgreement = () => {
                                         </div>
                                     </div>
                                     <div className='w-[15%]  flex'>
-
+                                        <div className='p-3'>
+                                            {item.actualenddate}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="w-[17%] flex">
