@@ -70,7 +70,69 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
     const [formValues,setFormValues] = useState(initialValues)
     const order = [];
     const [clientProperty,setClientProperty] = useState([]);
+
+    const validate = () => {
+        var res = true;
+        if (!formValues.clientProperty) {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "Select Client Property" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "" }
+            })
+        }
+        if (!formValues.pmaStartDate) {
+            setFormErrors((existing) => {
+                return { ...existing, pmaStartDate: "Select PMA Start Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, pmaStartDate: "" }
+            })
+        }
+        // if (!formValues.order) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "Select Order" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "" }
+        //     })
+        // }
+
+        if (!formValues.pmaEndDate) {
+            setFormErrors((existing) => {
+                return { ...existing, pmaEndDate: "Select PMA End Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, pmaEndDate: "" }
+            })
+        }
+        if (!formValues.poaStartDate) {
+            setFormErrors((existing) => {
+                return { ...existing, poaStartDate: "Select POA Start Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, poaStartDate: "" }
+            })
+        }
+        return res;
+    }
+    
     const handleEdit = async () => {
+        if (!validate()) {
+            console.log('hu')
+            return;
+        }
+
         const data = {
             "user_id": 1234,
             "clientpropertyid": formValues.clientProperty,

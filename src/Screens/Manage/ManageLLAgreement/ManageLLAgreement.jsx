@@ -20,6 +20,7 @@ import DateFilter from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
+import SaveConfirmationLLAgreement from './SaveConfirmationLLAgreement';
 
 const ManageLLAgreement = () => {
     const initialRows = [
@@ -39,7 +40,7 @@ const ManageLLAgreement = () => {
         "dated",
         "createdby",
         "isdeleted"
-      ]
+    ]
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -197,7 +198,7 @@ const ManageLLAgreement = () => {
     }
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
-    const [existingLLAgreement,setExistingLLAgreement] = useState([])
+    const [existingLLAgreement, setExistingLLAgreement] = useState([])
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
@@ -224,7 +225,7 @@ const ManageLLAgreement = () => {
                 "dated",
                 "createdby",
                 "isdeleted"
-              ],
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -266,7 +267,7 @@ const ManageLLAgreement = () => {
                 "dated",
                 "createdby",
                 "isdeleted"
-              ],
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -309,7 +310,7 @@ const ManageLLAgreement = () => {
                 "dated",
                 "createdby",
                 "isdeleted"
-              ],
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -389,7 +390,7 @@ const ManageLLAgreement = () => {
         setOpenAddConfirmation(true)
 
     }
-    const addEmployee = async () => {
+    const addLLAgreement = async () => {
         // console.log('clicked')
         console.log(formValues)
         if (!validate()) {
@@ -456,7 +457,7 @@ const ManageLLAgreement = () => {
         rentPaymentDate: "",
         noticePeriod: "",
         registrationType: "",
-        status:false
+        status: false
 
     };
     const [formValues, setFormValues] = useState(initialValues);
@@ -511,7 +512,7 @@ const ManageLLAgreement = () => {
                 return { ...existing, order: "" }
             })
         }
-        
+
         if (!formValues.durationInMonth) {
             setFormErrors((existing) => {
                 return { ...existing, durationInMonth: "Enter Month Duration" }
@@ -660,10 +661,10 @@ const ManageLLAgreement = () => {
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added LL Agreement" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted LL Agreement" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated LL Agreement" />}
+            {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
@@ -1032,58 +1033,56 @@ const ManageLLAgreement = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingLLAgreement.map((item, index) => {
-                            return <div className='w-full h-12 bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                   <div className="w-[83%] flex">
-                            <div className='w-[3%] flex'>
-                                <div className='px-3 py-5'>
-                                    <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className="w-[83%] flex">
+                                    <div className='w-[3%] flex'>
+                                        <div className='p-3'>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[18%]  flex'>
+                                        <div className='p-3'>
+                                            {item.clientname}
+                                        </div>
+                                    </div>
+                                    <div className='w-[19%]  flex'>
+                                        <div className='p-3'>
+                                            {item.propertydescription}
+                                        </div>
+                                    </div>
+                                    <div className='w-[15%]  flex'>
+                                        <div className='p-3'>
+                                            {item.propertystatusname}
+                                        </div>
+
+                                    </div>
+                                    <div className='w-[15%]  flex'>
+                                        <div className='p-3 ml-1 flex items-center space-x-2'>
+                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> inactive</p></>}
+                                        </div>
+                                    </div>
+                                    <div className='w-[15%]  flex'>
+                                        <div className='p-3'>
+                                            {item.startdate}
+                                        </div>
+                                    </div>
+                                    <div className='w-[15%]  flex'>
+
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-[18%]  flex'>
-                                <div className='px-3 py-5'>
-                                    {item.clientname}
+                                <div className="w-[17%] flex">
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
+
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
+                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-[19%]  flex'>
-                                <div className='px-3 py-5'>
-                                    {item.propertydescription}
-                                </div>
-                            </div>
-                            <div className='w-[15%]  flex'>
-                                <div className='p-3'>
-                                    <p>Property</p>
-                                    <p>Status</p>
-                                </div>
-                                <div className="font-extrabold py-5">↑↓</div>
-                            </div>
-                            <div className='w-[15%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Status <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                            <div className='w-[15%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Start date <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                            <div className='w-[15%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>End date <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="w-[17%] flex">
-                            <div className='w-1/2  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Tenet</p>
-                                </div>
-                            </div>
-                            <div className='w-1/2  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Edit</p>
-                                </div>
-                            </div>
-                        </div>
 
                             </div>
                         })}
@@ -1276,7 +1275,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
-                                            Rent payment Date 
+                                            Rent payment Date
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -1290,7 +1289,7 @@ const ManageLLAgreement = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        
+
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Notice Period in Days </div>
@@ -1298,7 +1297,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
-                                            Registeration Type 
+                                            Registeration Type
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -1312,7 +1311,7 @@ const ManageLLAgreement = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        
+
                                     </div>
                                 </div>
                             </div>
