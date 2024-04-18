@@ -1006,7 +1006,7 @@ const ManageEmployees = () => {
                             
                             <div className='w-[14%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)}  />
                                     <button className='px-1 py-2 w-[30%]'  onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setLdowInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef}/>}

@@ -366,7 +366,7 @@ const ManagePmaArgreement = () => {
     const addPmaAgreement = async () => {
         const data = {
             "user_id": 1234,
-            "clientpropertyid": 18196,
+            "clientpropertyid": null,
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
             "actualenddate": formValues.actualEndDate,
@@ -378,7 +378,7 @@ const ManagePmaArgreement = () => {
             "fixed": Number(formValues.fixedfee),
             "rentedtax": formValues.rentFee == null ? "false" : "true",
             "fixedtax": formValues.fixedfee == null ? "false" : "true",
-            "orderid": 435229,
+            "orderid": null,
             "poastartdate": formValues.poaStartDate,
             "poaenddate": formValues.poaEndDate,
             "poaholder": formValues.poaHolderName

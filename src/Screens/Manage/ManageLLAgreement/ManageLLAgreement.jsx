@@ -16,13 +16,18 @@ import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
-import DateFilter from "../../../assets/dateFilter.png"
+import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import SaveConfirmationLLAgreement from './SaveConfirmationLLAgreement';
 import DeleteLLAgreement from './DeleteLLAgreement';
 import AsyncSelect from "react-select/async"
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
+import CharacterFilter from "../../../Components/Filters/CharacterFilter";
+import DateFilter from '../../../Components/Filters/DateFilter';
+import NumericFilter from '../../../Components/Filters/NumericFilter';
 
 const ManageLLAgreement = () => {
     const initialRows = [
@@ -67,26 +72,19 @@ const ManageLLAgreement = () => {
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
-    const [empNameFilter, setEmpNameFilter] = useState(false);
-    const [empNameInput, setEmpNameInput] = useState("");
-    const [empIdFilter, setEmpIdFilter] = useState(false);
-    const [empIdInput, setEmpIdInput] = useState("");
-    const [phoneFilter, setPhoneFilter] = useState(false);
-    const [phoneInput, setPhoneInput] = useState("");
-    const [emailFilter, setEmailFilter] = useState(false);
-    const [emailInput, setEmailInput] = useState("");
-    const [roleFilter, setRoleFilter] = useState(false);
-    const [roleInput, setRoleInput] = useState("");
-    const [pannoFilter, setPannoFilter] = useState(false);
-    const [pannoInput, setPannoInput] = useState("");
-    const [dojFilter, setDojFilter] = useState(false);
-    const [dojInput, setDojInput] = useState("");
-    const [ldowFilter, setLdowFilter] = useState(false);
-    const [ldowInput, setLdowInput] = useState("");
+    const [clientNameFilter, setClientNameFilter] = useState(false);
+    const [clientNameFilterInput, setClientNameFilterInput] = useState("");
+    const [propertyDescriptionFilter, setPropertyDescriptionFilter] = useState(false);
+    const [propertyDescriptionFilterInput, setPropertyDescriptionFilterInput] = useState("");
+    const [propertyStatusFilter, setPropertyStatusFilter] = useState(false);
+    const [propertyStatusFilterInput, setPropertyStatusFilterInput] = useState("");
     const [statusFilter, setStatusFilter] = useState(false);
-    const [statusInput, setStatusInput] = useState("");
-    const [idFilter, setIdFilter] = useState(false);
-    const [idInput, setIdInput] = useState("");
+    const [statusFilterInput, setStatusFilterInput] = useState("");
+    const [startFilter, setStartFilter] = useState(false);
+    const [startFilterInput, setStartFilterInput] = useState("");
+    const [endFilter, setEndFilter] = useState(false);
+    const [endFilterInput, setEndFilterInput] = useState("");
+
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -199,13 +197,13 @@ const ManageLLAgreement = () => {
         }
     }
 
-    const [orders,setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
 
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id" :1234,
-            "client_id" : id
+            "user_id": 1234,
+            "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
@@ -213,17 +211,17 @@ const ManageLLAgreement = () => {
         setOrders(res.data)
     }
 
-    const [clientPropertyData,setClientPropertyData] = useState([]);
+    const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
-       const data = {
-        "user_id" : 1234,
-        "client_id" : id
-       }
+        const data = {
+            "user_id": 1234,
+            "client_id": id
+        }
 
-       const response = await APIService.getClientPropertyByClientId(data)
-       const res = await response.json()
-       console.log(res)
-       setClientPropertyData(res.data)
+        const response = await APIService.getClientPropertyByClientId(data)
+        const res = await response.json()
+        console.log(res)
+        setClientPropertyData(res.data)
     }
 
     const [selectedOption, setSelectedOption] = useState({
@@ -419,16 +417,12 @@ const ManageLLAgreement = () => {
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
-                setEmpNameFilter(false);
-                setEmpIdFilter(false);
-                setPhoneFilter(false);
-                setEmailFilter(false);
-                setRoleFilter(false);
-                setPannoFilter(false);
-                setDojFilter(false);
-                setLdowFilter(false);
+                setClientNameFilter(false);
+                setPropertyDescriptionFilter(false);
+                setPropertyStatusFilter(false);
                 setStatusFilter(false);
-                setIdFilter(false);
+                setStartFilter(false);
+                setEndFilter(false);
             }
         }
 
@@ -460,7 +454,7 @@ const ManageLLAgreement = () => {
         },
         {
             id: 2,
-            day : 2
+            day: 2
         },
         {
             id: 3,
@@ -500,7 +494,7 @@ const ManageLLAgreement = () => {
         },
         {
             id: 12,
-            day : 12
+            day: 12
         },
         {
             id: 13,
@@ -540,7 +534,7 @@ const ManageLLAgreement = () => {
         },
         {
             id: 22,
-            day : 22
+            day: 22
         },
         {
             id: 23,
@@ -608,19 +602,19 @@ const ManageLLAgreement = () => {
         console.log(formValues)
         // setPageLoading(true);
         const data = {
-            "user_id":1234,
+            "user_id": 1234,
             "clientpropertyid": formValues.clientProperty,
             "orderid": formValues.order,
-            "durationinmonth":formValues.durationInMonth,
-            "depositamount":formValues.depositeAmount,
+            "durationinmonth": formValues.durationInMonth,
+            "depositamount": formValues.depositeAmount,
             "startdate": formValues.startDate,
-            "actualenddate":formValues.endDate,
-            "rentamount":formValues.rentAmount,
-            "registrationtype":formValues.registrationType,
-            "rentpaymentdate":formValues.rentPaymentDate,
-            "noticeperiodindays":formValues.noticePeriod,
-            "active":formValues.status,
-            "llscancopy":formValues.scan
+            "actualenddate": formValues.endDate,
+            "rentamount": formValues.rentAmount,
+            "registrationtype": formValues.registrationType,
+            "rentpaymentdate": formValues.rentPaymentDate,
+            "noticeperiodindays": formValues.noticePeriod,
+            "active": formValues.status,
+            "llscancopy": formValues.scan
         }
         const response = await APIService.addLLAgreement(data);
 
@@ -764,20 +758,41 @@ const ManageLLAgreement = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
             "filters": [],
             "sort_by": [],
             "order": "asc",
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getEmployees(data)
+        const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "EmployeeData.xlsx");
+        XLSX.writeFile(workbook, "LLAgreementData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
@@ -786,20 +801,42 @@ const ManageLLAgreement = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
             "filters": [],
             "sort_by": [],
-            "order": "asc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingLLAgreement(result);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
@@ -808,20 +845,42 @@ const ManageLLAgreement = () => {
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": 1,
+            "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
         const result = temp.data;
+        console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingLLAgreement(result);
         setPageLoading(false);
     }
     const openAddSuccess = () => {
@@ -854,6 +913,213 @@ const ManageLLAgreement = () => {
         }, 2000)
         fetchData();
     }
+
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        // console.log(filterMapState);
+        // Object.keys(filterMapState).forEach(key => {
+        //     if (filterMapState[key].filterType != "") {
+        //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+        //     }
+        // })
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
+            "filters": tempArray,
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getLLAgreement(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingLLAgreement(result);
+        setPageLoading(false);
+    }
+
+    const filterMapping = {
+        clientname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        propertydescription: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        propertystatusname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        active: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        },
+        startdate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
+        },
+        enddate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
+        },
+    }
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+        console.log(columnName)
+        console.log('hey')
+        console.log(filterMapState);
+        if (columnName == 'status') {
+            var existing = filterMapState;
+            if (type == 'noFilter') {
+                setInputVariable("");
+            }
+            if (inputVariable.toLowerCase() == 'active') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'true'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else if (inputVariable.toLowerCase() == 'inactive') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'false'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else {
+                return;
+            }
+
+        } else {
+            var existing = filterMapState;
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterType: type == 'noFilter' ? "" : type
+                }
+            }
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterValue: type == 'noFilter' ? "" : inputVariable
+                }
+            }
+
+            if (type == 'noFilter') setInputVariable("");
+        }
+
+        fetchFiltered(existing);
+    }
+
+    const fetchFiltered = async (mapState) => {
+        setFilterMapState(mapState)
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientpropertyid",
+                "orderid",
+                "clientname",
+                "propertydescription",
+                "propertystatus",
+                "propertystatusname",
+                "orderdescription",
+                "startdate",
+                "durationinmonth",
+                "depositamount",
+                "rentpaymentdate",
+                "rentamount",
+                "registrationtype",
+                "noticeperiodindays",
+                "active",
+                "llscancopy",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        const response = await APIService.getLLAgreement(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingLLAgreement(result);
+        setPageLoading(false);
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
@@ -873,12 +1139,12 @@ const ManageLLAgreement = () => {
 
                         <div className='flex-col'>
                             <h1 className='text-[18px]'>Manage L&L Agreement </h1>
-                            <p className='text-[14px]'>Admin &gt; Manage Client Receipt</p>
+                            <p className='text-[14px]'>Manage &gt; Manage Client Receipt</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative'>
+                        <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
                                 className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3"
@@ -889,7 +1155,7 @@ const ManageLLAgreement = () => {
                                     setSearchInput(e.target.value);
                                 }}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
@@ -922,237 +1188,58 @@ const ManageLLAgreement = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[18%] flex p-3'>
-                                <div className="w-[52%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpNameInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpNameFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {empNameFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
-
-                            <div className='w-[19%]  flex p-3'>
-                                <div className="w-[52%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmpIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmpIdFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {empIdFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
-                            </div>
-
-                            <div className='w-[15%]  flex p-3'>
+                            <div className='w-[18%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {phoneFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[15%]  flex p-3'>
-                                <div className="w-[58%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setEmailInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmailFilter((prev) => !prev) }} /></button>
+                            <div className='w-[19%]  px-3 py-2.5'>
+                                <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {emailFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[15%]  flex p-3'>
+                            <div className='w-[15%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setRoleInput(e.target.value)} />
-                                    <button className='p-1'><img src={DateFilter} className='h-[15px] w-[15px]' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {roleFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[15%]  flex p-3'>
+                            <div className='w-[15%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setPannoInput(e.target.value)} />
-                                    <button className='p-1'><img src={DateFilter} className='h-[15px] w-[15px]' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {pannoFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='active' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            </div>
+
+                            <div className='w-[15%]  px-3 py-2.5'>
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={startFilterInput} onChange={(e) => setStartFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setStartFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {startFilter && <DateFilter inputVariable={startFilterInput} setInputVariable={setStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} />}
+                            </div>
+
+                            <div className='w-[15%]  px-3 py-2.5'>
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={endFilterInput} onChange={(e) => setEndFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setEndFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {endFilter && <DateFilter inputVariable={endFilterInput} setInputVariable={setEndFilterInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef} />}
                             </div>
 
                         </div>
                         <div className="w-[17%] flex">
                             <div className='w-1/2  flex p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" onChange={(e) => setIdInput(e.target.value)} />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {idFilter && <div className='h-[270px] w-[150px] mt-10 bg-white shadow-xl font-thin font-sans absolute p-2 flex-col rounded-md space-y-1 text-sm z-40' ref={menuRef} >
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >No Filter</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >Contains</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >DoesNotContain</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >StartsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer '>
-                                        <button onClick={() => { }}><h1 >EndsWith</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >EqualTo</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >isNull</h1></button>
-                                    </div>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer'>
-                                        <button onClick={() => { }}><h1 >NotIsNull</h1></button>
-                                    </div>
-                                </div>}
+
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1174,12 +1261,12 @@ const ManageLLAgreement = () => {
                             </div>
                             <div className='w-[18%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <span className="font-extrabold">↑↓</span></p>
+                                    <p>Client name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[19%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                    <p>Property Description <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[15%]  flex'>
@@ -1187,21 +1274,21 @@ const ManageLLAgreement = () => {
                                     <p>Property</p>
                                     <p>Status</p>
                                 </div>
-                                <div className="font-extrabold py-5">↑↓</div>
+                                <button onClick={() => handleSort('propertystatusname')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[15%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Status <span className="font-extrabold">↑↓</span></p>
+                                    <p>Status <button onClick={() => handleSort('active')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[15%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Start date <span className="font-extrabold">↑↓</span></p>
+                                    <p>Start date <button onClick={() => handleSort('startdate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[15%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>End date <span className="font-extrabold">↑↓</span></p>
+                                    <p>End date <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
@@ -1385,7 +1472,7 @@ const ManageLLAgreement = () => {
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center ">
                                 <div className=" space-y-3 py-5">
-                                <div className="">
+                                    <div className="">
                                         <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
                                         </div>
@@ -1436,7 +1523,7 @@ const ManageLLAgreement = () => {
                                         >
                                             {clientPropertyData.map((item) => (
                                                 <option key={item.id} value={item.id}>
-                                                    {item.id} 
+                                                    {item.id}
                                                     &nbsp;
                                                     &nbsp;
                                                     {item.propertyname}
@@ -1466,7 +1553,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
-                                <div className="">
+                                    <div className="">
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
                                         </div>
@@ -1526,7 +1613,7 @@ const ManageLLAgreement = () => {
                                             value={formValues.registrationType}
                                             onChange={handleChange}
                                         >
-                                           {registrationType.map(item => (
+                                            {registrationType.map(item => (
                                                 <option key={item.id} value={item.type}>
                                                     {item.type}
                                                 </option>
