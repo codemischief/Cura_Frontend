@@ -193,7 +193,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         existing.registrationType = res.data.registrationtype
         existing.startDate = res.data.startdate
         existing.clientProperty = res.data.clientpropertyid
-
+        existing.order = res.data.orderid
         const temp = {...selectedOption}
         temp.label = res.data.clientname
         temp.value = res.data.clientid 
@@ -417,7 +417,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             onChange={handleChange}
                                         >
                                             {orders.map((item) => (
-                                                <option key={item.id} value={item.ordername}>
+                                                <option key={item.id} value={item.id}>
                                                     {item.ordername}
                                                 </option>
                                             ))}

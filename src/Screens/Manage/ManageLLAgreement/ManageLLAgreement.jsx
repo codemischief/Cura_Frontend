@@ -9,7 +9,6 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
@@ -606,15 +605,15 @@ const ManageLLAgreement = () => {
         // setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "clientpropertyid": formValues.clientProperty,
-            "orderid": formValues.order,
-            "durationinmonth": formValues.durationInMonth,
-            "depositamount": formValues.depositeAmount,
+            "clientpropertyid": Number(formValues.clientProperty),
+            "orderid": Number(formValues.order),
+            "durationinmonth": Number(formValues.durationInMonth),
+            "depositamount": Number(formValues.depositeAmount),
             "startdate": formValues.startDate,
             "actualenddate": formValues.endDate,
-            "rentamount": formValues.rentAmount,
+            "rentamount": Number(formValues.rentAmount),
             "registrationtype": formValues.registrationType,
-            "rentpaymentdate": formValues.rentPaymentDate,
+            "rentpaymentdate": Number(formValues.rentPaymentDate),
             "noticeperiodindays": formValues.noticePeriod,
             "active": formValues.status,
             "llscancopy": formValues.scan
@@ -628,8 +627,21 @@ const ManageLLAgreement = () => {
         setIsLLAgreementDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
+            setSelectedOption({
+                
+                    label: "Enter Client Name",
+                    value: null
+                
+            })
             openAddSuccess();
         } else {
+            setFormValues(initialValues);
+            setSelectedOption({
+                
+                label: "Enter Client Name",
+                value: null
+            
+        })
             openFailureModal();
             setErrorMessage(result.message)
         }
@@ -642,15 +654,15 @@ const ManageLLAgreement = () => {
         client: "",
         clientProperty: null,
         startDate: null,
-        rentAmount: "",
-        depositeAmount: "",
+        rentAmount: null,
+        depositeAmount: null,
         scan: "",
         order: null,
-        durationInMonth: "",
+        durationInMonth: null,
         endDate: null,
-        rentPaymentDate: "",
-        noticePeriod: "",
-        registrationType: "",
+        rentPaymentDate: 1,
+        noticePeriod: null,
+        registrationType: "Registered",
         status: false
 
     };
@@ -676,16 +688,26 @@ const ManageLLAgreement = () => {
                 return { ...existing, client: "" }
             })
         }
-        // if (!formValues.clientProperty) {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, clientProperty: "Select Client Property" }
-        //     })
-        //     res = false;
-        // } else {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, clientProperty: "" }
-        //     })
-        // }
+        if (!formValues.clientProperty || formValues.clientProperty == "") {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "Select Client Property" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "" }
+            })
+        }
+        if (!formValues.order || formValues.order == "") {
+            setFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
         if (!formValues.startDate) {
             setFormErrors((existing) => {
                 return { ...existing, startDate: "Select Start Date" }
@@ -802,6 +824,8 @@ const ManageLLAgreement = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
+        setCurrentPage(1)
+        setCurrentPages(15)
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
@@ -1304,7 +1328,7 @@ const ManageLLAgreement = () => {
                         <div className="w-[17%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Tenet</p>
+                                    <p>Tenant</p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
@@ -1532,6 +1556,7 @@ const ManageLLAgreement = () => {
                                             value={formValues.clientProperty}
                                             onChange={handleChange}
                                         >
+                                            <option value="" >Select A Client Property</option>
                                             {clientPropertyData.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.id}
@@ -1574,8 +1599,9 @@ const ManageLLAgreement = () => {
                                             value={formValues.order}
                                             onChange={handleChange}
                                         >
+                                            <option value="" >Select A Order</option>
                                             {orders.map((item) => (
-                                                <option key={item.id} value={item.ordername}>
+                                                <option key={item.id} value={item.id}>
                                                     {item.ordername}
                                                 </option>
                                             ))}
@@ -1590,7 +1616,7 @@ const ManageLLAgreement = () => {
                                     <div className="">
                                         <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.durationInMonth}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.endDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
