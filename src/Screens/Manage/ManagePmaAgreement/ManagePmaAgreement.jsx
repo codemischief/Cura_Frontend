@@ -499,16 +499,16 @@ const ManagePmaArgreement = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.clientProperty) {
-            setFormErrors((existing) => {
-                return { ...existing, clientProperty: "Select Client Property" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, clientProperty: "" }
-            })
-        }
+        // if (!formValues.clientProperty) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, clientProperty: "Select Client Property" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, clientProperty: "" }
+        //     })
+        // }
         if (!formValues.pmaStartDate) {
             setFormErrors((existing) => {
                 return { ...existing, pmaStartDate: "Select PMA Start Date" }
@@ -1064,10 +1064,10 @@ const ManagePmaArgreement = () => {
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative'>
+                        <div className='flex bg-[#EBEBEB] '>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
@@ -1075,7 +1075,7 @@ const ManagePmaArgreement = () => {
                                     setSearchInput(e.target.value);
                                 }}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
