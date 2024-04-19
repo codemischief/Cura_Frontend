@@ -488,7 +488,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 <div className='w-[12%]  flex'>
                                     <div className='p-3'>
-                                        <p>Tenet <span className="font-extrabold">↑↓</span></p>
+                                        <p>Tenant <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
                             </div>
