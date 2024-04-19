@@ -22,7 +22,8 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
         scan : "example",
         fixedfee : 56,
         status : false,
-        clientProperty : null
+        clientProperty : null,
+        order : null
     }
     const fetchInitialData = async () => {
         const data = {
@@ -43,6 +44,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
         existing.status = res.data.active
         existing.clientProperty = res.data.clientpropertyid
         existing.actualEndDate = res.data.actualenddate
+        existing.order = res.data.orderid
         if(res.data.startdate) {
             existing.pmaStartDate = res.data.startdate.split('T')[0]
         }
@@ -70,10 +72,9 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
     const [formValues,setFormValues] = useState(initialValues)
     const order = [];
     const [clientProperty,setClientProperty] = useState([]);
-
     const validate = () => {
         var res = true;
-        if (!formValues.clientProperty) {
+        if (!formValues.clientProperty || formValues.clientProperty == "" ) {
             setFormErrors((existing) => {
                 return { ...existing, clientProperty: "Select Client Property" }
             })
@@ -93,16 +94,16 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                 return { ...existing, pmaStartDate: "" }
             })
         }
-        // if (!formValues.order) {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, order: "Select Order" }
-        //     })
-        //     res = false;
-        // } else {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, order: "" }
-        //     })
-        // }
+        if (!formValues.order || formValues.order == "") {
+            setFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
 
         if (!formValues.pmaEndDate) {
             setFormErrors((existing) => {
@@ -147,7 +148,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
             "fixed":formValues.fixedfee,
             "rentedtax":false,
             "fixedtax":false,
-            "orderid":435229,
+            "orderid":formValues.order,
             "poastartdate":formValues.poaStartDate,
             "poaenddate":formValues.poaEndDate,
             "poaholder":formValues.poaHolderName,

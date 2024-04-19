@@ -324,7 +324,7 @@ const ManagePmaArgreement = () => {
             "filters": [],
             "sort_by": ["id"],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(pageNumber),
+            "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
             "search_key": searchInput
         }
@@ -349,6 +349,12 @@ const ManagePmaArgreement = () => {
        const res = await response.json()
        console.log(res)
        setClientPropertyData(res.data)
+    //    if(res.data.length >= 1) {
+    //     const existing = {...formValues}
+    //     existing.clientProperty = res.data[0].id
+    //     console.log(res.data[0].id)
+    //     setFormValues(existing)
+    //  } 
     }
     const [orders,setOrders] = useState([]);
 
@@ -362,11 +368,20 @@ const ManagePmaArgreement = () => {
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
+        
+        // if(res.data.length >= 1) {
+        //    const existing = {...formValues}
+        //    existing.order = res.data[0].id
+        //    console.log(res.data[0].id)
+        //    setFormValues(existing)
+           
+        // } 
     }
     const addPmaAgreement = async () => {
+        console.log(formValues.order)
         const data = {
             "user_id": 1234,
-            "clientpropertyid": null,
+            "clientpropertyid": Number(formValues.clientProperty),
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
             "actualenddate": formValues.actualEndDate,
@@ -378,7 +393,7 @@ const ManagePmaArgreement = () => {
             "fixed": Number(formValues.fixedfee),
             "rentedtax": formValues.rentFee == null ? "false" : "true",
             "fixedtax": formValues.fixedfee == null ? "false" : "true",
-            "orderid": null,
+            "orderid": Number(formValues.order),
             "poastartdate": formValues.poaStartDate,
             "poaenddate": formValues.poaEndDate,
             "poaholder": formValues.poaHolderName
@@ -403,6 +418,26 @@ const ManagePmaArgreement = () => {
         setCurrPma(id)
         setShowEditModal(true);
     }
+    const initialValues = {
+        client: "",
+        clientProperty: null,
+        pmaStartDate: null,
+        pmaEndDate: null,
+        poaStartDate: null,
+        poaEndDate: null,
+        order: null,
+        poaHolderName: "",
+        actualEndDate: null,
+        description: "",
+        reason: "",
+        scan: "",
+        rentFee: "",
+        fixedfee: "",
+        gst1: false,
+        gst2: false,
+        status: false
+    };
+    const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
         fetchData();
         fetchCountryData();
@@ -467,27 +502,7 @@ const ManagePmaArgreement = () => {
         setOpenAddConfirmation(true)
 
     }
-    const initialValues = {
-        client: "",
-        clientProperty: "",
-        pmaStartDate: null,
-        pmaEndDate: null,
-        poaStartDate: null,
-        poaEndDate: null,
-        order: "",
-        poaHolderName: "",
-        actualEndDate: null,
-        description: "",
-        reason: "",
-        scan: "",
-        rentFee: "",
-        fixedfee: "",
-        gst1: false,
-        gst2: false,
-        status: false
-
-    };
-    const [formValues, setFormValues] = useState(initialValues);
+    
     const [formErrors, setFormErrors] = useState({});
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const handleChange = (e) => {
@@ -499,16 +514,16 @@ const ManagePmaArgreement = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        // if (!formValues.clientProperty) {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, clientProperty: "Select Client Property" }
-        //     })
-        //     res = false;
-        // } else {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, clientProperty: "" }
-        //     })
-        // }
+        if (!formValues.clientProperty || formValues.clientProperty == "" ) {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "Select Client Property" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "" }
+            })
+        }
         if (!formValues.pmaStartDate) {
             setFormErrors((existing) => {
                 return { ...existing, pmaStartDate: "Select PMA Start Date" }
@@ -519,16 +534,16 @@ const ManagePmaArgreement = () => {
                 return { ...existing, pmaStartDate: "" }
             })
         }
-        // if (!formValues.order) {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, order: "Select Order" }
-        //     })
-        //     res = false;
-        // } else {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, order: "" }
-        //     })
-        // }
+        if (!formValues.order || formValues.order == "") {
+            setFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
 
         if (!formValues.pmaEndDate) {
             setFormErrors((existing) => {
@@ -627,6 +642,8 @@ const ManagePmaArgreement = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
+        setCurrentPage(1)
+        setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
@@ -1044,7 +1061,7 @@ const ManagePmaArgreement = () => {
             {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Pma Agreement" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
@@ -1536,8 +1553,9 @@ const ManagePmaArgreement = () => {
                                             value={formValues.order}
                                             onChange={handleChange}
                                         >
+                                            <option value="" >Select A Order</option>
                                             {orders.map((item) => (
-                                                <option key={item.id} value={item.ordername}>
+                                                <option key={item.id} value={item.id}>
                                                     {item.ordername}
                                                 </option>
                                             ))}
@@ -1581,6 +1599,7 @@ const ManagePmaArgreement = () => {
                                             value={formValues.clientProperty}
                                             onChange={handleChange}
                                         >
+                                            <option value="" >Select A Client Property</option>
                                             {clientPropertyData.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.id} 
