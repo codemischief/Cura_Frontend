@@ -181,6 +181,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         const response = await APIService.getItembyId(data)
         const res = await response.json()
         console.log(res)
+        console.log('temp')
         const existing = {...formValues}
         existing.depositeAmount = res.data.depositamount
         existing.endDate  = res.data.actualenddate
