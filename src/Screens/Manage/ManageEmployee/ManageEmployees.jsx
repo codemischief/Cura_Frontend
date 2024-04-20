@@ -645,7 +645,7 @@ const ManageEmployees = () => {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": [],
-            "sort_by": [field],
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": 15,

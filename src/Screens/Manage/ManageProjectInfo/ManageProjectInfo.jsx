@@ -22,6 +22,8 @@ import ProjectDetails from "./ManageProjectInfoForm/ProjectDetails";
 import BankDetails from "./ManageProjectInfoForm/BankDetails";
 import Contact from './ManageProjectInfoForm/Contact';
 import Photos from './ManageProjectInfoForm/Photos';
+import EditProjectInfo from './EditProjectInfo';
+import SucessfullModal from "../../../Components/modals/SucessfullModal"
 const ManageProjectInfo = () => {
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -120,31 +122,121 @@ const ManageProjectInfo = () => {
     useEffect(() => {
         console.log('called')
         fetchData();
-    }, [1]);
+    }, []);
     
-
     const initialValues = {
-        employeeName: "",
-        panNo: "",
-        userName: "",
-        doj: "",
-        desc: "",
-        email: "",
-        employeeId: "",
-        lob: "",
-        dob: "",
-        role: "",
-        phNo: "",
-        country: 5,
-        state: "Maharashtra",
-        city: null,
-        suburb: "",
-        entity: ""
-
-    };
+        "project_info": {
+          "builderid": 10231,
+          "projectname": "testproject",
+          "addressline1": "addressline1",
+          "addressline2": "addressline2",
+          "suburb": "testsub",
+          "city": 847,
+          "state": "Maharashtra",
+          "country": 5,
+          "zip": "testzip",
+          "nearestlandmark": "landmark1",
+          "project_type": 2,
+          "mailgroup1": "mailgrouptest",
+          "mailgroup2": "newmailgrouptest",
+          "website": "websitetest.com",
+          "project_legal_status": 2,
+          "rules": "rule1, rule2, rule3",
+          "completionyear": 2021,
+          "jurisdiction": "ajuri",
+          "taluka": "tal",
+          "corporationward": "ward",
+          "policechowkey": "chowkey",
+          "maintenance_details": "deets",
+          "numberoffloors": 5,
+          "numberofbuildings": 4,
+          "approxtotalunits": 100,
+          "tenantstudentsallowed": true,
+          "tenantworkingbachelorsallowed": true,
+          "tenantforeignersallowed": true,
+          "otherdetails": true,
+          "duespayablemonth": 3
+        },
+        "project_amenities": {
+          "swimmingpool": true,
+          "lift": true,
+          "liftbatterybackup": true,
+          "clubhouse": true,
+          "gym": true,
+          "childrensplayarea": true,
+          "pipedgas": true,
+          "cctvcameras": true,
+          "otheramenities": "newdata",
+          "studio": "true",
+          "1BHK": false,
+          "2BHK": true,
+          "3BHK": true,
+          "rowhouse": false,
+          "otheraccomodationtypes": "4BHK",
+          "sourceofwater": "abc"
+        },
+        "project_bank_details": [
+          {
+            "bankname": "Banktest",
+            "bankbranch": "branchtest",
+            "bankcity": "Pune",
+            "bankaccountholdername": "Rudra",
+            "bankaccountno": "ABD102834732",
+            "bankifsccode": "PUN101",
+            "banktypeofaccount": "savings"
+          },
+          {
+            "bankname": "Banktest",
+            "bankbranch": "branchtest1",
+            "bankcity": "Pune",
+            "bankaccountholdername": "Rudra",
+            "bankaccountno": "ABD1046464732",
+            "bankifsccode": "PUN102",
+            "banktypeofaccount": "savings"
+          }
+        ],
+        "project_contacts": [
+          {
+            "contactname": "Rudra",
+            "phone": "9796543567",
+            "email": "abc",
+            "role": "owner",
+            "effectivedate": "2021-02-04 10:00:00",
+            "tenureenddate": null,
+            "details": "hreiufhuire"
+          },
+          {
+            "contactname": "Rudra_2",
+            "phone": "9456545514",
+            "email": "efg",
+            "role": "manager",
+            "effectivedate": "2021-02-04 10:00:00",
+            "tenureenddate": "2024-02-04 10:00:00",
+            "details": "hreiufhuire"
+          }
+        ],
+        "project_photos":[
+          {
+              "photo_link":"link1",
+              "description":"Desc 1",
+              "date_taken":"2024-03-01"
+          }
+        ]
+      }
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
+    const deleteProject = async (id) => {
+        const data = {
+            "user_id": 1234,
+            "id":id
+       }
+       const response = await APIService.deleteProject(data);
+       const res = await response.json();
+       if(res.result == 'success') {
+        fetchData()
+       }
 
+    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -154,36 +246,119 @@ const ManageProjectInfo = () => {
         setFormErrors(validate(formValues));
 
         // handle adding of data
-        const data = {
-            "user_id": 1234,
-            "id": 100,
-            "employeename": formValues.employeeName,
-            "employeeid": formValues.employeeId,
-            "roleid": 2,
-            "dateofjoining": "13-01-2024 00:00:00",
-            "dob": "13-01-2001 00:00:00",
-            "panno": "abcd",
-            "status": false,
-            "phoneno": null,
-            "email": null,
-            "addressline1": "abcdefgh",
-            "addressline2": "ijklmnop",
-            "suburb": "Pune",
-            "city": 847,
-            "state": "Maharashta",
-            "country": 5,
-            "zip": null,
-            "dated": "20-01-2020  00:00:00",
-            "createdby": 1234,
-            "isdeleted": false,
-            "entityid": 10,
-            "lobid": 100,
-            "lastdateofworking": "20-02-2020 00:00:00",
-            "designation": "New"
-        }
+        
 
 
     };
+    const addProjectInfo = async () => {
+        const data = {
+            "user_id" : 1234, 
+            "project_info": {
+              "builderid": 10231,
+              "projectname": "testproject",
+              "addressline1": "addressline1",
+              "addressline2": "addressline2",
+              "suburb": "testsub",
+              "city": 847,
+              "state": "Maharashtra",
+              "country": 5,
+              "zip": "testzip",
+              "nearestlandmark": "landmark1",
+              "project_type": 2,
+              "mailgroup1": "mailgrouptest",
+              "mailgroup2": "newmailgrouptest",
+              "website": "websitetest.com",
+              "project_legal_status": 2,
+              "rules": "rule1, rule2, rule3",
+              "completionyear": 2021,
+              "jurisdiction": "ajuri",
+              "taluka": "tal",
+              "corporationward": "ward",
+              "policechowkey": "chowkey",
+              "maintenance_details": "deets",
+              "numberoffloors": 5,
+              "numberofbuildings": 4,
+              "approxtotalunits": 100,
+              "tenantstudentsallowed": true,
+              "tenantworkingbachelorsallowed": true,
+              "tenantforeignersallowed": true,
+              "otherdetails": true,
+              "duespayablemonth": 3
+            },
+            "project_amenities": {
+              "swimmingpool": true,
+              "lift": true,
+              "liftbatterybackup": true,
+              "clubhouse": true,
+              "gym": true,
+              "childrensplayarea": true,
+              "pipedgas": true,
+              "cctvcameras": true,
+              "otheramenities": "newdata",
+              "studio": "true",
+              "1BHK": false,
+              "2BHK": true,
+              "3BHK": true,
+              "rowhouse": false,
+              "otheraccomodationtypes": "4BHK",
+              "sourceofwater": "abc"
+            },
+            "project_bank_details": [
+              {
+                "bankname": "Banktest",
+                "bankbranch": "branchtest",
+                "bankcity": "Pune",
+                "bankaccountholdername": "Rudra",
+                "bankaccountno": "ABD102834732",
+                "bankifsccode": "PUN101",
+                "banktypeofaccount": "savings"
+              },
+              {
+                "bankname": "Banktest",
+                "bankbranch": "branchtest1",
+                "bankcity": "Pune",
+                "bankaccountholdername": "Rudra",
+                "bankaccountno": "ABD1046464732",
+                "bankifsccode": "PUN102",
+                "banktypeofaccount": "savings"
+              }
+            ],
+            "project_contacts": [
+              {
+                "contactname": "Rudra",
+                "phone": "9796543567",
+                "email": "abc",
+                "role": "owner",
+                "effectivedate": "2021-02-04 10:00:00",
+                "tenureenddate": null,
+                "details": "hreiufhuire"
+              },
+              {
+                "contactname": "Rudra_2",
+                "phone": "9456545514",
+                "email": "efg",
+                "role": "manager",
+                "effectivedate": "2021-02-04 10:00:00",
+                "tenureenddate": "2024-02-04 10:00:00",
+                "details": "hreiufhuire"
+              }
+            ],
+            "project_photos":[
+              {
+                  "photo_link":"link1",
+                  "description":"Desc 1",
+                  "date_taken":"2024-03-01"
+              }
+            ]
+          }
+          const response = await APIService.addProject(data)
+          const res = await response.json()
+          if(res.result == 'success') {
+            setIsStateDialogue(false)
+            openAddSuccess();
+            // we need to fetch the data and open the success modal
+          }
+    }
     // validate form and to throw Error message
     const validate = (values) => {
         const errors = {};
@@ -322,10 +497,21 @@ const ManageProjectInfo = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     }
+    const [isEditDialogue,setIsEditDialogue] = useState(false)
+    const [showAddSuccess,setShowAddSuccess] = useState(false)
+    const openAddSuccess = () => {
+        // close the add modal
+        setShowAddSuccess(true)
+        setTimeout(function () {
+            setShowAddSuccess(false);
+        }, 2000)
+        fetchData();
+    }
     return (
         <div className="h-screen">
             <Navbar />
-
+            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Project Info Added!"/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -567,7 +753,7 @@ const ManageProjectInfo = () => {
                                         </div>
                                         <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
                                             <img className=' w-5 h-5' src={Edit} alt="edit" />
-                                            <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => deleteProject(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
 
@@ -687,7 +873,7 @@ const ManageProjectInfo = () => {
                             {selectedDialogue == 4 && <Contact />}
                             {selectedDialogue == 5 && <Photos />}
                             <div className="my-2 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' >Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProjectInfo} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>
