@@ -606,7 +606,7 @@ const fetchTenentOfData = async () => {
                         {selectedDialog == 5 && <EditPOADetails formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountries={allCountry} initialStates={allStates} initialCities={allCities}/>}
 
                         <div className="my-[10px] flex justify-center items-center gap-[10px] pb-8">
-                            <button className="bg-[#004DD7]  w-[100px] h-[35px]  text-white rounded-md" onClick={handleEditClient}>Update</button>
+                            <button className="bg-[#004DD7]  w-[100px] h-[35px]  text-white rounded-md" onClick={handleEditClient}>Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                         </div>
 

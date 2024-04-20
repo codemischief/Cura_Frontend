@@ -1275,7 +1275,7 @@ const ManageClientProperty = () => {
             {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientProperty={currClientProperty} addClientProperty={addClientProperty} />}
             {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Property" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Added Client Property" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Client Property" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Updated Client Property" />}
             {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty} item={currItem} />}

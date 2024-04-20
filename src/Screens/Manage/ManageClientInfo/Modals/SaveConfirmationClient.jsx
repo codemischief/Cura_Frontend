@@ -22,7 +22,7 @@ const SaveConfirmationClient = (props) => {
                         <p className="text-[14px]">Are you sure you want to Add new Client</p>
                     </div>
                     <div className="my-10 flex justify-center items-center gap-[10px]">
-                        <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addClient}>Save</button>
+                        <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addClient}>Add</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
                 </div>

@@ -1162,6 +1162,9 @@ const ManageClientInfo = () => {
         const res = await response.json()
         console.log(res)
         setShowDelete(false);
+        if(res.result == 'success') {
+            openDeleteSuccess()
+        }
         fetchData()
     }
     const openDelete = (id) => {
@@ -1443,13 +1446,104 @@ const ManageClientInfo = () => {
         setExistingClientInfo(result.client_info);
         setPageLoading(false);
     }
+
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+        if (type == 'noFilter') setInputVariable("");
+        fetchFiltered(existing);
+    }
+    const fetchFiltered = async (mapState) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        setFilterMapState(mapState)
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key=> {
+            if(mapState[key].filterType != "") {
+                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "clienttypename",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "homephone",
+                "workphone",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname"
+            ],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages)
+        };
+        const response = await APIService.getClientInfo(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingClientInfo(result.client_info);
+        setPageLoading(false);
+    }
+    // const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
+
     return (
         <div className='h-screen'>
             <Navbar />
             {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} />}
-
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Client" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Edited Client" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Deleted Successfully"/>}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Created Successfully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)} />}
             {showAddConfirmation && <SaveConfirmationClient addClient={addClientInfo} handleClose={() => { setShowAddConfirmation(false) }} currClient={currClientName} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
@@ -1514,7 +1608,7 @@ const ManageClientInfo = () => {
                                     <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
 
-                                {clientNameFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameInput} setInputVariable={setClientNameInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
 
                             </div>
 
@@ -1523,7 +1617,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)} />
                                     <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {clientTypeNameFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='clienttype' menuRef={menuRef} />}
+                                {clientTypeNameFilter && <CharacterFilter inputVariable={clientTypeNameInput} setInputVariable={setClientTypeNameInput} handleFilter={newHandleFilter} filterColumn='clienttypename' menuRef={menuRef} />}
 
                             </div>
 
@@ -1532,7 +1626,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
                                     <button className='p-1 w-[35%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {tenantOfTypeNameFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenantof' />}
+                                {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput}handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantof' />}
 
                             </div>
 
@@ -1541,7 +1635,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
                                     <button className='p-1 w-[35%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenantofproperty' />}
+                                {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofproperty' />}
                                 {/* {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} } */}
 
                             </div>
@@ -1551,8 +1645,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryInput} onChange={(e) => setCountryInput(e.target.value)} />
                                     <button className='p-1 w-[28%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {countryFilter && <CharacterFilter handleFilter={handleFilter} filterColumn='country' menuRef={menuRef} />}
-
+                                {countryFilter && <CharacterFilter inputVariable={countryInput} setInputVariable={setCountryInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[7%]   p-3'>
@@ -1560,7 +1653,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[60%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityInput}onChange={(e) => setCityInput(e.target.value)} />
                                     <button className='p-1 w-[40%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {cityFilter && <CharacterFilter filterColumn='city' menuRef={menuRef} handleFilter={handleFilter} />}
+                                {cityFilter && <CharacterFilter inputVariable={cityInput} setInputVariable={setCityInput} filterColumn='city' menuRef={menuRef} handleFilter={newHandleFilter} />}
                             </div>
 
                             <div className='w-[10%]   p-3'>
@@ -1568,7 +1661,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2"value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
                                     <button className='p-1 w-[28%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {phoneFilter && <CharacterFilter filterColumn='phone' handleFilter={handleFilter} menuRef={menuRef} />}
+                                {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='phone' handleFilter={newHandleFilter} menuRef={menuRef} />}
 
                             </div>
 
@@ -1577,8 +1670,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} />
                                     <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button>
                                 </div>
-                                {email1Filter && <CharacterFilter filterColumn='email' handleFilter={handleFilter} menuRef={menuRef} />}
-
+                                {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[9%]  p-3'>
@@ -1586,7 +1678,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employerInput} onChange={(e) => setEmployerInput(e.target.value)} />
                                     <button className='p-1 w-[30%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployerFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {employerFilter && <CharacterFilter filterColumn='employername' handleFilter={handleFilter} menuRef={menuRef} />}
+                                {employerFilter && <CharacterFilter inputVariable={employerInput} setInputVariable={setEmployerInput} filterColumn='employername' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                         </div>
@@ -1596,7 +1688,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
                                     <button className='p-1 w-[37%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' handleFilter={handleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput}  columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1899,19 +1991,19 @@ const ManageClientInfo = () => {
                         </div>
 
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFirst}>
+                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
                                 <div>Client Information</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectSecond}>
+                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer` }onClick={selectSecond}>
                                 <div>Client portal</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectThird}>
+                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>Bank Details</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectForth}>
+                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
                                 <div>Legal Information</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFifth}>
+                            <div className={`${selectedDialog == 5 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFifth}>
                                 <div>POA details</div>
                             </div>
                         </div>
