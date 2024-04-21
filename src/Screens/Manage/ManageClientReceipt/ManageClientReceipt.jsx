@@ -359,14 +359,14 @@ const ManageClientReceipt = () => {
     const initialValues = {
         receivedDate: null,
         receivedBy: 1,
-        receiptMode: 3,
+        receiptMode: 5,
         client: "",
-        howReceived: 1,
+        howReceived: null,
         serviceAmount: null,
-        reimbursementAmount: "",
-        amountReceived: "",
-        TDS: "",
-        receiptDescription: "",
+        reimbursementAmount: null,
+        amountReceived: null,
+        TDS: null,
+        receiptDescription: null,
 
     };
     const [formValues, setFormValues] = useState(initialValues);
@@ -397,7 +397,16 @@ const ManageClientReceipt = () => {
                 return { ...existing, receivedDate: "" }
             })
         }
-
+        if (!formValues.howReceived) {
+            setFormErrors((existing) => {
+                return { ...existing, howreceived: "Select How Received" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, howreceived: "" }
+            })
+        }
 
         if (!formValues.client) {
             setFormErrors((existing) => {
@@ -454,6 +463,7 @@ const ManageClientReceipt = () => {
                 return { ...existing, reimbursementAmount: "" }
             })
         }
+        
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
@@ -572,7 +582,7 @@ const ManageClientReceipt = () => {
 
     const [options, setOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState({
-        label: "Enter Client Name",
+        label: "Select Client",
         value: null
     });
     const [query, setQuery] = useState('')
@@ -631,13 +641,14 @@ const ManageClientReceipt = () => {
             "serviceamount": formValues.serviceAmount,
             "reimbursementamount": formValues.reimbursementAmount,
             "entityid": 1,
-            "howreceivedid": formValues.howReceived,
+            "howreceivedid": Number(formValues.howReceived),
             "officeid": 1
         }
         const response = await APIService.addClientReceipt(data)
         const res = await response.json()
         if (res.result == 'success') {
             setOpenAddConfirmation(false)
+            openAddSuccess()
             fetchData()
         }
         console.log(data)
@@ -652,6 +663,9 @@ const ManageClientReceipt = () => {
         const response = await APIService.deleteClientReceipt(data)
         const res = await response.json()
         setDeleteConfirmation(false)
+        if(res.result == 'success') {
+            openDeleteSuccess()
+        }
         fetchData()
     }
     const [currClientName, setCurrClientName] = useState("")
@@ -807,9 +821,9 @@ const ManageClientReceipt = () => {
             <Navbar />
             {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Client Receipt" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Receipt Created Successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Receipt Deleted Successfully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
@@ -965,7 +979,7 @@ const ManageClientReceipt = () => {
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
@@ -980,7 +994,7 @@ const ManageClientReceipt = () => {
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Reimbusment</p>
+                                    <p>Reimbursement</p>
                                     <p>Amount</p>
                                 </div>
                                 <button onClick={() => handleSort('reimbursementamount')}><span className="font-extrabold">↑↓</span></button>
@@ -1302,13 +1316,14 @@ const ManageClientReceipt = () => {
                                             value={formValues.howReceived}
                                             onChange={handleChange}
                                         >
+                                            <option value=""> Select How Received</option>
                                             {howReceivedData.map((item) => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.howReceived}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.howreceived}</div>
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">

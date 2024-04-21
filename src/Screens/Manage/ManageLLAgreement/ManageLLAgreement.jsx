@@ -224,7 +224,7 @@ const ManageLLAgreement = () => {
     }
 
     const [selectedOption, setSelectedOption] = useState({
-        label: "Enter Client Name",
+        label: "Select Client",
         value: null
     });
     const [query, setQuery] = useState('')
@@ -1172,7 +1172,7 @@ const ManageLLAgreement = () => {
 
                         <div className='flex-col'>
                             <h1 className='text-[18px]'>Manage L&L Agreement </h1>
-                            <p className='text-[14px]'>Manage &gt; Manage Client Receipt</p>
+                            <p className='text-[14px]'>Manage &gt; Manage L&L Agreement</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
@@ -1294,7 +1294,7 @@ const ManageLLAgreement = () => {
                             </div>
                             <div className='w-[18%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[19%]  flex'>
@@ -1585,7 +1585,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">LL & PV Scan Copy </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} placeholder='Please paste the link here'/>
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
@@ -1597,9 +1597,10 @@ const ManageLLAgreement = () => {
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
+                                            
                                             onChange={handleChange}
                                         >
-                                            <option value="" >Select A Order</option>
+                                            <option value="" >Select An Order</option>
                                             {orders.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.ordername}

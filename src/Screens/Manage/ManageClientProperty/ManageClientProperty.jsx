@@ -262,7 +262,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -322,7 +323,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -384,7 +386,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -603,7 +606,7 @@ const ManageClientProperty = () => {
             "poaaddressline1": "",
             "poaaddressline2": "",
             "poasuburb": "",
-            "poacity": "Mumbai",
+            "poacity": "Pune",
             "poastate": "Maharashtra",
             "poacountry": 5,
             "poazip": "",
@@ -648,7 +651,7 @@ const ManageClientProperty = () => {
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, clientid: "Enter Client Name" }
+                return { ...existing, clientid: "" }
             })
         }
         if (!formValues.client_property.leveloffurnishing) {
@@ -658,7 +661,7 @@ const ManageClientProperty = () => {
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, leveloffurnishing: "Select Level Of Furnishing" }
+                return { ...existing, leveloffurnishing: "" }
             })
         }
         if (!formValues.client_property.propertydescription) {
@@ -671,15 +674,18 @@ const ManageClientProperty = () => {
                 return { ...existing, propertydescription: "" }
             })
         }
-        if (!formValues.client_property.propertyid) {
+        console.log(formValues.client_property.projectid)
+        if (!formValues.client_property.projectid) {
             setFormErrors((existing) => {
-                return { ...existing, propertyid: "Enter Project Name" }
+                return { ...existing, projectid: "Enter Project Name" }
             })
             res = false;
+            // console.log('here')
         } else {
             setFormErrors((existing) => {
-                return { ...existing, propertyid: "" }
+                return { ...existing, projectid: "" }
             })
+            console.log('here')
         }
         if (!formValues.client_property.status) {
             setFormErrors((existing) => {
@@ -699,6 +705,46 @@ const ManageClientProperty = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, city: "" }
+            })
+        }
+        if (!formValues.client_property.propertytype) {
+            setFormErrors((existing) => {
+                return { ...existing, propertytype: "Enter Property Type " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, propertytype: "" }
+            })
+        }
+        if (!formValues.client_property.suburb) {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter Suburb" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+        if (!formValues.client_property.state) {
+            setFormErrors((existing) => {
+                return { ...existing, state: "Enter State Name " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, state: "" }
+            })
+        }
+        if (!formValues.client_property.electricitybillingduedate) {
+            setFormErrors((existing) => {
+                return { ...existing, electricitybillingduedate: "Enter Bill Due Date " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, electricitybillingduedate: "" }
             })
         }
         return res;
@@ -758,7 +804,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": [],
             "sort_by": [],
@@ -816,7 +863,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -876,7 +924,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -920,10 +969,13 @@ const ManageClientProperty = () => {
         }, 2000)
         fetchData();
     }
-
+    const [currClientName,setCurrClientName] = useState("")
     const handleAddClientProperty = () => {
         console.log(formValues);
         // setIsClientInfoDialogue(false);
+        if(!validate()) {
+            return ;
+        }
         setIsClientPropertyDialogue(false);
         setCurrClientProperty(formValues.client_property.clientid)
         showAddConfirmation(true);
@@ -1124,8 +1176,9 @@ const ManageClientProperty = () => {
                 filterValue: type == 'noFilter' ? "" : inputVariable
             }
         }
-        if (type == 'noFilter') setInputVariable("");
-
+        console.log(type)
+        if (type === 'noFilter') setInputVariable("");
+        
         fetchFiltered(existing);
     }
 
@@ -1181,7 +1234,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1249,7 +1303,8 @@ const ManageClientProperty = () => {
                 "dated",
                 "createdby",
                 "isdeleted",
-                "electricitybillingduedate"
+                "electricitybillingduedate",
+                "description"
             ],
             "filters": tempArray,
             "sort_by": [field],
@@ -1272,12 +1327,12 @@ const ManageClientProperty = () => {
     return (
         <div className="h-screen">
             <Navbar />
-            {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientProperty={currClientProperty} addClientProperty={addClientProperty} />}
+            {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientName={currClientName} addClientProperty={addClientProperty} />}
             {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Added Client Property" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Client Property" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully Updated Client Property" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Property Deleted Successfully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty} item={currItem} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -1341,7 +1396,7 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setClientNameFilterInput(e.target.value)} /> 
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} /> 
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} />}
@@ -1349,7 +1404,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertySuburbFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertySuburbFilterInput} onChange={(e) => setPropertySuburbFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} />}
@@ -1357,7 +1412,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[8%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyCityFilterInput(e.target.value)} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyCityFilterInput} onChange={(e) => setPropertyCityFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyCityFilter && <CharacterFilter inputVariable={propertyCityFilterInput} setInputVariable={setPropertyCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
@@ -1365,7 +1420,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyTypeFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyTypeFilterInput} onChange={(e) => setPropertyTypeFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} />}
@@ -1373,7 +1428,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[9%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
@@ -1381,7 +1436,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[17%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertyDescription' menuRef={menuRef} />}
@@ -1389,7 +1444,7 @@ const ManageClientProperty = () => {
 
                             <div className='w-[17%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setPorjectNameFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={porjectNameFilterInput} onChange={(e) => setPorjectNameFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPorjectNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} />}
@@ -1398,7 +1453,7 @@ const ManageClientProperty = () => {
                         <div className="w-[15%] ">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput}  handleFilter={newHandleFilter} columnName='id' menuRef={menuRef}/>}
@@ -1496,12 +1551,12 @@ const ManageClientProperty = () => {
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
                                 <div className="w-[85%] flex">
-                                    <div className='w-[3%] flex'>
+                                    <div className='w-[3%] flex items-center justify-center'>
                                         <div className='px-3 py-5'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex'>
+                                    <div className='w-[10%]  flex items-center justify-center'>
                                         <div className='p-3 '>
                                             <p>{item.client}</p>
                                         </div>
@@ -1531,7 +1586,7 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[17%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>Property Description </p>
+                                            <p>{item.description} </p>
                                         </div>
                                     </div>
                                     <div className='w-[17%]  flex'>
@@ -1659,21 +1714,21 @@ const ManageClientProperty = () => {
                         </div>
 
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFirst}>
+                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
                                 <div>Project Information</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectSecond}>
+                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
                                 <div>Photos</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectThird}>
+                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>POA Details</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectForth}>
+                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
                                 <div>Owner Details</div>
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} />}
+                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName}/>}
                         {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}

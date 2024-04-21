@@ -1626,7 +1626,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
                                     <button className='p-1 w-[35%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput}handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantof' />}
+                                {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput}handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofname' />}
 
                             </div>
 
@@ -1635,7 +1635,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
                                     <button className='p-1 w-[35%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofproperty' />}
+                                {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofpropertyname' />}
                                 {/* {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} } */}
 
                             </div>
@@ -1661,7 +1661,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2"value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
                                     <button className='p-1 w-[28%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='phone' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='mobilephone' handleFilter={newHandleFilter} menuRef={menuRef} />}
 
                             </div>
 
@@ -1670,7 +1670,7 @@ const ManageClientInfo = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} />
                                     <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button>
                                 </div>
-                                {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email1' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[9%]  p-3'>

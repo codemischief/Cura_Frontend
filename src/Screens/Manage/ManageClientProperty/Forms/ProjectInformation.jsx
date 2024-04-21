@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import { APIService } from "../../../../services/API";
-const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus}) => {
+const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,formErrors,setCurrClientName}) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
@@ -67,6 +67,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
        const existing = {...formValues}
        const temp = {...existing.client_property}
        temp.clientid = e.value
+       setCurrClientName(e.label)
        existing.client_property = temp;
        setFormValues(existing)
        console.log(formValues)
@@ -152,7 +153,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select> */}
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.clientid}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -172,7 +173,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.leveloffurnishing}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -192,7 +193,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -260,7 +261,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.projectid}</div>
           </div>
           <div className="">
             <div className="text-[13px]">Property Description <label className="text-red-500">*</label></div>
@@ -271,7 +272,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               value={formValues.client_property.propertydescription}
               onChange={handleChange}
             />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.propertydescription}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -291,7 +292,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
           </div>
           <div className="space-y-2">
           <div className="">
@@ -307,7 +308,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
           </div>
           <div className="">
             <div className="text-[13px]">
-              Number Of Parking
+              Number Of Parkings
             </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
@@ -357,7 +358,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.propertytype}</div>
           </div>
 
           <div className="">
@@ -381,7 +382,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               value={formValues.client_property.suburb}
               onChange={handleChange}
             />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
           </div>
           <div className="">
             <div className="text-[13px]">Electricity Consumer Number </div>
@@ -436,7 +437,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
           </div>
           <div className="">
             <div className="text-[13px]">Client Service Manager </div>
@@ -465,7 +466,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                   </option>
                 ))} 
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.electricitybillingduedate}</div>
           </div>
 
           <div className="">
@@ -480,7 +481,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]">Internal Furniture and fittings (Sch B) </div>
+            <div className="text-[13px]">Internal Furniture and Fittings (Sch B) </div>
             <input
               className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
               type="text"
@@ -510,9 +511,9 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                             // setFormValues(existing)
           }}
         />
-          Property Owner By Client Only</div>
+          Property Owned By Client Only</div>
         <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
-          Index || Collected </div>
+          Index  <span className="text-xs"> || </span>Collected </div>
       </div>
     </div>
   );

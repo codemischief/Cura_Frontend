@@ -555,16 +555,16 @@ const ManagePmaArgreement = () => {
                 return { ...existing, pmaEndDate: "" }
             })
         }
-        if (!formValues.poaStartDate) {
-            setFormErrors((existing) => {
-                return { ...existing, poaStartDate: "Select POA Start Date" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, poaStartDate: "" }
-            })
-        }
+        // if (!formValues.poaStartDate) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, poaStartDate: "Select POA Start Date" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, poaStartDate: "" }
+        //     })
+        // }
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
@@ -1226,7 +1226,7 @@ const ManagePmaArgreement = () => {
                             </div>
                             <div className='w-[10.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[14.8%]  flex'>
@@ -1539,7 +1539,7 @@ const ManagePmaArgreement = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.pmaStartDate}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">POA Start Date <label className="text-red-500">*</label></div>
+                                        <div className="text-[13px]">POA Start Date </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="poaStartDate" value={formValues.poaStartDate} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.poaStartDate}</div>
                                     </div>
