@@ -46,6 +46,7 @@ const ClientPortal = ({formValues,setFormValues}) => {
             <AddClientPortal index={index} formValues={formValues} setFormValues={setFormValues}/>
           )
         })}
+        
         <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
           <button className='text-[15px]' onClick={() => handleAdd()}>ADD  +</button>
         </div>
