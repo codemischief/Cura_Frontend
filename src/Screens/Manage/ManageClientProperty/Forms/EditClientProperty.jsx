@@ -253,7 +253,121 @@ const EditClientProperty = (props) => {
           }
         }
     }
+    const [formErrors, setFormErrors] = useState({});
+    const validate = () => {
+        var res = true;
+        if (!formValues.client_property.clientid) {
+            setFormErrors((existing) => {
+                return { ...existing, clientid: "Enter Client Name" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, clientid: "" }
+            })
+        }
+        if (!formValues.client_property.leveloffurnishing) {
+            setFormErrors((existing) => {
+                return { ...existing, leveloffurnishing: "Select Level Of Furnishing" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, leveloffurnishing: "" }
+            })
+        }
+        if (!formValues.client_property.propertydescription) {
+            setFormErrors((existing) => {
+                return { ...existing, propertydescription: "Enter Property Description" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, propertydescription: "" }
+            })
+        }
+        console.log(formValues.client_property.projectid)
+        if (!formValues.client_property.projectid) {
+            setFormErrors((existing) => {
+                return { ...existing, projectid: "Select Project Name" }
+            })
+            res = false;
+            // console.log('here')
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, projectid: "" }
+            })
+            console.log('here')
+        }
+        if (!formValues.client_property.status) {
+            setFormErrors((existing) => {
+                return { ...existing, status: "Enter Project Status" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, status: "" }
+            })
+        }
+        if (!formValues.client_property.city) {
+            setFormErrors((existing) => {
+                return { ...existing, city: "Enter City " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, city: "" }
+            })
+        }
+        if (!formValues.client_property.propertytype) {
+            setFormErrors((existing) => {
+                return { ...existing, propertytype: "Enter Property Type " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, propertytype: "" }
+            })
+        }
+        if (!formValues.client_property.suburb) {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter Suburb" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+        if (!formValues.client_property.state) {
+            setFormErrors((existing) => {
+                return { ...existing, state: "Enter State Name " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, state: "" }
+            })
+        }
+        if (!formValues.client_property.electricitybillingduedate) {
+            setFormErrors((existing) => {
+                return { ...existing, electricitybillingduedate: "Enter Bill Due Date " }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, electricitybillingduedate: "" }
+            })
+        }
+        return res;
+    }
+
     const handleEdit = async () => {
+        if(!validate()) {
+            setSelectedDialogue(1)
+            return ;
+        }
+
         const updateArrayClientPhotos = []
         const insertArrayClientPhotos = []
         const deleteArrayClientPhotos = []
@@ -337,7 +451,7 @@ const EditClientProperty = (props) => {
                             <h1>Fetching Data</h1>
                             <CircularProgress/>
                         </div>}
-            {!pageLoading && selectedDialog == 1 && <EditProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} clientNameOption={clientName}/>}
+            {!pageLoading && selectedDialog == 1 && <EditProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} clientNameOption={clientName} formErrors={formErrors}/>}
             {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues}/>}
             {selectedDialog == 3 && <EditPOADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues}/>}
             {selectedDialog == 4 && <EditOwnerDetails  formValues={formValues} setFormValues={setFormValues}/>}

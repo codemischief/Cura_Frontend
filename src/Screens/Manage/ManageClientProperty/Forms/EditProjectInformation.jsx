@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
-const EditProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,clientNameOption}) => {
+const EditProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,clientNameOption,formErrors}) => {
   // console.log(levelOfFurnishing)
   console.log(clientNameOption);
   console.log(formValues)
@@ -120,7 +120,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))} 
            </select>  */}
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.clientid}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -140,7 +140,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.leveloffurnishing}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -160,7 +160,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -228,7 +228,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.projectid}</div>
           </div>
           <div className="">
             <div className="text-[13px]">Property Description <label className="text-red-500">*</label></div>
@@ -239,7 +239,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
               value={formValues.client_property.propertydescription}
               onChange={handleChange}
             />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.propertydescription}</div>
           </div>
           <div className="">
             <div className="text-[13px]">
@@ -259,7 +259,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
           </div>
           <div className="space-y-2">
           <div className="">
@@ -325,7 +325,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.propertytype}</div>
           </div>
 
           <div className="">
@@ -349,7 +349,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
               value={formValues.client_property.suburb}
               onChange={handleChange}
             />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
           </div>
           <div className="">
             <div className="text-[13px]">Electricity Consumer Number </div>
@@ -404,7 +404,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))}
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
           </div>
           <div className="">
             <div className="text-[13px]">Client Service Manager </div>
@@ -433,7 +433,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                   </option>
                 ))} 
             </select>
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+            <div className="text-[10px] text-[#CD0000] ">{formErrors.electricitybillingduedate}</div>
           </div>
 
           <div className="">
