@@ -1349,8 +1349,10 @@ const ManagePmaArgreement = () => {
                                         </div>
                                     </div>
                                     <div className='w-[7.8%]  flex'>
-                                        <div className='px-3 py-5'>
-                                            <p>{item.status}</p>
+                                    <div className='p-3 ml-1 flex items-center space-x-2'>
+                                            {item.active ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
+                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
+                                                <p> inactive</p></>}
                                         </div>
                                     </div>
                                     <div className='w-[9.8%]  flex'>
