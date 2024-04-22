@@ -84,7 +84,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     })))
   }
   const [selectedOption,setSelectedOption] = useState({
-    label : "Enter Client Name",
+    label : "Select Tenant Of",
     value : null
    });
    const [query,setQuery] = useState('')

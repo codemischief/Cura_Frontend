@@ -1643,7 +1643,7 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
-                                            Registeration Type
+                                            Registration Type
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"

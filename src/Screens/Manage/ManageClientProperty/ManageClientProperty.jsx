@@ -1706,7 +1706,7 @@ const ManageClientProperty = () => {
                     <div className="w-[1150px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Client</div>
+                                <div className="text-[16px]">New Client Property</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>

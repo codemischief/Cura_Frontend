@@ -478,7 +478,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                             // setFormValues(existing)
           }}
         />
-          Property Owner By Client Only</div>
+          Property Owned By Client Only</div>
         <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
           Index || Collected </div>
       </div>
