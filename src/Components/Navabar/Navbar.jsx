@@ -343,7 +343,7 @@ const Navbar = () => {
                   <h1 className='font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4'>Order</h1>
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/admin/manageorder">Manage Order</Link></p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Manage Order Receipt</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/manageorderreceipt">Manage Order Receipt</Link></p>
                   </div>               
                </div>
             </div>
