@@ -416,7 +416,7 @@ const EditClientInfoModal = (props) => {
     }
   }
   const [tenantofName,setTenantOfName] = useState({
-    label : "",
+    label : "Select Client",
     value : null
   });
   const fetchTenantOfData = async (id) => {
@@ -428,10 +428,15 @@ const EditClientInfoModal = (props) => {
     const response = await APIService.getItembyId(data)
     const res = await (response.json());
     console.log(res);
-    const existing = {...tenantofName};
-    existing.label = res.data.firstname + " " + res.data.middlename + " " + res.data.lastname;
-    existing.value = id;
-    setTenantOfName(existing);
+    if(id != null) {
+        const existing = {...tenantofName};
+        var name = res.data.firstname + " " + res.data.middlename + " " + res.data.lastname
+    
+        existing.label = name
+        existing.value = id;
+        setTenantOfName(existing);
+    }
+    
     // setTenantOfName(res.data.firstname + " " + res.data.middlename + " " + res.data.lastname)
   }
   const fetchInitialClientData = async () => {
@@ -576,19 +581,19 @@ const fetchTenentOfData = async () => {
                         </div>
 
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9 ">
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFirst}>
+                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
                                 <div>Client Information</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectSecond}>
+                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
                                 <div>Client portal</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectThird}>
+                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>Bank Details</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectForth}>
+                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
                                 <div>Legal Information</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFifth}>
+                            <div className={`${selectedDialog == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFifth}>
                                 <div>POA details</div>
                             </div>
                         </div>

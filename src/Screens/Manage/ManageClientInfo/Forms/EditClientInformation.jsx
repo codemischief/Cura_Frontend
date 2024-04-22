@@ -443,7 +443,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 })
                             }
                         }>
-                            {/* <option >Select tenent of </option> */}
+                            <option value={null}>Select tenent of </option>
                             {tenentOfData && tenentOfData.map(item => {
                                 if(item.id == formValues.client_info.tenantofproperty) {
                                     return <option key={item.id} value={item.id} selected>

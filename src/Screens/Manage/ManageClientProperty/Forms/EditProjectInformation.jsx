@@ -479,8 +479,21 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
           }}
         />
           Property Owned By Client Only</div>
-        <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
-          Index || Collected </div>
+        <div className="flex justify-center items-center text-[13px] font-semibold">
+        <input
+                          type="checkbox"
+                          checked={formValues.client_property.indexiicollected}
+                          className='mr-3 h-4 w-4'
+                          onClick={(e) => {
+                              
+                              const existing = {...formValues};
+                              const temp = {...existing.client_property};
+                              temp.indexiicollected = !temp.propertyownedbyclientonly
+                              existing.client_property = temp;
+                              setFormValues(existing) 
+            }}
+          />
+          Index II Collected </div>
       </div>
     </div>
   );

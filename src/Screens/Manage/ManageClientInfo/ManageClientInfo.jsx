@@ -298,7 +298,8 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "tenantofname",
                 "tenantofproperty",
-                "tenantofpropertyname"
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -365,7 +366,8 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "tenantofname",
                 "tenantofproperty",
-                "tenantofpropertyname"
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -434,7 +436,8 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "tenantofname",
                 "tenantofproperty",
-                "tenantofpropertyname"
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -701,7 +704,8 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "tenantofname",
                 "tenantofproperty",
-                "tenantofpropertyname"
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -761,7 +765,8 @@ const ManageClientInfo = () => {
                 "createdby",
                 "isdeleted",
                 "entityid",
-                "tenantof"
+                "tenantof",
+                "clientname"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -821,7 +826,11 @@ const ManageClientInfo = () => {
                 "createdby",
                 "isdeleted",
                 "entityid",
-                "tenantof"
+                "tenantof",
+                "tenantofname",
+                "tenantofproperty",
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": [],
             "sort_by": [sortField],
@@ -1428,7 +1437,8 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "tenantofname",
                 "tenantofproperty",
-                "tenantofpropertyname"
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": [],
             "sort_by": [field],
@@ -1518,7 +1528,8 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "tenantofname",
                 "tenantofproperty",
-                "tenantofpropertyname"
+                "tenantofpropertyname",
+                "clientname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1811,7 +1822,7 @@ const ManageClientInfo = () => {
                                     </div>
                                     <div className='w-[13%]  flex '>
                                         <div className='p-3'>
-                                            <p>{item.firstname + " " + item.middlename + " " + item.lastname} </p>
+                                            <p>{item.clientname} </p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex'>

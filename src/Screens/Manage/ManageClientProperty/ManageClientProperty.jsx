@@ -558,7 +558,8 @@ const ManageClientProperty = () => {
             "textforposting": "",
             "poagiven": true,
             "poaid": null,
-            "electricitybillingunit": ""
+            "electricitybillingunit": "",
+            "indexiicollected": false
         },
         "client_property_photos": [
             {
@@ -1012,7 +1013,8 @@ const ManageClientProperty = () => {
                 "textforposting": formValues.client_property.textforposting,
                 "poagiven": true,
                 "poaid": 202,
-                "electricitybillingunit": formValues.client_property.electricitybillingunit
+                "electricitybillingunit": formValues.client_property.electricitybillingunit,
+                "indexiicollected" : formValues.client_property.indexiicollected
             },
             "client_property_photos": formValues.client_property_photos,
             "client_property_owner": {

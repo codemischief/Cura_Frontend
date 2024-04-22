@@ -106,7 +106,8 @@ const EditClientProperty = (props) => {
           "textforposting": "",
           "poagiven":true,
           "poaid":null,
-          "electricitybillingunit":""
+          "electricitybillingunit":"",
+          "indexiicollected" : null
         },
         "client_property_photos": [
               {
@@ -283,7 +284,8 @@ const EditClientProperty = (props) => {
               "electricitybillingduedate": Number(formValues.client_property.electricitybillingduedate),
               "comments": formValues.client_property.comments,
               "gasconnectiondetails": formValues.client_property.gasconnectiondetails,
-              "textforposting": formValues.client_property.textforposting
+              "textforposting": formValues.client_property.textforposting,
+              "indexiicollected" : formValues.client_property.indexiicollected
             },
             "client_property_photos": {
               "update" : updateArrayClientPhotos,
@@ -318,16 +320,16 @@ const EditClientProperty = (props) => {
             </div>
 
             <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(1)}>
+                <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={() => setSelectedDialogue(1)}>
                     <div>Project Information</div>
                 </div>
-                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(2)}>
+                <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={() => setSelectedDialogue(2)}>
                     <div>Photos</div>
                 </div>
-                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(3)}>
+                <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={() => setSelectedDialogue(3)}>
                     <div>POA Details</div>
                 </div>
-                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={() => setSelectedDialogue(4)}>
+                <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={() => setSelectedDialogue(4)}>
                     <div>Owner Details</div>
                 </div>
             </div>
