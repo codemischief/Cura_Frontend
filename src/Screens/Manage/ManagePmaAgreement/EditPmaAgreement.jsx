@@ -421,7 +421,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                 }}
             />Active</div>
             <div className="my-3 flex justify-center items-center gap-[10px]">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Update</button>
+                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Save</button>
                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
             </div>
         </div>

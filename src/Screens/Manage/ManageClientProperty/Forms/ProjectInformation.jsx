@@ -513,7 +513,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
         />
           Property Owned By Client Only</div>
         <div className="flex justify-center items-center text-[13px] font-semibold"><Checkbox label="Active" />
-          Index  <span className="text-xs"> || </span>Collected </div>
+          Index II Collected </div>
       </div>
     </div>
   );
