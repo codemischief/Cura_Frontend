@@ -488,7 +488,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                               
                               const existing = {...formValues};
                               const temp = {...existing.client_property};
-                              temp.indexiicollected = !temp.propertyownedbyclientonly
+                              temp.indexiicollected = !temp.indexiicollected
                               existing.client_property = temp;
                               setFormValues(existing) 
             }}
