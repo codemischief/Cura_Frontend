@@ -136,7 +136,7 @@ const Login = () => {
       />
       <div className="w-3/5  h-[540px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         <div className="w-[400px] h-[300px] mt-[35px]">
-          <div className="text-center text-[21px] mb-[35px]">Welcome Back!</div>
+          <div className="text-center text-[21px] mb-[35px]">Welcome </div>
           <form className="space-y-[15px]" onSubmit={handleSubmit}>
             <div className="space-y-[12px]">
               <div className="space-y-[2px]">
