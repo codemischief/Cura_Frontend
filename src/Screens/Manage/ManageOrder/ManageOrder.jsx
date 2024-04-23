@@ -26,7 +26,8 @@ import OrderStatusHistory from './Dialog/OrderStatusHistory';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-
+import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import SaveConfirmationOrder from './SaveConfirmationOrder';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -203,7 +204,12 @@ const ManageOrder = () => {
 
     useEffect(() => {
         fetchData();
-
+        fetchUsersData()
+        fetchOrderStatusData()
+        fetchClientPropertyData()
+        fetchServiceData()
+        fetchVendorData()
+        fetchTallyLedgerData()
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setClientNameFilter(false);
@@ -223,7 +229,62 @@ const ManageOrder = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
+    const initialValues = {
+        "order_info":{
+          "clientid":null,
+          "briefdescription":null,
+          "orderdate":null,
+          "earlieststartdate":null,
+          "expectedcompletiondate":null,
+          "actualcompletiondate":null,
+          "owner":null,
+          "comments":null,
+          "additionalcomments":null,
+          "status":null,
+          "service":null,
+          "clientpropertyid":null,
+          "vendorid":null,
+          "assignedtooffice":1,
+          "entityid":1,
+          "tallyledgerid":null
+        },
+        "order_photos":[
+          {
+            "photolink":"Link1",
+            "phototakenwhen":"2024-01-01",
+            "description":"description"
+          }
+        ],
+        "order_status_change":[{
+          "orderid":435231,
+          "statusid":1,
+          "timestamp":"2024-01-01 10:00:00"
+        }]
+    }
+    const [formValues,setFormValues] = useState(initialValues)
+    const [currOrder,setCurrOrder] = useState("");
+    const handleAddOrder = () => {
+        setShowAddConfirmation(true)
+        
+    }
+     const addOrder = async  () => {
+        console.log(formValues)
+    //    const data = {
+    //       "user_id" : 1234,
+    //       "order_info" : formValues.order_info,
+    //       "order_photos" : formValues.order_photos,
+    //       "order_status_change" : formValues.order_status_change
+    //    }
+    //    const response = await APIService.addOrder(data);
+    //    const res = await response.json();
+    //    if(res.result == 'success') {
+    //      // we need to open add success
+    //    }else {
+    //     // we need to open failure modal
 
+    //    }
+       
+    }
     const handleEdit = (id) => {
         // we need to open the edit modal
         // setCurrPma(id)
@@ -645,10 +706,100 @@ const ManageOrder = () => {
     const handleClose = () => {
         setIsStateDialogue(false);
     }
+    const [showAddSuccess,setShowAddSuccess] = useState(false);
+    const openAddSuccess = () => {
+        setShowAddSuccess(true);
+        setTimeout(function () {
+            setShowAddSuccess(false);
+            fetchData();
+        }, 2000)
+    }
+    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
+    const openDeleteSuccess = () => {
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+            fetchData();
+        }, 2000)
+    }
+    const [showAddConfirmation,setShowAddConfirmation] = useState(false);
+ 
+
+
+
+
+
+
+    // fetching all utility data
+    const [usersData,setUsersData] = useState([])
+    const fetchUsersData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response =  await APIService.getUsers(data)
+        const res = await response.json()
+        setUsersData(res.data);
+    }
+
+    const [orderStatusData,setOrderStatusData] = useState([])
+    const fetchOrderStatusData = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getOrderStatusAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setOrderStatusData(res.data)
+    }
+    const [clientPropertyData,setClientPropertyData] = useState([])
+    const fetchClientPropertyData = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getClientPropertyAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setClientPropertyData(res.data)
+    }
+    const [serviceData,setServiceData] = useState([])
+    const fetchServiceData = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getServiceAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setServiceData(res.data)
+    }
+    const [vendorData,setVendorData] = useState([])
+    const fetchVendorData = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getVendorAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setVendorData(res.data)
+    }
+    const [tallyLedgerData,setTallyLedgerData] = useState([])
+    const fetchTallyLedgerData = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getTallyLedgerAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setTallyLedgerData(res.data)
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // finish all utiltiy data
+
     return (
         <div className="h-screen">
             <Navbar />
-
+            {showAddSuccess && <SucessfullModal  isOpen={showAddSuccess} message="New Order Created Successfully"/>}
+            {showDeleteSuccess && <SucessfullModal  isOpen={showDeleteSuccess} message=" Order Deleted Successfully"/>}
+            {showAddConfirmation && <SaveConfirmationOrder handleClose={() => setShowAddConfirmation(false)} addOrder={addOrder} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
 
@@ -962,21 +1113,25 @@ const ManageOrder = () => {
                             </div>
                         </div>
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectFirst}>
+                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
                                 <div>Order Information</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectSecond}>
+                            <div className={` ${ selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
                                 <div>Photos</div>
                             </div>
-                            <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer" onClick={selectThird}>
+                            <div className={`${selectedDialog == 3 ? "bg-blue-200" :"bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>Order Status history</div>
                             </div>
                         </div>
-                        {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} />}
-                        {selectedDialog == 2 && <Photos setIsStateDialogue={setIsStateDialogue} />}
-                        {selectedDialog == 3 && <OrderStatusHistory setIsStateDialogue={setIsStateDialogue} />}
-
+                        {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} />}
+                        {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                        {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
+                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddOrder} >Save</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose} >Cancel</button>
+                        </div>
                     </div>
+                   
                 </div>
             </Modal>
 
