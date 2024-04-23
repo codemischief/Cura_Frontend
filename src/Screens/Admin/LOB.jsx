@@ -197,10 +197,10 @@ const LOB = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["name","id"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 0,
             "pg_size": 0
         };
@@ -424,16 +424,16 @@ const LOB = () => {
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative'>
+                        <div className='flex bg-[#EBEBEB] '>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 outline-none"
                                 type="text"
                                 placeholder="Search"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
@@ -459,18 +459,18 @@ const LOB = () => {
                         <div className='w-[10%] p-4'>
 
                         </div>
-                        <div className='w-[20%] p-3'>
+                        <div className='w-[20%] px-3 py-2.5'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
-                                <button className='p-1' onClick={toggleLobFilter}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[30%]' onClick={toggleLobFilter}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='lob_head' menuRef={menuRef} />}
                         </div>
                     </div>
-                    <div className='w-1/6 p-3 '>
+                    <div className='w-1/6 px-3 py-2.5'>
                         <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                            <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
-                            <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                            <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='id' />}
                         <div className='w-1/2 0 p-4'>
@@ -580,7 +580,7 @@ const LOB = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>

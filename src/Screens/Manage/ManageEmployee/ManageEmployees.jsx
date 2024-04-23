@@ -621,10 +621,10 @@ const ManageEmployees = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": [ "employeename", "employeeid", "phoneno", "email","role", "panno", "dateofjoining", "lastdateofworking", "status","id"],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 0,
             "pg_size": 0
         };
@@ -1238,7 +1238,7 @@ const ManageEmployees = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
