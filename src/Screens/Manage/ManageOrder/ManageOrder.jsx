@@ -17,11 +17,15 @@ import Checkbox from '@mui/material/Checkbox';
 import { CircularProgress, Pagination, LinearProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
 import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png"
-
+import Trash from "../../../assets/trash.png";
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
 import OrderInformation from './Dialog/OrderInformation';
 import Photos from './Dialog/Photos';
 import OrderStatusHistory from './Dialog/OrderStatusHistory';
+import CharacterFilter from "../../../Components/Filters/CharacterFilter"
+import DateFilter from '../../../Components/Filters/DateFilter';
+import NumericFilter from '../../../Components/Filters/NumericFilter';
 
 const ManageOrder = () => {
     // we have the module here
@@ -34,6 +38,8 @@ const ManageOrder = () => {
     const [selectedDialog, setSelectedDialogue] = useState(1);
     const [pageLoading, setPageLoading] = useState(false);
     const [downloadModal, setDownloadModal] = useState(false);
+    const [searchInput, setSearchInput] = useState("");
+    const [isSearchOn, setIsSearchOn] = useState(false);
 
     const handlePageChange = (event, value) => {
 
@@ -200,7 +206,15 @@ const ManageOrder = () => {
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
-
+                setClientNameFilter(false);
+                setAssignedToFilter(false);
+                setOrderDescriptionFilter(false);
+                setPropertyDescriptionFilter(false);
+                setServiceFilter(false);
+                setOrderStatusFilter(false);
+                setStartDateFilter(false);
+                setCompletionDateFilter(false);
+                setOrderDateFilter(false);
             }
         }
 
@@ -224,17 +238,384 @@ const ManageOrder = () => {
 
 
     const handleExcelDownload = async () => {
+        console.log('ugm')
         const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientid",
+                "clientname",
+                "orderdate",
+                "earlieststartdate",
+                "expectedcompletiondate",
+                "actualcompletiondate",
+                "owner",
+                "ownername",
+                "comments",
+                "status",
+                "orderstatus",
+                "briefdescription",
+                "additionalcomments",
+                "service",
+                "servicename",
+                "clientpropertyid",
+                "clientproperty",
+                "vendorid",
+                "vendorname",
+                "assignedtooffice",
+                "officename",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "entity",
+                "tallyledgerid"
+            ],
+            "filters": [],
+            "sort_by": ["id"],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15
+        }
+            ;
+        const response = await APIService.getOrder(data);
+        const temp = await response.json();
+        const result = temp.data;
+        const worksheet = XLSX.utils.json_to_sheet(result);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "OrdersData.xlsx");
+        FileSaver.saveAs(workbook, "demo.xlsx");
+    }
 
+    const handleSearch = async () => {
+        // console.log("clicked")
+        setPageLoading(true);
+        setCurrentPage(1)
+        setCurrentPages(15);
+        setIsSearchOn(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientid",
+                "clientname",
+                "orderdate",
+                "earlieststartdate",
+                "expectedcompletiondate",
+                "actualcompletiondate",
+                "owner",
+                "ownername",
+                "comments",
+                "status",
+                "orderstatus",
+                "briefdescription",
+                "additionalcomments",
+                "service",
+                "servicename",
+                "clientpropertyid",
+                "clientproperty",
+                "vendorid",
+                "vendorname",
+                "assignedtooffice",
+                "officename",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "entity",
+                "tallyledgerid"
+            ],
+            "filters": [],
+            "sort_by": ["id"],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key": searchInput
         };
-        // const response = await APIService.getEmployees(data)
-        // const temp = await response.json();
-        // const result = temp.data;
-        // const worksheet = XLSX.utils.json_to_sheet(result);
-        // const workbook = XLSX.utils.book_new();
-        // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        // XLSX.writeFile(workbook, "OrderData.xlsx");
-        // FileSaver.saveAs(workbook, "demo.xlsx");
+        const response = await APIService.getOrder(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingOrder(result);
+        setPageLoading(false);
+    }
+    const handleCloseSearch = async () => {
+        setIsSearchOn(false);
+        setPageLoading(true);
+        setSearchInput("");
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientid",
+                "clientname",
+                "orderdate",
+                "earlieststartdate",
+                "expectedcompletiondate",
+                "actualcompletiondate",
+                "owner",
+                "ownername",
+                "comments",
+                "status",
+                "orderstatus",
+                "briefdescription",
+                "additionalcomments",
+                "service",
+                "servicename",
+                "clientpropertyid",
+                "clientproperty",
+                "vendorid",
+                "vendorname",
+                "assignedtooffice",
+                "officename",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "entity",
+                "tallyledgerid"
+            ],
+            "filters": [],
+            "sort_by": ["id"],
+            "order": "desc",
+            "pg_no": 1,
+            "pg_size": 15,
+            "search_key": ""
+        };
+        const response = await APIService.getOrder(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingOrder(result);
+        setPageLoading(false);
+    }
+
+    const [sortField, setSortField] = useState("id");
+
+    const [clientNameFilter, setClientNameFilter] = useState(false);
+    const [clientNameFilterInput, setClientNameFilterInput] = useState("");
+    const [assignedToFilter, setAssignedToFilter] = useState(false);
+    const [assignedToFilterInput, setAssignedToFilterInput] = useState("");
+    const [orderDescriptionFilter, setOrderDescriptionFilter] = useState(false);
+    const [orderDescriptionFilterInput, setOrderDescriptionFilterInput] = useState("");
+    const [propertyDescriptionFilter, setPropertyDescriptionFilter] = useState(false);
+    const [propertyDescriptionFilterInput, setPropertyDescriptionFilterInput] = useState("");
+    const [serviceFilter, setServiceFilter] = useState(false);
+    const [serviceFilterInput, setServiceFilterInput] = useState("");
+    const [orderStatusFilter, setOrderStatusFilter] = useState(false);
+    const [orderStatusFilterInput, setOrderStatusFilterInput] = useState("");
+    const [startDateFilter, setStartDateFilter] = useState(false);
+    const [startDateFilterInput, setStartDateFilterInput] = useState("");
+    const [completionDateFilter, setCompletionDateFilter] = useState(false);
+    const [completionDateFilterInput, setCompletionDateFilterInput] = useState("");
+    const [orderDateFilter, setOrderDateFilter] = useState(false);
+    const [orderDateFilterInput, setOrderDateFilterInput] = useState("");
+
+    const filterMapping = {
+        clientname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        officename: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        briefdescription: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        clientproperty: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        servicename: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        orderstatus: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        expectedcompletiondate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
+        },
+        orderdate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
+        },
+
+    }
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+        console.log(columnName)
+        console.log('hey')
+        console.log(filterMapState);
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter') setInputVariable("");
+
+
+        fetchFiltered(existing);
+    }
+
+    const fetchFiltered = async (mapState) => {
+        setFilterMapState(mapState)
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientid",
+                "clientname",
+                "orderdate",
+                "earlieststartdate",
+                "expectedcompletiondate",
+                "actualcompletiondate",
+                "owner",
+                "ownername",
+                "comments",
+                "status",
+                "orderstatus",
+                "briefdescription",
+                "additionalcomments",
+                "service",
+                "servicename",
+                "clientpropertyid",
+                "clientproperty",
+                "vendorid",
+                "vendorname",
+                "assignedtooffice",
+                "officename",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "entity",
+                "tallyledgerid"
+            ],
+            "filters": tempArray,
+            "sort_by": ["id"],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        const response = await APIService.getOrder(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingOrder(result);
+        setPageLoading(false);
+    }
+
+
+
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        setSortField(field)
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "clientid",
+                "clientname",
+                "orderdate",
+                "earlieststartdate",
+                "expectedcompletiondate",
+                "actualcompletiondate",
+                "owner",
+                "ownername",
+                "comments",
+                "status",
+                "orderstatus",
+                "briefdescription",
+                "additionalcomments",
+                "service",
+                "servicename",
+                "clientpropertyid",
+                "clientproperty",
+                "vendorid",
+                "vendorname",
+                "assignedtooffice",
+                "officename",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "entity",
+                "tallyledgerid"
+            ],
+            "filters": tempArray,
+            "sort_by": [field],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": isSearchOn ? searchInput : ""
+        };
+        setFlag((prev) => !prev);
+        const response = await APIService.getOrder(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingOrder(result);
+        setPageLoading(false);
     }
 
     const openDownload = () => {
@@ -256,7 +637,6 @@ const ManageOrder = () => {
     const selectThird = () => {
         setSelectedDialogue(3);
     }
-
 
     const [isStateDialogue, setIsStateDialogue] = React.useState(false);
     const handleOpen = () => {
@@ -283,17 +663,21 @@ const ManageOrder = () => {
                             <p className='text-[14px]'>Manage &gt; Manage Order</p>
                         </div>
                     </div>
-                    <div className='flex space-x-2 items-center relative'>
-                        <div className='flex'>
+                    <div className='flex space-x-2 items-center '>
+                        <div className='flex bg-[#EBEBEB] '>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
+                                value={searchInput}
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value);
+                                }}
                             />
-                            <button onClick={() => { }}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <img className="h-[26px] " src={searchIcon} alt="search-icon" />
+                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
@@ -318,70 +702,76 @@ const ManageOrder = () => {
                             <div className='w-[3%] p-4'>
                                 {/* <p>Sr. </p> */}
                             </div>
-                            <div className='w-[12%]  px-4 py-3'>
-
-                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[12%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[11%]  px-4 py-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1' onClick={() => setSuburbFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[11%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={assignedToFilterInput} onChange={(e) => setAssignedToFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setAssignedToFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {assignedToFilter && <CharacterFilter inputVariable={assignedToFilterInput} setInputVariable={setAssignedToFilterInput} handleFilter={newHandleFilter} filterColumn='officename' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[13%]  px-4 py-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[13%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-
-                            </div>
-                            <div className='w-[16%]  px-4 py-3'>
-                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                </div>
+                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
 
                             </div>
-                            <div className='w-[9%]  px-4 py-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-9 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1' ><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[16%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
 
                             </div>
-                            <div className='w-[12%]  px-4 py-3'>
-                                <div className="w-[88%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1' ><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[9%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceFilterInput} onChange={(e) => setServiceFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setServiceFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} handleFilter={newHandleFilter} filterColumn='servicename' menuRef={menuRef} />}
 
                             </div>
-                            <div className='w-[11%]  px-4 py-3'>
-                                <div className="w-[99%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1' ><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[12%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderStatusFilterInput} onChange={(e) => setOrderStatusFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {orderStatusFilter && <CharacterFilter inputVariable={orderStatusFilterInput} setInputVariable={setOrderStatusFilterInput} handleFilter={newHandleFilter} filterColumn='orderstatus' menuRef={menuRef} />}
 
                             </div>
-                            <div className='w-[13%]  px-4 py-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-14 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1' ><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[11%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={startDateFilterInput} onChange={(e) => setStartDateFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setStartDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-
+                                {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef}/>}
+                            </div>
+                            <div className='w-[13%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setCompletionDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef}/>}
                             </div>
                         </div>
                         <div className='w-[15%] flex'>
-                            <div className='w-[58%]  px-4 py-3'>
-                                <div className="w-full flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                    <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                            <div className='w-[58%]  px-4 py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef}/>}
                             </div>
-                            <div className='w-[38%] 0 p-4'>
+                            <div className='w-[38%] p-4'>
                             </div>
                         </div>
                     </div>
@@ -395,33 +785,33 @@ const ManageOrder = () => {
                                 <p>Sr. </p>
                             </div>
                             <div className='w-[12%]  p-4'>
-                                <p>Client Name <span className="font-extrabold">↑↓</span></p>
+                                <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[11%]  p-4'>
-                                <p>Assigned to <span className="font-extrabold">↑↓</span></p>
+                                <p>Assigned to <button onClick={() => handleSort('officename')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>Order Description</p>
+                                <p>Order Description <button onClick={() => handleSort('briefdescription')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[16%]  p-4'>
-                                <p>Property Description <span className="font-extrabold">↑↓</span></p>
+                                <p>Property Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[9%]  p-4'>
-                                <p>Service <span className="font-extrabold">↑↓</span></p>
+                                <p>Service <button onClick={() => handleSort('servicename')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[12%]  p-4'>
-                                <p>Order Status <span className="font-extrabold">↑↓</span></p>
+                                <p>Order Status <button onClick={() => handleSort('orderstatus')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[11%]  p-4'>
-                                <p>Start Date <span className="font-extrabold">↑↓</span></p>
+                                <p>Start Date <button onClick={() => handleSort('earlieststartdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>Completion Date </p>
+                                <p>Completion Date <button onClick={() => handleSort('expectedcompletiondate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                         </div>
                         <div className='w-[15%]  flex'>
                             <div className='w-[62%]  p-4'>
-                                <p>Order Date <span className="font-extrabold">↑↓</span></p>
+                                <p>Order Date <button onClick={() => handleSort('orderdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[38%] 0 p-4'>
                                 <p>Edit</p>
@@ -443,19 +833,19 @@ const ManageOrder = () => {
                                         <p>{item.clientname}</p>
                                     </div>
                                     <div className='w-[11%]  p-4'>
-                                        <p>{item.assignedtooffice}</p>
+                                        <p>{item.officename}</p>
                                     </div>
                                     <div className='w-[13%]  p-4'>
                                         <p>{item.briefdescription}</p>
                                     </div>
                                     <div className='w-[16%]  p-4'>
-                                        <p>{item.briefdescription}</p>
+                                        <p>{item.clientproperty}</p>
                                     </div>
                                     <div className='w-[9%]  p-4'>
-                                        <p>{item.service}</p>
+                                        <p>{item.servicename}</p>
                                     </div>
                                     <div className='w-[12%]  p-4'>
-                                        <p>{item.status}</p>
+                                        <p>{item.orderstatus}</p>
                                     </div>
                                     <div className='w-[11%]  p-4'>
                                         <p>{item.earlieststartdate}</p>
@@ -469,7 +859,7 @@ const ManageOrder = () => {
                                         <p>{item.orderdate}</p>
                                     </div>
                                     <div className='w-[38%] p-4'>
-                                    <div className='flex space-x-1'>
+                                        <div className='flex space-x-1'>
                                             <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                         </div>
