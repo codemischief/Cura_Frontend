@@ -202,7 +202,7 @@ const ManageOrderReceipt = () => {
 
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
-    const [existingPmaAgreement, setExistingPmaAgreement] = useState([]);
+    const [existingOrderReceipt, setExistingOrderReceipt] = useState([]);
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
@@ -210,31 +210,23 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -243,13 +235,13 @@ const ManageOrderReceipt = () => {
             "pg_size": 15
         }
             ;
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -259,30 +251,23 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription"
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -290,13 +275,13 @@ const ManageOrderReceipt = () => {
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
         }
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
     const fetchQuantityData = async (quantity) => {
@@ -306,30 +291,23 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription"
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -339,13 +317,13 @@ const ManageOrderReceipt = () => {
             "search_key": searchInput
         }
             ;
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
     const [clientPropertyData, setClientPropertyData] = useState([]);
@@ -516,7 +494,7 @@ const ManageOrderReceipt = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        
+
         if (!formValues.client) {
             setFormErrors((existing) => {
                 return { ...existing, client: "Select Client" }
@@ -610,46 +588,28 @@ const ManageOrderReceipt = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
+                "briefdescription",
+                "office",
+                "amount",
+                "recddate",
+                "paymentmodename",
+                "receivedbyname",
                 "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
+                "id",
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "PmaAgreemenetData.xlsx");
+        XLSX.writeFile(workbook, "OrderReceiptData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
@@ -662,46 +622,38 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office"
             ],
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": searchInput
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
@@ -712,46 +664,38 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office"
             ],
             "filters": [],
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": 1,
             "pg_size": 15,
             "search_key": ""
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -1310,81 +1254,63 @@ const ManageOrderReceipt = () => {
 
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                        {!pageLoading && existingPmaAgreement.map((item, index) => {
+                        {!pageLoading && existingOrderReceipt.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex">
-                                    <div className='w-[2%] flex'>
+                                    <div className='w-[4%] flex'>
                                         <div className='px-3 py-5'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10.8%]  flex'>
+                                    <div className='w-[13%]  flex'>
                                         <div className='px-3 py-5'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14.8%]  flex'>
+                                    <div className='w-[15%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.propertydescription}</p>
+                                            <p>{item.briefdescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex '>
-                                        <div className='p-3'>
-                                            <p>{item.orderdescription}</p>
-                                        </div>
-
-                                    </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
-                                            {item.propertystatusname}
-                                        </div>
-
-                                    </div>
-                                    <div className='w-[9.8%]  flex'>
+                                    <div className='w-[16%]  flex '>
                                         <div className='px-3 py-5'>
-                                            <p>{item.description}</p>
+                                            <p>{item.office}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[7.8%]  flex'>
+                                    <div className='w-[8%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.status}</p>
+                                            <p>{item.amount}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex'>
-                                        <div className='p-3'>
-                                            <p>{item.startdate}</p>
+                                    <div className='w-[10%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.recddate}</p>
                                         </div>
-
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
-                                            <p>{item.enddate}</p>
+                                    <div className='w-[10%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.paymentmodename}</p>
                                         </div>
-
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
-                                            <p>{item.poastartdate}</p>
+                                    <div className='w-[12%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.receivedbyname}</p>
                                         </div>
-
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
-                                            <p>{item.poaenddate}</p>
-
+                                    <div className='w-[12%]  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.createdby}</p>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div className="w-[10%] flex">
-                                    <div className='w-[65%]  flex'>
-                                        <div className='p-3'>
-                                            <p>{item.poaholder}</p>
+                                    <div className='w-1/2  flex'>
+                                        <div className='px-3 py-5'>
+                                            <p>{item.id}</p>
                                         </div>
-                                        {/* <div className="font-extrabold py-5">↑↓</div> */}
                                     </div>
-                                    <div className='w-[35%] py-3  flex'>
-                                        <div className='flex space-x-1'>
+                                    <div className='w-1/2 py-5 flex ml-4'>
+                                        <div className='flex space-x-2'>
                                             <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                         </div>
@@ -1444,7 +1370,7 @@ const ManageOrderReceipt = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
@@ -1579,7 +1505,7 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Receipt Description </div>
-                                        <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange}  />
+                                        <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
