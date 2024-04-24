@@ -385,16 +385,34 @@ return response;
   const response = await fetch(`${env_URL_SERVER}getTallyLedgerAdmin`, METHOD_POST(data));
   return response;
  }
+
  const deleteOrders = async (data) => {
   const response = await fetch(`${env_URL_SERVER}deleteOrders`, METHOD_POST(data));
   return response;
  }
  const getOrderById = async (data) => {
   const response = await fetch(`${env_URL_SERVER}getOrderById`, METHOD_POST(data));
+
+ const getOrderReceipt = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getOrderReceipt`, METHOD_POST(data));
+  return response;
+ }
+ const addOrderReceipt = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addOrderReceipt`, METHOD_POST(data));
+  return response;
+ }
+ const getClientInvoice = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getOrdersInvoice`, METHOD_POST(data));
+  return response;
+ }
+ const deleteOrderReceipt = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteOrdersReceipt`, METHOD_POST(data));
   return response;
  }
  export  const APIService = { getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities,addNewBuilder,editBuilderInfo,deleteBuilderInfo,deleteCountries,
   getStatesAdmin, getCitiesAdmin,getLob,addLob,editLob,getBankStatement, editBankStatement,deleteBankStatement,getVendorAdmin,deleteLob,getEmployees,addEmployee,
-  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects,editEmployee,getItembyId,editPayment,deletePayment,getItemByAttr,getProjectsByBuilderId,getClientInfo,getClientProperty,getClientTypeAdmin,getTenantOfPropertyAdmin,getRelationAdmin,addClientInfo,deleteClientInfo,getClientInfoByClientId,editCLientInfo,getBuildersAndProjectsList,getPropertyStatusAdmin,getLevelOfFurnishingAdmin,getPropertyType,addClientProperty,getClientAdminPaginated, getClientPropertyById,editClientProperty,deleteClientProperty,getClientReceipt,getPmaAgreement,deleteClientReceipt,editClientReceipt,deletePmaAgreement,addPmaAgreement,getLLAgreement,getClientPropertyByClientId,getOrdersByClientId,editClientPMAAgreement,addLLAgreement,deleteLLAgreement,editClientLLAgreement,addProject,deleteProject,getOrder,addOrder,getOrderStatusAdmin,getClientPropertyAdmin,getServiceAdmin,getTallyLedgerAdmin,deleteOrders,getOrderById};
+  getLocality,addBankStatement,addLocality,deleteLocality,getModesAdmin,getEntityAdmin,getHowReceivedAdmin,getClientAdmin,addClientReceipt,getPayment,getProjectInfo,editLocality,getUsers,getRoles,deleteEmployee,getPaymentFor,getPaymentMode,addPayment,getProspects,addProspects,editProspects,deleteProspects,editEmployee,getItembyId,editPayment,deletePayment,getItemByAttr,getProjectsByBuilderId,getClientInfo,getClientProperty,getClientTypeAdmin,getTenantOfPropertyAdmin,getRelationAdmin,addClientInfo,deleteClientInfo,getClientInfoByClientId,editCLientInfo,getBuildersAndProjectsList,getPropertyStatusAdmin,getLevelOfFurnishingAdmin,getPropertyType,addClientProperty,getClientAdminPaginated, getClientPropertyById,editClientProperty,deleteClientProperty,getClientReceipt,getPmaAgreement,deleteClientReceipt,editClientReceipt,deletePmaAgreement,addPmaAgreement,getLLAgreement,getClientPropertyByClientId,getOrdersByClientId,editClientPMAAgreement,addLLAgreement,deleteLLAgreement,editClientLLAgreement,addProject,deleteProject,getOrder,addOrder,getOrderStatusAdmin,getClientPropertyAdmin,getServiceAdmin,getTallyLedgerAdmin,deleteOrders,getOrderById
+                            getOrderReceipt,addOrderReceipt,getClientInvoice,deleteOrderReceipt};
+
 
   
