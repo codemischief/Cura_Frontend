@@ -8,7 +8,7 @@ const SaveConfirmationEmployee = (props) => {
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="w-[150px] mt-10 w-full text-center">
-                            <div className="text-[24px]">Save Employee</div>
+                            <div className="text-[24px]">Add Client Invoice</div>
                             <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
                         </div>
 
@@ -17,13 +17,13 @@ const SaveConfirmationEmployee = (props) => {
                         </div>
                     </div>
                     <div className="mt-8 w-full text-center">
-                        <div className="text-[14px]">Employee Name : {props.currEmployee}</div>
+                        {/* <div className="text-[14px]">Employee Name : {props.currEmployee}</div> */}
                     </div>
                     <div className="mt-4 w-full text-center">
-                        <p className="text-[14px]">Are you sure you want to Add new Employee</p>
+                        <p className="text-[14px]">Are you sure you want to Add new Client Invoice</p>
                     </div>
                     <div className="my-10 flex justify-center items-center gap-[10px]">
-                        <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addEmployee}>Save</button>
+                        <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addClientInvoice}>Add</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
                 </div>
