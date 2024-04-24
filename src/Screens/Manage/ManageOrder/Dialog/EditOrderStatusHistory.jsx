@@ -1,30 +1,21 @@
-import React, { useState } from 'react';
-import AddFeildPhotos from './AddFeildPhotos';
+import React from 'react';
+import AddFeildOrderStatusHistory from './AddFeildOrderStatusHistory';
 
-const Photos = ({formValues,setFormValues}) => {
-    // const handleClose = () => {
-    //     props.setIsStateDialogue(false);
-    // }
-
-    // const [addField,setAddFeild] = useState([]);
-    // const handleAdd = () =>{
-
-        
-    //     const abc=[...addField,[]];
-    //     setAddFeild(abc);
-    // }
+const EditOrderStatusHistory = ({formValues,setFormValues}) => {
+     
     const handleAdd = () => {
         setFormValues({...formValues,order_photos: [
           ...formValues.order_photos, {
-            "photolink": null,
-            "phototakenwhen": null,
-            "description": null
+            "photolink":"Link1",
+            "phototakenwhen":"2024-01-01",
+            "description":"description"
         }
         ]})
       }
-    
+
     return (
         <div>
+            {/* <form onSubmit={handleSubmit}> */}
                 <div className='flex-col justify-center items-center mx-5 mt-10'>
                     <div className="w-full h-full">
                         <div className="w-full h-[40px] bg-[#EBEBEB] flex border-[#CBCBCB] border-b-[1px] ">
@@ -32,18 +23,18 @@ const Photos = ({formValues,setFormValues}) => {
                                 Sr.
                             </div>
                             <div className="w-[31%] h-full p-3 text-[11px]" >
-                                Photo Link
+                                Order description
                             </div>
                             <div className="w-[31%] h-full p-3 text-[11px]" >
-                                Description
+                                Status 
                             </div>
                             <div className="w-[31%] h-full p-3 text-[11px]" >
-                                Photo Taken Date
+                                Timestamp
                             </div>
                         </div>
-                        {formValues.order_photos.map((data,index) => {
+                        {formValues.order_status_change.map((item,index) => {
                             return (
-                                <AddFeildPhotos index={index} formValues={formValues} setFormValues={setFormValues}/>
+                                <AddFeildOrderStatusHistory index={index} formValues={formValues} setFormValues={setFormValues}/>
                             )
                         })}
                         <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
@@ -51,8 +42,10 @@ const Photos = ({formValues,setFormValues}) => {
                         </div>
                     </div>
                 </div>
+                
+            {/* </form> */}
         </div>
     )
 }
 
-export default Photos
+export default EditOrderStatusHistory

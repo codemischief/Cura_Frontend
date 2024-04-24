@@ -28,6 +28,8 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SaveConfirmationOrder from './SaveConfirmationOrder';
+import DeleteOrder from './DeleteOrderModal';
+import EditOrderModal from './EditOrderModal';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -41,7 +43,8 @@ const ManageOrder = () => {
     const [downloadModal, setDownloadModal] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [isSearchOn, setIsSearchOn] = useState(false);
-
+    const [stateArray,setStateArray] = useState([]);
+    const [sortField,setSortField] = useState("id");
     const handlePageChange = (event, value) => {
 
         setCurrentPage(value)
@@ -85,11 +88,12 @@ const ManageOrder = () => {
                 "entity",
                 "tallyledgerid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15
+            "filters": stateArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
             ;
         const response = await APIService.getOrder(data);
@@ -136,11 +140,12 @@ const ManageOrder = () => {
                 "entity",
                 "tallyledgerid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": stateArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
         const response = await APIService.getOrder(data);
         const temp = await response.json();
@@ -185,11 +190,12 @@ const ManageOrder = () => {
                 "entity",
                 "tallyledgerid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
+            "filters": stateArray,
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(quantity)
+            "pg_size": Number(quantity),
+            "search_key" : searchInput
         }
             ;
         const response = await APIService.getOrder(data);
@@ -249,11 +255,7 @@ const ManageOrder = () => {
           "tallyledgerid":null
         },
         "order_photos":[
-          {
-            "photolink":"Link1",
-            "phototakenwhen":"2024-01-01",
-            "description":"description"
-          }
+
         ],
         "order_status_change":[{
           "orderid":435231,
@@ -262,40 +264,77 @@ const ManageOrder = () => {
         }]
     }
     const [formValues,setFormValues] = useState(initialValues)
-    const [currOrder,setCurrOrder] = useState("");
+    const [currOrderName,setCurrOrderName] = useState(-1);
     const handleAddOrder = () => {
+        setIsStateDialogue(false)
         setShowAddConfirmation(true)
         
     }
      const addOrder = async  () => {
         console.log(formValues)
-    //    const data = {
-    //       "user_id" : 1234,
-    //       "order_info" : formValues.order_info,
-    //       "order_photos" : formValues.order_photos,
-    //       "order_status_change" : formValues.order_status_change
-    //    }
-    //    const response = await APIService.addOrder(data);
-    //    const res = await response.json();
-    //    if(res.result == 'success') {
-    //      // we need to open add success
-    //    }else {
-    //     // we need to open failure modal
-
-    //    }
+       const data = {
+          "user_id" : 1234,
+          "order_info" : {
+            "clientid": Number(formValues.order_info.clientid),
+            "briefdescription":formValues.order_info.briefdescription,
+            "orderdate":formValues.order_info.orderdate,
+            "earlieststartdate":formValues.order_info.earlieststartdate,
+            "expectedcompletiondate":formValues.order_info.expectedcompletiondate,
+            "actualcompletiondate":formValues.order_info.actualcompletiondate,
+            "owner":Number(formValues.order_info.owner),
+            "comments":formValues.order_info.comments,
+            "additionalcomments":formValues.order_info.additionalcomments,
+            "status":Number(formValues.order_info.status),
+            "service":Number(formValues.order_info.service),
+            "clientpropertyid": Number(formValues.order_info.clientpropertyid),
+            "vendorid": Number(formValues.order_info.vendorid),
+            "assignedtooffice":1,
+            "entityid":1,
+            "tallyledgerid": Number(formValues.order_info.tallyledgerid)
+          },
+          "order_photos" : formValues.order_photos,
+          "order_status_change" : formValues.order_status_change
+       }
+       const response = await APIService.addOrder(data);
+       const res = await response.json();
+       if(res.result == 'success') {
+         // we need to open add success
+         setShowAddConfirmation(false);
+         setFormValues(initialValues);
+         openAddSuccess();
+       }else {
+        // we need to open failure modal
+ 
+       }
+       // we get the success prompt
        
     }
     const handleEdit = (id) => {
         // we need to open the edit modal
         // setCurrPma(id)
+        setCurrOrderId(id)
+        setShowEditModal(true)
         // setShowEditModal(true);
     }
-
+    const [currOrderId,setCurrOrderId] = useState(-1)
     const handleDelete = (id) => {
         // setCurrPma(id);
-        // setShowDeleteModal(true)
+        setCurrOrderId(id)
+        setShowDeleteModal(true)
     }
-
+    const deleteOrder = async (id) => {
+        const data = {
+            "user_id" : 1234,
+            "order_id" : id
+        }
+        const response = await APIService.deleteOrders(data)
+        const res = await response.json()
+        if(res.result == 'success') {
+            // we need to open delete success
+            setShowDeleteModal(false)
+            openDeleteSuccess();
+        }
+    }
 
 
     const handleExcelDownload = async () => {
@@ -352,8 +391,7 @@ const ManageOrder = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
-        setCurrentPage(1)
-        setCurrentPages(15);
+        setCurrentPage(1);
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
@@ -387,11 +425,11 @@ const ManageOrder = () => {
                 "entity",
                 "tallyledgerid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": stateArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getOrder(data);
@@ -406,6 +444,7 @@ const ManageOrder = () => {
     const handleCloseSearch = async () => {
         setIsSearchOn(false);
         setPageLoading(true);
+        setCurrentPage(1);
         setSearchInput("");
         const data = {
             "user_id": 1234,
@@ -439,11 +478,11 @@ const ManageOrder = () => {
                 "entity",
                 "tallyledgerid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": stateArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": ""
         };
         const response = await APIService.getOrder(data);
@@ -456,7 +495,7 @@ const ManageOrder = () => {
         setPageLoading(false);
     }
 
-    const [sortField, setSortField] = useState("id");
+    // const [sortField, setSortField] = useState("id");
 
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [clientNameFilterInput, setClientNameFilterInput] = useState("");
@@ -566,6 +605,7 @@ const ManageOrder = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        setStateArray(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -600,11 +640,11 @@ const ManageOrder = () => {
                 "tallyledgerid"
             ],
             "filters": tempArray,
-            "sort_by": ["id"],
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
         const response = await APIService.getOrder(data);
         const temp = await response.json();
@@ -793,13 +833,16 @@ const ManageOrder = () => {
 
 
     // finish all utiltiy data
-
+    const [showDeleteModal,setShowDeleteModal] = useState(false)
+    const [showEditModal,setShowEditModal] = useState(false);
     return (
         <div className="h-screen">
             <Navbar />
             {showAddSuccess && <SucessfullModal  isOpen={showAddSuccess} message="New Order Created Successfully"/>}
             {showDeleteSuccess && <SucessfullModal  isOpen={showDeleteSuccess} message=" Order Deleted Successfully"/>}
             {showAddConfirmation && <SaveConfirmationOrder handleClose={() => setShowAddConfirmation(false)} addOrder={addOrder} />}
+            {showDeleteModal && <DeleteOrder handleClose={() => setShowDeleteModal(false)} handleDelete={deleteOrder} item={currOrderId} />}
+            {showEditModal && <EditOrderModal currOrderId={currOrderId} handleClose={() => setShowEditModal(false)}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
 
@@ -984,7 +1027,7 @@ const ManageOrder = () => {
                                         <p>{item.clientname}</p>
                                     </div>
                                     <div className='w-[11%]  p-4'>
-                                        <p>{item.officename}</p>
+                                        <p>{item.ownername}</p>
                                     </div>
                                     <div className='w-[13%]  p-4'>
                                         <p>{item.briefdescription}</p>
