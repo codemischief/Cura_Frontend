@@ -34,7 +34,7 @@ const ManageClientInvoice = () => {
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
-    const [existingEmployees, setExistingEmployees] = useState([]);
+    const [existingClientInvoice, setExistingClientInvoice] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -86,7 +86,7 @@ const ManageClientInvoice = () => {
         value: null
     });
     const [query, setQuery] = useState('')
-    
+
     const handleClientNameChange = (e) => {
         console.log('hey')
         console.log(e)
@@ -166,21 +166,34 @@ const ManageClientInvoice = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
+            "rows": ["id",
+                "clientid",
+                "clientname",
+                "orderid",
+                "ordername",
+                "estimatedate",
+                "estimateamount",
+                "invoicedate",
+                "invoiceamount",
+                "quotedescription",
+                "createdon",
+                "baseamount",
+                "tax",
+                "entityid",
+                "entityname"],
             "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getClientInvoice(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingClientInvoice(result);
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -935,81 +948,74 @@ const ManageClientInvoice = () => {
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                        {!pageLoading && existingEmployees.map((item, index) => {
+                        {!pageLoading && existingClientInvoice.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex min-h-0">
-                                    <div className='w-[3%] flex'>
+                                <div className="w-[90%] flex">
+                                    <div className='w-[4%] flex'>
                                         <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
+                                    <div className='w-[12%] flex'>
                                         <div className='p-3'>
-                                            <p>{item.employeename} </p>
+                                        <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex overflow-hidden'>
-                                        <div className='p-3 '>
-                                            <p >{item.employeeid}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
+                                    <div className='w-[14%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.phoneno}</p>
+                                            
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
+                                    <div className='w-[13%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.email}</p>
+                                        <p>{item.estimateamount}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
+                                    <div className='w-[12%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.role}</p>
+                                        <p>{item.estimatedate}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-[3px]'>
-                                            <p>{item.panno}</p>
+                                    <div className='w-[13%]  flex'>
+                                        <div className='p-3'>
+                                        <p>{item.invoiceamount}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
+                                    <div className='w-[12%]  flex'>
+                                        <div className='p-3'>
+                                        <p>{item.invoicedate}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[17%]  flex  overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
+                                    <div className='w-[8%]  flex'>
+                                        <div className='p-3'>
+                                        <p>{item.entityname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1 flex items-center space-x-2'>
-                                            {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
-                                                <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
-                                                <p> inactive</p></>}
+                                    <div className='w-[12%]  flex'>
+                                        <div className='p-3'>
+                                        {/* <p>{item.entityname}</p> */}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex overflow-hidden'>
-                                        <div className='p-3 ml-[6px]'>
-                                            <p>{item.id}</p>
+                                <div className="w-[10%] flex">
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
+                                        <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                    <div className='w-1/2  flex'>
+                                    <div className='w-1/2 py-5 flex ml-4'>
+                                        <div className='flex space-x-2'>
+                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
+                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
 
                             </div>
                         })}
                     </div>
-
-
-
-
 
                 </div>
 

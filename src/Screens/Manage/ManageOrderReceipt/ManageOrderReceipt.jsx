@@ -365,28 +365,24 @@ const ManageOrderReceipt = () => {
 
         // } 
     }
-    const addPmaAgreement = async () => {
-        console.log(formValues.order)
+    const addOrderReceipt = async () => {
+        
         const data = {
-            "user_id": 1234,
-            "clientpropertyid": Number(formValues.clientProperty),
-            "startdate": formValues.pmaStartDate,
-            "enddate": formValues.pmaEndDate,
-            "actualenddate": formValues.actualEndDate,
-            "active": formValues.status,
-            "scancopy": formValues.scan,
-            "reasonforearlyterminationifapplicable": formValues.reason,
-            "description": formValues.description,
-            "rented": Number(formValues.rentFee),
-            "fixed": Number(formValues.fixedfee),
-            "rentedtax": formValues.rentFee == null ? "false" : "true",
-            "fixedtax": formValues.fixedfee == null ? "false" : "true",
+            "user_id":1234,
+            "receivedby": Number(formValues.receivedBy),
+            "amount": Number(formValues.amountReceived),
+            "tds": formValues.TDS,
+            "recddate": formValues.receivedDate,
+            "paymentmode": formValues.receiptMode,
             "orderid": Number(formValues.order),
-            "poastartdate": formValues.poaStartDate,
-            "poaenddate": formValues.poaEndDate,
-            "poaholder": formValues.poaHolderName
+            "dated": "2014-11-20T18:06:34.430000",
+            "createdby": 95,
+            "isdeleted": false,
+            "createdon": null,
+            "entityid": 1,
+            "officeid": 1
         }
-        const response = await APIService.addPmaAgreement(data)
+        const response = await APIService.addOrderReceipt(data)
         const res = await response.json()
         console.log(res)
 
@@ -403,7 +399,7 @@ const ManageOrderReceipt = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const handleEdit = (id) => {
         // we need to open the edit modal
-        setCurrPma(id)
+        setCurrOrderReceipt(id)
         setShowEditModal(true);
     }
     const initialValues = {
@@ -471,13 +467,13 @@ const ManageOrderReceipt = () => {
     const client = [1, 2, 3, 4];
 
 
-    const handleAddPmaAgreement = () => {
+    const handleAddClientReceipt = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
         }
-        setIsPmaAgreementDialogue(false);
+        SetIsOrderReceiptDialogue(false);
         // setIsLLAgreementDialogue(false);
         setOpenAddConfirmation(true)
 
@@ -699,9 +695,9 @@ const ManageOrderReceipt = () => {
         setPageLoading(false);
     }
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [currPma, setCurrPma] = useState("");
+    const [currOrderReceipt, setCurrOrderReceipt] = useState("");
     const handleDelete = (id) => {
-        setCurrPma(id);
+        setCurrOrderReceipt(id);
         setShowDeleteModal(true)
     }
     const deletePma = async (id) => {
@@ -709,7 +705,7 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deletePmaAgreement(data)
+        const response = await APIService.deleteOrderReceipt(data)
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false);
@@ -1015,15 +1011,15 @@ const ManageOrderReceipt = () => {
         <div className='h-screen'>
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Pma Agreement" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Pma Agreement" />}
+            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currOrderReceipt={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Order Receipt" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Order Receipt" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Order Receipt" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationPmaAgreement addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
 
-            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma} />}
+            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currOrderReceipt} handleDelete={deletePma} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1544,21 +1540,21 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Pending Amount </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >13,000.00</div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Date </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >09-Feb-2024</div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Status </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Closed</div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddPmaAgreement} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientReceipt} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
