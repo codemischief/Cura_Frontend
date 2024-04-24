@@ -58,26 +58,22 @@ const ManageOrderReceipt = () => {
 
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [clientNameFilterInput, setClientNameFilterInput] = useState("");
-    const [propertyDescriptionFilter, setPropertyDescriptionFilter] = useState(false);
-    const [propertyDescriptionFilterInput, setPropertyDescriptionFilterInput] = useState("");
+    const [propertyFilter, setPropertyFilter] = useState(false);
+    const [propertyFilterInput, setPropertyFilterInput] = useState("");
     const [orderDescriptionFilter, setOrderDescriptionFilter] = useState(false);
     const [orderDescriptionFilterInput, setOrderDescriptionFilterInput] = useState("");
-    const [propertyStatusFilter, setPropertyStatusFilter] = useState(false);
-    const [propertyStatusFilterInput, setPropertyStatusFilterInput] = useState("");
-    const [descriptionFilter, setDescriptionFilter] = useState(false);
-    const [descriptionFilterInput, setDescriptionFilterInput] = useState("");
-    const [statusFilter, setStatusFilter] = useState(false);
-    const [statusFilterInput, setStatusFilterInput] = useState("");
-    const [pmaStartFilter, setPmaStartFilter] = useState(false);
-    const [pmaStartFilterInput, setPmaStartFilterInput] = useState("");
-    const [pmaEndFilter, setPmaEndFilter] = useState(false);
-    const [pmaEndFilterInput, setPmaEndFilterInput] = useState("");
-    const [poaStartFilter, setPoaStartFilter] = useState(false);
-    const [poaStartFilterInput, setPoaStartFilterInput] = useState("");
-    const [poaEndFilter, setPoaEndFilter] = useState(false);
-    const [poaEndFilterInput, setPoaEndFilterInput] = useState("");
-    const [poaHolderFilter, setPoaHolderFilter] = useState(false);
-    const [poaHolderFilterInput, setPoaHolderFilterInput] = useState("");
+    const [amountFilter, setAmountFilter] = useState(false);
+    const [amountFilterInput, setAmountFilterInput] = useState("");
+    const [receivedDateFilter, setReceivedDateFilter] = useState(false);
+    const [receivedDateFilterInput, setReceivedDateFilterInput] = useState("");
+    const [receiptModeFilter, setReceiptModeFilter] = useState(false);
+    const [receiptModeFilterInput, setReceiptModeFilterInput] = useState("");
+    const [receivedByFilter, setReceivedByFilter] = useState(false);
+    const [receivedByFilterInput, setReceivedByFilterInput] = useState("");
+    const [createdByFilter, setCreatedByFilter] = useState(false);
+    const [createdByFilterInput, setCreatedByFilterInput] = useState("");
+    const [idFilter, setIdFilter] = useState(false);
+    const [idFilterInput, setIdFilterInput] = useState("");
 
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -226,7 +222,12 @@ const ManageOrderReceipt = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "clientname",
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -267,7 +268,12 @@ const ManageOrderReceipt = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "clientname",
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -307,7 +313,12 @@ const ManageOrderReceipt = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "clientname",
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -366,15 +377,16 @@ const ManageOrderReceipt = () => {
         // } 
     }
     const addOrderReceipt = async () => {
-        
+
         const data = {
-            "user_id":1234,
+            "user_id": 1234,
             "receivedby": Number(formValues.receivedBy),
             "amount": Number(formValues.amountReceived),
-            "tds": formValues.TDS,
+            "tds": Number(formValues.TDS),
             "recddate": formValues.receivedDate,
-            "paymentmode": formValues.receiptMode,
+            "paymentmode": Number(formValues.receiptMode),
             "orderid": Number(formValues.order),
+            "quotedescription": formValues.receiptDescription,
             "dated": "2014-11-20T18:06:34.430000",
             "createdby": 95,
             "isdeleted": false,
@@ -407,7 +419,7 @@ const ManageOrderReceipt = () => {
         order: null,
         receiptMode: 5,
         receivedBy: 1,
-        TDS: "",
+        TDS: null,
         receiptDescription: "",
         receivedDate: null,
         amountReceived: ""
@@ -415,10 +427,6 @@ const ManageOrderReceipt = () => {
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
         fetchData();
-        fetchCountryData();
-        fetchStateData(5)
-        // fetchClientPropertyData()
-        fetchCityData("Maharashtra");
         fetchEntitiesData();
         fetchRoleData();
         fetchUsersData();
@@ -428,16 +436,14 @@ const ManageOrderReceipt = () => {
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
                 setClientNameFilter(false);
-                setPropertyDescriptionFilter(false);
+                setPropertyFilter(false);
                 setOrderDescriptionFilter(false);
-                setPropertyStatusFilter(false);
-                setStatusFilter(false);
-                setDescriptionFilter(false);
-                setPmaStartFilter(false);
-                setPmaEndFilter(false);
-                setPoaStartFilter(false);
-                setPoaEndFilter(false);
-                setPoaHolderFilter(false);
+                setAmountFilter(false);
+                setReceivedDateFilter(false);
+                setReceiptModeFilter(false);
+                setReceivedByFilter(false);
+                setCreatedByFilter(false);
+                setIdFilter(false);
             }
         }
 
@@ -584,13 +590,14 @@ const ManageOrderReceipt = () => {
         const data = {
             "user_id": 1234,
             "rows": [
+                "clientname",
                 "briefdescription",
-                "office",
+                "clientproperty",
                 "amount",
                 "recddate",
                 "paymentmodename",
                 "receivedbyname",
-                "createdby",
+                "createdbyname",
                 "id",
             ],
             "filters": [],
@@ -634,7 +641,12 @@ const ManageOrderReceipt = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "clientname",
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -676,7 +688,12 @@ const ManageOrderReceipt = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "clientname",
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": [],
             "sort_by": ["id"],
@@ -800,66 +817,54 @@ const ManageOrderReceipt = () => {
             filterData: "String",
             filterInput: ""
         },
-        propertydescription: {
+        briefdescription: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        orderdescription: {
+        clientproperty: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        propertystatusname: {
+        amount: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        },
+        receivedbyname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        description: {
+        paymentmodename: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        status: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        startdate: {
+        recddate: {
             filterType: "",
             filterValue: null,
             filterData: "Date",
             filterInput: ""
         },
-        enddate: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Date",
-            filterInput: ""
-        },
-        poastartdate: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Date",
-            filterInput: ""
-        },
-        poaenddate: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Date",
-            filterInput: ""
-        },
-        poaholder: {
+        createdbyname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
+        id : {
+            filterType : "",
+            filterValue : null,
+            filterData : "Numeric",
+            filterInput : ""
+        }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
@@ -904,46 +909,43 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office",
                 "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "sort_by": ["id"],
+            "order": "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
 
@@ -964,31 +966,28 @@ const ManageOrderReceipt = () => {
             "user_id": 1234,
             "rows": [
                 "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
+                "receivedby",
+                "receivedbyname",
+                "amount",
+                "tds",
+                "recddate",
+                "paymentmode",
+                "paymentmodename",
+                "orderid",
+                "briefdescription",
                 "dated",
                 "createdby",
                 "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
+                "createdon",
+                "entityid",
+                "entity",
+                "officeid",
+                "office",
                 "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
+                "clientid",
+                "createdbyname",
+                "clientproperty",
+                "clientpropertyid"
             ],
             "filters": tempArray,
             "sort_by": [field],
@@ -998,13 +997,13 @@ const ManageOrderReceipt = () => {
             "search_key": isSearchOn ? searchInput : ""
         };
         setFlag((prev) => !prev);
-        const response = await APIService.getPmaAgreement(data);
+        const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;
         console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingPmaAgreement(result);
+        setExistingOrderReceipt(result);
         setPageLoading(false);
     }
     return (
@@ -1073,91 +1072,78 @@ const ManageOrderReceipt = () => {
 
                 <div className='w-full h-12 flex justify-between border-gray-400 border-b-[1px] text-xs'>
                     <div className="w-[90%] flex">
-                        <div className='w-[2%] flex'>
+                        <div className='w-[4%] flex'>
                             <div className='px-3 py-5'>
                                 {/* <p>Sr.</p> */}
                             </div>
                         </div>
-                        <div className='w-[10.8%] px-3 py-2  '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                        <div className='w-[13%] px-3 py-2  '>
+                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[14.8%] px-3 py-2 '>
-                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                        <div className='w-[15%]  px-3 py-2 '>
+                            <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
-                        </div>
-                        <div className='w-[9.8%]  px-3 py-2 '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='orderdescription' menuRef={menuRef} />}
+                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
 
                         </div>
-                        <div className='w-[8.8%] px-3 py-2 '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                        <div className='w-[16%] px-3 py-2 '>
+                            <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyFilterInput} onChange={(e) => setPropertyFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
+                            {propertyFilter && <CharacterFilter inputVariable={propertyFilterInput} setInputVariable={setPropertyFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[9.8%] px-3 py-2 '>
+
+                        <div className='w-[8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                <button className='w-[35%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
+                            {amountFilter && <NumericFilter columnName='amount' inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
-                        <div className='w-[7.8%] px-3 py-2'>
+                        <div className='w-[10%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type='date' />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setReceivedDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
+                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[9.8%] px-3 py-2 '>
+                        <div className='w-[10%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receiptModeFilterInput} onChange={(e) => setReceiptModeFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => { setReceiptModeFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} />}
+                            {receiptModeFilter && <CharacterFilter inputVariable={receiptModeFilterInput} setInputVariable={setReceiptModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[8.8%] px-3 py-2  '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                        <div className='w-[12%] px-3 py-2 '>
+                            <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setReceivedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef} />}
+                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[8.8%] px-3 py-2 '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                        <div className='w-[12%] px-3 py-2  '>
+                            <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef} />}
-                        </div>
-                        <div className='w-[8.8%] px-3 py-2'>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef} />}
+                            {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
                         </div>
                     </div>
                     <div className="w-[10%] flex">
 
                         <div className='w-[65%] px-3 py-2 '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
+                                <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                             </div>
-                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} />}
+                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[35%]  flex'>
                             <div className='px-3 py-5'>
@@ -1184,17 +1170,17 @@ const ManageOrderReceipt = () => {
                             </div>
                             <div className='w-[15%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Order Description <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Order Description <button onClick={() => handleSort('briefdescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[16%]  flex '>
                                 <div className='px-3 py-5'>
-                                    <p>Property <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Property <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Amount <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Amount <button onClick={() => handleSort('amount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
@@ -1202,32 +1188,32 @@ const ManageOrderReceipt = () => {
                                     <p>Received</p>
                                     <p>Date</p>
                                 </div>
-                                <button onClick={() => handleSort('propertystatusname')}><span className="font-extrabold">↑↓</span></button>
+                                <button onClick={() => handleSort('recddate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
                                     <p>Receipt</p>
                                     <p>Mode</p>
                                 </div>
-                                <button onClick={() => handleSort('propertystatusname')}><span className="font-extrabold">↑↓</span></button>
+                                <button onClick={() => handleSort('paymentmodename')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
                                     <p>Received </p>
                                     <p>By</p>
                                 </div>
-                                <button onClick={() => handleSort('startdate')}><span className="font-extrabold">↑↓</span></button>
+                                <button onClick={() => handleSort('receivedbyname')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Created By <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Created By <button onClick={() => handleSort('createdbyname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
                         <div className="w-[10%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>ID <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
@@ -1270,7 +1256,7 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className='w-[16%]  flex '>
                                         <div className='px-3 py-5'>
-                                            <p>{item.office}</p>
+                                            <p>{item.clientproperty}</p>
                                         </div>
                                     </div>
                                     <div className='w-[8%]  flex'>
@@ -1295,7 +1281,7 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className='w-[12%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.createdby}</p>
+                                            <p>{item.createdbyname}</p>
                                         </div>
                                     </div>
                                 </div>
