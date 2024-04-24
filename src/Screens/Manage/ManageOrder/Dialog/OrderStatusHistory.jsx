@@ -3,15 +3,15 @@ import AddFeildOrderStatusHistory from './AddFeildOrderStatusHistory';
 
 const OrderStatusHistory = ({formValues,setFormValues}) => {
      
-    const handleAdd = () => {
-        setFormValues({...formValues,order_photos: [
-          ...formValues.order_photos, {
-            "photolink":"Link1",
-            "phototakenwhen":"2024-01-01",
-            "description":"description"
-        }
-        ]})
-      }
+    // const handleAdd = () => {
+    //     setFormValues({...formValues,order_photos: [
+    //       ...formValues.order_photos, {
+    //         "photolink":"Link1",
+    //         "phototakenwhen":"2024-01-01",
+    //         "description":"description"
+    //     }
+    //     ]})
+    //   }
 
     return (
         <div>
@@ -37,9 +37,9 @@ const OrderStatusHistory = ({formValues,setFormValues}) => {
                                 <AddFeildOrderStatusHistory index={index} formValues={formValues} setFormValues={setFormValues}/>
                             )
                         })}
-                        <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
+                        {/* <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
                             <button className='text-[15px]' onClick={() => handleAdd()}>ADD  +</button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 

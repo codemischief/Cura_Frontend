@@ -4,7 +4,7 @@ import Cross  from "../../../assets/cross.png"
 import EditOrderInformation from './Dialog/EditOrderInformation'
 import EditPhotos from './Dialog/EditPhotos'
 import EditOrderStatusHistory from './Dialog/EditOrderStatusHistory'
-import { APIService } from '../../../services/API'
+import { APIService } from '../../../services/API';
 const EditOrderModal = ({currOrderId,handleClose}) => {
     const initialValues = {
         "order_info":{
@@ -42,13 +42,25 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
     const [serviceData,setServiceData] = useState([])
     const [vendorData,setVendorData] = useState([])
     const [tallyLedgerData,setTallyLedgerData] = useState([])
+    const [pageLoading,setPageLoading] = useState(false);
     const fetchInitialData = async () => {
-       const data = {"user_id":1234,"id": currOrderId}
-       const response = await APIService.getOrderById(data)
-       const res = await response.json()
-       console.log(res.data)
-       setFormValues(res.data)
+        const data = {"user_id":1234,"id": currOrderId}
+        
+        const response = await APIService.getOrderDataById(data)
+        const res = await response.json()
+        console.log(res)
+        setFormValues(res.data)
     }
+    // const fetchInitialData = async () => {
+    //    const data = {"user_id":1234,"id": currOrderId}
+    // //    console.log(data)
+    //    const response = await APIService.getOrderById(data);
+    //    const res = await response.json()
+    //    console.log(res)
+    //    console.log(res.data)
+    //    setFormValues(res.data)
+    
+    // }
 
     // we need to fetch the utility routes here
     // const [usersData,setUsersData] = useState([])
@@ -138,8 +150,9 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                   
                     <div className="w-[1050px] h-auto bg-white  rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                       <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Order</div>
                             </div>
@@ -158,6 +171,7 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
                                 <div>Order Status history</div>
                             </div>
                         </div>
+                        
                         {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} />}
                         {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
