@@ -6,8 +6,13 @@ const EditCountryModal = (props) => {
     // console.log(props.currentCountry);
     const [showLoading,setShowLoading] = useState(false);
     const [countryName,setCountryName] =  useState(props.currentCountry);
+    const [errorMessage,setErrorMessage] = useState("");
     
 const handleChange = (e) => {
+    if(editModalInput == "") {
+        setErrorMessage("Enter Country Name");
+        return ;
+    }
     const { value } = e.target;
     setCountryName(value);
 };
@@ -48,6 +53,7 @@ const handleEdit = async () => {
                                         onChange={handleChange}
                                         autoComplete="off"
                                          />
+                                         <div className="text-[12px] text-[#CD0000] ">{errorMessage}</div>
                                     </div>
                                 </div>
                             </div>
