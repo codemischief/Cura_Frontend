@@ -98,7 +98,7 @@ const LOB = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -117,13 +117,22 @@ const LOB = () => {
     const handleSort = async (field) => {
         setPageLoading(true);
         setSortField(field);
+        // var existingFlag = flag
+        // existingFlag = !existingFlag
+        // setFlag(existingFlag)
+        setFlag((prev) => {
+            return !prev
+        })
+        // setFlag((prev) => {
+        //     return !prev;
+        // })
         const data = {
             "user_id": 1234,
             "rows": ["id", "name"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
+            "order": !flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
@@ -133,9 +142,7 @@ const LOB = () => {
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLOB(result);
-        setFlag((prev) => {
-            return !prev;
-        })
+        
         setPageLoading(false);
     }
     const handleAddLob = () => {
@@ -226,13 +233,14 @@ const LOB = () => {
     const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
         setPageLoading(true);
+        setCurrentPage(1)
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
@@ -300,13 +308,14 @@ const LOB = () => {
     const handleCloseSearch = async () => {
         setPageLoading(true);
         setSearchQuery("");
+        setCurrentPage(1);
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
-            "sort_by": ["id"],
+            "filters": filterState,
+            "sort_by": [sortField],
             "order": "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": ""
         };
@@ -328,7 +337,7 @@ const LOB = () => {
     }
 
     const filterMapping = {
-        lob_head : {
+        name : {
             filterType : "",
             filterValue : "",
             filterData : "String",
@@ -362,7 +371,7 @@ const LOB = () => {
         if (type == 'noFilter') setInputVariable("");
         fetchFiltered(existing);
     }
-
+    const [filterState,setFilterState] = useState([]);
     const fetchFiltered = async  (mapState) => {
         setPageLoading(true);
         const tempArray = [];
@@ -374,15 +383,17 @@ const LOB = () => {
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
             }
         })
+        setFilterState(tempArray)
         console.log('this is getting called')
         console.log(tempArray)
+        setCurrentPage(1);
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
@@ -464,7 +475,7 @@ const LOB = () => {
                                 <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
                                 <button className='px-1 py-2 w-[30%]' onClick={toggleLobFilter}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='lob_head' menuRef={menuRef} />}
+                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} />}
                         </div>
                     </div>
                     <div className='w-1/6 px-3 py-2.5'>
