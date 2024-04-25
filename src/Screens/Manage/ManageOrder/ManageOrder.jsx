@@ -266,7 +266,7 @@ const ManageOrder = () => {
     const [formErrors, setFormErrors] = useState({});
     const validate = () => {
         var res = true
-        if (formValues.order_info.assignedtooffice === "") {
+        if (formValues.order_info.assignedtooffice === "" || formValues.order_info.assignedtooffice === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -280,7 +280,7 @@ const ManageOrder = () => {
             }))
         }
 
-        if (formValues.order_info.status === "") {
+        if (formValues.order_info.status === "" || formValues.order_info.status === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -294,7 +294,7 @@ const ManageOrder = () => {
             }))
         }
 
-        if (formValues.order_info.service === "") {
+        if (formValues.order_info.service === "" || formValues.order_info.service === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -308,7 +308,7 @@ const ManageOrder = () => {
             }))
         }
 
-        if (formValues.order_info.clientid === "") {
+        if (formValues.order_info.clientid === "" || formValues.order_info.clientid === null ) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -322,7 +322,7 @@ const ManageOrder = () => {
             }))
         }
 
-        if (formValues.order_info.briefdescription === "") {
+        if (formValues.order_info.briefdescription === "" || formValues.order_info.briefdescription === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -342,7 +342,7 @@ const ManageOrder = () => {
     const [formValues,setFormValues] = useState(initialValues)
     const [currOrderName,setCurrOrderName] = useState(-1);
     const handleAddOrder = () => {
-        // console.log(formErrors);
+        console.log(formErrors);
         if (!validate()) {
             setSelectedDialogue(1);
             return
