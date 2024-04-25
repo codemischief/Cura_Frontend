@@ -2,7 +2,7 @@ import React from 'react'
 import {Modal} from "@mui/material"
 import Cross from "../../../assets/cross.png"
 
-const SaveConfirmationPmaAgreement = (props) => {
+const SaveConfirmationOrderReceipt = (props) => {
   return (
     <Modal open={true} >
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
@@ -31,4 +31,4 @@ const SaveConfirmationPmaAgreement = (props) => {
   )
 }
 
-export default SaveConfirmationPmaAgreement
+export default SaveConfirmationOrderReceipt

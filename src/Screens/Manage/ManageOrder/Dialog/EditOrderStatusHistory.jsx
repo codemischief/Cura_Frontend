@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AddFeildOrderStatusHistory from './AddFeildOrderStatusHistory';
-
-const EditOrderStatusHistory = ({formValues,setFormValues}) => {
-     
-    const handleAdd = () => {
-        setFormValues({...formValues,order_photos: [
-          ...formValues.order_photos, {
-            "photolink":"Link1",
-            "phototakenwhen":"2024-01-01",
-            "description":"description"
-        }
-        ]})
-      }
-
+import { useEffect } from 'react';
+import { APIService } from '../../../../services/API';
+const EditOrderStatusHistory = ({formValues,setFormValues,orderId}) => {
+    const [orderStatusData,setOrderStatusData] = useState([]);
+    const fetchOrderStatusData = async () => {
+         const data = {"user_id":1234,"id":orderId}
+         const response = await APIService.getOrderStatusHistory(data);
+         const res = await response.json();
+         setOrderStatusData(res.data);
+         console.log(res)
+    }
+    // const handleAdd = () => {
+    //     setFormValues({...formValues,order_photos: [
+    //       ...formValues.order_photos, {
+    //         "photolink":"Link1",
+    //         "phototakenwhen":"2024-01-01",
+    //         "description":"description"
+    //     }
+    //     ]})
+    //   }
+      useEffect(() => {
+         fetchOrderStatusData()
+      },[])
     return (
         <div>
             {/* <form onSubmit={handleSubmit}> */}
@@ -37,9 +47,7 @@ const EditOrderStatusHistory = ({formValues,setFormValues}) => {
                                 <AddFeildOrderStatusHistory index={index} formValues={formValues} setFormValues={setFormValues}/>
                             )
                         })}
-                        <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
-                            <button className='text-[15px]' onClick={() => handleAdd()}>ADD  +</button>
-                        </div>
+                    
                     </div>
                 </div>
                 

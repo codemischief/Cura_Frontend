@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
-const EditOrderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData,orderStatusData, clientPropertyData, serviceData,vendorData, tallyLedgerData}) => {
+const EditOrderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData,orderStatusData, clientPropertyData, serviceData,vendorData, tallyLedgerData,clientName}) => {
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -106,9 +106,10 @@ const EditOrderInformation = ({setIsStateDialogue,formValues,setFormValues,users
               label: x[1]
             })))
           }
+          console.log(clientName)
           const [selectedOption,setSelectedOption] = useState({
-            label : "Select Client",
-            value : null
+            label : clientName,
+            value : formValues.order_info.clientid
            });
            const [query,setQuery] = useState('')
            const handleClientNameChange = (e) => {

@@ -6,7 +6,7 @@ import { Modal, Button, CircularProgress } from "@mui/material";
 import DeleteImage from "../../../assets/delete.png"
 import Cross from "../../../assets/cross.png"
 // import { APIService } from "../../../services/API";
-const DeletePmaAgreement = (props) => {
+const DeleteOrderReceipt = (props) => {
   const [showLoading, setShowLoading] = useState(false);
   const [buttonLoading,setButtonLoading] = useState(false);
   const handleDeleteClick = () => {
@@ -47,4 +47,4 @@ const DeletePmaAgreement = (props) => {
   );
 };
 
-export default DeletePmaAgreement;
+export default DeleteOrderReceipt;

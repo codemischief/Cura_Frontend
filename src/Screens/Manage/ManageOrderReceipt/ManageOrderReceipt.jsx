@@ -22,14 +22,15 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
-import DeletePmaAgreement from './DeletePmaAgreement';
-import SaveConfirmationPmaAgreement from './SaveConfirmationPmaAgreement';
-import EditPmaAgreement from './EditPmaAgreement';
+import DeleteOrderReceipt from './DeleteOrderReceipt';
+import SaveConfirmationOrderReceipt from './SaveConfirmationOrderReceipt';
+// import EditPmaAgreement from './EditPmaAgreement';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
+import EditOrderReceipt from './EditOrderReceipt';
 const ManageOrderReceipt = () => {
 
     const menuRef = useRef();
@@ -1009,16 +1010,16 @@ const ManageOrderReceipt = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currOrderReceipt={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
+            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
+
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Order Receipt" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Order Receipt" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Order Receipt" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationPmaAgreement addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationOrderReceipt addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
 
-            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currOrderReceipt} handleDelete={deletePma} />}
+            {showDeleteModal && <DeleteOrderReceipt handleClose={() => setShowDeleteModal(false)} item={currOrderReceipt} handleDelete={deletePma} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1520,7 +1521,7 @@ const ManageOrderReceipt = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Amount Recived <label className="text-red-500">*</label></div>
+                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
                                     </div>

@@ -43,14 +43,59 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
     const [vendorData,setVendorData] = useState([])
     const [tallyLedgerData,setTallyLedgerData] = useState([])
     const [pageLoading,setPageLoading] = useState(false);
+    
+    const handleEdit = async () => {
+        const data = {
+            "user_id":1234,
+            "order_info": formValues.order_info,
+            "order_photos":{
+              "update":[
+
+              ],
+              "insert":[
+
+              ]
+            }
+          }
+          const response = await APIService.editOrder(data);
+          const res = await response.json()
+          console.log(res);
+
+          
+    } 
+
+
     const fetchInitialData = async () => {
+        setPageLoading(true);
         const data = {"user_id":1234,"id": currOrderId}
         
         const response = await APIService.getOrderDataById(data)
         const res = await response.json()
         console.log(res)
         setFormValues(res.data)
+        const existing = {...formValues}
+        existing.order_info = res.data.order_info;
+        existing.order_photos = res.data.order_photos;
+        await fetchClientName(res.data.order_info.clientid)
+        setFormValues(existing);
+        setPageLoading(false)
     }
+    const [clientName,setClientName] = useState("");
+    const fetchClientName = async (id) => {
+        const data = {
+            "user_id":1234,
+            "table_name":"get_client_info_view",
+            "item_id": id
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await (response.json());
+        console.log(res);
+        if(id != null) {
+            console.log(res.data);
+            setClientName(res.data.clientname);
+            console.log(clientName)
+        }
+      }
     // const fetchInitialData = async () => {
     //    const data = {"user_id":1234,"id": currOrderId}
     // //    console.log(data)
@@ -171,12 +216,14 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
                                 <div>Order Status history</div>
                             </div>
                         </div>
-                        
-                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} />}
+                        {!pageLoading && <>
+                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName}/>}
                         {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} />}
-                        {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
+                        {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId}/>}
+                        </>
+                        }
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Save</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose} >Cancel</button>
                         </div>
                     </div>
