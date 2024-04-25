@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
-const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName }) => {
+const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors }) => {
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -38,7 +38,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         orderDescription: "",
     };
     // const [formValues, setFormValues] = useState(initialValues);
-    const [formErrors, setFormErrors] = useState({});
+    // const [formErrors, setFormErrors] = useState({});
 
     // handle changes in input form
     const handleChange = (e) => {
@@ -57,22 +57,22 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
     //       setIsSubmit(true);
     //     };
     // validate form and to throw Error message
-    const validate = (values) => {
-        const errors = {};
-        if (!values.assignedTo) {
-            errors.assignedTo = "select a name";
-        }
-        if (!values.status) {
-            errors.status = "Select your status";
-        }
-        if (!values.clientName) {
-            errors.clientName = "Select Client Name";
-        }
-        if (!values.orderDescription) {
-            errors.orderDescription = "Enter Order Description";
-        }
-        return errors;
-    };
+    // const validate = (values) => {
+    //     const errors = {};
+    //     if (!values.assignedTo) {
+    //         errors.assignedTo = "select a name";
+    //     }
+    //     if (!values.status) {
+    //         errors.status = "Select your status";
+    //     }
+    //     if (!values.clientName) {
+    //         errors.clientName = "Select Client Name";
+    //     }
+    //     if (!values.orderDescription) {
+    //         errors.orderDescription = "Enter Order Description";
+    //     }
+    //     return errors;
+    // };
 
 
 
@@ -162,7 +162,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                         </div>
                         <div className="">
                             <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="owner" value={formValues.order_info.owner} onChange={handleChange} >
+                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="owner" value={formValues.order_info.owner} onChange={handleChange} >
                                 <option value={null}>Select User</option>
                                 {usersData.map(item => (
                                     <option key={item.id} value={item.id}>
@@ -171,11 +171,11 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                                 ))}
 
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.assignedTo}</div>
+                            <div className="text-[10px] text-[#CD0000] ">{formErrors.assignedtooffice}</div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="status" value={formValues.order_info.status} onChange={handleChange}>
+                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="status" value={formValues.order_info.status} onChange={handleChange}>
                                 <option value={null}>Select Status</option>
                                 {orderStatusData.map(item => (
                                     <option key={item[0]} value={item[0]}>
@@ -197,8 +197,8 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             </select>
                         </div>
                         <div className="">
-                            <div className="text-[13px]">Service</div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="service" value={formValues.order_info.service} onChange={handleChange} >
+                            <div className="text-[13px]">Service <label className="text-red-500">*</label></div>
+                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="service" value={formValues.order_info.service} onChange={handleChange} >
                                 <option value={null}> Select Service</option>
                                 {serviceData.map(item => (
                                     <option key={item[0]} value={item[0]}>
@@ -206,6 +206,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                                     </option>
                                 ))}
                             </select>
+                            <div className="text-[10px] text-[#CD0000] ">{formErrors.service}</div>
                         </div>
                     </div>
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -244,7 +245,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                                     })
                                 }}
                             />
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.clientName}</div>
+                            <div className="text-[10px] text-[#CD0000] ">{formErrors.clientid}</div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Order Date</div>
@@ -265,7 +266,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                         </div>
                         <div className="">
                             <div className="text-[13px]">Vendor</div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.order_info.vendorid} onChange={handleChange} >
+                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.order_info.vendorid} onChange={handleChange} >
                                 <option value={null}> Select Vendor</option>
                                 {vendorData.map(item => (
                                     <option key={item[0]} value={item[0]}>
@@ -278,7 +279,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                         <div className="">
                             <div className="text-[13px]">Tally Ledger</div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="tallyledgerid" value={formValues.order_info.tallyledgerid} onChange={handleChange} >
+                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="tallyledgerid" value={formValues.order_info.tallyledgerid} onChange={handleChange} >
                                 <option value={null}> Select Tally Ledger</option>
                                 {tallyLedgerData.map(item => (
                                     <option key={item[0]} value={item[0]}>
@@ -288,14 +289,15 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             </select>
                         </div>
                         <div className="">
+                            <div className="text-[13px]">Order Description <label className="text-red-500">*</label></div>
+                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="briefdescription" value={formValues.order_info.briefdescription} onChange={handleChange} />
+                            <div className="text-[12px] text-[#CD0000] ">{formErrors.briefdescription}</div>
+                        </div>
+                        <div className="">
                             <div className="text-[13px]">Comments</div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" value={formValues.order_info.comments} name="comments" onChange={handleChange} />
                         </div>
-                        <div className="">
-                            <div className="text-[13px]">Order Description <label className="text-red-500">*</label></div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="briefdescription" value={formValues.order_info.briefdescription} onChange={handleChange} />
-                            <div className="text-[12px] text-[#CD0000] ">{formErrors.orderDescription}</div>
-                        </div>
+                        
                         <div className="">
                             <div className="text-[13px]">Additional Comments</div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" value={formValues.order_info.additionalcomments} name="additionalcomments" onChange={handleChange} />

@@ -70,7 +70,11 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
         }
     }
     const handleEdit = async () => {
-        console.log(formValues)
+        console.log(formValues);
+        if (!validate()) {
+            setSelectedDialogue(1);
+            return
+        }
         const updateArrayPhotos = []
         const insertArrayPhotos = []
         helper1(updateArrayPhotos,insertArrayPhotos)
@@ -209,7 +213,82 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
         setTallyLedgerData(res.data)
     }
 
+    const [formErrors, setFormErrors] = useState({});
+    const validate = () => {
+        var res = true
+        if (formValues.order_info.assignedtooffice === "" || formValues.order_info.assignedtooffice === null) {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                assignedtooffice: "Select Assigned To"
+            }))
 
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                assignedtooffice: ""
+            }))
+        }
+
+        if (formValues.order_info.status === "" || formValues.order_info.status === null) {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                status: "Select Status"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                status: ""
+            }))
+        }
+
+        if (formValues.order_info.service === "" || formValues.order_info.service === null) {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                service: "Select Service"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                service: ""
+            }))
+        }
+
+        if (formValues.order_info.clientid === "" || formValues.order_info.clientid === null ) {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                clientid: "Select Client"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                clientid: ""
+            }))
+        }
+
+        if (formValues.order_info.briefdescription === "" || formValues.order_info.briefdescription === null) {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                briefdescription: "Enter Order Description"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                briefdescription: ""
+            }))
+        }
+
+
+        return res;
+    }
 
 
 
@@ -267,7 +346,7 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
                             </div>
                         </div>
                         {!pageLoading && <>
-                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} /> }
+                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} /> }
                         {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId}/>}
                         {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId}/>}
                         </>
