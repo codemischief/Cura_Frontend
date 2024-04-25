@@ -758,7 +758,7 @@ const ManageEmployees = () => {
             filterData : "String",
             filterInput : ""
         },
-        pannno : {
+        panno : {
             filterType : "",
             filterValue : "",
             filterData : "String",
@@ -812,7 +812,7 @@ const ManageEmployees = () => {
     const [dateOfJoiningInput,setDateOfJoiningInput] = useState(false)
 
     const fetchFiltered = async  (mapState) => {
-       setFilterMapState(mapState)
+       console.log(mapState)
        const tempArray = [];
        setCurrentPage((prev) => 1)
         // we need to query thru the object
@@ -820,11 +820,14 @@ const ManageEmployees = () => {
         console.log(filterMapState)
         Object.keys(mapState).forEach(key=> {
             if(mapState[key].filterType != "") {
+            console.log(key)
+            console.log(mapState[key])
                 console.log(mapState[key].filterData)
                 console.log(mapState[key])
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
             }
         })
+        setFilterMapState(mapState)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
