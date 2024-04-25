@@ -117,37 +117,22 @@ const EditClientProperty = (props) => {
               }
           ],
         "client_property_owner": {
-          "owner1name": "",
-          "owner1addressline1": "",
-          "owner1addressline2": "",
-          "owner1suburb": "",
-          "owner1city": "",
-          "owner1state": "",
-          "owner1country": null,
-          "owner1zip": null,
-          "owner1panno": "",
-          "owner1occupation": null,
-          "owner1employername": null,
-          "owner1relation":null,
-          "owner1birthyear":null,
-          "owner1relationwith": null,
-          "owner2name": "",
-          "owner2addressline1": "",
-          "owner2addressline2": "",
-          "owner2suburb": "",
-          "owner2city": null,
-          "owner2state": null,
-          "owner2country": null,
-          "owner2zip": null,
-          "owner2panno": "",
-          "owner2occupation": "",
-          "owner2employername": null,
-          "owner2relation": null,
-          "owner2relationwith": null,
-          "owner2birthyear":null,
-          "owner3name":"",
-          "owner3panno":"",
-          "otherownerdetails":"details"
+            "owner1name": null,
+            "owner1panno": null,
+            "owner1aadhaarno": null,
+            "owner1pancollected": null,
+            "owner1aadhaarcollected": null,
+            "owner2name": null,
+            "owner2panno":null,
+            "owner2aadhaarno": null,
+            "owner2pancollected": null,
+            "owner2aadhaarcollected": null,
+            "owner3name": null,
+            "owner3panno": null,
+            "owner3aadhaarno": null,
+            "owner3pancollected": null,
+            "owner3aadhaarcollected": null,
+            "comments": null,
         },
         "client_property_poa": {
           "poalegalname": "",
@@ -426,7 +411,7 @@ const EditClientProperty = (props) => {
         <div className="w-[1150px] h-auto bg-white rounded-lg">
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                 <div className="mr-[410px] ml-[410px]">
-                    <div className="text-[16px]">Edit Client</div>
+                    <div className="text-[16px]">Edit Client Property : </div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                     <button onClick={props.handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>

@@ -78,7 +78,7 @@ const LOB = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -97,7 +97,7 @@ const LOB = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -205,11 +205,12 @@ const LOB = () => {
         const data = {
             "user_id": 1234,
             "rows": ["name","id"],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchQuery
         };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -236,7 +237,7 @@ const LOB = () => {
         setCurrentPage(1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -311,7 +312,7 @@ const LOB = () => {
         setCurrentPage(1);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
@@ -389,7 +390,7 @@ const LOB = () => {
         setCurrentPage(1);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["id", "name"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -414,10 +415,10 @@ const LOB = () => {
         <div className='h-screen'>
             <Navbar />
             {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal} />}
-            {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="Successfull added Lob!" />}
+            {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="New Lob added Successfully!" />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Successfully edited Lob!" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Lob!" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully!" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Lob Deleted Successfully!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
             {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
@@ -483,7 +484,7 @@ const LOB = () => {
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                             <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                         </div>
-                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='id' />}
+                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' />}
                         <div className='w-1/2 0 p-4'>
 
                         </div>

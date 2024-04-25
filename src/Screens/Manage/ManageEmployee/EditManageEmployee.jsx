@@ -31,17 +31,12 @@ const EditManageEmployee = (props) => {
     const fetchStateData = async (id) => {
         // console.log(id);
         console.log(id);
-        const data = { "user_id": 1234, "country_id":  5};
+        const data = { "user_id": 1234, "country_id":  id};
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
-        // console.log(result)
-        
-        // await fetchCityData(formValues.state);
-        if (Array.isArray(result)) {
-            setAllState(result)
-        }
+        setAllState(result)
     }
     const fetchCityData = async (name) => {
         // console.log("Maharashtra");
@@ -121,6 +116,7 @@ const EditManageEmployee = (props) => {
         const response = await APIService.getItembyId(data);
         const result = await response.json();
         setFormValues(result.data);
+        console.log(result.data)
         // console.log(formValues.state);
         await fetchCountryData();
         // console.log(result.data.dateofjoining.split('T')[0]);
@@ -496,11 +492,23 @@ const EditManageEmployee = (props) => {
                                                 defaultValue="Select Country"
                                                 onChange={e => {
                                                     setCurrCountry(e.target.value);
+                                                    setAllState([])
                                                     fetchStateData(e.target.value);
+                                                    setAllCity([])
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, country: e.target.value }
                                                         return newData;
                                                     })
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, state: null }
+                                                        return newData;
+                                                    })
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, city: null }
+                                                        return newData;
+                                                    })
+                                                     
                                                     // fetchStateData(res);
                                                 }}
                                             >
@@ -527,17 +535,22 @@ const EditManageEmployee = (props) => {
 
                                                 }}
                                             >
+                                                {console.log(formValues.state)}
+                                                <option value={null} > Select A State</option>
                                                 {allState && allState.map((item) => {
                                                     // if(item[0])
-                                                    if(item[1] == formValues.state) {
-                                                        return <option value={item[0]} selected>
-                                                            {item[0]}
-                                                        </option>
-                                                    }else {
-                                                        return (<option value={item[0]} >
-                                                            {item[0]}
-                                                        </option>);
-                                                    }
+                                                    return <option value={item[0]}>
+                                                        {item[0]}
+                                                    </option>
+                                                    // if(item[0] == formValues.state) {
+                                                    //     return <option value={item[0]} selected>
+                                                    //         {item[0]}
+                                                    //     </option>
+                                                    // }else {
+                                                    //     return (<option value={item[0]} >
+                                                    //         {item[0]}
+                                                    //     </option>);
+                                                    // }
                                                  })}
                                             </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
@@ -555,6 +568,7 @@ const EditManageEmployee = (props) => {
 
                                                 }}
                                             >
+                                                <option value={null}> Select City</option>
                                                 {allCity.map((item) => {
                                                     if(item.id == formValues.city) {
 

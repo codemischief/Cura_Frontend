@@ -205,7 +205,7 @@ const ManageEmployees = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
@@ -234,7 +234,7 @@ const ManageEmployees = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
@@ -255,6 +255,7 @@ const ManageEmployees = () => {
                 tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         })
+        setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
             "user_id": 1234,
@@ -262,7 +263,7 @@ const ManageEmployees = () => {
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
@@ -392,7 +393,7 @@ const ManageEmployees = () => {
         email: "",
         addressLine1: "",
         employeeId: "",
-        lob: "",
+        lob: null,
         dob: "",
         lastDOW: null,
         role: "",
@@ -619,12 +620,21 @@ const ManageEmployees = () => {
         setDownloadModal(false);
     }
     const handleExcelDownload = async () => {
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
         const data = {
             "user_id": 1234,
-            "rows": [ "employeename", "employeeid", "phoneno", "email","role", "panno", "dateofjoining", "lastdateofworking", "status","id"],
-            "filters": [],
-            "sort_by": ["id"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "filters": tempArray,
+            "sort_by": [sortField],
             "order": "desc",
+            "search_key" : searchInput,
             "pg_no": 0,
             "pg_size": 0
         };
@@ -640,15 +650,24 @@ const ManageEmployees = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
         setIsSearchOn(true);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getEmployees(data);
@@ -662,11 +681,19 @@ const ManageEmployees = () => {
     const handleCloseSearch = async () => {
         setIsSearchOn(false);
         setPageLoading(true);
-        setSearchInput("");
+        setSearchInput(() => "");
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key=> {
+            if(filterMapState[key].filterType != "") {
+                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+            }
+        })
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": [],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -731,6 +758,12 @@ const ManageEmployees = () => {
             filterData : "String",
             filterInput : ""
         },
+        pannno : {
+            filterType : "",
+            filterValue : "",
+            filterData : "String",
+            filterInput : ""
+        },
         email : {
             filterType : "",
             filterValue : "",
@@ -781,22 +814,25 @@ const ManageEmployees = () => {
     const fetchFiltered = async  (mapState) => {
        setFilterMapState(mapState)
        const tempArray = [];
+       setCurrentPage((prev) => 1)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach(key=> {
             if(mapState[key].filterType != "") {
+                console.log(mapState[key].filterData)
+                console.log(mapState[key])
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
             }
         })
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
@@ -858,6 +894,7 @@ const ManageEmployees = () => {
     } 
     const handleSort = async (field) => {
         setPageLoading(true);
+        setFlag((prev) => !prev);
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
@@ -872,12 +909,12 @@ const ManageEmployees = () => {
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
             "filters": tempArray,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
+        
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
@@ -1362,6 +1399,7 @@ const ManageEmployees = () => {
 
                                             }}
                                         >
+                                            {/* <option value="none" hidden={true}>Select a LOB</option> */}
                                             {allLOB && allLOB.map(item => (
                                                 <option value={item.id} >
                                                     {item.name}
