@@ -44,5 +44,4 @@ const EditPhotos = ({formValues,setFormValues,currOrderId}) => {
         </div>
     )
 }
-
 export default EditPhotos

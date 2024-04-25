@@ -2,11 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
-const orderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData,orderStatusData, clientPropertyData, serviceData,vendorData, tallyLedgerData}) => {
+const orderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData,orderStatusData, serviceData,vendorData, tallyLedgerData}) => {
     const handleClose = () => {
         setIsStateDialogue(false);
     }
-
+    const [clientPropertyData,setClientPropertyData] = useState([]);
     const selectedClient = [
         "client 1","client 2","client 3"
        ];
@@ -73,25 +73,16 @@ const orderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData
               }
               return errors;
           };
-        
+          const getClientPropertyByClientId = async (id) => {
+            const data = {
+                "user_id" : 1234,
+                "client_id" : id
+            } 
+            const response = await APIService.getClientPropertyByClientId(data)
+            const res = await response.json()
+            setClientPropertyData((prev) => res.data)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          }
           // client name field
           const [options,setOptions] = useState([]);
           const fetchClientData = async () => {
@@ -117,6 +108,7 @@ const orderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData
                const existing = {...formValues}
                const temp = {...existing.order_info}
                temp.clientid = e.value
+               getClientPropertyByClientId(e.value)
                existing.order_info = temp;
                setFormValues(existing)
                console.log(formValues)
@@ -189,9 +181,9 @@ const orderInformation = ({setIsStateDialogue,formValues,setFormValues,usersData
                                         <div className="text-[13px]">Client Property</div>
                                         <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.order_info.clientpropertyid} onChange={handleChange}name="clientpropertyid" >
                                             <option value={null}>Select Client Property</option>
-                                            {clientPropertyData.map(item => (
-                                                    <option key={item[0]} value={item[0]}>
-                                                        {item[1]}
+                                                  {clientPropertyData.map(item => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.propertyname}
                                                     </option>
                                                     ))}
                                         </select>

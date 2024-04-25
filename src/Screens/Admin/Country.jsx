@@ -527,7 +527,7 @@ const Country = () => {
       <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
       <FailureModal isOpen={showFailure} message={failureMessage} />
       <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
-      <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} />
+      {showEdit && <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} />}
       {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry} />}
       <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
