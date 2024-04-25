@@ -62,14 +62,15 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
               const str1 = JSON.stringify(weNeed)
               const str2 = JSON.stringify(tempObj);
               if(str1 !== str2) {
-                  updateArrayAccess.push(tempObj);
+                updateArrayPhotos.push(tempObj);
               }
           }else {
-              insertArrayAccess.push(tempObj);
+            insertArrayPhotos.push(tempObj);
           }
         }
     }
     const handleEdit = async () => {
+        console.log(formValues)
         const updateArrayPhotos = []
         const insertArrayPhotos = []
         helper1(updateArrayPhotos,insertArrayPhotos)
@@ -100,7 +101,7 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
               "insert": insertArrayPhotos
             }
           }
-          
+        
           const response = await APIService.editOrder(data);
           const res = await response.json()
           console.log(res);
@@ -229,8 +230,8 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
 
     // finish it here
     useEffect(() => {
-      fetchInitialData()
-      fetchUsersData()
+        fetchInitialData()
+        fetchUsersData()
         fetchOrderStatusData()
         fetchClientPropertyData()
         fetchServiceData()
@@ -266,8 +267,8 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
                             </div>
                         </div>
                         {!pageLoading && <>
-                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName}/>}
-                        {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} />}
+                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} /> }
+                        {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId}/>}
                         {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId}/>}
                         </>
                         }

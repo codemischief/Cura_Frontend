@@ -87,7 +87,6 @@ const LOB = () => {
         const response = await APIService.getLob(data)
         const temp = await response.json();
         const result = temp.data;
-        if (number == 25) console.log(result);
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLOB(result);

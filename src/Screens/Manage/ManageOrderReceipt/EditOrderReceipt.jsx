@@ -116,22 +116,6 @@ const EditOrderReceipt = ({handleClose,receiptId}) => {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // we finish utility routes here
 
 

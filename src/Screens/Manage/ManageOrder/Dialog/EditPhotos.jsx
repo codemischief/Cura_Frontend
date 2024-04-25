@@ -1,28 +1,18 @@
 import React, { useState } from 'react';
 import AddFeildPhotos from './AddFeildPhotos';
 
-const EditPhotos = ({formValues,setFormValues}) => {
-    // const handleClose = () => {
-    //     props.setIsStateDialogue(false);
-    // }
+const EditPhotos = ({formValues,setFormValues,currOrderId}) => {
 
-    // const [addField,setAddFeild] = useState([]);
-    // const handleAdd = () =>{
-
-        
-    //     const abc=[...addField,[]];
-    //     setAddFeild(abc);
-    // }
     const handleAdd = () => {
         setFormValues({...formValues,order_photos: [
           ...formValues.order_photos, {
+            "orderid" : currOrderId,
             "photolink": null,
             "phototakenwhen": null,
             "description": null
-        }
+         }
         ]})
-      }
-    
+    }
     return (
         <div>
                 <div className='flex-col justify-center items-center mx-5 mt-10'>
