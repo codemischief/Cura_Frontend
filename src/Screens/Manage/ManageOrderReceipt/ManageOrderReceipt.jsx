@@ -753,7 +753,8 @@ const ManageOrderReceipt = () => {
         fetchData();
     }
     const openEditSuccess = () => {
-        setIsEditDialogue(false);
+        // setIsEditDialogue(false);
+        setShowEditModal(false)
         setShowEditSuccess(true);
         setTimeout(function () {
             setShowEditSuccess(false);
@@ -1014,7 +1015,7 @@ const ManageOrderReceipt = () => {
 
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Order Receipt" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Order Receipt" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Order Receipt" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationOrderReceipt addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
