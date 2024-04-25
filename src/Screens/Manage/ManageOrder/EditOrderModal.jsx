@@ -44,23 +44,67 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
     const [tallyLedgerData,setTallyLedgerData] = useState([])
     const [pageLoading,setPageLoading] = useState(false);
     
+
+
+    const [initialOrderData,setInitialOrderData] = useState(initialValues);
+    function helper1(updateArrayPhotos,insertArrayPhotos) {
+        var size = formValues.order_photos.length
+        for(var i=0;i<size;i++) {
+          const tempObj = formValues.order_photos[i]
+          if(tempObj.hasOwnProperty('id')) {
+              // it has a property id
+              var weNeed = {};
+              for(var j=0;j<initialOrderData.order_photos.length;j++) {
+                   if(tempObj.id === initialOrderData.order_photos[j].id) {
+                       weNeed = initialOrderData.order_photos[j]
+                   }
+              }
+              const str1 = JSON.stringify(weNeed)
+              const str2 = JSON.stringify(tempObj);
+              if(str1 !== str2) {
+                  updateArrayAccess.push(tempObj);
+              }
+          }else {
+              insertArrayAccess.push(tempObj);
+          }
+        }
+    }
     const handleEdit = async () => {
+        const updateArrayPhotos = []
+        const insertArrayPhotos = []
+        helper1(updateArrayPhotos,insertArrayPhotos)
+
         const data = {
             "user_id":1234,
-            "order_info": formValues.order_info,
+            "order_info":{
+              "id":currOrderId,
+              "clientid":formValues.order_info.clientid,
+              "briefdescription":formValues.order_info.briefdescription,
+              "orderdate":formValues.order_info.orderdate,
+              "earlieststartdate":formValues.order_info.earlieststartdate,
+              "expectedcompletiondate":formValues.order_info.expectedcompletiondate,
+              "actualcompletiondate": formValues.order_info.actualcompletiondate,
+              "owner":formValues.order_info.owner,
+              "comments":formValues.order_info.comments,
+              "additionalcomments":formValues.order_info.additionalcomments,
+              "status":formValues.order_info.status,
+              "service":formValues.order_info.service,
+              "clientpropertyid":formValues.order_info.clientpropertyid,
+              "vendorid":formValues.order_info.vendorid,
+              "assignedtooffice":1,
+              "entityid":1,
+              "tallyledgerid":formValues.order_info.tallyledgerid
+            },
             "order_photos":{
-              "update":[
-
-              ],
-              "insert":[
-
-              ]
+              "update": updateArrayPhotos,
+              "insert": insertArrayPhotos
             }
           }
+          
           const response = await APIService.editOrder(data);
           const res = await response.json()
           console.log(res);
-
+          
           
     } 
 
@@ -78,6 +122,11 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
         existing.order_photos = res.data.order_photos;
         await fetchClientName(res.data.order_info.clientid)
         setFormValues(existing);
+        setInitialOrderData((prev) => {
+            prev.order_info = res.data.order_info;
+            prev.order_photos = res.data.order_photos;
+            return prev;
+        })
         setPageLoading(false)
     }
     const [clientName,setClientName] = useState("");

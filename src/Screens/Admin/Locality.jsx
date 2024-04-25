@@ -993,7 +993,6 @@ const Locality = () => {
                                         <div className="">
                                             <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={formValues.locality} onChange={(e) => {
-
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, locality: e.target.value }
                                                     return newData;

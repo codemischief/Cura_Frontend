@@ -78,7 +78,7 @@ const LOB = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
