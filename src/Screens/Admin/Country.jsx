@@ -48,6 +48,7 @@ const Country = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
   const [isSearchOn, setIsSearchOn] = useState(false);
+  const [filterState,setFilterState] = useState([]);
   // const [flag,setFlag] = useState(false);
   const fetchUserId = async () => {
     const response = await authService.getUserId();
@@ -77,7 +78,7 @@ const Country = () => {
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
-      "filters": [],
+      "filters": filterState,
       "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
       "pg_no": Number(pageNumber),
@@ -114,7 +115,7 @@ const Country = () => {
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
-      "filters": [],
+      "filters": filterState,
       "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
       "pg_no": Number(currentPage),
@@ -145,11 +146,11 @@ const Country = () => {
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
-      "filters": [],
+      "filters": filterState,
       "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
-      "pg_no": 1,
-      "pg_size": 15,
+      "pg_no": Number(currentPage),
+      "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
     const response = await APIService.getCountries(data)
@@ -289,17 +290,19 @@ const Country = () => {
   const handleSort = async (field) => {
     console.log('called')
     setPageLoading(true);
-    setSortField(field)
+    setSortField(field);
+    setFlag((prev) => {
+      return !prev
+  })
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
-      "filters": [],
+      "filters": filterState,
       "sort_by": [field],
-      "order": flag ? "asc" : "desc",
+      "order": !flag ? "asc" : "desc",
       "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
-    setFlag((prev) => !prev)
     const response = await APIService.getCountries(data)
     const temp = await response.json();
     const result = temp.data;
@@ -322,7 +325,7 @@ const Country = () => {
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
-      "filters": [],
+      "filters": filterState,
       "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
       "pg_no": 1,
@@ -360,7 +363,7 @@ const Country = () => {
     const data = {
       "user_id": userId || 1234,
       "rows": ["id", "name"],
-      "filters": [],
+      "filters": filterState,
       "sort_by": [sortField],
       "order": "desc",
       "pg_no": 1,
@@ -493,6 +496,7 @@ const Country = () => {
         tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
       }
     })
+    setFilterState(tempArray)
     setPageLoading(true);
     const data = {
       "user_id": 1234,
@@ -500,7 +504,7 @@ const Country = () => {
       "filters": tempArray,
       "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
-      "pg_no": Number(currentPage),
+      "pg_no": 1,
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
@@ -576,7 +580,7 @@ const Country = () => {
                 <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
                 <button className='px-1 py-2 w-[25%]' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
               </div>
-              {countryFilterInput && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef}/>}
+              {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef}/>}
             </div>
 
           </div>
