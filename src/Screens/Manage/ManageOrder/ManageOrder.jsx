@@ -292,8 +292,7 @@ const ManageOrder = () => {
             "entityid":1,
             "tallyledgerid": Number(formValues.order_info.tallyledgerid)
           },
-          "order_photos" : formValues.order_photos,
-          "order_status_change" : formValues.order_status_change
+          "order_photos" : formValues.order_photos
        }
        const response = await APIService.addOrder(data);
        const res = await response.json();

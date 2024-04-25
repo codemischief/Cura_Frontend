@@ -59,8 +59,20 @@ const EditClientInvoice = ({handleClose,invoiceId}) => {
   },[])
   const handleEdit = async () => {
     const data = {
-
-    }
+        "user_id": 1234,
+        "id": invoiceId,
+        "clientid":formValues.client,
+        "orderid":formValues.order,
+        "estimatedate": formValues.estimateDate,
+        "estimateamount": formValues.estimateAmount,
+        "invoicedate":formValues.invoiceDate,
+        "invoiceamount":formValues.invoiceAmount,
+        "quotedescription":formValues.invoiceDescription,
+        "createdon":"2024-10-09",
+        "baseamount":25000.0,
+        "tax":12.0,
+        "entity":1
+      }
     const response = await APIService.editOrdersInvoice(data);
     const res = await response.json();
     console.log(res)
