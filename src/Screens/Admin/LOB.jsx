@@ -59,7 +59,7 @@ const LOB = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "name"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -75,13 +75,14 @@ const LOB = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
+        setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
             "rows": ["id", "name", "lob_head", "company"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(number)
         };
         const response = await APIService.getLob(data)
