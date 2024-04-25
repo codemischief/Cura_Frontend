@@ -2,7 +2,7 @@ import React from 'react'
 import {Modal} from "@mui/material"
 // import Cross from "../../../assets/cross.png"
 import Cross from "../../../assets/cross.png"
-const SaveConfirmationEmployee = (props) => {
+const SaveConfirmationClientInvoice = (props) => {
   return (
     <Modal open={true} >
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
@@ -31,4 +31,4 @@ const SaveConfirmationEmployee = (props) => {
   )
 }
 
-export default SaveConfirmationEmployee
+export default SaveConfirmationClientInvoice

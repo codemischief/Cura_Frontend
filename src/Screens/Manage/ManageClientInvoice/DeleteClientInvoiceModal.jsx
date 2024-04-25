@@ -3,7 +3,7 @@ import { Modal, Button, CircularProgress } from "@mui/material";
 import DeleteImage from "../../../assets/delete.png";
 import Cross from "../../../assets/cross.png"
 import { APIService } from "../../../services/API";
-const DeleteEmployeeModal = (props) => {
+const DeleteClientInvoiceModal = (props) => {
   const [showLoading, setShowLoading] = useState(false);
   const handleDeleteClick = () => {
     //  props.handleDelete(props.item.name);
@@ -41,4 +41,4 @@ const DeleteEmployeeModal = (props) => {
   );
 };
 
-export default DeleteEmployeeModal;
+export default DeleteClientInvoiceModal;

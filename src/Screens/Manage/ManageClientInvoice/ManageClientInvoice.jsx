@@ -17,11 +17,11 @@ import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
-import EditManageEmployee from './EditManageEmployee';
+import EditClientInvoice from './EditClientInvoice';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import SaveConfirmationEmployee from './SaveConfirmationManageEmployee';
+import SaveConfirmationClientInvoice from './SaveConfirmationClientInvoice';
 import FailureModal from '../../../Components/modals/FailureModal';
-import DeleteEmployeeModal from './DeleteEmployeeModal';
+import DeleteClientInvoiceModal from './DeleteClientInvoiceModal';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
@@ -293,7 +293,7 @@ const ManageClientInvoice = () => {
     }
     useEffect(() => {
         fetchData();
-
+        
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setClientNameFilter(false)
@@ -313,7 +313,13 @@ const ManageClientInvoice = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
-
+    const [invoiceId,setInvoiceId] = useState(0);
+    const handleEdit = (id) => {
+        setInvoiceId(id)
+        console.log(id);
+        console.log(invoiceId)
+        setIsEditDialogue(true)
+    }
     const handleOpenEdit = (oldItem) => {
         console.log('called');
         setIsEditDialogue(true);
@@ -787,13 +793,13 @@ const ManageClientInvoice = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Invoice" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully deleted Client Invoice" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Client Invoice" />}
-            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addClientInvoice={addClientInvoice} />}
+            {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addClientInvoice={addClientInvoice} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} />}
+            {deleteConfirmation && <DeleteClientInvoiceModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1060,8 +1066,8 @@ const ManageClientInvoice = () => {
                                     <div className='w-1/2  flex'>
                                         <div className='w-1/2 py-5 flex ml-4'>
                                             <div className='flex space-x-2'>
-                                                <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                                <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                                <button onClick={ () => {handleEdit(item.id)}}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit"  /></button>
+                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash"  /></button>
                                             </div>
                                         </div>
                                     </div>
@@ -1161,8 +1167,6 @@ const ManageClientInvoice = () => {
                             </div>
                         </div>
 
-                        <div className="text-sm text-center mt-1 font-semibold">Invoice ID:</div>
-
                         <div className="h-auto w-full mt-1 ">
                             <div className="flex gap-12 justify-center">
                                 <div className=" space-y-3 py-5">
@@ -1187,12 +1191,6 @@ const ManageClientInvoice = () => {
                                                     fontSize: 12,
                                                     padding: '1px'
                                                 }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
                                                     padding: '3px', // adjust padding for the dropdown indicator
