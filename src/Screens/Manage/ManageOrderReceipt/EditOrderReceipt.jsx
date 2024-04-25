@@ -3,7 +3,7 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
-const EditOrderReceipt = ({handleClose,receiptId}) => {
+const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
     const initialValues = {
         client: "",
         order: null,
@@ -26,25 +26,26 @@ const EditOrderReceipt = ({handleClose,receiptId}) => {
     const [orders,setOrders] = useState([]);
     const handleEdit = async () => {
        // we need to edit the order receipt here
-       const data = {
-           "user_id" : 1234,
-           "id":56050,
-            "receivedby": formValues.receivedBy,
-            "amount": formValues.amountReceived,
-            "tds": formValues.TDS,
-            "recddate": formValues.receivedDate,
-            "paymentmode": formValues.receiptMode,
-            "receiptdesc":formValues.receiptDescription,
-            "orderid": formValues.order,
-            "dated": "2014-11-20T18:06:34.430000",
-            "createdby": 95,
-            "isdeleted": false,
-            "createdon": null,
-            "entityid": 1,
-            "officeid": 1
-       }
+       const data =  {
+      "user_id":1234,
+      "id":56050,
+      "receivedby": formValues.receivedBy,
+      "amount": formValues.amountReceived,
+      "tds": formValues.TDS,
+      "recddate": formValues.receivedDate,
+      "paymentmode": formValues.receiptMode,
+      "receiptdesc":formValues.receiptDescription,
+      "orderid": formValues.order,
+      "entityid": 1,
+      "officeid": 2
+}
+       
        const response = await APIService.editOrdersReceipt(data);
-
+       const res = await response.json();
+       console.log(res)
+       if(res.result == 'success') {
+        showSuccess()
+       }
     }
     const fetchInitialData = async () => {
         // we need to fetch the initial data here
@@ -275,7 +276,7 @@ const EditOrderReceipt = ({handleClose,receiptId}) => {
                                 <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Receipt ID </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={receiptId} readOnly />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
