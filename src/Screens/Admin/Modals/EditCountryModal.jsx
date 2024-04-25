@@ -3,20 +3,20 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API';
 const EditCountryModal = (props) => {
-    // console.log(props.currentCountry);
+    console.log(props.currentCountry);
     const [showLoading,setShowLoading] = useState(false);
     const [countryName,setCountryName] =  useState(props.currentCountry);
     const [errorMessage,setErrorMessage] = useState("");
     
 const handleChange = (e) => {
-    if(editModalInput == "") {
-        setErrorMessage("Enter Country Name");
-        return ;
-    }
     const { value } = e.target;
     setCountryName(value);
 };
 const handleEdit = async () => {
+    if(countryName == "") {
+        setErrorMessage("Enter Country Name");
+        return ;
+    }
     const data = {
         "user_id" : 1234,
         "old_country_name" : props.currentCountry,
@@ -40,7 +40,7 @@ const handleEdit = async () => {
                             <button onClick={() => {props.setIsOpen(false)}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                         </div>
                     </div>
-                    <form onSubmit={() => {}} className='mb-3 space-y-16'>
+                    <div className='mb-3 space-y-16'>
                         <div className="h-auto w-full mt-2 ">
                             <div className="flex gap-[48px] justify-center items-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -64,7 +64,7 @@ const handleEdit = async () => {
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {props.setIsOpen(false)}}>Cancel</button>
                             {/* {isLoading && <CircularProgress/>} */}
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
     </Modal>

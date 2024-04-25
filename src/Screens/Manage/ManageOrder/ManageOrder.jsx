@@ -263,9 +263,90 @@ const ManageOrder = () => {
           "timestamp":"2024-01-01 10:00:00"
         }]
     }
+    const [formErrors, setFormErrors] = useState({});
+    const validate = () => {
+        var res = true
+        if (formValues.order_info.assignedtooffice === "") {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                assignedtooffice: "Select Assigned To"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                assignedtooffice: ""
+            }))
+        }
+
+        if (formValues.order_info.status === "") {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                status: "Select Status"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                status: ""
+            }))
+        }
+
+        if (formValues.order_info.service === "") {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                service: "Select Service"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                service: ""
+            }))
+        }
+
+        if (formValues.order_info.clientid === "") {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                clientid: "Select Client"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                clientid: ""
+            }))
+        }
+
+        if (formValues.order_info.briefdescription === "") {
+            res = false
+            setFormErrors((existing) => ({
+                ...existing,
+                briefdescription: "Enter Order Description"
+            }))
+
+        } else {
+            setFormErrors((existing) => ({
+                ...existing,
+                briefdescription: ""
+            }))
+        }
+
+
+        return res;
+    }
     const [formValues,setFormValues] = useState(initialValues)
     const [currOrderName,setCurrOrderName] = useState(-1);
     const handleAddOrder = () => {
+        // console.log(formErrors);
+        if (!validate()) {
+            setSelectedDialogue(1);
+            return
+        }
         setIsStateDialogue(false)
         setShowAddConfirmation(true)
         
@@ -1165,7 +1246,7 @@ const ManageOrder = () => {
                                 <div>Order Status history</div>
                             </div>
                         </div>
-                        {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} />}
+                        {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} />}
                         {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
                         <div className="my-[10px] flex justify-center items-center gap-[10px]">
