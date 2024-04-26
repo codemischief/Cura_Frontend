@@ -418,7 +418,9 @@ const ManageOrderReceipt = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const handleEdit = (id) => {
         // we need to open the edit modal
-        setCurrOrderReceipt(id)
+        console.log(id)
+        setCurrOrderReceipt((prev) => id)
+        console.log(currOrderReceipt)
         setShowEditModal(true);
     }
     const initialValues = {

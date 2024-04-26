@@ -30,7 +30,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
        // we need to edit the order receipt here
        const data =  {
       "user_id":1234,
-      "id":56050,
+      "id":receiptId,
       "receivedby": formValues.receivedBy,
       "amount": formValues.amountReceived,
       "tds": formValues.TDS,
@@ -49,7 +49,9 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         showSuccess()
        }
     }
+    const [pageLoading,setPageLoading] = useState(false);
     const fetchInitialData = async () => {
+        setPageLoading(true);
         // we need to fetch the initial data here
         const data = {
             "user_id" : 1234,
@@ -76,6 +78,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         temp.label = res.data.clientname
         temp.value = res.data.clientid 
         setSelectedOption(temp)
+        setPageLoading(false)
     }
     useEffect(() => {
         fetchInitialData()
@@ -174,6 +177,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
+                
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
@@ -184,7 +188,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-
+                        {!pageLoading && 
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center ">
                                 <div className=" space-y-3 py-5">
@@ -326,6 +330,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
                                 </div>
                             </div>
                         </div>
+                        }
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>

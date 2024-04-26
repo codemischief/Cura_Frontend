@@ -3,7 +3,7 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
-const EditClientInvoice = ({handleClose,invoiceId}) => {
+const EditClientInvoice = ({handleClose,invoiceId,showSuccess}) => {
   const initialValues = {
         client: "",
         estimateAmount: "",
@@ -22,7 +22,7 @@ const EditClientInvoice = ({handleClose,invoiceId}) => {
     setFormValues({ ...formValues, [name]: value });
 };
   const [orders,setOrders] = useState([])
-  console.log(invoiceId)
+ 
   const fetchInitialData = async () => {
     const data = {
         "user_id" : 1234,
@@ -76,6 +76,9 @@ const EditClientInvoice = ({handleClose,invoiceId}) => {
     const response = await APIService.editOrdersInvoice(data);
     const res = await response.json();
     console.log(res)
+    if(res.result == 'success') {
+        showSuccess()
+    }
   }
 
 
@@ -178,7 +181,7 @@ const getOrdersByClientId = async (id) => {
                 </div>
             </div>
 
-            <div className="text-sm text-center mt-1 font-semibold">Invoice ID:</div>
+            <div className="text-sm text-center mt-1 font-semibold">Invoice ID: {invoiceId}</div>
 
             <div className="h-auto w-full mt-1 ">
                 <div className="flex gap-12 justify-center">

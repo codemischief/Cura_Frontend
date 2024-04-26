@@ -184,8 +184,8 @@ const ManageClientInvoice = () => {
                 "createdbyname"
             ],
             "filters": tempArray,
-            "sort_by": ["id"],
-            "order": "desc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
         };
@@ -208,6 +208,7 @@ const ManageClientInvoice = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
+        setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -229,11 +230,11 @@ const ManageClientInvoice = () => {
                 "createdbyname"
             ],
             "filters": tempArray,
-            "sort_by": ["id"],
-            "order": "desc",
+            "sort_by": [sortField],
+            "order":  flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
         const response = await APIService.getClientInvoice(data);
         const temp = await response.json();
@@ -796,7 +797,7 @@ const ManageClientInvoice = () => {
             {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Invoice" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully deleted Client Invoice" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Client Invoice" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addClientInvoice={addClientInvoice} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {deleteConfirmation && <DeleteClientInvoiceModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} />}
@@ -863,7 +864,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef} />}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[14%]  p-3'>
@@ -871,7 +872,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
                                     <button className='W-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[13%]  p-3'>
@@ -879,7 +880,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {estimateAmountFilter && <CharacterFilter inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter} />}
+                                {estimateAmountFilter && <NumericFilter inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} columnName="estimateamount" menuRef={menuRef} handleFilter={newHandleFilter} />}
                             </div>
 
                             <div className='w-[12%] p-3'>
@@ -887,7 +888,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type="date" />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef}/>}
+                                {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef}/>}
                             </div>
 
                             <div className='w-[13%]  p-3'>
@@ -895,7 +896,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setInvoiceAmountFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {invoiceAmountFilter && <CharacterFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {invoiceAmountFilter && <NumericFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} columnName='invoiceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[12%] p-3'>
@@ -903,7 +904,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type="date" />
                                     <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setInvoiceDateFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef}/>}
+                                {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef}/>}
                             </div>
 
                             <div className='w-[8%] p-3'>
@@ -911,7 +912,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]' onClick={() => { setEntityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} filterColumn='entityname' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[12%]  p-3 '>
@@ -919,7 +920,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilter} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilter} filterColumn='createdbyname' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
                         <div className="w-[10%] flex">
