@@ -69,6 +69,8 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         existing.receiptDescription = res.data.receiptdesc 
         existing.receivedDate = res.data.recddate
         existing.amountReceived = res.data.amount
+        existing.orderstatus = res.data.status
+        existing.orderdate = res.data.orderdate
         setFormValues(existing)
         const temp = {...selectedOption}
         temp.label = res.data.clientname
@@ -315,11 +317,11 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Date </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.orderdate} readOnly/>
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Status </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.orderstatus} readOnly />
                                     </div>
                                 </div>
                             </div>

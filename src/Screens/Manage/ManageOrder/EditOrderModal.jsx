@@ -85,19 +85,19 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
             "user_id":1234,
             "order_info":{
               "id":currOrderId,
-              "clientid":formValues.order_info.clientid,
+              "clientid":Number(formValues.order_info.clientid),
               "briefdescription":formValues.order_info.briefdescription,
               "orderdate":formValues.order_info.orderdate,
               "earlieststartdate":formValues.order_info.earlieststartdate,
               "expectedcompletiondate":formValues.order_info.expectedcompletiondate,
               "actualcompletiondate": formValues.order_info.actualcompletiondate,
-              "owner":formValues.order_info.owner,
+              "owner":Number(formValues.order_info.owner),
               "comments":formValues.order_info.comments,
               "additionalcomments":formValues.order_info.additionalcomments,
-              "status":formValues.order_info.status,
-              "service":formValues.order_info.service,
-              "clientpropertyid":formValues.order_info.clientpropertyid,
-              "vendorid":formValues.order_info.vendorid,
+              "status":Number(formValues.order_info.status),
+              "service":Number(formValues.order_info.service),
+              "clientpropertyid":Number(formValues.order_info.clientpropertyid),
+              "vendorid":Number(formValues.order_info.vendorid),
               "assignedtooffice":1,
               "entityid":1,
               "tallyledgerid":formValues.order_info.tallyledgerid
@@ -132,15 +132,6 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
         existing.order_photos = res.data.order_photos;
         await fetchClientName(res.data.order_info.clientid)
         setFormValues(existing);
-        // const temp = {...res.data};
-        // initialOrderData = {...res.data};
-        var temp = initialOrderData;
-        temp = res.data;
-        setInitialOrderData(temp)
-        // setInitialOrderData((prev) => {
-        //     return {...res.data}
-        // })
-        // setInitialOrderData((prev) =>{...res.data})
         setPageLoading(false)
     }
     const [clientName,setClientName] = useState("");
@@ -317,7 +308,16 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
 
 
     // finish it here
+    const fetchInitialHelper =async () => {
+        const data = {"user_id":1234,"id": currOrderId}
+        
+        const response = await APIService.getOrderDataById(data)
+        const res = await response.json()
+        console.log(res)
+        setInitialOrderData(res.data)
+    }
     useEffect(() => {
+        fetchInitialHelper()
         fetchInitialData()
         fetchUsersData()
         fetchOrderStatusData()

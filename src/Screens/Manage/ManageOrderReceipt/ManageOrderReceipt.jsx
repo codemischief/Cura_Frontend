@@ -381,20 +381,26 @@ const ManageOrderReceipt = () => {
 
         const data = {
             "user_id": 1234,
+            "clientid" : Number(formValues.client),
             "receivedby": Number(formValues.receivedBy),
             "amount": Number(formValues.amountReceived),
             "tds": Number(formValues.TDS),
             "recddate": formValues.receivedDate,
             "paymentmode": Number(formValues.receiptMode),
             "orderid": Number(formValues.order),
-            "quotedescription": formValues.receiptDescription,
-            "dated": "2014-11-20T18:06:34.430000",
-            "createdby": 95,
-            "isdeleted": false,
-            "createdon": null,
+            "receiptdesc": formValues.receiptDescription,
             "entityid": 1,
-            "officeid": 1
+            "officeid" : 1
         }
+        // "user_id":1234,
+        // "receivedby": 1234,
+        // "amount": 20000,
+        // "tds": null,
+        // "recddate": "2014-04-14",
+        // "paymentmode": 5,
+        // "orderid": 34,
+        // "entityid": 1,
+        // "officeid": 1
         const response = await APIService.addOrderReceipt(data)
         const res = await response.json()
         console.log(res)
