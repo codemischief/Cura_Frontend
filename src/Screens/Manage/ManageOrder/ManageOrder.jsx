@@ -454,11 +454,11 @@ const ManageOrder = () => {
                 "entity",
                 "tallyledgerid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15
+            "filters": stateArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0
         }
             ;
         const response = await APIService.getOrder(data);
