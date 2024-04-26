@@ -10,6 +10,7 @@ const EditOrderStatusHistory = ({formValues,setFormValues,orderId}) => {
          const res = await response.json();
          setOrderStatusData(res.data);
          console.log(res)
+         setOrderStatusData(res.data)
     }
     // const handleAdd = () => {
     //     setFormValues({...formValues,order_photos: [
@@ -42,9 +43,9 @@ const EditOrderStatusHistory = ({formValues,setFormValues,orderId}) => {
                                 Timestamp
                             </div>
                         </div>
-                        {formValues.order_status_change.map((item,index) => {
+                        {orderStatusData.map((item,index) => {
                             return (
-                                <AddFeildOrderStatusHistory index={index} formValues={formValues} setFormValues={setFormValues}/>
+                                <AddFeildOrderStatusHistory index={index} item={item}/>
                             )
                         })}
                     

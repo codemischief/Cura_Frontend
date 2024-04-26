@@ -112,13 +112,14 @@ const Country = () => {
 
     // const user_id = await authService.getUserID();
     setCurrentPages(quantity);
+    setCurrentPage((prev) => 1)
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
       "filters": filterState,
       "sort_by": [sortField],
       "order": flag ? "asc" : "desc",
-      "pg_no": Number(currentPage),
+      "pg_no": 1,
       "pg_size": Number(quantity),
       "search_key": isSearchOn ? searchQuery : ""
     };
@@ -499,7 +500,7 @@ const Country = () => {
       }
     })
     setFilterState(tempArray)
-    setCurrentPage(1)
+    setCurrentPage((prev) => 1)
     setPageLoading(true);
     const data = {
       "user_id": 1234,

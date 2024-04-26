@@ -252,7 +252,8 @@ const ManageOrder = () => {
           "vendorid":null,
           "assignedtooffice":1,
           "entityid":1,
-          "tallyledgerid":null
+          "tallyledgerid":null,
+          "clientname" : "Select Client",
         },
         "order_photos":[
 
@@ -266,17 +267,18 @@ const ManageOrder = () => {
     const [formErrors, setFormErrors] = useState({});
     const validate = () => {
         var res = true
-        if (formValues.order_info.assignedtooffice === "" || formValues.order_info.assignedtooffice === null) {
+        if (formValues.order_info.owner === "" || formValues.order_info.owner === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
-                assignedtooffice: "Select Assigned To"
+                owner: "Select Assigned To"
             }))
+            console.log('he')
 
         } else {
             setFormErrors((existing) => ({
                 ...existing,
-                assignedtooffice: ""
+                owner: ""
             }))
         }
 

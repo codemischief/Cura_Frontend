@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
-const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors }) => {
+const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName}) => {
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -118,6 +118,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         const existing = { ...formValues }
         const temp = { ...existing.order_info }
         temp.clientid = e.value
+        setClientName(e.label)
         existing.order_info = temp;
         setFormValues(existing)
         console.log(formValues)
@@ -171,7 +172,7 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                                 ))}
 
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.assignedtooffice}</div>
+                            <div className="text-[10px] text-[#CD0000] ">{formErrors.owner}</div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>

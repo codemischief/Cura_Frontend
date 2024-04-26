@@ -23,7 +23,8 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
           "vendorid":null,
           "assignedtooffice":1,
           "entityid":1,
-          "tallyledgerid":null
+          "tallyledgerid":null,
+          "clientname" : null
         },
         "order_photos":[
 
@@ -216,17 +217,17 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
     const [formErrors, setFormErrors] = useState({});
     const validate = () => {
         var res = true
-        if (formValues.order_info.assignedtooffice === "" || formValues.order_info.assignedtooffice === null) {
+        if (formValues.order_info.owner === "" || formValues.order_info.owner === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
-                assignedtooffice: "Select Assigned To"
+                owner: "Select Assigned To"
             }))
 
         } else {
             setFormErrors((existing) => ({
                 ...existing,
-                assignedtooffice: ""
+                owner: ""
             }))
         }
 
@@ -346,7 +347,7 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
                             </div>
                         </div>
                         {!pageLoading && <>
-                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} /> }
+                        {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName}/> }
                         {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId}/>}
                         {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId}/>}
                         </>

@@ -98,8 +98,8 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
         })))
     }
     const [selectedOption, setSelectedOption] = useState({
-        label: "Select Client",
-        value: null
+        label: formValues.order_info.clientname,
+        value: formValues.order_info.clientid
     });
     const [query, setQuery] = useState('')
     const handleClientNameChange = (e) => {
@@ -108,6 +108,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
         const existing = { ...formValues }
         const temp = { ...existing.order_info }
         temp.clientid = e.value
+        temp.clientname = e.label
         getClientPropertyByClientId(e.value)
         existing.order_info = temp;
         setFormValues(existing)
@@ -163,7 +164,7 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                 ))}
 
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.assignedtooffice}</div>
+                            <div className="text-[10px] text-[#CD0000] ">{formErrors.owner}</div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
