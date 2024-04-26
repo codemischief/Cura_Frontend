@@ -5,7 +5,7 @@ import EditOrderInformation from './Dialog/EditOrderInformation'
 import EditPhotos from './Dialog/EditPhotos'
 import EditOrderStatusHistory from './Dialog/EditOrderStatusHistory'
 import { APIService } from '../../../services/API';
-const EditOrderModal = ({currOrderId,handleClose}) => {
+const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
     const initialValues = {
         "order_info":{
           "clientid":null,
@@ -47,7 +47,7 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
     
 
 
-    const [initialOrderData,setInitialOrderData] = useState(initialValues);
+    // const [initialOrderData,setInitialOrderData] = useState({...initialValues});
     function helper1(updateArrayPhotos,insertArrayPhotos) {
         var size = formValues.order_photos.length
         for(var i=0;i<size;i++) {
@@ -62,6 +62,7 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
               }
               const str1 = JSON.stringify(weNeed)
               const str2 = JSON.stringify(tempObj);
+              console.log(str1,str2)
               if(str1 !== str2) {
                 updateArrayPhotos.push(tempObj);
               }
@@ -110,10 +111,13 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
           const response = await APIService.editOrder(data);
           const res = await response.json()
           console.log(res);
-          
+          if(res.result == 'success') {
+              showSuccess()
+          }
           
     } 
-
+    const [initialOrderData,setInitialOrderData] = useState({...initialValues})
+    // var initialOrderData = {...initialValues};
 
     const fetchInitialData = async () => {
         setPageLoading(true);
@@ -122,17 +126,21 @@ const EditOrderModal = ({currOrderId,handleClose}) => {
         const response = await APIService.getOrderDataById(data)
         const res = await response.json()
         console.log(res)
-        setFormValues(res.data)
+        // setFormValues(res.data)
         const existing = {...formValues}
         existing.order_info = res.data.order_info;
         existing.order_photos = res.data.order_photos;
         await fetchClientName(res.data.order_info.clientid)
         setFormValues(existing);
-        setInitialOrderData((prev) => {
-            prev.order_info = res.data.order_info;
-            prev.order_photos = res.data.order_photos;
-            return prev;
-        })
+        // const temp = {...res.data};
+        // initialOrderData = {...res.data};
+        var temp = initialOrderData;
+        temp = res.data;
+        setInitialOrderData(temp)
+        // setInitialOrderData((prev) => {
+        //     return {...res.data}
+        // })
+        // setInitialOrderData((prev) =>{...res.data})
         setPageLoading(false)
     }
     const [clientName,setClientName] = useState("");

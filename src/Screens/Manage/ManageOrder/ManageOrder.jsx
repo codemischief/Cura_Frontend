@@ -158,6 +158,7 @@ const ManageOrder = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -193,7 +194,7 @@ const ManageOrder = () => {
             "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key" : searchInput
         }
@@ -605,7 +606,7 @@ const ManageOrder = () => {
             filterData: "String",
             filterInput: ""
         },
-        officename: {
+        ownername: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -688,6 +689,7 @@ const ManageOrder = () => {
             }
         })
         setStateArray(tempArray)
+        setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -724,7 +726,7 @@ const ManageOrder = () => {
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
@@ -751,6 +753,7 @@ const ManageOrder = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
+        setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
             "rows": [
@@ -785,12 +788,12 @@ const ManageOrder = () => {
             ],
             "filters": tempArray,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
+        
         const response = await APIService.getOrder(data);
         const temp = await response.json();
         const result = temp.data;
@@ -917,14 +920,24 @@ const ManageOrder = () => {
     // finish all utiltiy data
     const [showDeleteModal,setShowDeleteModal] = useState(false)
     const [showEditModal,setShowEditModal] = useState(false);
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const openEditSuccess = () => {
+        setShowEditModal(false)
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+            fetchData();
+        }, 2000)
+    }
     return (
         <div className="h-screen">
             <Navbar />
             {showAddSuccess && <SucessfullModal  isOpen={showAddSuccess} message="New Order Created Successfully"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
             {showDeleteSuccess && <SucessfullModal  isOpen={showDeleteSuccess} message=" Order Deleted Successfully"/>}
             {showAddConfirmation && <SaveConfirmationOrder handleClose={() => setShowAddConfirmation(false)} addOrder={addOrder} />}
             {showDeleteModal && <DeleteOrder handleClose={() => setShowDeleteModal(false)} handleDelete={deleteOrder} item={currOrderId} />}
-            {showEditModal && <EditOrderModal currOrderId={currOrderId} handleClose={() => setShowEditModal(false)}/>}
+            {showEditModal && <EditOrderModal currOrderId={currOrderId} handleClose={() => setShowEditModal(false)} showSuccess={openEditSuccess}/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
 
@@ -990,7 +1003,7 @@ const ManageOrder = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={assignedToFilterInput} onChange={(e) => setAssignedToFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setAssignedToFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {assignedToFilter && <CharacterFilter inputVariable={assignedToFilterInput} setInputVariable={setAssignedToFilterInput} handleFilter={newHandleFilter} filterColumn='officename' menuRef={menuRef} />}
+                                {assignedToFilter && <CharacterFilter inputVariable={assignedToFilterInput} setInputVariable={setAssignedToFilterInput} handleFilter={newHandleFilter} filterColumn='ownername' menuRef={menuRef} />}
                             </div>
                             <div className='w-[13%]  px-4 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">

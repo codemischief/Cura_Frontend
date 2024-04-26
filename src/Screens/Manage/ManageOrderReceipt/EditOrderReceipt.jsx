@@ -12,7 +12,9 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         TDS: null,
         receiptDescription: "",
         receivedDate: null,
-        amountReceived: ""
+        amountReceived: "",
+        orderdate : null,
+        orderstatus : null
     }
     const [formValues,setFormValues] = useState(initialValues)
     const [formErrors,setFormErrors] = useState({})
@@ -51,7 +53,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         // we need to fetch the initial data here
         const data = {
             "user_id" : 1234,
-            "table_name" : "get_order_receipt_view",
+            "table_name" : "get_orders_receipt_view",
             "item_id" : receiptId
         }
         const response = await APIService.getItembyId(data);
