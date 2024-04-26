@@ -229,7 +229,7 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order":  flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -277,7 +277,7 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -556,6 +556,7 @@ const ManageClientInvoice = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
+        setCurrentPage(1);
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1042,7 +1043,7 @@ const ManageClientInvoice = () => {
                                     </div>
                                     <div className='w-[13%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.estimateamount}</p>
+                                            <p>{item.estimateamount ? item.estimateamount.toFixed(2) : null }</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
@@ -1052,7 +1053,7 @@ const ManageClientInvoice = () => {
                                     </div>
                                     <div className='w-[13%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.invoiceamount}</p>
+                                            <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : null }</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>

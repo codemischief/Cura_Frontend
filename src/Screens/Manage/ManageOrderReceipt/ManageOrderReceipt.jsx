@@ -1027,7 +1027,7 @@ const ManageOrderReceipt = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
+            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData}/>}
 
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Order Receipt" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Order Receipt" />}
@@ -1281,7 +1281,7 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className='w-[8%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.amount}</p>
+                                            <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>

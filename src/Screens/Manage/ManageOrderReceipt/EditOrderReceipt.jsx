@@ -3,7 +3,7 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
-const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
+const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData}) => {
     const initialValues = {
         client: "",
         order: null,
@@ -23,8 +23,8 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const [modesData,setModesData] = useState([]);
-    const [usersData,setUsersData] = useState([]);
+    // const [modesData,setModesData] = useState([]);
+    // const [usersData,setUsersData] = useState([]);
     const [orders,setOrders] = useState([]);
     const handleEdit = async () => {
        // we need to edit the order receipt here
