@@ -154,14 +154,14 @@ const ManageClientInvoice = () => {
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         console.log('ugm')
-        const tempArray = [];
-        // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
+        // const tempArray = [];
+        // // we need to query thru the object
+        // console.log(filterMapState);
+        // Object.keys(filterMapState).forEach(key => {
+        //     if (filterMapState[key].filterType != "") {
+        //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+        //     }
+        // })
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -183,7 +183,7 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -500,7 +500,8 @@ const ManageClientInvoice = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getClientInvoice(data);
         const temp = await response.json();

@@ -318,14 +318,8 @@ const ManageClientInfo = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        setCurrentPage(pageNumber)
+        
+        setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -369,7 +363,7 @@ const ManageClientInfo = () => {
                 "tenantofpropertyname",
                 "clientname"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -387,15 +381,10 @@ const ManageClientInfo = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
+        
         // console.log(searchInput);
-        setCurrentPages(quantity)
+        setCurrentPage((prev) => 1)
+        setCurrentPages((prev) => quantity)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -439,10 +428,10 @@ const ManageClientInfo = () => {
                 "tenantofpropertyname",
                 "clientname"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key" : searchInput
         };
@@ -1068,7 +1057,7 @@ const ManageClientInfo = () => {
     }
     const addClientInfo = async () => {
         // setButtonLoading(true);
-
+        
         const data = {
             "user_id": 1234,
             "client_info": {
@@ -1397,6 +1386,7 @@ const ManageClientInfo = () => {
     const handleSort = async (field) => {
          setPageLoading(true)
          setSortField(field);
+         setFlag((prev) => !prev)
          const data = {
             "user_id": 1234,
             "rows": [
@@ -1440,13 +1430,14 @@ const ManageClientInfo = () => {
                 "tenantofpropertyname",
                 "clientname"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         };
-        setFlag((prev) => !prev)
+        
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
@@ -1476,6 +1467,7 @@ const ManageClientInfo = () => {
         if (type == 'noFilter') setInputVariable("");
         fetchFiltered(existing);
     }
+    const [filterState,setFilterState] = useState([])
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
@@ -1488,6 +1480,8 @@ const ManageClientInfo = () => {
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
             }
         })
+        setFilterState((prev) => tempArray)
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1534,7 +1528,7 @@ const ManageClientInfo = () => {
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages)
         };
         const response = await APIService.getClientInfo(data);
@@ -1546,7 +1540,6 @@ const ManageClientInfo = () => {
         setExistingClientInfo(result.client_info);
         setPageLoading(false);
     }
-    // const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
 
     return (
         <div className='h-screen'>

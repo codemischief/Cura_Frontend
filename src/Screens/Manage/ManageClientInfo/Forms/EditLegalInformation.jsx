@@ -118,7 +118,7 @@ useEffect(() => {
           </div>
           <div className="">
             <div className="text-[14px]">Birth Year </div>
-            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="birthyear" value={formValues.client_legal_info.birthyear} onChange={handleChange} />
+            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type='number' name="birthyear" value={formValues.client_legal_info.birthyear} onChange={handleChange} />
             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">

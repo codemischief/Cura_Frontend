@@ -21,8 +21,15 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
         {
             id: 4,
             name: "Master"
+        },
+        {
+            id : 5,
+            name : "Shri"
+        },
+        {
+            id : 6,
+            name : "Smt MS"
         }
-
     ]);
     const [clientProperty, setClientProperty] = useState([]);
     const [country, setCountry] = useState([]);

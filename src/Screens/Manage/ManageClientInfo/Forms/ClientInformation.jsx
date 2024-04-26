@@ -20,6 +20,14 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         {
             id: 4,
             name: "Master"
+        },
+        {
+            id : 5,
+            name : "Shri"
+        },
+        {
+            id : 6,
+            name : "Smt MS"
         }
 
     ]);
