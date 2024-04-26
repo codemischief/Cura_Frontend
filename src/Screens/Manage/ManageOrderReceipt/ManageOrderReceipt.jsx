@@ -203,6 +203,7 @@ const ManageOrderReceipt = () => {
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -230,11 +231,12 @@ const ManageOrderReceipt = () => {
                 "clientproperty",
                 "clientpropertyid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
             ;
         const response = await APIService.getOrderReceipt(data);
@@ -248,7 +250,7 @@ const ManageOrderReceipt = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        setCurrentPage(pageNumber)
+        setCurrentPage(() => {pageNumber})
         const data = {
             "user_id": 1234,
             "rows": [
@@ -276,11 +278,12 @@ const ManageOrderReceipt = () => {
                 "clientproperty",
                 "clientpropertyid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
         const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
@@ -321,8 +324,8 @@ const ManageOrderReceipt = () => {
                 "clientproperty",
                 "clientpropertyid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
+            "filters": filterState,
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
@@ -609,9 +612,9 @@ const ManageOrderReceipt = () => {
                 "createdbyname",
                 "id",
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0
         };
@@ -627,8 +630,8 @@ const ManageOrderReceipt = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
-        setCurrentPage(1)
-        setCurrentPages(15);
+        setCurrentPage(() => 1)
+        // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
@@ -657,11 +660,11 @@ const ManageOrderReceipt = () => {
                 "clientproperty",
                 "clientpropertyid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getOrderReceipt(data);
@@ -677,6 +680,7 @@ const ManageOrderReceipt = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -704,11 +708,11 @@ const ManageOrderReceipt = () => {
                 "clientproperty",
                 "clientpropertyid"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": ""
         };
         const response = await APIService.getOrderReceipt(data);
@@ -902,7 +906,7 @@ const ManageOrderReceipt = () => {
 
         fetchFiltered(existing);
     }
-
+    const [filterState,setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
@@ -914,6 +918,8 @@ const ManageOrderReceipt = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        setCurrentPage((prev) => 1)
+        setFilterState(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -943,9 +949,9 @@ const ManageOrderReceipt = () => {
                 "clientpropertyid"
             ],
             "filters": tempArray,
-            "sort_by": ["id"],
-            "order": "desc",
-            "pg_no": Number(currentPage),
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
@@ -972,6 +978,7 @@ const ManageOrderReceipt = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
+        setFlag((prev) => !prev)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1001,12 +1008,12 @@ const ManageOrderReceipt = () => {
             ],
             "filters": tempArray,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
+        // setFlag((prev) => !prev);
         const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
         const result = temp.data;

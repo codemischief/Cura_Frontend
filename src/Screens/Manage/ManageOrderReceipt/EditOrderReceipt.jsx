@@ -81,36 +81,36 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess}) => {
         setPageLoading(false)
     }
     useEffect(() => {
+        
         fetchInitialData()
-        fetchModesData()
-        fetchUsersData()
+        
     },[])
 
 
 
     // we need to fetch all utility routes here
 
-    const fetchModesData = async () => {
-        const data = {
-            "user_id": 1234
-        }
-        const response = await APIService.getModesAdmin(data)
-        const res = await response.json()
-        setModesData(res.data)
-        console.log(res)
-    }
-    const fetchUsersData = async () => {
-        const data = {
-            "user_id": 1234
-        }
-        const response = await APIService.getUsers(data)
-        const res = await response.json()
-        const existing = { ...formValues }
-        existing.receivedBy = res.data[0].id,
-            console.log(existing.receivedBy)
-        setFormValues(existing)
-        setUsersData(res.data)
-    }
+    // const fetchModesData = async () => {
+    //     const data = {
+    //         "user_id": 1234
+    //     }
+    //     const response = await APIService.getModesAdmin(data)
+    //     const res = await response.json()
+    //     setModesData(res.data)
+    //     console.log(res)
+    // }
+    // const fetchUsersData = async () => {
+    //     const data = {
+    //         "user_id": 1234
+    //     }
+    //     const response = await APIService.getUsers(data)
+    //     const res = await response.json()
+    //     const existing = { ...formValues }
+    //     existing.receivedBy = res.data[0].id,
+    //         console.log(existing.receivedBy)
+    //     setFormValues(existing)
+    //     setUsersData(res.data)
+    // }
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
