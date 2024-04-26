@@ -85,7 +85,7 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[13px]">Birth Year </div>
-            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="poabirthyear" value={formValues.client_property_poa.poabirthyear} onChange={handleChange} />
+            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="number" name="poabirthyear" value={formValues.client_property_poa.poabirthyear} onChange={handleChange} />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
         </div>
