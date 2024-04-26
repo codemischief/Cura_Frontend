@@ -4,6 +4,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
 const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities ,formErrors}) => {
+    const [tenantOfProperty,setTenantOfProperty] = useState([]);
     const [Salutation, setSalutation] = useState([
         {
             id: 1,
@@ -91,6 +92,20 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
       label: x[1]
     })))
   }
+
+
+  const getClientPropertyByClientId = async (id) => {
+    const data = {
+     "user_id" : 1234,
+     "client_id" : id
+    }
+
+    const response = await APIService.getClientPropertyByClientId(data)
+    const res = await response.json()
+    console.log(res)
+    setTenantOfProperty(res.data)
+ }
+
   const [selectedOption,setSelectedOption] = useState({
     label : "Select Tenant Of",
     value : null
@@ -105,6 +120,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
       //  }})
        const existing = {...formValues}
        const temp = {...existing.client_info}
+       getClientPropertyByClientId(e.value)
        temp.tenantof = e.value
        existing.client_info = temp;
        setFormValues(existing)
@@ -451,12 +467,9 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             }
                         }>
                             <option >Select tenant of </option>
-                            {tenentOfData && tenentOfData.map(item => (
+                            {tenantOfProperty && tenantOfProperty.map(item => (
                                 <option key={item.id} value={item.id}>
-                                    {item.suburb}
-                                    &nbsp;
-                                    &nbsp;
-                                    {item.propertydescription}
+                                    {item.propertyname}
                                 </option>
                             ))}
                         </select>

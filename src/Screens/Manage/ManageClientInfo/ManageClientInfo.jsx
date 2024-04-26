@@ -1715,7 +1715,7 @@ const ManageClientInfo = () => {
                             <div className='w-[8%]  flex'>
                                 <div className='p-3 flex space-x-2'>
                                     <div>
-                                        <p>Tenent of </p>
+                                        <p>Tenant of </p>
                                         <p>Property </p>
                                     </div>
                                     <div>

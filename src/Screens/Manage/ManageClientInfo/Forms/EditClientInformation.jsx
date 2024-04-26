@@ -4,7 +4,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
 const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities,tenantofname}) => {
-    console.log(formErrors)
+    // console.log(formErrors)
     const [Salutation, setSalutation] = useState([
         {
             id: 1,
@@ -74,7 +74,22 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
             setAllCity(result)
         }
     }
+    const [tenantOfProperty,setTenantOfProperty] = useState([])
+    const getClientPropertyByClientId = async (id) => {
+        const data = {
+         "user_id" : 1234,
+         "client_id" : id
+        }
+    
+        const response = await APIService.getClientPropertyByClientId(data)
+        const res = await response.json()
+        console.log(res)
+        setTenantOfProperty(res.data)
+     }
     useEffect(() => {
+        // we need to fetch the client property
+        console.log(tenantofname.value);
+        getClientPropertyByClientId(tenantofname.value)
         setAllState(initialStates);
         setAllCity(initialCities);
     }, [initialStates,initialCities,tenantofname])
@@ -451,23 +466,11 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                             }
                         }>
                             <option value={null}>Select tenant of </option>
-                            {tenentOfData && tenentOfData.map(item => {
-                                if(item.id == formValues.client_info.tenantofproperty) {
-                                    return <option key={item.id} value={item.id} selected>
-                                          {item.suburb}
-                                          &nbsp;
-                                          &nbsp;
-                                          {item.propertydescription}
-                                    </option>
-                                }else {
-                                     return <option key={item.id} value={item.id}>
-                                           {item.suburb}
-                                          &nbsp;
-                                          &nbsp;
-                                          {item.propertydescription}
-                                 </option>
-                                }
-})}
+                            {tenantOfProperty && tenantOfProperty.map(item => {
+                               return <option value={item.id}>
+                                     {item.propertyname}
+                               </option>
+                             })}
                         </select>
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
