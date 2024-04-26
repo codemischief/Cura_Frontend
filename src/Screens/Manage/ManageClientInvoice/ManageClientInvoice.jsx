@@ -692,6 +692,7 @@ const ManageClientInvoice = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
@@ -765,6 +766,7 @@ const ManageClientInvoice = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
+        setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
             "rows": [
@@ -787,12 +789,12 @@ const ManageClientInvoice = () => {
             ],
             "filters": tempArray,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
+        // setFlag((prev) => !prev);
         const response = await APIService.getClientInvoice(data);
         const temp = await response.json();
         const result = temp.data;
