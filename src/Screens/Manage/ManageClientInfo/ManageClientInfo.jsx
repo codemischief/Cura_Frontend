@@ -574,24 +574,8 @@ const ManageClientInfo = () => {
             "tenantof": null,
             "tenentofproperty": null
         },
-        "client_access": [
-            {
-                "onlinemailid": "",
-                "onlinepwd": "",
-                "onlineclue": ""
-            }
-        ],
-        "client_bank_info": [{
-            "bankname": "",
-            "bankbranch": "",
-            "bankcity": "",
-            "bankaccountno": "",
-            "bankaccountholdername": "",
-            "bankifsccode": "",
-            "bankmicrcode": "",
-            "bankaccounttype": "",
-            "description": ""
-        }],
+        "client_access": [],
+        "client_bank_info": [],
         "client_legal_info": {
             "fulllegalname": "",
             "panno": "",
@@ -757,7 +741,7 @@ const ManageClientInfo = () => {
                 "tenantof",
                 "clientname"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -774,10 +758,10 @@ const ManageClientInfo = () => {
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
+        // setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
-
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -821,11 +805,11 @@ const ManageClientInfo = () => {
                 "tenantofpropertyname",
                 "clientname"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": Number(currentPages)
         };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
@@ -1946,7 +1930,7 @@ const ManageClientInfo = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>

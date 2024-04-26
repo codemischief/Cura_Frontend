@@ -439,7 +439,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                     </div>
                     
                     <div className="">
-                        <div className="text-[13px]">Tenent Of Property</div>
+                        <div className="text-[13px]">Tenant Of Property</div>
                         <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenantofproperty} onChange={
                             (e) => {
                                 setFormValues({
@@ -450,7 +450,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 })
                             }
                         }>
-                            <option value={null}>Select tenent of </option>
+                            <option value={null}>Select tenant of </option>
                             {tenentOfData && tenentOfData.map(item => {
                                 if(item.id == formValues.client_info.tenantofproperty) {
                                     return <option key={item.id} value={item.id} selected>
