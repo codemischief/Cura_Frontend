@@ -80,7 +80,7 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
         const updateArrayPhotos = []
         const insertArrayPhotos = []
         helper1(updateArrayPhotos,insertArrayPhotos)
-
+  
         const data = {
             "user_id":1234,
             "order_info":{
@@ -107,7 +107,17 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
               "insert": insertArrayPhotos
             }
           }
-        
+          if(formValues.order_info.status != initialOrderStatus) {
+            const d = {
+                "user_id" : 1234,
+                "orderid" : currOrderId,
+                "statusid" : Number(formValues.order_info.status)
+            }
+            const response = await APIService.addOrderStatusChange(d);
+            const res = await response.json();
+            console.log(res)
+
+          }
           const response = await APIService.editOrder(data);
           const res = await response.json()
           console.log(res);
@@ -118,7 +128,7 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
     } 
     const [initialOrderData,setInitialOrderData] = useState({...initialValues})
     // var initialOrderData = {...initialValues};
-
+    const [initialOrderStatus,setInitialOrderStatus] = useState(null)
     const fetchInitialData = async () => {
         setPageLoading(true);
         const data = {"user_id":1234,"id": currOrderId}
@@ -315,6 +325,7 @@ const EditOrderModal = ({currOrderId,handleClose,showSuccess}) => {
         const res = await response.json()
         console.log(res)
         setInitialOrderData(res.data)
+        setInitialOrderStatus(res.data.status);
     }
     useEffect(() => {
         fetchInitialHelper()
