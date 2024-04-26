@@ -693,6 +693,7 @@ const ManageClientInvoice = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        setCurrentPage(() => 1)
         
         setFilterState(tempArray)
         setPageLoading(true);
@@ -719,7 +720,7 @@ const ManageClientInvoice = () => {
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
