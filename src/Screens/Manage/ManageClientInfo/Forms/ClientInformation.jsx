@@ -309,7 +309,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                 </div>
                 <div className="space-y-2 py-2">
                     <div className="">
-                        <div className="text-[12px]">Middle Name <label className="text-red-500">*</label></div>
+                        <div className="text-[12px]">Middle Name </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="middlename" onChange={handleChange} value={formValues.client_info.middlename} />
                         <div className="text-[12px] text-[#CD0000] ">{formErrors.middlename}</div>
                     </div>

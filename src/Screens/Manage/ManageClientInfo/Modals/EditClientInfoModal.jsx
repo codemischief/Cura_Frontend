@@ -215,19 +215,7 @@ const EditClientInfoModal = (props) => {
                 firstname: ""
             }))
         }
-        if (formValues.client_info.middlename === "") {
-            res = false
-            setFormErrorsClientInfo((existing) => ({
-                ...existing,
-                middlename: "Enter Middle Name"
-            }))
-            // console.log('hey')
-        } else {
-            setFormErrorsClientInfo((existing) => ({
-                ...existing,
-                middlename: ""
-            }))
-        }
+        
         if (formValues.client_info.lastname === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
