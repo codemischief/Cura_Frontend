@@ -681,11 +681,12 @@ const ManageClientInfo = () => {
                 "tenantofpropertyname",
                 "clientname"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getClientInfo(data)
         const temp = await response.json();

@@ -223,6 +223,7 @@ const ManageClientProperty = () => {
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         // console.log('ugm')
+        setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -265,11 +266,11 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getClientProperty(data);
@@ -284,7 +285,7 @@ const ManageClientProperty = () => {
     }
     const fetchPageData = async (page) => {
         setPageLoading(true);
-        setCurrentPage(page);
+        setCurrentPage(() => page);
         const data = {
             "user_id": 1234,
             "rows": [
@@ -326,7 +327,7 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(page),
@@ -348,6 +349,7 @@ const ManageClientProperty = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         setCurrentPages(quantity);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -389,10 +391,10 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
@@ -793,11 +795,12 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
@@ -811,6 +814,7 @@ const ManageClientProperty = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -852,11 +856,11 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getClientProperty(data);
@@ -872,6 +876,7 @@ const ManageClientProperty = () => {
     const handleCloseSearch = async () => {
         setPageLoading(true);
         setSearchInput("");
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -913,11 +918,11 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": ""
         };
         const response = await APIService.getClientProperty(data);
@@ -1118,7 +1123,7 @@ const ManageClientProperty = () => {
             filterData : "String",
             filterInput : ""
         },
-        propertyDescription : {
+        description : {
             filterType : "",
             filterValue : "",
             filterData : "String",
@@ -1155,7 +1160,7 @@ const ManageClientProperty = () => {
         
         fetchFiltered(existing);
     }
-
+    const [filterState,setFilterState] = useState([]);
     const fetchFiltered = async  (mapState) => {
         setPageLoading(true);
         const tempArray = [];
@@ -1168,8 +1173,10 @@ const ManageClientProperty = () => {
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
             }
         })
+        setFilterState((prev) => tempArray)
         console.log('this is getting called')
         console.log(tempArray)
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1215,8 +1222,8 @@ const ManageClientProperty = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
-            "search_key": isSearchOn ? searchInput : ""
+            "pg_size": Number(currentPages),
+            "search_key": searchInput
         }
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
@@ -1239,6 +1246,7 @@ const ManageClientProperty = () => {
                 tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         })
+        setFlag((prev) => !prev)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1280,14 +1288,14 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
-        setFlag((prev) => !prev);
+        // setFlag((prev) => !prev);
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
@@ -1413,7 +1421,7 @@ const ManageClientProperty = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertyDescription' menuRef={menuRef} />}
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[17%]   p-3'>
@@ -1487,7 +1495,7 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-[17%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Property Description <button onClick={() => handleSort('')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Property Description <button onClick={() => handleSort('description')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[17%]  flex'>
