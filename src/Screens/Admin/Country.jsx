@@ -321,6 +321,7 @@ const Country = () => {
   const handleSearch = async () => {
     setPageLoading(true);
     setIsSearchOn(true);
+    setCurrentPage(1);
     console.log('hey')
     const data = {
       "user_id": 1234,
@@ -359,6 +360,7 @@ const Country = () => {
   const handleCloseSearch = async () => {
     setSearchQuery("")
     setIsSearchOn(true);
+    setCurrentPage(1);
     setPageLoading(true)
     const data = {
       "user_id": userId || 1234,
@@ -497,6 +499,7 @@ const Country = () => {
       }
     })
     setFilterState(tempArray)
+    setCurrentPage(1)
     setPageLoading(true);
     const data = {
       "user_id": 1234,
