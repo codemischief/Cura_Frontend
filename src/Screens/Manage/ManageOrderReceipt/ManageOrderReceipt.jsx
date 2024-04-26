@@ -250,7 +250,8 @@ const ManageOrderReceipt = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        setCurrentPage(() => {pageNumber})
+        console.log(pageNumber)
+        setCurrentPage(() => pageNumber)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -630,7 +631,7 @@ const ManageOrderReceipt = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
-        setCurrentPage(() => 1)
+        setCurrentPage((prev) => 1)
         // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
@@ -1258,6 +1259,8 @@ const ManageOrderReceipt = () => {
                                 <div className="w-[90%] flex">
                                     <div className='w-[4%] flex'>
                                         <div className='px-3 py-5'>
+                                            {console.log(currentPage,currentPages)}
+                                            {/* {console.log(index + 1 + (currentPage - 1) * currentPages)} */}
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
