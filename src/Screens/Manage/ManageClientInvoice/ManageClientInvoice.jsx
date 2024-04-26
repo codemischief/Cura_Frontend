@@ -255,6 +255,7 @@ const ManageClientInvoice = () => {
                 tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
+        setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
             "user_id": 1234,
@@ -279,7 +280,7 @@ const ManageClientInvoice = () => {
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
@@ -473,6 +474,14 @@ const ManageClientInvoice = () => {
         setDownloadModal(false);
     }
     const handleExcelDownload = async () => {
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
         const data = {
             "user_id": 1234,
             "rows": [
@@ -487,9 +496,9 @@ const ManageClientInvoice = () => {
                 "id",
 
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0
         };
@@ -506,6 +515,7 @@ const ManageClientInvoice = () => {
         // console.log("clicked")
         setPageLoading(true);
         setIsSearchOn(true);
+        setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
             "rows": [
@@ -526,11 +536,11 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getClientInvoice(data);
@@ -566,7 +576,7 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -670,7 +680,7 @@ const ManageClientInvoice = () => {
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
-
+    const [filterState,setFilterState ] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
@@ -682,6 +692,7 @@ const ManageClientInvoice = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        setFilterState(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -920,7 +931,7 @@ const ManageClientInvoice = () => {
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilter} filterColumn='createdbyname' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} filterColumn='createdbyname' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
                         <div className="w-[10%] flex">
