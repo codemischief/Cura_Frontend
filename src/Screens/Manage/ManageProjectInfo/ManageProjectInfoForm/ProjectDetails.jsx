@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { useState, useEffect } from "react";
 
-const ProjectDetails = () => {
+const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
 
   const selectedProjectLegalStatus = [
     "1", "2", "3", "4"
@@ -12,7 +12,7 @@ const ProjectDetails = () => {
 
 
   };
-  const [formValues, setFormValues] = useState(initialValues);
+  // const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
 
   // handle changes in input form
@@ -34,6 +34,25 @@ const ProjectDetails = () => {
 
     return errors;
   };
+
+
+
+  const handleProjectInfoChange = (e) => {
+    const {name,value} = e.target;
+    setFormValues({...formValues,project_info : {
+        ...formValues.project_info,
+        [name] : value
+    }})
+   } 
+   const handleProjectAmenitiesChange = (e) => {
+    const {name,value} = e.target;
+    setFormValues({...formValues,project_amenities : {
+        ...formValues.project_amenities,
+        [name] : value
+    }})
+   }
+
+
   return (
     <>
         <div className="flex justify-center space-x-10 mt-5">
@@ -41,30 +60,136 @@ const ProjectDetails = () => {
             <div className="flex space-x-10">
               <div className="space-y-2">
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Swimming Pool</div>
+                      <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.swimmingpool}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.swimmingpool = !temp.swimmingpool
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                  
+                   <div className='text-[#505050] text-[14px]'>Swimming Pool</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Lift Battery backup</div>
+                       <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.liftbatterybackup}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.liftbatterybackup = !temp.liftbatterybackup
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                 
+                  <div className='text-[#505050] text-[14px]'>Lift Battery backup</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Gym</div>
+                    <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.gym}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.gym = !temp.gym
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                   <div className='text-[#505050] text-[14px]'>Gym</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>piped gas</div>
+                       <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.pipedgas}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.pipedgas = !temp.pipedgas
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                  <div className='text-[#505050] text-[14px]'>piped gas</div>
                 </div>
               </div>
               <div className="space-y-2">
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Lift</div>
+                       <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.lift}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.lift = !temp.lift
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                  <div className='text-[#505050] text-[14px]'>Lift</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Club House</div>
+                   <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.clubhouse}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.clubhouse = !temp.clubhouse
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                   <div className='text-[#505050] text-[14px]'>Club House</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Children play area</div>
+                    <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.childrensplayarea}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.childrensplayarea = !temp.childrensplayarea
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                  <div className='text-[#505050] text-[14px]'>Children play area</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>CCTV Camera</div>
+                      <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.cctvcameras}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.cctvcameras = !temp.cctvcameras
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                   <div className='text-[#505050] text-[14px]'>CCTV Camera</div>
                 </div>
               </div>
             </div>
@@ -72,13 +197,53 @@ const ProjectDetails = () => {
             <div className="flex  space-x-10">
               <div className="space-y-2">
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Studio</div>
+                     <input
+                            type="checkbox"
+                            checked={formValues.project_amenities.studio}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp.studio = !temp.studio
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                   <div className='text-[#505050] text-[14px]'>Studio</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>1BHK</div>
+                    <input
+                            type="checkbox"
+                            checked={formValues.project_amenities["1BHK"]}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp["1BHK"] = !temp["1BHK"]
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                  <div className='text-[#505050] text-[14px]'>1BHK</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>2BHK</div>
+                      <input
+                            type="checkbox"
+                            checked={formValues.project_amenities["2BHK"]}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp["2BHK"] = !temp["2BHK"]
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+                  
+                   <div className='text-[#505050] text-[14px]'>2BHK</div>
                 </div>
                 <div className="flex  items-center space-x-2">
                   <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>4BHK</div>
@@ -92,7 +257,19 @@ const ProjectDetails = () => {
                   <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>RK</div>
                 </div>
                 <div className="flex  items-center space-x-2">
-                  <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>3BHK</div>
+                    <input
+                            type="checkbox"
+                            checked={formValues.project_amenities["3BHK"]}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_amenities};
+                                temp["3BHK"] = !temp["3BHK"]
+                                existing.project_amenities = temp;
+                                setFormValues(existing)
+                            }}
+                        /> <div className='text-[#505050] text-[14px]'>3BHK</div>
                 </div>
                 <div className="flex  items-center space-x-2">
                   <Checkbox className='w-4 h-4' /> <div className='text-[#505050] text-[14px]'>Penthouse</div>
@@ -104,25 +281,26 @@ const ProjectDetails = () => {
             </div>
             <div className="mt-6">
               <div className="text-[#505050] text-[13px] ">Other Amenities</div>
-              <input className='w-52 h-5 border-[#C6C6C6] border-[1px] rounded-sm px-3 text-[11px]' type="text" name="" id="" />
+              <input className='w-52 h-5 border-[#C6C6C6] border-[1px] rounded-sm px-3 text-[11px]' type="text" name="otheramenities" value={formValues.project_amenities.otheramenities} onChange={handleProjectAmenitiesChange} />
             </div>
           </div>
           <div className="flex space-x-4">
             <div className="space-y-2">
               <div className="">
                 <div className="text-[13px]">Project Legal Status <label className="text-red-500">*</label></div>
-                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="projectLegalStatus" value={formValues.projectLegalStatus} onChange={handleChange} >
-                  {selectedProjectLegalStatus.map(item => (
-                    <option key={item} value={item}>
-                      {item}
+                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="project_legal_status" value={formValues.project_info.project_legal_status} onChange={handleProjectInfoChange} >
+                  <option value="none" hidden> Select Project Legal Status</option>
+                  {projectLegalData.map(item => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
                     </option>
                   ))}
                 </select>
                 <div className="text-[10px] text-[#CD0000] ">{formErrors.projectLegalStatus}</div>
               </div>
               <div className="">
-                <div className="text-[13px]">Competition Year</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="competitionYear" />
+                <div className="text-[13px]">Completion Year</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="completionyear" value={formValues.project_info.completionyear} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
                 <div className="text-[13px]">Taluka</div>

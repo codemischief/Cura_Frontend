@@ -474,7 +474,7 @@ const ManageProjectInfo = () => {
           "cctvcameras": true,
           "otheramenities": "newdata",
           "studio": "true",
-          "1BHK": false,
+          "1BHK": true,
           "2BHK": true,
           "3BHK": true,
           "rowhouse": false,
@@ -538,6 +538,36 @@ const ManageProjectInfo = () => {
 
 
     // utlity routes
+    const [builderNameData,setBuilderNameData] = useState([])
+    const [projectTypeData,setProjectTypeData] = useState([])
+    const [projectLegalData,setProjectLegalData] = useState([])
+    const getBuildersData = async () => {
+       const data = {
+        "user_id" : 1234
+       }
+       const response = await APIService.getBuildersAdmin(data);
+       const res = await response.json();
+       console.log(res)
+       setBuilderNameData(res.data)
+    }
+    const getProjectTypeData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getProjectTypeAdmin(data)
+        const res = await response.json();
+        console.log(res.data)
+        setProjectTypeData(res.data)
+    } 
+    const getProjectLegalData = async () => {
+        const data = {
+            "user_id" : 1234
+        }
+        const response = await APIService.getProjectLegalStatusAdmin(data)
+        const res = await response.json();
+        console.log(res.data)
+        setProjectLegalData(res.data)
+    }
     
 
 
@@ -555,8 +585,12 @@ const ManageProjectInfo = () => {
 
 
 
-
     // end utility routes here
+    useEffect(() => {
+      getBuildersData()
+      getProjectTypeData()
+      getProjectLegalData()
+    },[])
     return (
         <div className="h-screen">
             <Navbar />
@@ -917,8 +951,8 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} />}
-                            {selectedDialogue == 2 && <ProjectDetails />}
+                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} />}
+                            {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData}/>}
                             {selectedDialogue == 3 && <BankDetails />}
                             {selectedDialogue == 4 && <Contact />}
                             {selectedDialogue == 5 && <Photos />}

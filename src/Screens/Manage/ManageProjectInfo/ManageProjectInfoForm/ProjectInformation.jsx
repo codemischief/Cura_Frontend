@@ -2,13 +2,8 @@ import React from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { useState , useEffect } from "react";
 import { APIService } from '../../../../services/API';
-const ProjectInformation = () => {
-    //For closing a modal
-    // const handleDialogClose = () => {
-    //     props.setOpenDialog(false);
-    // };
-
-    // hardcoded dropdowns 
+const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNameData}) => {
+   
     const selectedProjectType =[1,2,3,4];
     const selectedBuilderName = [1,2,3,4];
 
@@ -80,7 +75,7 @@ const ProjectInformation = () => {
         suburb: "",
         builderName: "",
     };
-    const [formValues, setFormValues] = React.useState(initialValues);
+    // const [formValues, setFormValues] = React.useState(initialValues);
     const [formErrors, setFormErrors] = React.useState({});
 
     // handle changes in input form
@@ -122,6 +117,13 @@ const ProjectInformation = () => {
         }
         return errors;
     };
+    const handleProjectInfoChange = (e) => {
+        const {name,value} = e.target;
+        setFormValues({...formValues,project_info : {
+            ...formValues.project_info,
+            [name] : value
+        }})
+    }
     const handleDialogClose = () => { };
     return (
         <>
@@ -134,9 +136,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
-                            name="projectName"
-                            value={formValues.projectName}
-                            onChange={handleChange}
+                            name="projectname"
+                            value={formValues.project_info.projectname}
+                            onChange={handleProjectInfoChange}
                         />
                         {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.projectName}</div> */}
                     </div>
@@ -146,13 +148,14 @@ const ProjectInformation = () => {
                         </div>
                         <select
                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            name="projectType"
-                            value={formValues.projectType}
-                            onChange={handleChange}
+                            name="project_type"
+                            value={formValues.project_info.project_type}
+                            onChange={handleProjectInfoChange}
                         >
-                            {selectedProjectType.map((item) => (
-                                <option key={item} value={item}>
-                                    {item}
+                            <option value="none" hidden>Select Project Type</option>
+                            {projectTypeData.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
                                 </option>
                             ))}
                         </select>
@@ -165,9 +168,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
-                            name="addressLine1"
-                            value={formValues.addressLine1}
-                            onChange={handleChange}
+                            name="addressline1"
+                            value={formValues.project_info.addressline1}
+                            onChange={handleProjectInfoChange}
                         />
                         {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div> */}
                     </div>
@@ -178,19 +181,20 @@ const ProjectInformation = () => {
                         <select
                             className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                             name="country"
-                            value={formValues.country}
+                            value={formValues.project_info.country}
                             defaultValue="Select Country"
                             onChange={(e) => {
-                                // setselectedCountry(e.target.value);
-                                // fetchStateData(e);
-                                // console.log(e.target.value);
-                                setCurrCountry(e.target.value);
-                                fetchStateData(e.target.value);
-                                setFormValues((existing) => {
-                                    const newData = { ...existing, country: e.target.value };
-                                    return newData;
-                                });
-                                // fetchStateData(res);
+                                const existing = {...formValues};
+                                const temp = existing.project_info;
+                                temp.country = e.target.value 
+                                temp.state = null 
+                                temp.city = null 
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                               
+                                setAllState([])
+                                setAllCity([])
+                                fetchStateData(e.target.value)
                             }}
                         >
                             <option value="none" hidden={true}>
@@ -210,14 +214,15 @@ const ProjectInformation = () => {
                         <select
                             className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                             name="state"
-                            value={formValues.state}
+                            value={formValues.project_info.state}
                             defaultValue="Select State"
                             onChange={(e) => {
+                                const existing = {...formValues};
+                                const temp = existing.project_info;
+                                temp.state = e.target.value
+                                existing.project_info = temp;
+                                setFormValues(existing)
                                 fetchCityData(e.target.value);
-                                setFormValues((existing) => {
-                                    const newData = { ...existing, state: e.target.value };
-                                    return newData;
-                                });
                             }}
                         >
                             <option value="none" hidden={true}>
@@ -233,21 +238,19 @@ const ProjectInformation = () => {
                         <div className="text-[13px]">City Name </div>
                         <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                             name="city"
-                            value={formValues.city}
+                            value={formValues.project_info.city}
                             defaultValue="Select City"
                             onChange={e => {
-
-                                console.log(e.target.value);
-                                setFormValues((existing) => {
-                                    const newData = { ...existing, city: e.target.value }
-                                    return newData;
-                                })
-
+                                const existing = {...formValues};
+                                const temp = existing.project_info;
+                                temp.city = e.target.value 
+                                existing.project_info = temp;
+                                setFormValues(existing)
                             }}
                         >
                             <option value="none" hidden={true}>Select a City</option>
                             {allCity && allCity.map(item => (
-                                <option value={item.city} >
+                                <option value={item.id} >
                                     {item.city}
                                 </option>
                             ))}
@@ -262,8 +265,8 @@ const ProjectInformation = () => {
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
                             name="suburb"
-                            value={formValues.suburb}
-                            onChange={handleChange}
+                            value={formValues.project_info.suburb}
+                            onChange={handleProjectInfoChange}
                         />
                         <div className="text-[10px] text-[#CD0000] ">
                             {formErrors.suburb}
@@ -281,9 +284,10 @@ const ProjectInformation = () => {
                             value={formValues.builderName}
                             onChange={handleChange}
                         >
-                            {selectedBuilderName.map((item) => (
-                                <option key={item} value={item}>
-                                    {item}
+                            <option value="none">Select Builder Name</option>
+                            {builderNameData.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.buildername}
                                 </option>
                             ))}
                         </select>
@@ -294,6 +298,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
+                            name="mailgroup1"
+                            value={formValues.project_info.mailgroup1}
+                            onChange={handleProjectInfoChange}
                         />
                     </div>
                     <div className="">
@@ -301,6 +308,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
+                            name="adressline2"
+                            value={formValues.project_info.addressline2}
+                            onChange={handleProjectInfoChange}
                         />
                     </div>
                     <div className="">
@@ -308,6 +318,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
+                            name="zip"
+                            value={formValues.project_info.zip}
+                            onChange={handleProjectInfoChange}
                         />
                     </div>
                     <div className="">
@@ -315,6 +328,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
+                            name="nearestlandmark"
+                            value={formValues.project_info.nearestlandmark}
+                            onChange={handleProjectInfoChange}
                         />
                     </div>
                     <div className="">
@@ -322,6 +338,9 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
+                            name="mailgroup2"
+                            value={formValues.project_info.mailgroup2}
+                            onChange={handleProjectInfoChange}
                         />
                     </div>
                     <div className="">
@@ -329,21 +348,63 @@ const ProjectInformation = () => {
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
+                            name="website"
+                            value={formValues.project_info.website}
+                            onChange={handleProjectInfoChange}
                         />
                     </div>
                 </div>
             </div>
             <div className="flex justify-center items-center space-x-2 mt-2">
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
-                    <Checkbox label="Active" />
+                        <input
+                            type="checkbox"
+                            checked={formValues.project_info.tenantworkingbachelorsallowed}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_info};
+                                temp.tenantworkingbachelorsallowed = !temp.tenantworkingbachelorsallowed
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                            }}
+                        />
                     Tenet woking bachlors allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
-                    <Checkbox label="Active" />
+                <input
+                            type="checkbox"
+                            checked={formValues.project_info.tenantstudentsallowed}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_info};
+                                temp.tenantstudentsallowed = !temp.tenantstudentsallowed
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+
+
                     Tenet student allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
-                    <Checkbox label="Active" />
+                <input
+                            type="checkbox"
+                            checked={formValues.project_info.tenantforeignersallowed}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = {...formValues};
+                                const temp = {...existing.project_info};
+                                temp.tenantforeignersallowed = !temp.tenantforeignersallowed
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                            }}
+                        />
+
                     Tenet Foreigners allowed
                 </div>
             </div>
