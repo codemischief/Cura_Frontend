@@ -193,7 +193,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
                 </div>
               </div>
             </div>
-            <div className="mt-6 mb-2 font-semibold text-[14px]"> project Config</div>
+            <div className="mt-6 mb-2 font-semibold text-[14px]"> Project Config</div>
             <div className="flex  space-x-10">
               <div className="space-y-2">
                 <div className="flex  items-center space-x-2">
@@ -304,23 +304,23 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
               </div>
               <div className="">
                 <div className="text-[13px]">Taluka</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="taluka" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="taluka" value={formValues.project_info.taluka} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
                 <div className="text-[13px]">Police Chowkey</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="policeChowkey" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="policechowkey" value={formValues.project_info.policechowkey} onChange={handleProjectInfoChange} />
               </div>
               <div className="">
                 <div className="text-[13px]">Maintenance Detail</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="maintainanceDetail" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="maintenance_details" value={formValues.project_info.maintenance_details} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
                 <div className="text-[13px]">Number of Buildings</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberOfBuildings" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberofbuildings" value={formValues.project_info.numberofbuildings} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
-                <div className="text-[13px]">Numbher of Floors</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberOfFloors" />
+                <div className="text-[13px]">Number of Floors</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberoffloors" value={formValues.project_info.numberoffloors} onChange={handleProjectInfoChange} />
               </div>
             </div>
           </div>
@@ -328,15 +328,15 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
             <div className="space-y-2">
               <div className="">
                 <div className="text-[13px]">Rules</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="rules" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="test" name="rules" value={formValues.project_info.rules} onChange={handleProjectInfoChange} />
               </div>
               <div className="">
                 <div className="text-[13px]">Jurisdiction</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"  type="text" name="jurisdiction" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"  type="text" name="jurisdiction" value={formValues.project_info.jurisdiction} onChange={handleProjectInfoChange} />
               </div>
               <div className="">
                 <div className="text-[13px]">Corporation Ward</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="corporationWard" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="corporationward" value={formValues.project_info.corporationward} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
                 <div className="text-[13px]">Police Station</div>
@@ -344,7 +344,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
               </div>
               <div className="">
                 <div className="text-[13px]">Dues Payable Month</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="duesPayableMonth" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="duespayablemonth" value={formValues.project_info.duespayablemonth} />
               </div>
               <div className="">
                 <div className="text-[13px]">Approx Total Month</div>
