@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import AddFeildContacts from './AddFeildContacts';
-const Contact = ({formValues,setFormValues}) => {
+const EditContact = ({formValues,setFormValues}) => {
     const [addField, setAddFeild] = useState([]);
     const handleAdd = () => {
       setFormValues({...formValues,project_contacts : [
@@ -59,4 +59,4 @@ const Contact = ({formValues,setFormValues}) => {
   )
 }
 
-export default Contact
+export default EditContact

@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { useState, useEffect } from "react";
 
-const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
+const EditProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
 
   const selectedProjectLegalStatus = [
     "1", "2", "3", "4"
@@ -437,4 +437,4 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
   )
 }
 
-export default ProjectDetails
+export default EditProjectDetails

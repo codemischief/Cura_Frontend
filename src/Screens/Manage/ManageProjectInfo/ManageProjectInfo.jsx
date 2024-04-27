@@ -157,104 +157,67 @@ const ManageProjectInfo = () => {
     };
     const addProjectInfo = async () => {
         const data = {
+            "user_id": 1234,
             "project_info": {
-              "builderid": 10231,
-              "projectname": "testproject",
-              "addressline1": "addressline1",
-              "addressline2": "addressline2",
-              "suburb": "testsub",
-              "city": 847,
-              "state": "Maharashtra",
-              "country": 5,
-              "zip": "testzip",
-              "nearestlandmark": "landmark1",
-              "project_type": 2,
-              "mailgroup1": "mailgrouptest",
-              "mailgroup2": "newmailgrouptest",
-              "website": "websitetest.com",
-              "project_legal_status": 2,
-              "rules": "rule1, rule2, rule3",
-              "completionyear": 2021,
-              "jurisdiction": "ajuri",
-              "taluka": "tal",
-              "corporationward": "ward",
-              "policechowkey": "chowkey",
-              "maintenance_details": "deets",
-              "numberoffloors": 5,
-              "numberofbuildings": 4,
-              "approxtotalunits": 100,
-              "tenantstudentsallowed": true,
-              "tenantworkingbachelorsallowed": true,
-              "tenantforeignersallowed": true,
-              "otherdetails": true,
-              "duespayablemonth": 3
+              "builderid": formValues.project_info.builderid,
+              "projectname": formValues.project_info.projectname,
+              "addressline1": formValues.project_info.addressline1,
+              "addressline2": formValues.project_info.addressline2,
+              "suburb": formValues.project_info.suburb,
+              "city": formValues.project_info.city,
+              "state": formValues.project_info.state,
+              "country": formValues.project_info.country,
+              "zip": formValues.project_info.zip,
+              "nearestlandmark": formValues.project_info.nearestlandmark,
+              "project_type": formValues.project_info.project_type,
+              "mailgroup1": formValues.project_info.mailgroup1,
+              "mailgroup2": formValues.project_info.mailgroup2,
+              "website": formValues.project_info.website,
+              "project_legal_status": formValues.project_info.project_legal_status,
+              "rules": formValues.project_info.rules,
+              "completionyear": formValues.project_info.completionyear,
+              "jurisdiction": formValues.project_info.jurisdiction,
+              "taluka": formValues.project_info.taluka,
+              "corporationward": formValues.project_info.corporationward,
+              "policechowkey": formValues.project_info.policechowkey,
+              "maintenance_details": formValues.project_info.maintenance_details,
+              "numberoffloors": formValues.project_info.numberoffloors,
+              "numberofbuildings": formValues.project_info.numberofbuildings,
+              "approxtotalunits": formValues.project_info.approxtotalunits,
+              "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
+              "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
+              "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
+              "otherdetails": formValues.project_info.otherdetails,
+              "duespayablemonth": formValues.project_info.duespayablemonth
             },
             "project_amenities": {
-              "swimmingpool": true,
-              "lift": true,
-              "liftbatterybackup": true,
-              "clubhouse": true,
-              "gym": true,
-              "childrensplayarea": true,
-              "pipedgas": true,
-              "cctvcameras": true,
-              "otheramenities": "newdata",
-              "studio": "true",
-              "1BHK": false,
-              "2BHK": true,
-              "3BHK": true,
-              "rowhouse": false,
-              "otheraccomodationtypes": "4BHK",
-              "sourceofwater": "abc"
+                "swimmingpool": formValues.project_amenities.swimmingpool,
+                "lift": formValues.project_amenities.lift,
+                "liftbatterybackup": formValues.project_amenities.liftbatterybackup,
+                "clubhouse": formValues.project_amenities.clubhouse,
+                "gym": formValues.project_amenities.gym,
+                "childrensplayarea": formValues.project_amenities.childrensplayarea,
+                "pipedgas": formValues.project_amenities.pipedgas,
+                "cctvcameras": formValues.project_amenities.cctvcameras,
+                "otheramenities": formValues.project_amenities.otheramenities,
+                "studio": formValues.project_amenities.studio,
+                "1BHK": formValues.project_amenities['1BHK'],
+                "2BHK": formValues.project_amenities['2BHK'],
+                "3BHK": formValues.project_amenities['3BHK'],
+                "4BHK": formValues.project_amenities['4BHK'],
+                "RK": formValues.project_amenities['RK'],
+                "penthouse": formValues.project_amenities.penthouse,
+                "other": formValues.project_amenities.other,
+                "duplex": formValues.project_amenities.duplex,
+                "rowhouse": formValues.project_amenities.rowhouse,
+                "otheraccomodationtypes": formValues.project_amenities.otheraccomodationtypes,
+                "sourceofwater": formValues.project_amenities.sourceofwater
             },
-            "project_bank_details": [
-              {
-                "bankname": "Banktest",
-                "bankbranch": "branchtest",
-                "bankcity": "Pune",
-                "bankaccountholdername": "Rudra",
-                "bankaccountno": "ABD102834732",
-                "bankifsccode": "PUN101",
-                "banktypeofaccount": "savings"
-              },
-              {
-                "bankname": "Banktest",
-                "bankbranch": "branchtest1",
-                "bankcity": "Pune",
-                "bankaccountholdername": "Rudra",
-                "bankaccountno": "ABD1046464732",
-                "bankifsccode": "PUN102",
-                "banktypeofaccount": "savings"
-              }
-            ],
-            "project_contacts": [
-              {
-                "contactname": "Rudra",
-                "phone": "9796543567",
-                "email": "abc",
-                "role": "owner",
-                "effectivedate": "2021-02-04 10:00:00",
-                "tenureenddate": null,
-                "details": "hreiufhuire"
-              },
-              {
-                "contactname": "Rudra_2",
-                "phone": "9456545514",
-                "email": "efg",
-                "role": "manager",
-                "effectivedate": "2021-02-04 10:00:00",
-                "tenureenddate": "2024-02-04 10:00:00",
-                "details": "hreiufhuire"
-              }
-            ],
-            "project_photos":[
-              {
-                  "photo_link":"link1",
-                  "description":"Desc 1",
-                  "date_taken":"2024-03-01"
-              }
-            ]
+            "project_bank_details": formValues.project_bank_details,
+            "project_contacts": formValues.project_contacts,
+            "project_photos": formValues.project_photos
           }
+          
           const response = await APIService.addProject(data)
           const res = await response.json()
           if(res.result == 'success') {
@@ -432,108 +395,70 @@ const ManageProjectInfo = () => {
     }
     const initialValues = {
         "project_info": {
-          "builderid": 10231,
-          "projectname": "testproject",
-          "addressline1": "addressline1",
-          "addressline2": "addressline2",
-          "suburb": "testsub",
-          "city": 847,
-          "state": "Maharashtra",
-          "country": 5,
-          "zip": "testzip",
-          "nearestlandmark": "landmark1",
-          "project_type": 2,
-          "mailgroup1": "mailgrouptest",
-          "mailgroup2": "newmailgrouptest",
-          "website": "websitetest.com",
-          "project_legal_status": 2,
-          "rules": "rule1, rule2, rule3",
-          "completionyear": 2021,
-          "jurisdiction": "ajuri",
-          "taluka": "tal",
-          "corporationward": "ward",
-          "policechowkey": "chowkey",
-          "maintenance_details": "deets",
-          "numberoffloors": 5,
-          "numberofbuildings": 4,
-          "approxtotalunits": 100,
-          "tenantstudentsallowed": true,
-          "tenantworkingbachelorsallowed": true,
-          "tenantforeignersallowed": true,
-          "otherdetails": true,
-          "duespayablemonth": 3
+            "builderid": null,
+            "projectname": null,
+            "addressline1": null,
+            "addressline2": null,
+            "suburb": null,
+            "city": 847,
+            "state": 'Maharashtra',
+            "country": 5,
+            "zip": null,
+            "nearestlandmark": null,
+            "project_type": null,
+            "mailgroup1": null,
+            "mailgroup2": null,
+            "website": null,
+            "project_legal_status": null,
+            "rules": null,
+            "completionyear": null,
+            "jurisdiction": null,
+            "taluka": null,
+            "corporationward": null,
+            "policechowkey": null,
+            "maintenance_details": null,
+            "numberoffloors": null,
+            "numberofbuildings": null,
+            "approxtotalunits": null,
+            "tenantstudentsallowed": null,
+            "tenantworkingbachelorsallowed": null,
+            "tenantforeignersallowed": null,
+            "otherdetails": null,
+            "duespayablemonth": null
         },
         "project_amenities": {
-          "swimmingpool": true,
-          "lift": true,
-          "liftbatterybackup": true,
-          "clubhouse": true,
-          "gym": true,
-          "childrensplayarea": true,
-          "pipedgas": true,
-          "cctvcameras": true,
-          "otheramenities": "newdata",
-          "studio": "true",
-          "1BHK": true,
-          "2BHK": true,
-          "3BHK": true,
-          "rowhouse": false,
-          "otheraccomodationtypes": "4BHK",
-          "sourceofwater": "abc"
+            "swimmingpool": null,
+            "lift": null,
+            "liftbatterybackup": null,
+            "clubhouse": null,
+            "gym": null,
+            "childrensplayarea": null,
+            "pipedgas": null,
+            "cctvcameras": null,
+            "otheramenities": null,
+            "studio": null,
+            "1BHK": null,
+            "2BHK": null,
+            "3BHK": null,
+            "4BHK": null,
+            "RK": null,
+            "penthouse": null,
+            "other": null,
+            "duplex": null,
+            "rowhouse": null,
+            "otheraccomodationtypes": null,
+            "sourceofwater": null
         },
         "project_bank_details": [
-          {
-            "bankname": "Banktest",
-            "bankbranch": "branchtest",
-            "bankcity": "Pune",
-            "bankaccountholdername": "Rudra",
-            "bankaccountno": "ABD102834732",
-            "bankifsccode": "PUN101",
-            "banktypeofaccount": "savings"
-          },
-          {
-            "bankname": "Banktest",
-            "bankbranch": "branchtest1",
-            "bankcity": "Pune",
-            "bankaccountholdername": "Rudra",
-            "bankaccountno": "ABD1046464732",
-            "bankifsccode": "PUN102",
-            "banktypeofaccount": "savings"
-          }
+            
         ],
         "project_contacts": [
-          {
-            "contactname": "Rudra",
-            "phone": "9796543567",
-            "email": "abc",
-            "role": "owner",
-            "effectivedate": "2021-02-04 10:00:00",
-            "tenureenddate": null,
-            "details": "hreiufhuire"
-          },
-          {
-            "contactname": "Rudra_2",
-            "phone": "9456545514",
-            "email": "efg",
-            "role": "manager",
-            "effectivedate": "2021-02-04 10:00:00",
-            "tenureenddate": "2024-02-04 10:00:00",
-            "details": "hreiufhuire"
-          }
+           
         ],
-        "project_photos":[
-          {
-              "photo_link":"link1",
-              "description":"Desc 1",
-              "date_taken":"2024-03-01"
-          },
-          {
-              "photo_link":"link2",
-              "description":"Desc2",
-              "date_taken":"2024-01-01"   
-          }
+        "project_photos": [
+            
         ]
-      }
+    }
       const [formValues, setFormValues] = useState(initialValues);
 
 
@@ -591,6 +516,14 @@ const ManageProjectInfo = () => {
       getProjectTypeData()
       getProjectLegalData()
     },[])
+    const addProject = () => {
+
+    }
+    const [currProject,setCurrProject] = useState(0);
+    const handleEdit = (id) => {
+        setCurrProject((prev) => id)
+        setIsEditDialogue(true)
+    }
     return (
         <div className="h-screen">
             <Navbar />
@@ -836,7 +769,7 @@ const ManageProjectInfo = () => {
                                             </div>
                                         </div>
                                         <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
-                                            <img className=' w-5 h-5' src={Edit} alt="edit" />
+                                            <button onClick={() => handleEdit(item.id)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
                                             <button onClick={() => deleteProject(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
@@ -953,18 +886,17 @@ const ManageProjectInfo = () => {
                             </div>
                             {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} />}
                             {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData}/>}
-                            {selectedDialogue == 3 && <BankDetails />}
-                            {selectedDialogue == 4 && <Contact />}
-                            {selectedDialogue == 5 && <Photos />}
+                            {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
+                            {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues}/>}
+                            {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues}/>}
                             <div className="my-2 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProjectInfo} >Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProjectInfo} >Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>
                     </div>
                 </>
             </Modal>
-            
         </div>
     )
 }

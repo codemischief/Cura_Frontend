@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import AddFeildBank from './AddFeildBank'
-const BankDetails = ({formValues,setFormValues}) => {
+const EditBankDetails = ({formValues,setFormValues}) => {
   const [addField, setAddFeild] = useState([]);
   const handleAdd = () => {
     setFormValues({...formValues,project_bank_details : [
@@ -65,4 +65,4 @@ const BankDetails = ({formValues,setFormValues}) => {
   )
 }
 
-export default BankDetails
+export default EditBankDetails
