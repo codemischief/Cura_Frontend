@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AddFeildPhotos from './AddFeildPhotos';
 
-const Photos = ({formValues,setFormValues}) => {
+const EditPhotos = ({formValues,setFormValues}) => {
     const handleClose = () => {
         props.setIsStateDialogue(false);
     }
@@ -57,4 +57,4 @@ const Photos = ({formValues,setFormValues}) => {
     )
 }
 
-export default Photos
+export default EditPhotos
