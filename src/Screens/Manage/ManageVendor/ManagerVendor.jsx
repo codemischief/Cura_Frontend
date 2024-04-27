@@ -19,9 +19,9 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import EditClientInvoice from './EditClientInvoice';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import SaveConfirmationClientInvoice from './SaveConfirmationClientInvoice';
+import SaveConfirmationVendor from './SaveConfirmationVendor';
 import FailureModal from '../../../Components/modals/FailureModal';
-import DeleteClientInvoiceModal from './DeleteClientInvoiceModal';
+import DeleteVendorModal from './DeleteVendorModal';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
@@ -49,7 +49,7 @@ const ManageVendor = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isClientInvoiceDialogue, setIsClientInvoiceDialogue] = useState(false);
+    const [isVendorDialogue, setIsVendorDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
@@ -59,22 +59,16 @@ const ManageVendor = () => {
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
 
-    const [clientNameFilter, setClientNameFilter] = useState(false)
-    const [clientNameFilterInput, setClientNameFilterInput] = useState("");
-    const [orderDescriptionFilter, setOrderDescriptionFilter] = useState(false)
-    const [orderDescriptionFilterInput, setOrderDescriptionFilterInput] = useState("");
-    const [estimateAmountFilter, setEstimateAmountFilter] = useState(false)
-    const [estimateAmountFilterInput, setEstimateAmountFilterInput] = useState("");
-    const [estimateDateFilter, setEstimateDateFilter] = useState(false)
-    const [estimateDateFilterInput, setEstimateDateFilterInput] = useState("");
-    const [invoiceAmountFilter, setInvoiceAmountFilter] = useState(false)
-    const [invoiceAmountFilterInput, setInvoiceAmountFilterInput] = useState("");
-    const [invoiceDateFilter, setInvoiceDateFilter] = useState(false)
-    const [invoiceDateFilterInput, setInvoiceDateFilterInput] = useState("");
-    const [entityFilter, setEntityFilter] = useState(false)
-    const [entityFilterInput, setEntityFilterInput] = useState("");
-    const [createdByFilter, setCreatedByFilter] = useState(false)
-    const [createdByFilterInput, setCreatedByFilterInput] = useState("");
+    const [vendorNameFilter, setVendorNameFilter] = useState(false)
+    const [vendorNameFilterInput, setVendorNameFilterInput] = useState("");
+    const [tdsSectionFilter, setTdsSectionFilter] = useState(false)
+    const [tdsSectionFilterInput, setTdsSectionFilterInput] = useState("");
+    const [tallyLedgerFilter, setTallyLedgerFilter] = useState(false)
+    const [tallyLedgerFilterInput, setTallyLedgerFilterInput] = useState("");
+    const [categoryFilter, setCategoryFilter] = useState(false)
+    const [categoryFilterInput, setCategoryFilterInput] = useState("");
+    const [cityFilter, setCityFilter] = useState(false)
+    const [cityFilterInput, setCityFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     // const [filterArray,setFilterArray] = useState([]);
@@ -170,7 +164,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -232,7 +226,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -263,7 +257,7 @@ const ManageVendor = () => {
             ],
             "filters": filterState,
             "sort_by": [sortField],
-            "order":  flag ? "asc" : "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
             "search_key": searchInput
@@ -296,7 +290,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -343,17 +337,14 @@ const ManageVendor = () => {
     }
     useEffect(() => {
         fetchData();
-        
+
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setClientNameFilter(false)
-                setOrderDescriptionFilter(false)
-                setEstimateAmountFilter(false)
-                setEstimateDateFilter(false)
-                setInvoiceDateFilter(false)
-                setInvoiceAmountFilter(false)
-                setEntityFilter(false)
-                setCreatedByFilter(false)
+                setVendorNameFilter(false)
+                setTdsSectionFilter(false)
+                setTallyLedgerFilter(false)
+                setCategoryFilter(false)
+                setCityFilter(false)
                 setIdFilter(false)
             }
         }
@@ -363,7 +354,7 @@ const ManageVendor = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
-    const [invoiceId,setInvoiceId] = useState(0);
+    const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
         setInvoiceId(id)
         console.log(id);
@@ -377,53 +368,64 @@ const ManageVendor = () => {
     };
 
     const handleOpen = () => {
-        setIsClientInvoiceDialogue(true);
+        setIsVendorDialogue(true);
     };
 
     const handleClose = () => {
-        setIsClientInvoiceDialogue(false);
+        setIsVendorDialogue(false);
     }
-    const handleAddClientInvoice = () => {
+    const handleAddVendor = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
         }
-        setIsClientInvoiceDialogue(false);
-        setOpenAddConfirmation(true)
+        setIsVendorDialogue(false);
+        setOpenAddConfirmation(true);
 
     }
-    const addClientInvoice = async () => {
+    const addVendor = async () => {
         // console.log('clicked')
-        console.log(formValues)
-        if (!validate()) {
-            console.log('hu')
-            return;
-        }
+        // console.log(formValues)
         // setPageLoading(true);
         const data = {
 
             "user_id": 1234,
-            "clientid": Number(formValues.client),
-            "orderid": Number(formValues.order),
-            "estimatedate": formValues.estimateDate,
-            "estimateamount": Number(formValues.estimateAmount),
-            "invoicedate": formValues.invoiceDate,
-            "invoiceamount": Number(formValues.invoiceAmount),
-            "quotedescription": formValues.invoiceDescription,
-            "createdon": "2024-10-09",
-            "baseamount": Number(formValues.baseAmount),
-            "tax": Number(formValues.gst),
-            "entity": 1
+            "vendorname": "Rudra",
+            "addressline1": "Line1 address",
+            "addressline2": "Line2 address",
+            "suburb": "suburb 1",
+            "city": 847,
+            "state": "Maharashtra",
+            "country": 5,
+            "type": "New type",
+            "details": "details",
+            "category": 3,
+            "phone1": "934840984",
+            "email": "emailid@gmail",
+            "ownerinfo": "data",
+            "panno": "abc123",
+            "tanno": "def456",
+            "gstservicetaxno": "ijk789",
+            "tdssection": "opq345",
+            "bankname": "testbank",
+            "bankbranch": "testbranch",
+            "bankcity": "Pune",
+            "bankacctholdername": "holder",
+            "bankacctno": "acctno",
+            "bankifsccode": "code",
+            "bankaccttype": "savings",
+            "companydeductee": true,
+            "tallyledgerid": 1
 
         }
-        const response = await APIService.addClientInvoice(data);
+        const response = await APIService.addVendors(data);
 
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
         console.log(result)
-        setIsClientInvoiceDialogue(false);
+        setIsVendorDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -437,15 +439,29 @@ const ManageVendor = () => {
     }
 
     const initialValues = {
-        client: "",
-        estimateAmount: "",
-        baseAmount: "",
-        invoiceAmount: "",
-        invoiceDescription: "",
-        order: null,
-        estimateDate: null,
-        gst: "",
-        invoiceDate: null
+        vendorName: "",
+        addressLine1: "",
+        suburb: "",
+        phone: "",
+        ownerDetails: "",
+        category: "",
+        addressLine2: "",
+        city: "",
+        email: "",
+        details: "",
+        typeOfOrganization: "",
+        pan: "",
+        gstin: "",
+        tallyLedger: "",
+        tan: "",
+        tdsSection: "",
+        accountHolderName: "",
+        accountNumber: "",
+        accountType: "",
+        bankName: "",
+        bankBranch: "",
+        ifscCode: "",
+        bankBranchCity: "",
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -459,50 +475,64 @@ const ManageVendor = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.client) {
+
+        if (!formValues.vendorName) {
             setFormErrors((existing) => {
-                return { ...existing, client: "Enter Client name" }
+                return { ...existing, vendorName: "Enter Vendor name" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, client: "" }
+                return { ...existing, vendorName: "" }
             })
         }
-        if (!formValues.invoiceDescription) {
-            console.log('issue is in panno')
+
+        if (!formValues.phone) {
             setFormErrors((existing) => {
-                return { ...existing, invoiceDescription: "Enter Invoice Description" }
+                return { ...existing, phone: "Enter Phone Number" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, invoiceDescription: "" }
+                return { ...existing, phone: "" }
             })
         }
-        if (!formValues.order || formValues.order == "") {
+
+        if (!formValues.category) {
             setFormErrors((existing) => {
-                return { ...existing, order: "Select Order" }
+                return { ...existing, category: "Select Category" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, order: "" }
+                return { ...existing, category: "" }
             })
         }
+
+        if (!formValues.email) {
+            setFormErrors((existing) => {
+                return { ...existing, email: "Enter Email" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, email: "" }
+            })
+        }
+
         return res;
     }
-    const [currClientInvoiceId, setCurrClientInvoiceId] = useState("");
+    const [currVendorId, setCurrVendorId] = useState("");
     const handleDelete = (id) => {
-        setCurrClientInvoiceId(id);
+        setCurrVendorId(id);
         showDeleteConfirmation(true);
     }
-    const deleteClientInvoice = async (id) => {
+    const deleteVendor = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteClientInvoice(data);
+        const response = await APIService.deleteVendors(data);
         showDeleteConfirmation(false);
 
         openDeleteSuccess();
@@ -534,45 +564,19 @@ const ManageVendor = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
                 "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb","city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
                 "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
+                "tallyledger",
+                "category",
+                "city",
+                "id",
             ],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getVendors(data);
         const temp = await response.json();
@@ -595,7 +599,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -652,7 +656,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -729,49 +733,31 @@ const ManageVendor = () => {
     }
 
     const filterMapping = {
-        clientname: {
+        vendorname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        quotedescription: {
+        tdssection: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        estimateamount: {
-            filterType: "",
-            filterValue: "",
-            filterData: "Numeric",
-            filterInput: ""
-        },
-        estimatedate: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Date",
-            filterInput: ""
-        },
-        invoiceamount: {
-            filterType: "",
-            filterValue: "",
-            filterData: "Numeric",
-            filterInput: ""
-        },
-        invoicedate: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Date",
-            filterInput: ""
-        },
-        entityname: {
+        tallyledger: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        createdbyname: {
+        category: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        city: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -785,7 +771,7 @@ const ManageVendor = () => {
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
-    const [filterState,setFilterState ] = useState([]);
+    const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
@@ -798,7 +784,7 @@ const ManageVendor = () => {
             }
         })
         setCurrentPage(() => 1)
-        
+
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
@@ -808,7 +794,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -896,7 +882,7 @@ const ManageVendor = () => {
                 "vendorname",
                 "addressline1",
                 "addressline2",
-                "suburb","city",
+                "suburb", "city",
                 "state",
                 "country",
                 "type",
@@ -946,12 +932,12 @@ const ManageVendor = () => {
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Invoice" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully deleted Client Invoice" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Created Succesfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Deleted Succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addClientInvoice={addClientInvoice} />}
+            {openAddConfirmation && <SaveConfirmationVendor handleClose={() => setOpenAddConfirmation(false)} currVendor={formValues.vendorName} addVendor={addVendor} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteClientInvoiceModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} />}
+            {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1010,64 +996,64 @@ const ManageVendor = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[16%]  p-3'>
-                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                                </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
-                            </div>
-
-                            <div className='w-[16%]  p-3'>
+                            <div className='w-[16%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
-                                    <button className='W-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
+                                    <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[16%]  p-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)} />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            <div className='w-[16%]  px-3 py-2.5'>
+                                <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)} />
+                                    <button className='W-[25%] px-1 py-2' onClick={() => { setTdsSectionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {estimateAmountFilter && <NumericFilter inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} columnName="estimateamount" menuRef={menuRef} handleFilter={newHandleFilter} />}
+                                {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[16%]  p-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setInvoiceAmountFilter((prev) => !prev) }} /></button>
+                            <div className='w-[16%]  px-3 py-2.5'>
+                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)} />
+                                    <button className='w-[25%] px-1 py-2' onClick={() => { setTallyLedgerFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {invoiceAmountFilter && <NumericFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} columnName='invoiceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {tallyLedgerFilter && <CharacterFilter inputVariable={tallyLedgerFilterInput} setInputVariable={setTallyLedgerFilterInput} filterColumn='tallyledger' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[14%] p-3'>
-                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setInvoiceDateFilter((prev) => !prev) }} /></button>
+                            <div className='w-[16%]  px-3 py-2.5'>
+                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)} />
+                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCategoryFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef}/>}
+                                {categoryFilter && <CharacterFilter inputVariable={categoryFilterInput} setInputVariable={setCategoryFilterInput} filterColumn='category' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[18%]  p-3 '>
-                                <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
+                            <div className='w-[14%] px-3 py-2.5'>
+                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} filterColumn='createdbyname' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} filterColumn='city' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            </div>
+
+                            <div className='w-[18%]  px-3 py-2.5 '>
+                                <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" />
+                                    <button className='w-[25%] px-1 py-2' > <img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+
                             </div>
                         </div>
                         <div className="w-[15%] flex">
-                            <div className='w-[65%] p-3'>
+                            <div className='w-1/2 px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
-                                    <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
+                                    <button className='px-1 py-2 w-[35%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[35%]  flex'>
+                            <div className='w-1/2  flex'>
                                 <div className='p-3'>
 
                                 </div>
@@ -1086,12 +1072,12 @@ const ManageVendor = () => {
                             </div>
                             <div className='w-[16%]  flex'>
                                 <div className='p-3'>
-                                    <p>Vendor Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Vendor Name <button onClick={() => handleSort('vendorname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[16%]  flex'>
                                 <div className='p-3'>
-                                    <p>TDS Section <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>TDS Section <button onClick={() => handleSort('tdssection')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[16%]  flex'>
@@ -1101,12 +1087,12 @@ const ManageVendor = () => {
                             </div>
                             <div className='w-[16%]  flex'>
                                 <div className='p-3'>
-                                    <p>Category <button onClick={() => handleSort('estimatedate')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Category <button onClick={() => handleSort('category')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='p-3'>
-                                    <p>City <button onClick={() => handleSort('invoiceamount')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>City <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[18%]  flex'>
@@ -1135,35 +1121,35 @@ const ManageVendor = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingVendors.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[4%] flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[16%] flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{item.vendorname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[16%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{item.tdssection}</p>
                                         </div>
                                     </div>
                                     <div className='w-[16%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{item.tallyledger}</p>
                                         </div>
                                     </div>
                                     <div className='w-[16%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{item.category}</p>
                                         </div>
                                     </div>
                                     <div className='w-[14%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{item.city}</p>
                                         </div>
                                     </div>
@@ -1173,17 +1159,17 @@ const ManageVendor = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[15%] flex">
+                                <div className="w-[15%] flex items-center">
                                     <div className='w-1/2  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 py-2'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex'>
                                         <div className='w-1/2 py-5 flex ml-4'>
-                                            <div className='flex space-x-2'>
-                                                <button onClick={ () => {handleEdit(item.id)}}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit"  /></button>
-                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash"  /></button>
+                                            <div className='flex space-x-3'>
+                                                <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>
@@ -1266,115 +1252,156 @@ const ManageVendor = () => {
                 </div>
             </div>
 
-            <Modal open={isClientInvoiceDialogue}
+            <Modal open={isVendorDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className="h-10  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-base">New Client Invoice </div>
+                                <div className="text-base">Add New Vendor </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB]">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
                         <div className="h-auto w-full mt-1 ">
                             <div className="flex gap-12 justify-center">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
+                                <div className="">
+                                    <div className=" space-y-1 py-1">
+                                        <div className="font-semibold text-sm">Basic Information</div>
+                                        <div className="">
+                                            <div className="text-sm">Vendor Name <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="vendorName" value={formValues.vendorName} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorName}</div>
                                         </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
+                                        <div className="">
+                                            <div className="text-sm">Address Line 1</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
 
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
-                                                }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
-                                            }}
-                                        />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Estimate Amount</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Suburb</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
 
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Phone <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.phone}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Owner Details </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
+                                        </div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-sm">Base Amount</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="baseAmount" value={formValues.baseAmount} onChange={handleChange} />
+                                    <div className=" space-y-1 py-1 mt-2">
+                                        <div className="font-semibold text-sm">Accounting Information</div>
+                                        <div className="">
+                                            <div className="text-sm">Type of organization <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="typeOfOrganization" value={formValues.typeOfOrganization} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.typeOfOrganization}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">PAN </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="pan" value={formValues.pan} onChange={handleChange} />
 
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Invoice Amount</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Quote/Invoice Description <label className="text-red-500">*</label></div>
-                                        <textarea className="w-56 h-16 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="invoiceDescription" value={formValues.invoiceDescription} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.invoiceDescription}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">GSTIN</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gstin" value={formValues.gstin} onChange={handleChange} />
+
+                                        </div>
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
+                                <div className="">
+                                    <div className=" space-y-1 py-1 mt-6">
+                                        <div className="">
+                                            <div className="text-sm">Category <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="category" value={formValues.category} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.category}</div>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" >Select A Order</option>
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="">
+                                            <div className="text-sm">Address Line 2</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">City</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Email <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="email" value={formValues.email} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Details </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="details" value={formValues.details} onChange={handleChange} />
+                                        </div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-sm">Estimate Date</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">GST/ST</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Invoice Date</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                    <div className=" space-y-1 py-1 mt-8">
+
+                                        <div className="">
+                                            <div className="text-sm">Tally Ledger </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} />
+
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">TAN</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tan" value={formValues.tan} onChange={handleChange} />
+
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">TDS Section</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tdsSection" value={formValues.tdsSection} onChange={handleChange} />
+
+                                        </div>
+
                                     </div>
                                 </div>
+                                <div className=" space-y-1 py-1">
+                                    <div className="font-semibold text-sm">Vendor Bank Details </div>
+                                    <div className="">
+                                        <div className="text-sm">Account Holder Name </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountHolderName" value={formValues.accountHolderName} onChange={handleChange} />
+
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Account Number</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountNumber" value={formValues.accountNumber} onChange={handleChange} />
+
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Account Type</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountType" value={formValues.accountType} onChange={handleChange} />
+
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Bank Name </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankName" value={formValues.bankName} onChange={handleChange} />
+
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Bank Branch </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranch" value={formValues.bankBranch} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">IFSC Code </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ifscCode" value={formValues.ifscCode} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Bank Branch City </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranchCity" value={formValues.bankBranchCity} onChange={handleChange} />
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddClientInvoice} >Add</button>
+                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
                         </div>
 
