@@ -521,13 +521,14 @@ const ManageProjectInfo = () => {
     }
     const [currProject,setCurrProject] = useState(0);
     const handleEdit = (id) => {
+        console.log(id)
         setCurrProject((prev) => id)
         setIsEditDialogue(true)
     }
     return (
         <div className="h-screen">
             <Navbar />
-            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} />}
+            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Project Info Added!"/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 

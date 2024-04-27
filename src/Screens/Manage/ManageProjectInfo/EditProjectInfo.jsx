@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import ProjectInformation from "./ManageProjectInfoForm/ProjectInformation";
@@ -10,123 +10,94 @@ import EditProjectInformation from './ManageProjectInfoForm/EditProjectInformati
 import EditProjectDetails from './ManageProjectInfoForm/EditProjectDetails';
 import EditBankDetails from './ManageProjectInfoForm/EditBankDetails';
 import EditContact from './ManageProjectInfoForm/EditContact';
-const EditProjectInfo = ({handleClose}) => {
+import EditPhotos from './ManageProjectInfoForm/EditPhotos';
+import { APIService } from '../../../services/API';
+const EditProjectInfo = ({handleClose,currProject}) => {
     const [selectedDialogue,setSelectedDialogue] = useState(1)
     const initialValues = {
         "project_info": {
-            "builderid": 10231,
-            "projectname": "testproject",
-            "addressline1": "addressline1",
-            "addressline2": "addressline2",
-            "suburb": "testsub",
+            "builderid": null,
+            "projectname": null,
+            "addressline1": null,
+            "addressline2": null,
+            "suburb": null,
             "city": 847,
-            "state": "Maharashtra",
+            "state": 'Maharashtra',
             "country": 5,
-            "zip": "testzip",
-            "nearestlandmark": "landmark1",
-            "project_type": 2,
-            "mailgroup1": "mailgrouptest",
-            "mailgroup2": "newmailgrouptest",
-            "website": "websitetest.com",
-            "project_legal_status": 2,
-            "rules": "rule1, rule2, rule3",
-            "completionyear": 2021,
-            "jurisdiction": "ajuri",
-            "taluka": "tal",
-            "corporationward": "ward",
-            "policechowkey": "chowkey",
-            "maintenance_details": "deets",
-            "numberoffloors": 5,
-            "numberofbuildings": 4,
-            "approxtotalunits": 100,
-            "tenantstudentsallowed": true,
-            "tenantworkingbachelorsallowed": true,
-            "tenantforeignersallowed": true,
-            "otherdetails": true,
-            "duespayablemonth": 3
+            "zip": null,
+            "nearestlandmark": null,
+            "project_type": null,
+            "mailgroup1": null,
+            "mailgroup2": null,
+            "website": null,
+            "project_legal_status": null,
+            "rules": null,
+            "completionyear": null,
+            "jurisdiction": null,
+            "taluka": null,
+            "corporationward": null,
+            "policechowkey": null,
+            "maintenance_details": null,
+            "numberoffloors": null,
+            "numberofbuildings": null,
+            "approxtotalunits": null,
+            "tenantstudentsallowed": null,
+            "tenantworkingbachelorsallowed": null,
+            "tenantforeignersallowed": null,
+            "otherdetails": null,
+            "duespayablemonth": null
         },
         "project_amenities": {
-          "swimmingpool": true,
-          "lift": true,
-          "liftbatterybackup": true,
-          "clubhouse": true,
-          "gym": true,
-          "childrensplayarea": true,
-          "pipedgas": true,
-          "cctvcameras": true,
-          "otheramenities": "newdata",
-          "studio": true,
-          "1BHK": true,
-          "2BHK": true,
-          "3BHK": true,
-          "4BHK": true,
-          "RK": true,
-          "penthouse": true,
-          "other": true,
-          "duplex": true,
-          "rowhouse": false,
-          "otheraccomodationtypes": "4BHK, RK, penthouse, other, duplex",
-          "sourceofwater": "abc"
+            "swimmingpool": null,
+            "lift": null,
+            "liftbatterybackup": null,
+            "clubhouse": null,
+            "gym": null,
+            "childrensplayarea": null,
+            "pipedgas": null,
+            "cctvcameras": null,
+            "otheramenities": null,
+            "studio": null,
+            "1BHK": null,
+            "2BHK": null,
+            "3BHK": null,
+            "4BHK": null,
+            "RK": null,
+            "penthouse": null,
+            "other": null,
+            "duplex": null,
+            "rowhouse": null,
+            "otheraccomodationtypes": null,
+            "sourceofwater": null
         },
         "project_bank_details": [
-          {
-            "bankname": "Banktest",
-            "bankbranch": "branchtest",
-            "bankcity": "Pune",
-            "bankaccountholdername": "Rudra",
-            "bankaccountno": "ABD102834732",
-            "bankifsccode": "PUN101",
-            "banktypeofaccount": "savings",
-            "bankmicrcode": "MICR1234"
-          },
-          {
-            "bankname": "Banktest",
-            "bankbranch": "branchtest1",
-            "bankcity": "Pune",
-            "bankaccountholdername": "Rudra",
-            "bankaccountno": "ABD1046464732",
-            "bankifsccode": "PUN102",
-            "banktypeofaccount": "savings",
-            "bankmicrcode": "MICR1234"
-          }
+            
         ],
         "project_contacts": [
-          {
-            "contactname": "Rudra",
-            "phone": "9796543567",
-            "email": "abc",
-            "role": "owner",
-            "effectivedate": "2021-02-04 10:00:00",
-            "tenureenddate": "2024-02-04 10:00:00",
-            "details": "hreiufhuire"
-          },
-          {
-            "contactname": "Rudra_2",
-            "phone": "9456545514",
-            "email": "efg",
-            "role": "manager",
-            "effectivedate": "2021-02-04 10:00:00",
-            "tenureenddate": "2024-02-04 10:00:00",
-            "details": "hreiufhuire"
-          }
+           
         ],
-        "project_photos":[
-          {
-              "photo_link":"link1",
-              "description":"Desc 1",
-              "date_taken":"2024-03-01"
-          },
-          {
-              "photo_link":"link2",
-              "description":"Desc2",
-              "date_taken":"2024-01-01"   
-          }
+        "project_photos": [
+            
         ]
-      }
+    }
     const [formValues,setFormValues] = useState(initialValues)
     const [projectTypeData,setProjectTypeData] = useState([])
     const [builderNameData,setBuilderNameData] = useState([])
     const [projectLegalData,setProjectLegalData] = useState([])
+    const fetchInitialProjectData = async () => {
+        const data = {
+            "user_id" : 1234,
+            "id" : currProject
+        }
+        console.log(data)
+        const response = await APIService.getProjectById(data)
+        const res = await response.json()
+        console.log(res.data)
+        setFormValues(res.data)
+    }
+    useEffect(() => {
+       fetchInitialProjectData()
+    },[])
   return ( 
     <Modal open={true}
                 fullWidth={true}
@@ -165,6 +136,7 @@ const EditProjectInfo = ({handleClose}) => {
                             {selectedDialogue == 2 && <EditProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData}/>}
                             {selectedDialogue == 3 && <EditBankDetails formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 4 && <EditContact formValues={formValues} setFormValues={setFormValues}/>}
+                            {selectedDialogue == 5 &&  <EditPhotos formValues={formValues} setFormValues={setFormValues}/>}
                             {/* {selectedDialogue == 1 && <ProjectInformation  />}
                             {selectedDialogue == 2 && <ProjectDetails />}
                             {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
