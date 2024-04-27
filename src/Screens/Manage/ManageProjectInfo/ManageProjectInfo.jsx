@@ -25,6 +25,7 @@ import Photos from './ManageProjectInfoForm/Photos';
 import EditProjectInfo from './EditProjectInfo';
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
 const ManageProjectInfo = () => {
+    const dataRows = ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"]
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
@@ -53,16 +54,17 @@ const ManageProjectInfo = () => {
         setSelectedDialogue(5);
     }
     const fetchData = async () => {
+        setCurrentPage((prev) => 1)       
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"],
+            "rows": dataRows,
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput 
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
@@ -76,16 +78,17 @@ const ManageProjectInfo = () => {
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
+        setCurrentPage((prev) => pageNumber)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "buildername", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted"],
+            "rows": dataRows,
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc": "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key":  searchInput
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
@@ -99,16 +102,16 @@ const ManageProjectInfo = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         console.log(searchInput);
+        setCurrentPages((prev) => quantity)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "buildername", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted"
-            ],
+            "rows": dataRows,
             "filters": [],
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key":  searchInput 
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
@@ -124,106 +127,8 @@ const ManageProjectInfo = () => {
         fetchData();
     }, []);
     
-    const initialValues = {
-        "project_info": {
-          "builderid": 10231,
-          "projectname": "testproject",
-          "addressline1": "addressline1",
-          "addressline2": "addressline2",
-          "suburb": "testsub",
-          "city": 847,
-          "state": "Maharashtra",
-          "country": 5,
-          "zip": "testzip",
-          "nearestlandmark": "landmark1",
-          "project_type": 2,
-          "mailgroup1": "mailgrouptest",
-          "mailgroup2": "newmailgrouptest",
-          "website": "websitetest.com",
-          "project_legal_status": 2,
-          "rules": "rule1, rule2, rule3",
-          "completionyear": 2021,
-          "jurisdiction": "ajuri",
-          "taluka": "tal",
-          "corporationward": "ward",
-          "policechowkey": "chowkey",
-          "maintenance_details": "deets",
-          "numberoffloors": 5,
-          "numberofbuildings": 4,
-          "approxtotalunits": 100,
-          "tenantstudentsallowed": true,
-          "tenantworkingbachelorsallowed": true,
-          "tenantforeignersallowed": true,
-          "otherdetails": true,
-          "duespayablemonth": 3
-        },
-        "project_amenities": {
-          "swimmingpool": true,
-          "lift": true,
-          "liftbatterybackup": true,
-          "clubhouse": true,
-          "gym": true,
-          "childrensplayarea": true,
-          "pipedgas": true,
-          "cctvcameras": true,
-          "otheramenities": "newdata",
-          "studio": "true",
-          "1BHK": false,
-          "2BHK": true,
-          "3BHK": true,
-          "rowhouse": false,
-          "otheraccomodationtypes": "4BHK",
-          "sourceofwater": "abc"
-        },
-        "project_bank_details": [
-          {
-            "bankname": "Banktest",
-            "bankbranch": "branchtest",
-            "bankcity": "Pune",
-            "bankaccountholdername": "Rudra",
-            "bankaccountno": "ABD102834732",
-            "bankifsccode": "PUN101",
-            "banktypeofaccount": "savings"
-          },
-          {
-            "bankname": "Banktest",
-            "bankbranch": "branchtest1",
-            "bankcity": "Pune",
-            "bankaccountholdername": "Rudra",
-            "bankaccountno": "ABD1046464732",
-            "bankifsccode": "PUN102",
-            "banktypeofaccount": "savings"
-          }
-        ],
-        "project_contacts": [
-          {
-            "contactname": "Rudra",
-            "phone": "9796543567",
-            "email": "abc",
-            "role": "owner",
-            "effectivedate": "2021-02-04 10:00:00",
-            "tenureenddate": null,
-            "details": "hreiufhuire"
-          },
-          {
-            "contactname": "Rudra_2",
-            "phone": "9456545514",
-            "email": "efg",
-            "role": "manager",
-            "effectivedate": "2021-02-04 10:00:00",
-            "tenureenddate": "2024-02-04 10:00:00",
-            "details": "hreiufhuire"
-          }
-        ],
-        "project_photos":[
-          {
-              "photo_link":"link1",
-              "description":"Desc 1",
-              "date_taken":"2024-03-01"
-          }
-        ]
-      }
-    const [formValues, setFormValues] = useState(initialValues);
+   
+    
     const [formErrors, setFormErrors] = useState({});
     const deleteProject = async (id) => {
         const data = {
@@ -252,7 +157,6 @@ const ManageProjectInfo = () => {
     };
     const addProjectInfo = async () => {
         const data = {
-            "user_id" : 1234, 
             "project_info": {
               "builderid": 10231,
               "projectname": "testproject",
@@ -437,37 +341,55 @@ const ManageProjectInfo = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": dataRows,
             "filters": [],
-            "sort_by": [],
+            "sort_by": [sortField],
             "order": "asc",
             "pg_no": 0,
             "pg_size": 0
         };
-        const response = await APIService.getEmployees(data)
+        const response = await APIService.getProjectInfo(data)
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "EmployeeData.xlsx");
+        XLSX.writeFile(workbook, "ProjectData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
+    }
+    const handleSort = async (field) => {
+        setPageLoading(true);
+         setSortField((prev) => field)
+         const data  = {
+            "user_id" : 1234,
+            "rows" : dataRows,
+            "filters" : [],
+            "sort_by" : [sortField],
+            "order" : flag ? "asc" : "desc",
+            "pg_no" : Number(currentPage),
+            "pq_size" : Number(currentPages),
+            "search_key" : searchInput
+         }
+         const response = await APIService.getProjectInfo(data)
+         const res = await response.json();
+         
     }
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
         setIsSearchOn(true);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": dataRows,
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -476,20 +398,21 @@ const ManageProjectInfo = () => {
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
-        setIsSearchOn(false);
-        setPageLoading(true);
-        setSearchInput("");
+        setIsSearchOn(false)
+        setPageLoading(true)
+        setSearchInput("")
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status"],
+            "rows": dataRows,
             "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": ""
         };
-        const response = await APIService.getEmployees(data);
+        const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
         const result = temp.data;
         const t = temp.total_count;
@@ -507,6 +430,133 @@ const ManageProjectInfo = () => {
         }, 2000)
         fetchData();
     }
+    const initialValues = {
+        "project_info": {
+          "builderid": 10231,
+          "projectname": "testproject",
+          "addressline1": "addressline1",
+          "addressline2": "addressline2",
+          "suburb": "testsub",
+          "city": 847,
+          "state": "Maharashtra",
+          "country": 5,
+          "zip": "testzip",
+          "nearestlandmark": "landmark1",
+          "project_type": 2,
+          "mailgroup1": "mailgrouptest",
+          "mailgroup2": "newmailgrouptest",
+          "website": "websitetest.com",
+          "project_legal_status": 2,
+          "rules": "rule1, rule2, rule3",
+          "completionyear": 2021,
+          "jurisdiction": "ajuri",
+          "taluka": "tal",
+          "corporationward": "ward",
+          "policechowkey": "chowkey",
+          "maintenance_details": "deets",
+          "numberoffloors": 5,
+          "numberofbuildings": 4,
+          "approxtotalunits": 100,
+          "tenantstudentsallowed": true,
+          "tenantworkingbachelorsallowed": true,
+          "tenantforeignersallowed": true,
+          "otherdetails": true,
+          "duespayablemonth": 3
+        },
+        "project_amenities": {
+          "swimmingpool": true,
+          "lift": true,
+          "liftbatterybackup": true,
+          "clubhouse": true,
+          "gym": true,
+          "childrensplayarea": true,
+          "pipedgas": true,
+          "cctvcameras": true,
+          "otheramenities": "newdata",
+          "studio": "true",
+          "1BHK": false,
+          "2BHK": true,
+          "3BHK": true,
+          "rowhouse": false,
+          "otheraccomodationtypes": "4BHK",
+          "sourceofwater": "abc"
+        },
+        "project_bank_details": [
+          {
+            "bankname": "Banktest",
+            "bankbranch": "branchtest",
+            "bankcity": "Pune",
+            "bankaccountholdername": "Rudra",
+            "bankaccountno": "ABD102834732",
+            "bankifsccode": "PUN101",
+            "banktypeofaccount": "savings"
+          },
+          {
+            "bankname": "Banktest",
+            "bankbranch": "branchtest1",
+            "bankcity": "Pune",
+            "bankaccountholdername": "Rudra",
+            "bankaccountno": "ABD1046464732",
+            "bankifsccode": "PUN102",
+            "banktypeofaccount": "savings"
+          }
+        ],
+        "project_contacts": [
+          {
+            "contactname": "Rudra",
+            "phone": "9796543567",
+            "email": "abc",
+            "role": "owner",
+            "effectivedate": "2021-02-04 10:00:00",
+            "tenureenddate": null,
+            "details": "hreiufhuire"
+          },
+          {
+            "contactname": "Rudra_2",
+            "phone": "9456545514",
+            "email": "efg",
+            "role": "manager",
+            "effectivedate": "2021-02-04 10:00:00",
+            "tenureenddate": "2024-02-04 10:00:00",
+            "details": "hreiufhuire"
+          }
+        ],
+        "project_photos":[
+          {
+              "photo_link":"link1",
+              "description":"Desc 1",
+              "date_taken":"2024-03-01"
+          },
+          {
+              "photo_link":"link2",
+              "description":"Desc2",
+              "date_taken":"2024-01-01"   
+          }
+        ]
+      }
+      const [formValues, setFormValues] = useState(initialValues);
+
+
+    // utlity routes
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // end utility routes here
     return (
         <div className="h-screen">
             <Navbar />
@@ -701,7 +751,7 @@ const ManageProjectInfo = () => {
                                     <div className="w-[85%] flex min-h-0">
                                         <div className='w-[4%] flex  overflow-hidden'>
                                             <div className='p-3'>
-                                                <p>{index + 1}</p>
+                                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                             </div>
                                         </div>
                                         <div className='w-[12%]  flex overflow-hidden'>
@@ -731,7 +781,7 @@ const ManageProjectInfo = () => {
                                         </div>
                                         <div className='w-[12%]  flex overflow-hidden'>
                                             <div className='p-3'>
-                                                <p></p>
+                                                <p>{item.mailgroup2}</p>
                                             </div>
                                         </div>
                                         <div className='w-[10%]  flex overflow-hidden'>
@@ -741,7 +791,7 @@ const ManageProjectInfo = () => {
                                         </div>
                                         <div className='w-[12%]  flex overflow-hidden'>
                                             <div className='p-3'>
-                                                <p></p>
+                                                <p>{item.tenantworkingbachelorsallowed || item.tenantforeignersallowed || item.tenantstudentsallowed}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -867,7 +917,7 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                            {selectedDialogue == 1 && <ProjectInformation />}
+                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialogue == 2 && <ProjectDetails />}
                             {selectedDialogue == 3 && <BankDetails />}
                             {selectedDialogue == 4 && <Contact />}
