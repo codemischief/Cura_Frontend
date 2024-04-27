@@ -573,7 +573,7 @@ const fetchTenentOfData = async () => {
                                 <div>Client Information</div>
                             </div>
                             <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
-                                <div>Client portal</div>
+                                <div>Client Portal</div>
                             </div>
                             <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>Bank Details</div>

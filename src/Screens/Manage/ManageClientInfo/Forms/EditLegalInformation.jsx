@@ -43,6 +43,8 @@ const fetchCityData = async (id) => {
 useEffect(() => {
    setAllState(initialStates);
    setAllCity(initialCities);
+   fetchStateData(formValues.client_legal_info.country)
+   fetchCityData(formValues.client_legal_info.state)
 },[initialCities,initialStates])
   return (
     <div className="h-auto w-full">
@@ -60,13 +62,17 @@ useEffect(() => {
           </div>
           <div className="">
             <div className="text-[14px]">Country </div>
-            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.client_legal_info.country} onChange={
               (e) => {
                 // setAllCity([]);
-                setFormValues({...formValues,client_legal_info : {
-                  ...formValues.client_legal_info,
-                  country : e.target.value
-              }})
+                const existing = {...formValues};
+                const temp = existing.client_legal_info
+                temp.country = e.target.value 
+                temp.state = null 
+                temp.city = null
+                existing.client_legal_info = temp;
+                setFormValues(existing)
+                setAllState([])
                 fetchStateData(e.target.value);
                 setAllCity([]);
               }
@@ -149,7 +155,7 @@ useEffect(() => {
                 fetchCityData(e.target.value)
               }
             }>
-              <option selected disabled hidden> Select A State</option>
+              <option value="none" > Select A State</option>
               {allState.map(item => {
                 if(item[0] == formValues.client_legal_info.state) {
                   return <option key={item[0]} selected>

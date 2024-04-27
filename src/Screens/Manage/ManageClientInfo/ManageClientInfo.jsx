@@ -497,6 +497,7 @@ const ManageClientInfo = () => {
 
     const handleClose = () => {
         setSelectedDialogue(1)
+        setFormErrors(() => {})
         setIsClientInfoDialogue(false);
     }
     const [clientTypeData, setClientTypeData] = useState([]);
@@ -897,7 +898,7 @@ const ManageClientInfo = () => {
                 clienttype: ""
             }))
         }
-        if (formValues.client_info.state === "") {
+        if (formValues.client_info.state === "" || formValues.client_info.state == null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -909,7 +910,7 @@ const ManageClientInfo = () => {
                 state: ""
             }))
         }
-        if (formValues.client_info.city === "") {
+        if (formValues.client_info.city === "" || formValues.client_info.city == null) {
             res = false
             setFormErrorsClientInfo((existing) => ({
                 ...existing,
@@ -1018,6 +1019,7 @@ const ManageClientInfo = () => {
     }
     const [showAddConfirmation, setShowAddConfirmation] = useState(false);
     const handleAddClientInfo = () => {
+        console.log(formValues)
         if (!validate()) {
             console.log(formErrors)
             console.log(formErrorsClientInfo)
@@ -1973,7 +1975,7 @@ const ManageClientInfo = () => {
                                 <div>Client Information</div>
                             </div>
                             <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer` }onClick={selectSecond}>
-                                <div>Client portal</div>
+                                <div>Client Portal</div>
                             </div>
                             <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>Bank Details</div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState ,useEffect } from 'react';
-
+import { APIService } from '../../../../services/API';
 const EditPOADetails = ({formValues,setFormValues,relationData,allCountries,initialStates,initialCities}) => {
 
   const [city, setCity] = useState(initialCities);
@@ -14,13 +14,9 @@ const EditPOADetails = ({formValues,setFormValues,relationData,allCountries,init
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log(result)
-    if (Array.isArray(result)) {
-        setAllState(result)
-        if(result.length >= 1) {
-            console.log('hey')
-            fetchCityData(result[0][0])
-        }
-    }
+    setAllState(result)
+    // fetchCityData(formValues.client_poa.poacity)
+    console.log(result)
 }
 const fetchCityData = async (id) => {
     const data = { "user_id": 1234, "state_name": id };
@@ -40,8 +36,12 @@ const fetchCityData = async (id) => {
      }})
    }
    useEffect(() => {
+        // we need to fetch the data
+
         setAllState(initialStates)
         setAllCity(initialCities)
+        fetchStateData(formValues.client_poa.poacountry)
+        fetchCityData(formValues.client_poa.poastate)
    },[initialCities,initialStates])
   return (
     <div className="h-auto w-full">
@@ -60,12 +60,16 @@ const fetchCityData = async (id) => {
           <div className="">
             <div className="text-[14px]">Country </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="poacountry" onChange={
-               (e) => { setFormValues({
-                    ...formValues, client_poa: {
-                        ...formValues.client_poa,
-                        poacountry: e.target.value
-                    }
-                })
+               (e) => {
+                
+                const existing = {...formValues};
+                const temp = existing.client_poa;
+                temp.poacountry = e.target.value 
+                temp.poastate = null 
+                temp.poacity = null 
+                existing.client_poa = temp;
+                setFormValues(existing)
+                setAllState([]);
                 fetchStateData(e.target.value);
                 setAllCity([]);
                }
@@ -89,9 +93,9 @@ const fetchCityData = async (id) => {
             <div className="text-[14px]">City </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.client_poa.poacity} onChange={(e) => {
                 setFormValues({
-                    ...formValues, client_info: {
-                        ...formValues.client_info,
-                        city: e.target.value
+                    ...formValues, client_poa: {
+                        ...formValues.client_poa,
+                        poacity: e.target.value
                     }
                 })
             }}>
@@ -142,10 +146,10 @@ const fetchCityData = async (id) => {
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.client_poa.poastate} onChange={
                 (e) => {
                     setFormValues({
-                        ...formValues, client_info: {
-                            ...formValues.client_info,
-                            state: e.target.value
-                        }
+                      ...formValues, client_poa: {
+                        ...formValues.client_poa,
+                        poastate: e.target.value
+                     }
                     })
                     fetchCityData(e.target.value)
                 }

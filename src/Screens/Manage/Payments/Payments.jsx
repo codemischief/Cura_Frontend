@@ -1230,10 +1230,10 @@ const Payments = () => {
                                 <p>Sr. </p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>Payment to <button onClick={() => handleSort('paymentto')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p>Payment To <button onClick={() => handleSort('paymentto')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[13%]  p-4'>
-                                <p>payment by <button onClick={() => handleSort('paymentby')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p>Payment By <button onClick={() => handleSort('paymentby')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
                                 <p>Amount <button onClick={() => handleSort('amount')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1242,13 +1242,13 @@ const Payments = () => {
                                 <p>Paid On <button onClick={() => handleSort('paidon')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[14%]  p-4'>
-                                <p>Payment mode <button onClick={() => handleSort('paymentmode')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p>Payment Mode <button onClick={() => handleSort('paymentmode')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[13%]  p-4'>
                                 <p>Payment For <button onClick={() => handleSort('paymentfor')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[15%]  p-4'>
-                                <p>Payment status <button onClick={() => handleSort('paymentstatus')}><span className="font-extrabold">↑↓</span></button></p>
+                                <p>Payment Status <button onClick={() => handleSort('paymentstatus')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
                                 <p>Entity <button onClick={() => handleSort('entity')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1356,7 +1356,7 @@ const Payments = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>

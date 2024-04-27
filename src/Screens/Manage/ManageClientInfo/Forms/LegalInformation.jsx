@@ -22,12 +22,8 @@ const LegalInformation = ({formValues,setFormValues,relationData,allCountry,allS
     const response = await APIService.getState(data);
     const result = (await response.json()).data;
     console.log(result)
-    if (Array.isArray(result)) {
-        setAllStates(result)
-        if(result.length >= 1) {
-          fetchCityData(result[0][0]);
-        }
-    }
+    setAllStates(result)
+
 }  
 const fetchCityData = async (id) => {
   const data = { "user_id": 1234, "state_name": id };
@@ -54,14 +50,19 @@ const fetchCityData = async (id) => {
           </div>
           <div className="">
             <div className="text-[14px]">Country </div>
-            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
+            <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.client_legal_info.country} onChange={
               (e) => {
                 // setAllCity([]);
-                setFormValues({...formValues,client_legal_info : {
-                  ...formValues.client_legal_info,
-                  country : e.target.value
-              }})
+                const existing = {...formValues};
+                const temp = existing.client_legal_info
+                temp.country = e.target.value 
+                temp.state = null 
+                temp.city = null
+                existing.client_legal_info = temp;
+                setFormValues(existing)
+               
                 setAllCity([]);
+                setAllStates([])
                 fetchStateData(e.target.value);
               }
             }>

@@ -57,12 +57,8 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
         console.log(result)
-        if (Array.isArray(result)) {
-            setAllState(result)
-            if(result.length >= 1) {
-                fetchCityData(result[0][0])
-            }
-        }
+        setAllState(result)
+        
     }
     const fetchCityData = async (id) => {
         const data = { "user_id": 1234, "state_name": id };
@@ -250,24 +246,29 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     </div>
                     <div className="">
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
-                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
+                        <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" 
+                        value={formValues.client_info.country}
+                        name="country" onChange={
                             (e) => {
-                                setFormValues({
-                                    ...formValues, client_info: {
-                                        ...formValues.client_info,
-                                        country: e.target.value
-                                    }
-                                })
+                                const existing = {...formValues};
+                                const temp = existing.client_info
+                                temp.country = e.target.value;
+                                temp.state = null
+                                temp.city = null
+                                existing.client_info = temp;
+                                setFormValues(existing)
+                               
                                 setAllCity([]);
+                                setAllState([])
                                 fetchStateData(e.target.value)
                                 
                             }
                         }
-                            value={formValues.client_info.country}
+                            // value={formValues.client_info.country}
                         >
                             <option >Select Country</option>
                             {allCountry && allCountry.map(item => {
-                                if (item[0] == 5) {
+                                if (item[0] == formValues.client_info.country) {
                                     return <option key={item[0]} value={item[0]} selected>
                                         {item[1]}
                                     </option>
@@ -424,7 +425,8 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 })
                             }
                         }>
-                            <option value="none" hidden> Select A City</option>
+                            
+                            <option value="none" > Select A City</option>
                             {allCity && allCity.map(item => (
                                 <option value={item.city}>
                                     {item.city}

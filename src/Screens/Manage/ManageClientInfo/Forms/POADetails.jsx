@@ -22,12 +22,7 @@ const POADetails = ({formValues,setFormValues,relationData,allCountries,initialS
     const result = (await response.json()).data;
     console.log('here')
     console.log(result)
-    if (Array.isArray(result)) {
-        setAllStates(result)
-        if(result.length >= 1) {
-          fetchCityData(result[0][0]);
-        }
-    }
+    setAllStates(result)
 }  
 const fetchCityData = async (id) => {
   const data = { "user_id": 1234, "state_name": id };
@@ -56,11 +51,15 @@ const fetchCityData = async (id) => {
             <div className="text-[14px]">Country </div>
             <select className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.client_poa.poacountry} onChange={
               (e) => {
-                setFormValues({...formValues,client_poa : {
-                  ...formValues.client_poa,
-                  poacountry : e.target.value
-              }})
+                const existing = {...formValues};
+                const temp = existing.client_poa;
+                temp.poacountry = e.target.value 
+                temp.poastate = null 
+                temp.poacity = null 
+                existing.client_poa = temp;
+                setFormValues(existing)
                setAllCity([]);
+               setAllStates([])
                fetchStateData(e.target.value);
               }
             }>

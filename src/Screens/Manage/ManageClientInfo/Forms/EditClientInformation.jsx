@@ -123,6 +123,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
        const temp = {...existing.client_info}
        temp.tenantof = e.value
        existing.client_info = temp;
+       getClientPropertyByClientId(e.value)
        setFormValues(existing)
        console.log(formValues)
        setSelectedOption(e)
@@ -254,6 +255,19 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                         country: e.target.value
                                     }
                                 })
+                                setFormValues({
+                                    ...formValues, client_info: {
+                                        ...formValues.client_info,
+                                        state: null
+                                    }
+                                })
+                                setFormValues({
+                                    ...formValues, client_info: {
+                                        ...formValues.client_info,
+                                        city: null
+                                    }
+                                })
+                                setAllState([])
                                 fetchStateData(e.target.value)
                                 setAllCity([]);
                             }
