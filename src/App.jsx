@@ -30,6 +30,7 @@ import ManageLLAgreement from './Screens/Manage/ManageLLAgreement/ManageLLAgreem
 import ManagePmaArgreement from './Screens/Manage/ManagePmaAgreement/ManagePmaAgreement';
 import ManageOrderReceipt from './Screens/Manage/ManageOrderReceipt/ManageOrderReceipt';
 import ManageClientInvoice from './Screens/Manage/ManageClientInvoice/ManageClientInvoice';
+import ManageVendor from './Screens/Manage/ManageVendor/ManagerVendor';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
@@ -101,6 +102,7 @@ const App = () => {
                     <Route path="/manage/managepmaagreement" element={<ManagePmaArgreement />}/>
                     <Route path="/manage/manageorderreceipt" element={<ManageOrderReceipt />}/>
                     <Route path="/manage/manageclientinvoice" element={<ManageClientInvoice />}/>
+                    <Route path="/manage/managevendor" element={<ManageVendor />}/>
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     <Route path='admin/temp' element={<Temp/>}/>
