@@ -642,60 +642,60 @@ const ManageProjectInfo = () => {
                                     <div className='w-[4%] flex'>
 
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                        <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%] px-3 py-2.5'>
+                                        <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%] px-3 py-2.5'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%] px-3 py-2.5'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex p-3'>
-                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[14%] px-3 py-2.5'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%] px-3 py-2.5'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[73%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%] px-3 py-2.5'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex p-3'>
-                                    <div className="w-[87%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[10%] px-3 py-2.5'>
+                                    <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex p-3'>
-                                    <div className="w-[71%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-12 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                    <div className='w-[12%] px-3 py-2.5'>
+                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[15%] flex p-3">
+                                <div className="w-[15%] px-3 py-2.5">
                                     <div className='w-1/2  flex'>
                                     <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-10 bg-[#EBEBEB] rounded-[5px]" />
-                                            <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
+                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex'>
