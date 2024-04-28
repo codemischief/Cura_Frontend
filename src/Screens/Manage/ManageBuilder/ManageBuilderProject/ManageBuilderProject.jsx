@@ -19,6 +19,12 @@ import EditManageBuilder from '../EditManageBuilder';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Filter from "../../../../assets/filter.png"
+import BuilderProjectInformation from "./BuilderProjectInformation";
+import ProjectDetails from "../../ManageProjectInfo/ManageProjectInfoForm/ProjectDetails";
+import BankDetails from "../../ManageProjectInfo/ManageProjectInfoForm/BankDetails";
+import Contact from "../../ManageProjectInfo/ManageProjectInfoForm/Contact";
+import Photos from "../../ManageProjectInfo/ManageProjectInfoForm/Photos";
+import DeleteProjectBuilder from "./DeleteBuilderProject";
 const ManageBuilderProject = () => {
     // we have the module here
     const menuRef = useRef()
@@ -29,7 +35,7 @@ const ManageBuilderProject = () => {
     // console.log(params)
     const [existingProjects, setExistingProjects] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
-    const [showSucess, setShowSucess] = useState(false);
+    const [showSuccess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
@@ -56,14 +62,15 @@ const ManageBuilderProject = () => {
     }
     const openSuccessModal = () => {
         // set the state for true for some time
-        setIsManageBuidlerDialogue(false);
+        setIsManageBuilderDialogue(false);
         setShowSucess(true);
         setTimeout(function () {
             setShowSucess(false)
         }, 2000)
+        fetchBuilderData()
     }
     const openFailureModal = () => {
-        setIsManageBuidlerDialogue(false);
+        setIsManageBuilderDialogue(false);
         setShowFailure(true);
         setTimeout(function () {
             setShowFailure(false)
@@ -199,6 +206,8 @@ const ManageBuilderProject = () => {
     useEffect(() => {
         // fetchUserId();
         fetchBuilderData();
+        getProjectLegalData()
+        getProjectTypeData()
         fetchCountryData();
         fetchCityData();
         fetchStateData();
@@ -219,73 +228,86 @@ const ManageBuilderProject = () => {
     }, []);
     //Validation of the form
     const initialValues = {
-        builderName: "",
-        phone1: "",
-        phone2: "",
-        email1: "",
-        email2: "",
-        address1: "",
-        address2: "",
-        country: "",
-        state: "",
-        city: "",
-        zip: "",
-        website: "",
-        comment: "",
-        suburb: ""
-    };
+        "project_info": {
+            "builderid": state.builderid,
+            "projectname": null,
+            "addressline1": null,
+            "addressline2": null,
+            "suburb": null,
+            "city": 847,
+            "state": 'Maharashtra',
+            "country": 5,
+            "zip": null,
+            "nearestlandmark": null,
+            "project_type": null,
+            "mailgroup1": null,
+            "mailgroup2": null,
+            "website": null,
+            "project_legal_status": null,
+            "rules": null,
+            "completionyear": null,
+            "jurisdiction": null,
+            "taluka": null,
+            "corporationward": null,
+            "policechowkey": null,
+            "maintenance_details": null,
+            "numberoffloors": null,
+            "numberofbuildings": null,
+            "approxtotalunits": null,
+            "tenantstudentsallowed": null,
+            "tenantworkingbachelorsallowed": null,
+            "tenantforeignersallowed": null,
+            "otherdetails": null,
+            "duespayablemonth": null,
+            "policestation": null,
+        },
+        "project_amenities": {
+            "swimmingpool": null,
+            "lift": null,
+            "liftbatterybackup": null,
+            "clubhouse": null,
+            "gym": null,
+            "childrensplayarea": null,
+            "pipedgas": null,
+            "cctvcameras": null,
+            "otheramenities": null,
+            "studio": null,
+            "1BHK": null,
+            "2BHK": null,
+            "3BHK": null,
+            "4BHK": null,
+            "RK": null,
+            "penthouse": null,
+            "other": null,
+            "duplex": null,
+            "rowhouse": null,
+            "otheraccomodationtypes": null,
+            "sourceofwater": null
+        },
+        "project_bank_details": [
+
+        ],
+        "project_contacts": [
+
+        ],
+        "project_photos": [
+
+        ]
+    }
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
 
     // handle changes in input form
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-        // console.log(e.target.value)
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setFormErrors(validate(formValues)); // validate form and set error message
-        console.log(formErrors)
-        if (formValues.builderName == "") {
-            return;
-        }
-        if(formValues.address1 == "") {
-            return ;
-        }
-        if(formValues.phone1 == "") {
-            return ;
-        } 
-        
-        // if(formValues.)
-        setIsLoading(true);
-        addNewBuilder();
-    };
+    
     // validate form and to throw Error message
-    const validate = (values) => {
-        const errors = {};
-        if (!values.builderName) {
-            errors.builderName = "Enter Builder name";
-        }
-        if (!values.phone1) {
-            errors.phone1 = "Enter Phone number";
-        }
-        if (!values.email1) {
-            errors.email1 = "Enter Email";
-        }
-        if (!values.address1) {
-            errors.address1 = "Enter Builder Adress";
-        }
-        return errors;
-    };
+    
 
-    const [isManageBuidlerDialogue, setIsManageBuidlerDialogue] = React.useState(false);
+    const [isManageBuidlerDialogue, setIsManageBuilderDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsManageBuidlerDialogue(true);
+        setIsManageBuilderDialogue(true);
     };
     const handleClose = () => {
-        setIsManageBuidlerDialogue(false);
+        setIsManageBuilderDialogue(false);
     }
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const editBuilder = (item) => {
@@ -323,13 +345,223 @@ const ManageBuilderProject = () => {
     const [suburbFilterInput,setSuburbFilterInput] = useState("")
     const [idFilter,setIdFilter] = useState(false)
     const [idFilterInput,setIdFilterInput] = useState("")
+    const [selectedDialogue,setSelectedDialogue] = useState(1);
+    const [builderNameData,setBuilderNameData] = useState([])
+    const [projectTypeData,setProjectTypeData] = useState([])
+    const [projectLegalData,setProjectLegalData] = useState([])
+    const validate = () => {
+        // var res = true
+        let res = {
+            status: true,
+            page: 1
+        }
+        // if(formValues.project_info.)
+        if (formValues.project_info.projectname == null || formValues.project_info.projectname == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, projectname: "Enter Project name" }
+            })
+            res.status = false
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, projectname: "" }
+            })
+        }
+        if (formValues.project_info.project_type == null || formValues.project_info.project_type == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, project_type: "Select Project Type" }
+            })
+            res.status = false
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, project_type: "" }
+            })
+        }
+        if (formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
+            // we need to set the formErrors
+            console.log('hey')
+            setFormErrors((existing) => {
+                return { ...existing, addressline1: "Enter Adress Line1" }
+            })
+            res.status = false
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, addressline1: "" }
+            })
+        }
 
+        if (formValues.project_info.suburb == null || formValues.project_info.suburb == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter Suburb" }
+            })
+            res.status = false
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+
+
+
+        if (formValues.project_info.builderid == null || formValues.project_info.builderid == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, builderid: "Select Builder Name" }
+            })
+
+            res.status = false
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, builderid: "" }
+            })
+        }
+        if (formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "Enter Project Legal Status" }
+            })
+
+            res.status = false
+            res.page = 2
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "" }
+            })
+        }
+        return res
+    }
+    const addProjectInfo = async () => {
+        console.log(formValues)
+        let temp = validate()
+        if (!temp.status) {
+            console.log(formErrors)
+            setSelectedDialogue(temp.page)
+            return;
+        }
+        const data = {
+            "user_id": 1234,
+            "project_info": {
+                "builderid": Number(formValues.project_info.builderid),
+                "projectname": formValues.project_info.projectname,
+                "addressline1": formValues.project_info.addressline1,
+                "addressline2": formValues.project_info.addressline2,
+                "suburb": formValues.project_info.suburb,
+                "city": Number(formValues.project_info.city),
+                "state": formValues.project_info.state,
+                "country": Number(formValues.project_info.country),
+                "zip": formValues.project_info.zip,
+                "nearestlandmark": formValues.project_info.nearestlandmark,
+                "project_type": Number(formValues.project_info.project_type),
+                "mailgroup1": formValues.project_info.mailgroup1,
+                "mailgroup2": formValues.project_info.mailgroup2,
+                "website": formValues.project_info.website,
+                "project_legal_status": Number(formValues.project_info.project_legal_status),
+                "rules": formValues.project_info.rules,
+                "completionyear": Number(formValues.project_info.completionyear),
+                "jurisdiction": formValues.project_info.jurisdiction,
+                "taluka": formValues.project_info.taluka,
+                "corporationward": formValues.project_info.corporationward,
+                "policechowkey": formValues.project_info.policechowkey,
+                "maintenance_details": formValues.project_info.maintenance_details,
+                "numberoffloors": Number(formValues.project_info.numberoffloors),
+                "numberofbuildings": Number(formValues.project_info.numberofbuildings),
+                "approxtotalunits": formValues.project_info.approxtotalunits,
+                "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
+                "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
+                "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
+                "otherdetails": formValues.project_info.otherdetails,
+                "duespayablemonth": formValues.project_info.duespayablemonth,
+                "policestation": formValues.project_info.policestation
+            },
+            "project_amenities": {
+                "swimmingpool": formValues.project_amenities.swimmingpool,
+                "lift": formValues.project_amenities.lift,
+                "liftbatterybackup": formValues.project_amenities.liftbatterybackup,
+                "clubhouse": formValues.project_amenities.clubhouse,
+                "gym": formValues.project_amenities.gym,
+                "childrensplayarea": formValues.project_amenities.childrensplayarea,
+                "pipedgas": formValues.project_amenities.pipedgas,
+                "cctvcameras": formValues.project_amenities.cctvcameras,
+                "otheramenities": formValues.project_amenities.otheramenities,
+                "studio": formValues.project_amenities.studio,
+                "1BHK": formValues.project_amenities['1BHK'],
+                "2BHK": formValues.project_amenities['2BHK'],
+                "3BHK": formValues.project_amenities['3BHK'],
+                "4BHK": formValues.project_amenities['4BHK'],
+                "RK": formValues.project_amenities['RK'],
+                "penthouse": formValues.project_amenities.penthouse,
+                "other": formValues.project_amenities.other,
+                "duplex": formValues.project_amenities.duplex,
+                "rowhouse": formValues.project_amenities.rowhouse,
+                "otheraccomodationtypes": formValues.project_amenities.otheraccomodationtypes,
+                "sourceofwater": formValues.project_amenities.sourceofwater
+            },
+            "project_bank_details": formValues.project_bank_details,
+            "project_contacts": formValues.project_contacts,
+            "project_photos": formValues.project_photos
+        }
+        const response = await APIService.addProject(data)
+        const res = await response.json()
+        if (res.result == 'success') {
+            setFormValues(initialValues)
+            setIsManageBuilderDialogue(false)
+            openSuccessModal()
+            
+        }
+    }
+    const [currProject,setCurrProject] = useState(0);
+    const handleDelete = (id) => {
+         setCurrProject((prev) => id)
+         setShowDelete(true);
+         
+
+    }
+
+    const deleteProject = async (id) => {
+        // here we write the logic for deleting
+        const data = {
+            "user_id": 1234,
+            "id":id}
+            const response = await APIService.deleteProject(data)
+            const res = await response.json()
+            // showDelete(false)
+            setShowDelete(false)
+            if(res.result == 'success') {
+                // we need the success modal
+                openSuccessModal()
+            }
+    }
+
+
+
+    const getProjectTypeData = async () => {
+        const data = {
+            "user_id": 1234
+        }
+        const response = await APIService.getProjectTypeAdmin(data)
+        const res = await response.json();
+        console.log(res.data)
+        setProjectTypeData(res.data)
+    }
+    const getProjectLegalData = async () => {
+        const data = {
+            "user_id": 1234
+        }
+        const response = await APIService.getProjectLegalStatusAdmin(data)
+        const res = await response.json();
+        console.log(res.data)
+        setProjectLegalData(res.data)
+    }
+    
      return (
         <div >
             <Navbar />
-            <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
-            <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
-            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
+           {showSuccess &&  <SucessfullModal isOpen={showSuccess} message="Builder Project Added Successfully " />}
+            {showFailure && <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />}
+            {/* {showDelete && <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />} */}
+            {showDelete && <DeleteProjectBuilder handleDelete={deleteProject} handleClose={() => setShowDelete(false)} item={currProject} />}
             <div className='flex-col w-full h-full  bg-white'>
                 <div className='flex-col'>
                     {/* this div will have all the content */}
@@ -448,27 +680,27 @@ const ManageBuilderProject = () => {
                         <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                             <div className="w-[85%] flex">
                                 <div className='w-[4%] flex'>
-                                    <div className='p-3'>
+                                    <div className='p-3' draggable>
                                         <p>Sr.</p>
                                     </div>
                                 </div>
                                 <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
+                                    <div className='p-3 ' draggable>
                                         <p>Project Name <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
                                 <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
+                                    <div className='p-3 ' draggable>
                                         <p>Builder Name <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
                                 <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
+                                    <div className='p-3' draggable>
                                         <p>Suburb <span className="font-extrabold">↑↓</span></p>
                                     </div>
                                 </div>
                                 <div className='w-[14%]  flex'>
-                                    <div className='p-3'>
+                                    <div className='p-3' draggable>
                                         <p>Other details/issues </p>
                                     </div>
                                 </div>
@@ -567,7 +799,7 @@ const ManageBuilderProject = () => {
                                         </div>
                                         <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
                                             <img className=' w-5 h-5' src={Edit} alt="edit" />
-                                            <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
 
@@ -622,152 +854,53 @@ const ManageBuilderProject = () => {
             {/* modal goes here */}
             <Modal open={isManageBuidlerDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[20px]'>
-                    <div className="w-[1100px] h-[600px] bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Project</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
-                            </div>
-                        </div>
-                        <form onSubmit={handleSubmit}>
-                            <div className="h-auto w-full mt-[5px] ">
-                                <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Builder Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Phone 1<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.phone1}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Phone 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Email 1<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.email1}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Address 1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.address1}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
-                                            {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="country"
-                                                value={formValues.country}
-                                                defaultValue="Select Country"
-                                                onChange={e => {
-                                                    setselectedCountry(e.target.value);
-                                                    fetchStateData(e);
-                                                    setFormValues((existing) => {
-                                                        const newData = {...existing, country: e.target.value}
-                                                        return newData;
-                                                    })
-                                                    // fetchStateData(res);
-                                                }}
-                                            >
-                                                {allCountry && allCountry.map(item => (
-                                                    <option value={item}>
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.country}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
-                                                name="state"
-                                                value={formValues.state}
-                                                defaultValue="Select State"
-                                                onChange={e => {
-                                                    setSelectedState(e.target.value);
-                                                    fetchCityData(e)
-                                                    setFormValues((existing) => {
-                                                        const newData = {...existing, state: e.target.value}
-                                                        return newData;
-                                                    })
-                                                    // fetchCityData(selectedState);
-                                                }} >
-                                                {allState && allState.map(item => (
-                                                    <option  value={item}>
-                                                        {item}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" onChange={(e) => {
-                                               setFormValues((existing) => {
-                                                const newData = {...existing, city: e.target.value};
-                                                 return newData;
-                                               })
-                                            }}>
-                                            {allCity && allCity.map((item) => {
-                                                return <option value={item}>
-                                                      {item.city}
-                                                </option>
-                                                
-                                            })}
-                                            </select>
-                                           
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">ZIP Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Website</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="website" value={formValues.website} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Comment</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
-                                        </div>
-                                    </div>
+                maxWidth={'md'}
+                className='flex justify-center items-center'
+            >
+                <>
+                    <div className='flex justify-center'>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">New project</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
+                                    <button onClick={() => setIsManageBuilderDialogue(false)}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
-
-                            <div className="mt-[10px] flex justify-center items-center gap-[10px]">
-
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                                {isLoading && <CircularProgress />}
+                            <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
+                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40" >
+                                    <button onClick={() => setSelectedDialogue(1)}><div>Project Information</div></button>
+                                </div>
+                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                    <button onClick={() => setSelectedDialogue(2)}><div>Project details</div></button>
+                                </div>
+                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                    <button onClick={() => setSelectedDialogue(3)}><div>Bank details</div></button>
+                                </div>
+                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                    <button onClick={() => setSelectedDialogue(4)}><div>Contacts</div></button>
+                                </div>
+                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                    <button onClick={() => setSelectedDialogue(5)}><div>Photos</div></button>
+                                </div>
                             </div>
-                        </form>
+                            {selectedDialogue == 1 && <BuilderProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} builderName={params.buildername}/>}
+                            {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
+                            {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                            <div className="my-2 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProjectInfo} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => setIsManageBuilderDialogue(false)}>Cancel</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </>
             </Modal>
+           
         </div>
     )
 }
 
-export default ManageBuilderProject
+export default ManageBuilderProject;

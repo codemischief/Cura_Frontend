@@ -65,7 +65,7 @@ const ManageProjectInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -89,7 +89,7 @@ const ManageProjectInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -109,13 +109,14 @@ const ManageProjectInfo = () => {
         setPageLoading(true);
         console.log(searchInput);
         setCurrentPages((prev) => quantity)
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": searchInput
         };
@@ -131,6 +132,24 @@ const ManageProjectInfo = () => {
     useEffect(() => {
         console.log('called')
         fetchData();
+        const handler = (e) => {
+            console.log(menuRef)
+            if (menuRef.current == null || !menuRef.current.contains(e.target)) {
+                setProjectNameFilter(false)
+                setBuilderNameFilter(false)
+                setSuburbFilter(false)
+                setOtherDetailsFilter(false)
+                setMailGroupFilter(false)
+                setSubscribedEmailFilter(false)
+                setRulesFilter(false)
+                setIdFilter(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        };
     }, []);
 
 
@@ -359,11 +378,12 @@ const ManageProjectInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
-            "order": "asc",
+            "order": flag  ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getProjectInfo(data)
         const temp = await response.json();
@@ -381,7 +401,7 @@ const ManageProjectInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -390,7 +410,8 @@ const ManageProjectInfo = () => {
         }
         const response = await APIService.getProjectInfo(data)
         const res = await response.json();
-
+        setExistingProjectInfo(res.data)
+        setPageLoading(false)
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -400,7 +421,7 @@ const ManageProjectInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -412,7 +433,7 @@ const ManageProjectInfo = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingProjectInfo(result);
         setPageLoading(false);
     }
     const handleCloseSearch = async () => {
@@ -423,7 +444,7 @@ const ManageProjectInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -435,7 +456,7 @@ const ManageProjectInfo = () => {
         const result = temp.data;
         const t = temp.total_count;
         setTotalItems(t);
-        setExistingEmployees(result);
+        setExistingProjectInfo(result);
         setPageLoading(false);
     }
     const [isEditDialogue, setIsEditDialogue] = useState(false)
@@ -653,10 +674,14 @@ const ManageProjectInfo = () => {
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
+            console.log(key)
             if (mapState[key].filterType != "") {
+                console.log(key)
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        console.log(tempArray)
+
         setStateArray(tempArray)
         setCurrentPage((prev) => 1)
         setPageLoading(true);
@@ -768,49 +793,49 @@ const ManageProjectInfo = () => {
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={projectNameFilterInput} onChange={(e) => setProjectNameFilterInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setProjectNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} columnName="projectname" menuRef={menuRef} />}
+                                {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} filterColumn="projectname" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={builderNameFilterInput} onChange={(e) => setBuilderNameFilterInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setBuilderNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} columnName="buildername" menuRef={menuRef} />}
+                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2'  onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} columnName="suburb" menuRef={menuRef} />}
+                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} />}
                             </div>
                             <div className='w-[14%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setOtherDetailsFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} columnName="otherdetails" menuRef={menuRef} />}
+                                {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} filterColumn="otherdetails" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setMailGroupFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} columnName="mailgroup1" menuRef={menuRef} />}
+                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setSubscribedEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} columnName="mailgroup2" menuRef={menuRef} />}
+                                {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup2" menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2'onClick={() => { setRulesFilter((prev) => !prev) }} ><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} columnName="rules" menuRef={menuRef} />}
+                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -820,7 +845,7 @@ const ManageProjectInfo = () => {
                             </div>
                         </div>
                         <div className="w-[15%] px-3 py-2.5">
-                            <div className='w-1/2  flex'>
+                            <div className='w-1/2  '>
                                 <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -862,17 +887,17 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='p-3'>
-                                    <p>Other details/issues </p>
+                                    <p>Other details/issues <button onClick={() => handleSort('otherdetails')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Mail Group </p>
+                                    <p>Mail Group <button onClick={() => handleSort('mailgroup1')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Subscribed email </p>
+                                    <p>Subscribed email <button onClick={() => handleSort('mailgroup2')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
@@ -889,7 +914,7 @@ const ManageProjectInfo = () => {
                         <div className="w-[15%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
-                                    <p>ID</p>
+                                    <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
