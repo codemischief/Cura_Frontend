@@ -470,7 +470,8 @@ return response;
 
  const getProjectById = async (data) => {
   const response = await fetch(`${env_URL_SERVER}getProjectById` , METHOD_POST(data));
-
+  return response;
+ }
  const getVendorsInvoice = async (data) => {
   const response = await fetch(`${env_URL_SERVER}getVendorInvoice` , METHOD_POST(data));
   return response;
