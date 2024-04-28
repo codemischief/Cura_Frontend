@@ -2,7 +2,7 @@ import React from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { useState , useEffect } from "react";
 import { APIService } from '../../../../services/API';
-const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNameData}) => {
+const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNameData,formErrors}) => {
    
     const selectedProjectType =[1,2,3,4];
     const selectedBuilderName = [1,2,3,4];
@@ -76,7 +76,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
         builderName: "",
     };
     // const [formValues, setFormValues] = React.useState(initialValues);
-    const [formErrors, setFormErrors] = React.useState({});
+    // const [formErrors, setFormErrors] = React.useState({});
 
     // handle changes in input form
     const handleChange = (e) => {
@@ -140,7 +140,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                             value={formValues.project_info.projectname}
                             onChange={handleProjectInfoChange}
                         />
-                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.projectName}</div> */}
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.projectname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">
@@ -159,7 +159,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.projectType}</div> */}
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.project_type}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">
@@ -172,7 +172,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                             value={formValues.project_info.addressline1}
                             onChange={handleProjectInfoChange}
                         />
-                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div> */}
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.addressline1}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">
@@ -280,9 +280,9 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                         </div>
                         <select
                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            name="builderName"
-                            value={formValues.builderName}
-                            onChange={handleChange}
+                            name="builderid"
+                            value={formValues.project_info.builderid}
+                            onChange={handleProjectInfoChange}
                         >
                             <option value="none">Select Builder Name</option>
                             {builderNameData.map((item) => (
@@ -291,7 +291,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.builderName}</div> */}
+                        <div className="text-[10px] text-[#CD0000] ">{formErrors.builderid}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Mailing Group</div>

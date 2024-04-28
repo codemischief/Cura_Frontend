@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { useState, useEffect } from "react";
 
-const EditProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
+const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formErrors}) => {
 
   const selectedProjectLegalStatus = [
     "1", "2", "3", "4"
@@ -13,7 +13,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
 
   };
   // const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
+  // const [formErrors, setFormErrors] = useState({});
 
   // handle changes in input form
   const handleChange = (e) => {
@@ -363,14 +363,14 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
               <div className="">
                 <div className="text-[13px]">Project Legal Status <label className="text-red-500">*</label></div>
                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="project_legal_status" value={formValues.project_info.project_legal_status} onChange={handleProjectInfoChange} >
-                  <option value="none" hidden> Select Project Legal Status</option>
+                  <option value={null} hidden> Select Project Legal Status</option>
                   {projectLegalData.map(item => (
                     <option key={item.id} value={item.id}>
                       {item.name}
                     </option>
                   ))}
                 </select>
-                <div className="text-[10px] text-[#CD0000] ">{formErrors.projectLegalStatus}</div>
+                <div className="text-[10px] text-[#CD0000] ">{formErrors.project_legal_status}</div>
               </div>
               <div className="">
                 <div className="text-[13px]">Completion Year</div>
@@ -414,7 +414,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
               </div>
               <div className="">
                 <div className="text-[13px]">Police Station</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="policeStation" />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="policestation" value={formValues.project_info.policestation} onChange={handleProjectInfoChange} />
               </div>
               <div className="">
                 <div className="text-[13px]">Dues Payable Month</div>

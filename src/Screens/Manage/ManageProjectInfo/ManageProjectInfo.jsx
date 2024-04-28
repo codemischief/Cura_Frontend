@@ -24,6 +24,7 @@ import Contact from './ManageProjectInfoForm/Contact';
 import Photos from './ManageProjectInfoForm/Photos';
 import EditProjectInfo from './EditProjectInfo';
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
+import DeleteProjectInfo from './DeleteProjectInfo';
 const ManageProjectInfo = () => {
     const dataRows = ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"]
     // we have the module here
@@ -130,13 +131,21 @@ const ManageProjectInfo = () => {
    
     
     const [formErrors, setFormErrors] = useState({});
+    const [showDeleteModal,setShowDeleteModal] = useState(false)
+    const handleDelete = (id) => {
+        console.log(id)
+        setCurrProject((prev) => id)
+        setShowDeleteModal(true);
+    }
     const deleteProject = async (id) => {
+
         const data = {
             "user_id": 1234,
             "id":id
        }
        const response = await APIService.deleteProject(data);
        const res = await response.json();
+       setShowDeleteModal(false);
        if(res.result == 'success') {
         fetchData()
        }
@@ -148,47 +157,139 @@ const ManageProjectInfo = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        setFormErrors(validate(formValues));
+        // setFormErrors(validate(formValues));
 
         // handle adding of data
         
 
 
     };
+    // const [formErrors,setFormErrors] = useState({});
+    const validate = () => {
+        // var res = true
+        let res = {
+            status : true,
+            page : 1
+        }
+        // if(formValues.project_info.)
+        if(formValues.project_info.projectname == null || formValues.project_info.projectname == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, projectname: "Enter Project name" }
+            })
+            res.status = false
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, projectname: "" }
+            })
+        }
+        if(formValues.project_info.project_type == null || formValues.project_info.project_type == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, project_type: "Select Project Type" }
+            })
+            res.status = false
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, project_type: "" }
+            })
+        }
+        if(formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
+            // we need to set the formErrors
+            console.log('hey')
+            setFormErrors((existing) => {
+                return { ...existing, addressline1: "Enter Adress Line1" }
+            })
+            res.status = false
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, addressline1: "" }
+            })
+        }
+        
+        if(formValues.project_info.suburb == null || formValues.project_info.suburb == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter Suburb" }
+            })
+            res.status = false
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+
+
+
+        if(formValues.project_info.builderid == null || formValues.project_info.builderid == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, builderid: "Select Builder Name" }
+            })
+            
+            res.status = false
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, builderid: "" }
+            })
+        }
+        if(formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "Enter Project Legal Status" }
+            })
+            
+            res.status = false
+            res.page = 2
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "" }
+            })
+        }
+        return res
+    }
     const addProjectInfo = async () => {
+        console.log(formValues)
+        let temp = validate()
+        if(!temp.status) {
+            console.log(formErrors)
+            setSelectedDialogue(temp.page)
+            return ;
+        }
         const data = {
             "user_id": 1234,
             "project_info": {
-              "builderid": formValues.project_info.builderid,
+              "builderid": Number(formValues.project_info.builderid),
               "projectname": formValues.project_info.projectname,
               "addressline1": formValues.project_info.addressline1,
               "addressline2": formValues.project_info.addressline2,
               "suburb": formValues.project_info.suburb,
-              "city": formValues.project_info.city,
+              "city": Number(formValues.project_info.city),
               "state": formValues.project_info.state,
-              "country": formValues.project_info.country,
+              "country": Number(formValues.project_info.country),
               "zip": formValues.project_info.zip,
               "nearestlandmark": formValues.project_info.nearestlandmark,
-              "project_type": formValues.project_info.project_type,
+              "project_type": Number(formValues.project_info.project_type),
               "mailgroup1": formValues.project_info.mailgroup1,
               "mailgroup2": formValues.project_info.mailgroup2,
               "website": formValues.project_info.website,
-              "project_legal_status": formValues.project_info.project_legal_status,
+              "project_legal_status": Number(formValues.project_info.project_legal_status),
               "rules": formValues.project_info.rules,
-              "completionyear": formValues.project_info.completionyear,
+              "completionyear": Number(formValues.project_info.completionyear),
               "jurisdiction": formValues.project_info.jurisdiction,
               "taluka": formValues.project_info.taluka,
               "corporationward": formValues.project_info.corporationward,
               "policechowkey": formValues.project_info.policechowkey,
               "maintenance_details": formValues.project_info.maintenance_details,
-              "numberoffloors": formValues.project_info.numberoffloors,
-              "numberofbuildings": formValues.project_info.numberofbuildings,
+              "numberoffloors": Number(formValues.project_info.numberoffloors),
+              "numberofbuildings": Number(formValues.project_info.numberofbuildings),
               "approxtotalunits": formValues.project_info.approxtotalunits,
               "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
               "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
               "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
               "otherdetails": formValues.project_info.otherdetails,
-              "duespayablemonth": formValues.project_info.duespayablemonth
+              "duespayablemonth": formValues.project_info.duespayablemonth,
+              "policestation" : formValues.project_info.policestation
             },
             "project_amenities": {
                 "swimmingpool": formValues.project_amenities.swimmingpool,
@@ -222,64 +323,12 @@ const ManageProjectInfo = () => {
           const res = await response.json()
           if(res.result == 'success') {
             setIsStateDialogue(false)
+            setFormValues(initialValues);
             openAddSuccess();
             // we need to fetch the data and open the success modal
           }
     }
     // validate form and to throw Error message
-    const validate = (values) => {
-        const errors = {};
-        if (!values.employeeName) {
-            errors.employeeName = "Enter employee name";
-        }
-        if (!values.panNo) {
-            errors.panNo = "Enter PAN number";
-        }
-        if (!values.userName) {
-            errors.userName = "select userName";
-        }
-        if (!values.doj) {
-            errors.doj = "Enter date of joining";
-        }
-        if (!values.desc) {
-            errors.desc = "Enter Designamtion";
-        }
-        if (!values.email) {
-            errors.email = "Enter email addresss";
-        }
-        if (!values.employeeId) {
-            errors.employeeId = "Enter employee ID";
-        }
-        if (!values.lob) {
-            errors.lob = "Select LOB";
-        }
-        if (!values.dob) {
-            errors.dob = "Enter date of birth";
-        }
-        if (!values.role) {
-            errors.role = "select role";
-        }
-        if (!values.phNo) {
-            errors.phNo = "Enter phone number";
-        }
-        if (!values.country) {
-            errors.country = " Select country";
-        }
-        if (!values.state) {
-            errors.state = "Select state";
-        }
-        if (!values.city) {
-            errors.city = "Select city";
-        }
-        if (!values.suburb) {
-            errors.suburb = "Enter suburb";
-        }
-        if (!values.entity) {
-            errors.entity = "Enter entity";
-        }
-        return errors;
-    };
-
     const [isStateDialogue, setIsStateDialogue] = React.useState(false);
     const handleOpen = () => {
         setIsStateDialogue(true);
@@ -424,7 +473,8 @@ const ManageProjectInfo = () => {
             "tenantworkingbachelorsallowed": null,
             "tenantforeignersallowed": null,
             "otherdetails": null,
-            "duespayablemonth": null
+            "duespayablemonth": null,
+            "policestation" : null,
         },
         "project_amenities": {
             "swimmingpool": null,
@@ -525,11 +575,22 @@ const ManageProjectInfo = () => {
         setCurrProject((prev) => id)
         setIsEditDialogue(true)
     }
+    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const openEditSuccess = () => {
+        setIsEditDialogue(false)
+        setShowEditSuccess(true)
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        }, 2000)
+        fetchData();
+    }
     return (
         <div className="h-screen">
             <Navbar />
-            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject}/>}
+            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} />}
+            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Project Info Added!"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -771,7 +832,7 @@ const ManageProjectInfo = () => {
                                         </div>
                                         <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
                                             <button onClick={() => handleEdit(item.id)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => deleteProject(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                            <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                         </div>
                                     </div>
 
@@ -885,8 +946,8 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} />}
-                            {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData}/>}
+                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors}/>}
+                            {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
                             {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues}/>}
