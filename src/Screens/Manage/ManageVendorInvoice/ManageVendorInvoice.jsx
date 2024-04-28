@@ -199,6 +199,15 @@ const ManageVendorInvoice = () => {
         setUsersData(res.data)
     }
 
+    const [vendorData,setVendorData] = useState([])
+    const fetchVendorData = async () => {
+        const data = {"user_id" : 1234}
+        const response = await APIService.getVendorAdmin(data)
+        const res = await response.json()
+        console.log(res)
+        setVendorData(res.data)
+    }
+
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const [existingVendorInvoice, setExistingVendorInvoice] = useState([]);
@@ -394,18 +403,18 @@ const ManageVendorInvoice = () => {
 
         const data = {
             "user_id": 1234,
-            "estimatedate": "2024-04-27",
-            "amount": 25000.00,
-            "estimatedesc": "newdesc",
-            "orderid": 435229,
-            "vendorid": 13348,
-            "invoicedate": "2024-04-27",
-            "invoiceamount": 26000.00,
-            "notes": "newnotes",
-            "vat1": 10.50,
-            "vat2": 8.50,
-            "servicetax": 20.50,
-            "invoicenumber": "2024/1",
+            "estimatedate": formValues.estimateDate,
+            "amount": Number(formValues.estimateAmount),
+            "estimatedesc": formValues.invoicedescription,
+            "orderid": Number(formValues.order),
+            "vendorid": Number(formValues.vendor),
+            "invoicedate": formValues.invoiceDate,
+            "invoiceamount": Number(formValues.invoiceAmount),
+            "notes": formValues.notes,
+            "vat1": Number(formValues.vat5),
+            "vat2": Number(formValues.vat12),
+            "servicetax": Number(formValues.gst),
+            "invoicenumber": formValues.invoiceNumber,
             "entityid": 1,
             "officeid": 2
         }
@@ -442,7 +451,7 @@ const ManageVendorInvoice = () => {
     }
     const initialValues = {
         client: "",
-        vendor: "",
+        vendor: null,
         invoiceAmount: "",
         estimateDate: null,
         vat5: "",
@@ -463,6 +472,7 @@ const ManageVendorInvoice = () => {
         fetchUsersData();
         fetchLobData();
         fetchModesData();
+        fetchVendorData();
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
@@ -1023,7 +1033,7 @@ const ManageVendorInvoice = () => {
             <Navbar />
             {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currVendorInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice Created successfully" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Created successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationVendorInvoice addVendorInvoice={addVendorInvoice} handleClose={() => setOpenAddConfirmation(false)} />}
@@ -1441,20 +1451,27 @@ const ManageVendorInvoice = () => {
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Vendor </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <div className="text-[13px]">Vendor</div>
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <option value={null}> Select Vendor</option>
+                                            {vendorData.map(item => (
+                                                <option key={item[0]} value={item[0]}>
+                                                    {item[1]}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Invoice Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.invoiceAmount} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Estimate Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="TDS" value={formValues.estimateDate} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Vat 5% </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.vat5} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
                                     </div>
 
                                 </div>
@@ -1500,19 +1517,19 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Invoice Number </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.invoiceNumber} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">GST/ST </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.gst} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Estimate Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.estimateAmount} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">VAT 12.5% </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.vat12} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
@@ -1537,15 +1554,15 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Invoice Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="TDS" value={formValues.invoiceDate} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Invoice/Estiamte Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.invoicedescription} onChange={handleChange} />
+                                        <div className="text-[13px]">Invoice/Estimate Description </div>
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Notes </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.notes} onChange={handleChange} />
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
