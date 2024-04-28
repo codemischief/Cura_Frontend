@@ -30,7 +30,8 @@ import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-import EditOrderReceipt from './EditOrderReceipt';
+// import EditOrderReceipt from './EditOrderReceipt';
+import EditVendorInvoice from './EditVendorInvoice';
 const ManageVendorInvoice = () => {
 
     const menuRef = useRef();
@@ -371,12 +372,6 @@ const ManageVendorInvoice = () => {
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
-        //    if(res.data.length >= 1) {
-        //     const existing = {...formValues}
-        //     existing.clientProperty = res.data[0].id
-        //     console.log(res.data[0].id)
-        //     setFormValues(existing)
-        //  } 
     }
     const [orders, setOrders] = useState([]);
 
@@ -390,14 +385,6 @@ const ManageVendorInvoice = () => {
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
-
-        // if(res.data.length >= 1) {
-        //    const existing = {...formValues}
-        //    existing.order = res.data[0].id
-        //    console.log(res.data[0].id)
-        //    setFormValues(existing)
-
-        // } 
     }
     const addVendorInvoice = async () => {
 
@@ -442,36 +429,34 @@ const ManageVendorInvoice = () => {
         }
     }
     const [showEditModal, setShowEditModal] = useState(false);
+    const [currInvoice,setCurrInvoice] = useState(0);
     const handleEdit = (id) => {
         // we need to open the edit modal
         console.log(id)
-        setCurrOrderReceipt((prev) => id)
-        console.log(currOrderReceipt)
+        setCurrInvoice((prev) => id)
+        // setCurrOrderReceipt((prev) => id)
+        // console.log(currOrderReceipt)
         setShowEditModal(true);
     }
     const initialValues = {
-        client: "",
+        client: null,
         vendor: null,
-        invoiceAmount: "",
+        invoiceAmount: null,
         estimateDate: null,
-        vat5: "",
-        invoiceNumber: "",
-        gst: "",
-        estimateAmount: "",
-        vat12: "",
+        vat5: null,
+        invoiceNumber: null,
+        gst: null,
+        estimateAmount: null,
+        vat12: null,
         order: null,
         invoiceDate: null,
-        invoicedescription: "",
-        notes: "",
+        invoicedescription: null,
+        notes:null,
     };
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
         fetchData();
-        fetchEntitiesData();
-        fetchRoleData();
-        fetchUsersData();
-        fetchLobData();
-        fetchModesData();
+        // fetchUsersData();
         fetchVendorData();
 
         const handler = (e) => {
@@ -495,11 +480,7 @@ const ManageVendorInvoice = () => {
         };
     }, []);
 
-    const handleOpenEdit = (oldItem) => {
-        console.log('called');
-        setIsEditDialogue(true);
-        setCurrItem(oldItem)
-    };
+    
 
     const handleOpen = () => {
         SetIsVendorInvoiceDialogue(true);
@@ -508,11 +489,6 @@ const ManageVendorInvoice = () => {
     const handleClose = () => {
         SetIsVendorInvoiceDialogue(false);
     }
-
-    // harcoded dropdown
-    const clientProperty = [1, 2, 3, 4];
-
-    const client = [1, 2, 3, 4];
 
 
     const handleAddVendorInvoice = () => {
@@ -561,18 +537,6 @@ const ManageVendorInvoice = () => {
         }
 
         return res;
-    }
-    const [currEmployeeId, setCurrEmployeeId] = useState("");
-
-    const deleteEmployee = async (id) => {
-        const data = {
-            "user_id": 1234,
-            "id": id
-        }
-        const response = await APIService.deleteEmployee(data);
-        showDeleteConfirmation(false);
-
-        openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
         console.log(value);
@@ -1031,7 +995,7 @@ const ManageVendorInvoice = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currVendorInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} />}
+            {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice Created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
@@ -1084,8 +1048,6 @@ const ManageVendorInvoice = () => {
                     </div>
 
                 </div>
-
-
 
 
 
@@ -1279,8 +1241,7 @@ const ManageVendorInvoice = () => {
                                 <div className="w-[90%] flex">
                                     <div className='w-[4%] flex'>
                                         <div className='px-3 py-5'>
-                                            {console.log(currentPage, currentPages)}
-                                            {/* {console.log(index + 1 + (currentPage - 1) * currentPages)} */}
+                                            
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
