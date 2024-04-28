@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
@@ -25,9 +25,14 @@ import Photos from './ManageProjectInfoForm/Photos';
 import EditProjectInfo from './EditProjectInfo';
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
 import DeleteProjectInfo from './DeleteProjectInfo';
+import CharacterFilter from '../../../Components/Filters/CharacterFilter';
+import NumericFilter from '../../../Components/Filters/NumericFilter';
 const ManageProjectInfo = () => {
-    const dataRows = ["buildername", "builderid","projectname","addressline1","addressline2","suburb","city","state","country","zip","nearestlandmark","project_type","mailgroup1","mailgroup2","website","project_legal_status","rules","completionyear","jurisdiction","taluka","corporationward","policechowkey","policestation","maintenance_details","numberoffloors","numberofbuildings","approxtotalunits","tenantstudentsallowed","tenantworkingbachelorsallowed","tenantforeignersallowed","otherdetails","duespayablemonth","dated","createdby","isdeleted","id"]
+    const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
     // we have the module here
+
+    const menuRef = useRef();
+
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
@@ -37,8 +42,8 @@ const ManageProjectInfo = () => {
     const [searchInput, setSearchInput] = useState("");
     const [isSearchOn, setIsSearchOn] = useState(false);
     const [selectedDialogue, setSelectedDialogue] = useState(1);
-    const [sortField,setSortField] = useState("id");
-    const [flag,setFlag] = useState(false)
+    const [sortField, setSortField] = useState("id");
+    const [flag, setFlag] = useState(false);
     const selectFirst = () => {
         setSelectedDialogue(1);
     }
@@ -55,7 +60,7 @@ const ManageProjectInfo = () => {
         setSelectedDialogue(5);
     }
     const fetchData = async () => {
-        setCurrentPage((prev) => 1)       
+        setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -65,7 +70,7 @@ const ManageProjectInfo = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": searchInput 
+            "search_key": searchInput
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
@@ -86,10 +91,10 @@ const ManageProjectInfo = () => {
             "rows": dataRows,
             "filters": [],
             "sort_by": [sortField],
-            "order": flag ? "asc": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key":  searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
@@ -112,7 +117,7 @@ const ManageProjectInfo = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(quantity),
-            "search_key":  searchInput 
+            "search_key": searchInput
         };
         const response = await APIService.getProjectInfo(data);
         const temp = await response.json();
@@ -127,11 +132,11 @@ const ManageProjectInfo = () => {
         console.log('called')
         fetchData();
     }, []);
-    
-   
-    
+
+
+
     const [formErrors, setFormErrors] = useState({});
-    const [showDeleteModal,setShowDeleteModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const handleDelete = (id) => {
         console.log(id)
         setCurrProject((prev) => id)
@@ -141,14 +146,14 @@ const ManageProjectInfo = () => {
 
         const data = {
             "user_id": 1234,
-            "id":id
-       }
-       const response = await APIService.deleteProject(data);
-       const res = await response.json();
-       setShowDeleteModal(false);
-       if(res.result == 'success') {
-        fetchData()
-       }
+            "id": id
+        }
+        const response = await APIService.deleteProject(data);
+        const res = await response.json();
+        setShowDeleteModal(false);
+        if (res.result == 'success') {
+            fetchData()
+        }
 
     }
     const handleChange = (e) => {
@@ -160,7 +165,7 @@ const ManageProjectInfo = () => {
         // setFormErrors(validate(formValues));
 
         // handle adding of data
-        
+
 
 
     };
@@ -168,52 +173,52 @@ const ManageProjectInfo = () => {
     const validate = () => {
         // var res = true
         let res = {
-            status : true,
-            page : 1
+            status: true,
+            page: 1
         }
         // if(formValues.project_info.)
-        if(formValues.project_info.projectname == null || formValues.project_info.projectname == "") {
+        if (formValues.project_info.projectname == null || formValues.project_info.projectname == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
                 return { ...existing, projectname: "Enter Project name" }
             })
             res.status = false
-        }else {
+        } else {
             setFormErrors((existing) => {
                 return { ...existing, projectname: "" }
             })
         }
-        if(formValues.project_info.project_type == null || formValues.project_info.project_type == "") {
+        if (formValues.project_info.project_type == null || formValues.project_info.project_type == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
                 return { ...existing, project_type: "Select Project Type" }
             })
             res.status = false
-        }else {
+        } else {
             setFormErrors((existing) => {
                 return { ...existing, project_type: "" }
             })
         }
-        if(formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
+        if (formValues.project_info.addressline1 == null || formValues.project_info.addressline1 == "") {
             // we need to set the formErrors
             console.log('hey')
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "Enter Adress Line1" }
             })
             res.status = false
-        }else {
+        } else {
             setFormErrors((existing) => {
                 return { ...existing, addressline1: "" }
             })
         }
-        
-        if(formValues.project_info.suburb == null || formValues.project_info.suburb == "") {
+
+        if (formValues.project_info.suburb == null || formValues.project_info.suburb == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
                 return { ...existing, suburb: "Enter Suburb" }
             })
             res.status = false
-        }else {
+        } else {
             setFormErrors((existing) => {
                 return { ...existing, suburb: "" }
             })
@@ -221,27 +226,27 @@ const ManageProjectInfo = () => {
 
 
 
-        if(formValues.project_info.builderid == null || formValues.project_info.builderid == "") {
+        if (formValues.project_info.builderid == null || formValues.project_info.builderid == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
                 return { ...existing, builderid: "Select Builder Name" }
             })
-            
+
             res.status = false
-        }else {
+        } else {
             setFormErrors((existing) => {
                 return { ...existing, builderid: "" }
             })
         }
-        if(formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
+        if (formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
             // we need to set the formErrors
             setFormErrors((existing) => {
                 return { ...existing, project_legal_status: "Enter Project Legal Status" }
             })
-            
+
             res.status = false
             res.page = 2
-        }else {
+        } else {
             setFormErrors((existing) => {
                 return { ...existing, project_legal_status: "" }
             })
@@ -251,45 +256,45 @@ const ManageProjectInfo = () => {
     const addProjectInfo = async () => {
         console.log(formValues)
         let temp = validate()
-        if(!temp.status) {
+        if (!temp.status) {
             console.log(formErrors)
             setSelectedDialogue(temp.page)
-            return ;
+            return;
         }
         const data = {
             "user_id": 1234,
             "project_info": {
-              "builderid": Number(formValues.project_info.builderid),
-              "projectname": formValues.project_info.projectname,
-              "addressline1": formValues.project_info.addressline1,
-              "addressline2": formValues.project_info.addressline2,
-              "suburb": formValues.project_info.suburb,
-              "city": Number(formValues.project_info.city),
-              "state": formValues.project_info.state,
-              "country": Number(formValues.project_info.country),
-              "zip": formValues.project_info.zip,
-              "nearestlandmark": formValues.project_info.nearestlandmark,
-              "project_type": Number(formValues.project_info.project_type),
-              "mailgroup1": formValues.project_info.mailgroup1,
-              "mailgroup2": formValues.project_info.mailgroup2,
-              "website": formValues.project_info.website,
-              "project_legal_status": Number(formValues.project_info.project_legal_status),
-              "rules": formValues.project_info.rules,
-              "completionyear": Number(formValues.project_info.completionyear),
-              "jurisdiction": formValues.project_info.jurisdiction,
-              "taluka": formValues.project_info.taluka,
-              "corporationward": formValues.project_info.corporationward,
-              "policechowkey": formValues.project_info.policechowkey,
-              "maintenance_details": formValues.project_info.maintenance_details,
-              "numberoffloors": Number(formValues.project_info.numberoffloors),
-              "numberofbuildings": Number(formValues.project_info.numberofbuildings),
-              "approxtotalunits": formValues.project_info.approxtotalunits,
-              "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
-              "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
-              "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
-              "otherdetails": formValues.project_info.otherdetails,
-              "duespayablemonth": formValues.project_info.duespayablemonth,
-              "policestation" : formValues.project_info.policestation
+                "builderid": Number(formValues.project_info.builderid),
+                "projectname": formValues.project_info.projectname,
+                "addressline1": formValues.project_info.addressline1,
+                "addressline2": formValues.project_info.addressline2,
+                "suburb": formValues.project_info.suburb,
+                "city": Number(formValues.project_info.city),
+                "state": formValues.project_info.state,
+                "country": Number(formValues.project_info.country),
+                "zip": formValues.project_info.zip,
+                "nearestlandmark": formValues.project_info.nearestlandmark,
+                "project_type": Number(formValues.project_info.project_type),
+                "mailgroup1": formValues.project_info.mailgroup1,
+                "mailgroup2": formValues.project_info.mailgroup2,
+                "website": formValues.project_info.website,
+                "project_legal_status": Number(formValues.project_info.project_legal_status),
+                "rules": formValues.project_info.rules,
+                "completionyear": Number(formValues.project_info.completionyear),
+                "jurisdiction": formValues.project_info.jurisdiction,
+                "taluka": formValues.project_info.taluka,
+                "corporationward": formValues.project_info.corporationward,
+                "policechowkey": formValues.project_info.policechowkey,
+                "maintenance_details": formValues.project_info.maintenance_details,
+                "numberoffloors": Number(formValues.project_info.numberoffloors),
+                "numberofbuildings": Number(formValues.project_info.numberofbuildings),
+                "approxtotalunits": formValues.project_info.approxtotalunits,
+                "tenantstudentsallowed": formValues.project_info.tenantstudentsallowed,
+                "tenantworkingbachelorsallowed": formValues.project_info.tenantworkingbachelorsallowed,
+                "tenantforeignersallowed": formValues.project_info.tenantforeignersallowed,
+                "otherdetails": formValues.project_info.otherdetails,
+                "duespayablemonth": formValues.project_info.duespayablemonth,
+                "policestation": formValues.project_info.policestation
             },
             "project_amenities": {
                 "swimmingpool": formValues.project_amenities.swimmingpool,
@@ -317,16 +322,16 @@ const ManageProjectInfo = () => {
             "project_bank_details": formValues.project_bank_details,
             "project_contacts": formValues.project_contacts,
             "project_photos": formValues.project_photos
-          }
-          
-          const response = await APIService.addProject(data)
-          const res = await response.json()
-          if(res.result == 'success') {
+        }
+
+        const response = await APIService.addProject(data)
+        const res = await response.json()
+        if (res.result == 'success') {
             setIsStateDialogue(false)
             setFormValues(initialValues);
             openAddSuccess();
             // we need to fetch the data and open the success modal
-          }
+        }
     }
     // validate form and to throw Error message
     const [isStateDialogue, setIsStateDialogue] = React.useState(false);
@@ -371,20 +376,21 @@ const ManageProjectInfo = () => {
     }
     const handleSort = async (field) => {
         setPageLoading(true);
-         setSortField((prev) => field)
-         const data  = {
-            "user_id" : 1234,
-            "rows" : dataRows,
-            "filters" : [],
-            "sort_by" : [sortField],
-            "order" : flag ? "asc" : "desc",
-            "pg_no" : Number(currentPage),
-            "pq_size" : Number(currentPages),
-            "search_key" : searchInput
-         }
-         const response = await APIService.getProjectInfo(data)
-         const res = await response.json();
-         
+        setSortField((prev) => field)
+        setFlag((prev) => !prev);
+        const data = {
+            "user_id": 1234,
+            "rows": dataRows,
+            "filters": [],
+            "sort_by": [sortField],
+            "order": !flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pq_size": Number(currentPages),
+            "search_key": searchInput
+        }
+        const response = await APIService.getProjectInfo(data)
+        const res = await response.json();
+
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -432,8 +438,8 @@ const ManageProjectInfo = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     }
-    const [isEditDialogue,setIsEditDialogue] = useState(false)
-    const [showAddSuccess,setShowAddSuccess] = useState(false)
+    const [isEditDialogue, setIsEditDialogue] = useState(false)
+    const [showAddSuccess, setShowAddSuccess] = useState(false)
     const openAddSuccess = () => {
         // close the add modal
         setShowAddSuccess(true)
@@ -474,7 +480,7 @@ const ManageProjectInfo = () => {
             "tenantforeignersallowed": null,
             "otherdetails": null,
             "duespayablemonth": null,
-            "policestation" : null,
+            "policestation": null,
         },
         "project_amenities": {
             "swimmingpool": null,
@@ -500,82 +506,197 @@ const ManageProjectInfo = () => {
             "sourceofwater": null
         },
         "project_bank_details": [
-            
+
         ],
         "project_contacts": [
-           
+
         ],
         "project_photos": [
-            
+
         ]
     }
-      const [formValues, setFormValues] = useState(initialValues);
+    const [formValues, setFormValues] = useState(initialValues);
 
 
     // utlity routes
-    const [builderNameData,setBuilderNameData] = useState([])
-    const [projectTypeData,setProjectTypeData] = useState([])
-    const [projectLegalData,setProjectLegalData] = useState([])
+    const [builderNameData, setBuilderNameData] = useState([])
+    const [projectTypeData, setProjectTypeData] = useState([])
+    const [projectLegalData, setProjectLegalData] = useState([])
     const getBuildersData = async () => {
-       const data = {
-        "user_id" : 1234
-       }
-       const response = await APIService.getBuildersAdmin(data);
-       const res = await response.json();
-       console.log(res)
-       setBuilderNameData(res.data)
+        const data = {
+            "user_id": 1234
+        }
+        const response = await APIService.getBuildersAdmin(data);
+        const res = await response.json();
+        console.log(res)
+        setBuilderNameData(res.data)
     }
     const getProjectTypeData = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
         const response = await APIService.getProjectTypeAdmin(data)
         const res = await response.json();
         console.log(res.data)
         setProjectTypeData(res.data)
-    } 
+    }
     const getProjectLegalData = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
         const response = await APIService.getProjectLegalStatusAdmin(data)
         const res = await response.json();
         console.log(res.data)
         setProjectLegalData(res.data)
     }
-    
+
+    const [projectNameFilter, setProjectNameFilter] = useState(false);
+    const [projectNameFilterInput, setProjectNameFilterInput] = useState("");
+    const [builderNameFilter, setBuilderNameFilter] = useState(false);
+    const [builderNameFilterInput, setBuilderNameFilterInput] = useState("");
+    const [suburbFilter, setSuburbFilter] = useState(false);
+    const [suburbFilterInput, setSuburbFilterInput] = useState("");
+    const [otherDetailsFilter, setOtherDetailsFilter] = useState(false);
+    const [otherDetailsFilterInput, setOtherDetailsFilterInput] = useState("");
+    const [mailGroupFilter, setMailGroupFilter] = useState(false);
+    const [mailGroupFilterInput, setMailGroupFilterInput] = useState("");
+    const [subscribedEmailFilter, setSubscribedEmailFilter] = useState(false);
+    const [subscribedEmailFilterInput, setSubscribedEmailFilterInput] = useState("");
+    const [rulesFilter, setRulesFilter] = useState(false);
+    const [rulesFilterInput, setRulesFilterInput] = useState("");
+    const [idFilter, setIdFilter] = useState(false)
+    const [idFilterInput, setIdFilterInput] = useState("");
+
+    const filterMapping = {
+        projectname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        buildername: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        suburb: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        otherdetails: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        mailgroup1: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        mailgroup2: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        rules: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
+        },
+
+    }
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+        console.log(columnName)
+        console.log('hey')
+        console.log(filterMapState);
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter') setInputVariable("");
 
 
+        fetchFiltered(existing);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
+    const [stateArray, setStateArray] = useState([]);
+    const fetchFiltered = async (mapState) => {
+        setFilterMapState(mapState)
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setStateArray(tempArray)
+        setCurrentPage((prev) => 1)
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": dataRows,
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
+            "pg_size": Number(currentPages),
+            "search_key": searchInput
+        };
+        const response = await APIService.getProjectInfo(data);
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingProjectInfo(result);
+        console.log(result);
+        setPageLoading(false);
+    }
 
 
     // end utility routes here
     useEffect(() => {
-      getBuildersData()
-      getProjectTypeData()
-      getProjectLegalData()
-    },[])
+        getBuildersData()
+        getProjectTypeData()
+        getProjectLegalData()
+    }, [])
     const addProject = () => {
 
     }
-    const [currProject,setCurrProject] = useState(0);
+    const [currProject, setCurrProject] = useState(0);
     const handleEdit = (id) => {
         console.log(id)
         setCurrProject((prev) => id)
         setIsEditDialogue(true)
     }
-    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
     const openEditSuccess = () => {
         setIsEditDialogue(false)
         setShowEditSuccess(true)
@@ -588,9 +709,9 @@ const ManageProjectInfo = () => {
         <div className="h-screen">
             <Navbar />
             {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} />}
-            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject}/>}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Project Info Added!"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
+            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Project Info Added!" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -637,210 +758,218 @@ const ManageProjectInfo = () => {
                 </div>
 
                 <div className='h-12 w-full bg-white'>
-                            <div className='w-full h-12 bg-white flex justify-between'>
-                                <div className="w-[85%] flex">
-                                    <div className='w-[4%] flex'>
+                    <div className='w-full h-12 bg-white flex justify-between'>
+                        <div className="w-[85%] flex">
+                            <div className='w-[4%] flex'>
 
-                                    </div>
-                                    <div className='w-[12%] px-3 py-2.5'>
-                                        <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%] px-3 py-2.5'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%] px-3 py-2.5'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[14%] px-3 py-2.5'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%] px-3 py-2.5'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%] px-3 py-2.5'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%] px-3 py-2.5'>
-                                    <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-[12%] px-3 py-2.5'>
-                                    <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div className='w-[12%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={projectNameFilterInput} onChange={(e) => setProjectNameFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2' onClick={() => { setProjectNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                <div className="w-[15%] px-3 py-2.5">
-                                    <div className='w-1/2  flex'>
-                                    <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
-                                            <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' /></button>
-                                        </div>
-                                    </div>
-                                    <div className='w-1/2  flex'>
+                                {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} columnName="projectname" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[12%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={builderNameFilterInput} onChange={(e) => setBuilderNameFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2' onClick={() => { setBuilderNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} columnName="buildername" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[12%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2'  onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} columnName="suburb" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[14%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)} />
+                                    <button className='w-[25%] px-1 py-2' onClick={() => { setOtherDetailsFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} columnName="otherdetails" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[12%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2' onClick={() => { setMailGroupFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} columnName="mailgroup1" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[12%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2' onClick={() => { setSubscribedEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} columnName="mailgroup2" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[10%] px-3 py-2.5'>
+                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)} />
+                                    <button className='w-[30%] px-1 py-2'onClick={() => { setRulesFilter((prev) => !prev) }} ><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} columnName="rules" menuRef={menuRef} />}
+                            </div>
+                            <div className='w-[12%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
+                                    <button className='w-[30%] px-1 py-2' ><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-[15%] px-3 py-2.5">
+                            <div className='w-1/2  flex'>
+                                <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
+                                    <button className='w-[30%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            </div>
+                            <div className='w-1/2  flex'>
+                                <div className='p-3'>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                        <div className="w-[85%] flex">
+                            <div className='w-[4%] flex'>
+                                <div className='p-3'>
+                                    <p>Sr.</p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Project Name <button onClick={() => handleSort('projectname')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Builder Name <button onClick={() => handleSort('buildername')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Suburb <button onClick={() => handleSort('suburb')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[14%]  flex'>
+                                <div className='p-3'>
+                                    <p>Other details/issues </p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Mail Group </p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Subscribed email </p>
+                                </div>
+                            </div>
+                            <div className='w-[10%]  flex'>
+                                <div className='p-3'>
+                                    <p>Rules <button onClick={() => handleSort('rules')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Tenant <span className="font-extrabold">↑↓</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-[15%] flex">
+                            <div className='w-1/2  flex'>
+                                <div className='p-3'>
+                                    <p>ID</p>
+                                </div>
+                            </div>
+                            <div className='w-1/2  flex'>
+                                <div className='p-3'>
+                                    <p>Edit</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
+                        {/* we map our items here */}
+                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingProjectInfo.map((item, index) => {
+                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
+                                <div className="w-[85%] flex min-h-0">
+                                    <div className='w-[4%] flex  overflow-hidden'>
                                         <div className='p-3'>
-
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.projectname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.buildername}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.suburb}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[14%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.otherdetails}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.mailgroup1}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.mailgroup2}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.rules}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[12%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.tenantworkingbachelorsallowed || item.tenantforeignersallowed || item.tenantstudentsallowed}</p>
                                         </div>
                                     </div>
                                 </div>
+                                <div className="w-[15%] flex">
+                                    <div className='w-1/2  flex overflow-hidden'>
+                                        <div className='p-3 ml-1'>
+                                            <p>{item.id}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
+                                        <button onClick={() => handleEdit(item.id)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+                        })}
+                    </div>
 
-                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
-
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                            <div className="w-[85%] flex">
-                                <div className='w-[4%] flex'>
-                                    <div className='p-3'>
-                                        <p>Sr.</p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Project Name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Builder Name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Suburb <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[14%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Other details/issues </p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Mail Group </p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Subscribed email </p>
-                                    </div>
-                                </div>
-                                <div className='w-[10%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Rules <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='w-[12%]  flex'>
-                                    <div className='p-3'>
-                                        <p>Tenant <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="w-[15%] flex">
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>ID</p>
-                                    </div>
-                                </div>
-                                <div className='w-1/2  flex'>
-                                    <div className='p-3'>
-                                        <p>Edit</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
-                            {/* we map our items here */}
-                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingProjectInfo.map((item, index) => {
-                                return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
-                                    <div className="w-[85%] flex min-h-0">
-                                        <div className='w-[4%] flex  overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.projectname}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.buildername}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.suburb}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[14%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.otherdetails}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.mailgroup1}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.mailgroup2}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.rules}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.tenantworkingbachelorsallowed || item.tenantforeignersallowed || item.tenantstudentsallowed}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="w-[15%] flex">
-                                        <div className='w-1/2  flex overflow-hidden'>
-                                            <div className='p-3 ml-1'>
-                                                <p>{item.id}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
-                                            <button onClick={() => handleEdit(item.id)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
-                                            <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            })}
-                        </div>
-
-                        </div>
+                </div>
 
             </div>
 
@@ -946,11 +1075,11 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
-                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors}/>}
+                            {selectedDialogue == 1 && <ProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} />}
                             {selectedDialogue == 2 && <ProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors} />}
-                            {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
-                            {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues}/>}
-                            {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues}/>}
+                            {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             <div className="my-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProjectInfo} >Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
