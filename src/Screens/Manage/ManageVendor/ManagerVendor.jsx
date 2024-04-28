@@ -337,7 +337,8 @@ const ManageVendor = () => {
     }
     useEffect(() => {
         fetchData();
-
+        fetchCityData('Maharashtra')
+        fetchTallyLedgerData()
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setVendorNameFilter(false)
@@ -388,37 +389,65 @@ const ManageVendor = () => {
         // console.log('clicked')
         // console.log(formValues)
         // setPageLoading(true);
+        // const data = {
+
+        //     "user_id": 1234,
+        //     "vendorname": formValues.vendorName,
+        //     "addressline1": formValues.addressLine1,
+        //     "addressline2": formValues.addressLine2,
+        //     "suburb": formValues.suburb,
+        //     "city": 847,
+        //     "state": "Maharashtra",
+        //     "country": 5,
+        //     "type": formValues.typeOfOrganization,
+        //     "details": formValues.details,
+        //     "category": formValues.category,
+        //     "phone1": formValues.phone,
+        //     "email": formValues.email,
+        //     "ownerinfo": formValues.ownerDetails,
+        //     "panno": formValues.pan,
+        //     "tanno": formValues.tan,
+        //     "gstservicetaxno": formValues.gstin,
+        //     "tdssection": formValues.tdsSection,
+        //     "bankname": formValues.bankName,
+        //     "bankbranch": formValues.bankBranch,
+        //     "bankcity": formValues.bankBranchCity,
+        //     "bankacctholdername": formValues.accountHolderName,
+        //     "bankacctno": formValues.accountNumber,
+        //     "bankifsccode": formValues.ifscCode,
+        //     "bankaccttype": formValues.accountType,
+        //     "companydeductee": formValues.companydeductee,
+        //     "tallyledgerid": formValues.tallyLedger
+        // }
         const data = {
-
-            "user_id": 1234,
-            "vendorname": "Rudra",
-            "addressline1": "Line1 address",
-            "addressline2": "Line2 address",
-            "suburb": "suburb 1",
-            "city": 847,
-            "state": "Maharashtra",
-            "country": 5,
-            "type": "New type",
-            "details": "details",
-            "category": 3,
-            "phone1": "934840984",
-            "email": "emailid@gmail",
-            "ownerinfo": "data",
-            "panno": "abc123",
-            "tanno": "def456",
-            "gstservicetaxno": "ijk789",
-            "tdssection": "opq345",
-            "bankname": "testbank",
-            "bankbranch": "testbranch",
-            "bankcity": "Pune",
-            "bankacctholdername": "holder",
-            "bankacctno": "acctno",
-            "bankifsccode": "code",
-            "bankaccttype": "savings",
-            "companydeductee": true,
-            "tallyledgerid": 1
-
-        }
+            "user_id":1234,
+            "vendorname":"Rudra",
+            "addressline1":"Line1 address",
+            "addressline2":"Line2 address",
+            "suburb":"suburb 1",
+            "city":847,
+            "state":"Maharashtra",
+            "country":5,
+            "type":"New type",
+            "details":"details",
+            "category":3,
+            "phone1":"934840984",
+            "email":"emailid@gmail",
+            "ownerinfo":"data",
+            "panno":"abc123",
+            "tanno":"def456",
+            "gstservicetaxno":"ijk789",
+            "tdssection":"opq345",
+            "bankname":"testbank",
+            "bankbranch":"testbranch",
+            "bankcity":"Pune",
+            "bankacctholdername":"holder",
+            "bankacctno":"acctno",
+            "bankifsccode":"code",
+            "bankaccttype":"savings",
+            "companydeductee":true,
+            "tallyledgerid":1
+          }
         const response = await APIService.addVendors(data);
 
         const result = (await response.json())
@@ -928,6 +957,37 @@ const ManageVendor = () => {
         setExistingVendors(result);
         setPageLoading(false);
     }
+
+
+//    const [allCity,setAllCity] = useState([]);
+    // we need to fetch the city data
+    const fetchCityData = async (id) => {
+        const data = { "user_id": 1234, "state_name": id };
+        const response = await APIService.getCities(data);
+        const result = (await response.json()).data;
+        console.log(result);
+        if (Array.isArray(result)) {
+            setAllCity(result)
+            // if (result.length > 0) {
+            //     // setFormValues((existing) => {
+            //     //     const newData = { ...existing, city: result[0].id }
+            //     //     return newData;
+            //     // })
+            // }
+        }
+    }
+    const [tallyLedgerData,setTallyLedgerData] = useState([])
+    const fetchTallyLedgerData = async () => {
+        const data =  {
+            "user_id" : 1234
+        }
+        const response = await APIService.getTallyLedgerAdmin(data)
+        const res = await response.json()
+        setTallyLedgerData(res.data)
+    }
+
+
+    // fetching utility routes end here
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1330,7 +1390,21 @@ const ManageVendor = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-sm">City</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} />
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="city"
+                                            value={formValues.city}
+                                            defaultValue="Select City"
+                                            onChange={handleChange}
+                                        >
+                                            {/* <option value="none" hidden={true}>Select a City</option> */}
+                                            <option value="none" hidden> Select A City</option>
+                                            {allCity && allCity.map(item => (
+                                                <option value={item.id} >
+                                                    {item.city}
+                                                </option>
+                                            ))}
+                                        </select>
+                                            {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Email <label className="text-red-500">*</label></div>
@@ -1346,7 +1420,24 @@ const ManageVendor = () => {
 
                                         <div className="">
                                             <div className="text-sm">Tally Ledger </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} />
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="tallyLedger"
+                                            value={formValues.tallyLedger}
+                                            defaultValue="Select Tally Ledger"
+                                            onChange={handleChange}
+                                        >
+                                            {/* <option value="none" hidden={true}>Select a City</option> */}
+                                            <option value="none" hidden> Select Tally Ledger</option>
+                                            {tallyLedgerData && tallyLedgerData.map(item => (
+                                                <option value={item[0]} >
+                                                    {item[1]}
+                                                </option>
+                                            ))}
+                                        </select>
+
+
+
+                                            {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} /> */}
 
                                         </div>
                                         <div className="">
