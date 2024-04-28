@@ -22,8 +22,8 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
-import DeleteOrderReceipt from './DeleteOrderReceipt';
-import SaveConfirmationOrderReceipt from './SaveConfirmationOrderReceipt';
+import DeleteVendorInvoice from './DeleteVendorInvoice';
+import SaveConfirmationVendorInvoice from './SaveConfirmationVendorInvoice';
 // import EditPmaAgreement from './EditPmaAgreement';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
@@ -51,28 +51,30 @@ const ManageVendorInvoice = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isOrderReceiptDialogue, SetIsOrderReceiptDialogue] = useState(false);
+    const [isVendorInvoiceDialogue, SetIsVendorInvoiceDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
+    const [vendorNameFilter, setVendorNameFilter] = useState(false);
+    const [vendorNameFilterInput, setVendorNameFilterInput] = useState("");
     const [clientNameFilter, setClientNameFilter] = useState(false);
     const [clientNameFilterInput, setClientNameFilterInput] = useState("");
-    const [propertyFilter, setPropertyFilter] = useState(false);
-    const [propertyFilterInput, setPropertyFilterInput] = useState("");
     const [orderDescriptionFilter, setOrderDescriptionFilter] = useState(false);
     const [orderDescriptionFilterInput, setOrderDescriptionFilterInput] = useState("");
-    const [amountFilter, setAmountFilter] = useState(false);
-    const [amountFilterInput, setAmountFilterInput] = useState("");
-    const [receivedDateFilter, setReceivedDateFilter] = useState(false);
-    const [receivedDateFilterInput, setReceivedDateFilterInput] = useState("");
-    const [receiptModeFilter, setReceiptModeFilter] = useState(false);
-    const [receiptModeFilterInput, setReceiptModeFilterInput] = useState("");
-    const [receivedByFilter, setReceivedByFilter] = useState(false);
-    const [receivedByFilterInput, setReceivedByFilterInput] = useState("");
+    const [invoiceAmountFilter, setInvoiceAmountFilter] = useState(false);
+    const [invoiceAmountFilterInput, setInvoiceAmountFilterInput] = useState("");
+    const [invoiceDateFilter, setInvoiceDateFilter] = useState(false);
+    const [invoiceDateFilterInput, setInvoiceDateFilterInput] = useState("");
+    const [entityFilter, setEntityFilter] = useState(false);
+    const [entityFilterInput, setEntityFilterInput] = useState("");
     const [createdByFilter, setCreatedByFilter] = useState(false);
     const [createdByFilterInput, setCreatedByFilterInput] = useState("");
+    const [estimateAmountFilter, setEstimateAmountFilter] = useState(false);
+    const [estimateAmountFilterInput, setEstimateAmountFilterInput] = useState("");
+    const [estimateDateFilter, setEstimateDateFilter] = useState(false);
+    const [estimateDateFilterInput, setEstimateDateFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
 
@@ -229,7 +231,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -277,7 +281,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -324,7 +330,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -382,20 +390,24 @@ const ManageVendorInvoice = () => {
 
         // } 
     }
-    const addOrderReceipt = async () => {
+    const addVendorInvoice = async () => {
 
         const data = {
             "user_id": 1234,
-            "clientid": Number(formValues.client),
-            "receivedby": Number(formValues.receivedBy),
-            "amount": Number(formValues.amountReceived),
-            "tds": Number(formValues.TDS),
-            "recddate": formValues.receivedDate,
-            "paymentmode": Number(formValues.receiptMode),
-            "orderid": Number(formValues.order),
-            "receiptdesc": formValues.receiptDescription,
+            "estimatedate": "2024-04-27",
+            "amount": 25000.00,
+            "estimatedesc": "newdesc",
+            "orderid": 435229,
+            "vendorid": 13348,
+            "invoicedate": "2024-04-27",
+            "invoiceamount": 26000.00,
+            "notes": "newnotes",
+            "vat1": 10.50,
+            "vat2": 8.50,
+            "servicetax": 20.50,
+            "invoicenumber": "2024/1",
             "entityid": 1,
-            "officeid": 1
+            "officeid": 2
         }
         // "user_id":1234,
         // "receivedby": 1234,
@@ -406,12 +418,12 @@ const ManageVendorInvoice = () => {
         // "orderid": 34,
         // "entityid": 1,
         // "officeid": 1
-        const response = await APIService.addOrderReceipt(data)
+        const response = await APIService.addVendorsInvoice(data)
         const res = await response.json()
         console.log(res)
 
         setOpenAddConfirmation(false);
-        SetIsOrderReceiptDialogue(false);
+        SetIsVendorInvoiceDialogue(false);
         if (res.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -430,13 +442,18 @@ const ManageVendorInvoice = () => {
     }
     const initialValues = {
         client: "",
+        vendor: "",
+        invoiceAmount: "",
+        estimateDate: null,
+        vat5: "",
+        invoiceNumber: "",
+        gst: "",
+        estimateAmount: "",
+        vat12: "",
         order: null,
-        receiptMode: 5,
-        receivedBy: 1,
-        TDS: null,
-        receiptDescription: "",
-        receivedDate: null,
-        amountReceived: ""
+        invoiceDate: null,
+        invoicedescription: "",
+        notes: "",
     };
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
@@ -449,14 +466,15 @@ const ManageVendorInvoice = () => {
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
+                setVendorNameFilter(false);
                 setClientNameFilter(false);
-                setPropertyFilter(false);
                 setOrderDescriptionFilter(false);
-                setAmountFilter(false);
-                setReceivedDateFilter(false);
-                setReceiptModeFilter(false);
-                setReceivedByFilter(false);
+                setInvoiceAmountFilter(false);
+                setInvoiceDateFilter(false);
+                setEntityFilter(false);
                 setCreatedByFilter(false);
+                setEstimateAmountFilter(false);
+                setEstimateDateFilter(false);
                 setIdFilter(false);
             }
         }
@@ -474,11 +492,11 @@ const ManageVendorInvoice = () => {
     };
 
     const handleOpen = () => {
-        SetIsOrderReceiptDialogue(true);
+        SetIsVendorInvoiceDialogue(true);
     };
 
     const handleClose = () => {
-        SetIsOrderReceiptDialogue(false);
+        SetIsVendorInvoiceDialogue(false);
     }
 
     // harcoded dropdown
@@ -487,13 +505,13 @@ const ManageVendorInvoice = () => {
     const client = [1, 2, 3, 4];
 
 
-    const handleAddClientReceipt = () => {
+    const handleAddVendorInvoice = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
         }
-        SetIsOrderReceiptDialogue(false);
+        SetIsVendorInvoiceDialogue(false);
         // setIsLLAgreementDialogue(false);
         setOpenAddConfirmation(true)
 
@@ -519,46 +537,6 @@ const ManageVendorInvoice = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, client: "" }
-            })
-        }
-        if (!formValues.receiptMode) {
-            setFormErrors((existing) => {
-                return { ...existing, receiptMode: "Select Receipt Mode" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, receiptMode: "" }
-            })
-        }
-        if (!formValues.receivedBy) {
-            setFormErrors((existing) => {
-                return { ...existing, receivedBy: "Select Received By" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, receivedBy: "" }
-            })
-        }
-        if (!formValues.receivedDate) {
-            setFormErrors((existing) => {
-                return { ...existing, receivedDate: "Select Received Date" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, receivedDate: "" }
-            })
-        }
-        if (!formValues.amountReceived) {
-            setFormErrors((existing) => {
-                return { ...existing, amountReceived: "Enter Amount Received" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, amountReceived: "" }
             })
         }
         if (!formValues.order || formValues.order == "") {
@@ -605,10 +583,12 @@ const ManageVendorInvoice = () => {
             "user_id": 1234,
             "rows": [
                 "vendorname",
+                "clientname",
                 "briefdescription",
                 "invoiceamount",
                 "invoicedate",
                 "entity",
+                "createdbyname",
                 "amount",
                 "estimatedate",
                 "id",
@@ -659,7 +639,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -707,7 +689,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -726,17 +710,17 @@ const ManageVendorInvoice = () => {
         setPageLoading(false);
     }
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [currOrderReceipt, setCurrOrderReceipt] = useState("");
+    const [currVendorInvoice, setCurrVendorInvoice] = useState("");
     const handleDelete = (id) => {
-        setCurrOrderReceipt(id);
+        setCurrVendorInvoice(id);
         setShowDeleteModal(true)
     }
-    const deletePma = async (id) => {
+    const deleteVendorInvoice = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteOrderReceipt(data)
+        const response = await APIService.deleteVendorsInvoice(data)
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false);
@@ -826,6 +810,12 @@ const ManageVendorInvoice = () => {
     }
 
     const filterMapping = {
+        vendorname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
         clientname: {
             filterType: "",
             filterValue: "",
@@ -838,7 +828,25 @@ const ManageVendorInvoice = () => {
             filterData: "String",
             filterInput: ""
         },
-        clientproperty: {
+        invoiceamount: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        },
+        invoicedate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
+        },
+        entity: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        createdbyname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -850,28 +858,10 @@ const ManageVendorInvoice = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        receivedbyname: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        paymentmodename: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        recddate: {
+        estimatedate: {
             filterType: "",
             filterValue: null,
             filterData: "Date",
-            filterInput: ""
-        },
-        createdbyname: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
             filterInput: ""
         },
         id: {
@@ -947,7 +937,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -1005,7 +997,9 @@ const ManageVendorInvoice = () => {
                 "entityid",
                 "entity",
                 "officeid",
-                "office"
+                "office",
+                "createdbyname",
+                "clientname"
             ],
             "filters": tempArray,
             "sort_by": [field],
@@ -1027,16 +1021,15 @@ const ManageVendorInvoice = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} />}
-
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Order Receipt" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Order Receipt" />}
+            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currVendorInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice Created successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Created successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationOrderReceipt addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationVendorInvoice addVendorInvoice={addVendorInvoice} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
 
-            {showDeleteModal && <DeleteOrderReceipt handleClose={() => setShowDeleteModal(false)} item={currOrderReceipt} handleDelete={deletePma} />}
+            {showDeleteModal && <DeleteVendorInvoice handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorInvoice} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1097,56 +1090,49 @@ const ManageVendorInvoice = () => {
                         </div>
                         <div className='w-[13%] px-3 py-2  '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[14%]  px-3 py-2 '>
+                            <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
-                        </div>
-                        <div className='w-[14%]  px-3 py-2 '>
-                            <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
 
                         </div>
                         <div className='w-[16%] px-3 py-2 '>
                             <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyFilterInput} onChange={(e) => setPropertyFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {propertyFilter && <CharacterFilter inputVariable={propertyFilterInput} setInputVariable={setPropertyFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
+                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
                         </div>
 
                         <div className='w-[10%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
-                                <button className='w-[35%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} />
+                                <button className='w-[35%] px-1 py-2' onClick={() => { setInvoiceAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {amountFilter && <NumericFilter columnName='amount' inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {invoiceAmountFilter && <NumericFilter columnName='invoiceamount' inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[10%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setReceivedDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type='date' />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setInvoiceDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} />}
+                            {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receiptModeFilterInput} onChange={(e) => setReceiptModeFilterInput(e.target.value)} />
-                                <button className='w-[30%] px-1 py-2' onClick={() => { setReceiptModeFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => { setEntityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {receiptModeFilter && <CharacterFilter inputVariable={receiptModeFilterInput} setInputVariable={setReceiptModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} />}
+                            {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} handleFilter={newHandleFilter} filterColumn='entity' menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
-                            <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setReceivedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} />}
-                        </div>
-                        <div className='w-[10%] px-3 py-2  '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1155,10 +1141,17 @@ const ManageVendorInvoice = () => {
                         </div>
                         <div className='w-[10%] px-3 py-2  '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
+                            {estimateAmountFilter && <NumericFilter columnName='amount' inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[10%] px-3 py-2  '>
+                            <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type='date' />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef} />}
                         </div>
                     </div>
                     <div className="w-[10%] flex">
@@ -1195,7 +1188,7 @@ const ManageVendorInvoice = () => {
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Client Name <button onClick={() => handleSort('')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[16%]  flex '>
@@ -1288,7 +1281,7 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[14%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p></p>
+                                            <p>{item.clientname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[16%]  flex '>
@@ -1313,12 +1306,12 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[11%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.receivedbyname}</p>
+                                            <p>{item.createdbyname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>
                                         <div className='px-3 py-5'>
-                                        <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
+                                            <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>
@@ -1424,7 +1417,7 @@ const ManageVendorInvoice = () => {
                 </div>
             </div>
 
-            <Modal open={isOrderReceiptDialogue}
+            <Modal open={isVendorInvoiceDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1433,7 +1426,7 @@ const ManageVendorInvoice = () => {
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Order Receipt</div>
+                                <div className="text-[16px]">New Vendor Invoice</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
@@ -1447,6 +1440,25 @@ const ManageVendorInvoice = () => {
                                         <div className="text-sm text-[#787878]">Cura Office </div>
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Vendor </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Invoice Amount </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.invoiceAmount} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Estimate Date </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="TDS" value={formValues.estimateDate} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Vat 5% </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.vat5} onChange={handleChange} />
+                                    </div>
+
+                                </div>
+                                <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
@@ -1487,56 +1499,23 @@ const ManageVendorInvoice = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">
-                                            Receipt Mode <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="receiptMode"
-                                            value={formValues.receiptMode}
-                                            onChange={handleChange}
-                                        >
-                                            {modesData.map((item) => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                        <div className="text-[13px]">Invoice Number </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.invoiceNumber} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">
-                                            Received By <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="receivedBy"
-                                            value={formValues.receivedBy}
-                                            onChange={handleChange}
-                                        >
-                                            {/* <option value="none" hidden >Select Received By</option> */}
-                                            {usersData.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                        <div className="text-[13px]">GST/ST </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.gst} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">TDS </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <div className="text-[13px]">Estimate Amount </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.estimateAmount} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Receipt Description </div>
-                                        <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                        <div className="text-[13px]">VAT 12.5% </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.vat12} onChange={handleChange} />
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Receipt ID </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
                                     <div className="">
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
@@ -1557,32 +1536,22 @@ const ManageVendorInvoice = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Received Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                        <div className="text-[13px]">Invoice Date </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="TDS" value={formValues.invoiceDate} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                        <div className="text-[13px]">Invoice/Estiamte Description </div>
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.invoicedescription} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm text-[#787878]">Pending Amount </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Order Date </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Order Status </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <div className="text-[13px]">Notes </div>
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.notes} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientReceipt} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorInvoice} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
