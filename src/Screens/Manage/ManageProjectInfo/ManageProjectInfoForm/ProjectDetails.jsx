@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { useState, useEffect } from "react";
 
-const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
+const ProjectDetails = ({formValues,setFormValues,projectLegalData,formErrors}) => {
 
   const selectedProjectLegalStatus = [
     "1", "2", "3", "4"
@@ -13,7 +13,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
 
   };
   // const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
+  // const [formErrors, setFormErrors] = useState({});
 
   // handle changes in input form
   const handleChange = (e) => {
@@ -370,7 +370,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData}) => {
                     </option>
                   ))}
                 </select>
-                <div className="text-[10px] text-[#CD0000] ">{formErrors.projectLegalStatus}</div>
+                <div className="text-[10px] text-[#CD0000] ">{formErrors.project_legal_status}</div>
               </div>
               <div className="">
                 <div className="text-[13px]">Completion Year</div>
