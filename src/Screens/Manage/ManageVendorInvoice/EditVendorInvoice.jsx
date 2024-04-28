@@ -3,7 +3,7 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
-const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersData}) => {
+const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) => {
     const initialValues = {
         client: null,
         vendor: null,
@@ -22,11 +22,12 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
     const [formValues,setFormValues] = useState(initialValues)
     const [formErrors,setFormErrors] = useState({})
 
-    const handleChange = () => {
-
-    }
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
     const [orders,setOrders] = useState([])
-    const [vendorData,setVendorData] = useState([])
+    // const [vendorData,setVendorData] = useState([])
     const handleAddVendorInvoice = () => {
       
     }
@@ -42,7 +43,8 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
         const res = await response.json()
         console.log(res)
         const existing = {...formValues}
-        existing.client = res.data.clientid 
+        existing.client = res.data.clientid
+        getOrdersByClientId(res.data.clientid) 
         existing.vendor = res.data.vendorid
         existing.invoiceAmount = res.data.invoiceamount 
         existing.gst = res.data.servicetax 
@@ -57,10 +59,157 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
         existing.invoicedescription = res.data.estimatedesc
         existing.notes = res.data.notes
         setFormValues(existing)
+        const temp = {...selectedOption}
+        temp.value = res.data.clientid 
+        temp.label  = res.data.clientname 
+        setSelectedOption(temp)
     }
     useEffect(() => {
         fetchInitialData()
     },[])
+    const validate = () => {
+        var res = true;
+
+        if (!formValues.client) {
+            setFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
+        if (!formValues.order || formValues.order == "") {
+            setFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
+
+        return res;
+    }
+    const handleEdit = async () => {
+        if(!validate()) {
+            return 
+        }
+        const data = {
+            "user_id": 1234,
+            "id":currInvoice,
+            "estimatedate":formValues.estimateDate,
+            "amount":formValues.estimateAmount,
+            "estimatedesc":formValues.invoicedescription,
+            "orderid":formValues.order,
+            "vendorid":formValues.vendor,
+            "invoicedate":formValues.invoiceDate,
+            "invoiceamount":formValues.invoiceAmount,
+            "notes":formValues.notes,
+            "vat1":formValues.vat5,
+            "vat2":formValues.vat12,
+            "servicetax":formValues.gst,
+            "invoicenumber":formValues.invoiceNumber,
+            "entityid":1,
+            "officeid":2
+          }
+          const response = await APIService.editVendorInvoice(data)
+          const res  = await response.json()
+          console.log(res)
+          if(res.result == 'success') {
+            showSuccess()
+          }
+    }
+
+
+
+    
+    const getOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id": 1234,
+            "client_id": id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrders(res.data)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const [selectedOption, setSelectedOption] = useState({
+        label: "Enter Client Name",
+        value: null
+    });
+    const [query, setQuery] = useState('')
+    const handleClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        //  setFormValues({...formValues,client_property : {
+        //   ...formValues.client_property,
+        //   clientid : e.value
+        //  }})
+        const existing = { ...formValues }
+        existing.client = e.value
+        getOrdersByClientId(e.value)
+        // getClientPropertyByClientId(e.value)
+        setFormValues(existing)
+        //    const existing = {...formValues}
+        //    const temp = {...existing.client_property}
+        //    temp.clientid = e.value
+        //    existing.client_property = temp;
+        //    setFormValues(existing)
+        console.log(formValues)
+        setSelectedOption(e)
+    }
+
+    const loadOptions = async (e) => {
+        console.log(e)
+        if (e.length < 3) return;
+        const data = {
+            "user_id": 1234,
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": e
+        }
+        const response = await APIService.getClientAdminPaginated(data)
+        const res = await response.json()
+        const results = res.data.map(e => {
+            return {
+                label: e[1],
+                value: e[0]
+            }
+        })
+        if (results === 'No Result Found') {
+            return []
+        }
+        return results
+    }
+
+
+
     return (
         <Modal open={true}
         fullWidth={true}
@@ -98,7 +247,7 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
                             </div>
                             <div className="">
                                 <div className="text-[13px]">Invoice Amount </div>
-                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
                             </div>
                             <div className="">
                                 <div className="text-[13px]">Estimate Date </div>
@@ -115,7 +264,7 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
                                 <div className="text-[13px]">
                                     Client <label className="text-red-500">*</label>
                                 </div>
-                                {/* <AsyncSelect
+                                <AsyncSelect
                                     onChange={handleClientNameChange}
                                     value={selectedOption}
                                     loadOptions={loadOptions}
@@ -147,7 +296,7 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
                                             fontSize: 12 // adjust padding for the dropdown indicator
                                         })
                                     }}
-                                /> */}
+                                />
                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                             </div>
                             <div className="">
@@ -203,7 +352,7 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,modesData,usersD
                     </div>
                 </div>
                 <div className="my-3 flex justify-center items-center gap-[10px]">
-                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorInvoice} >Save</button>
+                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                 </div>
             </div>
