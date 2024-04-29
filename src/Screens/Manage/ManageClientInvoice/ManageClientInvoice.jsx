@@ -28,7 +28,7 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
-
+import Draggable from 'react-draggable';
 const ManageClientInvoice = () => {
 
     const menuRef = useRef();
@@ -1167,13 +1167,15 @@ const ManageClientInvoice = () => {
                     </div>
                 </div>
             </div>
-
+            
             <Modal open={isClientInvoiceDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
+                
                 <div className='flex justify-center'>
+                <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1281,6 +1283,7 @@ const ManageClientInvoice = () => {
                         </div>
 
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>
