@@ -17,7 +17,7 @@ import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
-import EditClientInvoice from './EditClientInvoice';
+import EditClientInvoice from './EditVendor';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import SaveConfirmationVendor from './SaveConfirmationVendor';
 import FailureModal from '../../../Components/modals/FailureModal';
@@ -28,6 +28,7 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
+import EditVendor from './EditVendor';
 
 const ManageVendor = () => {
 
@@ -392,9 +393,7 @@ const ManageVendor = () => {
     }, []);
     const [invoiceId, setInvoiceId] = useState(0);
     const handleEdit = (id) => {
-        setInvoiceId(id)
-        console.log(id);
-        console.log(invoiceId)
+        setInvoiceId((prev) => id)
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
@@ -503,29 +502,29 @@ const ManageVendor = () => {
     }
 
     const initialValues = {
-        vendorName: "",
-        addressLine1: "",
-        suburb: "",
-        phone: "",
-        ownerDetails: "",
-        category: "",
-        addressLine2: "",
-        city: "",
-        email: "",
-        details: "",
-        typeOfOrganization: "",
-        pan: "",
-        gstin: "",
-        tallyLedger: "",
-        tan: "",
-        tdsSection: "",
-        accountHolderName: "",
-        accountNumber: "",
-        accountType: "",
-        bankName: "",
-        bankBranch: "",
-        ifscCode: "",
-        bankBranchCity: "",
+        vendorName: null,
+        addressLine1: null,
+        suburb: null,
+        phone: null,
+        ownerDetails: null,
+        category: null,
+        addressLine2: null,
+        city: null,
+        email: null,
+        details: null,
+        typeOfOrganization: null,
+        pan: null,
+        gstin: null,
+        tallyLedger: null,
+        tan: null,
+        tdsSection: null,
+        accountHolderName: null,
+        accountNumber: null,
+        accountType: null,
+        bankName: null,
+        bankBranch: null,
+        ifscCode: null,
+        bankBranchCity: null,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -1027,7 +1026,7 @@ const ManageVendor = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditVendor currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Created Succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Deleted Succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
