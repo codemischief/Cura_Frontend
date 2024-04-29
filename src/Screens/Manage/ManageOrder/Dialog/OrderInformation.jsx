@@ -146,12 +146,12 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                 <div className="flex gap-[48px] justify-center">
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                         <div className="">
-                            <div className="text-[13px]">Cura office</div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Pune"} name="Cura Office" readOnly />
+                            <div className="text-[13px]">Cura Office</div>
+                            <input className="bg-[#F5F5F5] w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Pune"} name="Cura Office" readOnly />
                         </div>
                         <div className="">
                             <div className="text-[13px]">Entity</div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Cura"} name="Entity" readOnly />
+                            <input className="bg-[#F5F5F5] w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={"Cura"} name="Entity" readOnly />
                         </div>
                         <div className="">
                             <div className="text-[13px]">Assigned to <label className="text-red-500">*</label></div>
@@ -164,7 +164,10 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                 ))}
 
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.owner}</div>
+                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] ">
+                                <p> {formErrors.owner}</p>
+                                
+                                </div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
@@ -176,7 +179,9 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                     </option>
                                 ))}
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
+                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] ">
+                                <p>{formErrors.status}</p>
+                                </div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Client Property</div>
@@ -199,7 +204,11 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                     </option>
                                 ))}
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.service}</div>
+                            <div className="h-[12px] text-[9px] w-[230px] text-[#CD0000] ">
+                                <p>
+                                {formErrors.service}
+                                </p>
+                                </div>
                         </div>
                     </div>
                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -238,7 +247,11 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                                     })
                                 }}
                             />
-                            <div className="text-[10px] text-[#CD0000] ">{formErrors.clientid}</div>
+                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] ">
+                                
+                                <p>
+                                {formErrors.clientid}
+                                    </p></div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Order Date</div>
@@ -249,12 +262,12 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="earlieststartdate" value={formValues.order_info.earlieststartdate} onChange={handleChange} />
                         </div>
                         <div className="">
-                            <div className="text-[13px]">Expected Competition Date</div>
+                            <div className="text-[13px]">Expected Completion Date</div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="expectedcompletiondate" value={formValues.order_info.expectedcompletiondate} onChange={handleChange} />
 
                         </div>
                         <div className="">
-                            <div className="text-[13px]">Actual Competition Date</div>
+                            <div className="text-[13px]">Actual Completion Date</div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="actualcompletiondate" value={formValues.order_info.actualcompletiondate} onChange={handleChange} />
                         </div>
                         <div className="">
@@ -284,7 +297,9 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                         <div className="">
                             <div className="text-[13px]">Order Description <label className="text-red-500">*</label></div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="briefdescription" value={formValues.order_info.briefdescription} onChange={handleChange} />
-                            <div className="text-[12px] text-[#CD0000] ">{formErrors.briefdescription}</div>
+                            <div className=" h-[12px] w-[230px] text-[9px] text-[#CD0000] ">
+                                <p>{formErrors.briefdescription}</p>
+                                </div>
                         </div>
                         <div className="">
                             <div className="text-[13px]">Comments</div>
