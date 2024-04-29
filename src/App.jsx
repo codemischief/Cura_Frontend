@@ -32,6 +32,7 @@ import ManageOrderReceipt from './Screens/Manage/ManageOrderReceipt/ManageOrderR
 import ManageClientInvoice from './Screens/Manage/ManageClientInvoice/ManageClientInvoice';
 import ManageVendor from './Screens/Manage/ManageVendor/ManagerVendor';
 import ManageVendorInvoice from './Screens/Manage/ManageVendorInvoice/ManageVendorInvoice';
+import ManageVendorPayment from './Screens/Manage/ManageVendorPayment/ManageVendorPayment';
 
 
 import { createBrowserRouter,RouterProvider,Route, Routes, Outlet } from 'react-router-dom';
@@ -105,6 +106,7 @@ const App = () => {
                     <Route path="/manage/manageclientinvoice" element={<ManageClientInvoice />}/>
                     <Route path="/manage/managevendor" element={<ManageVendor />}/>
                     <Route path="/manage/managevendorinvoice" element={<ManageVendorInvoice />}/>
+                    <Route path="/manage/managevendorpayment" element={<ManageVendorPayment />}/>
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     <Route path='admin/temp' element={<Temp/>}/>
