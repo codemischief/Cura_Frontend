@@ -1113,6 +1113,7 @@ const ManageOrder = () => {
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingOrder.length == 0 && <h1 className='ml-10 text-lg mt-3'>No Records Found</h1>}
                         {!pageLoading && existingOrder.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-[85%] flex'>

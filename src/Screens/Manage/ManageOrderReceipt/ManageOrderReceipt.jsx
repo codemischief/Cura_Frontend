@@ -617,7 +617,8 @@ const ManageOrderReceipt = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getOrderReceipt(data);
         const temp = await response.json();
@@ -1029,8 +1030,8 @@ const ManageOrderReceipt = () => {
             <Navbar />
             {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData}/>}
 
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Order Receipt" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Order Receipt" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Order Receipt" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Order Receipt Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationOrderReceipt addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
@@ -1045,8 +1046,8 @@ const ManageOrderReceipt = () => {
                         </div>
 
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>Manage Order Reciept </h1>
-                            <p className='text-[14px]'>Manage &gt; Manage Order Reciept</p>
+                            <h1 className='text-[18px]'>Manage Order Receipt </h1>
+                            <p className='text-[14px]'>Manage &gt; Manage Order Receipt</p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
@@ -1535,7 +1536,7 @@ const ManageOrderReceipt = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Received Date </div>
+                                        <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
                                     </div>

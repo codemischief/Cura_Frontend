@@ -27,8 +27,77 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
     // const [modesData,setModesData] = useState([]);
     // const [usersData,setUsersData] = useState([]);
     const [orders,setOrders] = useState([]);
+    const validate = () => {
+        var res = true;
+
+        if (!formValues.client) {
+            setFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
+        if (!formValues.receiptMode) {
+            setFormErrors((existing) => {
+                return { ...existing, receiptMode: "Select Receipt Mode" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, receiptMode: "" }
+            })
+        }
+        if (!formValues.receivedBy) {
+            setFormErrors((existing) => {
+                return { ...existing, receivedBy: "Select Received By" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, receivedBy: "" }
+            })
+        }
+        if (!formValues.receivedDate) {
+            setFormErrors((existing) => {
+                return { ...existing, receivedDate: "Select Received Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, receivedDate: "" }
+            })
+        }
+        if (!formValues.amountReceived) {
+            setFormErrors((existing) => {
+                return { ...existing, amountReceived: "Enter Amount Received" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, amountReceived: "" }
+            })
+        }
+        if (!formValues.order || formValues.order == "") {
+            setFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
+
+        return res;
+    }
     const handleEdit = async () => {
        // we need to edit the order receipt here
+       if(!validate()) {
+        return
+       }
        const data =  {
       "user_id":1234,
       "id":receiptId,
@@ -308,7 +377,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Received Date </div>
+                                        <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
                                     </div>

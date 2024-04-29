@@ -57,7 +57,43 @@ const EditClientInvoice = ({handleClose,invoiceId,showSuccess}) => {
   useEffect(() => {
     fetchInitialData();
   },[])
+  const validate = () => {
+    var res = true;
+    if (!formValues.client) {
+        setFormErrors((existing) => {
+            return { ...existing, client: "Enter Client name" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, client: "" }
+        })
+    }
+    if (!formValues.invoiceDescription) {
+        console.log('issue is in panno')
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDescription: "Enter Invoice Description" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, invoiceDescription: "" }
+        })
+    }
+    if (!formValues.order || formValues.order == "") {
+        setFormErrors((existing) => {
+            return { ...existing, order: "Select Order" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, order: "" }
+        })
+    }
+    return res;
+}
   const handleEdit = async () => {
+    if(!validate()) return ;
     const data = {
         "user_id": 1234,
         "id": invoiceId,
@@ -93,7 +129,7 @@ const EditClientInvoice = ({handleClose,invoiceId,showSuccess}) => {
 
   // we have the client name here
   const [selectedOption, setSelectedOption] = useState({
-    label: "Enter Client Name",
+    label: "Select Client ",
     value: null
 });
 const [query, setQuery] = useState('')
@@ -188,7 +224,7 @@ const getOrdersByClientId = async (id) => {
                     <div className=" space-y-3 py-5">
                         <div className="">
                             <div className="text-[13px]">
-                                Client <label className="text-red-500">*</label>
+                                Client Name<label className="text-red-500">*</label>
                             </div>
                             <AsyncSelect
                                 onChange={handleClientNameChange}
@@ -270,7 +306,7 @@ const getOrdersByClientId = async (id) => {
                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                         </div>
                         <div className="">
-                            <div className="text-sm">GST/ST</div>
+                            <div className="text-sm">GST / ST</div>
                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
                         </div>
                         <div className="">

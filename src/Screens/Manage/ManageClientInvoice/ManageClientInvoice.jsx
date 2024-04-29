@@ -81,7 +81,7 @@ const ManageClientInvoice = () => {
 
 
     const [selectedOption, setSelectedOption] = useState({
-        label: "Enter Client Name",
+        label: "Sekect Client",
         value: null
     });
     const [query, setQuery] = useState('')
@@ -812,7 +812,7 @@ const ManageClientInvoice = () => {
             <Navbar />
             {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Invoice" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully deleted Client Invoice" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Invoice Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addClientInvoice={addClientInvoice} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
@@ -1189,7 +1189,7 @@ const ManageClientInvoice = () => {
                                 <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
+                                            Client Name<label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
                                             onChange={handleClientNameChange}
@@ -1265,7 +1265,7 @@ const ManageClientInvoice = () => {
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">GST/ST</div>
+                                        <div className="text-sm">GST / ST</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
                                     </div>
                                     <div className="">
