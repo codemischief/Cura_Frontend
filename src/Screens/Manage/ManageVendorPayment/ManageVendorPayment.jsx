@@ -22,8 +22,8 @@ import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
-import DeleteVendorInvoice from './DeleteVendorInvoice';
-import SaveConfirmationVendorInvoice from './SaveConfirmationVendorInvoice';
+import DeleteVendorPayment from './DeleteVendorPayment';
+import SaveConfirmationVendorPayment from './SaveConfirmationVendorPayment';
 // import EditPmaAgreement from './EditPmaAgreement';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
@@ -380,22 +380,19 @@ const ManageVendorPayment = () => {
         console.log(res.data)
         setOrders(res.data)
     }
-    const addVendorInvoice = async () => {
+    const addVendorPayment = async () => {
 
         const data = {
             "user_id": 1234,
-            "estimatedate": formValues.estimateDate,
-            "amount": Number(formValues.estimateAmount),
-            "estimatedesc": formValues.invoicedescription,
-            "orderid": Number(formValues.order),
-            "vendorid": Number(formValues.vendor),
-            "invoicedate": formValues.invoiceDate,
-            "invoiceamount": Number(formValues.invoiceAmount),
-            "notes": formValues.notes,
-            "vat1": Number(formValues.vat5),
-            "vat2": Number(formValues.vat12),
-            "servicetax": Number(formValues.gst),
-            "invoicenumber": formValues.invoiceNumber,
+            "paymentby": Number(formValues.paymentby),
+            "amount": Number(formValues.amount),
+            "paymentdate": formValues.paymentdate,
+            "orderid": Number(formValues.orderid),
+            "vendorid": Number(formValues.vendorid),
+            "mode": Number(formValues.mode),
+            "description": formValues.description,
+            "tds": Number(formValues.tds),
+            "servicetaxamount": Number(formValues.servicetaxamount),
             "entityid": 1,
             "officeid": 2
         }
@@ -408,7 +405,7 @@ const ManageVendorPayment = () => {
         // "orderid": 34,
         // "entityid": 1,
         // "officeid": 1
-        const response = await APIService.addVendorsInvoice(data)
+        const response = await APIService.addVendorPayment(data)
         const res = await response.json()
         console.log(res)
 
@@ -433,19 +430,18 @@ const ManageVendorPayment = () => {
         setShowEditModal(true);
     }
     const initialValues = {
-        client: null,
-        vendor: null,
-        invoiceAmount: null,
-        estimateDate: null,
-        vat5: null,
-        invoiceNumber: null,
-        gst: null,
-        estimateAmount: null,
-        vat12: null,
-        order: null,
-        invoiceDate: null,
-        invoicedescription: null,
-        notes: null,
+        client: "",
+        paymentby: null,
+        amount: "",
+        paymentdate: null,
+        orderid: null,
+        vendorid: null,
+        mode: null,
+        description: "",
+        tds: null,
+        servicetaxamount: null,
+        entityid: null,
+        officeid: null
     };
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
@@ -453,6 +449,7 @@ const ManageVendorPayment = () => {
         // fetchUsersData();
         fetchModesData();
         fetchVendorData();
+        fetchUsersData();
 
         const handler = (e) => {
             if (!menuRef.current.contains(e.target)) {
@@ -486,7 +483,7 @@ const ManageVendorPayment = () => {
     }
 
 
-    const handleAddVendorInvoice = () => {
+    const handleAddVendorPayment = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
@@ -520,14 +517,64 @@ const ManageVendorPayment = () => {
                 return { ...existing, client: "" }
             })
         }
-        if (!formValues.order || formValues.order == "") {
+        if (formValues.orderid == null || formValues.orderid == "") {
             setFormErrors((existing) => {
-                return { ...existing, order: "Select Order" }
+                return { ...existing, orderid: "Select Order" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, order: "" }
+                return { ...existing, orderid: "" }
+            })
+        }
+        if (formValues.mode == null || formValues.mode == "") {
+            setFormErrors((existing) => {
+                return { ...existing, mode: "Select Mode" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, mode: "" }
+            })
+        }
+        if (formValues.amount == null || formValues.amount == "") {
+            setFormErrors((existing) => {
+                return { ...existing, amount: "Enter Amount" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, amount: "" }
+            })
+        }
+        if (formValues.vendorid == null || formValues.vendorid == "") {
+            setFormErrors((existing) => {
+                return { ...existing, vendorid: "Enter Vendor" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, vendorid: "" }
+            })
+        }
+        if (formValues.paymentdate == null || formValues.paymentdate == "") {
+            setFormErrors((existing) => {
+                return { ...existing, paymentdate: "Enter Payment date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, paymentdate: "" }
+            })
+        }
+        if (formValues.paymentby == null || formValues.paymentby == "") {
+            setFormErrors((existing) => {
+                return { ...existing, paymentby: "Enter Payment By" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, paymentby: "" }
             })
         }
 
@@ -680,12 +727,12 @@ const ManageVendorPayment = () => {
         setCurrVendorInvoice(id);
         setShowDeleteModal(true)
     }
-    const deleteVendorInvoice = async (id) => {
+    const deleteVendorPayment = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteVendorsInvoice(data)
+        const response = await APIService.deleteVendorPayment(data)
         const res = await response.json()
         if (res.result == 'success') {
             setShowDeleteModal(false);
@@ -983,14 +1030,13 @@ const ManageVendorPayment = () => {
         <div className='h-screen'>
             <Navbar />
             {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice Created successfully" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Deleted successfully" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Payment Created successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Payment Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationVendorInvoice addVendorInvoice={addVendorInvoice} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationVendorPayment addVendorPayment={addVendorPayment} handleClose={() => setOpenAddConfirmation(false)} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-
-            {showDeleteModal && <DeleteVendorInvoice handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorInvoice} />}
+            {showDeleteModal && <DeleteVendorPayment handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorPayment} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1433,8 +1479,8 @@ const ManageVendorPayment = () => {
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="receiptMode"
-                                            value={formValues.receiptMode}
+                                            name="mode"
+                                            value={formValues.mode}
                                             onChange={handleChange}
                                         >
                                             {modesData.map((item) => (
@@ -1443,20 +1489,20 @@ const ManageVendorPayment = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">GST/ST </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
@@ -1470,8 +1516,8 @@ const ManageVendorPayment = () => {
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
+                                            name="orderid"
+                                            value={formValues.orderid}
                                             onChange={handleChange}
                                         >
                                             <option value="" >Select A Order</option>
@@ -1481,11 +1527,11 @@ const ManageVendorPayment = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
                                             <option value={null}> Select Vendor</option>
                                             {vendorData.map(item => (
                                                 <option key={item[0]} value={item[0]}>
@@ -1493,18 +1539,30 @@ const ManageVendorPayment = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">TDS Deduction </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
                                     </div>
 
                                     <div className="">
-                                        <div className="text-[13px]">Payment Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                        <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
                                     </div>
-                                    
+                                    <div className="">
+                                        <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                            {usersData.map(item => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+
+                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
+                                    </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Date </div>
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
@@ -1517,7 +1575,7 @@ const ManageVendorPayment = () => {
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorInvoice} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorPayment} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>

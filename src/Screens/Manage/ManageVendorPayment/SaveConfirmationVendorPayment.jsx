@@ -2,7 +2,7 @@ import React from 'react'
 import {Modal} from "@mui/material"
 import Cross from "../../../assets/cross.png"
 
-const SaveConfirmationVendorInvoice = (props) => {
+const SaveConfirmationVendorPayment = (props) => {
   return (
     <Modal open={true} >
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
@@ -17,13 +17,13 @@ const SaveConfirmationVendorInvoice = (props) => {
                         </div>
                     </div>
                     <div className="mt-8 w-full text-center">
-                        <div className="text-[14px]">New Vendor Invoice</div>
+                        <div className="text-[14px]">New Vendor Payment</div>
                     </div>
                     <div className="mt-4 w-full text-center">
-                        <p className="text-[14px]">Are you sure you want to Add new Vendor Invoice</p>
+                        <p className="text-[14px]">Are you sure you want to Add new Vendor Payment</p>
                     </div>
                     <div className="my-10 flex justify-center items-center gap-[10px]">
-                        <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={() => props.addVendorInvoice()}>Add</button>
+                        <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={() => props.addVendorPayment()}>Add</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
                 </div>
@@ -31,4 +31,4 @@ const SaveConfirmationVendorInvoice = (props) => {
   )
 }
 
-export default SaveConfirmationVendorInvoice
+export default SaveConfirmationVendorPayment
