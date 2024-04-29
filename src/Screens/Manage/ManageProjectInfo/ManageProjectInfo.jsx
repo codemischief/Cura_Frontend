@@ -27,6 +27,9 @@ import SucessfullModal from "../../../Components/modals/SucessfullModal"
 import DeleteProjectInfo from './DeleteProjectInfo';
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
+import * as XLSX from 'xlsx';
+import FileSaver from 'file-saver';
+import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 const ManageProjectInfo = () => {
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
     // we have the module here
@@ -171,6 +174,7 @@ const ManageProjectInfo = () => {
         const res = await response.json();
         setShowDeleteModal(false);
         if (res.result == 'success') {
+            openDeleteSuccess()
             fetchData()
         }
 
@@ -195,6 +199,19 @@ const ManageProjectInfo = () => {
             status: true,
             page: 1
         }
+        if (formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "Enter Project Legal Status" }
+            })
+
+            res.status = false
+            res.page = 2
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "" }
+            })
+        }
         // if(formValues.project_info.)
         if (formValues.project_info.projectname == null || formValues.project_info.projectname == "") {
             // we need to set the formErrors
@@ -202,6 +219,7 @@ const ManageProjectInfo = () => {
                 return { ...existing, projectname: "Enter Project name" }
             })
             res.status = false
+            res.page = 1
         } else {
             setFormErrors((existing) => {
                 return { ...existing, projectname: "" }
@@ -252,27 +270,16 @@ const ManageProjectInfo = () => {
             })
 
             res.status = false
+            res.page = 1
         } else {
             setFormErrors((existing) => {
                 return { ...existing, builderid: "" }
             })
         }
-        if (formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
-            // we need to set the formErrors
-            setFormErrors((existing) => {
-                return { ...existing, project_legal_status: "Enter Project Legal Status" }
-            })
-
-            res.status = false
-            res.page = 2
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, project_legal_status: "" }
-            })
-        }
+      
         return res
     }
-    const addProjectInfo = async () => {
+    const handleAddProjectInfo = () => {
         console.log(formValues)
         let temp = validate()
         if (!temp.status) {
@@ -280,6 +287,12 @@ const ManageProjectInfo = () => {
             setSelectedDialogue(temp.page)
             return;
         }
+        setIsStateDialogue(false)
+        setCurrProject((prev) => formValues.project_info.projectname)
+        setShowAddConfirmation(true)
+    }
+    const addProjectInfo = async () => {
+        
         const data = {
             "user_id": 1234,
             "project_info": {
@@ -342,10 +355,11 @@ const ManageProjectInfo = () => {
             "project_contacts": formValues.project_contacts,
             "project_photos": formValues.project_photos
         }
-
+         
         const response = await APIService.addProject(data)
         const res = await response.json()
         if (res.result == 'success') {
+            setShowAddConfirmation(false);
             setIsStateDialogue(false)
             setFormValues(initialValues);
             openAddSuccess();
@@ -358,6 +372,7 @@ const ManageProjectInfo = () => {
         setIsStateDialogue(true);
     };
     const handleClose = () => {
+        setSelectedDialogue(1);
         setIsStateDialogue(false);
     }
     const handlePageChange = (event, value) => {
@@ -722,6 +737,7 @@ const ManageProjectInfo = () => {
         setIsEditDialogue(true)
     }
     const [showEditSuccess, setShowEditSuccess] = useState(false);
+    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
     const openEditSuccess = () => {
         setIsEditDialogue(false)
         setShowEditSuccess(true)
@@ -730,13 +746,25 @@ const ManageProjectInfo = () => {
         }, 2000)
         fetchData();
     }
+    const openDeleteSuccess = () => {
+        setShowDeleteModal(false)
+        setShowDeleteSuccess(true)
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        }, 2000)
+        fetchData();
+    }
+    const [showAddConfirmation,setShowAddConfirmation] = useState(false);
     return (
         <div className="h-screen">
             <Navbar />
             {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} />}
             {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Project Info Added!" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Project Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Project Deleted Successfully" />}
+            {showAddConfirmation && <SaveConfirmationProjectInfo currProject={currProject} handleClose={() => setShowAddConfirmation(false)} addProject={addProjectInfo}/>}
+            
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -1037,7 +1065,7 @@ const ManageProjectInfo = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
@@ -1084,19 +1112,19 @@ const ManageProjectInfo = () => {
                                 </div>
                             </div>
                             <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40" >
+                                <div className={`${selectedDialogue == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`} >
                                     <button onClick={selectFirst}><div>Project Information</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={selectSecond}><div>Project details</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={selectThird}><div>Bank details</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={selectFourth}><div>Contacts</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={selectFifth}><div>Photos</div></button>
                                 </div>
                             </div>
@@ -1106,7 +1134,7 @@ const ManageProjectInfo = () => {
                             {selectedDialogue == 4 && <Contact formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             <div className="my-2 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProjectInfo} >Add</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddProjectInfo} >Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>

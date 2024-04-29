@@ -418,7 +418,7 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
               </div>
               <div className="">
                 <div className="text-[13px]">Dues Payable Month</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="duespayablemonth" value={formValues.project_info.duespayablemonth} />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="duespayablemonth" value={formValues.project_info.duespayablemonth} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
                 <div className="text-[13px]">Approx Total Month</div>

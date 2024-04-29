@@ -134,7 +134,9 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
 
 
     const [formErrors,setFormErrors] = useState({})
+    const [pageLoading,setPageLoading] = useState(false)
     const fetchInitialProjectData = async () => {
+        setPageLoading(true)
         const data = {
             "user_id" : 1234,
             "id" : currProject
@@ -144,6 +146,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
         const res = await response.json()
         console.log(res.data)
         setFormValues(res.data)
+        setPageLoading(false)
     }
     useEffect(() => {
        fetchInitialProjectData()
@@ -157,6 +160,19 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
         let res = {
             status : true,
             page : 1
+        }
+        if(formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "Enter Project Legal Status" }
+            })
+            
+            res.status = false
+            res.page = 2
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, project_legal_status: "" }
+            })
         }
         // if(formValues.project_info.)
         if(formValues.project_info.projectname == null || formValues.project_info.projectname == ""  ) {
@@ -220,19 +236,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
                 return { ...existing, builderid: "" }
             })
         }
-        if(formValues.project_info.project_legal_status == null || formValues.project_info.project_legal_status == "") {
-            // we need to set the formErrors
-            setFormErrors((existing) => {
-                return { ...existing, project_legal_status: "Enter Project Legal Status" }
-            })
-            
-            res.status = false
-            res.page = 2
-        }else {
-            setFormErrors((existing) => {
-                return { ...existing, project_legal_status: "" }
-            })
-        }
+        
         return res
     }
     const handleEdit = async () => {
@@ -241,6 +245,11 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
             setSelectedDialogue(temp.page)
             return 
         }
+
+
+
+        // we need to do the helper logic here
+        
         const data = {
             "user_id": 1234,
             "projectid": currProject,
@@ -347,27 +356,29 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
                                 </div>
                             </div>
                             <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40" >
+                                <div className={`${selectedDialogue == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`} >
                                     <button onClick={() => setSelectedDialogue(1)}><div>Project Information</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={() => setSelectedDialogue(2)}><div>Project details</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={() => setSelectedDialogue(3)}><div>Bank details</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={() => setSelectedDialogue(4)}><div>Contacts</div></button>
                                 </div>
-                                <div className="bg-[#EBEBEB] px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40">
+                                <div className={`${selectedDialogue == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={() => setSelectedDialogue(5)}><div>Photos</div></button>
                                 </div>
                             </div>
+                            {!pageLoading && <>
                             {selectedDialogue == 1 && <EditProjectInformation formValues={formValues} setFormValues={setFormValues} builderNameData={builderNameData} projectTypeData={projectTypeData} formErrors={formErrors} />}
                             {selectedDialogue == 2 && <EditProjectDetails formValues={formValues} setFormValues={setFormValues} projectLegalData={projectLegalData} formErrors={formErrors}/>}
                             {selectedDialogue == 3 && <EditBankDetails formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 4 && <EditContact formValues={formValues} setFormValues={setFormValues}/>}
                             {selectedDialogue == 5 &&  <EditPhotos formValues={formValues} setFormValues={setFormValues}/>}
+                            </>}
                             {/* {selectedDialogue == 1 && <ProjectInformation  />}
                             {selectedDialogue == 2 && <ProjectDetails />}
                             {selectedDialogue == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues}/>}
