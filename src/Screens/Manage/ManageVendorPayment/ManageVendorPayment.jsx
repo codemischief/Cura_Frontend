@@ -1,33 +1,28 @@
-import React from 'react';
-import { Outlet, Link } from "react-router-dom";
-import backLink from "../../../assets/back.png";
-import searchIcon from "../../../assets/searchIcon.png";
-import nextIcon from "../../../assets/next.png";
-import refreshIcon from "../../../assets/refresh.png";
-import downloadIcon from "../../../assets/download.png";
-import { useState, useEffect, useRef } from 'react';
+import { LinearProgress, Modal, Pagination } from "@mui/material";
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from "react-router-dom";
+import AsyncSelect from "react-select/async";
 import Navbar from "../../../Components/Navabar/Navbar";
-import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
-import Checkbox from '@mui/material/Checkbox';
-import { APIService } from '../../../services/API';
-import Pdf from "../../../assets/pdf.png";
-import Excel from "../../../assets/excel.png"
-import Edit from "../../../assets/edit.png"
-import Trash from "../../../assets/trash.png"
-import Filter from "../../../assets/filter.png"
-import DateIcon from "../../../assets/dateFilter.png"
-import Add from "../../../assets/add.png";
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
-import { Description } from '@mui/icons-material';
-import AsyncSelect from "react-select/async"
+import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import Add from "../../../assets/add.png";
+import backLink from "../../../assets/back.png";
+import Cross from "../../../assets/cross.png";
+import downloadIcon from "../../../assets/download.png";
+import Edit from "../../../assets/edit.png";
+import Excel from "../../../assets/excel.png";
+import Filter from "../../../assets/filter.png";
+import Pdf from "../../../assets/pdf.png";
+import refreshIcon from "../../../assets/refresh.png";
+import searchIcon from "../../../assets/searchIcon.png";
+import Trash from "../../../assets/trash.png";
+import { APIService } from '../../../services/API';
 import DeleteVendorPayment from './DeleteVendorPayment';
 import SaveConfirmationVendorPayment from './SaveConfirmationVendorPayment';
 // import EditPmaAgreement from './EditPmaAgreement';
-import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-import CharacterFilter from "../../../Components/Filters/CharacterFilter"
+import * as XLSX from 'xlsx';
+import CharacterFilter from "../../../Components/Filters/CharacterFilter";
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 // import EditOrderReceipt from './EditOrderReceipt';
@@ -84,7 +79,32 @@ const ManageVendorPayment = () => {
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
-
+    const dataRows = [
+        "id",
+        "paymentby",
+        "paymentbyname",
+        "amount",
+        "paymentdate",
+        "orderid",
+        "briefdescription",
+        "vendorid",
+        "vendorname",
+        "mode",
+        "modeofpayment",
+        "description",
+        "tds",
+        "servicetaxamount",
+        "dated",
+        "createdby",
+        "createdbyname",
+        "isdeleted",
+        "createdon",
+        "entityid",
+        "entity",
+        "officeid",
+        "office",
+        "clientname"
+    ]
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -218,31 +238,7 @@ const ManageVendorPayment = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -266,31 +262,7 @@ const ManageVendorPayment = () => {
         setCurrentPage(() => pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -313,31 +285,7 @@ const ManageVendorPayment = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -632,31 +580,7 @@ const ManageVendorPayment = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -680,31 +604,7 @@ const ManageVendorPayment = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -926,31 +826,7 @@ const ManageVendorPayment = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -984,31 +860,7 @@ const ManageVendorPayment = () => {
         setFlag((prev) => !prev)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "paymentby",
-                "paymentbyname",
-                "amount",
-                "paymentdate",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "mode",
-                "modeofpayment",
-                "description",
-                "tds",
-                "servicetaxamount",
-                "dated",
-                "createdby",
-                "createdbyname",
-                "isdeleted",
-                "createdon",
-                "entityid",
-                "entity",
-                "officeid",
-                "office"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
