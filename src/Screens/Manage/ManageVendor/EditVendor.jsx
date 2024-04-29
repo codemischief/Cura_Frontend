@@ -3,13 +3,11 @@ import { Modal, responsiveFontSizes } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 
-const EditVendor = ({currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization}) => {
-  const handleClose = () => {
-
-  }
-  const handleChange = () => {
-
-  }
+const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess}) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
   const initialValues = {
     vendorName: null,
     addressLine1: null,
@@ -55,14 +53,14 @@ const EditVendor = ({currVendor,allCity,tallyLedgerData,allCategory,typeOfOrgani
       existing.vendorName = res.data.vendorname 
       existing.addressLine1 = res.data.addressline1 
       existing.addressLine2 = res.data.addressline2 
-      existing.city = res.data.city 
+      existing.city = res.data.cityid
       existing.suburb = res.data.suburb 
       existing.phone = res.data.phone1 
       existing.ownerDetails = res.data.ownerinfo 
       existing.typeOfOrganization = res.data.type
       existing.pan = res.data.panno 
       existing.gstin = res.data.gstservicetaxno
-      existing.category = res.data.category 
+      existing.category = res.data.categoryid
       existing.email = res.data.email 
       existing.details = res.data.details 
       existing.tallyLedger = res.data.tallyledgerid
@@ -80,41 +78,96 @@ const EditVendor = ({currVendor,allCity,tallyLedgerData,allCategory,typeOfOrgani
   useEffect(() => {
      fetchInitialData()
   },[])
+  const validate = () => {
+    var res = true;
 
-  const handleEdit = () => {
+    if (!formValues.vendorName) {
+        setFormErrors((existing) => {
+            return { ...existing, vendorName: "Enter Vendor name" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, vendorName: "" }
+        })
+    }
+
+    if (!formValues.phone) {
+        setFormErrors((existing) => {
+            return { ...existing, phone: "Enter Phone Number" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, phone: "" }
+        })
+    }
+
+    if (!formValues.category) {
+        setFormErrors((existing) => {
+            return { ...existing, category: "Select Category" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, category: "" }
+        })
+    }
+
+    if (!formValues.email) {
+        setFormErrors((existing) => {
+            return { ...existing, email: "Enter Email" }
+        })
+        res = false;
+    } else {
+        setFormErrors((existing) => {
+            return { ...existing, email: "" }
+        })
+    }
+
+    return res;
+}
+  const handleEdit = async () => {
     // we handle edit here
+    if(!validate()) {
+        return ;
+    }
     const data  = {
       "user_id":1234,
-      "id":13348,
-      "vendorname":"Rudra_test",
-      "addressline1":"Line1 address",
-      "addressline2":"Line2 address",
-      "suburb":"suburb 1",
-      "city":847,
+      "id":currVendor,
+      "vendorname":formValues.vendorName,
+      "addressline1":formValues.addressLine1,
+      "addressline2":formValues.addressLine2,
+      "suburb":formValues.suburb,
+      "city": Number(formValues.city),
       "state":"Maharashtra",
       "country":5,
-      "type":"New type",
-      "details":"details",
-      "category":3,
-      "phone1":"934840984",
-      "email":"emailid@gmail",
-      "ownerinfo":"data",
-      "panno":"abc123",
-      "tanno":"def456",
-      "gstservicetaxno":"ijk789",
-      "tdssection":"opq345",
-      "bankname":"testbank",
-      "bankbranch":"testbranch",
-      "bankcity":"Pune",
-      "bankacctholdername":"holder",
-      "bankacctno":"acctno",
-      "bankifsccode":"code",
-      "bankaccttype":"savings",
+      "type":formValues.typeOfOrganization,
+      "details":formValues.details,
+      "category":Number(formValues.category),
+      "phone1":formValues.phone,
+      "email":formValues.email,
+      "ownerinfo":formValues.ownerDetails,
+      "panno":formValues.pan,
+      "tanno":formValues.tan,
+      "gstservicetaxno":formValues.gstin,
+      "tdssection":formValues.tdsSection,
+      "bankname":formValues.bankName,
+      "bankbranch":formValues.bankBranch,
+      "bankcity":formValues.bankBranchCity,
+      "bankacctholdername":formValues.accountHolderName,
+      "bankacctno":formValues.accountNumber,
+      "bankifsccode":formValues.ifscCode,
+      "bankaccttype":formValues.accountType,
       "companydeductee":true,
-      "tallyledgerid":1
+      "tallyledgerid":formValues.tallyLedger
     }
-    // const response  = await APIService.editVendorInvoice(d)
-
+    const response  = await APIService.editVendors(data)
+    const res = await response.json()
+    if(res.result == 'success') {
+        //  we need to open edit Modal
+        showSuccess()
+    }
   }
 
 
@@ -217,7 +270,7 @@ const EditVendor = ({currVendor,allCity,tallyLedgerData,allCategory,typeOfOrgani
                                                 {/* <option value="none" hidden={true}>Select a City</option> */}
                                                 <option value="none" hidden> Select Category</option>
                                                 {allCategory && allCategory.map(item => (
-                                                    <option key={item.id} value={item.name} >
+                                                    <option key={item.id} value={item.id} >
                                                         {item.name}
                                                     </option>
                                                 ))}
@@ -239,7 +292,7 @@ const EditVendor = ({currVendor,allCity,tallyLedgerData,allCategory,typeOfOrgani
                                                 {/* <option value="none" hidden={true}>Select a City</option> */}
                                                 <option value="none" hidden> Select A City</option>
                                                 {allCity && allCity.map(item => (
-                                                    <option value={item.city} >
+                                                    <option value={item.id} >
                                                         {item.city}
                                                     </option>
                                                 ))}
@@ -332,7 +385,7 @@ const EditVendor = ({currVendor,allCity,tallyLedgerData,allCategory,typeOfOrgani
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#505050] text-white rounded-md text-lg' onClick={() => {}} >Save</button>
+                            <button className='w-28 h-10 bg-[#505050] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
                         </div>
 

@@ -462,7 +462,7 @@ const ManageVendor = () => {
             "city": Number(formValues.city),
             "state": "Maharashtra",
             "country": 5,
-            "type": formValues.typeOfOrganization,
+            "type": Number(formValues.typeOfOrganization),
             "details": formValues.details,
             "category": Number(formValues.category),
             "phone1": formValues.phone,
@@ -1026,7 +1026,7 @@ const ManageVendor = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditVendor currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization}/>}
+            {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Created Succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Deleted Succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
@@ -1063,7 +1063,6 @@ const ManageVendor = () => {
                                 <button onClick={handleSearch}><img className="h-6" src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
-
                         <div>
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-9 w-72 rounded-lg" onClick={handleOpen}>
@@ -1073,15 +1072,8 @@ const ManageVendor = () => {
                                 </div>
                             </button>
                         </div>
-
                     </div>
-
                 </div>
-
-
-
-
-
                 {/* filter component */}
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
@@ -1387,7 +1379,7 @@ const ManageVendor = () => {
                                                 }>
                                                 <option >Select Type Of Organization</option>
                                                 {typeOfOrganization && typeOfOrganization.map(item => (
-                                                    <option key={item.id} value={item.type}>
+                                                    <option key={item.id} value={item.id}>
                                                         {item.type}
                                                     </option>
                                                 ))}
@@ -1418,7 +1410,7 @@ const ManageVendor = () => {
                                                 {/* <option value="none" hidden={true}>Select a City</option> */}
                                                 <option value="none" hidden> Select Category</option>
                                                 {allCategory && allCategory.map(item => (
-                                                    <option key={item.id} value={item.name} >
+                                                    <option key={item.id} value={item.id} >
                                                         {item.name}
                                                     </option>
                                                 ))}
@@ -1543,5 +1535,4 @@ const ManageVendor = () => {
         </div>
     )
 }
-
 export default ManageVendor
