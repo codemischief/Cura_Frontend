@@ -60,8 +60,8 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
 
     useEffect(() => {
         fetchCountryData();
-        fetchStateData(5);
-        fetchCityData("Maharashtra");
+        fetchStateData(formValues.project_info.country);
+        fetchCityData(formValues.project_info.state);
     }, []);
 
     //Validation of the form
@@ -308,7 +308,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                         <input
                             type="text"
                             className="border-[#C6C6C6] border-[1px] rounded-sm w-56 h-5 px-3 text-[11px]"
-                            name="adressline2"
+                            name="addressline2"
                             value={formValues.project_info.addressline2}
                             onChange={handleProjectInfoChange}
                         />
