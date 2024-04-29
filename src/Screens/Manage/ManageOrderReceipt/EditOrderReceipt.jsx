@@ -14,7 +14,8 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
         receivedDate: null,
         amountReceived: "",
         orderdate : null,
-        orderstatus : null
+        orderstatus : null,
+        pendingAmount : null,
     }
     const [formValues,setFormValues] = useState(initialValues)
     const [formErrors,setFormErrors] = useState({})
@@ -32,7 +33,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
       "user_id":1234,
       "id":receiptId,
       "receivedby": formValues.receivedBy,
-      "amount": formValues.amountReceived,
+      "amount": formValues.pendingAmount - formValues.amountReceived,
       "tds": formValues.TDS,
       "recddate": formValues.receivedDate,
       "paymentmode": formValues.receiptMode,
@@ -70,7 +71,8 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
         existing.TDS = res.data.tds
         existing.receiptDescription = res.data.receiptdesc 
         existing.receivedDate = res.data.recddate
-        existing.amountReceived = res.data.amount
+        // existing.amountReceived = res.data.amount
+        existing.pendingAmount = res.data.amount
         existing.orderstatus = res.data.status
         existing.orderdate = res.data.orderdate
         setFormValues(existing)
@@ -317,7 +319,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Pending Amount </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.pendingAmount} readOnly />
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Date </div>
