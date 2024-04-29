@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Select } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -44,6 +44,7 @@ const ManageVendor = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
+    const [allCategory,setAllCategory] = useState([]);
     const [allUsername, setAllUsername] = useState([]);
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
@@ -72,6 +73,29 @@ const ManageVendor = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     // const [filterArray,setFilterArray] = useState([]);
+
+    const [typeOfOrganization, setTypeOfOrganization] = useState([
+        {
+            id: 1,
+            type: "Proprietorship"
+        },
+        {
+            id: 2,
+            type: "Trust"
+        },
+        {
+            id: 3,
+            type: "PVT. Ltd Company"
+        },
+        {
+            id: 4,
+            type: "Pub. Ltd Company"
+        },
+        {
+            id: 5,
+            type: "Partnership"
+        },
+    ])
 
 
     const [selectedOption, setSelectedOption] = useState({
@@ -142,6 +166,16 @@ const ManageVendor = () => {
             return []
         }
         return results
+    }
+
+    const getVendorCategoryAdmin = async () => {
+        const data = {
+            "user_id": 1234,
+        }
+        const response = await APIService.getVendorCategoryAdmin(data);
+        const res = await response.json()
+        console.log(res.data);
+        setAllCategory(res.data)
     }
 
     const [sortField, setSortField] = useState("id")
@@ -338,7 +372,8 @@ const ManageVendor = () => {
     useEffect(() => {
         fetchData();
         fetchCityData('Maharashtra')
-        fetchTallyLedgerData()
+        fetchTallyLedgerData();
+        getVendorCategoryAdmin();
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setVendorNameFilter(false)
@@ -420,34 +455,34 @@ const ManageVendor = () => {
         //     "tallyledgerid": formValues.tallyLedger
         // }
         const data = {
-            "user_id":1234,
-            "vendorname":"Rudra",
-            "addressline1":"Line1 address",
-            "addressline2":"Line2 address",
-            "suburb":"suburb 1",
-            "city":847,
-            "state":"Maharashtra",
-            "country":5,
-            "type":"New type",
-            "details":"details",
-            "category":3,
-            "phone1":"934840984",
-            "email":"emailid@gmail",
-            "ownerinfo":"data",
-            "panno":"abc123",
-            "tanno":"def456",
-            "gstservicetaxno":"ijk789",
-            "tdssection":"opq345",
-            "bankname":"testbank",
-            "bankbranch":"testbranch",
-            "bankcity":"Pune",
-            "bankacctholdername":"holder",
-            "bankacctno":"acctno",
-            "bankifsccode":"code",
-            "bankaccttype":"savings",
-            "companydeductee":true,
-            "tallyledgerid":1
-          }
+            "user_id": 1234,
+            "vendorname": formValues.vendorName,
+            "addressline1": formValues.addressLine1,
+            "addressline2": formValues.addressLine2,
+            "suburb": formValues.suburb,
+            "city": Number(formValues.city),
+            "state": "Maharashtra",
+            "country": 5,
+            "type": formValues.typeOfOrganization,
+            "details": formValues.details,
+            "category": Number(formValues.category),
+            "phone1": formValues.phone,
+            "email": formValues.email,
+            "ownerinfo": formValues.ownerDetails,
+            "panno": formValues.pan,
+            "tanno": formValues.tan,
+            "gstservicetaxno": formValues.gstin,
+            "tdssection": formValues.tdsSection,
+            "bankname": formValues.bankName,
+            "bankbranch": formValues.bankBranch,
+            "bankcity": formValues.bankBranchCity,
+            "bankacctholdername": formValues.accountHolderName,
+            "bankacctno": formValues.accountNumber,
+            "bankifsccode": formValues.ifscCode,
+            "bankaccttype": formValues.accountType,
+            "companydeductee": true,
+            "tallyledgerid": Number(formValues.tallyLedger)
+        }
         const response = await APIService.addVendors(data);
 
         const result = (await response.json())
@@ -959,7 +994,7 @@ const ManageVendor = () => {
     }
 
 
-//    const [allCity,setAllCity] = useState([]);
+    //    const [allCity,setAllCity] = useState([]);
     // we need to fetch the city data
     const fetchCityData = async (id) => {
         const data = { "user_id": 1234, "state_name": id };
@@ -976,13 +1011,14 @@ const ManageVendor = () => {
             // }
         }
     }
-    const [tallyLedgerData,setTallyLedgerData] = useState([])
+    const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
-        const data =  {
-            "user_id" : 1234
+        const data = {
+            "user_id": 1234
         }
-        const response = await APIService.getTallyLedgerAdmin(data)
+        const response = await APIService.getTallyLedgerAdmin(data);
         const res = await response.json()
+        console.log(res);
         setTallyLedgerData(res.data)
     }
 
@@ -1095,14 +1131,6 @@ const ManageVendor = () => {
                                 </div>
                                 {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} filterColumn='city' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
-
-                            <div className='w-[18%]  px-3 py-2.5 '>
-                                <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" />
-                                    <button className='w-[25%] px-1 py-2' > <img src={Filter} className='h-3 w-3' /></button>
-                                </div>
-
-                            </div>
                         </div>
                         <div className="w-[15%] flex">
                             <div className='w-1/2 px-3 py-2.5'>
@@ -1153,11 +1181,6 @@ const ManageVendor = () => {
                             <div className='w-[14%]  flex'>
                                 <div className='p-3'>
                                     <p>City <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                            </div>
-                            <div className='w-[18%]  flex'>
-                                <div className='p-3'>
-                                    <p>Vendor Dealer Status <button onClick={() => handleSort('invoicedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
@@ -1213,11 +1236,7 @@ const ManageVendor = () => {
                                             <p>{item.city}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[16%]  flex'>
-                                        <div className='p-3'>
-                                            {/* <p>{item.invoicedate}</p> */}
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div className="w-[15%] flex items-center">
                                     <div className='w-1/2  flex'>
@@ -1361,9 +1380,19 @@ const ManageVendor = () => {
                                     <div className=" space-y-1 py-1 mt-2">
                                         <div className="font-semibold text-sm">Accounting Information</div>
                                         <div className="">
-                                            <div className="text-sm">Type of organization <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="typeOfOrganization" value={formValues.typeOfOrganization} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.typeOfOrganization}</div>
+                                            <div className="text-[13px]">Type Of Organization </div>
+                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] outline-none" name="typeOfOrganization"
+                                                value={formValues.typeOfOrganization}
+                                                onChange={
+                                                    handleChange
+                                                }>
+                                                <option >Select Type Of Organization</option>
+                                                {typeOfOrganization && typeOfOrganization.map(item => (
+                                                    <option key={item.id} value={item.type}>
+                                                        {item.type}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">PAN </div>
@@ -1381,7 +1410,20 @@ const ManageVendor = () => {
                                     <div className=" space-y-1 py-1 mt-6">
                                         <div className="">
                                             <div className="text-sm">Category <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="category" value={formValues.category} onChange={handleChange} />
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="category"
+                                                value={formValues.category}
+                                                defaultValue="Select Category"
+                                                onChange={handleChange}
+                                            >
+                                                {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                <option value="none" hidden> Select Category</option>
+                                                {allCategory && allCategory.map(item => (
+                                                    <option key={item.id} value={item.name} >
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.category}</div>
                                         </div>
                                         <div className="">
@@ -1391,19 +1433,19 @@ const ManageVendor = () => {
                                         <div className="">
                                             <div className="text-sm">City</div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="city"
-                                            value={formValues.city}
-                                            defaultValue="Select City"
-                                            onChange={handleChange}
-                                        >
-                                            {/* <option value="none" hidden={true}>Select a City</option> */}
-                                            <option value="none" hidden> Select A City</option>
-                                            {allCity && allCity.map(item => (
-                                                <option value={item.id} >
-                                                    {item.city}
-                                                </option>
-                                            ))}
-                                        </select>
+                                                name="city"
+                                                value={formValues.city}
+                                                defaultValue="Select City"
+                                                onChange={handleChange}
+                                            >
+                                                {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                <option value="none" hidden> Select A City</option>
+                                                {allCity && allCity.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.city}
+                                                    </option>
+                                                ))}
+                                            </select>
                                             {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
                                         </div>
                                         <div className="">
@@ -1421,19 +1463,19 @@ const ManageVendor = () => {
                                         <div className="">
                                             <div className="text-sm">Tally Ledger </div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="tallyLedger"
-                                            value={formValues.tallyLedger}
-                                            defaultValue="Select Tally Ledger"
-                                            onChange={handleChange}
-                                        >
-                                            {/* <option value="none" hidden={true}>Select a City</option> */}
-                                            <option value="none" hidden> Select Tally Ledger</option>
-                                            {tallyLedgerData && tallyLedgerData.map(item => (
-                                                <option value={item[0]} >
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
+                                                name="tallyLedger"
+                                                value={formValues.tallyLedger}
+                                                defaultValue="Select Tally Ledger"
+                                                onChange={handleChange}
+                                            >
+                                                {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                <option value="none" hidden> Select Tally Ledger</option>
+                                                {tallyLedgerData && tallyLedgerData.map(item => (
+                                                    <option value={item[0]} >
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
 
 
 
@@ -1492,7 +1534,7 @@ const ManageVendor = () => {
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
+                            <button className='w-28 h-10 bg-[#505050] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
                         </div>
 
