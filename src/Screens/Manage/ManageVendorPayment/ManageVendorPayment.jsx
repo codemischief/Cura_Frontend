@@ -60,18 +60,18 @@ const ManageVendorPayment = () => {
     const [clientNameFilterInput, setClientNameFilterInput] = useState("");
     const [orderDescriptionFilter, setOrderDescriptionFilter] = useState(false);
     const [orderDescriptionFilterInput, setOrderDescriptionFilterInput] = useState("");
-    const [invoiceAmountFilter, setInvoiceAmountFilter] = useState(false);
-    const [invoiceAmountFilterInput, setInvoiceAmountFilterInput] = useState("");
-    const [invoiceDateFilter, setInvoiceDateFilter] = useState(false);
-    const [invoiceDateFilterInput, setInvoiceDateFilterInput] = useState("");
-    const [entityFilter, setEntityFilter] = useState(false);
-    const [entityFilterInput, setEntityFilterInput] = useState("");
+    const [propertyDescriptionFilter, setPropertyDescriptionFilter] = useState(false);
+    const [propertyDescriptionFilterInput, setPropertyDescriptionFilterInput] = useState("");
+    const [amountFilter, setAmountFilter] = useState(false);
+    const [amountFilterInput, setAmountFilterInput] = useState("");
+    const [paymentDateFilter, setPaymentDateFilter] = useState(false);
+    const [paymentDateFilterInput, setPaymentDateFilterInput] = useState("");
+    const [modeOfPaymentFilter, setModeOfPaymentFilter] = useState(false);
+    const [modeOfPaymentFilterInput, setModeOfPaymentFilterInput] = useState("");
     const [createdByFilter, setCreatedByFilter] = useState(false);
     const [createdByFilterInput, setCreatedByFilterInput] = useState("");
-    const [estimateAmountFilter, setEstimateAmountFilter] = useState(false);
-    const [estimateAmountFilterInput, setEstimateAmountFilterInput] = useState("");
-    const [estimateDateFilter, setEstimateDateFilter] = useState(false);
-    const [estimateDateFilterInput, setEstimateDateFilterInput] = useState("");
+    const [paymentByFilter, setPaymentByFilter] = useState(false);
+    const [paymentByFilterInput, setPaymentByFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
 
@@ -104,7 +104,8 @@ const ManageVendorPayment = () => {
         "entity",
         "officeid",
         "office",
-        "clientname"
+        "clientname",
+        "propertydescription"
     ]
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -405,12 +406,12 @@ const ManageVendorPayment = () => {
                 setVendorNameFilter(false);
                 setClientNameFilter(false);
                 setOrderDescriptionFilter(false);
-                setInvoiceAmountFilter(false);
-                setInvoiceDateFilter(false);
-                setEntityFilter(false);
+                setPropertyDescriptionFilter(false);
+                setAmountFilter(false);
+                setPaymentDateFilter(false);
                 setCreatedByFilter(false);
-                setEstimateAmountFilter(false);
-                setEstimateDateFilter(false);
+                setModeOfPaymentFilter(false);
+                setPaymentByFilter(false);
                 setIdFilter(false);
             }
         }
@@ -549,7 +550,7 @@ const ManageVendorPayment = () => {
             "rows": [
                 "id",
                 "vendorname",
-                "description",
+                "propertydescription",
                 "briefdescription",
                 "amount",
                 "paymentdate",
@@ -741,25 +742,7 @@ const ManageVendorPayment = () => {
             filterData: "String",
             filterInput: ""
         },
-        invoiceamount: {
-            filterType: "",
-            filterValue: "",
-            filterData: "Numeric",
-            filterInput: ""
-        },
-        invoicedate: {
-            filterType: "",
-            filterValue: null,
-            filterData: "Date",
-            filterInput: ""
-        },
-        entity: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        createdbyname: {
+        propertydescription: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -771,10 +754,28 @@ const ManageVendorPayment = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        estimatedate: {
+        paymentdate: {
             filterType: "",
             filterValue: null,
             filterData: "Date",
+            filterInput: ""
+        },
+        modeofpayment: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        createdbyname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        paymentbyname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
             filterInput: ""
         },
         id: {
@@ -949,47 +950,59 @@ const ManageVendorPayment = () => {
                         </div>
                         <div className='w-[12%] px-3 py-2  '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%]  px-3 py-2 '>
-                            <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
-
                         </div>
                         <div className='w-[12%] px-3 py-2 '>
-                            <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                <button className='w-[35%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {propertyDescriptionFilter && <CharacterFilter filterColumn='propertydescription' inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[15%] px-3 py-2 '>
+                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
                         </div>
-
-                        <div className='w-[15%] px-3 py-2 '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} />
-                                <button className='w-[35%] px-1 py-2' onClick={() => { setInvoiceAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {invoiceAmountFilter && <NumericFilter columnName='invoiceamount' inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
-                        </div>
                         <div className='w-[9%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setInvoiceDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} />}
+                            {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
                         </div>
                         <div className='w-[12%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
-                                <button className='w-[30%] px-1 py-2' onClick={() => { setEntityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentDateFilterInput} onChange={(e) => setPaymentDateFilterInput(e.target.value)} type="date" />
+                                <button className='w-[30%] px-1 py-2' onClick={() => { setPaymentDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} handleFilter={newHandleFilter} filterColumn='entity' menuRef={menuRef} />}
+                            {paymentDateFilter && <DateFilter inputVariable={paymentDateFilterInput} setInputVariable={setPaymentDateFilterInput} handleFilter={newHandleFilter} columnName='paymentdate' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[11%] px-3 py-2 '>
+                            <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={modeOfPaymentFilterInput} onChange={(e) => setModeOfPaymentFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setModeOfPaymentFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {modeOfPaymentFilter && <CharacterFilter inputVariable={modeOfPaymentFilterInput} setInputVariable={setModeOfPaymentFilterInput} handleFilter={newHandleFilter} filterColumn='modeofpayment' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[11%] px-3 py-2'>
+                            <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setPaymentByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {paymentByFilter && <CharacterFilter filterColumn='paymentbyname' inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
@@ -998,20 +1011,7 @@ const ManageVendorPayment = () => {
                             </div>
                             {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[11%] px-3 py-2  '>
-                            <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)} />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {estimateAmountFilter && <NumericFilter columnName='amount' inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
-                        </div>
-                        <div className='w-[11%] px-3 py-2  '>
-                            <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type='date' />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef} />}
-                        </div>
+                        
                     </div>
                     <div className="w-[10%] flex">
 
@@ -1052,7 +1052,7 @@ const ManageVendorPayment = () => {
                             </div>
                             <div className='w-[12%]  flex '>
                                 <div className='px-3 py-5'>
-                                    <p>Property <button onClick={() => handleSort('description')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Property <button onClick={() => handleSort('propertydescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[15%]  flex'>
@@ -1134,7 +1134,7 @@ const ManageVendorPayment = () => {
                                     </div>
                                     <div className='w-[12%]  flex '>
                                         <div className='px-3 py-5'>
-                                            <p>{item.description}</p>
+                                            <p>{item.propertydescription}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%]  flex'>
