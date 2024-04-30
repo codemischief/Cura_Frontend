@@ -22,7 +22,9 @@ body{
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
-
+input::selection {
+    background-color: transparent;
+  }
 /* 
 @layer components{
     .button-action {

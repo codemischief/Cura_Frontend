@@ -38,7 +38,7 @@ const EditBankDetails = ({formValues,setFormValues}) => {
                 Acc. Holder Name
               </div>
               <div className="w-[12%] h-full p-3 text-[11px]" >
-                Acc. no
+                Acc. No
               </div>
               <div className="w-[12%] h-full p-3 text-[11px]" >
                 Account type
