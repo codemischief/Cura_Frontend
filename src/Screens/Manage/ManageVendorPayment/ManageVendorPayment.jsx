@@ -26,7 +26,8 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter";
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 // import EditOrderReceipt from './EditOrderReceipt';
-import EditVendorInvoice from './EditVendorInvoice';
+// import EditVendorInvoice from './EditVendorPayment';
+import EditVendorPayment from "./EditVendorPayment";
 const ManageVendorPayment = () => {
 
     const menuRef = useRef();
@@ -881,7 +882,8 @@ const ManageVendorPayment = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />}
+            {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess}/>}
+            {/* {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Payment Created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Payment Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
