@@ -209,7 +209,7 @@ const ManageClientReceipt = () => {
     }
 
 
-
+    const [filterState, setFilterState] = useState([]);
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
@@ -218,11 +218,12 @@ const ManageClientReceipt = () => {
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": searchInput
         };
         const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
@@ -235,10 +236,11 @@ const ManageClientReceipt = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
+        setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -257,13 +259,14 @@ const ManageClientReceipt = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         console.log(searchInput);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         };
@@ -389,7 +392,7 @@ const ManageClientReceipt = () => {
         var res = true;
         if (!formValues.receivedDate) {
             setFormErrors((existing) => {
-                return { ...existing, receivedDate: "Select Recived Date" }
+                return { ...existing, receivedDate: "Select Received Date" }
             })
             res = false;
         } else {
@@ -420,47 +423,12 @@ const ManageClientReceipt = () => {
         }
         if (!formValues.amountReceived) {
             setFormErrors((existing) => {
-                return { ...existing, amountReceived: "Enter Amount received" }
-            })
-            res = false;
-        } else if (!Number.isInteger(Number(formValues.amountReceived))) {
-            setFormErrors((existing) => {
-                return { ...existing, amountReceived: "Enter A Numeric Value" }
+                return { ...existing, amountReceived: "Enter Amount Received" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
                 return { ...existing, amountReceived: "" }
-            })
-        }
-        if (!Number.isInteger(Number(formValues.TDS))) {
-            setFormErrors((existing) => {
-                return { ...existing, TDS: "Enter A Numeric Value" }
-            })
-            res = false;
-        } else if (Number.isInteger(Number(formValues.TDS))) {
-            setFormErrors((existing) => {
-                return { ...existing, TDS: "" }
-            })
-        }
-        if (!Number.isInteger(Number(formValues.serviceAmount))) {
-            setFormErrors((existing) => {
-                return { ...existing, serviceAmount: "Enter A Numeric Value" }
-            })
-            res = false;
-        } else if (Number.isInteger(Number(formValues.serviceAmount))) {
-            setFormErrors((existing) => {
-                return { ...existing, serviceAmount: "" }
-            })
-        }
-        if (!Number.isInteger(Number(formValues.reimbursementAmount))) {
-            setFormErrors((existing) => {
-                return { ...existing, reimbursementAmount: "Enter A Numeric Value" }
-            })
-            res = false;
-        } else if (Number.isInteger(Number(formValues.reimbursementAmount))) {
-            setFormErrors((existing) => {
-                return { ...existing, reimbursementAmount: "" }
             })
         }
         
@@ -486,12 +454,24 @@ const ManageClientReceipt = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": initialRows,
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "rows": 
+            [
+                "clientname",
+                "amount",
+                "serviceamount",
+                "reimbursementamount",
+                "recddate",
+                "paymentmodename",
+                "receivedbyname",
+                "tds",
+                "id"
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key": searchInput
         };
         const response = await APIService.getClientReceipt(data)
         const temp = await response.json();
@@ -499,21 +479,22 @@ const ManageClientReceipt = () => {
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "CleintReceiptData.xlsx");
+        XLSX.writeFile(workbook, "ClientReceiptData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
         setIsSearchOn(true);
+        setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getClientReceipt(data);
@@ -529,10 +510,11 @@ const ManageClientReceipt = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
+        setCurrentPage(1);
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -707,7 +689,7 @@ const ManageClientReceipt = () => {
             filterData : "Date",
             filterInput : ""
         },
-        howreceived : {
+        paymentmodename : {
             filterType : "",
             filterValue : "",
             filterData : "String",
@@ -747,9 +729,7 @@ const ManageClientReceipt = () => {
                 }
             }
 
-            if (type == 'noFilter') setInputVariable("");
-        
-
+            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
         fetchFiltered(existing);
     }
     const fetchFiltered = async (mapState) => {
@@ -763,15 +743,17 @@ const ManageClientReceipt = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        setCurrentPage((prev) => 1)
+        setFilterState(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": initialRows,
             "filters": tempArray,
-            "sort_by": ["id"],
+            "sort_by": [sortField],
             "order": "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
         const response = await APIService.getClientReceipt(data);
@@ -795,17 +777,18 @@ const ManageClientReceipt = () => {
                 tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         })
+        setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": [],
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
+        // setFlag((prev) => !prev);
         const response = await APIService.getClientReceipt(data);
         const temp = await response.json();
         const result = temp.data;
@@ -932,7 +915,7 @@ const ManageClientReceipt = () => {
                                     <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={receivedModeFilterInput} onChange={(e) => setReceivedModeFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[23%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedModeFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='howreceived' menuRef={menuRef}/>}
+                                {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef}/>}
                             </div>
 
                             <div className='w-[11%] px-3 py-2.5'>
@@ -1001,12 +984,12 @@ const ManageClientReceipt = () => {
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Received date <button onClick={() => handleSort('recddate')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Received Date <button onClick={() => handleSort('recddate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Received Mode <button onClick={() => handleSort('howreceived')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Receipt Mode <button onClick={() => handleSort('paymentmodename')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[11%]  flex'>
@@ -1052,51 +1035,51 @@ const ManageClientReceipt = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingClientReceipt.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px] h-10 overflow-hidden'>
                                 <div className="w-[87%] flex">
                                     <div className='w-[3%] flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[14%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='p-3'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>
-                                        <div className='px-3 py-5'>
-                                            <p>{item.amount} </p>
+                                        <div className='p-3'>
+                                            <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex'>
-                                        <div className='px-3 py-5'>
-                                            <p> {item.serviceamount} </p>
+                                        <div className='p-3 '>
+                                            <p> {item.serviceamount ? item.serviceamount.toFixed(2) : ""} </p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
                                         <div className='p-3'>
-                                            {item.reimbursementamount}
+                                            {item.reimbursementamount ? item.reimbursementamount.toFixed(2) : ""}
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='p-3 ml-1'>
                                             <p>{item.recddate}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex'>
-                                        <div className='px-3 py-5'>
-                                            <p>{item.howreceived} </p>
+                                        <div className='p-3 ml-1'>
+                                            <p>{item.paymentmodename} </p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='p-3 ml-1'>
                                             <p>{item.receivedbyname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[7%]  flex'>
-                                        <div className='px-3 py-5'>
-                                            <p>{item.tds}</p>
+                                        <div className='p-3 ml-1'>
+                                            <p>{item.tds ? item.tds.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[5%]  flex'>
@@ -1107,12 +1090,12 @@ const ManageClientReceipt = () => {
                                 </div>
                                 <div className="w-[13%] flex">
                                     <div className='w-1/2  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='p-3'>
                                             <p>{item.id} </p>
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex'>
-                                        <div className='px-3 py-5 flex space-x-2'>
+                                        <div className='px-3 py-2.5 flex space-x-2'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                         </div>
@@ -1173,7 +1156,7 @@ const ManageClientReceipt = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
@@ -1329,22 +1312,22 @@ const ManageClientReceipt = () => {
                                 <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-sm">Service Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Reimbursement Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.reimbursementAmount}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Amount Recived <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">TDS </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.TDS}</div>
                                     </div>
                                     <div className="">
