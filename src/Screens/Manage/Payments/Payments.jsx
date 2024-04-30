@@ -25,6 +25,7 @@ import Excel from "../../../assets/excel.png"
 import SaveConfirmationPayments from './SaveConfirmationPayments';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeletePaymentModal from './DeletePaymentModal';
+import DateFilter from '../../../Components/Filters/DateFilter';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -171,7 +172,7 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no":  Number(currentPage),
@@ -195,6 +196,7 @@ const Payments = () => {
         }) 
         console.log(tempArray)
         setCurrentPages(quantity);
+        setCurrentPage((prev) => 1);
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -219,10 +221,10 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": isSearchOn ? searchInput : ""
         }
@@ -266,7 +268,7 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -618,10 +620,9 @@ const Payments = () => {
         fetchData();
     }
     const handleSearch = async () => {
-
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
         setIsSearchOn(true);
-
         const data = {
             "user_id": 1234,
             "rows": [
@@ -645,11 +646,11 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         }
         const response = await APIService.getPayment(data);
@@ -662,6 +663,7 @@ const Payments = () => {
         setPageLoading(true);
         setIsSearchOn(false);
         setSearchInput("");
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -685,7 +687,7 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -702,31 +704,22 @@ const Payments = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
                 "paymentto",
                 "paymentby",
                 "amount",
                 "paidon",
                 "paymentmode",
-                "paymentstatus",
-                "description",
-                "banktransactionid",
                 "paymentfor",
-                "dated",
-                "createdby",
-                "isdeleted",
+                "paymentstatus",
                 "entity",
-                "officeid",
-                "tds",
-                "professiontax",
-                "month",
-                "deduction"
+                "id",
             ],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key": searchInput
         };
         const response = await APIService.getPayment(data)
         const temp = await response.json();
@@ -759,6 +752,7 @@ const Payments = () => {
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     const [showDeleteSuccess, setDeleteSuccess] = useState(false);
+    const [filterState, setFilterState] = useState([]);
     const filterMapping = {
         paymentto : {
             filterType : "",
@@ -780,8 +774,8 @@ const Payments = () => {
         },
         paidon : {
             filterType : "",
-            filterValue : "",
-            filterData : "String",
+            filterValue : null,
+            filterData : "Date",
             filterInput : ""
         },
         paymentmode : {
@@ -829,6 +823,8 @@ const Payments = () => {
             }
         })
         console.log('this is getting called')
+        setCurrentPage((prev) => 1)
+        setFilterState(tempArray)
         console.log(tempArray)
         const data = {
             "user_id": 1234,
@@ -857,7 +853,7 @@ const Payments = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         }
         const response = await APIService.getPayment(data);
@@ -881,163 +877,6 @@ const Payments = () => {
         
         fetchFiltered(existing);
     } 
-    const handleFiltering = (type,columnName) => {
-        if(columnName == "paymentTo") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.paymentTo.filterType = "";
-                existing.paymentTo.filterValue = "";
-                setFilterMapState(existing)
-            //    filterMapping.country.filterType = "";
-            //    filterMapping.country.filterValue = "";
-               setPaymentToFilterInput("");
-            }else {
-                const existing = filterMapState;
-                existing.paymentTo.filterType = type;
-                existing.paymentTo.filterValue = paymentToFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
-            }
-        }else if(columnName == "paymentBy") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.paymentBy.filterType = "";
-                existing.paymentBy.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setPaymentByFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.paymentBy.filterType = type;
-                existing.paymentBy.filterValue = paymentByFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "amount") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.amount.filterType = "";
-                existing.amount.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setAmountFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.amount.filterType = type;
-                existing.amount.filterValue = amountFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "paidOn") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.paidOn.filterType = "";
-                existing.paidOn.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setPaidOnFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.paidOn.filterType = type;
-                existing.paidOn.filterValue = paidOnFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "paymentMode") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.paymentMode.filterType = "";
-                existing.paymentMode.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setPaymentModeFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.paymentMode.filterType = type;
-                existing.paymentMode.filterValue = paymentModeFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "paymentFor") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.paymentFor.filterType = "";
-                existing.paymentFor.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setPaymentForFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.paymentFor.filterType = type;
-                existing.paymentFor.filterValue = paymentForFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "paymentStatus") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.paymentStatus.filterType = "";
-                existing.paymentStatus.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setPaymentStatusFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.paymentStatus.filterType = type;
-                existing.paymentStatus.filterValue = paymentStatusFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "entity") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.entity.filterType = "";
-                existing.entity.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setEntityFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.entity.filterType = type;
-                existing.entity.filterValue = entityFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "id") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.id.filterType = "";
-                existing.id.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = "";
-                // filterMapping.id.filterValue = "";
-                setIdFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.id.filterType = type;
-                existing.id.filterValue = Number(idFilterInput);
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = type;
-                // filterMapping.id.filterValue = Number(idFilterInput);
-             }
-        }
-        fetchData();
-    }
 
     const handleSort = async (field) => {
         setPageLoading(true);
@@ -1050,6 +889,7 @@ const Payments = () => {
                 tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
             }
         })
+        setFlag((prev) => !prev)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -1073,14 +913,13 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
         const response = await APIService.getPayment(data);
         const result = (await response.json());
         console.log(result);
@@ -1173,10 +1012,10 @@ const Payments = () => {
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} type='date' />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {paidOnFilter && <CharacterFilter inputVariable={paidOnFilterInput} setInputVariable={setPaidOnFilterInput} handleFilter={newHandleFilter} filterColumn='paidon' menuRef={menuRef}/>}
+                                {paidOnFilter && <DateFilter inputVariable={paidOnFilterInput} setInputVariable={setPaidOnFilterInput} handleFilter={newHandleFilter} columnName='paidon' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[14%]  px-4 py-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
