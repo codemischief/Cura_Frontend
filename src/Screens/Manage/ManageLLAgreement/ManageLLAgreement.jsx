@@ -29,24 +29,24 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditManageLLAgreement from './EditManageLLAgreement';
 const ManageLLAgreement = () => {
-    const initialRows = [
-        "id",
-        "clientpropertyid",
-        "orderid",
-        "orderdescription",
-        "startdate",
-        "durationinmonth",
-        "depositamount",
-        "rentpaymentdate",
-        "rentamount",
-        "registrationtype",
-        "noticeperiodindays",
-        "active",
-        "llscancopy",
-        "dated",
-        "createdby",
-        "isdeleted"
-    ]
+    // const initialRows = [
+    //     "id",
+    //     "clientpropertyid",
+    //     "orderid",
+    //     "orderdescription",
+    //     "startdate",
+    //     "durationinmonth",
+    //     "depositamount",
+    //     "rentpaymentdate",
+    //     "rentamount",
+    //     "registrationtype",
+    //     "noticeperiodindays",
+    //     "active",
+    //     "llscancopy",
+    //     "dated",
+    //     "createdby",
+    //     "isdeleted"
+    // ]
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -89,7 +89,29 @@ const ManageLLAgreement = () => {
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
-
+    const dataRows = [
+        "id",
+        "clientpropertyid",
+        "orderid",
+        "clientname",
+        "propertydescription",
+        "propertystatus",
+        "propertystatusname",
+        "orderdescription",
+        "startdate",
+        "durationinmonth",
+        "depositamount",
+        "rentpaymentdate",
+        "rentamount",
+        "registrationtype",
+        "noticeperiodindays",
+        "active",
+        "llscancopy",
+        "dated",
+        "createdby",
+        "isdeleted",
+        "actualenddate"
+    ]
     const fetchCountryData = async () => {
         setPageLoading(true);
         // const data = { "user_id":  1234 };
@@ -279,37 +301,17 @@ const ManageLLAgreement = () => {
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
+
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": [],
+            "rows": dataRows,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput 
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -324,35 +326,13 @@ const ManageLLAgreement = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": [],
+            "rows": dataRows,    
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key":  searchInput 
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -366,37 +346,17 @@ const ManageLLAgreement = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         console.log(searchInput);
+        setCurrentPage((prev) => 1)
+        setCurrentPages((prev) => quantity)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": [],
+            "rows": dataRows,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput 
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -783,34 +743,13 @@ const ManageLLAgreement = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "rows": dataRows,
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -824,39 +763,17 @@ const ManageLLAgreement = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
-        setCurrentPage(1)
-        setCurrentPages(15)
+        setCurrentPage((prev) => 1)
+        // setCurrentPages(15)
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": [],
-            "sort_by": [],
+            "rows": dataRows,
+            "filters": filterState,
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getLLAgreement(data);
@@ -872,35 +789,14 @@ const ManageLLAgreement = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": [],
+            "rows": dataRows,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": ""
         };
@@ -946,7 +842,7 @@ const ManageLLAgreement = () => {
 
     const handleSort = async (field) => {
         setPageLoading(true);
-        const tempArray = [];
+        // const tempArray = [];
         // we need to query thru the object
         setSortField(field)
         // console.log(filterMapState);
@@ -955,39 +851,18 @@ const ManageLLAgreement = () => {
         //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
         //     }
         // })
+        setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate"
-            ],
-            "filters": tempArray,
+            "rows": dataRows,
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput 
         };
-        setFlag((prev) => !prev);
+        
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -1097,7 +972,7 @@ const ManageLLAgreement = () => {
 
         fetchFiltered(existing);
     }
-
+    const [filterState,setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
@@ -1109,38 +984,18 @@ const ManageLLAgreement = () => {
                 tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
+        setFilterState((prev) => tempArray)
+        setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "orderid",
-                "clientname",
-                "propertydescription",
-                "propertystatus",
-                "propertystatusname",
-                "orderdescription",
-                "startdate",
-                "durationinmonth",
-                "depositamount",
-                "rentpaymentdate",
-                "rentamount",
-                "registrationtype",
-                "noticeperiodindays",
-                "active",
-                "llscancopy",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "actualenddate",
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no":1,
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
