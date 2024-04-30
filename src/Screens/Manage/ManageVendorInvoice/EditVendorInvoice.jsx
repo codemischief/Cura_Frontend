@@ -172,6 +172,7 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) =>
         //   clientid : e.value
         //  }})
         const existing = { ...formValues }
+        existing.order = null
         existing.client = e.value
         getOrdersByClientId(e.value)
         // getClientPropertyByClientId(e.value)
