@@ -509,7 +509,7 @@ const ManageVendor = () => {
         ownerDetails: null,
         category: null,
         addressLine2: null,
-        city: null,
+        city: 847,
         email: null,
         details: null,
         typeOfOrganization: null,
@@ -1377,9 +1377,9 @@ const ManageVendor = () => {
                                                 onChange={
                                                     handleChange
                                                 }>
-                                                <option >Select Type Of Organization</option>
+                                                <option value="" hidden>Select Type Of Organization</option>
                                                 {typeOfOrganization && typeOfOrganization.map(item => (
-                                                    <option key={item.id} value={item.id}>
+                                                    <option key={item.id} value={item.type}>
                                                         {item.type}
                                                     </option>
                                                 ))}

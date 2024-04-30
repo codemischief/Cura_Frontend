@@ -57,7 +57,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
       existing.suburb = res.data.suburb 
       existing.phone = res.data.phone1 
       existing.ownerDetails = res.data.ownerinfo 
-      existing.typeOfOrganization = res.data.type
+      existing.typeOfOrganization = Number(res.data.type)
       existing.pan = res.data.panno 
       existing.gstin = res.data.gstservicetaxno
       existing.category = res.data.categoryid
@@ -237,7 +237,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                                 onChange={
                                                     handleChange
                                                 }>
-                                                <option >Select Type Of Organization</option>
+                                                <option hidden>Select Type Of Organization</option>
                                                 {typeOfOrganization && typeOfOrganization.map(item => (
                                                     <option key={item.id} value={item.type}>
                                                         {item.type}
