@@ -151,7 +151,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
     return (
         <div className="h-auto w-full">
             <div className="flex gap-10 justify-center items-center">
-                <div className=" space-y-2 py-2">
+                <div className=" space-y-3 py-2">
                     <div className="">
                         <div className="text-[13px]">Salutation <label className="text-red-500">*</label></div>
                         <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="salutation"
@@ -166,7 +166,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 </option>
                             ))}
                         </select>
-                        <div className="text-[10px] text-[#CD0000] ">{formErrors.salutation}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.salutation}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Client Type <label className="text-red-500">*</label></div>
@@ -188,7 +188,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                             ))}
                         </select>
                         {/* <p>hey</p> */}
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.clienttype}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.clienttype}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Address Line 1 </div>
@@ -238,11 +238,11 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
                     </div>
                 </div>
-                <div className="space-y-2 py-2">
+                <div className="space-y-3 py-2">
                     <div className="">
                         <div className="text-[13px]">First Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="firstname" onChange={handleChange} value={formValues.client_info.firstname} />
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.firstname}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.firstname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
@@ -308,11 +308,11 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                     </div>
                 </div>
-                <div className="space-y-2 py-2">
+                <div className="space-y-3 py-2">
                     <div className="">
                         <div className="text-[12px]">Middle Name </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="middlename" onChange={handleChange} value={formValues.client_info.middlename} />
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.middlename}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.middlename}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">State <label className="text-red-500">*</label></div>
@@ -342,7 +342,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 }
                             })}
                         </select>
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.state}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.state}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Pin Code </div>
@@ -407,11 +407,11 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                     </div>
 
                 </div>
-                <div className="space-y-2 py-2">
+                <div className="space-y-3 py-2">
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.lastname}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.lastname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">City <label className="text-red-500">*</label></div>
@@ -433,7 +433,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
                                 </option>
                             ))}
                         </select>
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.city}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Area/Locality </div>

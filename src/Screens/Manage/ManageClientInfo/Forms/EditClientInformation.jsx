@@ -89,7 +89,8 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
     useEffect(() => {
         // we need to fetch the client property
         console.log(tenantofname.value);
-        getClientPropertyByClientId(tenantofname.value)
+        // getClientPropertyByClientId(tenantofname.value)
+        getClientPropertyByClientId(formValues.client_info.tenantof)
         setAllState(initialStates);
         setAllCity(initialCities);
     }, [initialStates,initialCities,tenantofname])
@@ -174,7 +175,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 }
 })}
                         </select>
-                        <div className="text-[10px] text-[#CD0000] ">{formErrors.salutation}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.salutation}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Client Type <label className="text-red-500">*</label></div>
@@ -195,27 +196,27 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 </option>
                             ))}
                         </select>
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.clienttype}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.clienttype}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Address Line 1 </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline1" value={formValues.client_info.addressline1} onChange={handleChange} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Email 1</div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email1" onChange={handleChange} value={formValues.client_info.email1} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Local Contact 1 Name </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact1name" onChange={handleChange} value={formValues.client_info.localcontact1name} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Local Contact 2 Name </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact2name" onChange={handleChange} value={formValues.client_info.localcontact2name} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Source <label className="text-red-500">*</label></div>
@@ -236,14 +237,14 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 </option>
                             ))}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                 </div>
                 <div className="space-y-3 py-2">
                     <div className="">
                         <div className="text-[13px]">First Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="firstname" onChange={handleChange} value={formValues.client_info.firstname} />
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.firstname}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.firstname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
@@ -288,42 +289,42 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
 
                             })}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Address Line 2 </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressline2" onChange={handleChange} value={formValues.client_info.addressline2} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Email 2 </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email2" onChange={handleChange} value={formValues.client_info.email2} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Local Contact 1 Details </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact1details" onChange={handleChange} value={formValues.client_info.localcontact1details} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Local Contact 2 Details </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact2details" onChange={handleChange} value={formValues.client_info.localcontact2details} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Comments </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="comments" onChange={handleChange} value={formValues.client_info.comments} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                 </div>
                 <div className="space-y-3 py-2">
                     <div className="">
-                        <div className="text-[12px]">Middle Name <label className="text-red-500">*</label></div>
+                        <div className="text-[12px]">Middle Name </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="middlename" onChange={handleChange} value={formValues.client_info.middlename} />
-                        <div className='text-[12px] text-[#CD0000] '>
+                        <div className='text-[8px] text-[#CD0000] absolute '>
                             {formErrors.middlename}
                         </div>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">State <label className="text-red-500">*</label></div>
@@ -350,27 +351,27 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 }
                             })}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Pin Code </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zip" onChange={handleChange} value={formValues.client_info.zip} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Mobile Phone </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="mobilephone" onChange={handleChange} value={formValues.client_info.mobilephone} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Local Contact 1 Address </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact1address" onChange={handleChange} value={formValues.client_info.localcontact1address} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Local Contact 2 Address </div>
                         <input className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="localcontact2address" onChange={handleChange} value={formValues.client_info.localcontact2address} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Tenant Of </div>
@@ -408,7 +409,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                  }}
             />
                         
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
 
                 </div>
@@ -416,7 +417,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                 <div className="">
                         <div className="text-[12px]">Last Name <label className="text-red-500">*</label></div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="lastname" onChange={handleChange} value={formValues.client_info.lastname} />
-                        <div className="text-[12px] text-[#CD0000] ">{formErrors.lastname}</div>
+                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.lastname}</div>
                         {/* <h1>this is an error</h1> */}
                     </div>
                     <div className="">
@@ -443,28 +444,28 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                 }
 })}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Area/Locality </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.client_info.suburb} onChange={handleChange}/>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Home Phone </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="homephone" onChange={handleChange} value={formValues.client_info.homephone} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Work Phone </div>
                         <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="workphone" onChange={handleChange} value={formValues.client_info.workphone} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.amount}</div> */}
                     </div>
                     <div className="">
                         <div className="text-[13px]">Employer Name </div>
                         
                             <input className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="employername" onChange={handleChange} value={formValues.client_info.employername} />
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                     
                     <div className="">
@@ -486,7 +487,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                </option>
                              })}
                         </select>
-                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div> */}
+                        {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                     
                 </div>

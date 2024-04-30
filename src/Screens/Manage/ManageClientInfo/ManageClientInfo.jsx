@@ -1782,7 +1782,7 @@ const ManageClientInfo = () => {
 
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingClientInfo &&  existingClientInfo.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full h-10 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[3%] flex'>
                                         <div className='p-3'>
