@@ -1064,7 +1064,7 @@ const ManageEmployees = () => {
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef}/>}
                             </div>
                         </div>
                         <div className="w-[15%] flex">
@@ -1198,12 +1198,12 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[14%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1'>
-                                            <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : "NA"}</p>
+                                            <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[17%]  flex  overflow-hidden'>
                                         <div className='p-3 ml-1'>
-                                            <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : "NA"}</p>
+                                            <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>

@@ -805,7 +805,8 @@ const ManageClientProperty = () => {
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
         const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
+        console.log(result)
+        const worksheet = XLSX.utils.json_to_sheet(result.client_info);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
         XLSX.writeFile(workbook, "ClientPropertyData.xlsx");

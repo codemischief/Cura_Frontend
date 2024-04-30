@@ -31,7 +31,34 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 const ManagePmaArgreement = () => {
-
+    const dataRows = [
+        "id",
+        "clientpropertyid",
+        "startdate",
+        "enddate",
+        "actualenddate",
+        "active",
+        "scancopy",
+        "reasonforearlyterminationifapplicable",
+        "dated",
+        "createdby",
+        "isdeleted",
+        "description",
+        "rented",
+        "fixed",
+        "rentedtax",
+        "fixedtax",
+        "orderid",
+        "orderdescription",
+        "poastartdate",
+        "poaenddate",
+        "poaholder",
+        "clientname",
+        "status",
+        "propertystatus",
+        "propertydescription",
+        "propertystatusname"
+    ]
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -196,41 +223,16 @@ const ManagePmaArgreement = () => {
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
-            ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "rows": dataRows,
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
             ;
         const response = await APIService.getPmaAgreement(data);
@@ -274,9 +276,9 @@ const ManagePmaArgreement = () => {
                 "propertystatus",
                 "propertydescription"
             ],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages)
         }
@@ -292,6 +294,8 @@ const ManagePmaArgreement = () => {
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
         console.log(searchInput);
+        setCurrentPage((prev) => 1)
+        setCurrentPages((prev) => quantity)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -321,10 +325,10 @@ const ManagePmaArgreement = () => {
                 "propertystatus",
                 "propertydescription"
             ],
-            "filters": [],
-            "sort_by": ["id"],
+            "filters": filterState,
+            "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(quantity),
             "search_key": searchInput
         }
@@ -596,39 +600,13 @@ const ManagePmaArgreement = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
-            ],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "rows": dataRows,
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key" : searchInput
         };
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
@@ -642,44 +620,17 @@ const ManagePmaArgreement = () => {
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
-        setCurrentPage(1)
-        setCurrentPages(15);
+        setCurrentPage((prev) => 1)
+        // setCurrentPages(15);
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
-            ],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "rows": dataRows,
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getPmaAgreement(data);
@@ -694,42 +645,16 @@ const ManagePmaArgreement = () => {
     const handleCloseSearch = async () => {
         setIsSearchOn(false);
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
         setSearchInput("");
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
-            ],
-            "filters": [],
+            "rows": dataRows,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key": ""
         };
         const response = await APIService.getPmaAgreement(data);
@@ -934,6 +859,7 @@ const ManagePmaArgreement = () => {
 
         fetchFiltered(existing);
     }
+    const [filterState,setFilterState] = useState([])
 
     const fetchFiltered = async  (mapState) => {
         setFilterMapState(mapState)
@@ -946,43 +872,18 @@ const ManagePmaArgreement = () => {
                  tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
              }
          })
+         setFilterState((prev) => tempArray)
+         setCurrentPage((prev) => 1)
          setPageLoading(true);
          const data = {
              "user_id": 1234,
-             "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
-            ],
+             "rows": dataRows,
              "filters": tempArray,
              "sort_by": [sortField],
              "order": flag ? "asc" : "desc",
-             "pg_no": Number(currentPage),
+             "pg_no": 1,
              "pg_size": Number(currentPages),
-             "search_key": isSearchOn ? searchInput : ""
+             "search_key": searchInput
          };
          const response = await APIService.getPmaAgreement(data);
          const temp = await response.json();
@@ -998,53 +899,22 @@ const ManagePmaArgreement = () => {
 
     const handleSort = async (field) => {
         setPageLoading(true);
-        const tempArray = [];
+        // const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
+        
+        setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription",
-                "propertystatusname"
-            ],
-            "filters": tempArray,
+            "rows": dataRows,
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput
         };
-        setFlag((prev) => !prev);
+        
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
