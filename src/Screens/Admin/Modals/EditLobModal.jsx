@@ -3,7 +3,7 @@ import Cross from "../../../assets/cross.png"
 import { Modal } from '@mui/material'
 import { useState } from 'react'
 import { APIService } from '../../../services/API'
-import SucessfullModal from '../../../Components/modals/SucessfullModal'
+import SucessfullModal from '../../../components/modals/SucessfullModal'
 const EditLobModal = (props) => {
     // const [showSuccess,setShowSuccess] = useState(false);
     const [editModalInput,setEditModalInput] = useState(props.item.name);

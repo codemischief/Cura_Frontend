@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Modal , Button ,CircularProgress} from '@mui/material'
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
 import SucessImage from "../../../assets/SuccessImage.png";
 const Delete = (props) => {
     const [showLoading,setShowLoading] = useState(false);

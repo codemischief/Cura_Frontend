@@ -1,4 +1,4 @@
-import UserNav from "../../Components/Navabar/Navbar";
+import UserNav from "../../components/Navabar/Navbar";
 import React from "react";
 import searchIcon from "../../assets/searchIcon.png";
 import logo from '../../assets/logo-white1.jpg';

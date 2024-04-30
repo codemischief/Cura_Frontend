@@ -6,7 +6,7 @@ import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
+import Navbar from "../../../components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
@@ -23,10 +23,10 @@ import BankDetails from "./ManageProjectInfoForm/BankDetails";
 import Contact from './ManageProjectInfoForm/Contact';
 import Photos from './ManageProjectInfoForm/Photos';
 import EditProjectInfo from './EditProjectInfo';
-import SucessfullModal from "../../../Components/modals/SucessfullModal"
+import SucessfullModal from "../../../components/modals/SucessfullModal"
 import DeleteProjectInfo from './DeleteProjectInfo';
-import CharacterFilter from '../../../Components/Filters/CharacterFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
+import CharacterFilter from '../../../components/Filters/CharacterFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';

@@ -6,7 +6,7 @@ import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
+import Navbar from "../../../components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
@@ -20,9 +20,9 @@ import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
-import CharacterFilter from '../../../Components/Filters/CharacterFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import CharacterFilter from '../../../components/Filters/CharacterFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
 import Joystick from "../../../assets/four_direction_arrow.png";
 import Trash from "../../../assets/trash.png"
 import Edit from "../../../assets/edit.png"

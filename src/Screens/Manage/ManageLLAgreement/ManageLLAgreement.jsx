@@ -6,7 +6,7 @@ import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
+import Navbar from "../../../components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
 import { APIService } from '../../../services/API';
@@ -17,16 +17,16 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import FailureModal from '../../../Components/modals/FailureModal';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
+import FailureModal from '../../../components/modals/FailureModal';
 import SaveConfirmationLLAgreement from './SaveConfirmationLLAgreement';
 import DeleteLLAgreement from './DeleteLLAgreement';
 import AsyncSelect from "react-select/async"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-import CharacterFilter from "../../../Components/Filters/CharacterFilter";
-import DateFilter from '../../../Components/Filters/DateFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
+import CharacterFilter from "../../../components/Filters/CharacterFilter";
+import DateFilter from '../../../components/Filters/DateFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
 import EditManageLLAgreement from './EditManageLLAgreement';
 const ManageLLAgreement = () => {
     const initialRows = [

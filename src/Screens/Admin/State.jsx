@@ -6,7 +6,7 @@ import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../Components/Navabar/Navbar";
+import Navbar from "../../components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Add from "../../assets/add.png";
@@ -19,9 +19,9 @@ import FileSaver from 'file-saver';
 import { APIService } from '../../services/API';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
-import CharacterFilter from "../../Components/Filters/CharacterFilter"
-import DateFilter from '../../Components/Filters/DateFilter';
-import NumericFilter from '../../Components/Filters/NumericFilter';
+import CharacterFilter from "../../components/Filters/CharacterFilter"
+import DateFilter from '../../components/Filters/DateFilter';
+import NumericFilter from '../../components/Filters/NumericFilter';
 
 const State = () => {
     const menuRef = useRef()

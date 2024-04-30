@@ -2,9 +2,9 @@ import { CircularProgress, Modal, Pagination, LinearProgress } from "@mui/materi
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import Navbar from "../../../../Components/Navabar/Navbar";
-import FailureModal from '../../../../Components/modals/FailureModal';
-import SucessfullModal from '../../../../Components/modals/SucessfullModal';
+import Navbar from "../../../../components/Navabar/Navbar";
+import FailureModal from '../../../../components/modals/FailureModal';
+import SucessfullModal from '../../../../components/modals/SucessfullModal';
 import backLink from "../../../../assets/back.png";
 import Cross from "../../../../assets/cross.png";
 import downloadIcon from "../../../../assets/download.png";

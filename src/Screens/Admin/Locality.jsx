@@ -6,7 +6,7 @@ import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../Components/Navabar/Navbar";
+import Navbar from "../../components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
@@ -19,12 +19,12 @@ import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
 import EditLocalityModal from './Modals/EditLocalityModal';
-import SucessfullModal from '../../Components/modals/SucessfullModal';
+import SucessfullModal from '../../components/modals/SucessfullModal';
 import DeleteLocalityModal from './Modals/DeleteLocalityModal';
-import FailureModal from '../../Components/modals/FailureModal';
+import FailureModal from '../../components/modals/FailureModal';
 import SaveConfirmationLocality from './Modals/SaveConfirmationLocality';
-import CharacterFilter from '../../Components/Filters/CharacterFilter';
-import NumericFilter from '../../Components/Filters/NumericFilter';
+import CharacterFilter from '../../components/Filters/CharacterFilter';
+import NumericFilter from '../../components/Filters/NumericFilter';
 const Locality = () => {
     const menuRef = useRef();
     const [existingLocalities, setExistingLocalities] = useState([]);

@@ -6,7 +6,7 @@ import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
+import Navbar from "../../../components/Navabar/Navbar";
 import Edit from "../../../assets/edit.png";
 import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
@@ -16,14 +16,14 @@ import { Modal, Pagination, LinearProgress } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../../services/API';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import CharacterFilter from '../../../Components/Filters/CharacterFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
+import CharacterFilter from '../../../components/Filters/CharacterFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
 import EditPayments from './EditPayments';
 import Pdf from "../../../assets/pdf.png"
 import Excel from "../../../assets/excel.png"
 import SaveConfirmationPayments from './SaveConfirmationPayments';
-import FailureModal from '../../../Components/modals/FailureModal';
+import FailureModal from '../../../components/modals/FailureModal';
 import DeletePaymentModal from './DeletePaymentModal';
 const Payments = () => {
     const menuRef = useRef();

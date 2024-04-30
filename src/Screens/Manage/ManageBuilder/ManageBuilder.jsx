@@ -1,9 +1,9 @@
 import { CircularProgress, Modal, Pagination } from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
-import Navbar from "../../../Components/Navabar/Navbar";
-import FailureModal from '../../../Components/modals/FailureModal';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import Navbar from "../../../components/Navabar/Navbar";
+import FailureModal from '../../../components/modals/FailureModal';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
@@ -16,8 +16,8 @@ import Trash from "../../../assets/trash.png";
 import { APIService } from '../../../services/API';
 import Delete from './Delete';
 import EditManageBuilder from './EditManageBuilder';
-import CharacterFilter from '../../../Components/Filters/CharacterFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
+import CharacterFilter from '../../../components/Filters/CharacterFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Filter from "../../../assets/filter.png"

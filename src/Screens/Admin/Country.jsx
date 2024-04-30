@@ -7,7 +7,7 @@ import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
 import Cross from "../../assets/cross.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../Components/Navabar/Navbar";
+import Navbar from "../../components/Navabar/Navbar";
 import { Modal, CircularProgress, Pagination } from "@mui/material";
 import Edit from '../../assets/edit.png';
 import Trash from "../../assets/trash.png";
@@ -16,13 +16,13 @@ import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-import SucessfullModal from '../../Components/modals/SucessfullModal';
-import FailureModal from '../../Components/modals/FailureModal';
-import DeleteModal from '../../Components/modals/DeleteModal';
+import SucessfullModal from '../../components/modals/SucessfullModal';
+import FailureModal from '../../components/modals/FailureModal';
+import DeleteModal from '../../components/modals/DeleteModal';
 import { APIService } from '../../services/API';
 import EditCountryModal from './Modals/EditCountryModal';
-import CharacterFilter from "../../Components/Filters/CharacterFilter"
-import NumericFilter from '../../Components/Filters/NumericFilter';
+import CharacterFilter from "../../components/Filters/CharacterFilter"
+import NumericFilter from '../../components/Filters/NumericFilter';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
 import SaveConfirmationCountry from './Modals/SaveConfirmationCountry';

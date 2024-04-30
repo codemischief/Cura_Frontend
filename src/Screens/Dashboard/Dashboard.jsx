@@ -2,7 +2,7 @@ import React from "react";
 import searchIcon from "../../assets/searchIcon.png";
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Navbar from "../../Components/Navabar/Navbar";
+import Navbar from "../../components/Navabar/Navbar";
 const Dashboard = () => {
     const [myOrder, setmyorder] = useState([]);
     const [cashBalance, setcashbalance] = useState([]);

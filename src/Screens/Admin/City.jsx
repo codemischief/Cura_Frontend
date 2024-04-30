@@ -6,7 +6,7 @@ import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
 import { useState, useEffect, useRef } from "react";
-import Navbar from "../../Components/Navabar/Navbar";
+import Navbar from "../../components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
 import Edit from "../../assets/edit.png";
 import Trash from "../../assets/trash.png";
@@ -19,8 +19,8 @@ import * as XLSX from "xlsx";
 import FileSaver from "file-saver";
 import { APIService } from "../../services/API";
 import { authService } from "../../services/authServices";
-import CharacterFilter from "../../Components/Filters/CharacterFilter";
-import NumericFilter from "../../Components/Filters/NumericFilter";
+import CharacterFilter from "../../components/Filters/CharacterFilter";
+import NumericFilter from "../../components/Filters/NumericFilter";
 
 const City = () => {
     const menuRef = useRef();

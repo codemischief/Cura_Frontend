@@ -6,7 +6,7 @@ import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
+import Navbar from "../../../components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
@@ -18,15 +18,15 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import EditClientInvoice from './EditClientInvoice';
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
 import SaveConfirmationClientInvoice from './SaveConfirmationClientInvoice';
-import FailureModal from '../../../Components/modals/FailureModal';
+import FailureModal from '../../../components/modals/FailureModal';
 import DeleteClientInvoiceModal from './DeleteClientInvoiceModal';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-import CharacterFilter from "../../../Components/Filters/CharacterFilter"
-import DateFilter from '../../../Components/Filters/DateFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
+import CharacterFilter from "../../../components/Filters/CharacterFilter"
+import DateFilter from '../../../components/Filters/DateFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
 const ManageClientInvoice = () => {

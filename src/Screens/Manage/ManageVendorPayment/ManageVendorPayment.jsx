@@ -6,7 +6,7 @@ import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
-import Navbar from "../../../Components/Navabar/Navbar";
+import Navbar from "../../../components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
 import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
@@ -18,8 +18,8 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import FailureModal from '../../../Components/modals/FailureModal';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
+import FailureModal from '../../../components/modals/FailureModal';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeleteVendorInvoice from './DeleteVendorInvoice';
@@ -27,9 +27,9 @@ import SaveConfirmationVendorInvoice from './SaveConfirmationVendorInvoice';
 // import EditPmaAgreement from './EditPmaAgreement';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-import CharacterFilter from "../../../Components/Filters/CharacterFilter"
-import DateFilter from '../../../Components/Filters/DateFilter';
-import NumericFilter from '../../../Components/Filters/NumericFilter';
+import CharacterFilter from "../../../components/Filters/CharacterFilter"
+import DateFilter from '../../../components/Filters/DateFilter';
+import NumericFilter from '../../../components/Filters/NumericFilter';
 // import EditOrderReceipt from './EditOrderReceipt';
 import EditVendorInvoice from './EditVendorInvoice';
 const ManageVendorPayment = () => {

@@ -1,8 +1,8 @@
 import { CircularProgress, Modal, Pagination } from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
-import Navbar from "../../../Components/Navabar/Navbar";
-import FailureModal from '../../../Components/modals/FailureModal';
+import Navbar from "../../../components/Navabar/Navbar";
+import FailureModal from '../../../components/modals/FailureModal';
 
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
@@ -19,7 +19,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { authService } from "../../../services/authServices";
 import Filter from "../../../assets/filter.png"
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import SucessfullModal from "../../../components/modals/SucessfullModal";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
 // import DayJS from 'react-dayjs';

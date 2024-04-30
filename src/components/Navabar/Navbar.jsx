@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from 'react';
 import { authService } from '../../services/authServices';
 
 const Navbar = () => {
-
    const [isToggledDash, setIsToggledDash] = useState(false);
    const [isToggledAdmin, setIsToggledAdmin] = useState(false);
    const [isToggledManage, setIsToggledManage] = useState(false);

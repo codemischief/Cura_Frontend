@@ -3,8 +3,8 @@ import Cross from "../../../assets/cross.png";
 import { Link } from 'react-router-dom';
 import { Modal, CircularProgress } from "@mui/material";
 import { useState, useEffect } from "react";
-import SucessfullModal from '../../../Components/modals/SucessfullModal';
-import FailureModal from '../../../Components/modals/FailureModal';
+import SucessfullModal from '../../../components/modals/SucessfullModal';
+import FailureModal from '../../../components/modals/FailureModal';
 import { APIService } from '../../../services/API';
 
 
