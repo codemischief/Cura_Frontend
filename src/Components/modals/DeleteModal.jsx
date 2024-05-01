@@ -28,6 +28,7 @@ const DeleteModal = (props) => {
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
+            
             <div className='bg-white'>
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] flex justify-center items-center">
