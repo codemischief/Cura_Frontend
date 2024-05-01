@@ -1468,7 +1468,7 @@ const ManageClientProperty = () => {
                                 </div>
                                 <button onClick={() => handleSort('client')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[9%]  flex'>
                                 <div className='p-3'>
                                     <p>Property</p>
                                     <p>Suburb</p>
@@ -1494,7 +1494,7 @@ const ManageClientProperty = () => {
                                 </div>
                                 <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                            <div className='w-[17%]  flex'>
+                            <div className='w-[16%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Property Description <button onClick={() => handleSort('description')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1530,61 +1530,61 @@ const ManageClientProperty = () => {
 
                     </div>
                     {/* <h1>{existingClientProperty.length}</h1> */}
-                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
+                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
+                            return <div className='w-full h-11 overflow-auto bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
                                 <div className="w-[85%] flex">
-                                    <div className='w-[3%] flex items-center justify-center'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[3%] flex items-center justify-center overflow-x-hidden'>
+                                        <div className='px-3 flex items-center'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex items-center justify-center'>
-                                        <div className='p-3 '>
+                                    <div className='w-[10%]  flex items-center '>
+                                        <div className='px-3 '>
                                             <p>{item.client}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[10%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[9%]  flex items-center'>
+                                        <div className='px-3'>
                                             <p>{item.suburb}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[8%]  flex items-center'>
+                                        <div className='px-3'>
                                             <p>{item.city} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[10%]  flex items-center'>
+                                        <div className='px-3'>
                                             <p>{item.propertytype}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[9%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[9%]  flex items-center'>
+                                        <div className='px-3'>
                                             <p>{item.status}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[17%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[16%]  flex items-center'>
+                                        <div className='px-3'>
                                             <p>{item.description} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[17%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[17%]  flex items-center'>
+                                        <div className='px-3'>
                                             <p>{item.project}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex'>
-                                        <div className='p-3'>
-
+                                    <div className='w-[9%]  flex items-center'>
+                                        <div className='px-1 text-[11px] text-blue-500'>
+                                            <Link to="">PMA Agreement</Link>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex'>
-                                        <div className='p-3'>
-
+                                    <div className='w-[9%]  flex items-center'>
+                                        <div className='pl-1 text-[11px] text-blue-500'>
+                                            <Link to="">L&L Agreement</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -1594,7 +1594,7 @@ const ManageClientProperty = () => {
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex px-3 py-5 space-x-2'>
+                                    <div className='w-1/2  flex items-center px-3 space-x-2'>
                                         <button onClick={() => { handleOpenEdit(item.id) }}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
                                         <button onClick={() => handleDelete(item.id)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
@@ -1650,7 +1650,7 @@ const ManageClientProperty = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
