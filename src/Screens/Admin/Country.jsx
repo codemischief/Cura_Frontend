@@ -527,7 +527,7 @@ const Country = () => {
 
   return (
     <div className='h-screen w-full'>
-      <Navbar />
+      {/* <Navbar /> */}
       <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
       <FailureModal isOpen={showFailure} message={failureMessage} />
       <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />

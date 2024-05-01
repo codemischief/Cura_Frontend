@@ -1154,7 +1154,7 @@ const ManageLLAgreement = () => {
 
     return (
         <div className='h-screen'>
-            <Navbar />
+            {/* <Navbar /> */}
             {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Added LL Agreement Successfully" />}

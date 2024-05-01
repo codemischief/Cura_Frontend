@@ -1,7 +1,10 @@
-import { Suspense } from "react";
-import { useLocation, useRoutes } from "react-router-dom";
-import LoadingScreen from "../components/LoadingScreen";
-import AuthGuard from "../guards/AuthGuard";
+import { Suspense, lazy } from "react";
+import { createBrowserRouter, useLocation } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen.jsx";
+import { PATH_DASHBOARD } from "./path";
+import DashboardLayout from "../layout/DashboardLayout.jsx";
+import AuthGuard from "../guards/AuthGuard.jsx";
+import Dashboard from "../Screens/Dashboard/Dashboard.jsx";
 
 /* eslint-disable react/display-name */
 
@@ -22,7 +25,7 @@ const Loadable = (Component) => (props) => {
             left: "50%",
           }}
         >
-          <LoadingScreen
+          {/* <LoadingScreen
             sx={{
               ...(!isDashboard && {
                 top: 0,
@@ -32,7 +35,8 @@ const Loadable = (Component) => (props) => {
                 position: "fixed",
               }),
             }}
-          />
+          /> */}
+          ...loading
         </div>
       }
     >
@@ -41,38 +45,55 @@ const Loadable = (Component) => (props) => {
   );
 };
 
-export default function Router() {
-  return useRoutes([
-    // {
-    //   path: "auth",
-    //   children: [
-    //     {
-    //       path: "login",
-    //       element: (
-    //         <GuestGuard>
-    //           <Login />
-    //         </GuestGuard>
-    //       ),
-    //     },
-    //     {
-    //       path: "register",
-    //       element: (
-    //         <GuestGuard>
-    //           <Register />
-    //         </GuestGuard>
-    //       ),
-    //     },
-    //     { path: "login-unprotected", element: <Login /> },
-    //     { path: "register-unprotected", element: <Register /> },
-    //     { path: "reset-password", element: <ResetPassword /> },
-    //     { path: "verify", element: <VerifyCode /> },
-    //   ],
-    // },
-    // Dashboard Routes
-    {
-      path: "/",
-      element: <AuthGuard>{/* <DashboardLayout /> */}</AuthGuard>,
-      children: [],
-    },
-  ]);
-}
+// Components
+
+// 404 -
+const NotFound = Loadable(
+  lazy(() => import("../Screens/NotFound/notFound.jsx"))
+);
+
+// ---admin
+const ManageUser = Loadable(
+  lazy(() => import("../Screens/Manage/ManageUser/ManageUser"))
+);
+const ManageEmployees = Loadable(
+  lazy(() => import("../Screens/Manage/ManageEmployee/ManageEmployees"))
+);
+const ManageBuilder = Loadable(
+  lazy(() => import("../Screens/Manage/ManageEmployee/ManageEmployees"))
+);
+const ManageProjectInfo = Loadable(
+  lazy(() => import("../Screens/Manage/ManageProjectInfo/ManageProjectInfo"))
+);
+const ManageOrder = Loadable(
+  lazy(() => import("../Screens/Manage/ManageOrder/ManageOrder"))
+);
+const Country = Loadable(lazy(() => import("../Screens/Admin/Country")));
+const State = Loadable(lazy(() => import("../Screens/Admin/State")));
+const Locality = Loadable(lazy(() => import("../Screens/Admin/Locality")));
+const LOB = Loadable(lazy(() => import("../Screens/Admin/LOB")));
+const Service = Loadable(lazy(() => import("../Screens/Admin/Service")));
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/admin",
+        children: [
+          { path: "manageuser", element: <ManageUser />, index: true },
+          { path: "manageemployees", element: <ManageEmployees /> },
+          { path: "managebuilder", element: <ManageBuilder /> },
+          { path: "manageprojectinfo", element: <ManageProjectInfo /> },
+          { path: "manageOrder", element: <ManageOrder /> },
+          { path: "country", element: <Country /> },
+          { path: "state", element: <State /> },
+          { path: "locality", element: <Locality /> },
+          { path: "LOB", element: <LOB /> },
+          { path: "service", element: <Service /> },
+        ],
+      },
+    ],
+  },
+]);

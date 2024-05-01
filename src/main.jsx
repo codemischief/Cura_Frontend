@@ -7,14 +7,15 @@ import { AuthProvider } from './context/AuthProvider.jsx'
 
 
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <BrowserRouter>
+    // <BrowserRouter>
   
-    <AuthProvider>
-    <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-    </AuthProvider>
-    </BrowserRouter>
+    // <AuthProvider>
+    // <Routes>
+    //       <Route path="/*" element={<App />} />
+    //     </Routes>
+    // </AuthProvider>
+    // </BrowserRouter>
+    <App />
   )
 
 

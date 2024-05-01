@@ -641,7 +641,7 @@ const Locality = () => {
     }
     return (
         <div className='h-screen'>
-            <Navbar/>
+            {/* <Navbar/> */}
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} />}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
             {failureModal && <FailureModal isOpen={failureModal} message={errorMessage}/>}

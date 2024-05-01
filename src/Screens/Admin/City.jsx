@@ -450,7 +450,7 @@ const City = () => {
 
     return (
         <div className="h-screen">
-            <Navbar />
+            {/* <Navbar /> */}
 
             <div className="h-[calc(100vh_-_7rem)] w-full px-10">
                 <div className="h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2">

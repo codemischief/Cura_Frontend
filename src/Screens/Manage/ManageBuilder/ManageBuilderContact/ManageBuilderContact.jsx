@@ -327,7 +327,7 @@ const ManageBuilderContact = () => {
 
     return (
         <div >
-            <Navbar />
+            {/* <Navbar /> */}
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
             <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />

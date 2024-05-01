@@ -1,5 +1,10 @@
 import PropTypes from "prop-types";
-import { useLocation, NavLink as RouterLink } from "react-router-dom";
+import {
+  useLocation,
+  NavLink as RouterLink,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { navMenuConfig } from "./navbarConfig";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -80,13 +85,15 @@ function MenuDesktopItem({
   isOffset,
   onOpen,
   onClose,
+  activeTab,
 }) {
   const { title, path, children } = item;
+
   const isActive = pathname === path;
   const extraContainers =
     children?.length % 15 === 0 ? 0 : 15 - (children?.length % 15);
 
-  if (children ) {
+  if (activeTab) {
     return (
       <div key={title}>
         <LinkStyle
@@ -252,7 +259,12 @@ function MenuDesktopItem({
   return (
     <LinkStyle
       key={title}
-      to={path}
+      // to={path}
+      onClick={onOpen}
+      to={{
+        pathname: "/",
+        search: `?current=${title}`,
+      }}
       component={RouterLink}
       sx={{
         ...(isHome && { color: "common.white" }),
@@ -268,15 +280,16 @@ function MenuDesktopItem({
 MenuDesktopItem.propTypes = {
   item: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
+    path: PropTypes.string,
     children: PropTypes.arrayOf(
       PropTypes.shape({
         subheader: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
+        path: PropTypes.string,
       })
     ),
   }).isRequired,
   pathname: PropTypes.string.isRequired,
+  activeTab: PropTypes.bool.isRequired,
   isHome: PropTypes.bool.isRequired,
   isOpen: PropTypes.bool.isRequired,
   isOffset: PropTypes.bool.isRequired,
@@ -285,6 +298,7 @@ MenuDesktopItem.propTypes = {
 };
 export default function MenuDesktop({ isOffset, isHome }) {
   const { pathname } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -301,7 +315,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log("pathname", searchParams.get("current"));
   return (
     <Stack direction="row" justifyContent={"center"} alignItems={"center"}>
       {navMenuConfig?.map((link) => (
@@ -309,6 +323,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
           key={link.title}
           item={link}
           pathname={pathname}
+          activeTab={searchParams.get("current") === link.title}
           isOpen={open}
           onOpen={handleOpen}
           onClose={handleClose}

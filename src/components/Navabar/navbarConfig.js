@@ -1,106 +1,108 @@
+import { PATH_DASHBOARD, ROOTS } from "../../route/path";
+
 export const navMenuConfig = [
   {
     title: "Admin",
-    path: "admin",
+    path: ROOTS.admin,
 
-    // children: [
-    //   {
-    //     subheader: "Personnel",
-    //     items: [
-    //       { title: "Users", path: "#" },
-    //       { title: "Employees", path: "#" },
-    //       { title: "Contractual Payment", path: "#" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Offerings",
-    //     items: [
-    //       { title: "LOB (Line of business)", path: "#" },
-    //       { title: "Services", path: "#" },
-    //       { title: "Grinding Machine ", path: "#" },
-    //       { title: "Drilling Machine ", path: "#" },
-    //       { title: "Milling Machine ", path: "#" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Locations",
-    //     items: [
-    //       { title: "Country", path: "#" },
-    //       { title: "State", path: "#" },
-    //       { title: "City", path: "#" },
-    //       { title: "Locality", path: "#" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Data Management",
-    //     items: [{ title: "Delete by ID", path: "#" }],
-    //   },
-    //   {
-    //     subheader: "Margin Report",
-    //     items: [
-    //       { title: "LOB- Receipts - Payments", path: "#" },
-    //       { title: "Entity-Receipts-Payments", path: "#" },
-    //       { title: "LOB - Receipts-Payments-Consolidated", path: "#" },
-    //     ],
-    //   },
-    // ],
+    children: [
+      {
+        subheader: "Personnel",
+        items: [
+          { title: "Users", path: PATH_DASHBOARD.admin.manageUsers },
+          { title: "Employees", path: "#" },
+          { title: "Contractual Payment", path: "#" },
+        ],
+      },
+      {
+        subheader: "Offerings",
+        items: [
+          { title: "LOB (Line of business)", path: "#" },
+          { title: "Services", path: "#" },
+          { title: "Grinding Machine ", path: "#" },
+          { title: "Drilling Machine ", path: "#" },
+          { title: "Milling Machine ", path: "#" },
+        ],
+      },
+      {
+        subheader: "Locations",
+        items: [
+          { title: "Country", path: "#" },
+          { title: "State", path: "#" },
+          { title: "City", path: "#" },
+          { title: "Locality", path: "#" },
+        ],
+      },
+      {
+        subheader: "Data Management",
+        items: [{ title: "Delete by ID", path: "#" }],
+      },
+      {
+        subheader: "Margin Report",
+        items: [
+          { title: "LOB- Receipts - Payments", path: "#" },
+          { title: "Entity-Receipts-Payments", path: "#" },
+          { title: "LOB - Receipts-Payments-Consolidated", path: "#" },
+        ],
+      },
+    ],
   },
   {
     title: "Manage",
-    path: "#",
-    // children: [
-    //   {
-    //     subheader: "Builder",
-    //     items: [
-    //       { title: "Manage Builder", path: "" },
-    //       { title: "Manage Project", path: "" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Statement",
-    //     items: [
-    //       { title: "Bank Statement", path: "" },
-    //       { title: "Send Client Statement", path: "#" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Client",
-    //     items: [
-    //       { title: "Manage Client", path: "" },
-    //       { title: "Manage Client Property", path: "" },
-    //       { title: "Manage Client Invoice", path: "" },
-    //       { title: "Manage Client Receipt", path: "" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Order",
-    //     items: [
-    //       { title: "Manage Order", path: "" },
-    //       { title: "Manage Order Receipt", path: "" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Vendor",
-    //     items: [
-    //       { title: "Manage Vendor", path: "" },
-    //       { title: "Manage Vendor Invoice", path: "" },
-    //       { title: "Manage Vendor Payment", path: "" },
-    //     ],
-    //   },
-    //   {
-    //     subheader: "Service",
-    //     items: [
-    //       { title: "PMA Agreement", path: "" },
-    //       { title: "L&L Agreement", path: "" },
-    //       { title: "PMA Billing", path: "#" },
-    //       { title: "Email PMA Statement", path: "#" },
-    //     ],
-    //   },
-    // ],
+    path: ROOTS.manage,
+    children: [
+      {
+        subheader: "Builder",
+        items: [
+          { title: "Manage Builder", path: "" },
+          { title: "Manage Project", path: "" },
+        ],
+      },
+      {
+        subheader: "Statement",
+        items: [
+          { title: "Bank Statement", path: "" },
+          { title: "Send Client Statement", path: "#" },
+        ],
+      },
+      {
+        subheader: "Client",
+        items: [
+          { title: "Manage Client", path: "" },
+          { title: "Manage Client Property", path: "" },
+          { title: "Manage Client Invoice", path: "" },
+          { title: "Manage Client Receipt", path: "" },
+        ],
+      },
+      {
+        subheader: "Order",
+        items: [
+          { title: "Manage Order", path: "" },
+          { title: "Manage Order Receipt", path: "" },
+        ],
+      },
+      {
+        subheader: "Vendor",
+        items: [
+          { title: "Manage Vendor", path: "" },
+          { title: "Manage Vendor Invoice", path: "" },
+          { title: "Manage Vendor Payment", path: "" },
+        ],
+      },
+      {
+        subheader: "Service",
+        items: [
+          { title: "PMA Agreement", path: "" },
+          { title: "L&L Agreement", path: "" },
+          { title: "PMA Billing", path: "#" },
+          { title: "Email PMA Statement", path: "#" },
+        ],
+      },
+    ],
   },
   {
     title: "Reports",
-    path: "#",
+    path: ROOTS.report,
     children: [
       {
         subheader: "Bank Record",
@@ -207,22 +209,21 @@ export const navMenuConfig = [
   },
   {
     title: "Research",
-    path: "#",
-    // children: [
-    //   { subheader: "Prospect", path: "" },
-    //   { subheader: "Employer", path: "" },
-    //   { subheader: "Manage Govt Department", path: "" },
-    //   { subheader: "Real Estate Agents", path: "" },
-    //   { subheader: "Manage Owners", path: "" },
-    //   { subheader: "Service Appartments And Guest Houses", path: "" },
-    //   { subheader: "Friends", path: "" },
-    //   { subheader: "Bank and Branches", path: "" },
-    //   { subheader: "Business Group", path: "" },
-    //   { subheader: "Professionals", path: "" },
-    //   { subheader: "Mandals", path: "" },
-    //   { subheader: "Architect", path: "" },
-    //   { subheader: "Educational Institute", path: "" },
-    // ],
-    //   icon: <Icon icon={fileFill} {...ICON_SIZE} />
+    path: ROOTS.research,
+    children: [
+      { subheader: "Prospect", path: "" },
+      { subheader: "Employer", path: "" },
+      { subheader: "Manage Govt Department", path: "" },
+      { subheader: "Real Estate Agents", path: "" },
+      { subheader: "Manage Owners", path: "" },
+      { subheader: "Service Appartments And Guest Houses", path: "" },
+      { subheader: "Friends", path: "" },
+      { subheader: "Bank and Branches", path: "" },
+      { subheader: "Business Group", path: "" },
+      { subheader: "Professionals", path: "" },
+      { subheader: "Mandals", path: "" },
+      { subheader: "Architect", path: "" },
+      { subheader: "Educational Institute", path: "" },
+    ],
   },
 ];

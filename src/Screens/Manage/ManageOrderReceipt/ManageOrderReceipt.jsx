@@ -1027,7 +1027,7 @@ const ManageOrderReceipt = () => {
     }
     return (
         <div className='h-screen'>
-            <Navbar />
+            {/* <Navbar /> */}
             {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData}/>}
 
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Order Receipt" />}

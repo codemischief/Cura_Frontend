@@ -51,6 +51,7 @@ import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBank
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
 import ManageBuilderContact from "./Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact";
 import Temp from "./Screens/Admin/temp";
+import { router } from "./route";
 
 const App = () => {
   const ROLES = {
@@ -63,13 +64,13 @@ const App = () => {
     <div className="app">
       {/* <RouterProvider router={router}/> */}
 
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<Outlet />}>
           <Route path="" element={<Login />} />
-          <Route path="/user" element={<Userscreen />} />
+          <Route path="/user" element={<Userscreen />} /> */}
 
-          {/* <Route element={<RequireAuth/>}>  */}
-          <Route path="/dashboard" element={<Dashboard />} />
+      {/* <Route element={<RequireAuth/>}>  */}
+      {/* <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin/manageuser" element={<ManageUser />} />
           <Route path="/admin/manageemployees" element={<ManageEmployees />} />
           <Route path="/admin/managebuilder" element={<ManageBuilder />} />
@@ -86,6 +87,7 @@ const App = () => {
           <Route path="/admin/LOB" element={<LOB />} />
           <Route path="/admin/service" element={<Service />} />
           <Route path="/admin/payments" element={<Payments />} />
+          
           <Route path="/research/prospect" element={<Prospect />} />
           <Route path="/research/owner" element={<Owner />} />
           <Route path="/research/educational" element={<Educational />} />
@@ -151,11 +153,12 @@ const App = () => {
             element={<ManageBuilderContact />}
           />
           <Route path="admin/temp" element={<Temp />} />
-          {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
         </Route>
-      </Routes>
+      </Routes> */}
+      {/* <Router /> */}
+      <RouterProvider router={router} />
     </div>
   );
 };

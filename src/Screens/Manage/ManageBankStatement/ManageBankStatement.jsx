@@ -957,7 +957,7 @@ const ManageBankStatement = () => {
       }
     return (
         <div className="h-screen">
-            <Navbar/>
+            {/* <Navbar/> */}
             <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />

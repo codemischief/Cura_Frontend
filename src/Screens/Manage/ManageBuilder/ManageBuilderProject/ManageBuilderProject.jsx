@@ -557,7 +557,7 @@ const ManageBuilderProject = () => {
     
      return (
         <div >
-            <Navbar />
+            {/* <Navbar /> */}
            {showSuccess &&  <SucessfullModal isOpen={showSuccess} message="Builder Project Added Successfully " />}
             {showFailure && <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />}
             {/* {showDelete && <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />} */}

@@ -932,7 +932,7 @@ const ManageOrder = () => {
     }
     return (
         <div className="h-screen">
-            <Navbar />
+            {/* <Navbar /> */}
             {showAddSuccess && <SucessfullModal  isOpen={showAddSuccess} message="New Order Created Successfully"/>}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
             {showDeleteSuccess && <SucessfullModal  isOpen={showDeleteSuccess} message=" Order Deleted Successfully"/>}

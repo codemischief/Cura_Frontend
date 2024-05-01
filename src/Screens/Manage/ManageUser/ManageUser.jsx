@@ -129,7 +129,7 @@ const ManageUser = () => {
   return (
     <div>
       {/* <Navbar/> */}
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex-col w-full h-full  bg-white">
         <div className="flex-col">
           {/* this div will have all the content */}

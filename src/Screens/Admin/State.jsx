@@ -428,7 +428,7 @@ const State = () => {
 
     return (
         <div className='h-screen'>
-            <Navbar />
+            {/* <Navbar /> */}
 
 
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>

@@ -3,8 +3,9 @@ import NProgress from "nprogress";
 import { Box, alpha, createStyles, makeStyles, styled } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { motion } from 'framer-motion';
-import Logo from "../assets/logo.png"
-const nprogressStyle = makeStyles((theme) =>
+import { LogoDev } from "@mui/icons-material";
+// import Logo from "../assets/logo.png"
+const nprogressStyle = styled((theme) =>
   createStyles({
     "@global": {
       "#nprogress": {
@@ -73,7 +74,7 @@ export default function LoadingScreen({ ...other }) {
           repeat: Infinity,
         }}
       >
-        <img alt="Logo" src={Logo} style={{ width: 64, height: 64 }} />
+        <img alt="Logo" src={LogoDev} style={{ width: 64, height: 64 }} />
       </motion.div>
 
       <Box

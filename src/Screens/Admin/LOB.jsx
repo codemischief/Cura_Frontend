@@ -413,7 +413,7 @@ const LOB = () => {
     const [idFilterInput, setIdFilterInput] = useState("");
     return (
         <div className='h-screen'>
-            <Navbar />
+            {/* <Navbar /> */}
             {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal} />}
             {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="New Lob added Successfully!" />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}

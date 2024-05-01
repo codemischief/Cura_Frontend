@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../../assets/logo.jpg';
 import { Link } from 'react-router-dom';
 
-const notFound = () => {
+const NotFound = () => {
   return (
     <div className="flex gap-[70px] p-5 bg-[#F5F5F5] h-screen">
       <img className="w-[152px] h-[64px] ml-[28px] " src={Logo} alt="company-logo" />
@@ -18,4 +18,4 @@ const notFound = () => {
   )
 }
 
-export default notFound
+export default NotFound

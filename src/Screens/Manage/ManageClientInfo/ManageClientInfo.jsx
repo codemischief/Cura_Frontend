@@ -1519,7 +1519,7 @@ const ManageClientInfo = () => {
 
     return (
         <div className='h-screen'>
-            <Navbar />
+            {/* <Navbar /> */}
             {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Deleted Successfully"/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Created Successfully" />}

@@ -526,7 +526,7 @@ const ManageBuilder = () => {
 
     return (
         <div className="h-screen">
-            <Navbar />
+            {/* <Navbar /> */}
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             <FailureModal isOpen={showFailure} message={errorMessage} />
             <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
