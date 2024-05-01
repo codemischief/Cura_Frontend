@@ -144,11 +144,12 @@ const EditManageBuilder = (props) => {
             <FailureModal isOpen={showFailure} message="Error! cannot edit the builder" />
             <Modal open={props.openDialog}
                 fullWidth={true}
-                maxWidth={'md'} >
-                <div className='flex justify-center mt-[80px] rounded-lg'>
+                maxWidth={'md'}
+                className='flex justify-center items-center' >
+                <div className='flex justify-center rounded-lg'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white ">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                    <div className="w-[1050px] h-auto bg-white rounded-lg  ">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Builder</div>
                             </div>
@@ -161,9 +162,9 @@ const EditManageBuilder = (props) => {
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Builder Name <label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Builder Name <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.builderName}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.builderName}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone1 <label className="text-red-500">*</label></div>
