@@ -1738,6 +1738,7 @@ const ManageClientInfo = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1200px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                             <div className="mr-[410px] ml-[410px]">
@@ -1778,6 +1779,7 @@ const ManageClientInfo = () => {
                         </div>
 
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { APIService } from '../../../services/API';
 import { useEffect } from 'react';
 import AsyncSelect from "react-select/async"
+import Draggable from 'react-draggable';
 const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
     console.log(currClientReceipt)
     const handleChange = (e) => {
@@ -134,6 +135,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[370px] ml-[370px]">
@@ -279,6 +281,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
   )

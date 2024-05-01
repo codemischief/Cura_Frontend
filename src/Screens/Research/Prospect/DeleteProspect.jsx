@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
+import Draggable from 'react-draggable';
 const DeleteProspect = (props) => {
     console.log(props);
   const handleDialogClose = () => {
@@ -21,6 +22,7 @@ const DeleteProspect = (props) => {
             className='flex justify-center items-center rounded-lg'
              >
             <div className='bg-white rounded-lg'>
+                <Draggable>
                 <div className="w-auto h-auto  ">
                     <div className="h-[40px] justify-center flex items-center">
                         <div className="mr-[210px] ml-[210px]">
@@ -41,6 +43,7 @@ const DeleteProspect = (props) => {
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                     </div>
                 </div>
+                </Draggable>
             </div>
 
         </Modal>

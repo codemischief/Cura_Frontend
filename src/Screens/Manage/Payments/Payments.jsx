@@ -26,6 +26,7 @@ import SaveConfirmationPayments from './SaveConfirmationPayments';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeletePaymentModal from './DeletePaymentModal';
 import DateFilter from '../../../Components/Filters/DateFilter';
+import Draggable from 'react-draggable';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -1220,6 +1221,7 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <div className=''>
+                    <Draggable>
                     <div className="w-[1100px]  h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1343,6 +1345,7 @@ const Payments = () => {
                         </div>
                         {/* </form> */}
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

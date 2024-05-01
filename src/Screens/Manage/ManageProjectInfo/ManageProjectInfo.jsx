@@ -30,6 +30,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
+import Draggable from 'react-draggable';
 const ManageProjectInfo = () => {
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
     // we have the module here
@@ -1102,6 +1103,7 @@ const ManageProjectInfo = () => {
             >
                 <>
                     <div className='flex justify-center'>
+                        <Draggable>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                 <div className="mr-[410px] ml-[410px]">
@@ -1138,6 +1140,7 @@ const ManageProjectInfo = () => {
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                             </div>
                         </div>
+                        </Draggable>
                     </div>
                 </>
             </Modal>

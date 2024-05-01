@@ -3,6 +3,7 @@ import { Modal, useScrollTrigger } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
+import Draggable from 'react-draggable'
 const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersData,showSuccess}) => {
     const initialValues = {
         client: null,
@@ -170,6 +171,7 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -334,6 +336,7 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
   )

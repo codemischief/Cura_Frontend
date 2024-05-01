@@ -21,6 +21,7 @@ import Excel from "../../../assets/excel.png"
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import Draggable from 'react-draggable';
 const Prospect = () => {
     const menuRef = useRef();
     // we have the module here
@@ -760,6 +761,7 @@ const Prospect = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center items-center'>
+                    <Draggable>
                     <div className="w-[778px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[300px] ml-[300px]">
@@ -895,6 +897,7 @@ const Prospect = () => {
                         </div>
                         {/* </form> */}
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
        </div>

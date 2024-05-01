@@ -25,6 +25,7 @@ import FailureModal from '../../Components/modals/FailureModal';
 import SaveConfirmationLocality from './Modals/SaveConfirmationLocality';
 import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
+import Draggable from 'react-draggable';
 const Locality = () => {
     const menuRef = useRef();
     const [existingLocalities, setExistingLocalities] = useState([]);
@@ -884,6 +885,7 @@ const Locality = () => {
                 className='flex justify-center items-center rounded-lg'
             >
                 <div className='flex justify-center bg-white rounded-lg'>
+                    <Draggable>
                     <div className=" w-[700px] h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[250px] ml-[250px]">
@@ -1009,6 +1011,7 @@ const Locality = () => {
                             </div>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

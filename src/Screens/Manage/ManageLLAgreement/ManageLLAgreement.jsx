@@ -28,6 +28,7 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter";
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditManageLLAgreement from './EditManageLLAgreement';
+import Draggable from "react-draggable"
 const ManageLLAgreement = () => {
     // const initialRows = [
     //     "id",
@@ -691,7 +692,7 @@ const ManageLLAgreement = () => {
 
         if (!formValues.durationInMonth) {
             setFormErrors((existing) => {
-                return { ...existing, durationInMonth: "Enter Month Duration" }
+                return { ...existing, durationInMonth: "Enter duration" }
             })
             res = false;
         } else {
@@ -701,7 +702,7 @@ const ManageLLAgreement = () => {
         }
         if (!formValues.endDate) {
             setFormErrors((existing) => {
-                return { ...existing, endDate: "Enter End Date" }
+                return { ...existing, endDate: "Select End Date" }
             })
             res = false;
         } else {
@@ -1012,7 +1013,7 @@ const ManageLLAgreement = () => {
             <Navbar />
             {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Added LL Agreement Successfully" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New L&L Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="L&L Agreement Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} />}
@@ -1313,7 +1314,7 @@ const ManageLLAgreement = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
@@ -1349,6 +1350,7 @@ const ManageLLAgreement = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1434,7 +1436,7 @@ const ManageLLAgreement = () => {
 
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Deposite Amount </div>
+                                        <div className="text-[13px]">Deposit Amount </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
 
                                     </div>
@@ -1537,6 +1539,7 @@ const ManageLLAgreement = () => {
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

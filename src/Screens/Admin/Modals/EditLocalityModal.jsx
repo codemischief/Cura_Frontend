@@ -3,6 +3,7 @@ import Cross from "../../../assets/cross.png"
 import { Modal } from '@mui/material'
 import { useState } from 'react'
 import { APIService } from '../../../services/API'
+import Draggable from 'react-draggable'
 const EditLocalityModal = (props) => {
     // const [showSuccess,setShowSuccess] = useState(false);
     const [inputField,setInputField] = useState(props.item.locality);
@@ -27,6 +28,7 @@ const EditLocalityModal = (props) => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[150px]'>
+                    <Draggable>
                     <div className="w-[700px]  h-auto bg-white rounded-lg mb-3">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[200px] ml-[200px]">
@@ -74,6 +76,7 @@ const EditLocalityModal = (props) => {
                             </div>
                         
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
             </>

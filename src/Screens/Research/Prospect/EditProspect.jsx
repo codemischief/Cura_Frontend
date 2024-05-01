@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
-
+import Draggable from 'react-draggable';
 const EditProspect = (props) => {
     console.log(props.item);
     const [editModalInput,setEditModalInput] = useState(props.item.personname);
@@ -146,6 +146,7 @@ const EditProspect = (props) => {
             >
                 
             <div className='flex justify-center items-center'>
+                <Draggable>
                 <div className="w-[778px] h-auto bg-white rounded-lg">
                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                         <div className="mr-[300px] ml-[300px]">
@@ -289,6 +290,7 @@ const EditProspect = (props) => {
                         </div>
                     {/* </form> */}
                 </div>
+                </Draggable>
             </div>
         </Modal>
     )

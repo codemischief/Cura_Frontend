@@ -2,6 +2,7 @@ import React, { useState , useEffect} from 'react'
 import { Modal, responsiveFontSizes } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
+import Draggable from 'react-draggable'
 
 const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess}) => {
     const handleChange = (e) => {
@@ -188,6 +189,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -390,6 +392,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                         </div>
 
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
   )

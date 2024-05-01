@@ -25,6 +25,7 @@ import BankDetails from "../../ManageProjectInfo/ManageProjectInfoForm/BankDetai
 import Contact from "../../ManageProjectInfo/ManageProjectInfoForm/Contact";
 import Photos from "../../ManageProjectInfo/ManageProjectInfoForm/Photos";
 import DeleteProjectBuilder from "./DeleteBuilderProject";
+import Draggable from "react-draggable";
 const ManageBuilderProject = () => {
     // we have the module here
     const menuRef = useRef()
@@ -859,6 +860,7 @@ const ManageBuilderProject = () => {
             >
                 <>
                     <div className='flex justify-center'>
+                        <Draggable>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                 <div className="mr-[410px] ml-[410px]">
@@ -895,6 +897,7 @@ const ManageBuilderProject = () => {
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => setIsManageBuilderDialogue(false)}>Cancel</button>
                             </div>
                         </div>
+                        </Draggable>
                     </div>
                 </>
             </Modal>

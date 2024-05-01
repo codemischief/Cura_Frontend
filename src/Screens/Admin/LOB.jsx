@@ -25,6 +25,7 @@ import DeleteLobModal from './Modals/DeleteLobModal';
 import SaveConfirmationLob from './Modals/SaveConfirmationLob';
 import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
+import Draggable from 'react-draggable';
 const LOB = () => {
     const menuRef = useRef();
     const [existingLOB, setExistingLOB] = useState([]);
@@ -630,6 +631,7 @@ const LOB = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[778px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[290px] ml-[290px]">
@@ -659,6 +661,7 @@ const LOB = () => {
                         </div>
 
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

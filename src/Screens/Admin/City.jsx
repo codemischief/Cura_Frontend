@@ -21,7 +21,7 @@ import { APIService } from "../../services/API";
 import { authService } from "../../services/authServices";
 import CharacterFilter from "../../Components/Filters/CharacterFilter";
 import NumericFilter from "../../Components/Filters/NumericFilter";
-
+import Draggable from "react-draggable";
 const City = () => {
     const menuRef = useRef();
     // we have the module here
@@ -779,6 +779,7 @@ const City = () => {
             className="flex justify-center items-center"
             >
                 <div className="flex justify-center ">
+                    <Draggable>
                     <div className="w-[800px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[270px] ml-[270px]">
@@ -890,6 +891,7 @@ const City = () => {
                             </button>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

@@ -13,6 +13,7 @@ import EditClientPortal from '../Forms/EditClientPortal';
 import EditPOADetails from '../Forms/EditPOADetails';
 import EditLegalInformation from '../Forms/EditLegalInformation';
 import { APIService } from '../../../../services/API';
+import Draggable from 'react-draggable';
 const EditClientInfoModal = (props) => {
   
   const initalValues = {
@@ -558,6 +559,7 @@ const fetchTenentOfData = async () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1300px] h-auto  bg-white rounded-lg relative">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -604,6 +606,7 @@ const fetchTenentOfData = async () => {
                         </div>
 
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
   )
