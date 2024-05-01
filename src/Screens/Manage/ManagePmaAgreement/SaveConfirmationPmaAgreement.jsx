@@ -6,8 +6,9 @@ import Draggable from 'react-draggable'
 const SaveConfirmationPmaAgreement = (props) => {
   return (
     <Modal open={true} >
-                <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
+        <>
                     <Draggable>
+                <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="w-[150px] mt-10 w-full text-center">
                             <div className="text-[24px]">Save Pma Agreement</div>
@@ -28,8 +29,9 @@ const SaveConfirmationPmaAgreement = (props) => {
                         <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={() => props.addPmaAgreement()}>Save</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
   )
 }

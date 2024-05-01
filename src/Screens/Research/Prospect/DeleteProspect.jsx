@@ -21,8 +21,9 @@ const DeleteProspect = (props) => {
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
-            <div className='bg-white rounded-lg'>
+                <>
                 <Draggable>
+            <div className='bg-white rounded-lg'>
                 <div className="w-auto h-auto  ">
                     <div className="h-[40px] justify-center flex items-center">
                         <div className="mr-[210px] ml-[210px]">
@@ -43,8 +44,9 @@ const DeleteProspect = (props) => {
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                     </div>
                 </div>
-                </Draggable>
             </div>
+                </Draggable>
+                </>
 
         </Modal>
   )

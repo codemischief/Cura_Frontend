@@ -760,8 +760,9 @@ const Prospect = () => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className='flex justify-center items-center'>
+                <>
                     <Draggable>
+                <div className='flex justify-center items-center'>
                     <div className="w-[778px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[300px] ml-[300px]">
@@ -897,8 +898,9 @@ const Prospect = () => {
                         </div>
                         {/* </form> */}
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
        </div>
     )

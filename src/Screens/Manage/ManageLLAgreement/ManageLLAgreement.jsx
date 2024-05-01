@@ -1349,8 +1349,9 @@ const ManageLLAgreement = () => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className='flex justify-center'>
+                <>
                     <Draggable>
+                <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1400,7 +1401,7 @@ const ManageLLAgreement = () => {
                                                     fontSize: 12 // adjust padding for the dropdown indicator
                                                 })
                                             }}
-                                        />
+                                            />
                                         <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -1511,7 +1512,7 @@ const ManageLLAgreement = () => {
                                             name="registrationType"
                                             value={formValues.registrationType}
                                             onChange={handleChange}
-                                        >
+                                            >
                                             {registrationType.map(item => (
                                                 <option key={item.id} value={item.type}>
                                                     {item.type}
@@ -1533,14 +1534,15 @@ const ManageLLAgreement = () => {
                                 existing.status = !existing.status;
                                 setFormValues(existing)
                             }}
-                        />Active</div>
+                            />Active</div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLLAgreement} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                            </>
             </Modal>
         </div>
     )

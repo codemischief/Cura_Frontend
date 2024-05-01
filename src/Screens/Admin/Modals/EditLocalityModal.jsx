@@ -27,8 +27,9 @@ const EditLocalityModal = (props) => {
     <Modal open={true}
                 fullWidth={true}
                 maxWidth={'md'} >
-                <div className='flex justify-center mt-[150px]'>
+                    <>
                     <Draggable>
+                <div className='flex justify-center mt-[150px]'>
                     <div className="w-[700px]  h-auto bg-white rounded-lg mb-3">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[200px] ml-[200px]">
@@ -76,8 +77,9 @@ const EditLocalityModal = (props) => {
                             </div>
                         
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
             </>
   )

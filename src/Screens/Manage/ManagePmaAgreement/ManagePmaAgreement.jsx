@@ -1354,8 +1354,9 @@ const ManagePmaArgreement = () => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className='flex justify-center'>
+                <>
                     <Draggable>
+                <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1542,8 +1543,9 @@ const ManagePmaArgreement = () => {
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
         </div>
     )
