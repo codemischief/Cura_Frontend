@@ -884,8 +884,9 @@ const Locality = () => {
                 maxWidth={'md'}
                 className='flex justify-center items-center rounded-lg'
             >
-                <div className='flex justify-center bg-white rounded-lg'>
+                <>
                     <Draggable>
+                <div className='flex justify-center bg-white rounded-lg'>
                     <div className=" w-[700px] h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[250px] ml-[250px]">
@@ -1011,8 +1012,9 @@ const Locality = () => {
                             </div>
                         </div>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
         </div>
     )
