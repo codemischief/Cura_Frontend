@@ -200,7 +200,7 @@ const ManageEmployees = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -229,7 +229,7 @@ const ManageEmployees = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -260,7 +260,7 @@ const ManageEmployees = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -630,13 +630,13 @@ const ManageEmployees = () => {
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "rows": ["employeename", "employeeid", "phoneno", "email","role","panno","dateofjoining","lastdateofworking","status","id",],
+            "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "search_key" : searchInput,
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
         };
         const response = await APIService.getEmployees(data)
         const temp = await response.json();
@@ -663,7 +663,7 @@ const ManageEmployees = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -693,7 +693,7 @@ const ManageEmployees = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -810,6 +810,7 @@ const ManageEmployees = () => {
     const [phoneFilterInput,setPhoneFilterInput] = useState("");
     const [dateOfJoiningFilter,setDateOfJoiningFilter] = useState(false)
     const [dateOfJoiningInput,setDateOfJoiningInput] = useState(false)
+    const [filterState,setFilterState] = useState([]);
 
     const fetchFiltered = async  (mapState) => {
        console.log(mapState)
@@ -828,6 +829,7 @@ const ManageEmployees = () => {
             }
         })
         setFilterMapState(mapState)
+        setFilterState(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -910,7 +912,7 @@ const ManageEmployees = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
