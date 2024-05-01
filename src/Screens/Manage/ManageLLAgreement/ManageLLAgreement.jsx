@@ -1013,7 +1013,7 @@ const ManageLLAgreement = () => {
             {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Added LL Agreement Successfully" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted LL Agreement" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="L&L Agreement Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
@@ -1248,8 +1248,8 @@ const ManageLLAgreement = () => {
                                 </div>
                                 <div className="w-[17%] flex">
                                     <div className='w-1/2  flex'>
-                                        <div className='p-3'>
-
+                                        <div className='p-3 text-blue-400 cursor-pointer'>
+                                            Tenant Details
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>

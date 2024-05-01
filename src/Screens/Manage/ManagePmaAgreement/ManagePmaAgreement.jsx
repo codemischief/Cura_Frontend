@@ -280,7 +280,8 @@ const ManagePmaArgreement = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
-            "pg_size": Number(currentPages)
+            "pg_size": Number(currentPages),
+            "search_key" : searchInput
         }
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
