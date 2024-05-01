@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
 import { APIService } from '../../../services/API';
+import Draggable from 'react-draggable';
 
 
 const EditManageBuilder = (props) => {
@@ -145,6 +146,7 @@ const EditManageBuilder = (props) => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <div className='flex justify-center mt-[80px] rounded-lg'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
@@ -248,6 +250,7 @@ const EditManageBuilder = (props) => {
                             </div>
                         </form>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </>

@@ -28,6 +28,7 @@ import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
+import Draggable from 'react-draggable';
 const ManageClientReceipt = () => {
     const initialRows = [
         "id",
@@ -1192,6 +1193,7 @@ const ManageClientReceipt = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[370px] ml-[370px]">
@@ -1342,6 +1344,7 @@ const ManageClientReceipt = () => {
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </div>

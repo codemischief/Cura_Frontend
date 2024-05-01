@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Modal , Button ,CircularProgress} from '@mui/material'
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
+import Draggable from 'react-draggable';
 const Delete = (props) => {
     const [showLoading,setShowLoading] = useState(false);
     const deleteCountry = async (item) =>{
@@ -25,6 +26,7 @@ const Delete = (props) => {
             className='flex justify-center items-center rounded-lg'
              >
             <div className='bg-white'>
+                <Draggable>
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="ml-56 mr-52">
@@ -46,6 +48,7 @@ const Delete = (props) => {
                         {showLoading && <CircularProgress/>}
                     </div>
                 </div>
+                </Draggable>
             </div>
 
         </Modal>

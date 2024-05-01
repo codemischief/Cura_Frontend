@@ -1,10 +1,12 @@
 import React from 'react'
 import {Modal} from "@mui/material"
 import Cross from "../../../assets/cross.png"
+import Draggable from 'react-draggable'
 const SaveConfirmationLocality = (props) => {
   return (
     <Modal open={true} >
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
+                    <Draggable>
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="w-[150px] mt-10 w-full text-center">
                             <div className="text-[24px]">Save Locality</div>
@@ -25,6 +27,7 @@ const SaveConfirmationLocality = (props) => {
                         <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addLocality}>Save</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
   )

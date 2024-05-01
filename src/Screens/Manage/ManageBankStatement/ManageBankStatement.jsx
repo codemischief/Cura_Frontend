@@ -22,6 +22,7 @@ import Filter from "../../../assets/filter.png"
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
+import Draggable from "react-draggable";
 // import DayJS from 'react-dayjs';
 const ManageBankStatement = () => {
     // we have the module here
@@ -1542,6 +1543,7 @@ const ManageBankStatement = () => {
                 maxwidth={'md'} bankStatement={currentStatement}>
                 {/* <h1>{currentStatement}</h1> */}
                 <div className='flex justify-center items-center mt-[70px]'>
+                    <Draggable>
                     <div className="w-[1050px] h-[500px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
@@ -1673,6 +1675,7 @@ const ManageBankStatement = () => {
                             </div>
                         </form>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
 
@@ -1681,6 +1684,7 @@ const ManageBankStatement = () => {
 
             <Modal open={isConfirmManageStatementDialogue} >
                 <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
+                    <Draggable>
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="w-[150px] mt-10 w-full text-center">
                             <div className="text-[24px]">Save Bank Statement</div>
@@ -1701,6 +1705,7 @@ const ManageBankStatement = () => {
                         <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Save</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
 

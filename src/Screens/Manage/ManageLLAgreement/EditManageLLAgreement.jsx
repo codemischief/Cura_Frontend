@@ -4,6 +4,7 @@ import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
+import Draggable from 'react-draggable'
 const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
     const initialValues = {
         client: "",
@@ -184,6 +185,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         console.log('temp')
         const existing = {...formValues}
         existing.depositeAmount = res.data.depositamount
+        existing.client = res.data.clientid
         existing.endDate  = res.data.actualenddate
         existing.durationInMonth = res.data.durationinmonth
         existing.noticePeriod = res.data.noticeperiodindays
@@ -261,7 +263,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
 
         if (!formValues.durationInMonth) {
             setFormErrors((existing) => {
-                return { ...existing, durationInMonth: "Enter Month Duration" }
+                return { ...existing, durationInMonth: "Enter duration" }
             })
             res = false;
         } else {
@@ -271,7 +273,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         }
         if (!formValues.endDate) {
             setFormErrors((existing) => {
-                return { ...existing, endDate: "Enter End Date" }
+                return { ...existing, endDate: "Select End Date" }
             })
             res = false;
         } else {
@@ -282,6 +284,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         return res;
     }
     const handleEdit = async () => {
+        console.log(formValues)
         if(!validate()) {
             return ;
         }
@@ -350,6 +353,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
+        existing.order = null
         getOrdersByClientId(e.value)
         getClientPropertyByClientId(e.value)
         setFormValues(existing)
@@ -391,6 +395,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -475,7 +480,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
 
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Deposite Amount </div>
+                                        <div className="text-[13px]">Deposit Amount </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
 
                                     </div>
@@ -495,6 +500,8 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             value={formValues.order}
                                             onChange={handleChange}
                                         >
+                                            <option value="" hidden >Select Client Order</option>
+                                            <option value="" >ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Order Description</option>
                                             {orders.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.ordername}
@@ -572,6 +579,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
   )

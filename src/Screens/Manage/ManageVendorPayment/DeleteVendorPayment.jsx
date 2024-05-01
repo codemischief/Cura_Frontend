@@ -6,6 +6,7 @@ import { Modal, Button, CircularProgress } from "@mui/material";
 import DeleteImage from "../../../assets/delete.png"
 import Cross from "../../../assets/cross.png"
 // import { APIService } from "../../../services/API";
+import Draggable from "react-draggable";
 const DeleteVendorPayment = (props) => {
   const [showLoading, setShowLoading] = useState(false);
   const [buttonLoading,setButtonLoading] = useState(false);
@@ -21,7 +22,9 @@ const DeleteVendorPayment = (props) => {
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
+               
             <div className='bg-white rounded-lg'>
+            <Draggable>
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="ml-56 mr-52">
@@ -42,6 +45,7 @@ const DeleteVendorPayment = (props) => {
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                     </div>
                 </div>
+                </Draggable>
             </div>
         </Modal>
   );

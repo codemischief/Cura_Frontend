@@ -8,6 +8,7 @@ import EditPhotos from './EditPhotos'
 import EditPOADetails from './EditPoaDetails'
 import EditOwnerDetails from './EditOwnerDetails'
 import { APIService } from '../../../../services/API'
+import Draggable from 'react-draggable'
 const EditClientProperty = (props) => {
     useEffect(() => {
         fetchLevelOfFurnishing();
@@ -408,6 +409,7 @@ const EditClientProperty = (props) => {
     className='flex justify-center items-center'
 >
     <div className='flex justify-center relative'>
+        <Draggable>
         <div className="w-[1150px] h-auto bg-white rounded-lg">
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                 <div className="mr-[410px] ml-[410px]">
@@ -446,6 +448,7 @@ const EditClientProperty = (props) => {
             </div>
 
         </div>
+        </Draggable>
     </div>
 </Modal>
   )

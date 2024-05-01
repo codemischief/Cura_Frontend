@@ -26,6 +26,7 @@ import NumericFilter from '../../Components/Filters/NumericFilter';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
 import SaveConfirmationCountry from './Modals/SaveConfirmationCountry';
+import Draggable from 'react-draggable';
 const Country = () => {
   // we have the module here
   const menuRef = useRef()
@@ -730,6 +731,7 @@ const Country = () => {
         className='flex justify-center items-center'
       >
         <div className='flex justify-center '>
+          <Draggable>
           <div className="w-[778px]  h-auto bg-white rounded-lg ">
             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
               <div className="mr-[270px] ml-[270px]">
@@ -765,7 +767,9 @@ const Country = () => {
               </div>
             </form>
           </div>
+          </Draggable>
         </div>
+        
       </Modal>
     </div>
   )

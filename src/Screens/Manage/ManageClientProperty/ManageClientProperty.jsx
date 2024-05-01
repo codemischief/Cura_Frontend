@@ -30,6 +30,7 @@ import SaveConfirmationClientProperty from './Forms/SaveConfirmationClientProper
 import EditClientProperty from './Forms/EditClientProperty';
 import Select from "react-select"
 import DeleteClientProperty from './DeleteClientProperty';
+import Draggable from 'react-draggable';
 const ManageClientProperty = () => {
     const menuRef = useRef();
     // we have the module here
@@ -1686,6 +1687,7 @@ const ManageClientProperty = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center relative'>
+                    <Draggable>
                     <div className="w-[1150px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1722,6 +1724,7 @@ const ManageClientProperty = () => {
                         </div>
 
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
 

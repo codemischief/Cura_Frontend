@@ -4,6 +4,7 @@ import Cross from "../../../assets/cross.png";
 import { APIService } from '../../../services/API';
 import { Modal,CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
+import Draggable from 'react-draggable';
 // import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 const EditPayments = (props) => {
     console.log(props.item.item);
@@ -356,6 +357,7 @@ const EditPayments = (props) => {
                 className='flex justify-center items-center'
             >
                 <div className=''>
+                    <Draggable>
                     <div className="w-[1100px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -486,6 +488,7 @@ const EditPayments = (props) => {
                         </div>
                         {/* </form> */}
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
         </>

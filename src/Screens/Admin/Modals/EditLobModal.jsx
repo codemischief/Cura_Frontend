@@ -4,6 +4,7 @@ import { Modal } from '@mui/material'
 import { useState } from 'react'
 import { APIService } from '../../../services/API'
 import SucessfullModal from '../../../Components/modals/SucessfullModal'
+import Draggable from 'react-draggable'
 const EditLobModal = (props) => {
     // const [showSuccess,setShowSuccess] = useState(false);
     const [editModalInput,setEditModalInput] = useState(props.item.name);
@@ -32,6 +33,7 @@ const EditLobModal = (props) => {
                 className='flex justify-center items-center' 
                 >
                 <div className='flex justify-center'>
+                    <Draggable>
                     <div className="w-[778px]  h-[255px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[290px] ml-[290px]">
@@ -59,6 +61,7 @@ const EditLobModal = (props) => {
                             </div>
                         </div>
                     </div>
+                    </Draggable>
                 </div>
             </Modal>
             </>
