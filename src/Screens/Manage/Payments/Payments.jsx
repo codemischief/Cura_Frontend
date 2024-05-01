@@ -356,16 +356,21 @@ const Payments = () => {
             "id": Number(id)
         };
         const response = await APIService.deletePayment(data);
+        const res = await  response.json()
         console.log(response);
         setDeleteConfirmationModal(false);
-        openDeleteSuccess();
-        fetchData();
+        if(res.result == 'success') {
+            openDeleteSuccess();
+        }
+       
     }
     const openDeleteSuccess = () => {
-        showDeleteSuccess(true);
+        
+        setShowDeleteSuccess(true);
         setTimeout(function () {
-            showDeleteSuccess(false);
+            setShowDeleteSuccess(false);
         }, 2000)
+        fetchData();
     }
     const selectedPaymentMode = [
         "1", "2", "3", "4"
@@ -736,7 +741,7 @@ const Payments = () => {
     const [entityFilterInput, setEntityFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
-    const [showDeleteSuccess, setDeleteSuccess] = useState(false);
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const [filterState, setFilterState] = useState([]);
     const filterMapping = {
         paymentto : {
