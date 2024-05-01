@@ -373,51 +373,51 @@ const Payments = () => {
     const selectedMonth = [
         {
             id: 1,
-            month: "january"
+            month: "Jan"
         },
         {
             id: 2,
-            month: "february"
+            month: "Feb"
         },
         {
             id: 3,
-            month: "march"
+            month: "Mar"
         },
         {
             id: 4,
-            month: "april"
+            month: "Apr"
         },
         {
             id: 5,
-            month: "may"
+            month: "May"
         },
         {
             id: 6,
-            month: "june"
+            month: "Jun"
         },
         {
             id: 7,
-            month: "july"
+            month: "July"
         },
         {
             id: 8,
-            month: "august"
+            month: "Aug"
         },
         {
             id: 9,
-            month: "september"
+            month: "Sep"
         },
         {
             id: 10,
-            month: "october"
+            month: "Oct"
         },
         {
             id: 11,
-            month: "november"
+            month: "Nov"
         },
         {
             id: 12,
-            month: "december"
+            month: "Dec"
         },
     ]
 
@@ -461,12 +461,7 @@ const Payments = () => {
 
         if (!formValues.amount) {
             setFormErrors((existing) => {
-                return { ...existing, amount: "Amount is Mandatory" }
-            })
-            res = false;
-        } else if (!Number.isInteger(Number(formValues.amount))) {
-            setFormErrors((existing) => {
-                return { ...existing, amount: "Enter A Numeric Value" }
+                return { ...existing, amount: "Enter Amount to pay" }
             })
             res = false;
         } else {
@@ -476,7 +471,7 @@ const Payments = () => {
         }
         if (!formValues.paymentfor) {
             setFormErrors((existing) => {
-                return { ...existing, paymentfor: "This Feild is mandatory" }
+                return { ...existing, paymentfor: "Select Tally Ledger" }
             })
             res = false;
         } else {
@@ -529,11 +524,6 @@ const Payments = () => {
                 return { ...existing, tds: "Enter TDS amount" }
             })
             res = false;
-        } else if (!Number.isInteger(Number(formValues.tds))) {
-            setFormErrors((existing) => {
-                return { ...existing, tds: "Enter A Numeric Value!" }
-            })
-            res = false;
         } else {
             setFormErrors((existing) => {
                 return { ...existing, tds: "" }
@@ -542,11 +532,6 @@ const Payments = () => {
         if (!formValues.professiontax) {
             setFormErrors((existing) => {
                 return { ...existing, professiontax: "Enter profession Tax amount" }
-            })
-            res = false;
-        } else if (!Number.isInteger(Number(formValues.professiontax))) {
-            setFormErrors((existing) => {
-                return { ...existing, professiontax: "Enter A Numeric Value!" }
             })
             res = false;
         } else {
@@ -1250,6 +1235,7 @@ const Payments = () => {
                                     <div className="">
                                         <div className="text-sm">Payment To <label className="text-red-500">*</label></div>
                                         <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                            <option value={null}>Select User</option>
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
@@ -1272,7 +1258,7 @@ const Payments = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Amount <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
@@ -1332,12 +1318,12 @@ const Payments = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm">TDS <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Profession Tax <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.professiontax}</div>
                                     </div>
                                 </div>
