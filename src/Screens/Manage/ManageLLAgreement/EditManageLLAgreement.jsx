@@ -153,7 +153,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         },
         {
             id: 2,
-            type: "Not Registered"
+            type: "Notarized"
         }
     ];
     const [formValues,setFormValues] = useState(initialValues)
@@ -206,7 +206,85 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         
 
     }
+    const validate = () => {
+        var res = true;
+        if (!formValues.client) {
+            setFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
+        if (!formValues.clientProperty || formValues.clientProperty == "") {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "Select Client Property" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, clientProperty: "" }
+            })
+        }
+        if (!formValues.order || formValues.order == "") {
+            setFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
+        if (!formValues.startDate) {
+            setFormErrors((existing) => {
+                return { ...existing, startDate: "Select Start Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, startDate: "" }
+            })
+        }
+        // if (!formValues.order) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "Select Order" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, order: "" }
+        //     })
+        // }
+
+        if (!formValues.durationInMonth) {
+            setFormErrors((existing) => {
+                return { ...existing, durationInMonth: "Enter Month Duration" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, durationInMonth: "" }
+            })
+        }
+        if (!formValues.endDate) {
+            setFormErrors((existing) => {
+                return { ...existing, endDate: "Enter End Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, endDate: "" }
+            })
+        }
+        return res;
+    }
     const handleEdit = async () => {
+        if(!validate()) {
+            return ;
+        }
         const data = {
             "user_id":1234,
             "id": currItem.id,
@@ -363,7 +441,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                                 })
                                             }}
                                         />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
@@ -384,12 +462,12 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.startDate}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.startDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Rent Amount </div>
@@ -423,17 +501,17 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.durationInMonth}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.durationInMonth}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.endDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">

@@ -544,7 +544,7 @@ const ManageLLAgreement = () => {
         },
         {
             id: 2,
-            type: "Not Registered"
+            type: "Notarized"
         }
     ];
     //end
@@ -1399,7 +1399,7 @@ const ManageLLAgreement = () => {
                                                 })
                                             }}
                                         />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
@@ -1421,12 +1421,12 @@ const ManageLLAgreement = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.startDate}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.startDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Rent Amount </div>
@@ -1455,24 +1455,28 @@ const ManageLLAgreement = () => {
                                             
                                             onChange={handleChange}
                                         >
-                                            <option value="" >Select An Order</option>
+                                            <option value="" hidden >Select Client Order</option>
+                                            <option value="" >ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Order Description</option>
                                             {orders.map((item) => (
                                                 <option key={item.id} value={item.id}>
+                                                    {item.id}
+                                                    &nbsp;
+                                                    &nbsp;
                                                     {item.ordername}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.durationInMonth}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.endDate}</div>
+                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.endDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">
