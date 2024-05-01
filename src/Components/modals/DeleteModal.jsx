@@ -3,6 +3,7 @@ import { Modal, Button, CircularProgress } from "@mui/material";
 import DeleteImage from "../../assets/delete.png";
 import Cross from "../../assets/cross.png";
 import { APIService } from "../../services/API";
+import Draggable from "react-draggable";
 const DeleteModal = (props) => {
   const [showLoading, setShowLoading] = useState(false);
   const deleteCountry = async (item) => {
@@ -28,8 +29,10 @@ const DeleteModal = (props) => {
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
-            
-            <div className='bg-white'>
+                 <>
+             <Draggable>
+            <div className='bg-white rounded-lg'>
+               
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="ml-56 mr-52">
@@ -51,6 +54,8 @@ const DeleteModal = (props) => {
                     </div>
                 </div>
             </div>
+                </Draggable>
+               </>   
         </Modal>
   );
 };
