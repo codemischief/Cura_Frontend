@@ -394,8 +394,10 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
+                <>
+                <Draggable>
                 <div className='flex justify-center'>
-                    <Draggable>
+                    
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -420,7 +422,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             cacheOptions
                                             defaultOptions
                                             onInputChange={(value) => setQuery(value)}
-
+                                            
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
@@ -457,7 +459,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             name="clientProperty"
                                             value={formValues.clientProperty}
                                             onChange={handleChange}
-                                        >
+                                            >
                                             {clientPropertyData.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.id}
@@ -499,7 +501,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             name="order"
                                             value={formValues.order}
                                             onChange={handleChange}
-                                        >
+                                            >
                                             <option value="" hidden >Select Client Order</option>
                                             <option value="" >ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Order Description</option>
                                             {orders.map((item) => (
@@ -529,7 +531,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             name="rentPaymentDate"
                                             value={formValues.rentPaymentDate}
                                             onChange={handleChange}
-                                        >
+                                            >
                                             {rentPaymentDate.map((item) => (
                                                 <option key={item.id} value={item.day}>
                                                     {item.day}
@@ -551,7 +553,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                             name="registrationType"
                                             value={formValues.registrationType}
                                             onChange={handleChange}
-                                        >
+                                            >
                                             {registrationType.map(item => (
                                                 <option key={item.id} value={item.type}>
                                                     {item.type}
@@ -573,14 +575,15 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                 existing.status = !existing.status;
                                 setFormValues(existing)
                             }}
-                        />Active</div>
+                            />Active</div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                            </>
             </Modal>
   )
 }

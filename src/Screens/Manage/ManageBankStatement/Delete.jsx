@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import SucessImage from "../../../assets/SuccessImage.png";
+import Draggable from 'react-draggable';
 const Delete = (props) => {
     const [showLoading,setShowLoading] = useState(false);
     const [showSucess,setShowSucess] = useState(false);
@@ -32,6 +33,8 @@ const Delete = (props) => {
   return (
     <div>
      <Modal open={showSucess} fullWidth={true} >
+        <>
+        <Draggable>
         <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
            <div className='w-full h-64 pt-12'>
                 <img src={SucessImage} className='h-24 w-24  mx-auto '/>
@@ -40,11 +43,15 @@ const Delete = (props) => {
                 </div>
            </div>
         </div>
+        </Draggable>
+        </>
     </Modal>
     <Modal open={props.isOpen}
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >  
+             <>
+             <Draggable>
             <div className='bg-white'>
                 <div className="w-auto h-auto flex flex-col justify-center items-center ">
                     <div className="h-[40px] flex justify-center items-center">
@@ -68,7 +75,8 @@ const Delete = (props) => {
                     </div>
                 </div>
             </div>
-
+            </Draggable>
+            </>
         </Modal>
         </div>
   )

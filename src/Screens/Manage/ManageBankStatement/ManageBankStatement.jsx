@@ -1440,6 +1440,8 @@ const ManageBankStatement = () => {
                     <Modal open={isManageStatementDialogue}
                 fullWidth={true}
                 maxWidth={'md'} >
+                    <>
+                    <Draggable>
                 <div className='flex justify-center items-center mt-[70px]'>
                     <div className="w-[1050px] h-[500px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
@@ -1534,6 +1536,8 @@ const ManageBankStatement = () => {
                         </form>
                     </div>
                 </div>
+                </Draggable>
+                </>
             </Modal>
              
 
@@ -1542,8 +1546,9 @@ const ManageBankStatement = () => {
                 fullWidth={true}
                 maxwidth={'md'} bankStatement={currentStatement}>
                 {/* <h1>{currentStatement}</h1> */}
-                <div className='flex justify-center items-center mt-[70px]'>
+                <>
                     <Draggable>
+                <div className='flex justify-center items-center mt-[70px]'>
                     <div className="w-[1050px] h-[500px] bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                             <div className="mr-[410px] ml-[410px]">
@@ -1675,16 +1680,18 @@ const ManageBankStatement = () => {
                             </div>
                         </form>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
 
 
 
 
             <Modal open={isConfirmManageStatementDialogue} >
-                <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
+                <>
                     <Draggable>
+                <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                     <div className="h-[40px] flex justify-center items-center">
                         <div className="w-[150px] mt-10 w-full text-center">
                             <div className="text-[24px]">Save Bank Statement</div>
@@ -1705,8 +1712,9 @@ const ManageBankStatement = () => {
                         <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Save</button>
                         <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                </>
             </Modal>
 
 

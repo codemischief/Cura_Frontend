@@ -188,8 +188,9 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className='flex justify-center'>
+                <>
                     <Draggable>
+                <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -392,8 +393,9 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                         </div>
 
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
   )
 }
