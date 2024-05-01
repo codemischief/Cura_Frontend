@@ -29,6 +29,7 @@ import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
+import Draggable from 'react-draggable';
 const ManageClientInfo = () => {
 
     const menuRef = useRef();

@@ -1590,8 +1590,8 @@ const ManageClientProperty = () => {
                                     </div>
                                 </div>
                                 <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-1/2  flex items-center'>
+                                        <div className='px-3 '>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
