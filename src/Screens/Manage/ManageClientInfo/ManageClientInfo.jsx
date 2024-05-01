@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress} from "@mui/material";
+import { Modal, Pagination, LinearProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
 import ClientInformation from "./Forms/ClientInformation"
 import ClientPortal from "./Forms/ClientPortal";
@@ -56,7 +56,7 @@ const ManageClientInfo = () => {
     const [showAddSuccess, setShowAddSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const [tenentOfData, setTenentOfData] = useState([])
-    
+
     const [sortField, setSortField] = useState("id")
     const [relationData, setRelationData] = useState([]);
     const [showDelete, setShowDelete] = useState(false);
@@ -76,7 +76,7 @@ const ManageClientInfo = () => {
             filterData: "String",
             filterInput: ""
         },
-       
+
         tenantofname: {
             filterType: "",
             filterValue: "",
@@ -113,7 +113,7 @@ const ManageClientInfo = () => {
             filterData: "String",
             filterInput: ""
         },
-        employername : {
+        employername: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -258,6 +258,7 @@ const ManageClientInfo = () => {
         })
         console.log(filterMapState);
         console.log(tempArray);
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -301,11 +302,12 @@ const ManageClientInfo = () => {
                 "tenantofpropertyname",
                 "clientname"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": Number(currentPages),
+            "search_key": searchInput
         };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
@@ -318,7 +320,7 @@ const ManageClientInfo = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        
+
         setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
@@ -368,7 +370,7 @@ const ManageClientInfo = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
@@ -381,7 +383,7 @@ const ManageClientInfo = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        
+
         // console.log(searchInput);
         setCurrentPage((prev) => 1)
         setCurrentPages((prev) => quantity)
@@ -433,7 +435,7 @@ const ManageClientInfo = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
@@ -457,7 +459,7 @@ const ManageClientInfo = () => {
         fetchUsersData();
         fetchLobData();
         const makeFalse = () => {
-            
+
         }
         const handler = (e) => {
             console.log(menuRef)
@@ -484,7 +486,7 @@ const ManageClientInfo = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
-    
+
     const handleOpenEdit = (oldItem) => {
         console.log('called');
         setIsEditDialogue(true);
@@ -497,7 +499,7 @@ const ManageClientInfo = () => {
 
     const handleClose = () => {
         setSelectedDialogue(1)
-        setFormErrors(() => {})
+        setFormErrors(() => { })
         setIsClientInfoDialogue(false);
     }
     const [clientTypeData, setClientTypeData] = useState([]);
@@ -642,58 +644,29 @@ const ManageClientInfo = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
-                "firstname",
-                "middlename",
-                "lastname",
-                "salutation",
-                "clienttype",
+                "clientname",
                 "clienttypename",
-                "addressline1",
-                "addressline2",
-                "suburb",
-                "city",
-                "state",
+                "tenantofname",
+                "tenantofpropertyname",
                 "country",
-                "zip",
-                "homephone",
-                "workphone",
+                "city",
                 "mobilephone",
                 "email1",
-                "email2",
                 "employername",
-                "comments",
-                "photo",
-                "onlineaccreated",
-                "localcontact1name",
-                "localcontact1address",
-                "localcontact1details",
-                "localcontact2name",
-                "localcontact2address",
-                "localcontact2details",
-                "includeinmailinglist",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "tenantof",
-                "tenantofname",
-                "tenantofproperty",
-                "tenantofpropertyname",
-                "clientname"
+                "id",
             ],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getClientInfo(data)
         const temp = await response.json();
         const result = await temp.data.client_info;
         const worksheet = await XLSX.utils.json_to_sheet(result);
-        const workbook =await XLSX.utils.book_new();
+        const workbook = await XLSX.utils.book_new();
         await XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
         await XLSX.writeFile(workbook, "ClientInfoData.xlsx");
         await FileSaver.saveAs(workbook, "demo.xlsx");
@@ -702,7 +675,7 @@ const ManageClientInfo = () => {
         // console.log("clicked")
         setPageLoading(true);
         setCurrentPage(1)
-    
+
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
@@ -748,7 +721,7 @@ const ManageClientInfo = () => {
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": currentPages,
+            "pg_size": Number(currentPages),
             "search_key": searchInput
         };
         const response = await APIService.getClientInfo(data);
@@ -872,7 +845,7 @@ const ManageClientInfo = () => {
                 firstname: ""
             }))
         }
-        
+
         if (formValues.client_info.lastname === "") {
             res = false
             setFormErrorsClientInfo((existing) => ({
@@ -922,7 +895,7 @@ const ManageClientInfo = () => {
                 city: ""
             }))
         }
-        
+
         //  if(formValues.client_info.middlename == "") {
         //     res = false
         //     setFormErrors({...formErrors,client_info : {
@@ -1033,7 +1006,7 @@ const ManageClientInfo = () => {
     }
     const addClientInfo = async () => {
         // setButtonLoading(true);
-        
+
         const data = {
             "user_id": 1234,
             "client_info": {
@@ -1120,7 +1093,7 @@ const ManageClientInfo = () => {
             openAddSuccess();
             setFormValues(initialValues)
         } else {
-            
+
 
         }
         setButtonLoading(false);
@@ -1136,7 +1109,7 @@ const ManageClientInfo = () => {
         const res = await response.json()
         console.log(res)
         setShowDelete(false);
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             openDeleteSuccess()
         }
         fetchData()
@@ -1161,209 +1134,32 @@ const ManageClientInfo = () => {
             fetchData();
         }, 2000)
     }
-    const [clientNameFilter,setClientNameFilter] = useState(false)
-    const [clientNameInput,setClientNameInput ] = useState("");
-    const [clientTypeNameFilter,setClientTypeNameFilter] = useState(false)
-    const [clientTypeNameInput,setClientTypeNameInput ] = useState("");
-    const [tenantOfTypeNameFilter,setTenantOfTypeNameFilter] = useState(false)
-    const [tenantOfTypeNameInput,setTenantOfTypeNameInput] = useState("");
-    const [tenantOfPropertyFilter,setTenantOfPropertyFilter] = useState(false)
-    const [tenantOfPropertyInput,setTenantOfPropertyInput] = useState("");
-    const [countryFilter,setCountryFilter] = useState(false)
-    const [countryInput,setCountryInput] = useState("");
-    const [cityFilter,setCityFilter] = useState(false)
-    const [cityInput,setCityInput] = useState("");
-    const [phoneFilter,setPhoneFilter] = useState(false)
-    const [phoneInput,setPhoneInput] = useState("");
-    const [email1Filter,setEmail1Filter] = useState(false)
-    const [email1Input,setEmail1Input] = useState("");
-    const [employerFilter,setEmployerFilter] = useState(false)
-    const [employerInput,setEmployerInput] = useState("");
-    const [idFilter,setIdFilter] = useState(false);
-    const [idFilterInput,setidFilterInput] = useState("");
-    const handleFilter = (type, columnName) => {
-        if (columnName == "clientname") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.clientname.filterType = "";
-                existing.clientname.filterValue = "";
-                setFilterMapState(existing)
-                //    filterMapping.country.filterType = "";
-                //    filterMapping.country.filterValue = "";
-                setClientNameInput("");
-            } else {
-                const existing = filterMapState;
-                existing.clientname.filterType = type;
-                existing.clientname.filterValue = clientNameInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
-            }
-        } else if (columnName == "clienttype") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.clienttypename.filterType = "";
-                existing.clienttypename.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setClientTypeNameInput("");
-            } else {
-                const existing = filterMapState;
-                existing.clienttypename.filterType = type;
-                existing.clienttypename.filterValue = clientTypeNameInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-            }
-        } else if (columnName == "tenantof") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.tenantofname.filterType = "";
-                existing.tenantofname.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.locality.filterType = "";
-                // filterMapping.locality.filterValue = "";
-                // setTenentOfInput("");
-                setTenantOfTypeNameInput("");
-            } else {
-                const existing = filterMapState;
-                existing.tenantofname.filterType = type;
-                existing.tenantofname.filterValue = tenantOfTypeNameInput;
-                setFilterMapState(existing)
-                // filterMapping.locality.filterType = type;
-                // filterMapping.locality.filterValue = localityFilterInput;
-            }
-        }  else if (columnName == "country") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.country.filterType = "";
-                existing.country.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = "";
-                // filterMapping.city.filterValue = "";
-                setCountryInput("");
-            } else {
-                const existing = filterMapState;
-                existing.country.filterType = type;
-                existing.country.filterValue = countryInput;
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = type;
-                // filterMapping.city.filterValue = cityFilterInput;
-            }
-        }else if (columnName == "city") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.city.filterType = "";
-                existing.city.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = "";
-                // filterMapping.city.filterValue = "";
-                setCityInput("");
-            } else {
-                const existing = filterMapState;
-                existing.city.filterType = type;
-                existing.city.filterValue = cityInput;
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = type;
-                // filterMapping.city.filterValue = cityFilterInput;
-            }
-        }else if (columnName == "phone") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.mobilephone.filterType = "";
-                existing.mobilephone.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = "";
-                // filterMapping.city.filterValue = "";
-                setPhoneInput("");
-            } else {
-                const existing = filterMapState;
-                existing.mobilephone.filterType = type;
-                existing.mobilephone.filterValue = phoneInput;
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = type;
-                // filterMapping.city.filterValue = cityFilterInput;
-            }
-        }else if (columnName == "email") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.email1.filterType = "";
-                existing.email1.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = "";
-                // filterMapping.city.filterValue = "";
-                // setEmailInput("");
-                setEmail1Input("");
-            } else {
-                const existing = filterMapState;
-                existing.email1.filterType = type;
-                existing.email1.filterValue = email1Input;
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = type;
-                // filterMapping.city.filterValue = cityFilterInput;
-            }
-        }else if (columnName == "employername") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.employername.filterType = "";
-                existing.employername.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = "";
-                // filterMapping.city.filterValue = "";
-                setEmployerInput("");
-            } else {
-                const existing = filterMapState;
-                existing.employername.filterType = type;
-                existing.employername.filterValue = employerInput;
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = type;
-                // filterMapping.city.filterValue = cityFilterInput;
-            }
-        }else if (columnName == "id") {
-            console.log(columnName,type)
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.id.filterType = "";
-                existing.id.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = "";
-                // filterMapping.id.filterValue = "";
-                setidFilterInput("");
-            } else {
-                const existing = filterMapState;
-                existing.id.filterType = type;
-                existing.id.filterValue = Number(idFilterInput);
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = type;
-                // filterMapping.id.filterValue = Number(idFilterInput);
-            }
-        }else if(columnName == "tenantofproperty") {
-            if (type == "noFilter") {
-                const existing = filterMapState;
-                existing.tenantofpropertyname.filterType = "";
-                existing.tenantofpropertyname.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = "";
-                // filterMapping.id.filterValue = "";
-                // setidFilterInput("");
-                setTenantOfTypeNameFilter("");
-            } else {
-                const existing = filterMapState;
-                existing.tenantofpropertyname.filterType = type;
-                existing.tenantofpropertyname.filterValue = tenantOfPropertyInput;
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = type;
-                // filterMapping.id.filterValue = Number(idFilterInput);
-            }
-        }
-        fetchData();
-    }
+    const [clientNameFilter, setClientNameFilter] = useState(false)
+    const [clientNameInput, setClientNameInput] = useState("");
+    const [clientTypeNameFilter, setClientTypeNameFilter] = useState(false)
+    const [clientTypeNameInput, setClientTypeNameInput] = useState("");
+    const [tenantOfTypeNameFilter, setTenantOfTypeNameFilter] = useState(false)
+    const [tenantOfTypeNameInput, setTenantOfTypeNameInput] = useState("");
+    const [tenantOfPropertyFilter, setTenantOfPropertyFilter] = useState(false)
+    const [tenantOfPropertyInput, setTenantOfPropertyInput] = useState("");
+    const [countryFilter, setCountryFilter] = useState(false)
+    const [countryInput, setCountryInput] = useState("");
+    const [cityFilter, setCityFilter] = useState(false)
+    const [cityInput, setCityInput] = useState("");
+    const [phoneFilter, setPhoneFilter] = useState(false)
+    const [phoneInput, setPhoneInput] = useState("");
+    const [email1Filter, setEmail1Filter] = useState(false)
+    const [email1Input, setEmail1Input] = useState("");
+    const [employerFilter, setEmployerFilter] = useState(false)
+    const [employerInput, setEmployerInput] = useState("");
+    const [idFilter, setIdFilter] = useState(false);
+    const [idFilterInput, setidFilterInput] = useState("");
+    
     const handleSort = async (field) => {
-         setPageLoading(true)
-         setSortField(field);
-         setFlag((prev) => !prev)
-         const data = {
+        setPageLoading(true)
+        setSortField(field);
+        setFlag((prev) => !prev)
+        const data = {
             "user_id": 1234,
             "rows": [
                 "id",
@@ -1411,9 +1207,9 @@ const ManageClientInfo = () => {
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
-        
+
         const response = await APIService.getClientInfo(data);
         const temp = await response.json();
         const result = temp.data;
@@ -1443,7 +1239,7 @@ const ManageClientInfo = () => {
         if (type == 'noFilter') setInputVariable("");
         fetchFiltered(existing);
     }
-    const [filterState,setFilterState] = useState([])
+    const [filterState, setFilterState] = useState([])
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
@@ -1451,9 +1247,9 @@ const ManageClientInfo = () => {
         // console.log(filterMapState);
         setFilterMapState(mapState)
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key=> {
-            if(mapState[key].filterType != "") {
-                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
         setFilterState((prev) => tempArray)
@@ -1521,7 +1317,7 @@ const ManageClientInfo = () => {
         <div className='h-screen'>
             <Navbar />
             {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Deleted Successfully"/>}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Deleted Successfully" />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)} />}
@@ -1582,81 +1378,81 @@ const ManageClientInfo = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[13%] p-3 '>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={clientNameInput} onChange={(e) => setClientNameInput(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
+                            <div className='w-[13%] px-3 py-2.5 '>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameInput} onChange={(e) => setClientNameInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
 
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameInput} setInputVariable={setClientNameInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
 
                             </div>
 
-                            <div className='w-[11%]   p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setClientTypeNameFilter((prev) => !prev) }} /></button>
+                            <div className='w-[11%] px-3 py-2.5 '>
+                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[73%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[27%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {clientTypeNameFilter && <CharacterFilter inputVariable={clientTypeNameInput} setInputVariable={setClientTypeNameInput} handleFilter={newHandleFilter} filterColumn='clienttypename' menuRef={menuRef} />}
 
                             </div>
 
-                            <div className='w-[8%]  p-3'>
+                            <div className='w-[8%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
-                                    <button className='p-1 w-[35%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput}handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofname' />}
+                                {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofname' />}
 
                             </div>
 
-                            <div className='w-[8%]  p-3'>
+                            <div className='w-[8%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
-                                    <button className='p-1 w-[35%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofpropertyname' />}
                                 {/* {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} } */}
 
                             </div>
 
-                            <div className='w-[10%]   p-3'>
+                            <div className='w-[8%]  px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryInput} onChange={(e) => setCountryInput(e.target.value)} />
-                                    <button className='p-1 w-[28%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryInput} onChange={(e) => setCountryInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {countryFilter && <CharacterFilter inputVariable={countryInput} setInputVariable={setCountryInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[7%]   p-3'>
+                            <div className='w-[6%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[60%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityInput}onChange={(e) => setCityInput(e.target.value)} />
-                                    <button className='p-1 w-[40%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[50%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityInput} onChange={(e) => setCityInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[50%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {cityFilter && <CharacterFilter inputVariable={cityInput} setInputVariable={setCityInput} filterColumn='city' menuRef={menuRef} handleFilter={newHandleFilter} />}
                             </div>
 
-                            <div className='w-[10%]   p-3'>
+                            <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2"value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
-                                    <button className='p-1 w-[28%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[28%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='mobilephone' handleFilter={newHandleFilter} menuRef={menuRef} />}
 
                             </div>
 
-                            <div className='w-[11%]   p-3'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} />
-                                    <button className='p-1 w-[25%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button>
+                            <div className='w-[11%] px-3 py-2.5'>
+                                <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button>
                                 </div>
                                 {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email1' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[9%]  p-3'>
+                            <div className='w-[9%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={employerInput} onChange={(e) => setEmployerInput(e.target.value)} />
-                                    <button className='p-1 w-[30%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setEmployerFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={employerInput} onChange={(e) => setEmployerInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setEmployerFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {employerFilter && <CharacterFilter inputVariable={employerInput} setInputVariable={setEmployerInput} filterColumn='employername' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
@@ -1665,10 +1461,10 @@ const ManageClientInfo = () => {
                         <div className="w-[15%] ">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
-                                    <button className='p-1 w-[37%]'><img src={Filter} className='h-[15px] w-[15px]' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[37%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput}  columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1686,7 +1482,7 @@ const ManageClientInfo = () => {
                         <div className="w-[85%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Sr.</p> 
+                                    <p>Sr.</p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
@@ -1701,27 +1497,23 @@ const ManageClientInfo = () => {
                             </div>
                             <div className='w-[8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Tenant of <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Tenant of </p>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
-                                <div className='p-3 flex space-x-2'>
+                                <div className='px-3 py-3.5 flex space-x-2'>
                                     <div>
                                         <p>Tenant of </p>
                                         <p>Property </p>
                                     </div>
-                                    <div>
-                                      <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
-                                    </div>
-                                    
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[8%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Country<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[7%]  flex'>
+                            <div className='w-[6%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>City<button onClick={() => handleSort('city')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1737,16 +1529,12 @@ const ManageClientInfo = () => {
                                 </div>
                             </div>
                             <div className='w-[9%]  flex'>
-                                <div className='p-3 flex space-x-2'>
+                                <div className='px-3 py-3.5 flex space-x-2'>
                                     <div>
-                                    <p>Employer </p>
-                                    <p>Name </p>
+                                        <p>Employer </p>
+                                        <p>Name </p>
                                     </div>
-                                   
-                                    <div>
-                                      <button onClick={() => handleSort('employername')}> <span className="font-extrabold">↑↓</span></button>
-                                    </div>
-                                    
+                                    <button onClick={() => handleSort('employername')}> <span className="font-extrabold">↑↓</span></button>
                                 </div>
                             </div>
                             <div className='w-[5%]  flex'>
@@ -1781,10 +1569,10 @@ const ManageClientInfo = () => {
 
 
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                        {!pageLoading && existingClientInfo &&  existingClientInfo.map((item, index) => {
+                        {!pageLoading && existingClientInfo && existingClientInfo.map((item, index) => {
                             return <div className='w-full h-10 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
-                                    <div className='w-[3%] flex'>
+                                    <div className='w-[3%] flex overflow-x-hidden'>
                                         <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
@@ -1809,12 +1597,12 @@ const ManageClientInfo = () => {
                                             <p>{item.tenantofpropertyname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex '>
+                                    <div className='w-[8%]  flex '>
                                         <div className='p-3 ml-2'>
                                             <p>{item.country}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[7%]  flex overflow-hidden'>
+                                    <div className='w-[6%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1'>
                                             <p>{item.city}</p>
                                         </div>
@@ -1834,14 +1622,14 @@ const ManageClientInfo = () => {
                                             <p>{item.employername}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[5%]  flex'>
-                                        <div className='p-3'>
-
+                                    <div className='w-[7%]  flex'>
+                                        <div className='p-3 text-[11px] text-blue-500'>
+                                            <Link to="">Properties</Link>
                                         </div>
                                     </div>
-                                    <div className='w-[5%]  flex'>
-                                        <div className='p-3'>
-
+                                    <div className='w-[6%]  flex'>
+                                        <div className='p-3 text-[11px] text-blue-500'>
+                                            <Link to="">Orders</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -1864,16 +1652,6 @@ const ManageClientInfo = () => {
 
 
                     </div>
-
-
-
-
-
-
-
-
-
-
 
                 </div>
 
@@ -1971,19 +1749,19 @@ const ManageClientInfo = () => {
                         </div>
 
                         <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
+                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
                                 <div>Client Information</div>
                             </div>
-                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer` }onClick={selectSecond}>
+                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
                                 <div>Client Portal</div>
                             </div>
-                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
+                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
                                 <div>Bank Details</div>
                             </div>
-                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
+                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
                                 <div>Legal Information</div>
                             </div>
-                            <div className={`${selectedDialog == 5 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFifth}>
+                            <div className={`${selectedDialog == 5 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFifth}>
                                 <div>POA details</div>
                             </div>
                         </div>
