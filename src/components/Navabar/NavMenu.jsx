@@ -6,7 +6,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { navMenuConfig } from "./navbarConfig";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 import {
   Box,
@@ -16,6 +16,7 @@ import {
   List,
   ListItem,
   ListSubheader,
+  Paper,
   Popover,
   Stack,
   styled,
@@ -34,7 +35,7 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
   transition: theme.transitions.create("color"),
   "&:hover": {
-    color: theme.palette.text.primary,
+    color: "red",
   },
 }));
 
@@ -71,10 +72,10 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   transition: theme.transitions.create("opacity", {
     duration: theme.transitions.duration.shortest,
   }),
-  "&:hover": {
-    opacity: 0.48,
-    textDecoration: "none",
-  },
+  // "&:hover": {
+  //   opacity: 0.48,
+  //   textDecoration: "none",
+  // },
 }));
 
 function MenuDesktopItem({
@@ -87,59 +88,97 @@ function MenuDesktopItem({
   onClose,
   activeTab,
 }) {
+  const paperRef = useRef();
   const { title, path, children } = item;
 
   const isActive = pathname === path;
   const extraContainers =
     children?.length % 15 === 0 ? 0 : 15 - (children?.length % 15);
+  useEffect(() => {
+    const handler = (event) => {
+      if (
+        isOpen &&
+        paperRef.current &&
+        !paperRef.current.contains(event.target)
+      ) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [isOpen]);
+  return (
+    // <div
+    //   onClick={() => onOpen(title)}
+    //   className={`w-[73px] h-[26px] flex items-center justify-center rounded-[5px] hover:bg-white hover:text-blue-800 active:bg-white active:text-blue-800 `}
+    // >
+    //   {title}
+    // </div>
 
-  if (activeTab) {
-    return (
-      <div key={title}>
-        <LinkStyle
-          onClick={onOpen}
+    <>
+      <LinkStyle
+        key={title}
+        onClick={() => onOpen(title)}
+        to={"#"}
+        component={RouterLink}
+        sx={{
+          // ...(isHome && { color: "common.white" }),
+          // ...(isOffset && { color: "text.primary" }),
+          ...(isOpen && isOpen === title && { color: "white" }),
+        }}
+      >
+        {title}
+      </LinkStyle>
+      {isOpen && isOpen === title && (
+        // <Popover
+        //   open={isOpen === title }
+        //   anchorReference="anchorPosition"
+        //   anchorPosition={{ top: 90, left: 0 }}
+        //   anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        //   transformOrigin={{ vertical: "top", horizontal: "center" }}
+        //   onClose={onClose}
+        //   slotProps={{
+        //     paper: {
+        //       sx: {
+        //         px: 3,
+        //         pt: 5,
+        //         pb: 3,
+        //         right: 16,
+        //         m: "auto",
+        //         borderRadius: "15px",
+        //         maxHeight: "657px",
+        //         // maxWidth: (theme) => theme.breakpoints.values.lg,
+        //         // boxShadow: (theme) => theme.customShadows.z24,
+        //       },
+        //     },
+        //   }}
+        // >
+        <Paper
+          ref={paperRef}
+          // onMouseEnter={handleOpen}
+
+          // onMouseLeave={onClose}
+          elevation={12}
           sx={{
-            display: "flex",
-            cursor: "pointer",
-            alignItems: "center",
-            ...(isHome && { color: "common.white" }),
-            ...(isOffset && { color: "text.white" }),
-            ...(isOpen && { opacity: 0.48 }),
-          }}
-        >
-          {title}
-          {/* <Box
-            component={Icon}
-            // icon={isOpen ? arrowIosUpwardFill : arrowIosDownwardFill}
-            sx={{ ml: 0.5, width: 16, height: 16 }}
-          /> */}
-        </LinkStyle>
-
-        <Popover
-          open={isOpen}
-          anchorReference="anchorPosition"
-          anchorPosition={{ top: 80, left: 0 }}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          transformOrigin={{ vertical: "top", horizontal: "center" }}
-          onClose={onClose}
-          slotProps={{
-            paper: {
-              // sx: { maxHeight: "657px", height: "fit-content" },
-              sx: {
-                px: 3,
-                pt: 5,
-                pb: 3,
-                right: 16,
-                m: "auto",
-                borderRadius: 2,
-                // maxWidth: (theme) => theme.breakpoints.values.lg,
-                // boxShadow: (theme) => theme.customShadows.z24,
-              },
-            },
+            mx: "18px",
+            my: "6px",
+            width: "100%",
+            position: "absolute",
+            top: 90,
+            left: 0,
+            maxHeight: "300px",
+            borderRadius: "15px",
+            overflowY: "scroll",
+            // zIndex: (theme) => theme.zIndex.modal,
+            // boxShadow: (theme) => theme.customShadows.z20,
           }}
         >
           {/* <Grid container spacing={3}> */}
-          <div className="grid grid-cols-5 w-full gap-x-[18px]">
+          <div className="grid grid-cols-5 w-full gap-x-[18px]" ref={paperRef}>
             {children?.map((list) => {
               const { subheader, items } = list;
               return (
@@ -187,6 +226,7 @@ function MenuDesktopItem({
 
                     {items?.map((item) => (
                       <ListItemStyle
+                        onClick={onClose}
                         key={item.title}
                         to={item.path}
                         component={RouterLink}
@@ -251,29 +291,10 @@ function MenuDesktopItem({
             ))}
           </div>
           {/* </Grid> */}
-        </Popover>
-      </div>
-    );
-  }
-
-  return (
-    <LinkStyle
-      key={title}
-      // to={path}
-      onClick={onOpen}
-      to={{
-        pathname: "/",
-        search: `?current=${title}`,
-      }}
-      component={RouterLink}
-      sx={{
-        ...(isHome && { color: "common.white" }),
-        ...(isOffset && { color: "text.primary" }),
-        ...(isActive && { color: "primary.main" }),
-      }}
-    >
-      {title}
-    </LinkStyle>
+          {/* </Popover> */}
+        </Paper>
+      )}
+    </>
   );
 }
 
@@ -299,23 +320,26 @@ MenuDesktopItem.propTypes = {
 export default function MenuDesktop({ isOffset, isHome }) {
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(null);
 
-  useEffect(() => {
-    if (open) {
-      handleClose();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  // useEffect(() => {
+  //   if (open) {
+  //     handleClose();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [pathname]);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleOpen = (title) => {
+    // setOpen((prev) => ({ ...prev, [title]: true }));
+    setOpen(title);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(null);
   };
-  console.log("pathname", searchParams.get("current"));
+  useEffect(() => {
+    console.log("open", open);
+  }, [open]);
   return (
     <Stack direction="row" justifyContent={"center"} alignItems={"center"}>
       {navMenuConfig?.map((link) => (
