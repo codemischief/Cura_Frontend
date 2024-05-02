@@ -442,7 +442,7 @@ const Payments = () => {
 
     const validate = () => {
         var res = true;
-        if (!formValues.paymentto) {
+        if (!formValues.paymentto || formValues.paymentto == "") {
             setFormErrors((existing) => {
                 return { ...existing, paymentto: "Select a name to pay" }
             })
@@ -452,9 +452,9 @@ const Payments = () => {
                 return { ...existing, paymentto: "" }
             })
         }
-        if (!formValues.paymentby) {
+        if (!formValues.paymentby || formValues.paymentby == "") {
             setFormErrors((existing) => {
-                return { ...existing, paymentby: "Sealect a name to pay from" }
+                return { ...existing, paymentby: "Select a name to pay from" }
             })
             res = false;
         } else {
@@ -1131,7 +1131,7 @@ const Payments = () => {
                                         <p>{item.id}</p>
                                     </div>
                                     <div className='w-1/2 0 p-4 flex space-x-2'>
-                                        <img className=' w-5 h-5' src={Edit} alt="edit" onClick={() => editStatement(item)} />
+                                        <button onClick={() => editStatement(item)}><img className=' w-5 h-5' src={Edit} alt="edit"  /></button>
                                         <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
@@ -1244,9 +1244,15 @@ const Payments = () => {
                                         <div className="text-sm">Payment To <label className="text-red-500">*</label></div>
                                         <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                             <option value="" hidden >Select User</option>
+                                            <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    {item.username}
                                                 </option>
                                             ))}
                                         </select>
@@ -1255,9 +1261,16 @@ const Payments = () => {
                                     <div className="">
                                         <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
                                         <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        <option value="" hidden >Select User</option>
+                                            <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    {item.username}
                                                 </option>
                                             ))}
                                         </select>

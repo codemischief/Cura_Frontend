@@ -335,16 +335,7 @@ const EditClientProperty = (props) => {
                 return { ...existing, state: "" }
             })
         }
-        if (!formValues.client_property.electricitybillingduedate) {
-            setFormErrors((existing) => {
-                return { ...existing, electricitybillingduedate: "Enter Bill Due Date " }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, electricitybillingduedate: "" }
-            })
-        }
+        
         return res;
     }
 

@@ -107,38 +107,43 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                 Client Name <label className="text-red-500">*</label>
             </div>
             <AsyncSelect
-                 onChange={handleClientNameChange}
-                 value={selectedOption}
-                 loadOptions={loadOptions}
-                 cacheOptions
-                 defaultOptions
-                 onInputChange={(value) => setQuery(value)}
-                 
-                 styles={{
-                  control: (provided, state) => ({
-                    ...provided,
-                    minHeight : 25,
-                    lineHeight : '1.3',
-                    height : 2,
-                    fontSize : 12,
-                    padding : '1px'
-                  }),
-                  // indicatorSeparator: (provided, state) => ({
-                  //   ...provided,
-                  //   lineHeight : '0.5',
-                  //   height : 2,
-                  //   fontSize : 12 // hide the indicator separator
-                  // }),
-                  dropdownIndicator: (provided, state) => ({
-                    ...provided,
-                    padding: '3px', // adjust padding for the dropdown indicator
-                  }),
-                  options : (provided, state) => ({
-                    ...provided,
-                    fontSize : 12 // adjust padding for the dropdown indicator
-                  })
-                 }}
-            />
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
+                                            }}
+                                        />
             {/* <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
@@ -451,7 +456,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
           <div className="">
-            <div className="text-[13px]">Electricity Bill Due Date <label className="text-red-500">*</label></div>
+            <div className="text-[13px]">Electricity Bill Due Date </div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="electricitybillingduedate"
@@ -521,7 +526,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                               
                               const existing = {...formValues};
                               const temp = {...existing.client_property};
-                              temp.indexiicollected = !temp.propertyownedbyclientonly
+                              temp.indexiicollected = !temp.indexiicollected
                               existing.client_property = temp;
                               setFormValues(existing) 
             }}

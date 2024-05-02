@@ -459,6 +459,7 @@ const ManageClientProperty = () => {
     };
 
     const handleClose = () => {
+        setFormErrors({})
         setIsClientPropertyDialogue(false);
     }
 
@@ -533,41 +534,41 @@ const ManageClientProperty = () => {
     }
     const initialValues = {
         "client_property": {
-            "clientid": 44598,
+            "clientid": null,
             "propertytype": null,
             "leveloffurnishing": null,
             "numberofparkings": null,
             "state": "Maharashtra",
             "city": "Pune",
-            "suburb": "",
+            "suburb": null,
             "country": 5,
             "projectid": null,
             "status": null,
-            "propertydescription": "",
-            "layoutdetails": "",
-            "email": "",
-            "website": "",
+            "propertydescription": null,
+            "layoutdetails": null,
+            "email": null,
+            "website": null,
             "initialpossessiondate": null,
-            "electricityconsumernumber": "",
-            "otherelectricitydetails": "",
+            "electricityconsumernumber": null,
+            "otherelectricitydetails": null,
             "electricitybillingduedate": null,
-            "comments": "",
-            "propertytaxnumber": "",
+            "comments": null,
+            "propertytaxnumber": null,
             "clientservicemanager": null,
             "propertymanager": null,
             "propertyownedbyclientonly": false,
-            "gasconnectiondetails": "",
-            "internalfurnitureandfittings": "",
-            "textforposting": "",
+            "gasconnectiondetails": null,
+            "internalfurnitureandfittings": null,
+            "textforposting": null,
             "poagiven": true,
             "poaid": null,
-            "electricitybillingunit": "",
+            "electricitybillingunit": null,
             "indexiicollected": false
         },
         "client_property_photos": [
             {
-                "photolink": "",
-                "description": "",
+                "photolink": null,
+                "description": null,
                 "phototakenwhen": null
             }
         ],
@@ -590,25 +591,25 @@ const ManageClientProperty = () => {
             "comments": null,
         },
         "client_property_poa": {
-            "poalegalname": "",
-            "poapanno": "",
-            "poaaddressline1": "",
-            "poaaddressline2": "",
-            "poasuburb": "",
+            "poalegalname": null,
+            "poapanno": null,
+            "poaaddressline1": null,
+            "poaaddressline2": null,
+            "poasuburb": null,
             "poacity": "Pune",
             "poastate": "Maharashtra",
             "poacountry": 5,
-            "poazip": "",
-            "poaoccupation": "",
+            "poazip": null,
+            "poaoccupation": null,
             "poabirthyear": null,
-            "poaphoto": "",
-            "poaemployername": "",
+            "poaphoto": null,
+            "poaemployername":null,
             "poarelation": null,
-            "poarelationwith": "",
+            "poarelationwith": null,
             "poaeffectivedate": null,
             "poaenddate": null,
-            "poafor": "",
-            "scancopy": ""
+            "poafor": null,
+            "scancopy": null
         }
     }
     const [formValues, setFormValues] = useState(initialValues);
@@ -726,16 +727,7 @@ const ManageClientProperty = () => {
                 return { ...existing, state: "" }
             })
         }
-        if (!formValues.client_property.electricitybillingduedate) {
-            setFormErrors((existing) => {
-                return { ...existing, electricitybillingduedate: "Enter Bill Due Date " }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, electricitybillingduedate: "" }
-            })
-        }
+        
         return res;
     }
 
@@ -987,7 +979,7 @@ const ManageClientProperty = () => {
                 "city": formValues.client_property.city,
                 "suburb": formValues.client_property.suburb,
                 "country": 5,
-                "projectid": formValues.client_property.projectid,
+                "projectid": Number(formValues.client_property.projectid),
                 "status": Number(formValues.client_property.status),
                 "propertydescription": formValues.client_property.propertydescription,
                 "layoutdetails": formValues.client_property.layoutdetails,
@@ -1314,7 +1306,7 @@ const ManageClientProperty = () => {
             {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientName={currClientName} addClientProperty={addClientProperty} />}
             {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Added Client Property" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Property created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Property Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty} item={currItem} />}
@@ -1533,7 +1525,7 @@ const ManageClientProperty = () => {
                     {/* <h1>{existingClientProperty.length}</h1> */}
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
-                            return <div className='w-full h-11 overflow-auto bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
+                            return <div className='w-full h-11 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[3%] flex items-center justify-center overflow-x-hidden'>
                                         <div className='px-3 flex items-center'>

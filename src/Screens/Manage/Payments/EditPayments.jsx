@@ -168,25 +168,25 @@ const EditPayments = (props) => {
 
     const validate = ()  => {
         var res = true;
-        if(!formValues.paymentto) {
+        if (!formValues.paymentto || formValues.paymentto == "") {
             setFormErrors((existing) => {
-               return {...existing,paymentto: "Select a name to pay"}
+                return { ...existing, paymentto: "Select a name to pay" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,paymentto: ""}
-             })
+                return { ...existing, paymentto: "" }
+            })
         }
-        if(!formValues.paymentby) {
+        if (!formValues.paymentby || formValues.paymentby == "") {
             setFormErrors((existing) => {
-               return  {...existing,paymentby: "Sealect a name to pay from"}
+                return { ...existing, paymentby: "Select a name to pay from" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,paymentby: ""}
-             })
+                return { ...existing, paymentby: "" }
+            })
         }
         // console.log(formValues.amount);
         // const temp = Number(formValues.amount);
@@ -284,51 +284,51 @@ const EditPayments = (props) => {
     const selectedMonth = [
         {
             id: 1,
-            month: "january"
+            month: "Jan"
         },
         {
             id: 2,
-            month: "february"
+            month: "Feb"
         },
         {
             id: 3,
-            month: "march"
+            month: "Mar"
         },
         {
             id: 4,
-            month: "april"
+            month: "Apr"
         },
         {
             id: 5,
-            month: "may"
+            month: "May"
         },
         {
             id: 6,
-            month: "june"
+            month: "Jun"
         },
         {
             id: 7,
-            month: "july"
+            month: "July"
         },
         {
             id: 8,
-            month: "august"
+            month: "Aug"
         },
         {
             id: 9,
-            month: "september"
+            month: "Sep"
         },
         {
             id: 10,
-            month: "october"
+            month: "Oct"
         },
         {
             id: 11,
-            month: "november"
+            month: "Nov"
         },
         {
             id: 12,
-            month: "december"
+            month: "Dec"
         },
     ]
     return (
@@ -362,27 +362,36 @@ const EditPayments = (props) => {
                                     <div className="">
                                         <div className="text-[13px]">Payment To <label className="text-red-500">*</label></div>
                                         <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
-                                            {allUsername.map(item => {
-                                                if(item.name == formValues.paymentto) {
-                                                    return <option key={item.id} value={item.id} selected>
-                                                         {item.name}
-                                                    </option>
-                                                }else {
-                                                    return <option key={item.id} value={item.id}>
+                                        <option value="" hidden >Select User</option>
+                                            <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
+                                        {allUsername.map(item => (
+                                                <option key={item.id} value={item.id}>
                                                     {item.name}
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    {item.username}
                                                 </option>
-                                                }
-                                                
-                                          })}
+                                            ))}
                                         </select>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Payment By <label className="text-red-500">*</label></div>
                                         <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        <option value="" hidden >Select User</option>
+                                            <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
+                                                    <option key={item.id} value={item.id}>
                                                     {item.name}
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    {item.username}
+                                                </option>
                                                 </option>
                                             ))}
                                         </select>
