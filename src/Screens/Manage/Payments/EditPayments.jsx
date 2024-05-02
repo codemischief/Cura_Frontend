@@ -197,12 +197,6 @@ const EditPayments = (props) => {
             })
             console.log('here')
             res = false;
-        }else if(!Number.isInteger(Number(formValues.amount))){
-            setFormErrors((existing) => {
-                return {...existing,amount: "Enter A Numeric Value"}
-            })
-            console.log('here')
-            res = false;
         }else {
             setFormErrors((existing) => {
                 return {...existing,amount: ""}
@@ -269,12 +263,6 @@ const EditPayments = (props) => {
             })
             console.log('here')
             res = false;
-        }else if(!Number.isInteger(Number(formValues.tds))){
-            setFormErrors((existing) => {
-                return {...existing,tds: "Enter A Numeric Value!"}
-            })
-            console.log('here')
-            res = false;
         }else {
             setFormErrors((existing) => {
                 return {...existing,tds: ""}
@@ -283,12 +271,6 @@ const EditPayments = (props) => {
         if(formValues.professiontax === '') {
             setFormErrors((existing) => {
                 return {...existing,professiontax: "Enter profession Tax amount"}
-            })
-            console.log('here')
-            res = false;
-        }else if(!Number.isInteger(Number(formValues.professiontax))){
-            setFormErrors((existing) => {
-                return {...existing,professiontax: "Enter A Numeric Value!"}
             })
             console.log('here')
             res = false;
@@ -356,8 +338,9 @@ const EditPayments = (props) => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className=''>
+                <>
                     <Draggable>
+                <div className=''>
                     <div className="w-[1100px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -407,7 +390,7 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Amount <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
@@ -467,12 +450,12 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">TDS <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.professiontax}</div>
                                     </div>
                                 </div>
@@ -488,8 +471,9 @@ const EditPayments = (props) => {
                         </div>
                         {/* </form> */}
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
         </>
     )

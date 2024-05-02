@@ -1220,8 +1220,9 @@ const Payments = () => {
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                <div className=''>
+                <>
                     <Draggable>
+                <div className=''>
                     <div className="w-[1100px]  h-auto bg-white rounded-lg ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1345,8 +1346,9 @@ const Payments = () => {
                         </div>
                         {/* </form> */}
                     </div>
-                    </Draggable>
                 </div>
+                    </Draggable>
+                    </>
             </Modal>
         </div>
     )
