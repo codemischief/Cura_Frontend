@@ -625,11 +625,12 @@ const ManageClientReceipt = () => {
             "reimbursementamount": formValues.reimbursementAmount,
             "entityid": 1,
             "howreceivedid": Number(formValues.howReceived),
-            "officeid": 1
+            "officeid": 2
         }
         const response = await APIService.addClientReceipt(data)
         const res = await response.json()
         if (res.result == 'success') {
+            setFormValues(initialValues)
             setOpenAddConfirmation(false)
             openAddSuccess()
             fetchData()
@@ -1264,14 +1265,16 @@ const ManageClientReceipt = () => {
                                             cacheOptions
                                             defaultOptions
                                             onInputChange={(value) => setQuery(value)}
+
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
                                                 }),
                                                 // indicatorSeparator: (provided, state) => ({
                                                 //   ...provided,
@@ -1281,19 +1284,23 @@ const ManageClientReceipt = () => {
                                                 // }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                    padding: '1px', // adjust padding for the dropdown indicator
                                                 }),
                                                 options: (provided, state) => ({
                                                     ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
                                             }}
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
-                                            How received <label className="text-red-500">*</label>
+                                            How Received <label className="text-red-500">*</label>
                                         </div>
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"

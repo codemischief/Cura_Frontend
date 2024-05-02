@@ -24,7 +24,9 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
         fixedfee : 56,
         status : false,
         clientProperty : null,
-        order : null
+        order : null,
+        gst1 : null,
+        gst2 : null,
     }
     const fetchInitialData = async () => {
         const data = {
@@ -46,6 +48,8 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
         existing.clientProperty = res.data.clientpropertyid
         existing.actualEndDate = res.data.actualenddate
         existing.order = res.data.orderid
+        existing.gst1 = res.data.rentedtax
+        existing.gst2 = res.data.fixedtax
         if(res.data.startdate) {
             existing.pmaStartDate = res.data.startdate.split('T')[0]
         }
@@ -116,16 +120,16 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                 return { ...existing, pmaEndDate: "" }
             })
         }
-        if (!formValues.poaStartDate) {
-            setFormErrors((existing) => {
-                return { ...existing, poaStartDate: "Select POA Start Date" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, poaStartDate: "" }
-            })
-        }
+        // if (!formValues.poaStartDate) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, poaStartDate: "Select POA Start Date" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, poaStartDate: "" }
+        //     })
+        // }
         return res;
     }
     
@@ -147,8 +151,8 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
             "description":formValues.description,
             "rented":formValues.rentFee,
             "fixed":formValues.fixedfee,
-            "rentedtax":false,
-            "fixedtax":false,
+            "rentedtax":formValues.gst1,
+            "fixedtax":formValues.gst2,
             "orderid":formValues.order,
             "poastartdate":formValues.poaStartDate,
             "poaenddate":formValues.poaEndDate,
@@ -265,38 +269,43 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                                 Client <label className="text-red-500">*</label>
                             </div>
                             <AsyncSelect
-     onChange={handleClientNameChange}
-     value={selectedOption}
-     loadOptions={loadOptions}
-     cacheOptions
-     defaultOptions
-     onInputChange={(value) => setQuery(value)}
-     
-     styles={{
-      control: (provided, state) => ({
-        ...provided,
-        minHeight : 25,
-        lineHeight : '1.3',
-        height : 2,
-        fontSize : 12,
-        padding : '1px'
-      }),
-      // indicatorSeparator: (provided, state) => ({
-      //   ...provided,
-      //   lineHeight : '0.5',
-      //   height : 2,
-      //   fontSize : 12 // hide the indicator separator
-      // }),
-      dropdownIndicator: (provided, state) => ({
-        ...provided,
-        padding: '3px', // adjust padding for the dropdown indicator
-      }),
-      options : (provided, state) => ({
-        ...provided,
-        fontSize : 12 // adjust padding for the dropdown indicator
-      })
-     }}
-/>
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
+                                            }}
+                                        />
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                         </div>
                         <div className="">
@@ -305,7 +314,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.pmaStartDate}</div>
                         </div>
                         <div className="">
-                            <div className="text-[13px]">POA Start Date <label className="text-red-500">*</label></div>
+                            <div className="text-[13px]">POA Start Date</div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="poaStartDate" value={formValues.poaStartDate} onChange={handleChange} />
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.poaStartDate}</div>
                         </div>
@@ -319,8 +328,22 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                                 value={formValues.order}
                                 onChange={handleChange}
                             >
+                                <option value="" >
+                                                  <div className='flex justify-between'>
+                                                            <p className="float-left">Order Id</p>
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            <p className="float-right">Order Name</p>
+                                                    </div>
+                                                {/* Id &nbsp; &nbsp; &nbsp; &nbsp;Order Name */}
+                                            </option>
                                 {orders.map((item) => (
                                     <option key={item.id} value={item.id}>
+                                        {item.id}
+                                        &nbsp;
+                                        &nbsp;
                                         {item.ordername}
                                     </option>
                                 ))}
@@ -339,9 +362,13 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                         </div>
                         <div className="">
                             <div className="text-[13px]">Rented Fee in % </div>
-                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentFee" value={formValues.rentFee} onChange={handleChange} />
+                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentFee" value={formValues.rentFee} onChange={handleChange} min="0" max="100" onInput={(e) => {
+    if (parseInt(e.target.value) > parseInt(e.target.max)) {
+      e.target.value = e.target.max;
+    }
+  }}/>
                         </div>
-                        <div className=" flex items-center "><input
+                        <div className=" flex items-center text-[13px] "><input
                             type="checkbox"
                             checked={formValues.gst1}
                             className='mr-3 h-4 w-4'
@@ -398,7 +425,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                             <div className="text-[13px]">Fixed Fees in Rs </div>
                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="fixedfee" value={formValues.fixedfee} onChange={handleChange} />
                         </div>
-                        <div className=" flex items-center "><input
+                        <div className=" flex items-center text-[13px]"><input
                             type="checkbox"
                             checked={formValues.gst2}
                             className='mr-3 h-4 w-4'
