@@ -1074,7 +1074,7 @@ const ManageClientInfo = () => {
                 "poaoccupation": formValues.client_poa.poaoccupation,
                 "poabirthyear": formValues.client_poa.poabirthyear,
                 "poaphoto": formValues.client_poa.poaphoto,
-                "poaemployername": "frijiurgh nfr",
+                "poaemployername": formValues.client_poa.poaemployername,
                 "poarelation": formValues.client_poa.poarelation,
                 "poarelationwith": formValues.client_poa.poarelationwith,
                 "poaeffectivedate": formValues.client_poa.poaeffectivedate,

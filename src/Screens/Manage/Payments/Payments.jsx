@@ -62,9 +62,9 @@ const Payments = () => {
 
         // console.log(result.data);
         //    console.log('hey')
-        setFormValues((existing) => {
-            return { ...existing, paymentto: result.data[0].id, paymentby: result.data[0].id }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, paymentto: result.data[0].id, paymentby: result.data[0].id }
+        // })
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -285,8 +285,8 @@ const Payments = () => {
     //Validation of the form
     const initialValues = {
         curaoffice: "",
-        paymentto: "",
-        paymentby: "",
+        paymentto: null,
+        paymentby: 1234,
         amount: "",
         description: "",
         paymentfor: "",
@@ -1243,7 +1243,7 @@ const Payments = () => {
                                     <div className="">
                                         <div className="text-sm">Payment To <label className="text-red-500">*</label></div>
                                         <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
-                                            <option value={null}>Select User</option>
+                                            <option value="" hidden >Select User</option>
                                             {allUsername.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
