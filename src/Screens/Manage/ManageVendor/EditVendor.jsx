@@ -205,36 +205,36 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                             <div className="flex gap-12 justify-center">
                                 <div className="">
                                     <div className=" space-y-1 py-1">
-                                        <div className="font-semibold text-sm">Basic Information</div>
+                                        <div className="font-semibold text-sm text-[#282828]">Basic Information</div>
                                         <div className="">
-                                            <div className="text-sm">Vendor Name <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Vendor Name <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="vendorName" value={formValues.vendorName} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorName}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Address Line 1</div>
+                                            <div className="text-sm text-[#505050]">Address Line 1</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Suburb</div>
+                                            <div className="text-sm text-[#505050]">Suburb</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Phone <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.phone}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Owner Details </div>
+                                            <div className="text-sm text-[#505050]">Owner Details </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-1 py-1 mt-2">
-                                        <div className="font-semibold text-sm">Accounting Information</div>
+                                        <div className="font-semibold text-sm text-[#282828]">Accounting Information</div>
                                         <div className="">
-                                            <div className="text-[13px]">Type Of Organization </div>
+                                            <div className="text-[13px] text-[#505050]">Type Of Organization </div>
                                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] outline-none" name="typeOfOrganization"
                                                 value={formValues.typeOfOrganization}
                                                 onChange={
@@ -249,12 +249,12 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                             </select>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">PAN </div>
+                                            <div className="text-sm text-[#505050]">PAN </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="pan" value={formValues.pan} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">GSTIN</div>
+                                            <div className="text-sm text-[#505050]">GSTIN</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gstin" value={formValues.gstin} onChange={handleChange} />
 
                                         </div>
@@ -263,7 +263,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                 <div className="">
                                     <div className=" space-y-1 py-1 mt-6">
                                         <div className="">
-                                            <div className="text-sm">Category <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Category <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="category"
                                                 value={formValues.category}
@@ -281,11 +281,11 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.category}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Address Line 2</div>
+                                            <div className="text-sm text-[#505050]">Address Line 2</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">City</div>
+                                            <div className="text-sm text-[#505050]">City</div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="city"
                                                 value={formValues.city}
@@ -303,19 +303,19 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                             {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Email <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Email <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="email" value={formValues.email} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-sm">Details </div>
+                                        <div className=""> 
+                                            <div className="text-sm text-[#505050]">Details </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="details" value={formValues.details} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-1 py-1 mt-8">
 
                                         <div className="">
-                                            <div className="text-sm">Tally Ledger </div>
+                                            <div className="text-sm text-[#505050]" >Tally Ledger </div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="tallyLedger"
                                                 value={formValues.tallyLedger}
@@ -337,12 +337,12 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">TAN</div>
+                                            <div className="text-sm text-[#505050]">TAN</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tan" value={formValues.tan} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">TDS Section</div>
+                                            <div className="text-sm text-[#505050]">TDS Section</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tdsSection" value={formValues.tdsSection} onChange={handleChange} />
 
                                         </div>
@@ -350,37 +350,37 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                     </div>
                                 </div>
                                 <div className=" space-y-1 py-1">
-                                    <div className="font-semibold text-sm">Vendor Bank Details </div>
+                                    <div className="font-semibold text-sm text-[#282828]">Vendor Bank Details </div>
                                     <div className="">
-                                        <div className="text-sm">Account Holder Name </div>
+                                        <div className="text-sm text-[#505050]">Account Holder Name </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountHolderName" value={formValues.accountHolderName} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Account Number</div>
+                                        <div className="text-sm text-[#505050]">Account Number</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountNumber" value={formValues.accountNumber} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Account Type</div>
+                                        <div className="text-sm text-[#505050]">Account Type</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountType" value={formValues.accountType} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Bank Name </div>
+                                        <div className="text-sm text-[#505050]">Bank Name </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankName" value={formValues.bankName} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Bank Branch </div>
+                                        <div className="text-sm text-[#505050]">Bank Branch </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranch" value={formValues.bankBranch} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">IFSC Code </div>
+                                        <div className="text-sm text-[#505050]">IFSC Code </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ifscCode" value={formValues.ifscCode} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Bank Branch City </div>
+                                        <div className="text-sm text-[#505050]">Bank Branch City </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranchCity" value={formValues.bankBranchCity} onChange={handleChange} />
                                     </div>
                                 </div>

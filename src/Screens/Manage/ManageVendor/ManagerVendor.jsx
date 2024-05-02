@@ -173,6 +173,7 @@ const ManageVendor = () => {
     const getVendorCategoryAdmin = async () => {
         const data = {
             "user_id": 1234,
+            "order": "asc"
         }
         const response = await APIService.getVendorCategoryAdmin(data);
         const res = await response.json()
@@ -635,7 +636,7 @@ const ManageVendor = () => {
                 "city",
                 "id",
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
@@ -975,7 +976,7 @@ const ManageVendor = () => {
                 "tallyledgerid",
                 "tallyledger"
             ],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -1028,12 +1029,12 @@ const ManageVendor = () => {
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess}/>}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Created Succesfully" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Deleted Succesfully" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor created succesfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor deleted succesfully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
             {openAddConfirmation && <SaveConfirmationVendor handleClose={() => setOpenAddConfirmation(false)} currVendor={formValues.vendorName} addVendor={addVendor} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} />}
+            {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} currVendor={formValues.vendorName} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1078,13 +1079,13 @@ const ManageVendor = () => {
                 {/* filter component */}
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[85%] flex">
-                            <div className='w-[4%] flex'>
+                        <div className="w-[75%] flex">
+                            <div className='w-[5%] flex'>
                                 <div className='p-3'>
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[16%]  px-3 py-2.5'>
+                            <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1092,7 +1093,7 @@ const ManageVendor = () => {
                                 {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[16%]  px-3 py-2.5'>
+                            <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)} />
                                     <button className='W-[25%] px-1 py-2' onClick={() => { setTdsSectionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1100,7 +1101,7 @@ const ManageVendor = () => {
                                 {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[16%]  px-3 py-2.5'>
+                            <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setTallyLedgerFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1108,7 +1109,7 @@ const ManageVendor = () => {
                                 {tallyLedgerFilter && <CharacterFilter inputVariable={tallyLedgerFilterInput} setInputVariable={setTallyLedgerFilterInput} filterColumn='tallyledger' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[16%]  px-3 py-2.5'>
+                            <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCategoryFilter((prev) => !prev) }} /></button>
@@ -1116,7 +1117,7 @@ const ManageVendor = () => {
                                 {categoryFilter && <CharacterFilter inputVariable={categoryFilterInput} setInputVariable={setCategoryFilterInput} filterColumn='category' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[14%] px-3 py-2.5'>
+                            <div className='w-[19%] px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
@@ -1124,16 +1125,16 @@ const ManageVendor = () => {
                                 {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} filterColumn='city' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
-                        <div className="w-[15%] flex">
-                            <div className='w-1/2 px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
-                                    <button className='px-1 py-2 w-[35%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                        <div className="w-[25%] flex">
+                            <div className='w-[75%] px-3 py-2.5'>
+                                <div className="w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-1/2  flex'>
+                            <div className='w-[35%]  flex'>
                                 <div className='p-3'>
 
                                 </div>
@@ -1144,46 +1145,46 @@ const ManageVendor = () => {
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[85%] flex">
-                            <div className='w-[4%] flex'>
-                                <div className='p-3'>
+                        <div className="w-[75%] flex">
+                            <div className='w-[5%] flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[16%]  flex'>
-                                <div className='p-3'>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>Vendor Name <button onClick={() => handleSort('vendorname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[16%]  flex'>
-                                <div className='p-3'>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>TDS Section <button onClick={() => handleSort('tdssection')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[16%]  flex'>
-                                <div className='p-3'>
-                                    <p>TallyLedger </p>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3 py-3.5'>
+                                    <p>TallyLedger <button onClick={() => handleSort('tallyledger')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[16%]  flex'>
-                                <div className='p-3'>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>Category <button onClick={() => handleSort('category')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[14%]  flex'>
-                                <div className='p-3'>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>City <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[15%] flex">
-                            <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                        <div className="w-[25%] flex">
+                            <div className='w-[65%]  flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                            <div className='w-[35%]  flex'>
+                                <div className='px-3 py-3.5'>
                                     <p>Edit</p>
                                 </div>
                             </div>
@@ -1197,47 +1198,47 @@ const ManageVendor = () => {
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingVendors.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex">
-                                    <div className='w-[4%] flex'>
+                                <div className="w-[75%] flex">
+                                    <div className='w-[5%] flex'>
                                         <div className='px-3 py-2'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[16%] flex'>
+                                    <div className='w-[19%] flex'>
                                         <div className='px-3 py-2'>
                                             <p>{item.vendorname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[16%]  flex'>
+                                    <div className='w-[19%]  flex'>
                                         <div className='px-3 py-2'>
                                             <p>{item.tdssection}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[16%]  flex'>
+                                    <div className='w-[19%]  flex'>
                                         <div className='px-3 py-2'>
                                             <p>{item.tallyledger}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[16%]  flex'>
+                                    <div className='w-[19%]  flex'>
                                         <div className='px-3 py-2'>
                                             <p>{item.category}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex'>
+                                    <div className='w-[19%]  flex'>
                                         <div className='px-3 py-2'>
                                             <p>{item.city}</p>
                                         </div>
                                     </div>
 
                                 </div>
-                                <div className="w-[15%] flex items-center">
-                                    <div className='w-1/2  flex'>
+                                <div className="w-[25%] flex items-center">
+                                    <div className='w-[65%]  flex'>
                                         <div className='px-3 py-2'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex'>
-                                        <div className='w-1/2 py-5 flex ml-4'>
+                                    <div className='w-[35%]  flex'>
+                                        <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-3'>
                                                 <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
@@ -1345,36 +1346,36 @@ const ManageVendor = () => {
                             <div className="flex gap-12 justify-center">
                                 <div className="">
                                     <div className=" space-y-1 py-1">
-                                        <div className="font-semibold text-sm">Basic Information</div>
+                                        <div className="font-semibold text-sm text-[#282828]">Basic Information</div>
                                         <div className="">
-                                            <div className="text-sm">Vendor Name <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Vendor Name <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="vendorName" value={formValues.vendorName} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorName}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Address Line 1</div>
+                                            <div className="text-sm text-[#505050]">Address Line 1</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Suburb</div>
+                                            <div className="text-sm text-[#505050]">Suburb</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Phone <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.phone}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Owner Details </div>
+                                            <div className="text-sm text-[#505050]">Owner Details </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-1 py-1 mt-2">
-                                        <div className="font-semibold text-sm">Accounting Information</div>
+                                        <div className="font-semibold text-sm text-[#282828]">Accounting Information</div>
                                         <div className="">
-                                            <div className="text-[13px]">Type Of Organization </div>
+                                            <div className="text-[13px] text-[#505050]">Type Of Organization </div>
                                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] outline-none" name="typeOfOrganization"
                                                 value={formValues.typeOfOrganization}
                                                 onChange={
@@ -1389,12 +1390,12 @@ const ManageVendor = () => {
                                             </select>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">PAN </div>
+                                            <div className="text-[#505050] text-sm">PAN </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="pan" value={formValues.pan} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">GSTIN</div>
+                                            <div className="text-sm text-[#505050]">GSTIN</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gstin" value={formValues.gstin} onChange={handleChange} />
 
                                         </div>
@@ -1403,7 +1404,7 @@ const ManageVendor = () => {
                                 <div className="">
                                     <div className=" space-y-1 py-1 mt-6">
                                         <div className="">
-                                            <div className="text-sm">Category <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Category <label className="text-red-500">*</label></div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="category"
                                                 value={formValues.category}
@@ -1421,11 +1422,11 @@ const ManageVendor = () => {
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.category}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Address Line 2</div>
+                                            <div className="text-sm text-[#505050]">Address Line 2</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">City</div>
+                                            <div className="text-sm text-[#505050]">City</div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="city"
                                                 value={formValues.city}
@@ -1443,7 +1444,7 @@ const ManageVendor = () => {
                                             {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">Email <label className="text-red-500">*</label></div>
+                                            <div className="text-sm text-[#505050]">Email <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="email" value={formValues.email} onChange={handleChange} />
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
                                         </div>
@@ -1455,7 +1456,7 @@ const ManageVendor = () => {
                                     <div className=" space-y-1 py-1 mt-8">
 
                                         <div className="">
-                                            <div className="text-sm">Tally Ledger </div>
+                                            <div className="text-sm text-[#505050]">Tally Ledger </div>
                                             <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="tallyLedger"
                                                 value={formValues.tallyLedger}
@@ -1477,12 +1478,12 @@ const ManageVendor = () => {
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">TAN</div>
+                                            <div className="text-sm text-[#505050]">TAN</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tan" value={formValues.tan} onChange={handleChange} />
 
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">TDS Section</div>
+                                            <div className="text-sm text-[#505050]">TDS Section</div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tdsSection" value={formValues.tdsSection} onChange={handleChange} />
 
                                         </div>
@@ -1490,37 +1491,37 @@ const ManageVendor = () => {
                                     </div>
                                 </div>
                                 <div className=" space-y-1 py-1">
-                                    <div className="font-semibold text-sm">Vendor Bank Details </div>
+                                    <div className="font-semibold text-sm text-[#282828]">Vendor's Bank Details </div>
                                     <div className="">
-                                        <div className="text-sm">Account Holder Name </div>
+                                        <div className="text-sm text-[#505050]">Account Holder Name </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountHolderName" value={formValues.accountHolderName} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Account Number</div>
+                                        <div className="text-sm text-[#505050]">Account Number</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountNumber" value={formValues.accountNumber} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Account Type</div>
+                                        <div className="text-sm text-[#505050]">Account Type</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountType" value={formValues.accountType} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Bank Name </div>
+                                        <div className="text-sm text-[#505050]">Bank Name </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankName" value={formValues.bankName} onChange={handleChange} />
 
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Bank Branch </div>
+                                        <div className="text-sm text-[#505050]">Bank Branch </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranch" value={formValues.bankBranch} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">IFSC Code </div>
+                                        <div className="text-sm text-[#505050] ">IFSC Code </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ifscCode" value={formValues.ifscCode} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Bank Branch City </div>
+                                        <div className="text-sm text-[#505050]">Bank Branch City </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranchCity" value={formValues.bankBranchCity} onChange={handleChange} />
                                     </div>
                                 </div>
@@ -1528,7 +1529,7 @@ const ManageVendor = () => {
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#505050] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
+                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
                         </div>
 
