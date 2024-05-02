@@ -397,8 +397,8 @@ const ManagePmaArgreement = () => {
             "description": formValues.description,
             "rented": Number(formValues.rentFee),
             "fixed": Number(formValues.fixedfee),
-            "rentedtax": formValues.rentFee == null ? "false" : "true",
-            "fixedtax": formValues.fixedfee == null ? "false" : "true",
+            "rentedtax": formValues.gst1,
+            "fixedtax": formValues.gst2,
             "orderid": Number(formValues.order),
             "poastartdate": formValues.poaStartDate,
             "poaenddate": formValues.poaEndDate,
@@ -411,6 +411,10 @@ const ManagePmaArgreement = () => {
         setOpenAddConfirmation(false);
         setIsPmaAgreementDialogue(false);
         if (res.result == "success") {
+            const temp = {...selectedOption}
+            temp.label = "Select Client"
+            temp.value = null 
+            setSelectedOption(temp)
             setFormValues(initialValues);
             openAddSuccess();
         } else {
@@ -931,7 +935,7 @@ const ManagePmaArgreement = () => {
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Pma Agreement Created Successfully" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New PMA Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
@@ -1229,25 +1233,25 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[9.8%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.startdate}</p>
+                                            <p>{item.startdate ? item.startdate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.enddate}</p>
+                                            <p>{item.enddate ? item.enddate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.poastartdate}</p>
+                                            <p>{item.poastartdate ? item.poastartdate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.poaenddate}</p>
+                                            <p>{item.poaenddate ? item.poaenddate.split('T')[0] : ""}</p>
 
                                         </div>
 
@@ -1319,7 +1323,7 @@ const ManagePmaArgreement = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
@@ -1385,11 +1389,12 @@ const ManagePmaArgreement = () => {
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
                                                 }),
                                                 // indicatorSeparator: (provided, state) => ({
                                                 //   ...provided,
@@ -1399,12 +1404,16 @@ const ManagePmaArgreement = () => {
                                                 // }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                    padding: '1px', // adjust padding for the dropdown indicator
                                                 }),
                                                 options: (provided, state) => ({
                                                     ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
                                             }}
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
@@ -1429,9 +1438,25 @@ const ManagePmaArgreement = () => {
                                             value={formValues.order}
                                             onChange={handleChange}
                                         >
-                                            <option value="" >Select A Order</option>
+                                            <option value="" hidden >Select A Order</option>
+                                            <option value="" >
+                                                  <div className='flex justify-between'>
+                                                            <p className="float-left">Order Id</p>
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            <p className="float-right">Order Name</p>
+                                                    </div>
+                                                {/* Id &nbsp; &nbsp; &nbsp; &nbsp;Order Name */}
+                                            </option>
+
                                             {orders.map((item) => (
                                                 <option key={item.id} value={item.id}>
+                                                    {item.id} 
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
                                                     {item.ordername}
                                                 </option>
                                             ))}
@@ -1450,9 +1475,13 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Rented Fee in % </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentFee" value={formValues.rentFee} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="rentFee" value={formValues.rentFee} onChange={handleChange} min="0" max="100"  onInput={(e) => {
+    if (parseInt(e.target.value) > parseInt(e.target.max)) {
+      e.target.value = e.target.max;
+    }
+  }}/>
                                     </div>
-                                    <div className=" flex items-center "><input
+                                    <div className=" flex items-center text-[13px]"><input
                                         type="checkbox"
                                         checked={formValues.gst1}
                                         className='mr-3 h-4 w-4'
@@ -1513,7 +1542,7 @@ const ManagePmaArgreement = () => {
                                         <div className="text-[13px]">Fixed Fees in Rs </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="fixedfee" value={formValues.fixedfee} onChange={handleChange} />
                                     </div>
-                                    <div className=" flex items-center "><input
+                                    <div className=" flex items-center text-[13px]"><input
                                         type="checkbox"
                                         checked={formValues.gst2}
                                         className='mr-3 h-4 w-4'
