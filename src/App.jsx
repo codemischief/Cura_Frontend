@@ -46,6 +46,7 @@ import ManageBankStatement from './Screens/Manage/ManageBankStatement/ManageBank
 import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject';
 import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
 import Temp from './Screens/Admin/temp';
+import ManageClientPropertyByClientName from './Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName';
 
 const App = () => {
   const ROLES = {
@@ -109,6 +110,7 @@ const App = () => {
                     <Route path="/manage/managevendorpayment" element={<ManageVendorPayment />}/>
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
+                    <Route path="/manage/manageclientinfo/properties/:clientname" element={<ManageClientPropertyByClientName/>}/>
                     <Route path='admin/temp' element={<Temp/>}/>
                {/* </Route>  */}
 
