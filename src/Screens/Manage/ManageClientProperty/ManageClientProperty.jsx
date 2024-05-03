@@ -1378,7 +1378,7 @@ const ManageClientProperty = () => {
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[10%]   p-3'>
+                            <div className='w-[9%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertySuburbFilterInput} onChange={(e) => setPropertySuburbFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button>
@@ -1394,7 +1394,7 @@ const ManageClientProperty = () => {
                                 {propertyCityFilter && <CharacterFilter inputVariable={propertyCityFilterInput} setInputVariable={setPropertyCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[10%]   p-3'>
+                            <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyTypeFilterInput} onChange={(e) => setPropertyTypeFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button>
@@ -1410,7 +1410,7 @@ const ManageClientProperty = () => {
                                 {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[17%]   p-3'>
+                            <div className='w-[16%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
@@ -1450,13 +1450,13 @@ const ManageClientProperty = () => {
                     <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                         <div className="w-[85%] flex">
                             <div className='w-[3%] flex'>
-                                <div className='px-3 py-5'>
+                                <div className='px-3 py-5 overflow-x-auto'>
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[10%]  flex overflow-x-auto'>
                                 <div className='p-3 '>
-                                    <p>Client  </p>
+                                    <p>Client </p>
                                     <p>Name</p>
                                 </div>
                                 <button onClick={() => handleSort('client')}><span className="font-extrabold">↑↓</span></button>
@@ -1472,6 +1472,7 @@ const ManageClientProperty = () => {
                                 <div className='p-3'>
                                     <p>Property City </p>
                                 </div>
+                                <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
