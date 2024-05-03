@@ -25,13 +25,13 @@ const AddClientPortal = ({index,formValues,setFormValues}) => {
                 {index + 1}
             </div>
             <div className="w-[31%] h-full p-1 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" placeholder=' Paste the hyperlink here' value={formValues.client_access[index].onlinemailid} onChange={handleMailChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-3 outline-none' type="text" placeholder=' Paste the hyperlink here' value={formValues.client_access[index].onlinemailid} onChange={handleMailChange}/>
             </div>
             <div className="w-[31%] h-full p-1 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" placeholder=' Enter Password here' value={formValues.client_access[index].onlinepwd} onChange={handlePassChange} />
+                <input className='w-full h-full bg-[#F5F5F5] pl-3 outline-none' type="text" placeholder=' Enter Password here' value={formValues.client_access[index].onlinepwd} onChange={handlePassChange} />
             </div>
             <div className="w-[31%] h-full p-1 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' value={formValues.client_access[index].onlineclue} type="text" onChange={handleOnlineClueChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-3 outline-none' value={formValues.client_access[index].onlineclue} type="text" onChange={handleOnlineClueChange}/>
             </div>
         </div>
     )

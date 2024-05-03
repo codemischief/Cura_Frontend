@@ -1498,7 +1498,7 @@ const ManageClientInfo = () => {
                             </div>
                             <div className='w-[8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Tenant of </p>
+                                    <p>Tenant of <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
@@ -1506,6 +1506,7 @@ const ManageClientInfo = () => {
                                     <div>
                                         <p>Tenant of </p>
                                         <p>Property </p>
+                                        <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
                                     </div>
                                 </div>
                             </div>
