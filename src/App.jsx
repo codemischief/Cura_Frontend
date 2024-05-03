@@ -46,7 +46,7 @@ import ManageBankStatement from './Screens/Manage/ManageBankStatement/ManageBank
 import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject';
 import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
 import Temp from './Screens/Admin/temp';
-import ManageClientPropertyByClientName from './Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName';
+import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName" ; 
 
 const App = () => {
   const ROLES = {
