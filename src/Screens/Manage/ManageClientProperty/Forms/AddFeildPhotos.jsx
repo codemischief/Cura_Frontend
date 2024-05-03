@@ -23,13 +23,13 @@ const AddFeildPhotos = ({index,formValues,setFormValues}) => {
         {index + 1}
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5]' type="text" placeholder=' Paste the hyperlink here' value={formValues.client_property_photos[index].photolink} onChange={handlePhotoLinkChange}/>
+        <input className='w-full h-full bg-[#F5F5F5] outline-none pl-3' type="text" placeholder=' Paste the hyperlink here' value={formValues.client_property_photos[index].photolink} onChange={handlePhotoLinkChange}/>
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5]' type="text" onChange={handleDescriptionChange} value={formValues.client_property_photos[index].description}/>
+        <input className='w-full h-full bg-[#F5F5F5] outline-none pl-3' type="text" onChange={handleDescriptionChange} value={formValues.client_property_photos[index].description}/>
       </div>
       <div className="w-[31%] h-full p-1 text-[11px]" >
-        <input className='w-full h-full bg-[#F5F5F5]' type="date" value={formValues.client_property_photos[index].phototakenwhen} onChange={handleTakenWhenChange} />
+        <input className='w-full h-full bg-[#F5F5F5] outline-none pl-3' type="date" value={formValues.client_property_photos[index].phototakenwhen} onChange={handleTakenWhenChange} />
       </div>
     </div>
   )
