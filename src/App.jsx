@@ -47,6 +47,7 @@ import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderPr
 import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
 import Temp from './Screens/Admin/temp';
 import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName" ; 
+import PmaBillingTable from './Screens/Manage/pma';
 
 const App = () => {
   const ROLES = {
@@ -112,6 +113,7 @@ const App = () => {
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     <Route path="/manage/manageclientinfo/properties/:clientname" element={<ManageClientPropertyByClientName/>}/>
                     <Route path='admin/temp' element={<Temp/>}/>
+                    <Route path='/manage/pmaBilling' element= {<PmaBillingTable />} />
                {/* </Route>  */}
 
 
