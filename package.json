@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.7",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@material-table/core": "0.2.32",
+    "@material-table/exporters": "1.0.12",
     "@mui/icons-material": "^5.15.11",
     "@mui/material": "^5.15.16",
     "axios": "^1.6.7",
@@ -20,6 +23,7 @@
     "framer-motion": "^11.1.7",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
+    "material-react-table": "^2.13.0",
     "msw": "^2.2.2",
     "nprogress": "^0.2.0",
     "prop-types": "^15.8.1",
@@ -32,10 +36,7 @@
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",
     "sort-by": "^1.2.0",
-    "xlsx": "^0.18.5",
-    "material-react-table": "^2.13.0",
-    "@material-table/core": "0.2.32",
-    "@material-table/exporters": "1.0.12"
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",

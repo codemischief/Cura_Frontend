@@ -16,12 +16,15 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import { FilterList } from "@mui/icons-material";
+import { FilterAlt, FilterList } from "@mui/icons-material";
 import Filter from "../../../assets/filter.png";
 
-
-
 import styleConst from "./styleConst";
+import {
+  characterFilterData,
+  dateFilterData,
+  numericFilterData,
+} from "../../../Components/Filters/data";
 const { customFilterFCCommon, columnFlex } = styleConst;
 
 export function clearFilterAll(noOfColumns, tableRef) {
@@ -38,24 +41,37 @@ export function TextFilterField(props) {
 export function NumberFilterField(props) {
   return <FilterField {...props} type="number" />;
 }
+export function DateFilterField(props) {
+  return <FilterField {...props} type="date" />;
+}
 
 const FilterField = (props) => {
   const { columnDef, onFilterChanged, type } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   let value = columnDef?.tableData?.filterValue;
   value =
     (value !== null && typeof value === "object" ? "Advance Filter" : value) ??
     "";
+  const open = Boolean(anchorEl);
+  const optionType = {
+    text: characterFilterData,
+    number: numericFilterData,
+    date: dateFilterData,
+  };
+  // console.log("newww", optionType[type]);
   return (
     <>
       {/* <FormControl variant="outlined">
         <OutlinedInput
           value={value}
-          onChange={(e) =>
-            onFilterChanged(columnDef.tableData.id, e.target.value)
+          onChange={
+            (e) => {}
+            // onFilterChanged(columnDef.tableData.id, e.target.value)
           }
           startAdornment={
             <InputAdornment position="start">
@@ -79,21 +95,22 @@ const FilterField = (props) => {
         />
       </FormControl> */}
       <div className="w-fit  p-3">
-        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+        <div className="w-[100%] flex items-center bg-[#F5F5F5] rounded-md">
           <input
-            className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
+            className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
             // value={employeeNameInput}
             // onChange={(e) => setEmployeeNameInput(e.target.value)}
           />
-          <button
-            className="w-[32%] px-1 py-2"
-            // onClick={() => {
-            //   setEmployeeNameFilter((prev) => !prev);
-            // }}
-          >
-            <img src={Filter} className="h-3 w-3" />
-          </button>
+          <Tooltip title="Filters">
+            <button className="w-[32%] px-1 py-2" onClick={handleClick}>
+              <FilterAlt
+                sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
+                color="#C6C6C6"
+              />
+            </button>
+          </Tooltip>
         </div>
+
         {/* {employeeNameFilter && (
           <CharacterFilter
             inputVariable={employeeNameInput}
@@ -104,6 +121,19 @@ const FilterField = (props) => {
           />
         )} */}
       </div>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        {optionType[type]?.map((option) => (
+          <MenuItem key={option.key}>{option.title}</MenuItem>
+        ))}
+      </Popover>
       {/* <MyPopover
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
@@ -140,14 +170,8 @@ const destructureQuery = ({ conditions, jointConditions }) => {
   };
 };
 const MyPopover = (props) => {
-  const {
-    setAnchorEl,
-    anchorEl,
-    onFilterChanged,
-    columnId,
-    type,
-    value,
-  } = props;
+  const { setAnchorEl, anchorEl, onFilterChanged, columnId, type, value } =
+    props;
   const [condition1, setCondition1] = useState(
     type === "number" ? "exact" : "contains"
   );
@@ -239,133 +263,132 @@ const MyPopover = (props) => {
 
   const showClose = input1 === "" && min === "" && max === "";
   return (
-    // <Popover
-    //   open={!!anchorEl}
-    //   anchorEl={anchorEl}
-    //   onClose={handleClose}
-    //   anchorOrigin={{
-    //     vertical: "bottom",
-    //     horizontal: "left"
-    //   }}
-    // >
-    //   <Box
-    //     elementType={"div"}
-    //     sx={{
-    //       ...columnFlex,
-    //       maxWidth: 250
-    //     }}
-    //   >
-    //     {type === "number" && (
-    //       <>
-    //         <Box elementType={"div"} sx={{ display: "flex" }}>
-    //           <FormControl variant="outlined" sx={{ m: 1 }}>
-    //             <TextField
-    //               type="number"
-    //               name="min"
-    //               value={min}
-    //               label="Min"
-    //               onChange={handleChange}
-    //             />
-    //           </FormControl>
-    //           <FormControl variant="outlined" sx={{ m: 1 }}>
-    //             <TextField
-    //               type="number"
-    //               name="max"
-    //               value={max}
-    //               label="Max"
-    //               onChange={handleChange}
-    //             />
-    //           </FormControl>
-    //         </Box>
-    //         <Divider />
-    //       </>
-    //     )}
-    //     <FormControl variant="outlined" sx={customFilterFCCommon}>
-    //       <TextField
-    //         select
-    //         name="condition1"
-    //         value={condition1}
-    //         label="Condition 1"
-    //         onChange={handleChange}
-    //       >
-    //         {options[type].map((obj) => (
-    //           <MenuItem key={obj.value} value={obj.value}>
-    //             {obj.label}
-    //           </MenuItem>
-    //         ))}
-    //       </TextField>
-    //     </FormControl>
-    //     <FormControl variant="outlined" sx={customFilterFCCommon}>
-    //       <TextField
-    //         type={type}
-    //         name="input1"
-    //         value={input1}
-    //         label="Value"
-    //         onChange={handleChange}
-    //       />
-    //     </FormControl>
-    //     {input1 && (
-    //       <>
-    //         <FormControl>
-    //           <FormLabel id="JoinCondition">Join Condition</FormLabel>
-    //           <RadioGroup
-    //             row
-    //             aria-labelledby="JoinCondition"
-    //             defaultValue="and"
-    //             name="jointConditions"
-    //             onChange={handleChange}
-    //             value={jointConditions}
-    //           >
-    //             <FormControlLabel value="and" control={<Radio />} label="And" />
-    //             <FormControlLabel value="or" control={<Radio />} label="Or" />
-    //           </RadioGroup>
-    //         </FormControl>
-    //         <FormControl variant="outlined" sx={customFilterFCCommon}>
-    //           <TextField
-    //             select
-    //             name="condition2"
-    //             value={condition2}
-    //             label="Condition 2"
-    //             onChange={handleChange}
-    //           >
-    //             {options[type].map((obj) => (
-    //               <MenuItem key={obj.value} value={obj.value}>
-    //                 {obj.label}
-    //               </MenuItem>
-    //             ))}
-    //           </TextField>
-    //         </FormControl>
-    //         <FormControl variant="outlined" sx={customFilterFCCommon}>
-    //           <TextField
-    //             type={type}
-    //             name="input2"
-    //             value={input2}
-    //             label="Value"
-    //             onChange={handleChange}
-    //           />
-    //         </FormControl>
-    //       </>
-    //     )}
-    //     <Box elementType="div" sx={{ display: "flex" }}>
-    //       <Button
-    //         color="secondary"
-    //         fullWidth
-    //         onClick={showClose ? handleClose : handleClear}
-    //       >
-    //         {showClose ? "Close" : "Clear"}
-    //       </Button>
-    //       <Button
-    //         color="primary"
-    //         fullWidth
-    //         onClick={handleApply}
-    //         disabled={showClose}
-    //       >
-    //         Apply
-    //       </Button>
-    //     </Box>
-    //   </Box>
-    // </Popover>
-    <></>
+    <Popover
+      open={!!anchorEl}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+    >
+      <Box
+        elementType={"div"}
+        sx={{
+          ...columnFlex,
+          maxWidth: 250,
+        }}
+      >
+        {type === "number" && (
+          <>
+            <Box elementType={"div"} sx={{ display: "flex" }}>
+              <FormControl variant="outlined" sx={{ m: 1 }}>
+                <TextField
+                  type="number"
+                  name="min"
+                  value={min}
+                  label="Min"
+                  onChange={handleChange}
+                />
+              </FormControl>
+              <FormControl variant="outlined" sx={{ m: 1 }}>
+                <TextField
+                  type="number"
+                  name="max"
+                  value={max}
+                  label="Max"
+                  onChange={handleChange}
+                />
+              </FormControl>
+            </Box>
+            <Divider />
+          </>
+        )}
+        <FormControl variant="outlined" sx={customFilterFCCommon}>
+          <TextField
+            select
+            name="condition1"
+            value={condition1}
+            label="Condition 1"
+            onChange={handleChange}
+          >
+            {options[type].map((obj) => (
+              <MenuItem key={obj.value} value={obj.value}>
+                {obj.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </FormControl>
+        <FormControl variant="outlined" sx={customFilterFCCommon}>
+          <TextField
+            type={type}
+            name="input1"
+            value={input1}
+            label="Value"
+            onChange={handleChange}
+          />
+        </FormControl>
+        {input1 && (
+          <>
+            <FormControl>
+              <FormLabel id="JoinCondition">Join Condition</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="JoinCondition"
+                defaultValue="and"
+                name="jointConditions"
+                onChange={handleChange}
+                value={jointConditions}
+              >
+                <FormControlLabel value="and" control={<Radio />} label="And" />
+                <FormControlLabel value="or" control={<Radio />} label="Or" />
+              </RadioGroup>
+            </FormControl>
+            <FormControl variant="outlined" sx={customFilterFCCommon}>
+              <TextField
+                select
+                name="condition2"
+                value={condition2}
+                label="Condition 2"
+                onChange={handleChange}
+              >
+                {options[type].map((obj) => (
+                  <MenuItem key={obj.value} value={obj.value}>
+                    {obj.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+            <FormControl variant="outlined" sx={customFilterFCCommon}>
+              <TextField
+                type={type}
+                name="input2"
+                value={input2}
+                label="Value"
+                onChange={handleChange}
+              />
+            </FormControl>
+          </>
+        )}
+        <Box elementType="div" sx={{ display: "flex" }}>
+          <Button
+            color="secondary"
+            fullWidth
+            onClick={showClose ? handleClose : handleClear}
+          >
+            {showClose ? "Close" : "Clear"}
+          </Button>
+          <Button
+            color="primary"
+            fullWidth
+            onClick={handleApply}
+            disabled={showClose}
+          >
+            Apply
+          </Button>
+        </Box>
+      </Box>
+    </Popover>
   );
 };
 
