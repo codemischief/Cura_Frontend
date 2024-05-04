@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, forwardRef } from "react";
+import React, { useMemo, useState, useRef, forwardRef, useEffect } from "react";
 import { data, connectionTypeObj, connectionProtocolsObj } from "./data";
 import connectionDataColumn from "./columns";
 import { Strings } from "./String";
@@ -33,10 +33,13 @@ import {
   FullscreenExit,
   IosShare,
   Refresh,
+  ArrowUpward,
 } from "@mui/icons-material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { FilePdfOutlined } from "@ant-design/icons";
+import {useDispatch} from 'react-redux'
+import { example } from "../../../Redux/pmaSlicing";
 const fullScreen = {
   position: "fixed",
   top: 0,
@@ -116,6 +119,14 @@ const tableIcons = {
   IosShare: forwardRef((props, ref) => (
     <IosShare {...props} ref={ref} fontSize="large" sx={{ m: -0.75 }} />
   )),
+  SortArrow: forwardRef((props, ref) => (
+    <SyncAlt
+      {...props}
+      ref={ref}
+      fontSize="large"
+      sx={{ m: -0.75, rotate: "90" }}
+    />
+  )),
 };
 
 export default function MyMaterialTable(props) {
@@ -129,56 +140,12 @@ export default function MyMaterialTable(props) {
     () => connectionDataColumn({ connectionTypeObj, connectionProtocolsObj }),
     []
   );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(example());
+  }, []);
 
-  console.log(tableIcons, "tableIcons");
 
-  const actions = [
-    // {
-    //   icon: tableIcons.FilterList,
-    //   tooltip: Strings.CLEAR_ALL_FILTER,
-    //   isFreeAction: true,
-    //   onClick: () => clearFilterAll(7, tableRef),
-    // },
-    // {
-    //   icon: columnResizable ? tableIcons.ColumnReset : tableIcons?.ColumnResize,
-    //   tooltip: columnResizable ? Strings.RESET_WIDTH : Strings.RESIZE_WIDTH,
-    //   isFreeAction: true,
-    //   onClick: () => {
-    //     setColumnResizable(!columnResizable);
-    //   },
-    // },
-    // {
-    //   icon: fullscreenOpen ? tableIcons.FullscreenExit : tableIcons?.Fullscreen,
-    //   tooltip: fullscreenOpen
-    //     ? Strings.FULLSCREEN_EXIT_LABLE
-    //     : Strings.FULLSCREEN_LABEL,
-    //   isFreeAction: true,
-    //   onClick: (event, rowData) => {
-    //     setFullscreenOpen(!fullscreenOpen);
-    //   },
-    // },
-    // {
-    //   icon: tableIcons.Add,
-    //   tooltip: "Add Connection",
-    //   isFreeAction: true,
-    //   onClick: (event, rowData) => window.alert("add"),
-    // },
-    // {
-    //   icon: tableIcons.Edit,
-    //   tooltip: "Edit Connection",
-    //   onClick: (event, rowData) => window.alert("edit")
-    // },
-    // {
-    //   icon: tableIcons.View,
-    //   tooltip: "View Connection",
-    //   onClick: (event, rowData) => window.alert("veiw"),
-    // },
-    {
-      icon: tableIcons.Delete,
-      tooltip: "Delete Connection",
-      onClick: (event, rowData) => window.alert("delete"),
-    },
-  ];
 
   function getYearsRange() {
     const currentYear = new Date().getFullYear();
@@ -232,11 +199,7 @@ export default function MyMaterialTable(props) {
         {/* footer component */}
         <div className="ml-2">
           <div className="flex items-center w-auto h-full">
-            <Pagination
-              count={Math.ceil(20 / 10)}
-              onChange={() => {}}
-              page={10}
-            />
+          <Pagination count={10} />
           </div>
         </div>
         <div className="flex mr-10 justify-center items-center space-x-2 ">
@@ -392,21 +355,14 @@ export default function MyMaterialTable(props) {
           >
             Show
           </Button>
-
-          {/* {error.year && <p className="text-red-800">{error.year}</p>}
-          {error.month && <p className="text-red-800">{error.month}</p>} */}
           <CustomButton title="Add New PMA Invoice" />
         </Stack>
-
-        {/* {showTable &&  */}
-        {/* } */}
-
         <MaterialTable
           tableRef={tableRef}
           columns={columns}
           data={data}
           title={""}
-          actions={actions}
+
           options={{
             actionsColumnIndex: -1,
             addRowPosition: "first",
@@ -432,6 +388,9 @@ export default function MyMaterialTable(props) {
             toolbar: false,
             // Customizing the toolbar to include filter input fields
             toolbarButtonAlignment: "",
+          }}
+          icons={{
+            SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
           }}
           components={{
             Pagination: (props) => {
