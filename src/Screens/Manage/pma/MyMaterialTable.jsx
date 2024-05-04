@@ -23,6 +23,7 @@ import {
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 
+
 const fullScreen = {
   position: "fixed",
   top: 0,
@@ -119,46 +120,46 @@ export default function MyMaterialTable(props) {
   console.log(tableIcons, "tableIcons");
 
   const actions = [
-    {
-      icon: tableIcons.FilterList,
-      tooltip: Strings.CLEAR_ALL_FILTER,
-      isFreeAction: true,
-      onClick: () => clearFilterAll(7, tableRef),
-    },
-    {
-      icon: columnResizable ? tableIcons.ColumnReset : tableIcons?.ColumnResize,
-      tooltip: columnResizable ? Strings.RESET_WIDTH : Strings.RESIZE_WIDTH,
-      isFreeAction: true,
-      onClick: () => {
-        setColumnResizable(!columnResizable);
-      },
-    },
-    {
-      icon: fullscreenOpen ? tableIcons.FullscreenExit : tableIcons?.Fullscreen,
-      tooltip: fullscreenOpen
-        ? Strings.FULLSCREEN_EXIT_LABLE
-        : Strings.FULLSCREEN_LABEL,
-      isFreeAction: true,
-      onClick: (event, rowData) => {
-        setFullscreenOpen(!fullscreenOpen);
-      },
-    },
-    {
-      icon: tableIcons.Add,
-      tooltip: "Add Connection",
-      isFreeAction: true,
-      onClick: (event, rowData) => window.alert("add"),
-    },
+    // {
+    //   icon: tableIcons.FilterList,
+    //   tooltip: Strings.CLEAR_ALL_FILTER,
+    //   isFreeAction: true,
+    //   onClick: () => clearFilterAll(7, tableRef),
+    // },
+    // {
+    //   icon: columnResizable ? tableIcons.ColumnReset : tableIcons?.ColumnResize,
+    //   tooltip: columnResizable ? Strings.RESET_WIDTH : Strings.RESIZE_WIDTH,
+    //   isFreeAction: true,
+    //   onClick: () => {
+    //     setColumnResizable(!columnResizable);
+    //   },
+    // },
+    // {
+    //   icon: fullscreenOpen ? tableIcons.FullscreenExit : tableIcons?.Fullscreen,
+    //   tooltip: fullscreenOpen
+    //     ? Strings.FULLSCREEN_EXIT_LABLE
+    //     : Strings.FULLSCREEN_LABEL,
+    //   isFreeAction: true,
+    //   onClick: (event, rowData) => {
+    //     setFullscreenOpen(!fullscreenOpen);
+    //   },
+    // },
+    // {
+    //   icon: tableIcons.Add,
+    //   tooltip: "Add Connection",
+    //   isFreeAction: true,
+    //   onClick: (event, rowData) => window.alert("add"),
+    // },
     // {
     //   icon: tableIcons.Edit,
     //   tooltip: "Edit Connection",
     //   onClick: (event, rowData) => window.alert("edit")
     // },
-    {
-      icon: tableIcons.View,
-      tooltip: "View Connection",
-      onClick: (event, rowData) => window.alert("veiw"),
-    },
+    // {
+    //   icon: tableIcons.View,
+    //   tooltip: "View Connection",
+    //   onClick: (event, rowData) => window.alert("veiw"),
+    // },
     {
       icon: tableIcons.Delete,
       tooltip: "Delete Connection",
@@ -169,11 +170,11 @@ export default function MyMaterialTable(props) {
   function getYearsRange() {
     const currentYear = new Date().getFullYear();
     const yearsRange = [];
-  
+
     for (let i = currentYear - 10; i <= currentYear + 10; i++) {
       yearsRange.push(i.toString());
     }
-  
+
     return yearsRange;
   }
   let YEARS = getYearsRange();
@@ -293,6 +294,8 @@ export default function MyMaterialTable(props) {
           >
             Show
           </Button>
+
+          
           {/* {error.year && <p className="text-red-800">{error.year}</p>}
           {error.month && <p className="text-red-800">{error.month}</p>} */}
           <CustomButton title="Add New PMA Invoice" />
@@ -300,46 +303,44 @@ export default function MyMaterialTable(props) {
 
         {/* {showTable &&  */}
         {/* } */}
-      
-      <MaterialTable
-        tableRef={tableRef}
-        columns={columns}
-        data={data}
-        title={Strings.CONNECTION_TITLE}
-        actions={actions}
-        options={{
-          actionsColumnIndex: -1,
-          addRowPosition: "first",
-          emptyRowsWhenPaging: false,
-          search: true,
-          filtering: true,
-          grouping: true,
-          columnsButton: true,
-          pageSize: 5,
-          pageSizeOptions: [5, 10, 20],
-          padding: "default",
-          headerStyle: {
-            backgroundColor: "lightblue",
-            pt: 12,
-            pb: 12,
-          },
-          filterCellStyle: { padding: "4px" },
-          selection: false,
-          exportAllData: true,
-          columnResizable: columnResizable,
-          tableWidth: "variable",
-          tableLayout: columnResizable ? "fixed" : "auto",
-          // exportMenu: [
-          //   {
-          //     label: Strings.EXPORT_CSV,
-          //     exportFunc: (cols, datas) =>
-          //       ExportCsv(cols, datas, Strings.CONNECTION_TITLE)
-          //   }
-          // ]
-        }}
-      />
+
+        <MaterialTable
+          tableRef={tableRef}
+          columns={columns}
+          data={data}
+          title={""}
+          actions={actions}
+          
+          options={{
+            actionsColumnIndex: -1,
+            addRowPosition: "first",
+            emptyRowsWhenPaging: false,
+            search: true,
+            filtering: true,
+            grouping: true,
+            columnsButton: true,
+            pageSize: 5,
+            pageSizeOptions: [5, 10, 20],
+            padding: "default",
+            headerStyle: {
+              backgroundColor: "lightblue",
+              pt: 12,
+              pb: 12,
+
+            },
+            filterCellStyle: { padding: "4px"},
+            selection: false,
+            exportAllData: true,
+            columnResizable: columnResizable,
+            tableWidth: "variable",
+            tableLayout: columnResizable ? "fixed" : "auto",
+            toolbar: false,
+            // Customizing the toolbar to include filter input fields
+            toolbarButtonAlignment: "",
+            
+          }}
+        />
       </Stack>
-      </Stack>
-    
+    </Stack>
   );
 }

@@ -14,9 +14,13 @@ import {
   FormControlLabel,
   Radio,
   TextField,
-  MenuItem
+  MenuItem,
 } from "@mui/material";
 import { FilterList } from "@mui/icons-material";
+import Filter from "../../../assets/filter.png";
+
+
+
 import styleConst from "./styleConst";
 const { customFilterFCCommon, columnFlex } = styleConst;
 
@@ -47,7 +51,7 @@ const FilterField = (props) => {
     "";
   return (
     <>
-      <FormControl variant="outlined">
+      {/* <FormControl variant="outlined">
         <OutlinedInput
           value={value}
           onChange={(e) =>
@@ -70,18 +74,44 @@ const FilterField = (props) => {
           aria-describedby="filter-input"
           inputProps={{
             "aria-label": columnDef?.title ?? "Na",
-            sx: { padding: "8px 4px" }
+            sx: { padding: "8px 4px" },
           }}
         />
-      </FormControl>
-      <MyPopover
+      </FormControl> */}
+      <div className="w-fit  p-3">
+        <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+          <input
+            className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
+            // value={employeeNameInput}
+            // onChange={(e) => setEmployeeNameInput(e.target.value)}
+          />
+          <button
+            className="w-[32%] px-1 py-2"
+            // onClick={() => {
+            //   setEmployeeNameFilter((prev) => !prev);
+            // }}
+          >
+            <img src={Filter} className="h-3 w-3" />
+          </button>
+        </div>
+        {/* {employeeNameFilter && (
+          <CharacterFilter
+            inputVariable={employeeNameInput}
+            setInputVariable={setEmployeeNameInput}
+            handleFilter={newHandleFilter}
+            filterColumn="employeename"
+            menuRef={menuRef}
+          />
+        )} */}
+      </div>
+      {/* <MyPopover
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         onFilterChanged={onFilterChanged}
         columnId={columnDef.tableData.id}
         type={type}
         value={columnDef?.tableData?.filterValue}
-      />
+      /> */}
     </>
   );
 };
@@ -106,7 +136,7 @@ const destructureQuery = ({ conditions, jointConditions }) => {
         : conditions?.[1]?.type === "max"
         ? conditions?.[1]?.value
         : "",
-    jointConditions: jointConditions === "" ? "and" : jointConditions ?? "and"
+    jointConditions: jointConditions === "" ? "and" : jointConditions ?? "and",
   };
 };
 const MyPopover = (props) => {
@@ -116,7 +146,7 @@ const MyPopover = (props) => {
     onFilterChanged,
     columnId,
     type,
-    value
+    value,
   } = props;
   const [condition1, setCondition1] = useState(
     type === "number" ? "exact" : "contains"
@@ -158,11 +188,11 @@ const MyPopover = (props) => {
         query.conditions.push(
           {
             type: condition1,
-            value: type === "number" ? Number(input1) : input1.toLowerCase()
+            value: type === "number" ? Number(input1) : input1.toLowerCase(),
           },
           {
             type: condition2,
-            value: type === "number" ? Number(input2) : input2.toLowerCase()
+            value: type === "number" ? Number(input2) : input2.toLowerCase(),
           }
         );
         query.jointConditions = input2 ? jointConditions : "";
@@ -209,132 +239,133 @@ const MyPopover = (props) => {
 
   const showClose = input1 === "" && min === "" && max === "";
   return (
-    <Popover
-      open={!!anchorEl}
-      anchorEl={anchorEl}
-      onClose={handleClose}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left"
-      }}
-    >
-      <Box
-        elementType={"div"}
-        sx={{
-          ...columnFlex,
-          maxWidth: 250
-        }}
-      >
-        {type === "number" && (
-          <>
-            <Box elementType={"div"} sx={{ display: "flex" }}>
-              <FormControl variant="outlined" sx={{ m: 1 }}>
-                <TextField
-                  type="number"
-                  name="min"
-                  value={min}
-                  label="Min"
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl variant="outlined" sx={{ m: 1 }}>
-                <TextField
-                  type="number"
-                  name="max"
-                  value={max}
-                  label="Max"
-                  onChange={handleChange}
-                />
-              </FormControl>
-            </Box>
-            <Divider />
-          </>
-        )}
-        <FormControl variant="outlined" sx={customFilterFCCommon}>
-          <TextField
-            select
-            name="condition1"
-            value={condition1}
-            label="Condition 1"
-            onChange={handleChange}
-          >
-            {options[type].map((obj) => (
-              <MenuItem key={obj.value} value={obj.value}>
-                {obj.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </FormControl>
-        <FormControl variant="outlined" sx={customFilterFCCommon}>
-          <TextField
-            type={type}
-            name="input1"
-            value={input1}
-            label="Value"
-            onChange={handleChange}
-          />
-        </FormControl>
-        {input1 && (
-          <>
-            <FormControl>
-              <FormLabel id="JoinCondition">Join Condition</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="JoinCondition"
-                defaultValue="and"
-                name="jointConditions"
-                onChange={handleChange}
-                value={jointConditions}
-              >
-                <FormControlLabel value="and" control={<Radio />} label="And" />
-                <FormControlLabel value="or" control={<Radio />} label="Or" />
-              </RadioGroup>
-            </FormControl>
-            <FormControl variant="outlined" sx={customFilterFCCommon}>
-              <TextField
-                select
-                name="condition2"
-                value={condition2}
-                label="Condition 2"
-                onChange={handleChange}
-              >
-                {options[type].map((obj) => (
-                  <MenuItem key={obj.value} value={obj.value}>
-                    {obj.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-            <FormControl variant="outlined" sx={customFilterFCCommon}>
-              <TextField
-                type={type}
-                name="input2"
-                value={input2}
-                label="Value"
-                onChange={handleChange}
-              />
-            </FormControl>
-          </>
-        )}
-        <Box elementType="div" sx={{ display: "flex" }}>
-          <Button
-            color="secondary"
-            fullWidth
-            onClick={showClose ? handleClose : handleClear}
-          >
-            {showClose ? "Close" : "Clear"}
-          </Button>
-          <Button
-            color="primary"
-            fullWidth
-            onClick={handleApply}
-            disabled={showClose}
-          >
-            Apply
-          </Button>
-        </Box>
-      </Box>
-    </Popover>
+    // <Popover
+    //   open={!!anchorEl}
+    //   anchorEl={anchorEl}
+    //   onClose={handleClose}
+    //   anchorOrigin={{
+    //     vertical: "bottom",
+    //     horizontal: "left"
+    //   }}
+    // >
+    //   <Box
+    //     elementType={"div"}
+    //     sx={{
+    //       ...columnFlex,
+    //       maxWidth: 250
+    //     }}
+    //   >
+    //     {type === "number" && (
+    //       <>
+    //         <Box elementType={"div"} sx={{ display: "flex" }}>
+    //           <FormControl variant="outlined" sx={{ m: 1 }}>
+    //             <TextField
+    //               type="number"
+    //               name="min"
+    //               value={min}
+    //               label="Min"
+    //               onChange={handleChange}
+    //             />
+    //           </FormControl>
+    //           <FormControl variant="outlined" sx={{ m: 1 }}>
+    //             <TextField
+    //               type="number"
+    //               name="max"
+    //               value={max}
+    //               label="Max"
+    //               onChange={handleChange}
+    //             />
+    //           </FormControl>
+    //         </Box>
+    //         <Divider />
+    //       </>
+    //     )}
+    //     <FormControl variant="outlined" sx={customFilterFCCommon}>
+    //       <TextField
+    //         select
+    //         name="condition1"
+    //         value={condition1}
+    //         label="Condition 1"
+    //         onChange={handleChange}
+    //       >
+    //         {options[type].map((obj) => (
+    //           <MenuItem key={obj.value} value={obj.value}>
+    //             {obj.label}
+    //           </MenuItem>
+    //         ))}
+    //       </TextField>
+    //     </FormControl>
+    //     <FormControl variant="outlined" sx={customFilterFCCommon}>
+    //       <TextField
+    //         type={type}
+    //         name="input1"
+    //         value={input1}
+    //         label="Value"
+    //         onChange={handleChange}
+    //       />
+    //     </FormControl>
+    //     {input1 && (
+    //       <>
+    //         <FormControl>
+    //           <FormLabel id="JoinCondition">Join Condition</FormLabel>
+    //           <RadioGroup
+    //             row
+    //             aria-labelledby="JoinCondition"
+    //             defaultValue="and"
+    //             name="jointConditions"
+    //             onChange={handleChange}
+    //             value={jointConditions}
+    //           >
+    //             <FormControlLabel value="and" control={<Radio />} label="And" />
+    //             <FormControlLabel value="or" control={<Radio />} label="Or" />
+    //           </RadioGroup>
+    //         </FormControl>
+    //         <FormControl variant="outlined" sx={customFilterFCCommon}>
+    //           <TextField
+    //             select
+    //             name="condition2"
+    //             value={condition2}
+    //             label="Condition 2"
+    //             onChange={handleChange}
+    //           >
+    //             {options[type].map((obj) => (
+    //               <MenuItem key={obj.value} value={obj.value}>
+    //                 {obj.label}
+    //               </MenuItem>
+    //             ))}
+    //           </TextField>
+    //         </FormControl>
+    //         <FormControl variant="outlined" sx={customFilterFCCommon}>
+    //           <TextField
+    //             type={type}
+    //             name="input2"
+    //             value={input2}
+    //             label="Value"
+    //             onChange={handleChange}
+    //           />
+    //         </FormControl>
+    //       </>
+    //     )}
+    //     <Box elementType="div" sx={{ display: "flex" }}>
+    //       <Button
+    //         color="secondary"
+    //         fullWidth
+    //         onClick={showClose ? handleClose : handleClear}
+    //       >
+    //         {showClose ? "Close" : "Clear"}
+    //       </Button>
+    //       <Button
+    //         color="primary"
+    //         fullWidth
+    //         onClick={handleApply}
+    //         disabled={showClose}
+    //       >
+    //         Apply
+    //       </Button>
+    //     </Box>
+    //   </Box>
+    // </Popover>
+    <></>
   );
 };
 
@@ -345,7 +376,7 @@ const options = {
     { value: "exact", label: "Equals" },
     { value: "nexact", label: "Not Equal" },
     { value: "startswith", label: "Start with" },
-    { value: "endwith", label: "End with" }
+    { value: "endwith", label: "End with" },
   ],
   number: [
     { value: "exact", label: "= (Equals to)" },
@@ -353,8 +384,8 @@ const options = {
     { value: "gt", label: "> (Greater then)" },
     { value: "gte", label: ">= (Greater then or Equals to)" },
     { value: "lt", label: "< (Less then)" },
-    { value: "lte", label: "<= (Less then or Equals to)" }
-  ]
+    { value: "lte", label: "<= (Less then or Equals to)" },
+  ],
 };
 
 const filterFunctionObject = {
@@ -371,7 +402,7 @@ const filterFunctionObject = {
   gt: (compareTo, value) => compareTo < value,
   gte: (compareTo, value) => compareTo <= value,
   lt: (compareTo, value) => value < compareTo,
-  lte: (compareTo, value) => value <= compareTo
+  lte: (compareTo, value) => value <= compareTo,
 };
 
 export const filterQuery = (query, haystack) => {

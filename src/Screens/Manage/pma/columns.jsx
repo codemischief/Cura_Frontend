@@ -14,9 +14,10 @@ export default function connectionDataColumn({
   const { cellStyleCommon } = styleConst;
   const columns = [
     {
+      filterComponent: TextFilterField,
       title: Strings.COLUMN_CONNECTION_TYPE,
       field: "connectionType",
-      lookup: connectionTypeObj,
+      // filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
       render: (rowData) => {
         // while grouping rowData will be just value not object
@@ -26,10 +27,13 @@ export default function connectionDataColumn({
           ? rowData
           : "N/A";
         return (
-          <Chip
-            label={data}
-            color={data === Strings.EXPORT ? "warning" : "info"}
-          />
+          // <Chip
+          //   label={data}
+          //   color={data === Strings.EXPORT ? "warning" : "info"}
+          // />
+          <Stack direction="row" spacing={0.5}>
+            {data}
+          </Stack>
         );
       }
     },
@@ -68,6 +72,7 @@ export default function connectionDataColumn({
     {
       title: Strings.COLUMN_PROTOCOL,
       field: "protocol",
+      filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon, minWidth: 100 },
       lookup: connectionProtocolsObj
     },
@@ -77,13 +82,15 @@ export default function connectionDataColumn({
       cellStyle: { ...cellStyleCommon, minWidth: 250 },
       filterComponent: TextFilterField,
       customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.host)
+      
     },
     {
       title: Strings.COLUMN_PORT,
       field: "port",
       cellStyle: { ...cellStyleCommon, minWidth: 75 },
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.port)
+      
     },
     {
       title: Strings.LABEL_USER_NAME,
@@ -96,3 +103,34 @@ export default function connectionDataColumn({
   ];
   return columns;
 }
+
+
+{/* <div className='flex space-x-2 items-center '>
+<div className='flex bg-[#EBEBEB] '>
+    
+    <input
+        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
+        type="text"
+        placeholder="  Search"
+        value={searchInput}
+        onChange={(e) => {
+            setSearchInput(e.target.value);
+        }}
+    />
+    <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
+    <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+    </div>
+</div>
+
+<div>
+ 
+    <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+        <div className="flex items-center justify-center gap-4">
+            Add New Order
+            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+        </div>
+    </button>
+</div>
+
+</div> */}
