@@ -8,7 +8,9 @@ import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
+import Example from "./BillingTable";
 import { Delete, Edit } from "@mui/icons-material";
+import { MenuItem } from '@mui/material';
 // const YEAR= ["2021", "2022", "2023, ""]
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -48,10 +50,22 @@ const PmaBillingTable = () => {
       {
         header: "Client Name",
         accessorKey: "firstName",
+        columnFilterModeOptions: ['contains', 'startsWith', 'endsWith'],
       },
       {
         header: "Quote Description",
         accessorKey: "lastName",
+        renderColumnFilterModeMenuItems: ({ onSelectFilterMode }) => [
+          <MenuItem key="0" onClick={() => onSelectFilterMode('contains')}>
+            <div>Contains</div>
+          </MenuItem>,
+          <MenuItem
+            key="1"
+            onClick={() => onSelectFilterMode('customFilterFn')}
+          >
+            <div>Custom Filter Fn</div>
+          </MenuItem>,
+        ],
       },
       {
         header: "Invoice Date",
@@ -85,12 +99,23 @@ const PmaBillingTable = () => {
   const table = useMaterialReactTable({
     columns,
     data: tableData,
+    groupedColumnMode,
     // data:[],
     enableGrouping: true,
     // enableEditing: true,
     enableStickyHeader: true,
+    enableColumnFilterModes: true, //enable changing filter mode for all columns unless explicitly disabled in a column def
+    // initialState: { showColumnFilters: true }, //show filters by default
+    filterFns: {
+      customFilterFn: (row, id, filterValue) => {
+        return row.getValue(id) === filterValue;
+      },
+    },
+    localization: {
+      filterCustomFilterFn: 'Custom Filter Fn',
+    },
     positionActionsColumn: "last",
-    groupedColumnMode,
+    
     muiTableBodyRowProps: ({ row }) => ({
       onClick: (event) => {
         // console.info("event", row.original);
@@ -153,6 +178,7 @@ const PmaBillingTable = () => {
     }
   };
   return (
+    // <Example/>
     <Stack gap="1rem">
       <Navbar />
       <Stack direction={"column"} paddingX={"14px"}>
