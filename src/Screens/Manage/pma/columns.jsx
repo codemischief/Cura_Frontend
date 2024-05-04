@@ -3,34 +3,32 @@ import { Strings } from "./String";
 import {
   TextFilterField,
   NumberFilterField,
-  filterQuery
+  filterQuery,
 } from "./CustomFilterField";
 import styleConst from "./styleConst";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function connectionDataColumn({
   connectionTypeObj,
-  connectionProtocolsObj
+  connectionProtocolsObj,
 }) {
   const { cellStyleCommon } = styleConst;
-const { pmaBillingData } = useSelector((state) => state.pmaBilling);
-console.log(pmaBillingData,"pmaBillingData");
-
+  const { pmaBillingData } = useSelector((state) => state.pmaBilling);
+  console.log(pmaBillingData, "pmaBillingData");
 
   const columns = [
     {
       filterComponent: TextFilterField,
       title: "Client Name",
-      field: "connectionType",
-      // filterComponent: TextFilterField,
+      field: "clientname",
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
-      render: (rowData) => {        
+      render: (rowData) => {
         return (
           <Stack direction="row" spacing={0.5}>
             {rowData.clientname}
           </Stack>
         );
-      }
+      },
     },
     {
       filterComponent: TextFilterField,
@@ -39,17 +37,17 @@ console.log(pmaBillingData,"pmaBillingData");
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
           //   color={data === Strings.EXPORT ? "warning" : "info"}
           // />
           <Stack direction="row" spacing={0.5}>
-            {rowData?.briefdescription?rowData?.briefdescription : "---"}
+            {rowData?.briefdescription ? rowData?.briefdescription : "---"}
           </Stack>
         );
-      }
+      },
     },
     {
       title: "Invoice Date",
@@ -59,17 +57,17 @@ console.log(pmaBillingData,"pmaBillingData");
       // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.connectionName),
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
           //   color={data === Strings.EXPORT ? "warning" : "info"}
           // />
           <Stack direction="row" spacing={0.5}>
-            {rowData?.date ?rowData?.date : "---"}
+            {rowData?.date ? rowData?.date : "---"}
           </Stack>
         );
-      }
+      },
     },
     {
       title: "Invoice Amount",
@@ -84,13 +82,12 @@ console.log(pmaBillingData,"pmaBillingData");
       //   return sdpsData;
       // },
       render: (rowData) => {
-       
         return (
           <Stack direction="row" spacing={0.5}>
             {rowData.rentamount}
           </Stack>
         );
-      }
+      },
     },
     {
       title: "Base Amount",
@@ -99,13 +96,12 @@ console.log(pmaBillingData,"pmaBillingData");
       cellStyle: { ...cellStyleCommon, minWidth: 100 },
       lookup: connectionProtocolsObj,
       render: (rowData) => {
-       
         return (
           <Stack direction="row" spacing={0.5}>
             ---
           </Stack>
         );
-      }
+      },
     },
 
     {
@@ -116,7 +112,7 @@ console.log(pmaBillingData,"pmaBillingData");
       // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.host),
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
@@ -126,7 +122,7 @@ console.log(pmaBillingData,"pmaBillingData");
             ----
           </Stack>
         );
-      }
+      },
     },
     {
       title: "Fixed Amount",
@@ -136,7 +132,7 @@ console.log(pmaBillingData,"pmaBillingData");
       // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.port),
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
@@ -146,8 +142,7 @@ console.log(pmaBillingData,"pmaBillingData");
             {rowData.fixedamt}
           </Stack>
         );
-      }
-      
+      },
     },
     {
       title: "Fixed Tax Amount",
@@ -157,7 +152,7 @@ console.log(pmaBillingData,"pmaBillingData");
       // customFilterAndSearch: (term, rowData) =>filterQuery(term, rowData.userName)
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
@@ -167,7 +162,7 @@ console.log(pmaBillingData,"pmaBillingData");
             {rowData.fixedtaxamt}
           </Stack>
         );
-      }
+      },
     },
     {
       title: "Rented Amount",
@@ -177,17 +172,17 @@ console.log(pmaBillingData,"pmaBillingData");
       // customFilterAndSearch: (term, rowData) =>filterQuery(term, rowData.userName)
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
           //   color={data === Strings.EXPORT ? "warning" : "info"}
           // />
           <Stack direction="row" spacing={0.5}>
-            {rowData.rentedamt ? rowData.rentedamt:"---"}
+            {rowData.rentedamt ? rowData.rentedamt : "---"}
           </Stack>
         );
-      }
+      },
     },
     {
       title: "Rented Tax Amount",
@@ -197,24 +192,24 @@ console.log(pmaBillingData,"pmaBillingData");
       // customFilterAndSearch: (term, rowData) =>filterQuery(term, rowData.userName)
       render: (rowData) => {
         // while grouping rowData will be just value not object
-       
+
         return (
           // <Chip
           //   label={data}
           //   color={data === Strings.EXPORT ? "warning" : "info"}
           // />
           <Stack direction="row" spacing={0.5}>
-            {rowData.rentedtaxamt ? rowData.rentedtaxamt:"---"}
+            {rowData.rentedtaxamt ? rowData.rentedtaxamt : "---"}
           </Stack>
         );
-      }
-    }
+      },
+    },
   ];
   return columns;
 }
 
-
-{/* <div className='flex space-x-2 items-center '>
+{
+  /* <div className='flex space-x-2 items-center '>
 <div className='flex bg-[#EBEBEB] '>
     
     <input
@@ -242,4 +237,5 @@ console.log(pmaBillingData,"pmaBillingData");
     </button>
 </div>
 
-</div> */}
+</div> */
+}

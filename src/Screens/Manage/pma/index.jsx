@@ -11,7 +11,7 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
 import MyMaterialTable from "./MyMaterialTable";
-import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
+import { getPmaBilling, setPageNumber } from "../../../Redux/slice/pmaSlice";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -40,16 +40,22 @@ const MONTHS = [
 ];
 const PmaBillingTable = () => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.pmaBilling);
+  const [loadingState, setLoadingState] = useState(false);
+  const { pmaBillingData, status, totalCount, countPerPage, pageNo } =
+    useSelector((state) => state.pmaBilling);
   const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
 
   const handleSelectMonth = (e) => {
+    setLoadingState(true);
+    setShowTable(false);
     setSelectedMonth(e.target.value);
   };
   const handleSelectYear = (e) => {
+    setLoadingState(true);
+    setShowTable(false);
     setSelectedYear(e.target.value);
   };
 
@@ -63,7 +69,8 @@ const PmaBillingTable = () => {
         pg_no: 1,
         pg_size: 30,
       };
-      dispatch(getPmaBilling(obj));
+      // dispatch(getPmaBilling(obj));
+      setLoadingState(false);
       setShowTable(true);
     } else {
       setError((prev) => ({
@@ -74,7 +81,6 @@ const PmaBillingTable = () => {
     }
   };
 
-  // console.log("status", status);
   return (
     <Stack gap="1rem">
       <Navbar />
@@ -170,7 +176,14 @@ const PmaBillingTable = () => {
             <LinearProgress />
           </Box>
         )}
-        {status === "success" && showTable && <MyMaterialTable />}
+        {showTable && (
+          <MyMaterialTable year={selectedYear} month={Number(selectedMonth)} />
+        )}
+        {/* {loadingState && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )} */}
       </Stack>
     </Stack>
   );

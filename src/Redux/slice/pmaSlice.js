@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { env_URL_SERVER } from "../helper";
 
 const initialState = {
   pmaBillingData: [],
@@ -10,7 +11,6 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
 };
-const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
 
 export const pmaSlice = createSlice({
   name: "pma",
@@ -24,6 +24,7 @@ export const pmaSlice = createSlice({
       state.status = payload;
     },
     setPageNumber: (state, { payload }) => {
+      console.log("payload", payload);
       state.pageNo = payload;
     },
     setCountPerPage: (state, { payload }) => {
@@ -34,12 +35,8 @@ export const pmaSlice = createSlice({
 
 // reducer
 // Action creators are generated for each case reducer function
-export const {
-  setPmaBillingData,
-  setStatus,
-  setPageNumber,
-  setCountPerPage,
-} = pmaSlice.actions;
+export const { setPmaBillingData, setStatus, setPageNumber, setCountPerPage } =
+  pmaSlice.actions;
 
 export const getPmaBilling = (payloadObj) => async (dispatch) => {
   try {
@@ -57,4 +54,3 @@ export const getPmaBilling = (payloadObj) => async (dispatch) => {
 };
 
 export default pmaSlice.reducer;
-

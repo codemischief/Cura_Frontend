@@ -1,327 +1,217 @@
-import React, { useMemo, useState, useRef, forwardRef, useEffect } from "react";
-import { data, connectionTypeObj, connectionProtocolsObj } from "./data";
+import React, { useMemo, useState, useRef } from "react";
+import { connectionTypeObj, connectionProtocolsObj } from "./data";
 import connectionDataColumn from "./columns";
-import { Strings } from "./String";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
 
 import MaterialTable from "@material-table/core";
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  MenuItem,
-  Pagination,
-  Popover,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { clearFilterAll } from "./CustomFilterField";
-import CustomButton from "../../../Components/common/CustomButton";
-import {
-  ViewArray,
-  ViewHeadline,
-  Visibility,
-  DeleteOutline,
-  AddCircle,
-  RestartAlt,
-  Search,
-  Download,
-  FilterList,
-  Fullscreen,
-  FullscreenExit,
-  IosShare,
-  Refresh,
-  ArrowUpward,
-} from "@mui/icons-material";
-import Navbar from "../../../Components/Navabar/Navbar";
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import { MenuItem, Pagination, Popover } from "@mui/material";
+import { Refresh, ArrowUpward } from "@mui/icons-material";
 import { FilePdfOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { getPmaBilling, setCountPerPage, setPageNumber } from "../../../Redux/slice/pmaSlice";
-const fullScreen = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100vw",
-  height: "100vh",
-  zIndex: 1200,
-  backgroundColor: "#fff",
-  overflow: "auto",
-  padding: "8px",
-};
+import { env_URL_SERVER } from "../../../Redux/helper";
 
-const tableIcons = {
-  ColumnResize: forwardRef((props, ref) => (
-    <ViewArray {...props} ref={ref} fontSize="medium"></ViewArray>
-  )),
-  ColumnReset: forwardRef((props, ref) => (
-    <ViewHeadline
-      {...props}
-      ref={ref}
-      fontSize="medium"
-      sx={{ transform: "rotate(90deg)" }}
-    />
-  )),
-  View: forwardRef((props, ref) => (
-    <Visibility
-      {...props}
-      ref={ref}
-      color={props.color ?? "secondary"}
-      fontSize="small"
-    />
-  )),
-  // Edit: forwardRef((props, ref) => (
-  //   <EditOutlined
-  //     {...props}
-  //     ref={ref}
-  //     color={props.color ?? "secondary"}
-  //     fontSize="small"
-  //   />
-  // )),
-  Delete: forwardRef((props, ref) => (
-    <DeleteOutline
-      {...props}
-      ref={ref}
-      color={props.color ?? "secondary"}
-      fontSize="small"
-    />
-  )),
-  Add: forwardRef((props, ref) => (
-    <AddCircle
-      {...props}
-      ref={ref}
-      color={props.color ?? "secondary"}
-      fontSize="large"
-      sx={{ m: -0.75 }}
-    />
-  )),
-  Reset: forwardRef((props, ref) => <RestartAlt {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => (
-    <Search
-      {...props}
-      ref={ref}
-      color={props.color ?? "secondary"}
-      fontSize="small"
-    />
-  )),
-  Download: forwardRef((props, ref) => (
-    <Download {...props} ref={ref} fontSize="medium" sx={{ m: -0.75 }} />
-  )),
-  FilterList: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  Fullscreen: forwardRef((props, ref) => (
-    <Fullscreen {...props} ref={ref} fontSize="large" sx={{ m: -0.75 }} />
-  )),
-  FullscreenExit: forwardRef((props, ref) => (
-    <FullscreenExit {...props} ref={ref} fontSize="large" sx={{ m: -0.75 }} />
-  )),
-  IosShare: forwardRef((props, ref) => (
-    <IosShare {...props} ref={ref} fontSize="large" sx={{ m: -0.75 }} />
-  )),
-  SortArrow: forwardRef((props, ref) => (
-    <SyncAlt
-      {...props}
-      ref={ref}
-      fontSize="large"
-      sx={{ m: -0.75, rotate: "90" }}
-    />
-  )),
-};
+const CustomPaginationComponent = (props) => {
+  // console.log("props", props);
+  const {
+    count,
+    page,
+    rowsPerPage,
+    onPageChange,
+    rowsPerPageOptions,
+    onRowsPerPageChange,
+  } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
 
-export default function MyMaterialTable(props) {
-  const { pmaBillingData, totalCount, countPerPage, pageNo } = useSelector(
-    (state) => state.pmaBilling
+  const open = Boolean(anchorEl);
+  return (
+    <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
+      {/* footer component */}
+      <div className="ml-2">
+        <div className="flex items-center w-auto h-full">
+          <Pagination
+            count={Math.ceil(count / rowsPerPage)} // Calculate total pages
+            page={page + 1} // Page is zero-indexed, so add 1
+            variant="outlined"
+            onChange={(e, value) => {
+              onPageChange(e, value - 1);
+            }}
+          />
+        </div>
+      </div>
+      <div className="flex mr-10 justify-center items-center space-x-2 ">
+        <div className="flex mr-8 space-x-2 text-sm items-center">
+          <p className="text-gray-700">Items Per page</p>
+          <select
+            className="text-gray-700 border-black border-[1px] rounded-md p-1"
+            name="currentPages"
+            value={+rowsPerPage}
+            onChange={onRowsPerPageChange}
+          >
+            {rowsPerPageOptions?.map((rowOption) => (
+              <option key={rowOption}>{rowOption}</option>
+            ))}
+          </select>
+        </div>
+        <div className="flex text-sm">
+          <p className="mr-11 text-gray-700">
+            {+count} Items in {Math.ceil(+count / +rowsPerPage)} Pages
+          </p>
+        </div>
+
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          onClose={() => setAnchorEl(null)}
+          sx={{ top: "-110px", left: "-20px" }}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3">
+            <p>Download as Pdf</p>
+            <img src={Pdf} />
+          </MenuItem>
+          <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3">
+            <p> Download as Excel</p>
+            <img src={Excel} />
+          </MenuItem>
+        </Popover>
+
+        <div className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2">
+          <button onClick={() => {}}>
+            <p>Refresh</p>
+          </button>
+          <Refresh sx={{ height: "16px", width: "16px" }} />
+        </div>
+        <div className="border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2">
+          {/* download */}
+          <button
+            onClick={(e) => {
+              setAnchorEl(e.currentTarget);
+            }}
+          >
+            <p>Download</p>
+          </button>
+          {/* <img src={"downloadIcon"} className="h-2/3" /> */}
+          <FilePdfOutlined height={"16px"} width={"16px"} />
+        </div>
+      </div>
+    </div>
   );
-  const [fullscreenOpen, setFullscreenOpen] = useState(false);
+};
+
+export default function MyMaterialTable({ year, month }) {
+  // const dispatch = useDispatch();
+
   const [columnResizable, setColumnResizable] = useState(false);
-  const [error, setError] = useState({ year: false, month: false });
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedMonth, setSelectedMonth] = useState("");
+
   const tableRef = useRef();
   const columns = useMemo(
     () => connectionDataColumn({ connectionTypeObj, connectionProtocolsObj }),
     []
   );
-  const dispatch = useDispatch();
-
-  const handlePageChange = (event, newPage) => {
-    
-  };
-
-  console.log(totalCount, countPerPage, pageNo,"fcgvbhjikcgvbhjnk");
-
-
-  // useEffect(() => {
-  //   dispatch(getPmaBilling());
-  //   console.log("pmaBillingData", pmaBillingData, totalCount);
-  // }, []);
-
-  function getYearsRange() {
-    const currentYear = new Date().getFullYear();
-    const yearsRange = [];
-
-    for (let i = currentYear - 10; i <= currentYear + 10; i++) {
-      yearsRange.push(i.toString());
-    }
-
-    return yearsRange;
-  }
-  let YEARS = getYearsRange();
-  const MONTHS = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const handleShow = () => {
-    if (selectedYear && selectedMonth) {
-      setShowTable(true);
-    } else {
-      setError((prev) => ({
-        ...prev,
-        year: selectedYear ? prev.year : "please select a year first",
-        month: selectedMonth ? prev.month : "please select a year first",
-      }));
-    }
-  };
-
-
-  const CustomPaginationComponent = (props) => {
-    const {dispatch,setPageNumber,totalCount,countPerPage,pageNo} = props
-    // console.log(dispatch);
-    const [anchorEl, setAnchorEl] = useState(null);
-   
-    // const handlePageChange = (event, newPage) => {
-    //   dispatch(setPageNumber(newPage))
-    // };
-
-    
-    const open = Boolean(anchorEl);
-    return (
-      <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
-        {/* footer component */}
-        <div className="ml-2">
-          <div className="flex items-center w-auto h-full">
-            <Pagination
-              count={Math.ceil(totalCount / countPerPage)} // Calculate total pages
-              page={pageNo + 1} // Page is zero-indexed, so add 1
-              variant="outlined"
-              onChange={handlePageChange}
-            />
-          </div>
-        </div>
-        <div className="flex mr-10 justify-center items-center space-x-2 ">
-          <div className="flex mr-8 space-x-2 text-sm items-center">
-            <p className="text-gray-700">Items Per page</p>
-            <select
-              className="text-gray-700 border-black border-[1px] rounded-md p-1"
-              name="currentPages"
-              // value={countPerPage}
-              // onChange={(e) => {dispatch(setCountPerPage(e.target.value))}}
-            >
-              <option>15</option>
-              <option>20</option>
-              <option>25</option>
-            </select>
-          </div>
-          <div className="flex text-sm">
-            <p className="mr-11 text-gray-700">
-              {10} Items in {Math.ceil(10 / 20)} Pages
-            </p>
-          </div>
-
-          <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={() => setAnchorEl(null)}
-            sx={{ top: "-110px", left: "-20px" }}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-          >
-            <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3">
-              <p>Download as Pdf</p>
-              <img src={Pdf} />
-            </MenuItem>
-            <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3">
-              <p> Download as Excel</p>
-              <img src={Excel} />
-            </MenuItem>
-          </Popover>
-
-          <div className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2">
-            <button onClick={() => {}}>
-              <p>Refresh</p>
-            </button>
-            <Refresh sx={{ height: "16px", width: "16px" }} />
-          </div>
-          <div className="border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2">
-            {/* download */}
-            <button
-              onClick={(e) => {
-                setAnchorEl(e.currentTarget);
-              }}
-            >
-              <p>Download</p>
-            </button>
-            {/* <img src={"downloadIcon"} className="h-2/3" /> */}
-            <FilePdfOutlined height={"16px"} width={"16px"} />
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
-    <MaterialTable
-      tableRef={tableRef}
-      columns={columns}
-      data={pmaBillingData}
-      title={""}
-      options={{
-        actionsColumnIndex: -1,
-        addRowPosition: "first",
-        emptyRowsWhenPaging: false,
-        search: true,
-        filtering: true,
-        grouping: true,
-        columnsButton: true,
-        pageSize: 30,
-        pageSizeOptions: [5, 10, 20, 30],
-        padding: "default",
-        headerStyle: {
-          backgroundColor: "lightblue",
-          pt: 12,
-          pb: 12,
-        },
-        filterCellStyle: { padding: "4px" },
-        selection: false,
-        exportAllData: true,
-        columnResizable: columnResizable,
-        tableWidth: "variable",
-        tableLayout: columnResizable ? "fixed" : "auto",
-        toolbar: false,
-        toolbarButtonAlignment: "",
-      }}
-      icons={{
-        SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
-      }}
-      components={{
-        Pagination: (props) => {
-          return <CustomPaginationComponent {...props} dispatch={dispatch} setPageNumber={setPageNumber} totalCount={totalCount} countPerPage={countPerPage} pageNo={pageNo} />;
-        },
-      }}
-    />
+    <div className="max-h-[501px]">
+      <MaterialTable
+        tableRef={tableRef}
+        columns={columns}
+        // data={tableData}
+        data={(query) =>
+          new Promise((resolve, reject) => {
+            console.log("query", query);
+            // prepare your data and then call resolve like this:
+            let url = `${env_URL_SERVER}getPMABilling`;
+            let pageNo = Number(query.page);
+            let pageSize = Number(query.pageSize);
+            //searching
+            if (query.search) {
+              url += `q=${query.search}`;
+            }
+            //sorting
+            if (query.orderBy) {
+              url += `&_sort=${query.orderBy.field}&_order=${query.orderDirection}`;
+            }
+            //filtering
+            if (query.filters.length) {
+              // const filter = query.filters.map((filter) => {
+              //   return `&${filter.column.field}${filter.operator}${filter.value}`;
+              // });
+              // url += filter.join("");
+              // console.log("query.filters.value", query.filters[0].value);
+            }
+
+            const options = {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                user_id: 1234,
+                month: month,
+                year: year,
+                filter: query?.filters?.length ? query?.filters[0]?.value : [],
+                pg_no: pageNo + 1,
+                pg_size: pageSize,
+              }),
+            };
+            //pagination
+            // url += `&_page=${query.page + 1}`;
+            // url += `&_limit=${query.pageSize}`;
+
+            fetch(url, options)
+              .then((resp) => resp.json())
+              .then((resp) => {
+                resolve({
+                  data: resp.data, // your data array
+                  page: query.page, // current page number
+                  totalCount: resp.total_count, // total row number
+                });
+              });
+          })
+        }
+        title={""}
+        options={{
+          actionsColumnIndex: -1,
+          addRowPosition: "first",
+          emptyRowsWhenPaging: false,
+          search: true,
+          filtering: true,
+          grouping: true,
+          columnsButton: true,
+          paging: true,
+          // pageNo: 1,
+          pageSize: 15,
+          pageSizeOptions: [15, 25, 50],
+          padding: "default",
+          headerStyle: {
+            backgroundColor: "lightblue",
+            position: "sticky",
+            top: 0,
+            pt: 12,
+            pb: 12,
+          },
+          maxBodyHeight: "650px",
+          filterCellStyle: { padding: "4px" },
+          selection: false,
+          exportAllData: true,
+          columnResizable: columnResizable,
+          tableWidth: "variable",
+          tableLayout: columnResizable ? "fixed" : "auto",
+          toolbar: false,
+          pagination: false,
+          toolbarButtonAlignment: "",
+        }}
+        icons={{
+          SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
+        }}
+        components={{
+          Pagination: (props) => {
+            return <CustomPaginationComponent {...props} />;
+          },
+        }}
+      />
+    </div>
   );
 }

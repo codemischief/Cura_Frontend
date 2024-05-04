@@ -16,7 +16,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import { FilterAlt, FilterList } from "@mui/icons-material";
+import { Close, FilterAlt, FilterList } from "@mui/icons-material";
 import Filter from "../../../assets/filter.png";
 
 import styleConst from "./styleConst";
@@ -48,7 +48,7 @@ export function DateFilterField(props) {
 const FilterField = (props) => {
   const { columnDef, onFilterChanged, type } = props;
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [search, setSearch] = useState("");
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => {
     setAnchorEl(null);
@@ -63,44 +63,32 @@ const FilterField = (props) => {
     number: numericFilterData,
     date: dateFilterData,
   };
-  // console.log("newww", optionType[type]);
+  const handleFilter = (filter) => {
+    if (search) {
+      const query = [[columnDef.field], [search], [filter], [""]];
+      onFilterChanged(columnDef.tableData.id, query);
+    }
+    handleClose();
+  };
+
   return (
     <>
-      {/* <FormControl variant="outlined">
-        <OutlinedInput
-          value={value}
-          onChange={
-            (e) => {}
-            // onFilterChanged(columnDef.tableData.id, e.target.value)
-          }
-          startAdornment={
-            <InputAdornment position="start">
-              <Tooltip title="Advance filter">
-                <IconButton
-                  sx={{ p: 0 }}
-                  aria-label="advance filter"
-                  edge="end"
-                  onClick={handleClick}
-                >
-                  <FilterList />
-                </IconButton>
-              </Tooltip>
-            </InputAdornment>
-          }
-          aria-describedby="filter-input"
-          inputProps={{
-            "aria-label": columnDef?.title ?? "Na",
-            sx: { padding: "8px 4px" },
-          }}
-        />
-      </FormControl> */}
       <div className="w-fit  p-3">
         <div className="w-[100%] flex items-center bg-[#F5F5F5] rounded-md">
           <input
             className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
-            // value={employeeNameInput}
-            // onChange={(e) => setEmployeeNameInput(e.target.value)}
+            type={type}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
+          {search && (
+            <IconButton
+              onClick={() => setSearch("")}
+              sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
+            >
+              <Close sx={{ height: "16px", w: "16px", color: "#C6C6C6" }} />
+            </IconButton>
+          )}
           <Tooltip title="Filters">
             <button className="w-[32%] px-1 py-2" onClick={handleClick}>
               <FilterAlt
@@ -110,16 +98,6 @@ const FilterField = (props) => {
             </button>
           </Tooltip>
         </div>
-
-        {/* {employeeNameFilter && (
-          <CharacterFilter
-            inputVariable={employeeNameInput}
-            setInputVariable={setEmployeeNameInput}
-            handleFilter={newHandleFilter}
-            filterColumn="employeename"
-            menuRef={menuRef}
-          />
-        )} */}
       </div>
       <Popover
         open={open}
@@ -131,17 +109,11 @@ const FilterField = (props) => {
         }}
       >
         {optionType[type]?.map((option) => (
-          <MenuItem key={option.key}>{option.title}</MenuItem>
+          <MenuItem key={option.key} onClick={() => handleFilter(option.key)}>
+            {option.title}
+          </MenuItem>
         ))}
       </Popover>
-      {/* <MyPopover
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        onFilterChanged={onFilterChanged}
-        columnId={columnDef.tableData.id}
-        type={type}
-        value={columnDef?.tableData?.filterValue}
-      /> */}
     </>
   );
 };
@@ -410,84 +382,3 @@ const options = {
     { value: "lte", label: "<= (Less then or Equals to)" },
   ],
 };
-
-const filterFunctionObject = {
-  startswith: (value, str) => str?.startsWith(value),
-  endwith: (value, str) => str?.endsWith(value),
-  contains: (value, str) => str?.includes(value),
-  nContains: (value, str) => !str?.includes(value),
-  exact: (value, str) => str === value,
-  nexact: (value, str) => str !== value,
-  and: (value1, value2) => value1 && value2,
-  or: (value1, value2) => value1 || value2,
-  min: (compareTo, value) => compareTo <= value,
-  max: (compareTo, value) => value <= compareTo,
-  gt: (compareTo, value) => compareTo < value,
-  gte: (compareTo, value) => compareTo <= value,
-  lt: (compareTo, value) => value < compareTo,
-  lte: (compareTo, value) => value <= compareTo,
-};
-
-export const filterQuery = (query, haystack) => {
-  haystack = typeof haystack === "string" ? haystack?.toLowerCase() : haystack;
-  if (haystack === null || haystack === undefined) haystack = "";
-  if (typeof query !== "object") {
-    haystack = haystack?.toString();
-    return haystack?.includes(query?.toLowerCase());
-  }
-  const conditions = query.conditions;
-  const jointConditions = query.jointConditions;
-
-  let found = filterFunctionObject[conditions[0].type](
-    conditions[0].value,
-    haystack
-  );
-
-  if (jointConditions !== "") {
-    if (found && jointConditions === "and") {
-      found = filterFunctionObject[conditions[1].type](
-        conditions[1].value,
-        haystack
-      );
-    } else if (!found && jointConditions === "or") {
-      found = filterFunctionObject[conditions[1].type](
-        conditions[1].value,
-        haystack
-      );
-    }
-  }
-  return found;
-};
-
-// for more then two conditions
-/* query = {
-    conditions : [
-        {type:"startswith",value:"ABC"},
-        {type:"contain",value:"OP"},
-        {type:"endwith",value:"XYZ"},
-        ...
-    ],
-    jointConditions:['and','or',...]
-}
-export const filterQuery = (query, haystack) => {
-    let found = false;
-    const conditions = query.conditions;
-    const jointConditions = query.jointConditions;
-    let jointConditionsLeft = jointConditions.slice(0);//TO create copy
-    
-    found = filterFunctionObject[conditions[0].type](conditions[0].value,haystack)
-    for(let i=1 ; i<conditions.length ;i++){
-        if(!found && !jointConditionsLeft.includes('or')){ //it will never true
-            return found
-        }else if(found && !jointConditionsLeft.includes('and'){//it will never false
-            return found
-        }
-        found = filterFunctionObject[jointConditions[i-1]](
-            found,
-            filterFunctionObject[conditions[i].type](conditions[i].value,haystack)
-        )
-        jointConditionsLeft.splice(0,1)
-    }
-    return found
-}
-*/
