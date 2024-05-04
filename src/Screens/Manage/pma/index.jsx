@@ -37,6 +37,21 @@ const MONTHS = [
 ];
 const PmaBillingTable = () => {
   const [showTable, setShowTable] = useState(false);
+  const MyCustomFilter = ({ column, setColumnFilterValue }) => {
+    // const handleFilterChange = (e) => {
+    //   setColumnFilterValue(column.accessorKey, e.target.value);
+    // };
+    console.log(column, "column");
+
+    return (
+      <input
+        type="text"
+        placeholder={`Filter ${column.header}`}
+        // onChange={handleFilterChange}
+      />
+    );
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -44,30 +59,37 @@ const PmaBillingTable = () => {
         header: "Sr no.",
         enableEditing: false,
         size: 80,
+        Filter: MyCustomFilter,
       },
       {
         header: "Client Name",
         accessorKey: "firstName",
+        Filter: MyCustomFilter,
       },
       {
         header: "Quote Description",
         accessorKey: "lastName",
+        Filter: MyCustomFilter,
       },
       {
         header: "Invoice Date",
         accessorKey: "age",
+        Filter: MyCustomFilter,
       },
       {
         header: "Invoice Amount",
         accessorKey: "gender",
+        Filter: MyCustomFilter,
       },
       {
         header: "Base Amount",
         accessorKey: "state",
+        Filter: MyCustomFilter,
       },
       {
         header: "Tax  Amount",
         accessorKey: "salary",
+        Filter: MyCustomFilter,
       },
     ],
     []
@@ -81,6 +103,24 @@ const PmaBillingTable = () => {
   );
   //demo state
   const [groupedColumnMode, setGroupedColumnMode] = useState("reorder"); //default is 'reorder
+
+  const MyCustomColumnFilters = ({ columns, setColumnFilterValue }) => {
+    return (
+      // <Stack direction="row" spacing={2}>
+      //   {columns.map((column) => (
+      //     <div key={column.accessorKey}>
+      //       <label>{column.header} Filter:</label>
+      //       <input
+      //         type="text"
+      //         value={column.filterValue || ""}
+      //         onChange={(e) => setColumnFilterValue(column.accessorKey, e.target.value)}
+      //       />
+      //     </div>
+      //   ))}
+      // </Stack>
+      <div>jhwfjhwr</div>
+    );
+  };
 
   const table = useMaterialReactTable({
     columns,
@@ -123,7 +163,11 @@ const PmaBillingTable = () => {
         </Tooltip>
       </Box>
     ),
-    enableGlobalFilter: false,
+   
+
+    columnFilterDisplayMode: "custom",
+    
+    
     initialState: {
       expanded: true, //expand all groups by default
       grouping: [], //an array of columns to group by by default (can be multiple)
@@ -133,9 +177,9 @@ const PmaBillingTable = () => {
     muiTableHeadCellProps: {
       //simple styling with the `sx` prop, works just like a style prop in this example
       sx: {
-        fontWeight: 'normal',
-        fontSize: '14px',
-        backgroundColor:"#F0F6FF"
+        fontWeight: "normal",
+        fontSize: "14px",
+        backgroundColor: "#F0F6FF",
       },
     },
 
@@ -246,7 +290,10 @@ const PmaBillingTable = () => {
           {error.month && <p className="text-red-800">{error.month}</p>} */}
           <CustomButton title="Add New PMA Invoice" />
         </Stack>
-        {showTable && <MaterialReactTable table={table} />}
+       
+        {/* {showTable &&  */}
+        <MaterialReactTable table={table} />
+        {/* } */}
       </Stack>
     </Stack>
   );

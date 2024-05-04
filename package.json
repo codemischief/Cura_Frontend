@@ -33,7 +33,9 @@
     "react-window-infinite-loader": "^1.0.9",
     "sort-by": "^1.2.0",
     "xlsx": "^0.18.5",
-    "material-react-table": "^2.13.0"
+    "material-react-table": "^2.13.0",
+    "@material-table/core": "0.2.32",
+    "@material-table/exporters": "1.0.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
