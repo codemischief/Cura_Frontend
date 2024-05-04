@@ -39,7 +39,7 @@ import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { FilePdfOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
+import { getPmaBilling, setCountPerPage, setPageNumber } from "../../../Redux/slice/pmaSlice";
 const fullScreen = {
   position: "fixed",
   top: 0,
@@ -130,7 +130,7 @@ const tableIcons = {
 };
 
 export default function MyMaterialTable(props) {
-  const { pmaBillingData, totalCount } = useSelector(
+  const { pmaBillingData, totalCount, countPerPage, pageNo } = useSelector(
     (state) => state.pmaBilling
   );
   const [fullscreenOpen, setFullscreenOpen] = useState(false);
@@ -144,6 +144,14 @@ export default function MyMaterialTable(props) {
     []
   );
   const dispatch = useDispatch();
+
+  const handlePageChange = (event, newPage) => {
+    
+  };
+
+  console.log(totalCount, countPerPage, pageNo,"fcgvbhjikcgvbhjnk");
+
+
   // useEffect(() => {
   //   dispatch(getPmaBilling());
   //   console.log("pmaBillingData", pmaBillingData, totalCount);
@@ -187,21 +195,29 @@ export default function MyMaterialTable(props) {
     }
   };
 
+
   const CustomPaginationComponent = (props) => {
+    const {dispatch,setPageNumber,totalCount,countPerPage,pageNo} = props
+    // console.log(dispatch);
     const [anchorEl, setAnchorEl] = useState(null);
-    const { page, rowsPerPage, count, onChangePage } = props;
-    let from = rowsPerPage * page + 1;
-    let to = rowsPerPage * (page + 1);
-    if (to > count) {
-      to = count;
-    }
+   
+    // const handlePageChange = (event, newPage) => {
+    //   dispatch(setPageNumber(newPage))
+    // };
+
+    
     const open = Boolean(anchorEl);
     return (
       <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
         {/* footer component */}
         <div className="ml-2">
           <div className="flex items-center w-auto h-full">
-            <Pagination count={10} />
+            <Pagination
+              count={Math.ceil(totalCount / countPerPage)} // Calculate total pages
+              page={pageNo + 1} // Page is zero-indexed, so add 1
+              variant="outlined"
+              onChange={handlePageChange}
+            />
           </div>
         </div>
         <div className="flex mr-10 justify-center items-center space-x-2 ">
@@ -210,8 +226,8 @@ export default function MyMaterialTable(props) {
             <select
               className="text-gray-700 border-black border-[1px] rounded-md p-1"
               name="currentPages"
-              value={1}
-              onChange={(e) => {}}
+              // value={countPerPage}
+              // onChange={(e) => {dispatch(setCountPerPage(e.target.value))}}
             >
               <option>15</option>
               <option>20</option>
@@ -271,7 +287,7 @@ export default function MyMaterialTable(props) {
     <MaterialTable
       tableRef={tableRef}
       columns={columns}
-      data={data}
+      data={pmaBillingData}
       title={""}
       options={{
         actionsColumnIndex: -1,
@@ -281,8 +297,8 @@ export default function MyMaterialTable(props) {
         filtering: true,
         grouping: true,
         columnsButton: true,
-        pageSize: 5,
-        pageSizeOptions: [5, 10, 20],
+        pageSize: 30,
+        pageSizeOptions: [5, 10, 20, 30],
         padding: "default",
         headerStyle: {
           backgroundColor: "lightblue",
@@ -303,7 +319,7 @@ export default function MyMaterialTable(props) {
       }}
       components={{
         Pagination: (props) => {
-          return <CustomPaginationComponent {...props} />;
+          return <CustomPaginationComponent {...props} dispatch={dispatch} setPageNumber={setPageNumber} totalCount={totalCount} countPerPage={countPerPage} pageNo={pageNo} />;
         },
       }}
     />

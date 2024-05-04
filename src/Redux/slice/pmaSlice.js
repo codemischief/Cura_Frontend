@@ -23,13 +23,23 @@ export const pmaSlice = createSlice({
     setStatus: (state, { payload }) => {
       state.status = payload;
     },
+    setPageNumber: (state, { payload }) => {
+      state.pageNo = payload;
+    },
+    setCountPerPage: (state, { payload }) => {
+      state.countPerPage = payload;
+    },
   },
 });
 
 // reducer
-export default pmaSlice.reducer;
 // Action creators are generated for each case reducer function
-export const { setPmaBillingData, setStatus } = pmaSlice.actions;
+export const {
+  setPmaBillingData,
+  setStatus,
+  setPageNumber,
+  setCountPerPage,
+} = pmaSlice.actions;
 
 export const getPmaBilling = (payloadObj) => async (dispatch) => {
   try {
@@ -45,3 +55,6 @@ export const getPmaBilling = (payloadObj) => async (dispatch) => {
     dispatch(setStatus("error"));
   }
 };
+
+export default pmaSlice.reducer;
+
