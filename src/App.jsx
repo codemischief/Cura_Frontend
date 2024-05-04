@@ -114,7 +114,7 @@ const App = () => {
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     <Route path="/manage/manageclientinfo/properties/:clientname" element={<ManageClientPropertyByClientName/>}/>
                     <Route path='admin/temp' element={<Temp/>}/>
-                    <Route path='/manage/pmaBilling' element= {<MyMaterialTable />} />
+                    <Route path='/manage/pmaBilling' element= {<PmaBillingTable />} />
                {/* </Route>  */}
 
 

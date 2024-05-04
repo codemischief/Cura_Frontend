@@ -1,15 +1,18 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
-import { data } from "./data";
-import { Box, Button, IconButton, Stack, Tooltip } from "@mui/material";
+  Box,
+  Button,
+  CircularProgress,
+  LinearProgress,
+  Stack,
+} from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { Delete, Edit } from "@mui/icons-material";
-// const YEAR= ["2021", "2022", "2023, ""]
+import MyMaterialTable from "./MyMaterialTable";
+import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
+
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
   const yearsRange = [];
@@ -36,157 +39,31 @@ const MONTHS = [
   "December",
 ];
 const PmaBillingTable = () => {
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.pmaBilling);
   const [showTable, setShowTable] = useState(false);
-  const MyCustomFilter = ({ column, setColumnFilterValue }) => {
-    // const handleFilterChange = (e) => {
-    //   setColumnFilterValue(column.accessorKey, e.target.value);
-    // };
-    console.log(column, "column");
-
-    return (
-      <input
-        type="text"
-        placeholder={`Filter ${column.header}`}
-        // onChange={handleFilterChange}
-      />
-    );
-  };
-
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "id",
-        header: "Sr no.",
-        enableEditing: false,
-        size: 80,
-        Filter: MyCustomFilter,
-      },
-      {
-        header: "Client Name",
-        accessorKey: "firstName",
-        Filter: MyCustomFilter,
-      },
-      {
-        header: "Quote Description",
-        accessorKey: "lastName",
-        Filter: MyCustomFilter,
-      },
-      {
-        header: "Invoice Date",
-        accessorKey: "age",
-        Filter: MyCustomFilter,
-      },
-      {
-        header: "Invoice Amount",
-        accessorKey: "gender",
-        Filter: MyCustomFilter,
-      },
-      {
-        header: "Base Amount",
-        accessorKey: "state",
-        Filter: MyCustomFilter,
-      },
-      {
-        header: "Tax  Amount",
-        accessorKey: "salary",
-        Filter: MyCustomFilter,
-      },
-    ],
-    []
-  );
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
-  const tableData = useMemo(
-    () => data.map((d, index) => ({ ...d, id: index + 1 })),
-    []
-  );
-  //demo state
-  const [groupedColumnMode, setGroupedColumnMode] = useState("reorder"); //default is 'reorder
 
-  const MyCustomColumnFilters = ({ columns, setColumnFilterValue }) => {
-    return (
-      // <Stack direction="row" spacing={2}>
-      //   {columns.map((column) => (
-      //     <div key={column.accessorKey}>
-      //       <label>{column.header} Filter:</label>
-      //       <input
-      //         type="text"
-      //         value={column.filterValue || ""}
-      //         onChange={(e) => setColumnFilterValue(column.accessorKey, e.target.value)}
-      //       />
-      //     </div>
-      //   ))}
-      // </Stack>
-      <div>jhwfjhwr</div>
-    );
+  const handleSelectMonth = (e) => {
+    setSelectedMonth(e.target.value);
+  };
+  const handleSelectYear = (e) => {
+    setSelectedYear(e.target.value);
   };
 
-  const table = useMaterialReactTable({
-    columns,
-    data: tableData,
-    // data:[],
-    enableGrouping: true,
-    // enableEditing: true,
-    enableStickyHeader: true,
-    positionActionsColumn: "last",
-    groupedColumnMode,
-    muiTableBodyRowProps: ({ row }) => ({
-      onClick: (event) => {
-        // console.info("event", row.original);
-      },
-      sx: {
-        cursor: "pointer", //you might want to change the cursor too when adding an onClick
-      },
-    }),
-    renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
-        <Tooltip title="Edit">
-          <IconButton
-            onClick={() => {
-              console.log("row", row.original);
-              // table.setEditingRow(row);
-            }}
-          >
-            <Edit />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton
-            color="error"
-            onClick={() => {
-              // row;
-            }}
-          >
-            <Delete />
-          </IconButton>
-        </Tooltip>
-      </Box>
-    ),
-   
-
-    columnFilterDisplayMode: "custom",
-    
-    
-    initialState: {
-      expanded: true, //expand all groups by default
-      grouping: [], //an array of columns to group by by default (can be multiple)
-      pagination: { pageIndex: 0, pageSize: 20 },
-    },
-    muiTableContainerProps: { sx: { maxHeight: "440px" } },
-    muiTableHeadCellProps: {
-      //simple styling with the `sx` prop, works just like a style prop in this example
-      sx: {
-        fontWeight: "normal",
-        fontSize: "14px",
-        backgroundColor: "#F0F6FF",
-      },
-    },
-
-    // MRT_ToolbarDropZoneProps
-  });
   const handleShow = () => {
     if (selectedYear && selectedMonth) {
+      let obj = {
+        user_id: 1234,
+        month: +selectedMonth,
+        year: selectedYear,
+        filter: [],
+        pg_no: 1,
+        pg_size: 30,
+      };
+      dispatch(getPmaBilling(obj));
       setShowTable(true);
     } else {
       setError((prev) => ({
@@ -196,6 +73,8 @@ const PmaBillingTable = () => {
       }));
     }
   };
+
+  // console.log("status", status);
   return (
     <Stack gap="1rem">
       <Navbar />
@@ -225,9 +104,7 @@ const PmaBillingTable = () => {
                 className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
                 name="year"
                 value={selectedYear}
-                onChange={(e) => {
-                  setSelectedYear(e.target.value);
-                }}
+                onChange={handleSelectYear}
               >
                 <option selected value={""} className="hidden"></option>
                 {YEARS.map((item, index) => {
@@ -248,14 +125,12 @@ const PmaBillingTable = () => {
                 name="year"
                 value={selectedMonth}
                 defaultValue="Select State"
-                onChange={(e) => {
-                  setSelectedMonth(e.target.value);
-                }}
+                onChange={handleSelectMonth}
               >
                 <option selected value={""} className="hidden"></option>
                 {MONTHS.map((item, index) => {
                   return (
-                    <option value={item} key={index}>
+                    <option value={index + 1} key={index}>
                       {item}
                     </option>
                   );
@@ -290,10 +165,12 @@ const PmaBillingTable = () => {
           {error.month && <p className="text-red-800">{error.month}</p>} */}
           <CustomButton title="Add New PMA Invoice" />
         </Stack>
-       
-        {/* {showTable &&  */}
-        <MaterialReactTable table={table} />
-        {/* } */}
+        {status === "loading" && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )}
+        {status === "success" && showTable && <MyMaterialTable />}
       </Stack>
     </Stack>
   );

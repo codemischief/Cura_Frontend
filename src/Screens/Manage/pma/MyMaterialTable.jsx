@@ -38,8 +38,8 @@ import {
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { FilePdfOutlined } from "@ant-design/icons";
-import {useDispatch} from 'react-redux'
-import { example } from "../../../Redux/pmaSlicing";
+import { useDispatch, useSelector } from "react-redux";
+import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
 const fullScreen = {
   position: "fixed",
   top: 0,
@@ -130,6 +130,9 @@ const tableIcons = {
 };
 
 export default function MyMaterialTable(props) {
+  const { pmaBillingData, totalCount } = useSelector(
+    (state) => state.pmaBilling
+  );
   const [fullscreenOpen, setFullscreenOpen] = useState(false);
   const [columnResizable, setColumnResizable] = useState(false);
   const [error, setError] = useState({ year: false, month: false });
@@ -141,11 +144,10 @@ export default function MyMaterialTable(props) {
     []
   );
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(example());
-  }, []);
-
-
+  // useEffect(() => {
+  //   dispatch(getPmaBilling());
+  //   console.log("pmaBillingData", pmaBillingData, totalCount);
+  // }, []);
 
   function getYearsRange() {
     const currentYear = new Date().getFullYear();
@@ -199,7 +201,7 @@ export default function MyMaterialTable(props) {
         {/* footer component */}
         <div className="ml-2">
           <div className="flex items-center w-auto h-full">
-          <Pagination count={10} />
+            <Pagination count={10} />
           </div>
         </div>
         <div className="flex mr-10 justify-center items-center space-x-2 ">
@@ -266,139 +268,44 @@ export default function MyMaterialTable(props) {
   };
 
   return (
-    <Stack gap="1rem">
-      <Navbar />
-      <Stack direction={"column"} paddingX={"14px"}>
-        <HeaderBreadcrum
-          heading={"Manage PMA Billing"}
-          path={["Manage", "Manage PMA Billing"]}
-        />
-        <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          // alignContent={"center"}
-          alignItems={"center"}
-        >
-          <Stack
-            direction={"row"}
-            justifyContent={"space-around"}
-            alignItems={"center"}
-            gap={"24px"}
-          >
-            <div className="flex flex-col h-16 w-[281px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Select Year <span className="text-[#CD0000]">*</span>
-              </label>
-              <select
-                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="year"
-                value={selectedYear}
-                onChange={(e) => {
-                  setSelectedYear(e.target.value);
-                }}
-              >
-                <option selected value={""} className="hidden"></option>
-                {YEARS.map((item, index) => {
-                  return (
-                    <option value={item} key={item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="flex flex-col h-16 w-[281px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Select Month <span className="text-[#CD0000]">*</span>
-              </label>
-              <select
-                className="w-[281px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="year"
-                value={selectedMonth}
-                defaultValue="Select State"
-                onChange={(e) => {
-                  setSelectedMonth(e.target.value);
-                }}
-              >
-                <option selected value={""} className="hidden"></option>
-                {MONTHS.map((item, index) => {
-                  return (
-                    <option value={item} key={index}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-          </Stack>
-          <Button
-            variant="outlined"
-            onClick={handleShow}
-            sx={{
-              height: "36px",
-              textTransform: "none",
-              color: "#004DD7",
-              borderRadius: "8px",
-              width: "133px",
-              fontSize: "14px",
-              border: "1px solid #004DD7",
-              fontWeight: "600px",
-              lineHeight: "18.9px",
-              "&:hover": {
-                //you want this to be the same as the backgroundColor above
-                backgroundColor: "#004DD7",
-                color: "#fff",
-              },
-            }}
-            disabled={!(selectedYear && selectedMonth)}
-          >
-            Show
-          </Button>
-          <CustomButton title="Add New PMA Invoice" />
-        </Stack>
-        <MaterialTable
-          tableRef={tableRef}
-          columns={columns}
-          data={data}
-          title={""}
-
-          options={{
-            actionsColumnIndex: -1,
-            addRowPosition: "first",
-            emptyRowsWhenPaging: false,
-            search: true,
-            filtering: true,
-            grouping: true,
-            columnsButton: true,
-            pageSize: 5,
-            pageSizeOptions: [5, 10, 20],
-            padding: "default",
-            headerStyle: {
-              backgroundColor: "lightblue",
-              pt: 12,
-              pb: 12,
-            },
-            filterCellStyle: { padding: "4px" },
-            selection: false,
-            exportAllData: true,
-            columnResizable: columnResizable,
-            tableWidth: "variable",
-            tableLayout: columnResizable ? "fixed" : "auto",
-            toolbar: false,
-            // Customizing the toolbar to include filter input fields
-            toolbarButtonAlignment: "",
-          }}
-          icons={{
-            SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
-          }}
-          components={{
-            Pagination: (props) => {
-              return <CustomPaginationComponent {...props} />;
-            },
-          }}
-        />
-      </Stack>
-    </Stack>
+    <MaterialTable
+      tableRef={tableRef}
+      columns={columns}
+      data={data}
+      title={""}
+      options={{
+        actionsColumnIndex: -1,
+        addRowPosition: "first",
+        emptyRowsWhenPaging: false,
+        search: true,
+        filtering: true,
+        grouping: true,
+        columnsButton: true,
+        pageSize: 5,
+        pageSizeOptions: [5, 10, 20],
+        padding: "default",
+        headerStyle: {
+          backgroundColor: "lightblue",
+          pt: 12,
+          pb: 12,
+        },
+        filterCellStyle: { padding: "4px" },
+        selection: false,
+        exportAllData: true,
+        columnResizable: columnResizable,
+        tableWidth: "variable",
+        tableLayout: columnResizable ? "fixed" : "auto",
+        toolbar: false,
+        toolbarButtonAlignment: "",
+      }}
+      icons={{
+        SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
+      }}
+      components={{
+        Pagination: (props) => {
+          return <CustomPaginationComponent {...props} />;
+        },
+      }}
+    />
   );
 }
