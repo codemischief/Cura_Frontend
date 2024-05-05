@@ -1578,7 +1578,7 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='pl-1 text-[11px] text-blue-500'>
-                                            <Link to="">L&L Agreement</Link>
+                                            <Link to={`llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link>
                                         </div>
                                     </div>
                                 </div>

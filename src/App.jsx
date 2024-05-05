@@ -48,6 +48,7 @@ import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderCo
 import Temp from './Screens/Admin/temp';
 import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName" ; 
 import ClientPmaArgreement from './Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement';
+import ClientLLAgreement from './Screens/Manage/ManageClientProperty/ClientLLAgreement/ClientLLAgreement copy';
 
 const App = () => {
   const ROLES = {
@@ -112,7 +113,8 @@ const App = () => {
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     <Route path="/manage/manageclientinfo/properties/:clientname" element={<ManageClientPropertyByClientName/>}/>
-                    <Route path="/manage/manageclientproperty/pmaagreement/:clientname" element={<ClientPmaArgreement/>}/>
+                    <Route path="/manage/manageclientproperty/pmaagreement/:clientname" element={<ClientPmaArgreement />}/>
+                    <Route path="/manage/manageclientproperty/llagreement/:clientname" element={<ClientLLAgreement />}/>
                     <Route path='admin/temp' element={<Temp/>}/>
                {/* </Route>  */}
 
