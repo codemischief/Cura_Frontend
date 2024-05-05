@@ -226,11 +226,22 @@ const ClientPmaArgreement = () => {
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
-        setCurrentPage((prev) => 1)
+        const tempArray = []
+         // we need to query thru the object
+         // console.log(filterMapState);
+         console.log(filterMapState)
+         Object.keys(filterMapState).forEach(key=> {
+             if(filterMapState[key].filterType != "") {
+                 tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+             }
+         })
+         setFilterState((prev) => tempArray)
+         setCurrentPage((prev) => 1)
+        // setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -774,6 +785,12 @@ const ClientPmaArgreement = () => {
     }
 
     const filterMapping = {
+        clientpropertyid : {
+            filterType : "equalTo",
+            filterValue : state.clientPropertyId,
+            filterData : "Numeric",
+            filterInput : ""
+        },
         clientname : {
             filterType : "",
             filterValue : "",
