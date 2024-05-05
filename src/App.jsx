@@ -27,7 +27,7 @@ import ManageClientInfo from './Screens/Manage/ManageClientInfo/ManageClientInfo
 import ManageClientProperty from './Screens/Manage/ManageClientProperty/ManageClientProperty';
 import ManageClientReceipt from './Screens/Manage/ManageClientReceipt/ManageClientReceipt';
 import ManageLLAgreement from './Screens/Manage/ManageLLAgreement/ManageLLAgreement';
-import ManagePmaArgreement from './Screens/Manage/ManagePmaAgreement/ManagePmaAgreement';
+import ManagePmaArgreement from './Screens/Manage/ManagePmaAgreement/ManagePmaAgreement copy';
 import ManageOrderReceipt from './Screens/Manage/ManageOrderReceipt/ManageOrderReceipt';
 import ManageClientInvoice from './Screens/Manage/ManageClientInvoice/ManageClientInvoice';
 import ManageVendor from './Screens/Manage/ManageVendor/ManagerVendor';
@@ -47,6 +47,7 @@ import ManageBuilderProject from './Screens/Manage/ManageBuilder/ManageBuilderPr
 import ManageBuilderContact from './Screens/Manage/ManageBuilder/ManageBuilderContact/ManageBuilderContact';
 import Temp from './Screens/Admin/temp';
 import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName" ; 
+import ClientPmaArgreement from './Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement';
 
 const App = () => {
   const ROLES = {
@@ -111,6 +112,7 @@ const App = () => {
                     <Route path="admin/managebuilder/projects/:buildername" element={<ManageBuilderProject/>}/>
                     <Route path="admin/managebuilder/contacts/:buildername" element={<ManageBuilderContact/>}/>
                     <Route path="/manage/manageclientinfo/properties/:clientname" element={<ManageClientPropertyByClientName/>}/>
+                    <Route path="/manage/manageclientproperty/pmaagreement/:clientname" element={<ClientPmaArgreement/>}/>
                     <Route path='admin/temp' element={<Temp/>}/>
                {/* </Route>  */}
 

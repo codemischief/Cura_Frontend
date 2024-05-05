@@ -1573,7 +1573,7 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-1 text-[11px] text-blue-500'>
-                                            <Link to="">PMA Agreement</Link>
+                                            <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>PMA Agreement</Link>
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
