@@ -84,9 +84,9 @@ const FilterField = (props) => {
           {search && (
             <IconButton
               onClick={() => setSearch("")}
-              sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
+              sx={{ height: "12px", w: "12px", color: "#C6C6C6" }}
             >
-              <Close sx={{ height: "16px", w: "16px", color: "#C6C6C6" }} />
+              <Close sx={{ height: "12px", w: "12px", color: "#C6C6C6" }} />
             </IconButton>
           )}
           <Tooltip title="Filters">

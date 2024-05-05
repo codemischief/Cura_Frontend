@@ -3,15 +3,16 @@ import { connectionTypeObj, connectionProtocolsObj } from "./data";
 import connectionDataColumn from "./columns";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
-
 import MaterialTable from "@material-table/core";
 import { MenuItem, Pagination, Popover } from "@mui/material";
 import { Refresh, ArrowUpward } from "@mui/icons-material";
 import { FilePdfOutlined } from "@ant-design/icons";
 import { env_URL_SERVER } from "../../../Redux/helper";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+
 
 const CustomPaginationComponent = (props) => {
-  // console.log("props", props);
   const {
     count,
     page,
@@ -19,8 +20,69 @@ const CustomPaginationComponent = (props) => {
     onPageChange,
     rowsPerPageOptions,
     onRowsPerPageChange,
+    tableRef,
   } = props;
+
   const [anchorEl, setAnchorEl] = useState(null);
+  const downloadExcel = () => {
+    const tableData = tableRef.current?.dataManager?.data;
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "pmaBilling.xlsx");
+  };
+
+  const downloadPDF = () => {
+    const data = tableRef.current?.dataManager?.data;
+    const pdf = new jsPDF("p", "pt", "a4");
+
+    // Set the font for the entire table
+    pdf.setFont("helvetica");
+
+    // Set up the table headers
+    const headers = Object.keys(data[0]);
+
+    // Set up the table rows
+    const rows = data.map((obj) => headers.map((key) => obj[key]));
+
+    // Add a table with headers and rows
+    pdf.autoTable({
+      head: [headers],
+      body: rows,
+      startY: 60, // Adjust table starting Y position
+      theme: "striped",
+      styles: {
+        cellPadding: 5,
+        fontSize: 10,
+        valign: "middle",
+        halign: "center",
+        overflow: "linebreak", // Overflow content to new line if needed
+      },
+      columnStyles: {
+        // Adjust column width if needed
+        0: { columnWidth: "auto" },
+        1: { columnWidth: "auto" },
+        // Add more column styles as needed
+      },
+      margin: { top: 50 },
+      addPageContent: function (data) {
+        // Add header to each page
+        pdf.setFontSize(18);
+        pdf.text("Table Title", data.settings.margin.left, 40);
+      },
+      didParseCell: function (data) {
+        // Adjust row height based on content
+        const cellHeight =
+          pdf.internal.getLineHeight() * (data.row.raw.length / 50);
+        if (data.row.raw.length > 50) {
+          data.row.height = cellHeight;
+        }
+      },
+    });
+
+    // Save the PDF
+    pdf.save("data.pdf");
+  };
 
   const open = Boolean(anchorEl);
   return (
@@ -29,8 +91,8 @@ const CustomPaginationComponent = (props) => {
       <div className="ml-2">
         <div className="flex items-center w-auto h-full">
           <Pagination
-            count={Math.ceil(count / rowsPerPage)} // Calculate total pages
-            page={page + 1} // Page is zero-indexed, so add 1
+            count={Math.ceil(count / rowsPerPage)}
+            page={page + 1}
             variant="outlined"
             onChange={(e, value) => {
               onPageChange(e, value - 1);
@@ -57,7 +119,6 @@ const CustomPaginationComponent = (props) => {
             {+count} Items in {Math.ceil(+count / +rowsPerPage)} Pages
           </p>
         </div>
-
         <Popover
           open={open}
           anchorEl={anchorEl}
@@ -68,18 +129,22 @@ const CustomPaginationComponent = (props) => {
             horizontal: "left",
           }}
         >
-          <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3">
+          <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3" onClick={downloadPDF}>
             <p>Download as Pdf</p>
             <img src={Pdf} />
           </MenuItem>
-          <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3">
+          <MenuItem
+            className="flex space-x-2 justify-center items-center ml-3 mt-3"
+            onClick={downloadExcel}
+          >
             <p> Download as Excel</p>
             <img src={Excel} />
           </MenuItem>
         </Popover>
-
-        <div className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2">
-          <button onClick={() => {}}>
+          <div className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer" onClick={() => {
+              tableRef?.current.onQueryChange();
+            }}>
+          <button>
             <p>Refresh</p>
           </button>
           <Refresh sx={{ height: "16px", width: "16px" }} />
@@ -102,10 +167,7 @@ const CustomPaginationComponent = (props) => {
 };
 
 export default function MyMaterialTable({ year, month }) {
-  // const dispatch = useDispatch();
-
   const [columnResizable, setColumnResizable] = useState(false);
-
   const tableRef = useRef();
   const columns = useMemo(
     () => connectionDataColumn({ connectionTypeObj, connectionProtocolsObj }),
@@ -117,31 +179,17 @@ export default function MyMaterialTable({ year, month }) {
       <MaterialTable
         tableRef={tableRef}
         columns={columns}
-        // data={tableData}
         data={(query) =>
           new Promise((resolve, reject) => {
-            console.log("query", query);
-            // prepare your data and then call resolve like this:
             let url = `${env_URL_SERVER}getPMABilling`;
             let pageNo = Number(query.page);
             let pageSize = Number(query.pageSize);
-            //searching
-            if (query.search) {
-              url += `q=${query.search}`;
-            }
-            //sorting
+            let sort_by=[]
+            let sort_order=[]
             if (query.orderBy) {
-              url += `&_sort=${query.orderBy.field}&_order=${query.orderDirection}`;
+              sort_by.push(query.orderBy.field)
+              sort_order.push(query.orderDirection)
             }
-            //filtering
-            if (query.filters.length) {
-              // const filter = query.filters.map((filter) => {
-              //   return `&${filter.column.field}${filter.operator}${filter.value}`;
-              // });
-              // url += filter.join("");
-              // console.log("query.filters.value", query.filters[0].value);
-            }
-
             const options = {
               method: "POST",
               headers: {
@@ -154,25 +202,28 @@ export default function MyMaterialTable({ year, month }) {
                 filter: query?.filters?.length ? query?.filters[0]?.value : [],
                 pg_no: pageNo + 1,
                 pg_size: pageSize,
+                add: false,
+                sort_by,
+                sort_order
               }),
             };
-            //pagination
-            // url += `&_page=${query.page + 1}`;
-            // url += `&_limit=${query.pageSize}`;
-
             fetch(url, options)
               .then((resp) => resp.json())
               .then((resp) => {
                 resolve({
-                  data: resp.data, // your data array
-                  page: query.page, // current page number
-                  totalCount: resp.total_count, // total row number
+                  data: resp.data, 
+                  page: query.page, 
+                  totalCount: resp.total_count,
                 });
               });
           })
         }
         title={""}
         options={{
+          exportButton: {
+            csv: true,
+            pdf: false,
+          },
           actionsColumnIndex: -1,
           addRowPosition: "first",
           emptyRowsWhenPaging: false,
@@ -181,13 +232,13 @@ export default function MyMaterialTable({ year, month }) {
           grouping: true,
           columnsButton: true,
           paging: true,
-          // pageNo: 1,
           pageSize: 15,
           pageSizeOptions: [15, 25, 50],
           padding: "default",
           headerStyle: {
             backgroundColor: "lightblue",
             position: "sticky",
+            zIndex:90,
             top: 0,
             pt: 12,
             pb: 12,
@@ -196,19 +247,18 @@ export default function MyMaterialTable({ year, month }) {
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,
-          columnResizable: columnResizable,
           tableWidth: "variable",
           tableLayout: columnResizable ? "fixed" : "auto",
           toolbar: false,
           pagination: false,
-          toolbarButtonAlignment: "",
+          toolbacolumnResizablerButtonAlignment: "",
         }}
         icons={{
           SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
         }}
         components={{
           Pagination: (props) => {
-            return <CustomPaginationComponent {...props} />;
+            return <CustomPaginationComponent {...props} tableRef={tableRef} />;
           },
         }}
       />
