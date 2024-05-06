@@ -53,7 +53,7 @@ const Country = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
   const [isSearchOn, setIsSearchOn] = useState(false);
-  const [filterState,setFilterState] = useState([]);
+  const [filterState, setFilterState] = useState([]);
   // const [flag,setFlag] = useState(false);
   const fetchUserId = async () => {
     const response = await authService.getUserId();
@@ -71,10 +71,10 @@ const Country = () => {
     console.log("edit model called");
     setShowEditSuccess(true);
     setTimeout(function () {
-        setShowEditSuccess(false);
+      setShowEditSuccess(false);
     }, 2000)
     fetchData();
-}
+  }
   const openFailureModal = () => {
     // we have the error message hre
 
@@ -86,14 +86,14 @@ const Country = () => {
   }
 
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
-    const openDeleteSuccess = () => {
-        // setIsLobDialogue(false);
-        console.log('hey')
-        setShowDeleteSuccess(true);
-        setTimeout(function () {
-            setShowDeleteSuccess(false);
-        }, 2000)
-    }
+  const openDeleteSuccess = () => {
+    // setIsLobDialogue(false);
+    console.log('hey')
+    setShowDeleteSuccess(true);
+    setTimeout(function () {
+      setShowDeleteSuccess(false);
+    }, 2000)
+  }
 
   const openCancelModal = () => {
     // we have the error message hre
@@ -287,7 +287,7 @@ const Country = () => {
     }
     setCurrentCountry(formValues.countryName)
     setIsCountryDialogue(false);
-    setOpenAddConfirmation(true); 
+    setOpenAddConfirmation(true);
     // addCountry();
   };
 
@@ -344,7 +344,7 @@ const Country = () => {
     setSortField(field);
     setFlag((prev) => {
       return !prev
-  })
+    })
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
@@ -445,7 +445,7 @@ const Country = () => {
   const handleExcelDownload = async () => {
     const data = {
       "user_id": 1234,
-      "rows": ["name","id"],
+      "rows": ["name", "id"],
       "filters": [],
       "sort_by": ["id"],
       "order": "desc",
@@ -466,58 +466,23 @@ const Country = () => {
     console.log(columnName)
     console.log('hey')
     console.log(filterMapState);
-    if (columnName == 'status') {
-      var existing = filterMapState;
-      if (type == 'noFilter') {
-        setInputVariable("");
-      }
-      if (inputVariable.toLowerCase() == 'active') {
-        existing = {
-          ...existing, [columnName]: {
-            ...existing[columnName],
-            filterValue: 'true'
-          }
-        }
-        existing = {
-          ...existing, [columnName]: {
-            ...existing[columnName],
-            filterType: type == 'noFilter' ? "" : type
-          }
-        }
-      } else if (inputVariable.toLowerCase() == 'inactive') {
-        existing = {
-          ...existing, [columnName]: {
-            ...existing[columnName],
-            filterValue: 'false'
-          }
-        }
-        existing = {
-          ...existing, [columnName]: {
-            ...existing[columnName],
-            filterType: type == 'noFilter' ? "" : type
-          }
-        }
-      } else {
-        return;
-      }
 
-    } else {
-      var existing = filterMapState;
-      existing = {
-        ...existing, [columnName]: {
-          ...existing[columnName],
-          filterType: type == 'noFilter' ? "" : type
-        }
+    var existing = filterMapState;
+    existing = {
+      ...existing, [columnName]: {
+        ...existing[columnName],
+        filterType: type == 'noFilter' ? "" : type
       }
-      existing = {
-        ...existing, [columnName]: {
-          ...existing[columnName],
-          filterValue: type == 'noFilter' ? "" : inputVariable
-        }
-      }
-
-      if (type == 'noFilter') setInputVariable("");
     }
+    existing = {
+      ...existing, [columnName]: {
+        ...existing[columnName],
+        filterValue: type == 'noFilter' ? "" : inputVariable
+      }
+    }
+
+    if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
+
 
     fetchFiltered(existing);
   }
@@ -585,7 +550,7 @@ const Country = () => {
       {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully!" />}
       {showDelete && <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} showCancel={openEditCancelModal} showSuccess={openDeleteSuccess} />}
       {showEdit && <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} showSuccess={openSuccessEditModal} showCancel={openEditCancelModal} />}
-      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry} showCancel={openCancelModal} setDefault={initials}  />}
+      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry} showCancel={openCancelModal} setDefault={initials} />}
       {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Country Deleted Successfully!" />}
       <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
         <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -600,16 +565,16 @@ const Country = () => {
           </div>
           <div className='flex space-x-2 items-center'>
 
-            <div className='flex relative'>
+            <div className='flex bg-[#EBEBEB] '>
               {/* search button */}
               <input
-                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 outline-none w-48"
                 type="text"
                 placeholder="  Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+              <button onClick={handleCloseSearch}><img src={Cross} className='w-[20px] h-[20px] mx-2' /></button>
               <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
               </div>
@@ -636,7 +601,7 @@ const Country = () => {
                 <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
                 <button className='px-1 py-2 w-[25%]' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
               </div>
-              {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef}/>}
+              {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} />}
             </div>
 
           </div>
@@ -645,7 +610,7 @@ const Country = () => {
               <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
               <button className='px-1 py-2 w-[25%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
             </div>
-            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
+            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
             <div className='w-1/2 p-4'>
 
             </div>
@@ -783,45 +748,45 @@ const Country = () => {
       >
         <>
           <Draggable>
-        <div className='flex justify-center '>
-          <div className="w-[778px]  h-auto bg-white rounded-lg ">
-            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-              <div className="mr-[270px] ml-[270px]">
-                <div className="text-[20px]">New Country</div>
-              </div>
-              <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-              </div>
-            </div>
-            <form onSubmit={handleSubmit} className='mb-3 space-y-16'>
-              <div className="h-auto w-full mt-2  ">
-                <div className="flex gap-[48px] justify-center items-center">
-                  <div className=" space-y-3 py-5 ">
-                    <div className="">
-                      <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
-                      <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] outline-none"
-                        type="text"
-                        name="countryName"
-                        value={formValues.countryName}
-                        onChange={handleChange}
-                        autoComplete="off"
-                      />
-                      <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div>
-                    </div>
+            <div className='flex justify-center '>
+              <div className="w-[778px]  h-auto bg-white rounded-lg ">
+                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                  <div className="mr-[270px] ml-[270px]">
+                    <div className="text-[20px]">New Country</div>
+                  </div>
+                  <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                    <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                   </div>
                 </div>
-              </div>
+                <form onSubmit={handleSubmit} className='mb-3 space-y-16'>
+                  <div className="h-auto w-full mt-2  ">
+                    <div className="flex gap-[48px] justify-center items-center">
+                      <div className=" space-y-3 py-5 ">
+                        <div className="">
+                          <div className="text-[13px]">Country Name<label className="text-red-500">*</label></div>
+                          <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] outline-none"
+                            type="text"
+                            name="countryName"
+                            value={formValues.countryName}
+                            onChange={handleChange}
+                            autoComplete="off"
+                          />
+                          <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              <div className=" flex justify-center items-center gap-3">
-                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
-                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                {isLoading && <CircularProgress />}
+                  <div className=" flex justify-center items-center gap-3">
+                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                    {isLoading && <CircularProgress />}
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </div>
+            </div>
           </Draggable>
-         </>
+        </>
       </Modal>
     </div>
   )
