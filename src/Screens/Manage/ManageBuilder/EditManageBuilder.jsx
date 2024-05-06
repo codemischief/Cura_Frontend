@@ -209,7 +209,7 @@ const EditManageBuilder = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">State <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
-                                                {selectedCity.map(item => (
+                                                {selectedState.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>

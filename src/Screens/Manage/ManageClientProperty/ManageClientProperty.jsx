@@ -580,7 +580,7 @@ const ManageClientProperty = () => {
             "owner1aadhaarcollected": false,
             "owner2name": null,
             "owner2panno": null,
-            "owner2aadhaarno": false,
+            "owner2aadhaarno": null,
             "owner2pancollected": false,
             "owner2aadhaarcollected": null,
             "owner3name": null,

@@ -848,16 +848,27 @@ const ManageBuilder = () => {
                                                 defaultValue="Select Country"
                                                 onChange={e => {
                                                     setselectedCountry(e.target.value);
-                                                    fetchStateData(e);
+                                                    setAllCity([])
+
+                                                    fetchStateData(e.target.value);
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, country: e.target.value }
                                                         return newData;
                                                     })
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, state: null }
+                                                        return newData;
+                                                    })
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, city: null }
+                                                        return newData;
+                                                    })
+                                                    
                                                     // fetchStateData(res);
                                                 }}
                                             >
                                                 {allCountry && allCountry.map(item => {
-                                                    if(item[0] == 5) {
+                                                    if(item[0] == formValues.country) {
                                                         return <option value={item[0]} selected>
                                                            {item[1]}
                                                         </option>
@@ -879,7 +890,7 @@ const ManageBuilder = () => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     setSelectedState(e.target.value);
-                                                    fetchCityData(e)
+                                                    fetchCityData(e.target.value)
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, state: e.target.value }
                                                         return newData;
@@ -887,7 +898,7 @@ const ManageBuilder = () => {
                                                     // fetchCityData(selectedState);
                                                 }} >
                                                 {allState && allState.map(item => {
-                                                    if(item[0] == "Maharashtra") {
+                                                    if(item[0] == formValues.state) {
                                                        return <option value={item[0]} selected>
                                                           {item[0]}
                                                        </option>
