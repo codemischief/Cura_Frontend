@@ -273,7 +273,12 @@ const ManageLLAgreement = () => {
         console.log(formValues)
         setSelectedOption(e)
     }
+    const handleTenantClientNameChange = (e,index) => {
+       const temp = [...selectedOptions]
 
+       temp[index] = e;
+       setSelectedOptions(temp);
+    }
     const loadOptions = async (e) => {
         console.log(e)
         if (e.length < 3) return;
@@ -410,7 +415,8 @@ const ManageLLAgreement = () => {
         setIsLLAgreementDialogue(false);
     }
 
-    const handleOpenTenantDetails = () => {
+    const handleOpenTenantDetails = (id) => {
+        setCurrItem(id);
         setTenantDetails(true);
     }
 
@@ -569,6 +575,7 @@ const ManageLLAgreement = () => {
         setOpenAddConfirmation(true)
 
     }
+
     const addLLAgreement = async () => {
         // console.log('clicked')
         console.log(formValues)
@@ -1016,7 +1023,37 @@ const ManageLLAgreement = () => {
         setExistingLLAgreement(result);
         setPageLoading(false);
     }
+    const [selectedOptions,setSelectedOptions] = useState([
+        {
+            label : "Select Client",
+            value : null
+        }
+    ])
 
+    const handleAddClient = () => {
+        console.log('called')
+        const temp = [...selectedOptions];
+        temp.push({
+                label : "Select Client",
+                value : null
+        })
+        setSelectedOptions(temp)
+    }
+    const handleAddTenant = async () => {
+        // we need the id here as well
+        const temp = []
+        for(var i=0;i<selectedOptions.length;i++) {
+            temp.push({ "tenantid"  : selectedOptions[i].value})
+        }
+        const data = {
+            "user_id":1234,
+            "leavelicenseid":currItem,
+            "tenants":temp
+          }
+          const response = await APIService.addLLTenant(data)
+          const res = await response.json()
+          console.log(res)
+    }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1258,7 +1295,7 @@ const ManageLLAgreement = () => {
                                 </div>
                                 <div className="w-[17%] flex">
                                     <div className='w-1/2  flex'>
-                                        <button onClick={handleOpenTenantDetails} >
+                                        <button onClick={() => handleOpenTenantDetails(item.id)} >
                                             <div className='p-3 text-blue-400 cursor-pointer'>
                                                 Tenant Details
                                             </div>
@@ -1579,7 +1616,49 @@ const ManageLLAgreement = () => {
                                     <div className="flex gap-[48px] justify-center ">
                                         <div className=" space-y-3 py-5">
                                             <div className="">
-                                                <div className="text-[13px]">
+                                                {/* this should a list */}
+                                                {selectedOptions.map((item,index) => {
+                                                    return <>
+                                                          <div className="text-[13px]">
+                                                    Client
+                                                </div>
+                                                <AsyncSelect
+                                                    onChange={(e) => handleTenantClientNameChange(e,index)}
+                                                    value={selectedOptions[index]}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
+
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 25,
+                                                            lineHeight: '1.3',
+                                                            height: 2,
+                                                            fontSize: 12,
+                                                            padding: '1px'
+                                                        }),
+                                                        // indicatorSeparator: (provided, state) => ({
+                                                        //   ...provided,
+                                                        //   lineHeight : '0.5',
+                                                        //   height : 2,
+                                                        //   fontSize : 12 // hide the indicator separator
+                                                        // }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '3px', // adjust padding for the dropdown indicator
+                                                        }),
+                                                        options: (provided, state) => ({
+                                                            ...provided,
+                                                            fontSize: 12 // adjust padding for the dropdown indicator
+                                                        })
+                                                    }}
+                                                />
+                                                    
+                                                    </>
+                                                })}
+                                                {/* <div className="text-[13px]">
                                                     Client
                                                 </div>
                                                 <AsyncSelect
@@ -1614,9 +1693,10 @@ const ManageLLAgreement = () => {
                                                             fontSize: 12 // adjust padding for the dropdown indicator
                                                         })
                                                     }}
-                                                />
+                                                /> */}
                                             </div>
-                                            <button className="bg-[#282828] text-white h-[36px] w-[300px] rounded-lg">
+                                            <button className="bg-[#282828] text-white h-[36px] w-[300px] rounded-lg" onClick={handleAddClient}>
+                                                
                                                 <div className="flex items-center justify-center gap-4">
                                                     Add Client
                                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
@@ -1629,7 +1709,7 @@ const ManageLLAgreement = () => {
                                 </div>
 
                                 <div className="my-3 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddTenant} >Add</button>
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseTenantDetails}>Cancel</button>
                                 </div>
                             </div>
