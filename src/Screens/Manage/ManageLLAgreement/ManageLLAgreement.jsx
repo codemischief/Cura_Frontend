@@ -89,6 +89,7 @@ const ManageLLAgreement = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
+    const [tenantDetails, setTenantDetails] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
     const dataRows = [
         "id",
@@ -312,7 +313,7 @@ const ManageLLAgreement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": searchInput 
+            "search_key": searchInput
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -327,13 +328,13 @@ const ManageLLAgreement = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": dataRows,    
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key":  searchInput 
+            "search_key": searchInput
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -357,7 +358,7 @@ const ManageLLAgreement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key": searchInput 
+            "search_key": searchInput
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -407,6 +408,14 @@ const ManageLLAgreement = () => {
 
     const handleClose = () => {
         setIsLLAgreementDialogue(false);
+    }
+
+    const handleOpenTenantDetails = () => {
+        setTenantDetails(true);
+    }
+
+    const handleCloseTenantDetails = () => {
+        setTenantDetails(false);
     }
 
     // harcoded dropdown
@@ -589,20 +598,20 @@ const ManageLLAgreement = () => {
         if (result.result == "success") {
             setFormValues(initialValues);
             setSelectedOption({
-                
-                    label: "Enter Client Name",
-                    value: null
-                
+
+                label: "Enter Client Name",
+                value: null
+
             })
             openAddSuccess();
         } else {
             setFormValues(initialValues);
             setSelectedOption({
-                
+
                 label: "Enter Client Name",
                 value: null
-            
-        })
+
+            })
             openFailureModal();
             setErrorMessage(result.message)
         }
@@ -750,7 +759,7 @@ const ManageLLAgreement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
@@ -861,9 +870,9 @@ const ManageLLAgreement = () => {
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": searchInput 
+            "search_key": searchInput
         };
-        
+
         const response = await APIService.getLLAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -973,7 +982,7 @@ const ManageLLAgreement = () => {
 
         fetchFiltered(existing);
     }
-    const [filterState,setFilterState] = useState([]);
+    const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
@@ -994,7 +1003,7 @@ const ManageLLAgreement = () => {
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no":1,
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
@@ -1249,9 +1258,12 @@ const ManageLLAgreement = () => {
                                 </div>
                                 <div className="w-[17%] flex">
                                     <div className='w-1/2  flex'>
-                                        <div className='p-3 text-blue-400 cursor-pointer'>
-                                            Tenant Details
-                                        </div>
+                                        <button onClick={handleOpenTenantDetails} >
+                                            <div className='p-3 text-blue-400 cursor-pointer'>
+                                                Tenant Details
+                                            </div>
+                                        </button>
+
                                     </div>
                                     <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
@@ -1351,198 +1363,279 @@ const ManageLLAgreement = () => {
             >
                 <>
                     <Draggable>
-                <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New L&L Agreement</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
-                                        </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
-
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
-                                            }}
-                                            />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
+                        <div className='flex justify-center'>
+                            <div className="w-[1050px] h-auto bg-white rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">New L&L Agreement</div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client Property <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="clientProperty"
-                                            value={formValues.clientProperty}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" >Select A Client Property</option>
-                                            {clientPropertyData.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.id}
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    {item.propertyname}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.startDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Rent Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Deposit Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">LL & PV Scan Copy </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} placeholder='Please paste the link here'/>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
-                                            
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" hidden >Select Client Order</option>
-                                            <option value="" >ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Order Description</option>
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.id}
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.endDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Rent payment Date
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="rentPaymentDate"
-                                            value={formValues.rentPaymentDate}
-                                            onChange={handleChange}
-                                        >
-                                            {rentPaymentDate.map((item) => (
-                                                <option key={item.id} value={item.day}>
-                                                    {item.day}
-                                                </option>
-                                            ))}
-                                        </select>
 
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Notice Period in Days </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Registration Type
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="registrationType"
-                                            value={formValues.registrationType}
-                                            onChange={handleChange}
-                                            >
-                                            {registrationType.map(item => (
-                                                <option key={item.id} value={item.type}>
-                                                    {item.type}
-                                                </option>
-                                            ))}
-                                        </select>
+                                <div className="h-auto w-full mt-[5px]">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Client <label className="text-red-500">*</label>
+                                                </div>
+                                                <AsyncSelect
+                                                    onChange={handleClientNameChange}
+                                                    value={selectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
 
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 25,
+                                                            lineHeight: '1.3',
+                                                            height: 2,
+                                                            fontSize: 12,
+                                                            padding: '1px'
+                                                        }),
+                                                        // indicatorSeparator: (provided, state) => ({
+                                                        //   ...provided,
+                                                        //   lineHeight : '0.5',
+                                                        //   height : 2,
+                                                        //   fontSize : 12 // hide the indicator separator
+                                                        // }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '3px', // adjust padding for the dropdown indicator
+                                                        }),
+                                                        options: (provided, state) => ({
+                                                            ...provided,
+                                                            fontSize: 12 // adjust padding for the dropdown indicator
+                                                        })
+                                                    }}
+                                                />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Client Property <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="clientProperty"
+                                                    value={formValues.clientProperty}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="" >Select A Client Property</option>
+                                                    {clientPropertyData.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.id}
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            {item.propertyname}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.startDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Rent Amount </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
+
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Deposit Amount </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
+
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">LL & PV Scan Copy </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} placeholder='Please paste the link here' />
+                                            </div>
+                                        </div>
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Order <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="order"
+                                                    value={formValues.order}
+
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="" hidden >Select Client Order</option>
+                                                    <option value="" >ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Order Description</option>
+                                                    {orders.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.id}
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            {item.ordername}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.endDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Rent payment Date
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="rentPaymentDate"
+                                                    value={formValues.rentPaymentDate}
+                                                    onChange={handleChange}
+                                                >
+                                                    {rentPaymentDate.map((item) => (
+                                                        <option key={item.id} value={item.day}>
+                                                            {item.day}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Notice Period in Days </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Registration Type
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="registrationType"
+                                                    value={formValues.registrationType}
+                                                    onChange={handleChange}
+                                                >
+                                                    {registrationType.map(item => (
+                                                        <option key={item.id} value={item.type}>
+                                                            {item.type}
+                                                        </option>
+                                                    ))}
+                                                </select>
+
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                                <div className="mt-[10px] flex justify-center items-center "><input
+                                    type="checkbox"
+                                    checked={formValues.status}
+                                    className='mr-3 h-4 w-4'
+                                    onClick={(e) => {
+                                        // console.log(e.target.checked)
+                                        const existing = { ...formValues };
+                                        existing.status = !existing.status;
+                                        setFormValues(existing)
+                                    }}
+                                />Active</div>
+                                <div className="my-3 flex justify-center items-center gap-[10px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLLAgreement} >Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-[10px] flex justify-center items-center "><input
-                            type="checkbox"
-                            checked={formValues.status}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = { ...formValues };
-                                existing.status = !existing.status;
-                                setFormValues(existing)
-                            }}
-                            />Active</div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLLAgreement} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-                    </div>
-                </div>
                     </Draggable>
-                            </>
+                </>
+            </Modal>
+
+            <Modal open={tenantDetails}
+                fullWidth={true}
+                maxWidth={'md'}
+                className='flex justify-center items-center'
+            >
+                <>
+                    <Draggable>
+                        <div className='flex justify-center'>
+                            <div className="w-[700px] h-auto bg-white rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[250px] ml-[250px]">
+                                        <div className="text-[16px]">Tenant Details</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={handleCloseTenantDetails}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                    </div>
+                                </div>
+
+                                <div className="h-auto w-full mt-[5px]">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Client
+                                                </div>
+                                                <AsyncSelect
+                                                    onChange={handleClientNameChange}
+                                                    value={selectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
+
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 25,
+                                                            lineHeight: '1.3',
+                                                            height: 2,
+                                                            fontSize: 12,
+                                                            padding: '1px'
+                                                        }),
+                                                        // indicatorSeparator: (provided, state) => ({
+                                                        //   ...provided,
+                                                        //   lineHeight : '0.5',
+                                                        //   height : 2,
+                                                        //   fontSize : 12 // hide the indicator separator
+                                                        // }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '3px', // adjust padding for the dropdown indicator
+                                                        }),
+                                                        options: (provided, state) => ({
+                                                            ...provided,
+                                                            fontSize: 12 // adjust padding for the dropdown indicator
+                                                        })
+                                                    }}
+                                                />
+                                            </div>
+                                            <button className="bg-[#282828] text-white h-[36px] w-[300px] rounded-lg">
+                                                <div className="flex items-center justify-center gap-4">
+                                                    Add Client
+                                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                                </div>
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div className="my-3 flex justify-center items-center gap-[10px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => { }} >Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseTenantDetails}>Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </Draggable>
+                </>
             </Modal>
         </div>
     )
