@@ -1591,13 +1591,13 @@ const ManageClientPropertyByClientName = () => {
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
-                                        <div className='px-1 text-[11px] text-blue-500'>
-                                            <Link to="">PMA Agreement</Link>
+                                    <div className='px-1 text-[11px] text-blue-500'>
+                                            <Link to={`/manage/manageclientproperty/pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>PMA Agreement</Link>
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
-                                        <div className='pl-1 text-[11px] text-blue-500'>
-                                            <Link to="">L&L Agreement</Link>
+                                    <div className='pl-1 text-[11px] text-blue-500'>
+                                            <Link to={`/manage/manageclientproperty/llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link>
                                         </div>
                                     </div>
                                 </div>
