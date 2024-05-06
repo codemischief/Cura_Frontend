@@ -432,7 +432,7 @@ const ManageOrderReceipt = () => {
         client: "",
         order: null,
         receiptMode: 5,
-        receivedBy: 1,
+        receivedBy: 1234,
         TDS: null,
         receiptDescription: "",
         receivedDate: null,
@@ -1030,7 +1030,6 @@ const ManageOrderReceipt = () => {
         <div className='h-screen'>
             <Navbar />
             {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData}/>}
-
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Order Receipt" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Order Receipt Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
@@ -1429,7 +1428,7 @@ const ManageOrderReceipt = () => {
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-[13px] mb-0.5">
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
@@ -1443,11 +1442,12 @@ const ManageOrderReceipt = () => {
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
                                                 }),
                                                 // indicatorSeparator: (provided, state) => ({
                                                 //   ...provided,
@@ -1457,12 +1457,16 @@ const ManageOrderReceipt = () => {
                                                 // }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                    padding: '1px', // adjust padding for the dropdown indicator
                                                 }),
                                                 options: (provided, state) => ({
                                                     ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
                                             }}
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>

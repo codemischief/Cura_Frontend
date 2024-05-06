@@ -81,7 +81,7 @@ const ManageClientInvoice = () => {
 
 
     const [selectedOption, setSelectedOption] = useState({
-        label: "Sekect Client",
+        label: "Select Client",
         value: null
     });
     const [query, setQuery] = useState('')
@@ -333,6 +333,8 @@ const ManageClientInvoice = () => {
     };
 
     const handleClose = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
         setIsClientInvoiceDialogue(false);
     }
     const handleAddClientInvoice = () => {
@@ -413,7 +415,7 @@ const ManageClientInvoice = () => {
         var res = true;
         if (!formValues.client) {
             setFormErrors((existing) => {
-                return { ...existing, client: "Enter Client name" }
+                return { ...existing, client: "Enter Client Name" }
             })
             res = false;
         } else {
@@ -811,10 +813,10 @@ const ManageClientInvoice = () => {
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Client Invoice" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Invoice Deleted Successfully" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addClientInvoice={addClientInvoice} />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
+            {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currClient={selectedOption.label} addClientInvoice={addClientInvoice} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {deleteConfirmation && <DeleteClientInvoiceModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
@@ -961,59 +963,59 @@ const ManageClientInvoice = () => {
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
                         <div className="w-[90%] flex">
                             <div className='w-[4%] flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Sr.</p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[14%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Order Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Estimate Amount <button onClick={() => handleSort('estimateamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Estimate Date <button onClick={() => handleSort('estimatedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[13%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Invoice Amount <button onClick={() => handleSort('invoiceamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Invoice Date <button onClick={() => handleSort('invoicedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Entity <button onClick={() => handleSort('entityname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Created By <button onClick={() => handleSort('createdbyname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
                         <div className="w-[10%] flex">
                             <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                                <div className='px-3 py-3.5'>
                                     <p>Edit</p>
                                 </div>
                             </div>
@@ -1050,7 +1052,7 @@ const ManageClientInvoice = () => {
                                     </div>
                                     <div className='w-[12%]  flex'>
                                         <div className='p-3'>
-                                            <p>{item.estimatedate}</p>
+                                            <p>{item.estimatedate ? item.estimatedate.split('T')[0] :""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex'>
@@ -1175,7 +1177,7 @@ const ManageClientInvoice = () => {
             >
                 
                 <div className='flex justify-center'>
-                <Draggable>
+                
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -1190,7 +1192,7 @@ const ManageClientInvoice = () => {
                             <div className="flex gap-12 justify-center">
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-[13px] pb-0.5">
                                             Client Name<label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
@@ -1204,20 +1206,31 @@ const ManageClientInvoice = () => {
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
                                                 }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                    padding: '1px', // adjust padding for the dropdown indicator
                                                 }),
                                                 options: (provided, state) => ({
                                                     ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
                                             }}
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
@@ -1238,8 +1251,8 @@ const ManageClientInvoice = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Quote/Invoice Description <label className="text-red-500">*</label></div>
-                                        <textarea className="w-56 h-16 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="invoiceDescription" value={formValues.invoiceDescription} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.invoiceDescription}</div>
+                                        <textarea className="w-56 h-16 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none resize-none" type="text" name="invoiceDescription" value={formValues.invoiceDescription} onChange={handleChange} />
+                                        <p className="text-[10px] text-[#CD0000] mt-[-5px] ">{formErrors.invoiceDescription}</p>
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
@@ -1283,7 +1296,7 @@ const ManageClientInvoice = () => {
                         </div>
 
                     </div>
-                    </Draggable>
+                    
                 </div>
             </Modal>
         </div>
