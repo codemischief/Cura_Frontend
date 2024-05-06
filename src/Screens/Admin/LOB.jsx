@@ -21,6 +21,7 @@ import Excel from "../../assets/excel.png"
 import EditLobModal from './Modals/EditLobModal';
 import SucessfullModal from "../../Components/modals/SucessfullModal"
 import FailureModal from '../../Components/modals/FailureModal';
+import CancelModel from './../../Components/modals/CancelModel';
 import DeleteLobModal from './Modals/DeleteLobModal';
 import SaveConfirmationLob from './Modals/SaveConfirmationLob';
 import CharacterFilter from '../../Components/Filters/CharacterFilter';
@@ -200,8 +201,14 @@ const LOB = () => {
         setIsLobDialogue(true);
     };
     const handleClose = () => {
+        initials();
         setIsLobDialogue(false);
+        openAddCancelModal();
     }
+    const initials = () => {
+        setLobName("")
+        setLobError("");
+      }
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
@@ -275,12 +282,30 @@ const LOB = () => {
     const [isSuccessModal, setIsSuccessModal] = useState(false);
     const [isFailureModal, setIsFailureModal] = useState(false);
     const [showEditSuccess, setShowEditSuccess] = useState(false);
+    const [showCancelModelAdd , setShowCancelModelAdd] = useState(false);
+    const [showCancelModel , setShowCancelModel] = useState(false);
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsLobDialogue(false);
         setIsSuccessModal(true);
         setTimeout(function () {
             setIsSuccessModal(false)
+        }, 2000)
+    }
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsLobDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+        
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
         }, 2000)
     }
     const openFailureModal = () => {
@@ -298,6 +323,7 @@ const LOB = () => {
         }, 2000)
         fetchData();
     }
+    
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const openDeleteSuccess = () => {
         // setIsLobDialogue(false);
@@ -370,7 +396,7 @@ const LOB = () => {
                 filterValue: type == 'noFilter' ? "" : inputVariable
             }
         }
-        if (type == 'noFilter') setInputVariable("");
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
         fetchFiltered(existing);
     }
     const [filterState,setFilterState] = useState([]);
@@ -415,13 +441,15 @@ const LOB = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal} />}
+            {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new LOB added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             {isSuccessModal && <SucessfullModal isOpen={isSuccessModal} message="New Lob added Successfully!" />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message="Some Error Occured Try again!" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Lob Deleted Successfully!" />}
-            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} />}
-            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} />}
+            {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} showCancel={openCancelModal} />}
+            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} setDefault = {initials} showCancel={openAddCancelModal} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 {/* we need the first banner */}
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -440,7 +468,7 @@ const LOB = () => {
                         <div className='flex bg-[#EBEBEB] '>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 outline-none"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 outline-none w-48"
                                 type="text"
                                 placeholder="Search"
                                 value={searchQuery}
