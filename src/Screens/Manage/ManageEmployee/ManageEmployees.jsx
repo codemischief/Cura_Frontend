@@ -699,7 +699,7 @@ const ManageEmployees = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": ""
+            "search_key": searchInput
         };
         const response = await APIService.getEmployees(data);
         const temp = await response.json();

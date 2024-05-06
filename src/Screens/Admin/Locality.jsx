@@ -414,13 +414,14 @@ const Locality = () => {
         setPageLoading(true);
         setIsSearchOn(true);
         setSortField("id");
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
-            "pg_no": Number(currentPage),
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
@@ -454,17 +455,16 @@ const Locality = () => {
         setPageLoading(true);
         setSearchQuery("");
         setIsSearchOn(false);
-        setSortField("id");
-        setFlag(false)
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": [],
-            "sort_by": ["id"],
-            "order": "desc",
-            "pg_no": Number(currentPage),
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key": ""
+            "search_key": searchQuery
         };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
