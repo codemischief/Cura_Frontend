@@ -26,6 +26,7 @@ import NumericFilter from '../../Components/Filters/NumericFilter';
 import { authService } from '../../services/authServices';
 import Filter from "../../assets/filter.png"
 import SaveConfirmationCountry from './Modals/SaveConfirmationCountry';
+import CancelModel from './../../Components/modals/CancelModel';
 import Draggable from 'react-draggable';
 const Country = () => {
   // we have the module here
@@ -35,7 +36,10 @@ const Country = () => {
   const [pageLoading, setPageLoading] = useState(false);
   const [userId, setUserId] = useState(0);
   const [showSucess, setShowSucess] = useState(false);
+  const [showEditSuccess, setShowEditSuccess] = useState(false);
   const [showFailure, setShowFailure] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [showCancelEdit, setShowCancelEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,6 +66,15 @@ const Country = () => {
       setShowSucess(false)
     }, 2000)
   }
+  const openSuccessEditModal = () => {
+    setShowEdit(false);
+    console.log("edit model called");
+    setShowEditSuccess(true);
+    setTimeout(function () {
+        setShowEditSuccess(false);
+    }, 2000)
+    fetchData();
+}
   const openFailureModal = () => {
     // we have the error message hre
 
@@ -70,6 +83,35 @@ const Country = () => {
     setTimeout(function () {
       setShowFailure(false)
     }, 4000);
+  }
+
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+    const openDeleteSuccess = () => {
+        // setIsLobDialogue(false);
+        console.log('hey')
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        }, 2000)
+    }
+
+  const openCancelModal = () => {
+    // we have the error message hre
+    setIsCountryDialogue(false);
+    setShowCancel(true);
+    setTimeout(function () {
+      setShowCancel(false)
+    }, 1000);
+  }
+
+  const openEditCancelModal = () => {
+    // we have the error message hre
+    setShowEdit(false);
+    setShowCancelEdit(true);
+    setTimeout(function () {
+      console.log("hello")
+      setShowCancelEdit(false)
+    }, 1000);
   }
 
   const fetchPageCountryData = async (pageNumber) => {
@@ -245,7 +287,7 @@ const Country = () => {
     }
     setCurrentCountry(formValues.countryName)
     setIsCountryDialogue(false);
-    setOpenAddConfirmation(true); a
+    setOpenAddConfirmation(true); 
     // addCountry();
   };
 
@@ -254,7 +296,14 @@ const Country = () => {
     setIsCountryDialogue(true);
   };
   const handleClose = () => {
+    initials();
     setIsCountryDialogue(false);
+    openCancelModal();
+
+  }
+  const initials = () => {
+    setFormValues(initialValues);
+    setFormErrors({});
   }
   const validate = () => {
     const errors = {};
@@ -529,14 +578,16 @@ const Country = () => {
   return (
     <div className='h-screen w-full'>
       <Navbar />
-      <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />
-      <FailureModal isOpen={showFailure} message={failureMessage} />
-      <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} />
-      {showEdit && <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} />}
-      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry} />}
+      {showSucess && <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />}
+      {showCancel && <CancelModel isOpen={showCancel} message="Process cancelled, no new Country added." />}
+      {showCancelEdit && <CancelModel isOpen={showCancelEdit} message="Process cancelled, no changes saved." />}
+      {showFailure && <FailureModal isOpen={showFailure} message={failureMessage} />}
+      {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully!" />}
+      {showDelete && <DeleteModal isOpen={showDelete} currentCountry={currentCountry} closeDialog={setShowDelete} fetchData={fetchCountryData} showCancel={openEditCancelModal} showSuccess={openDeleteSuccess} />}
+      {showEdit && <EditCountryModal isOpen={showEdit} currentCountry={currentCountry} setIsOpen={setShowEdit} showSuccess={openSuccessEditModal} showCancel={openEditCancelModal} />}
+      {openAddConfirmation && <SaveConfirmationCountry addCountry={addCountry} handleClose={() => setOpenAddConfirmation(false)} currentCountry={currentCountry} showCancel={openCancelModal} setDefault={initials}  />}
+      {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Country Deleted Successfully!" />}
       <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
-
-
         <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
           <div className='flex items-center space-x-3'>
             <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
