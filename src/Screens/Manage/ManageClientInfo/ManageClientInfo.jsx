@@ -1327,7 +1327,7 @@ const ManageClientInfo = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                        <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
@@ -1504,10 +1504,12 @@ const ManageClientInfo = () => {
                             <div className='w-[8%]  flex'>
                                 <div className='px-3 py-3.5 flex space-x-2'>
                                     <div>
+
                                         <p>Tenant of </p>
-                                        <p>Property </p>
-                                        <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
+                                        <p>Property</p>
+                                        
                                     </div>
+                                    <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
                                 </div>
                             </div>
                             <div className='w-[8%]  flex'>
@@ -1572,7 +1574,7 @@ const ManageClientInfo = () => {
 
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingClientInfo && existingClientInfo.map((item, index) => {
-                            return <div className='w-full h-10 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
                                     <div className='w-[3%] flex overflow-x-hidden'>
                                         <div className='p-3'>
@@ -1627,7 +1629,7 @@ const ManageClientInfo = () => {
                                     <div className='w-[7%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500'>
                                             
-                                            <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id }}><p>Properties</p></Link>
+                                            <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link>
                                         </div>
                                     </div>
                                     <div className='w-[6%]  flex'>
@@ -1741,7 +1743,7 @@ const ManageClientInfo = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <Draggable>
+                    {/* <Draggable> */}
                     <div className="w-[1200px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                             <div className="mr-[410px] ml-[410px]">
@@ -1782,7 +1784,7 @@ const ManageClientInfo = () => {
                         </div>
 
                     </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </div>
             </Modal>
         </div>

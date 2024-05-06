@@ -1314,7 +1314,7 @@ const ManageClientProperty = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                        <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
@@ -1706,7 +1706,7 @@ const ManageClientProperty = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName}/>}
+                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={"Select Client Name"} clientid={null}/>}
                         {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
