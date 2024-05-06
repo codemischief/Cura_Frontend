@@ -13,7 +13,6 @@ const ConfirmationModal = ({
   onClose,
   onSubmit,
 }) => {
-  console.log("open", open);
   return (
     <Modal open={open}>
       <>

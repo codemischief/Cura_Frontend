@@ -12,11 +12,9 @@ import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
   const yearsRange = [];
-
   for (let i = currentYear - 10; i <= currentYear + 10; i++) {
     yearsRange.push(i.toString());
   }
-
   return yearsRange;
 }
 let YEARS = getYearsRange();
@@ -36,8 +34,14 @@ const MONTHS = [
 ];
 const PmaBilling = () => {
   const dispatch = useDispatch();
-  const { pmaBillingData, status, totalCount, countPerPage, pageNo, filter } =
-    useSelector((state) => state.pmaBilling);
+  const {
+    pmaBillingData,
+    status,
+    totalCount,
+    countPerPage,
+    pageNo,
+    filter,
+  } = useSelector((state) => state.pmaBilling);
   const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
@@ -55,9 +59,9 @@ const PmaBilling = () => {
         filter: filter,
         pg_no: pageNo,
         insertIntoDB: false,
-        pg_size: 30,
+        pg_size: countPerPage,
       };
-      dispatch(getPmaBilling(obj));
+      dispatch(getPmaBilling(obj,selectedYear,selectedMonth));
     }
   }, [pageNo, filter]);
 
@@ -70,6 +74,7 @@ const PmaBilling = () => {
   const handleSelectMonth = (e) => {
     setSelectedMonth(e.target.value);
   };
+
   const handleSelectYear = (e) => {
     setSelectedYear(e.target.value);
   };
@@ -83,9 +88,9 @@ const PmaBilling = () => {
         filter: [],
         pg_no: 1,
         insertIntoDB: false,
-        pg_size: 30,
+        pg_size: countPerPage,
       };
-      dispatch(getPmaBilling(obj));
+      dispatch(getPmaBilling(obj,selectedYear,selectedMonth));
       setShowTable(true);
     } else {
       setError((prev) => ({
@@ -125,7 +130,6 @@ const PmaBilling = () => {
           marginTop={"8px"}
           justifyContent={"space-between"}
           direction={"row"}
-          // alignContent={"center"}
           alignItems={"center"}
         >
           <Stack
@@ -204,18 +208,11 @@ const PmaBilling = () => {
           <CustomButton
             title="Add New PMA Invoice"
             onClick={() => {
-              selectedYear && selectedMonth && setOpenModal(true);
+              selectedYear && selectedMonth && showTable && setOpenModal(true);
             }}
           />
         </Stack>
-        {/* {status === "loading" && (
-          <Box sx={{ width: "100%" }}>
-            <LinearProgress />
-          </Box>
-        )} */}
-        {/* {showTable && (
-          <MyMaterialTable year={selectedYear} month={Number(selectedMonth)} />
-        )} */}
+
         {pmaBillingData && (
           <PmaBillingTable
             data={pmaBillingData}
@@ -252,5 +249,4 @@ const PmaBilling = () => {
     </Stack>
   );
 };
-
 export default PmaBilling;

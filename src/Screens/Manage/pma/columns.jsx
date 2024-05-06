@@ -2,10 +2,20 @@ import { Chip, Stack } from "@mui/material";
 import { TextFilterField, NumberFilterField } from "./CustomFilterField";
 import styleConst from "./styleConst";
 import { useDispatch, useSelector } from "react-redux";
+import { ArrowUpward } from "@mui/icons-material";
+
+export function CustomSorting(props) {
+  console.log(props,"props");
+  return [
+    <ArrowUpward  fontSize="small" />,
+  ]
+}
+
 
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
 
+ 
   const columns = [
     {
       // filterComponent: TextFilterField,
@@ -32,15 +42,16 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Invoice Date",
-      field: "connectionName",
+      field: "invoicedate",
       filterComponent: TextFilterField,
       // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.connectionName),
     },
     {
       title: "Invoice Amount",
       field: "totalamt",
-      grouping: false,
-      filterComponent: NumberFilterField,
+      grouping: true,
+      lookup: "totalamt",
+      filterComponent: TextFilterField,
     },
     {
       title: "Total Base Amount",
@@ -82,36 +93,4 @@ export default function connectionDataColumn(onQuery) {
     },
   ];
   return columns;
-}
-
-{
-  /* <div className='flex space-x-2 items-center '>
-<div className='flex bg-[#EBEBEB] '>
-    
-    <input
-        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
-        type="text"
-        placeholder="  Search"
-        value={searchInput}
-        onChange={(e) => {
-            setSearchInput(e.target.value);
-        }}
-    />
-    <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
-    <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-        <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
-    </div>
-</div>
-
-<div>
- 
-    <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
-        <div className="flex items-center justify-center gap-4">
-            Add New Order
-            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
-        </div>
-    </button>
-</div>
-
-</div> */
 }

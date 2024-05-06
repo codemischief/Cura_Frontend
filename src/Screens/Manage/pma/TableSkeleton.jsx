@@ -4,6 +4,8 @@ import MaterialTable from "@material-table/core";
 import { ArrowUpward } from "@mui/icons-material";
 import { CustomPaginationComponent } from "./MyMaterialTable";
 
+
+
 export default function PmaBillingTable({
   column,
   data,
@@ -33,9 +35,9 @@ export default function PmaBillingTable({
           filtering: true,
           filterRowStyle: {
             position: "sticky",
-            top: 80,
+            top: 79,
             background: "white",
-            zIndex: 50 /* optionally */,
+            zIndex: 36 /* optionally */,
           },
           grouping: true,
           columnsButton: true,
@@ -46,7 +48,7 @@ export default function PmaBillingTable({
           headerStyle: {
             backgroundColor: "#F0F6FF",
             position: "sticky",
-            zIndex: 90,
+            zIndex: 39,
             top: 0,
             pt: 12,
             pb: 12,
@@ -62,7 +64,7 @@ export default function PmaBillingTable({
           toolbacolumnResizablerButtonAlignment: "",
         }}
         icons={{
-          SortArrow: (props) => <ArrowUpward {...props} fontSize="small" />,
+          SortArrow: (props) => <ArrowUpward {...props} />
         }}
         components={{
           Pagination: (props) => {
@@ -74,8 +76,11 @@ export default function PmaBillingTable({
               />
             );
           },
+         
+         
         }}
       />
     </div>
   );
 }
+
