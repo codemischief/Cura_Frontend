@@ -2,11 +2,16 @@ import React, { useState,useEffect } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import { APIService } from "../../../../services/API";
-const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,formErrors,setCurrClientName}) => {
+const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,formErrors,setCurrClientName,clientname,clientid}) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   useEffect(() => {
+     const temp = {...formValues}
+     const ex = temp.client_property
+     ex.clientid = clientid 
+     temp.client_property = ex
+     setFormValues(temp)
      fetchClientData();
   },[])
   const [state, setState] = useState(initialStates);
@@ -53,8 +58,8 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
      }})
    }
    const [selectedOption,setSelectedOption] = useState({
-    label : "Enter Client Name",
-    value : null
+    label : clientname,
+    value : clientid
    });
    const [query,setQuery] = useState('')
    const handleClientNameChange = (e) => {
@@ -98,6 +103,17 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
    const handleInputChange = (value) => {
       console.log(value)
    }
+   const fetchCityData = async (id) => {
+    const data = { "user_id": 1234, "state_name": id };
+    const response = await APIService.getCities(data);
+    const result = (await response.json()).data;
+    console.log(result);
+    if (Array.isArray(result)) {
+        // setAllCity(result)
+        setCity(result)
+        
+    }
+}
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3">
@@ -188,7 +204,15 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="state"
               value={formValues.client_property.state}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e)
+                fetchCityData(e.target.value)
+                const temp = {...formValues}
+                const ex = temp.client_property
+                ex.city = null 
+                temp.client_property = ex 
+                setFormValues(temp)
+              }}
             >
               {/* <option>Select State</option> */}
               {initialStates &&
@@ -290,8 +314,8 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               value={formValues.client_property.city}
             >
               <option>Select City</option>
-              {initialCities &&
-                initialCities.map((item) => (
+              {city &&
+                city.map((item) => (
                   <option key={item.id} value={item.city}>
                     {item.city}
                   </option>

@@ -648,6 +648,7 @@ const ManageClientPropertyByClientName = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
+        console.log(formValues.client)
         if (!formValues.client_property.clientid) {
             setFormErrors((existing) => {
                 return { ...existing, clientid: "Enter Client Name" }
@@ -977,8 +978,9 @@ const ManageClientPropertyByClientName = () => {
             console.log('here')
             return ;
         }
+        setCurrClientName(() => state.clientname)
         setIsClientPropertyDialogue(false);
-        setCurrClientProperty(formValues.client_property.clientid)
+        // setCurrClientProperty(formValues.client_property.clientid)
         showAddConfirmation(true);
     }
     const addClientProperty = async () => {
@@ -1334,7 +1336,7 @@ const ManageClientPropertyByClientName = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                        <Link to="/manage/manageclientinfo"><img className='h-5 w-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
@@ -1724,8 +1726,8 @@ const ManageClientPropertyByClientName = () => {
                                 <div>Owner Details</div>
                             </div>
                         </div>
-
-                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName}/>}
+                        {console.log(state.clientname)}
+                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={state.clientname} clientid={state.clientid} />}
                         {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
