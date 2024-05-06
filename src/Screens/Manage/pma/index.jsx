@@ -4,7 +4,6 @@ import { Box, Button, LinearProgress, Stack } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import MyMaterialTable from "./MyMaterialTable";
 import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
@@ -53,7 +52,7 @@ const PmaBilling = () => {
         year: selectedYear,
         filter: filter,
         pg_no: pageNo,
-        add: false,
+        insertIntoDB: false,
         pg_size: 30,
       };
       dispatch(getPmaBilling(obj));
@@ -75,7 +74,7 @@ const PmaBilling = () => {
         year: selectedYear,
         filter: [],
         pg_no: 1,
-        add: false,
+        insertIntoDB: false,
         pg_size: 30,
       };
       dispatch(getPmaBilling(obj));
@@ -178,16 +177,20 @@ const PmaBilling = () => {
           {error.month && <p className="text-red-800">{error.month}</p>} */}
           <CustomButton title="Add New PMA Invoice" />
         </Stack>
-        {status === "loading" && (
+        {/* {status === "loading" && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
           </Box>
-        )}
+        )} */}
         {/* {showTable && (
           <MyMaterialTable year={selectedYear} month={Number(selectedMonth)} />
         )} */}
-        {showTable && (
-          <PmaBillingTable data={pmaBillingData} column={columns} />
+        {pmaBillingData && (
+          <PmaBillingTable
+            data={pmaBillingData}
+            column={columns}
+            loading={status === "loading"}
+          />
         )}
       </Stack>
     </Stack>

@@ -5,15 +5,16 @@ export const getPmaBillingPayload = (obj) => {
 export const updatedResponsePmaData = (data) => {
   return data.map((billing) => ({
     ...billing,
-    totaltaxamt: billing.totaltaxamt ? billing.totaltaxamt?.toFixed(2) : null,
-    totalamt: billing.totalamt ? billing.totalamt?.toFixed(2) : null,
+    data: billing.data ? billing.date : "--",
+    totaltaxamt: billing.totaltaxamt ? billing.totaltaxamt?.toFixed(2) : "---",
+    totalamt: billing.totalamt ? billing.totalamt?.toFixed(2) : "---",
     rentedtaxamt: billing.rentedtaxamt
       ? billing.rentedtaxamt?.toFixed(2)
-      : null,
-    rentedamt: billing.rentedamt ? billing.rentedamt?.toFixed(2) : null,
+      : "---",
+    rentedamt: billing.rentedamt ? billing.rentedamt?.toFixed(2) : "---",
     totalbaseamt: billing.totalbaseamt
       ? billing.totalbaseamt?.toFixed(2)
-      : null,
+      : "---",
   }));
 };
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

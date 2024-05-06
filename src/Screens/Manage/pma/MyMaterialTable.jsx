@@ -164,7 +164,7 @@ export const CustomPaginationComponent = (props) => {
         <div
           className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
           onClick={() => {
-            tableRef?.current.onQueryChange();
+            // tableRef?.current.onQueryChange();
           }}
         >
           <button>

@@ -7,6 +7,7 @@ import { CustomPaginationComponent } from "./MyMaterialTable";
 export default function PmaBillingTable({
   column,
   data,
+  loading,
   // handleQueryChange,
 }) {
   const [columnResizable, setColumnResizable] = useState(false);
@@ -15,6 +16,7 @@ export default function PmaBillingTable({
   return (
     <div className="max-h-[501px]">
       <MaterialTable
+        isLoading={loading}
         tableRef={tableRef}
         columns={column}
         data={data}

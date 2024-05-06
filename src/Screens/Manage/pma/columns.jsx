@@ -35,15 +35,6 @@ export default function connectionDataColumn(onQuery) {
       field: "connectionName",
       filterComponent: TextFilterField,
       // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.connectionName),
-      render: (rowData) => {
-        // while grouping rowData will be just value not object
-
-        return (
-          <Stack direction="row" spacing={0.5}>
-            {rowData?.date ? rowData?.date : "---"}
-          </Stack>
-        );
-      },
     },
     {
       title: "Invoice Amount",
@@ -55,13 +46,6 @@ export default function connectionDataColumn(onQuery) {
       title: "Total Base Amount",
       field: "totalbaseamt",
       filterComponent: TextFilterField,
-      render: (rowData) => {
-        return (
-          <Stack direction="row" spacing={0.5}>
-            {rowData.totalbaseamt}
-          </Stack>
-        );
-      },
     },
 
     {
