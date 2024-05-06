@@ -10,9 +10,14 @@ import { FilePdfOutlined } from "@ant-design/icons";
 import { env_URL_SERVER } from "../../../Redux/helper";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
+import { useDispatch } from "react-redux";
+import { getPmaBilling, setPageNumber } from "../../../Redux/slice/pmaSlice";
+import { useSelector } from "react-redux";
 // import "./styles.css";
 
 export const CustomPaginationComponent = (props) => {
+  const dispatch = useDispatch();
+  const { pageNo } = useSelector((state) => state.pmaBilling);
   const {
     count,
     page,
@@ -21,6 +26,7 @@ export const CustomPaginationComponent = (props) => {
     rowsPerPageOptions,
     onRowsPerPageChange,
     tableRef,
+    handleQueryChange,
   } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -85,6 +91,15 @@ export const CustomPaginationComponent = (props) => {
   };
 
   const open = Boolean(anchorEl);
+  let obj = {
+    user_id: 1234,
+    month: 2,
+    year: 2021,
+    filter: [],
+    pg_no: page,
+    add: false,
+    pg_size: 30,
+  };
   return (
     <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
       {/* footer component */}
@@ -92,10 +107,12 @@ export const CustomPaginationComponent = (props) => {
         <div className="flex items-center w-auto h-full">
           <Pagination
             count={Math.ceil(count / rowsPerPage)}
-            page={page + 1}
+            page={pageNo}
             variant="outlined"
             onChange={(e, value) => {
-              onPageChange(e, value - 1);
+              // handleQueryChange(e, value);
+              dispatch(setPageNumber(value));
+              // onPageChange(e, value - 1);
             }}
           />
         </div>

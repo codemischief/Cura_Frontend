@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { env_URL_SERVER } from "../helper";
+import { env_URL_SERVER, updatedResponsePmaData } from "../helper";
 
 const initialState = {
   pmaBillingData: [],
   status: "",
+  filter: [],
   countPerPage: 15,
   pageNo: 1,
   totalCount: 0,
@@ -17,7 +18,7 @@ export const pmaSlice = createSlice({
   initialState,
   reducers: {
     setPmaBillingData: (state, { payload }) => {
-      state.pmaBillingData = payload.data;
+      state.pmaBillingData = updatedResponsePmaData(payload.data);
       state.totalCount = payload.total_count;
     },
     setStatus: (state, { payload }) => {
@@ -30,13 +31,21 @@ export const pmaSlice = createSlice({
     setCountPerPage: (state, { payload }) => {
       state.countPerPage = payload;
     },
+    setFilters: (state, { payload }) => {
+      state.filters = payload;
+    },
   },
 });
 
 // reducer
 // Action creators are generated for each case reducer function
-export const { setPmaBillingData, setStatus, setPageNumber, setCountPerPage } =
-  pmaSlice.actions;
+export const {
+  setPmaBillingData,
+  setStatus,
+  setPageNumber,
+  setCountPerPage,
+  setFilters,
+} = pmaSlice.actions;
 
 export const getPmaBilling = (payloadObj) => async (dispatch) => {
   try {

@@ -1,24 +1,23 @@
-import { useMemo, useRef, useState } from "react";
-import connectionDataColumn from "./columns";
-import { connectionTypeObj, connectionProtocolsObj } from "./data";
+import { useRef, useState } from "react";
+
 import MaterialTable from "@material-table/core";
 import { ArrowUpward } from "@mui/icons-material";
 import { CustomPaginationComponent } from "./MyMaterialTable";
 
-export default function BillingTableSekeleton() {
+export default function PmaBillingTable({
+  column,
+  data,
+  // handleQueryChange,
+}) {
   const [columnResizable, setColumnResizable] = useState(false);
   const tableRef = useRef();
-  const columns = useMemo(
-    () => connectionDataColumn({ connectionTypeObj, connectionProtocolsObj }),
-    []
-  );
 
   return (
     <div className="max-h-[501px]">
       <MaterialTable
         tableRef={tableRef}
-        columns={columns}
-        data={[]}
+        columns={column}
+        data={data}
         title={""}
         options={{
           exportButton: {
@@ -65,7 +64,13 @@ export default function BillingTableSekeleton() {
         }}
         components={{
           Pagination: (props) => {
-            return <CustomPaginationComponent {...props} tableRef={tableRef} />;
+            return (
+              <CustomPaginationComponent
+                {...props}
+                tableRef={tableRef}
+                // handleQueryChange={handleQueryChange}
+              />
+            );
           },
         }}
       />

@@ -3,10 +3,7 @@ import { TextFilterField, NumberFilterField } from "./CustomFilterField";
 import styleConst from "./styleConst";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function connectionDataColumn({
-  connectionTypeObj,
-  connectionProtocolsObj,
-}) {
+export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
 
   const columns = [
@@ -55,13 +52,13 @@ export default function connectionDataColumn({
       filterComponent: NumberFilterField,
     },
     {
-      title: "Base Amount",
-      field: "protocol",
+      title: "Total Base Amount",
+      field: "totalbaseamt",
       filterComponent: TextFilterField,
       render: (rowData) => {
         return (
           <Stack direction="row" spacing={0.5}>
-            ---
+            {rowData.totalbaseamt}
           </Stack>
         );
       },

@@ -1,18 +1,13 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  LinearProgress,
-  Stack,
-} from "@mui/material";
+import { Box, Button, LinearProgress, Stack } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
 import MyMaterialTable from "./MyMaterialTable";
-import { getPmaBilling, setPageNumber } from "../../../Redux/slice/pmaSlice";
-import BillingTableSekeleton from "./TableSkeleton";
+import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
+import connectionDataColumn from "./columns";
+import PmaBillingTable from "./TableSkeleton";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -39,24 +34,36 @@ const MONTHS = [
   "November",
   "December",
 ];
-const PmaBillingTable = () => {
+const PmaBilling = () => {
   const dispatch = useDispatch();
-  const [loadingState, setLoadingState] = useState(false);
-  const { pmaBillingData, status, totalCount, countPerPage, pageNo } =
+  const { pmaBillingData, status, totalCount, countPerPage, pageNo, filter } =
     useSelector((state) => state.pmaBilling);
   const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
 
+  const columns = useMemo(() => connectionDataColumn(), []);
+
+  useEffect(() => {
+    if (selectedMonth && selectedYear) {
+      let obj = {
+        user_id: 1234,
+        month: +selectedMonth,
+        year: selectedYear,
+        filter: filter,
+        pg_no: pageNo,
+        add: false,
+        pg_size: 30,
+      };
+      dispatch(getPmaBilling(obj));
+    }
+  }, [pageNo, filter]);
+
   const handleSelectMonth = (e) => {
-    setLoadingState(true);
-    setShowTable(false);
     setSelectedMonth(e.target.value);
   };
   const handleSelectYear = (e) => {
-    setLoadingState(true);
-    setShowTable(false);
     setSelectedYear(e.target.value);
   };
 
@@ -68,10 +75,10 @@ const PmaBillingTable = () => {
         year: selectedYear,
         filter: [],
         pg_no: 1,
+        add: false,
         pg_size: 30,
       };
-      // dispatch(getPmaBilling(obj));
-      setLoadingState(false);
+      dispatch(getPmaBilling(obj));
       setShowTable(true);
     } else {
       setError((prev) => ({
@@ -81,7 +88,6 @@ const PmaBillingTable = () => {
       }));
     }
   };
-
   return (
     <Stack gap="1rem">
       <Navbar />
@@ -177,18 +183,15 @@ const PmaBillingTable = () => {
             <LinearProgress />
           </Box>
         )}
-        {showTable && (
+        {/* {showTable && (
           <MyMaterialTable year={selectedYear} month={Number(selectedMonth)} />
-        )}
-        {!showTable && <BillingTableSekeleton />}
-        {/* {loadingState && (
-          <Box sx={{ width: "100%" }}>
-            <LinearProgress />
-          </Box>
         )} */}
+        {showTable && (
+          <PmaBillingTable data={pmaBillingData} column={columns} />
+        )}
       </Stack>
     </Stack>
   );
 };
 
-export default PmaBillingTable;
+export default PmaBilling;

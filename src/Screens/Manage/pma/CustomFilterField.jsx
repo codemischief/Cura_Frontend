@@ -25,6 +25,8 @@ import {
   dateFilterData,
   numericFilterData,
 } from "../../../Components/Filters/data";
+import { useDispatch } from "react-redux";
+import { setFilters } from "../../../Redux/slice/pmaSlice";
 const { customFilterFCCommon, columnFlex } = styleConst;
 
 export function clearFilterAll(noOfColumns, tableRef) {
@@ -46,6 +48,7 @@ export function DateFilterField(props) {
 }
 
 const FilterField = (props) => {
+  const dispatch = useDispatch();
   const { columnDef, onFilterChanged, type } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
@@ -66,7 +69,8 @@ const FilterField = (props) => {
   const handleFilter = (filter) => {
     if (search) {
       const query = [[columnDef.field], [search], [filter], [""]];
-      onFilterChanged(columnDef.tableData.id, query);
+      dispatch(setFilters(query));
+      // onFilterChanged(columnDef.tableData.id, query);
     }
     handleClose();
   };
