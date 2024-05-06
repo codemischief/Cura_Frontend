@@ -11,6 +11,10 @@ const initialState = {
   totalCount: 0,
   isLoading: false,
   isSuccess: false,
+  sorting: {
+    sort_by: [],
+    sort_order: [],
+  },
 };
 
 export const pmaSlice = createSlice({
@@ -18,21 +22,34 @@ export const pmaSlice = createSlice({
   initialState,
   reducers: {
     setPmaBillingData: (state, { payload }) => {
-      state.pmaBillingData = updatedResponsePmaData(payload.data);
-      state.totalCount = payload.total_count;
+      const { data, year, month } = payload;
+      state.pmaBillingData = updatedResponsePmaData(data.data, year, month);
+      state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;
     },
     setPageNumber: (state, { payload }) => {
-      console.log("payload", payload);
       state.pageNo = payload;
     },
     setCountPerPage: (state, { payload }) => {
       state.countPerPage = payload;
     },
+    setInitialState: (state, { payload }) => {
+      (state.filter = []),
+        (state.status = ""),
+        (state.filter = []),
+        (state.countPerPage = 15),
+        (state.pageNo = 1),
+        (state.totalCount = 0),
+        (state.isLoading = false),
+        (state.isSuccess = false);
+    },
     setFilters: (state, { payload }) => {
-      state.filters = payload;
+      state.filter = payload;
+    },
+    setSorting: (state, { payload }) => {
+      state.sorting = payload;
     },
   },
 });
@@ -45,21 +62,37 @@ export const {
   setPageNumber,
   setCountPerPage,
   setFilters,
+  setInitialState,
+  setSorting,
 } = pmaSlice.actions;
 
-export const getPmaBilling = (payloadObj) => async (dispatch) => {
+export const getPmaBilling = (payloadObj, year, month) => async (dispatch) => {
+  console.log(payloadObj, "payloadObj");
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
       `${env_URL_SERVER}getPMABilling`,
       payloadObj
     );
-    dispatch(setPmaBillingData(response.data));
+
+    dispatch(setPmaBillingData({ data: response.data, year, month }));
     dispatch(setStatus("success"));
-    console.log(response, "response");
   } catch (err) {
     dispatch(setStatus("error"));
   }
 };
 
+export const addNewInvoices = (payloadObj) => async (dispatch) => {
+  try {
+    dispatch(setStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}getPMABilling`,
+      payloadObj
+    );
+    dispatch(setStatus("success"));
+    return response.data;
+  } catch (err) {
+    dispatch(setStatus("error"));
+  }
+};
 export default pmaSlice.reducer;

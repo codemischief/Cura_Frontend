@@ -18,3 +18,6 @@ export const updatedResponsePmaData = (data) => {
   }));
 };
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
+
+
+

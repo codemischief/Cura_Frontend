@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, LinearProgress, Stack } from "@mui/material";
+import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { getPmaBilling } from "../../../Redux/slice/pmaSlice";
+import { addNewInvoices, getPmaBilling } from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
+import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -41,6 +42,7 @@ const PmaBilling = () => {
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -58,6 +60,12 @@ const PmaBilling = () => {
       dispatch(getPmaBilling(obj));
     }
   }, [pageNo, filter]);
+
+  // useEffect(() => {
+  //   if (status === "success") {
+  //     setOpenModal(false);
+  //   }
+  // }, [status]);
 
   const handleSelectMonth = (e) => {
     setSelectedMonth(e.target.value);
@@ -85,6 +93,24 @@ const PmaBilling = () => {
         year: selectedYear ? prev.year : "please select a year first",
         month: selectedMonth ? prev.month : "please select a year first",
       }));
+    }
+  };
+  const hadleConfirm = () => {
+    if (selectedYear && selectedMonth) {
+      let obj = {
+        user_id: 1234,
+        month: +selectedMonth,
+        year: selectedYear,
+        filter: [],
+        pg_no: 1,
+        insertIntoDB: true,
+        pg_size: 30,
+      };
+      dispatch(addNewInvoices(obj)).then((res) => {
+        if (res.result === "success") {
+          setOpenModal(false);
+        }
+      });
     }
   };
   return (
@@ -175,7 +201,12 @@ const PmaBilling = () => {
           </Button>
           {/* {error.year && <p className="text-red-800">{error.year}</p>}
           {error.month && <p className="text-red-800">{error.month}</p>} */}
-          <CustomButton title="Add New PMA Invoice" />
+          <CustomButton
+            title="Add New PMA Invoice"
+            onClick={() => {
+              selectedYear && selectedMonth && setOpenModal(true);
+            }}
+          />
         </Stack>
         {/* {status === "loading" && (
           <Box sx={{ width: "100%" }}>
@@ -193,6 +224,31 @@ const PmaBilling = () => {
           />
         )}
       </Stack>
+      <ConfirmationModal
+        open={openModal}
+        btnTitle="Confirm"
+        onClose={() => {
+          setOpenModal(false);
+        }}
+        onSubmit={() => {
+          hadleConfirm();
+        }}
+        title="Generate New Invoices"
+        description={
+          <Typography
+            sx={{
+              fontFamily: "Open Sans",
+              fontSize: "14px",
+              fontStyle: "normal",
+              fontWeight: 400,
+              lineHeight: "150%" /* 21px */,
+              color: "#282828",
+            }}
+          >
+            Are you sure you want to generate new invoices?
+          </Typography>
+        }
+      />
     </Stack>
   );
 };
