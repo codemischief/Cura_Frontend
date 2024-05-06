@@ -570,7 +570,7 @@ const Country = () => {
               <input
                 className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 outline-none w-48"
                 type="text"
-                placeholder="  Search"
+                placeholder="   Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />

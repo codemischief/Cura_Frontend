@@ -144,7 +144,7 @@ const LOB = () => {
         const t = temp.total_count;
         setTotalItems(t);
         setExistingLOB(result);
-        
+
         setPageLoading(false);
     }
     const handleAddLob = () => {
@@ -208,17 +208,17 @@ const LOB = () => {
     const initials = () => {
         setLobName("")
         setLobError("");
-      }
+    }
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["name","id"],
+            "rows": ["name", "id"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchQuery
+            "search_key": searchQuery
         };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -282,8 +282,8 @@ const LOB = () => {
     const [isSuccessModal, setIsSuccessModal] = useState(false);
     const [isFailureModal, setIsFailureModal] = useState(false);
     const [showEditSuccess, setShowEditSuccess] = useState(false);
-    const [showCancelModelAdd , setShowCancelModelAdd] = useState(false);
-    const [showCancelModel , setShowCancelModel] = useState(false);
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
     const openSuccessModal = () => {
         // set the state for true for some time
         setIsLobDialogue(false);
@@ -302,7 +302,7 @@ const LOB = () => {
     }
     const openCancelModal = () => {
         // set the state for true for some time
-        
+
         setShowCancelModel(true);
         setTimeout(function () {
             setShowCancelModel(false)
@@ -323,7 +323,7 @@ const LOB = () => {
         }, 2000)
         fetchData();
     }
-    
+
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
     const openDeleteSuccess = () => {
         // setIsLobDialogue(false);
@@ -365,21 +365,21 @@ const LOB = () => {
     }
 
     const filterMapping = {
-        name : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        name: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
 
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
 
@@ -399,16 +399,16 @@ const LOB = () => {
         if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
         fetchFiltered(existing);
     }
-    const [filterState,setFilterState] = useState([]);
-    const fetchFiltered = async  (mapState) => {
+    const [filterState, setFilterState] = useState([]);
+    const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key=> {
-            if(mapState[key].filterType != "") {
-                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
         setFilterState(tempArray)
@@ -449,7 +449,7 @@ const LOB = () => {
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully!" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Lob Deleted Successfully!" />}
             {deleteLobModal && <DeleteLobModal isOpen={deleteLobModal} handleDelete={deleteLob} item={currItem} handleClose={() => setDeleteLobModal(false)} showCancel={openCancelModal} />}
-            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} setDefault = {initials} showCancel={openAddCancelModal} />}
+            {openAddConfirmation && <SaveConfirmationLob handleClose={() => setOpenAddConfirmation(false)} currLob={lobName} addLob={addLob} setDefault={initials} showCancel={openAddCancelModal} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 {/* we need the first banner */}
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -470,7 +470,7 @@ const LOB = () => {
                             <input
                                 className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 outline-none w-48"
                                 type="text"
-                                placeholder="Search"
+                                placeholder="   Search"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -660,39 +660,39 @@ const LOB = () => {
             >
                 <>
                     <Draggable>
-                <div className='flex justify-center'>
-                    <div className="w-[778px]  h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[290px] ml-[290px]">
-                                <div className="text-[16px]">New LOB</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-                        <div className="space-y-16 mb-3">
-                            <div className="h-auto w-full mt-[15px] ">
-                                <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[14px] text-[#505050]">LOB Name  <label className="text-red-500">*</label></div>
-                                            <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={lobName} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
-                                        </div>
+                        <div className='flex justify-center'>
+                            <div className="w-[778px]  h-auto bg-white rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[290px] ml-[290px]">
+                                        <div className="text-[16px]">New LOB</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
-                            </div>
+                                <div className="space-y-16 mb-3">
+                                    <div className="h-auto w-full mt-[15px] ">
+                                        <div className="flex gap-[48px] justify-center items-center">
+                                            <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                                <div className="">
+                                                    <div className="text-[14px] text-[#505050]">LOB Name  <label className="text-red-500">*</label></div>
+                                                    <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={lobName} onChange={handleChange} />
+                                                    <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <div className="flex justify-center items-center gap-[10px] ">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLob}>Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                                    <div className="flex justify-center items-center gap-[10px] ">
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddLob}>Add</button>
+                                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-
-                    </div>
-                </div>
                     </Draggable>
-                    </>
+                </>
             </Modal>
         </div>
     )

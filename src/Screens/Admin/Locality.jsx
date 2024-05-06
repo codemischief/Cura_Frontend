@@ -22,6 +22,7 @@ import EditLocalityModal from './Modals/EditLocalityModal';
 import SucessfullModal from '../../Components/modals/SucessfullModal';
 import DeleteLocalityModal from './Modals/DeleteLocalityModal';
 import FailureModal from '../../Components/modals/FailureModal';
+import CancelModel from './../../Components/modals/CancelModel';
 import SaveConfirmationLocality from './Modals/SaveConfirmationLocality';
 import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
@@ -31,7 +32,7 @@ const Locality = () => {
     const [existingLocalities, setExistingLocalities] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
-    const [addConfirmation,setAddConfirmation] = useState(false)
+    const [addConfirmation, setAddConfirmation] = useState(false)
     const [pageLoading, setPageLoading] = useState(false);
     const [totalItems, setTotalItems] = useState(0);
     const [downloadModal, setDownloadModal] = useState(false);
@@ -46,48 +47,16 @@ const Locality = () => {
     const [showSuccess, setShowSuccess] = useState(false);
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
-    const [failureModal,setFailureModal] = useState(false);
-    const [errorMessage,setErrorMessage] = useState("");
+    const [failureModal, setFailureModal] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
+
     
-    const filterMapping = {
-        country : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
-        },
-        state : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
-        },
-        city : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
-        },
-        locality : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
-        },
-        id : {
-            filterType : "",
-            filterValue : "",
-            filterData : "Numeric",
-            filterInput : ""
-        }
-    }
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
     const [sortField, setSortField] = useState("id");
     const initialValues = {
         country: 5,
         state: "Maharashtra",
-        city: 0,
+        city: 847,
         locality: ""
     }
     const [formValues, setFormValues] = useState(initialValues);
@@ -192,7 +161,7 @@ const Locality = () => {
                 setLocalityFilter(false)
                 setIdFilter(false)
             }
-           
+
         }
 
         document.addEventListener("mousedown", handler);
@@ -204,17 +173,17 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
-        }) 
+        })
         console.log(tempArray)
         setCurrentPage(pageNumber);
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -232,20 +201,21 @@ const Locality = () => {
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
         const tempArray = [];
+        setCurrentPage((prev) => 1);
         // we need to query thru the object
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
-        }) 
+        })
         console.log(tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(number),
             "search_key": isSearchOn ? searchQuery : ""
         };
@@ -263,20 +233,20 @@ const Locality = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
-        }) 
-        
-        console.log('here is the call') 
+        })
+
+        console.log('here is the call')
         console.log(tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
@@ -296,20 +266,20 @@ const Locality = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
-        }) 
+        })
         console.log(tempArray)
         setSortField(field);
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": tempArray,
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
+            "order": !flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
         };
@@ -344,18 +314,18 @@ const Locality = () => {
         const response = await APIService.addLocality(data);
         const res = await response.json();
         setAddConfirmation(false)
-        
+
         // console.log(res);
 
-        
-        if(res.result == "success") {
+
+        if (res.result == "success") {
             setFormValues(initialValues);
             openSuccess();
-        }else {
+        } else {
             setErrorMessage(res.message)
             openFailure();
         }
-        
+
         fetchData();
     }
     const openSuccess = () => {
@@ -364,10 +334,28 @@ const Locality = () => {
             setShowSuccess(false);
         }, 2000)
     }
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
     const openFailure = () => {
         setFailureModal(true);
         setTimeout(function () {
             setFailureModal(false);
+        }, 2000)
+    }
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsLocalityDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
         }, 2000)
     }
     const openEditSuccess = () => {
@@ -383,7 +371,13 @@ const Locality = () => {
         setIsLocalityDialogue(true);
     };
     const handleClose = () => {
+        initials();
         setIsLocalityDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const handleExcelDownload = async () => {
         const data = {
@@ -443,38 +437,6 @@ const Locality = () => {
     const [lobFilterInput, setLobFilterInput] = useState("");
     const toggleLobFilter = () => {
         setLobFilter((prev) => !prev)
-    }
-    const fetchFiltered = async (filterType, filterField) => {
-        const tempArray = [];
-        // we need to query thru the object
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
-            }
-        }) 
-        console.log(tempArray) 
-        
-        setPageLoading(true);
-        const data = {
-            "user_id": 1234,
-            "rows": ["id", "name"],
-            "filters": tempArray,
-            "sort_by": [],
-            "order": "asc",
-            "pg_no": 1,
-            "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchQuery : ""
-        };
-        const response = await APIService.getLob(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        // setExistingLOB(result);
-        setFlag((prev) => {
-            return !prev;
-        })
-        setPageLoading(false);
     }
     const handlePageChange = (event, value) => {
         console.log(value);
@@ -544,96 +506,100 @@ const Locality = () => {
     const [localityFilterType, setLocalityFilterType] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setidFilterInput] = useState("");
-    const handleFiltering = (type,columnName) => {
-       
-        if(columnName == "country") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.country.filterType = "";
-                existing.country.filterValue = "";
-                setFilterMapState(existing)
-            //    filterMapping.country.filterType = "";
-            //    filterMapping.country.filterValue = "";
-               setCountryFilterInput("");
-            }else {
-                const existing = filterMapState;
-                existing.country.filterType = type;
-                existing.country.filterValue = countryFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.country.filterType = type;
-                // filterMapping.country.filterValue = countryFilterInput;
-            }
-        }else if(columnName == "state") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.state.filterType = "";
-                existing.state.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = "";
-                // filterMapping.state.filterValue = "";
-                setStateFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.state.filterType = type;
-                existing.state.filterValue = stateFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.state.filterType = type;
-                // filterMapping.state.filterValue = stateFilterInput;
-             }
-        }else if(columnName == "city") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.city.filterType = "";
-                existing.city.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = "";
-                // filterMapping.city.filterValue = "";
-                setCityFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.city.filterType = type;
-                existing.city.filterValue = cityFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.city.filterType = type;
-                // filterMapping.city.filterValue = cityFilterInput;
-             }
-        }else if(columnName == "locality") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.locality.filterType = "";
-                existing.locality.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.locality.filterType = "";
-                // filterMapping.locality.filterValue = "";
-                setLocalityFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.locality.filterType = type;
-                existing.locality.filterValue = localityFilterInput;
-                setFilterMapState(existing)
-                // filterMapping.locality.filterType = type;
-                // filterMapping.locality.filterValue = localityFilterInput;
-             }
-        }else if(columnName == "id") {
-            if(type == "noFilter") {
-                const existing = filterMapState;
-                existing.id.filterType = "";
-                existing.id.filterValue = "";
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = "";
-                // filterMapping.id.filterValue = "";
-                setidFilterInput("");
-             }else {
-                const existing = filterMapState;
-                existing.id.filterType = type;
-                existing.id.filterValue = Number(idFilterInput);
-                setFilterMapState(existing)
-                // filterMapping.id.filterType = type;
-                // filterMapping.id.filterValue = Number(idFilterInput);
-             }
+
+    const filterMapping = {
+        country: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        state: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        city: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        locality: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
-        fetchData();
     }
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+        console.log(columnName)
+        console.log('hey')
+        console.log(filterMapState);
+    
+        var existing = filterMapState;
+        existing = {
+          ...existing, [columnName]: {
+            ...existing[columnName],
+            filterType: type == 'noFilter' ? "" : type
+          }
+        }
+        existing = {
+          ...existing, [columnName]: {
+            ...existing[columnName],
+            filterValue: type == 'noFilter' ? "" : inputVariable
+          }
+        }
+    
+        if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
+    
+    
+        fetchFiltered(existing);
+      }
+      const [filterState, setFilterState] = useState([]);
+    const fetchFiltered = async (mapState) => {
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setFilterState(tempArray)
+        console.log('this is getting called')
+        console.log(tempArray)
+        setCurrentPage(1);
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "country", "cityid", "city", "state", "locality"],
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
+            "pg_size": Number(currentPages),
+            "search_key": searchQuery
+        };
+        const response = await APIService.getLocality(data)
+        const temp = await response.json();
+        const result = temp.data;
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingLocalities(result);
+        setPageLoading(false);
+    }
+   
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const handleDelete = (item) => {
         setCurrItem(item)
@@ -642,242 +608,243 @@ const Locality = () => {
     }
     return (
         <div className='h-screen'>
-            <Navbar/>
-            {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} />}
+            <Navbar />
+            {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} showCancel={openCancelModal} />}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
-            {failureModal && <FailureModal isOpen={failureModal} message={errorMessage}/>}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Locality added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
+            {failureModal && <FailureModal isOpen={failureModal} message={errorMessage} />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
-            {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} />}
-            {addConfirmation && <SaveConfirmationLocality handleClose={() => setAddConfirmation(false)} currentLocality={formValues.locality} addLocality={addLocality}/>}
+            {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} showCancel={openCancelModal} />}
+            {addConfirmation && <SaveConfirmationLocality handleClose={() => setAddConfirmation(false)} currentLocality={formValues.locality} addLocality={addLocality} setDefault={initials} showCancel={openAddCancelModal} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-7'>
-                    {/* search component */}
-                    <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
-                                    <div className='flex items-center space-x-3'>
-                                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
-                                        </div>
+                {/* search component */}
+                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                    <div className='flex items-center space-x-3'>
+                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
+                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
+                        </div>
 
-                                        <div className='flex-col'>
-                                            <h1 className='text-[18px]'>Locality</h1>
-                                            <p className='text-[14px]'>Admin &gt; Localities</p>
-                                        </div>
-                                    </div>
-                                    <div className='flex space-x-2 items-center'>
+                        <div className='flex-col'>
+                            <h1 className='text-[18px]'>Locality</h1>
+                            <p className='text-[14px]'>Admin &gt; Localities</p>
+                        </div>
+                    </div>
+                    <div className='flex space-x-2 items-center'>
 
-                                        <div className='flex relative'>
-                                            {/* search button */}
-                                            <input
-                                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
-                                                type="text"
-                                                placeholder="Search"
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                            />
-                                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            {/* button */}
-                                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
-                                                <div className="flex items-center justify-center gap-4">
-                                                    Add New Locality
-                                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
-                                                </div>
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                           {/* filter component */}
-                           <div className='h-12 w-full bg-white flex justify-between'>
-                            <div className='w-[85%] flex'>
-                                <div className='w-[5%] p-4'>
-                                    {/* <p>Sr. </p> */}
-                                </div>
-                                <div className='w-[15%] p-3'>
-                                    <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
-                                        <button className='p-1' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {countryFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='country' menuRef={menuRef}/>}
-                                </div>
-                                <div className='w-[20%] p-3 ml-1'>
-                                    <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
-                                        <button className='p-1' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {stateFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='state' menuRef={menuRef}/>}
-                                </div>
-
-                                <div className='w-[20%] p-3 ml-1'>
-                                    <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
-                                        <button className='p-1' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {cityFilter &&  <CharacterFilter handleFilter={handleFiltering} filterColumn='city' menuRef={menuRef}/>}
-                                </div>
-                                <div className='w-[20%] p-3 ml-[2px]'>
-                                    <div className="w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
-                                        <button className='p-1' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    {localityFilter && <CharacterFilter handleFilter={handleFiltering} filterColumn='locality' menuRef={menuRef}/>}
-                                </div>
-                            </div>
-                            <div className='w-1/6 p-3 '>
-                                <div className='w-[37%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
-                                    <input className="w-10 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
-                                    <button className='p-1' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                </div>
-                                {idFilter && <NumericFilter handleFilter={handleFiltering} columnName='id' menuRef={menuRef}/>}
-                                <div className='w-1/2 0 p-4'>
-
-                                </div>
+                        <div className='flex bg-[#EBEBEB]'>
+                            {/* search button */}
+                            <input
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 w-48 outline-none"
+                                type="text"
+                                placeholder="   Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
+                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
+                        <div>
+                            {/* button */}
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg" onClick={handleOpen}>
+                                <div className="flex items-center justify-center gap-4">
+                                    Add New Locality
+                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                </div>
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {/* filter component */}
+                <div className='h-12 w-full bg-white flex justify-between'>
+                    <div className='w-[85%] flex'>
+                        <div className='w-[5%] p-4'>
+                            {/* <p>Sr. </p> */}
+                        </div>
+                        <div className='w-[15%] px-3 py-2.5'>
+                            <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[20%] px-3 py-2.5 ml-1'>
+                            <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-[20%] px-3 py-2.5 ml-1'>
+                            <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
+                        </div>
+                        <div className='w-[20%] px-3 py-2.5 ml-[2px]'>
+                            <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
+                                <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                            </div>
+                            {localityFilter && <CharacterFilter inputVariable={localityFilterInput} setInputVariable={setLocalityFilterInput} handleFilter={newHandleFilter} filterColumn='locality' menuRef={menuRef} />}
+                        </div>
+                    </div>
+                    <div className='w-1/6 px-3 py-2.5 '>
+                        <div className='w-[40%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
+                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
+                            <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                        </div>
+                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
+                        <div className='w-1/2 p-4'>
+                        </div>
+                    </div>
+                </div>
 
 
-                        {/* main component */}
-                        <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
-                            {/* clumns names */}
-                                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                                    <div className='w-[85%] flex'>
-                                        <div className='w-[5%] p-4'>
-                                            <p>Sr. </p>
-                                        </div>
-                                        <div className='w-[15%]  p-4'>
-                                            <p>Country <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
-                                        </div>
-                                        <div className='w-[20%]  p-4'>
-                                            <p>State <button onClick={() => handleSort("state")}><span className="font-extrabold">↑↓</span></button></p>
-                                        </div>
-                                        <div className='w-[20%]  p-4'>
-                                            <p>City <button onClick={() => handleSort("city")}><span className="font-extrabold">↑↓</span></button></p>
-                                        </div>
-                                        <div className='w-[25%]  p-4'>
-                                            <p>Locality <button onClick={() => handleSort("locality")}><span className="font-extrabold">↑↓</span></button></p>
-                                        </div>
+
+                {/* main component */}
+                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+                    {/* clumns names */}
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                        <div className='w-[85%] flex'>
+                            <div className='w-[5%] p-4'>
+                                <p>Sr. </p>
+                            </div>
+                            <div className='w-[15%]  p-4'>
+                                <p>Country <button onClick={() => handleSort("name")}><span className="font-extrabold">↑↓</span></button></p>
+                            </div>
+                            <div className='w-[20%]  p-4'>
+                                <p>State <button onClick={() => handleSort("state")}><span className="font-extrabold">↑↓</span></button></p>
+                            </div>
+                            <div className='w-[20%]  p-4'>
+                                <p>City <button onClick={() => handleSort("city")}><span className="font-extrabold">↑↓</span></button></p>
+                            </div>
+                            <div className='w-[25%]  p-4'>
+                                <p>Locality <button onClick={() => handleSort("locality")}><span className="font-extrabold">↑↓</span></button></p>
+                            </div>
+                        </div>
+                        <div className='w-[15%] flex'>
+                            <div className='w-1/2  p-4'>
+                                <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button> </p>
+                            </div>
+                            <div className='w-1/2 0 p-4'>
+                                <p>Edit</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* main table */}
+                    <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
+                        {pageLoading && <LinearProgress />}
+                        {!pageLoading && existingLocalities.map((item, index) => {
+                            return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className='w-[85%] flex'>
+                                    <div className='w-[5%] p-4'>
+                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                     </div>
-                                    <div className='w-[15%] flex'>
-                                        <div className='w-1/2  p-4'>
-                                            <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button> </p>
-                                        </div>
-                                        <div className='w-1/2 0 p-4'>
-                                            <p>Edit</p>
-                                        </div>
+                                    <div className='w-[15%]  p-4'>
+                                        <p>{item.country}</p>
+                                    </div>
+                                    <div className='w-[20%]  p-4'>
+                                        <p>{item.state}</p>
+                                    </div>
+                                    <div className='w-[20%]  p-4'>
+                                        <p>{item.city}</p>
+                                    </div>
+                                    <div className='w-[25%]  p-4 ml-1'>
+                                        <p>{item.locality}</p>
                                     </div>
                                 </div>
-
-                                {/* main table */}
-                                <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
-                                        {pageLoading && <LinearProgress />}
-                                        {!pageLoading && existingLocalities.map((item, index) => {
-                                            return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
-                                                <div className='w-[85%] flex'>
-                                                    <div className='w-[5%] p-4'>
-                                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                                    </div>
-                                                    <div className='w-[15%]  p-4'>
-                                                        <p>{item.country}</p>
-                                                    </div>
-                                                    <div className='w-[20%]  p-4'>
-                                                        <p>{item.state}</p>
-                                                    </div>
-                                                    <div className='w-[20%]  p-4'>
-                                                        <p>{item.city}</p>
-                                                    </div>
-                                                    <div className='w-[25%]  p-4 ml-1'>
-                                                        <p>{item.locality}</p>
-                                                    </div>
-                                                </div>
-                                                <div className='w-[15%] flex'>
-                                                    <div className='w-1/2  p-4 ml-1'>
-                                                        <p>{item.id}</p>
-                                                    </div>
-                                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
-                                                        <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
-                                                        <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        })}
+                                <div className='w-[15%] flex'>
+                                    <div className='w-1/2  p-4 ml-1'>
+                                        <p>{item.id}</p>
                                     </div>
-                        </div>
+                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                        <button onClick={() => handleOpenEdit(item)}><img className='w-5 h-5' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item)}><img className='w-5 h-5' src={Trash} alt="trash" /></button>
+                                    </div>
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                </div>
             </div>
             {/* footer component */}
             <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white'>
-                            {/* footer component */}
-                            <div className='ml-2'>
-                                <div className='flex items-center w-auto h-full'>
-                                    {/* items */}
-                                    <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
+                {/* footer component */}
+                <div className='ml-2'>
+                    <div className='flex items-center w-auto h-full'>
+                        {/* items */}
+                        <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
 
-                                </div>
+                    </div>
+                </div>
+                <div className='flex mr-10 justify-center items-center space-x-2 '>
+                    <div className="flex mr-8 space-x-2 text-sm items-center">
+                        <p className="text-gray-700">Items Per page</p>
+                        <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                            name="currentPages"
+                            value={currentPages}
+                            //  defaultValue="Select State"
+                            onChange={e => {
+                                setCurrentPages(e.target.value);
+                                console.log(e.target.value);
+                                fetchQuantityData(e.target.value)
+                            }}
+
+                        >
+                            <option>
+                                15
+                            </option>
+                            <option>
+                                25
+                            </option>
+                            <option>
+                                50
+                            </option>
+                        </select>
+                    </div>
+                    <div className="flex text-sm">
+                        <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
+                    </div>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+
+                        <button>
+                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+
+                                <p>Download as pdf</p>
+                                <img src={Pdf} />
                             </div>
-                            <div className='flex mr-10 justify-center items-center space-x-2 '>
-                                <div className="flex mr-8 space-x-2 text-sm items-center">
-                                    <p className="text-gray-700">Items Per page</p>
-                                    <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
-                                        name="currentPages"
-                                        value={currentPages}
-                                        //  defaultValue="Select State"
-                                        onChange={e => {
-                                            setCurrentPages(e.target.value);
-                                            console.log(e.target.value);
-                                            fetchQuantityData(e.target.value)
-                                        }}
-
-                                    >
-                                        <option>
-                                            15
-                                        </option>
-                                        <option>
-                                            25
-                                        </option>
-                                        <option>
-                                            50
-                                        </option>
-                                    </select>
-                                </div>
-                                <div className="flex text-sm">
-                                    <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
-                                </div>
-                                {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                                    <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
-
-                                    <button>
-                                        <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
-                                            <p>Download as pdf</p>
-                                            <img src={Pdf} />
-                                        </div>
-                                    </button>
-                                    <button onClick={handleExcelDownload}>
-                                        <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
-                                            <p>Download as Excel</p>
-                                            <img src={Excel} />
-                                        </div>
-                                    </button>
-                                </div>}
-
-                                <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
-                                    {/* refresh */}
-                                    <button onClick={handleRefresh}><p>Refresh</p></button>
-                                    <img src={refreshIcon} className="h-2/3" />
-                                </div>
-                                <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
-                                    {/* download */}
-                                    <button onClick={openDownload}><p>Download</p></button>
-                                    <img src={downloadIcon} className="h-2/3" />
-                                </div>
+                        </button>
+                        <button onClick={handleExcelDownload}>
+                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                <p>Download as Excel</p>
+                                <img src={Excel} />
                             </div>
+                        </button>
+                    </div>}
+
+                    <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
+                        {/* refresh */}
+                        <button onClick={handleRefresh}><p>Refresh</p></button>
+                        <img src={refreshIcon} className="h-2/3" />
+                    </div>
+                    <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
+                        {/* download */}
+                        <button onClick={openDownload}><p>Download</p></button>
+                        <img src={downloadIcon} className="h-2/3" />
+                    </div>
+                </div>
             </div>
             <Modal open={isLocalityDialogue}
                 fullWidth={true}
@@ -886,135 +853,134 @@ const Locality = () => {
             >
                 <>
                     <Draggable>
-                <div className='flex justify-center bg-white rounded-lg'>
-                    <div className=" w-[700px] h-auto bg-white rounded-lg ">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[250px] ml-[250px]">
-                                <div className="text-[16px]">Add New Locality</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-                        <div className="space-y-10 mb-3">
-                            <div className="h-auto w-full py-4 ">
-                                <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="mb-4">
-                                            <div className="text-[14px]">Select Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
-                                                name="country"
-                                                value={formValues.country}
-                                                defaultValue="Select Country"
-                                                onChange={e => {
+                        <div className='flex justify-center bg-white rounded-lg'>
+                            <div className=" w-[700px] h-auto bg-white rounded-lg ">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[250px] ml-[250px]">
+                                        <div className="text-[16px]">Add New Locality</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                    </div>
+                                </div>
+                                <div className="space-y-10 mb-3">
+                                    <div className="h-auto w-full py-4 ">
+                                        <div className="flex gap-[48px] justify-center items-center">
+                                            <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                                <div className="mb-4">
+                                                    <div className="text-[14px]">Select Country <label className="text-red-500">*</label></div>
+                                                    <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
+                                                        name="country"
+                                                        value={formValues.country}
+                                                        defaultValue="Select Country"
+                                                        onChange={e => {
 
-                                                    setCurrCountry(e.target.value);
-                                                    fetchStateData(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, country: e.target.value }
-                                                        return newData;
-                                                    })
-                                                }}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a Country</option> */}
-                                                {allCountry && allCountry.map(item => {
-                                                    if(item[1] == 5) {
-                                                      return <option value={item[0]} selected>
-                                                            {item[1]}
-                                                        </option>
-                                                    }else {
-                                                        return <option value={item[0]}>
-                                                              {item[1]}
-                                                        </option>
-                                                    }
-                                              })}
-                                            </select>
-                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
-                                        </div>
-                                        <div className="mb-4">
-                                            <div className="text-[14px]">Select State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
-                                                name="state"
-                                                value={formValues.state}
-                                                defaultValue="Select State"
-                                                // defaultValue={formValues.state}
-                                                onChange={e => {
-                                                    fetchCityData(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, state: e.target.value }
-                                                        return newData;
-                                                    })
+                                                            setCurrCountry(e.target.value);
+                                                            fetchStateData(e.target.value);
+                                                            setFormValues((existing) => {
+                                                                const newData = { ...existing, country: e.target.value }
+                                                                return newData;
+                                                            })
+                                                        }}
+                                                    >
+                                                        {/* <option value="none" hidden={true}>Select a Country</option> */}
+                                                        {allCountry && allCountry.map(item => {
+                                                            if (item[1] == 5) {
+                                                                return <option value={item[0]} selected>
+                                                                    {item[1]}
+                                                                </option>
+                                                            } else {
+                                                                return <option value={item[0]}>
+                                                                    {item[1]}
+                                                                </option>
+                                                            }
+                                                        })}
+                                                    </select>
+                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="text-[14px]">Select State <label className="text-red-500">*</label></div>
+                                                    <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
+                                                        name="state"
+                                                        value={formValues.state}
+                                                        defaultValue="Select State"
+                                                        // defaultValue={formValues.state}
+                                                        onChange={e => {
+                                                            fetchCityData(e.target.value);
+                                                            setFormValues((existing) => {
+                                                                const newData = { ...existing, state: e.target.value }
+                                                                return newData;
+                                                            })
 
-                                                }}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a State</option> */}
-                                                {allState.map(item => {
-                                                
-                                                    if(item[0] === "Maharashtra") {
-                                                        return <option value={item[0]} selected>
-                                                                  {item[0]}
+                                                        }}
+                                                    >
+                                                        {/* <option value="none" hidden={true}>Select a State</option> */}
+                                                        {allState.map(item => {
+
+                                                            if (item[0] === "Maharashtra") {
+                                                                return <option value={item[0]} selected>
+                                                                    {item[0]}
+                                                                </option>
+                                                            } else {
+                                                                return <option value={item[0]}>
+                                                                    {item[0]}
+                                                                </option>
+                                                                //     return <option value={item[0]} >
+                                                                //     {item[0]}
+                                                                // </option>
+                                                            }
+                                                        })}
+                                                    </select>
+                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
+                                                </div>
+                                                <div className="mb-4">
+                                                    <div className="text-[14px]">Select City<label className="text-red-500">*</label></div>
+                                                    <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
+                                                        name="country"
+                                                        value={formValues.city}
+                                                        defaultValue="Select City"
+                                                        onChange={e => {
+                                                            // fetchCityData(e.target.value);
+                                                            console.log(e.target.value);
+                                                            setFormValues((existing) => {
+                                                                const newData = { ...existing, city: e.target.value }
+                                                                return newData;
+                                                            })
+
+                                                        }}
+                                                    >
+                                                        <option value="none" hidden={true}>Select a City</option>
+                                                        {allCity && allCity.map(item => (
+                                                            <option value={item.id} >
+                                                                {item.city}
                                                             </option>
-                                                    }else {
-                                                          return <option value={item[0]}>
-                                                            {item[0]}
-                                                          </option>
-                                                    //     return <option value={item[0]} >
-                                                    //     {item[0]}
-                                                    // </option>
-                                                    }
-})}
-                                            </select>
-                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
-                                        </div>
-                                        <div className="mb-4">
-                                            <div className="text-[14px]">Select City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]"
-                                                name="country"
-                                                value={formValues.city}
-                                                defaultValue="Select City"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
 
-                                                        const newData = { ...existing, city: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                <option value="none" hidden={true}>Select a City</option>
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
-                                                    </option>
-
-                                                ))}
-                                            </select>
-                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.city}</div>
+                                                        ))}
+                                                    </select>
+                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.city}</div>
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
+                                                    <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={formValues.locality} onChange={(e) => {
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, locality: e.target.value }
+                                                            return newData;
+                                                        })
+                                                    }} />
+                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.locality}</div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={formValues.locality} onChange={(e) => {
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, locality: e.target.value }
-                                                    return newData;
-                                                })
-                                            }} />
-                                            <div className="text-[11px] text-[#CD0000] ">{formErrors.locality}</div>
-                                        </div>
+                                    </div>
+                                    <div className=" flex justify-center items-center gap-[10px] ">
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleAddLocality}>Add</button>
+                                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                     </div>
                                 </div>
                             </div>
-                            <div className=" flex justify-center items-center gap-[10px] ">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleAddLocality}>Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                            </div>
                         </div>
-                    </div>
-                </div>
                     </Draggable>
-                    </>
+                </>
             </Modal>
         </div>
     )
