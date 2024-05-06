@@ -10,9 +10,9 @@ import { FilePdfOutlined } from "@ant-design/icons";
 import { env_URL_SERVER } from "../../../Redux/helper";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
+// import "./styles.css";
 
-
-const CustomPaginationComponent = (props) => {
+export const CustomPaginationComponent = (props) => {
   const {
     count,
     page,
@@ -129,7 +129,10 @@ const CustomPaginationComponent = (props) => {
             horizontal: "left",
           }}
         >
-          <MenuItem className="flex space-x-2 justify-center items-center ml-3 mt-3" onClick={downloadPDF}>
+          <MenuItem
+            className="flex space-x-2 justify-center items-center ml-3 mt-3"
+            onClick={downloadPDF}
+          >
             <p>Download as Pdf</p>
             <img src={Pdf} />
           </MenuItem>
@@ -141,9 +144,12 @@ const CustomPaginationComponent = (props) => {
             <img src={Excel} />
           </MenuItem>
         </Popover>
-          <div className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer" onClick={() => {
-              tableRef?.current.onQueryChange();
-            }}>
+        <div
+          className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
+          onClick={() => {
+            tableRef?.current.onQueryChange();
+          }}
+        >
           <button>
             <p>Refresh</p>
           </button>
@@ -184,11 +190,11 @@ export default function MyMaterialTable({ year, month }) {
             let url = `${env_URL_SERVER}getPMABilling`;
             let pageNo = Number(query.page);
             let pageSize = Number(query.pageSize);
-            let sort_by=[]
-            let sort_order=[]
+            let sort_by = [];
+            let sort_order = [];
             if (query.orderBy) {
-              sort_by.push(query.orderBy.field)
-              sort_order.push(query.orderDirection)
+              sort_by.push(query.orderBy.field);
+              sort_order.push(query.orderDirection);
             }
             const options = {
               method: "POST",
@@ -204,15 +210,15 @@ export default function MyMaterialTable({ year, month }) {
                 pg_size: pageSize,
                 add: false,
                 sort_by,
-                sort_order
+                sort_order,
               }),
             };
             fetch(url, options)
               .then((resp) => resp.json())
               .then((resp) => {
                 resolve({
-                  data: resp.data, 
-                  page: query.page, 
+                  data: resp.data,
+                  page: query.page,
                   totalCount: resp.total_count,
                 });
               });
@@ -229,6 +235,12 @@ export default function MyMaterialTable({ year, month }) {
           emptyRowsWhenPaging: false,
           search: true,
           filtering: true,
+          filterRowStyle: {
+            position: "sticky",
+            top: 80,
+            background: "white",
+            zIndex: 50 /* optionally */,
+          },
           grouping: true,
           columnsButton: true,
           paging: true,
@@ -236,9 +248,9 @@ export default function MyMaterialTable({ year, month }) {
           pageSizeOptions: [15, 25, 50],
           padding: "default",
           headerStyle: {
-            backgroundColor: "lightblue",
+            backgroundColor: "#F0F6FF",
             position: "sticky",
-            zIndex:90,
+            zIndex: 90,
             top: 0,
             pt: 12,
             pb: 12,

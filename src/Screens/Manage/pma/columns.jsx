@@ -1,5 +1,4 @@
 import { Chip, Stack } from "@mui/material";
-import { Strings } from "./String";
 import { TextFilterField, NumberFilterField } from "./CustomFilterField";
 import styleConst from "./styleConst";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +8,6 @@ export default function connectionDataColumn({
   connectionProtocolsObj,
 }) {
   const { cellStyleCommon } = styleConst;
-  const { pmaBillingData } = useSelector((state) => state.pmaBilling);
 
   const columns = [
     {
@@ -18,16 +16,11 @@ export default function connectionDataColumn({
       render: (rowData) => {
         // while grouping rowData will be just value not object
         return (
-          // <Chip
-          //   label={data}
-          //   color={data === Strings.EXPORT ? "warning" : "info"}
-          // />
           <Stack direction="row" spacing={0.5}>
-            {rowData?.tableData.index}
+            {rowData?.tableData.index + 1}
           </Stack>
         );
       },
-      
     },
     {
       filterComponent: TextFilterField,
@@ -49,10 +42,6 @@ export default function connectionDataColumn({
         // while grouping rowData will be just value not object
 
         return (
-          // <Chip
-          //   label={data}
-          //   color={data === Strings.EXPORT ? "warning" : "info"}
-          // />
           <Stack direction="row" spacing={0.5}>
             {rowData?.date ? rowData?.date : "---"}
           </Stack>
@@ -63,7 +52,7 @@ export default function connectionDataColumn({
       title: "Invoice Amount",
       field: "totalamt",
       grouping: false,
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
     {
       title: "Base Amount",

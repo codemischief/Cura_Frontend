@@ -12,6 +12,7 @@ import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
 import MyMaterialTable from "./MyMaterialTable";
 import { getPmaBilling, setPageNumber } from "../../../Redux/slice/pmaSlice";
+import BillingTableSekeleton from "./TableSkeleton";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -179,6 +180,7 @@ const PmaBillingTable = () => {
         {showTable && (
           <MyMaterialTable year={selectedYear} month={Number(selectedMonth)} />
         )}
+        {!showTable && <BillingTableSekeleton />}
         {/* {loadingState && (
           <Box sx={{ width: "100%" }}>
             <LinearProgress />
