@@ -8,6 +8,7 @@ import { addNewInvoices, getPmaBilling } from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
+import SucessfullModal from "../../../Components/modals/SucessfullModal";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -34,20 +35,14 @@ const MONTHS = [
 ];
 const PmaBilling = () => {
   const dispatch = useDispatch();
-  const {
-    pmaBillingData,
-    status,
-    totalCount,
-    countPerPage,
-    pageNo,
-    filter,
-  } = useSelector((state) => state.pmaBilling);
+  const { pmaBillingData, status, totalCount, countPerPage, pageNo, filter } =
+    useSelector((state) => state.pmaBilling);
   const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
   const [openModal, setOpenModal] = useState(false);
-
+  const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
 
   useEffect(() => {
@@ -61,7 +56,7 @@ const PmaBilling = () => {
         insertIntoDB: false,
         pg_size: countPerPage,
       };
-      dispatch(getPmaBilling(obj,selectedYear,selectedMonth));
+      dispatch(getPmaBilling(obj, selectedYear, selectedMonth));
     }
   }, [pageNo, filter]);
 
@@ -90,7 +85,7 @@ const PmaBilling = () => {
         insertIntoDB: false,
         pg_size: countPerPage,
       };
-      dispatch(getPmaBilling(obj,selectedYear,selectedMonth));
+      dispatch(getPmaBilling(obj, selectedYear, selectedMonth));
       setShowTable(true);
     } else {
       setError((prev) => ({
@@ -114,6 +109,10 @@ const PmaBilling = () => {
       dispatch(addNewInvoices(obj)).then((res) => {
         if (res.result === "success") {
           setOpenModal(false);
+          setToast(true);
+          setTimeout(function () {
+            setToast(false);
+          }, 2000);
         }
       });
     }
@@ -246,6 +245,12 @@ const PmaBilling = () => {
           </Typography>
         }
       />
+      {toast && (
+        <SucessfullModal
+          isOpen={toast}
+          message="New Invoice Added Successfully"
+        />
+      )}
     </Stack>
   );
 };

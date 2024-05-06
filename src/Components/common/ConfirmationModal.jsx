@@ -17,7 +17,7 @@ const ConfirmationModal = ({
     <Modal open={open}>
       <>
         <Draggable>
-          <div className=" flex flex-col w-[638px] h-[316px] rounded-xl bg-white justify-center items-center">
+          <div className="ml-[320px] mt-52 flex flex-col w-[638px] h-[316px] rounded-xl bg-white justify-center items-center">
             <button
               onClick={onClose}
               className="flex self-end mr-[50px] mt-[10px]"
