@@ -50,7 +50,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Invoice Amount",
       field: "totalamt",
       grouping: true,
-      lookup: "totalamt",
+      // lookup: "totalamt",
       filterComponent: TextFilterField,
     },
     {

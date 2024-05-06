@@ -2,7 +2,7 @@ export const getPmaBillingPayload = (obj) => {
   return { ...obj, user_id: obj.userId ?? 1234 };
 };
 
-export const updatedResponsePmaData = (data,year,month) => {
+export const updatedResponsePmaData = (data, year, month) => {
   return data.map((billing) => ({
     ...billing,
     data: billing.data ? billing.date : "--",
@@ -15,11 +15,11 @@ export const updatedResponsePmaData = (data,year,month) => {
     totalbaseamt: billing.totalbaseamt
       ? billing.totalbaseamt?.toFixed(2)
       : "---",
-    invoicedate: `${year}-${month}-01`
-
+    invoicedate: `${year}-${month}-01`,
+    fixedamt: billing?.fixedamt ? billing?.fixedamt?.toFixed(2) : "---",
+    fixedtaxamt: billing?.fixedtaxamt
+      ? billing?.fixedtaxam?.toFixedt(2)
+      : "---",
   }));
 };
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
-
-
-
