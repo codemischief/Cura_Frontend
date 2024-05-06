@@ -140,15 +140,10 @@ const Locality = () => {
         console.log(result);
         if (Array.isArray(result)) {
             setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
         }
     }
     useEffect(() => {
+        initials();
         fetchData();
         fetchCountryData();
         fetchStateData(5);
