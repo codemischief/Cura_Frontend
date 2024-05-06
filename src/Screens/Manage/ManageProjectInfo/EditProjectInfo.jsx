@@ -149,7 +149,23 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
         setFormValues(res.data)
         setPageLoading(false)
     }
+    const [helperData,setHelperData] = useState({})
+    const fetchInitialDataHelper = async () => {
+        setPageLoading(true)
+        const data = {
+            "user_id" : 1234,
+            "id" : currProject
+        }
+        console.log(data)
+        const response = await APIService.getProjectById(data)
+        const res = await response.json()
+        console.log(res.data)
+        setHelperData(res.data)
+        // setFormValues(res.data)
+        setPageLoading(false)
+    }
     useEffect(() => {
+        fetchInitialDataHelper()
        fetchInitialProjectData()
        getBuildersData()
       getProjectTypeData()
@@ -240,15 +256,87 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
         
         return res
     }
+    const helper1 = (insertBankDetails,updateBankDetails) => {
+        var size = formValues.project_bank_details.length
+      for(var i=0;i<size;i++) {
+        const tempObj = formValues.project_bank_details[i]
+        if(tempObj.hasOwnProperty('id')) {
+            // it has a property id
+            var weNeed = {};
+            for(var j=0;j<helperData.project_bank_details.length;j++) {
+                 if(tempObj.id === helperData.project_bank_details[j].id) {
+                     weNeed = helperData.project_bank_details[j]
+                 }
+            }
+            const str1 = JSON.stringify(weNeed)
+            const str2 = JSON.stringify(tempObj);
+            if(str1 !== str2) {
+                updateBankDetails.push(tempObj);
+            }
+        }else {
+                insertBankDetails.push(tempObj);   
+        }
+      }
+    }
+    const helper2 = (insertContacts,updateContacts) => {
+        var size = formValues.project_contacts.length
+      for(var i=0;i<size;i++) {
+        const tempObj = formValues.project_contacts[i]
+        if(tempObj.hasOwnProperty('id')) {
+            // it has a property id
+            var weNeed = {};
+            for(var j=0;j<helperData.project_contacts.length;j++) {
+                 if(tempObj.id === helperData.project_contacts[j].id) {
+                     weNeed = helperData.project_contacts[j]
+                 }
+            }
+            const str1 = JSON.stringify(weNeed)
+            const str2 = JSON.stringify(tempObj);
+            if(str1 !== str2) {
+                updateContacts.push(tempObj);
+            }
+        }else {
+                insertContacts.push(tempObj);   
+        }
+      }
+    }
+    const helper3 = (insertPhotos,updatePhotos) => {
+        var size = formValues.project_photos.length
+      for(var i=0;i<size;i++) {
+        const tempObj = formValues.project_photos[i]
+        if(tempObj.hasOwnProperty('id')) {
+            // it has a property id
+            var weNeed = {};
+            for(var j=0;j<helperData.project_photos.length;j++) {
+                 if(tempObj.id === helperData.project_photos[j].id) {
+                     weNeed = helperData.project_photos[j]
+                 }
+            }
+            const str1 = JSON.stringify(weNeed)
+            const str2 = JSON.stringify(tempObj);
+            if(str1 !== str2) {
+                updatePhotos.push(tempObj);
+            }
+        }else {
+            insertPhotos.push(tempObj);   
+        }
+      }
+    }
     const handleEdit = async () => {
         const temp = validate();
         if(!temp.status) {
             setSelectedDialogue(temp.page)
             return 
         }
-
-
-
+        const insertBankDetails = []
+        const updateBankDetails = []
+        const insertContacts = []
+        const updateContacts = []
+        const insertPhotos = []
+        const updatePhotos = []
+        helper1(insertBankDetails,updateBankDetails)
+        helper2(insertContacts,updateContacts)
+        helper3(insertPhotos,updatePhotos)
         // we need to do the helper logic here
         
         const data = {
@@ -313,23 +401,17 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
                 "sourceofwater": formValues.project_amenities.sourceofwater
             },
             "project_bank_details": {
-              "update": [
-              ],
-              "insert": [
-              ],
+              "update": updateBankDetails,
+              "insert": insertBankDetails,
               "delete": []
             },
             "project_contacts": {
-              "insert": [
-              ],
-              "update": [
-              ]
+              "insert": insertContacts,
+              "update": updateContacts
             },
             "project_photos": {
-              "insert": [
-              ],
-              "update": [
-              ]
+              "insert": insertPhotos,
+              "update": updatePhotos
             }
           }
           const response = await APIService.editProject(data);
