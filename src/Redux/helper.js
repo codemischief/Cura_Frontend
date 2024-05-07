@@ -15,10 +15,10 @@ export const updatedResponsePmaData = (data, year, month) => {
     totalbaseamt: billing.totalbaseamt
       ? billing.totalbaseamt?.toFixed(2)
       : "---",
-    invoicedate: `${year}-${month}-01`,
+    // invoicedate: `${year}-${month}-01`,
     fixedamt: billing?.fixedamt ? billing?.fixedamt?.toFixed(2) : "---",
     fixedtaxamt: billing?.fixedtaxamt
-      ? billing?.fixedtaxam?.toFixedt(2)
+      ? billing?.fixedtaxamt?.toFixed(2)
       : "---",
   }));
 };

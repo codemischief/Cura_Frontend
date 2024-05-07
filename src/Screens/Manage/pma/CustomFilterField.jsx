@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  Tooltip,
-  FormControl,
-  Button,
-  Divider,
-  Popover,
-  Box,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Tooltip, Popover, MenuItem } from "@mui/material";
 import { Close, FilterAlt } from "@mui/icons-material";
 
-import styleConst from "./styleConst";
 import {
   characterFilterData,
   dateFilterData,
@@ -23,7 +9,7 @@ import {
 } from "../../../Components/Filters/data";
 import { useDispatch } from "react-redux";
 import { setFilters } from "../../../Redux/slice/pmaSlice";
-const { customFilterFCCommon, columnFlex } = styleConst;
+import { useSelector } from "react-redux";
 
 export function clearFilterAll(noOfColumns, tableRef) {
   // i is column id which is assigned by Material Table;
@@ -45,6 +31,7 @@ export function DateFilterField(props) {
 
 const FilterField = (props) => {
   const dispatch = useDispatch();
+  const { filter } = useSelector((state) => state.pmaBilling);
   const { columnDef, onFilterChanged, type } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
@@ -52,7 +39,6 @@ const FilterField = (props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  let value = columnDef?.tableData?.filterValue;
 
   const open = Boolean(anchorEl);
   const optionType = {
@@ -68,14 +54,14 @@ const FilterField = (props) => {
         date: "Date",
       };
       let queryType = type === "number" ? Number(search) : search;
-      const query = [[columnDef.field, filter, queryType, filterType[type]]];
+      const query = [[columnDef.field, filter, queryType, filterType[type]]]
       dispatch(setFilters(query));
     }
     handleClose();
   };
   const handleResetFilter = () => {
     setSearch("");
-    dispatch(setFilters([]));
+    if (filter.length > 0) dispatch(setFilters([]));
   };
   return (
     <>

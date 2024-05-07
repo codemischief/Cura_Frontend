@@ -1,21 +1,21 @@
 import { Chip, Stack } from "@mui/material";
-import { TextFilterField, NumberFilterField, DateFilterField } from "./CustomFilterField";
+import {
+  TextFilterField,
+  NumberFilterField,
+  DateFilterField,
+} from "./CustomFilterField";
 import styleConst from "./styleConst";
 import { useDispatch, useSelector } from "react-redux";
 import { ArrowUpward } from "@mui/icons-material";
 
 export function CustomSorting(props) {
-  console.log(props,"props");
-  return [
-    <ArrowUpward  fontSize="small" />,
-  ]
+  console.log(props, "props");
+  return [<ArrowUpward fontSize="small" />];
 }
-
 
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
 
- 
   const columns = [
     {
       // filterComponent: TextFilterField,
@@ -71,15 +71,8 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Fixed Tax Amount",
-      field: "userName",
+      field: "fixedtaxamt",
       filterComponent: NumberFilterField,
-      render: (rowData) => {
-        return (
-          <Stack direction="row" spacing={0.5}>
-            {rowData.fixedtaxamt}
-          </Stack>
-        );
-      },
     },
     {
       title: "Rented Amount",
@@ -88,7 +81,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Rented Tax Amount",
-      field: "fixedtaxamt",
+      field: "rentedtaxamt",
       filterComponent: NumberFilterField,
     },
   ];

@@ -25,7 +25,12 @@ body{
 input::selection {
     background-color: transparent;
   }
+
+input[type=number] {
+    -moz-appearance: textfield;
+  }
 /* 
+
 @layer components{
     .button-action {
 
