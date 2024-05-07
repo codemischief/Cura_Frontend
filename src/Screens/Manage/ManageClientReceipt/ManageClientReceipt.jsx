@@ -432,7 +432,7 @@ const ManageClientReceipt = () => {
                 return { ...existing, amountReceived: "" }
             })
         }
-        
+
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
@@ -455,18 +455,18 @@ const ManageClientReceipt = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": 
-            [
-                "clientname",
-                "amount",
-                "serviceamount",
-                "reimbursementamount",
-                "recddate",
-                "paymentmodename",
-                "receivedbyname",
-                "tds",
-                "id"
-            ],
+            "rows":
+                [
+                    "clientname",
+                    "amount",
+                    "serviceamount",
+                    "reimbursementamount",
+                    "recddate",
+                    "paymentmodename",
+                    "receivedbyname",
+                    "tds",
+                    "id"
+                ],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -577,6 +577,7 @@ const ManageClientReceipt = () => {
         //   clientid : e.value
         //  }})
         setCurrClientName(e.label);
+        getOrdersByClientId(e.value)
         const existing = { ...formValues }
         existing.client = e.value
         setFormValues(existing)
@@ -604,6 +605,27 @@ const ManageClientReceipt = () => {
             return []
         }
         return results
+    }
+    const [orders,setOrders] = useState([]);
+
+    const getOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id" :1234,
+            "client_id" : id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrders(res.data)
+        
+        // if(res.data.length >= 1) {
+        //    const existing = {...formValues}
+        //    existing.order = res.data[0].id
+        //    console.log(res.data[0].id)
+        //    setFormValues(existing)
+           
+        // } 
     }
     const [currReceiptId, setCurrReceiptId] = useState(0);
     const [deleteConfirmation, setDeleteConfirmation] = useState(false)
@@ -647,7 +669,7 @@ const ManageClientReceipt = () => {
         const response = await APIService.deleteClientReceipt(data)
         const res = await response.json()
         setDeleteConfirmation(false)
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             openDeleteSuccess()
         }
         fetchData()
@@ -655,83 +677,83 @@ const ManageClientReceipt = () => {
     const [currClientName, setCurrClientName] = useState("")
 
     const filterMapping = {
-        clientname : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        clientname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        amount : {
-            filterType : "",
-            filterValue : "",
-            filterData : "Numeric",
-            filterInput : ""
+        amount: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
         },
-        serviceamount : {
-            filterType : "",
-            filterValue : "",
-            filterData : "Numeric",
-            filterInput : ""
+        serviceamount: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
         },
-        reimbursementamount : {
-            filterType : "",
-            filterValue : "",
-            filterData : "Numeric",
-            filterInput : ""
+        reimbursementamount: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
         },
-        tds : {
-            filterType : "",
-            filterValue : "",
-            filterData : "Numeric",
-            filterInput : ""
+        tds: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
         },
-        recddate : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        recddate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        paymentmodename : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        paymentmodename: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        receivedbyname : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        receivedbyname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-       
-            var existing = filterMapState;
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterType: type == 'noFilter' ? "" : type
-                }
-            }
-            existing = {
-                ...existing, [columnName]: {
-                    ...existing[columnName],
-                    filterValue: type == 'noFilter' ? "" : inputVariable
-                }
-            }
 
-            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
         fetchFiltered(existing);
     }
     const fetchFiltered = async (mapState) => {
@@ -774,9 +796,9 @@ const ManageClientReceipt = () => {
         // we need to query thru the object
         setSortField(field)
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setFlag((prev) => !prev);
@@ -799,6 +821,16 @@ const ManageClientReceipt = () => {
         setTotalItems(t);
         setExistingClientReceipt(result);
         setPageLoading(false);
+    }
+
+    const [orModel , setOrModel] = useState(false);
+
+    const handleOpenOrModel = () => {
+        setOrModel(true);
+    }
+
+    const handleCloseOrModel = () => {
+        setOrModel(false);
     }
 
     return (
@@ -864,95 +896,95 @@ const ManageClientReceipt = () => {
 
 
                 {/* filter component */}
-                
-                    <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[87%] flex">
-                            <div className='w-[3%] '>
-                                <div className='p-3'>
-                                    {/* <p>Sr.</p> */}
-                                </div>
-                            </div>
-                            <div className='w-[14%]  px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md ">
-                                    <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[22%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef}/>}
-                            </div>
 
-                            <div className='w-[10%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setAmountFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} columnName='amount' handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                <div className='w-full h-12 bg-white flex justify-between'>
+                    <div className="w-[87%] flex">
+                        <div className='w-[3%] '>
+                            <div className='p-3'>
+                                {/* <p>Sr.</p> */}
                             </div>
-
-                            <div className='w-[13%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setServiceAmountFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {serviceAmountFilter && <NumericFilter inputVariable={serviceAmountFilterInput} setInputVariable={setServiceAmountFilterInput} columnName='serviceamount' handleFilter={newHandleFilter} menuRef={menuRef}/>}
-                            </div>
-
-                            <div className='w-[12%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReimbusmentAmountFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {reimbusmentAmountFilter && <NumericFilter inputVariable={reimbusmentAmountFilterInput} setInputVariable={setReimbusmentAmountFilterInput} columnName='reimbursementamount' handleFilter={newHandleFilter} menuRef={menuRef}/>}
-                            </div>
-
-                            <div className='w-[12%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type="date" />
-                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedDateFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef}/>}
-                            </div>
-
-                            <div className='w-[13%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={receivedModeFilterInput} onChange={(e) => setReceivedModeFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[23%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedModeFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef}/>}
-                            </div>
-
-                            <div className='w-[11%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedByFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef}/>}
-                            </div>
-
-                            <div className='w-[7%] px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"  value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[45%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTDSFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {TDSFilter && <NumericFilter inputVariable={TDSFilterInput} setInputVariable={setTDSFilterInput} columnName='tds' handleFilter={newHandleFilter} menuRef={menuRef}/>}
-                            </div>
-
                         </div>
-                        <div className="w-[13%] flex">
-                            <div className='w-1/2 px-3 py-2.5'>
-                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
-                                    <button className='px-1 py-2 w-[40%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                        <div className='w-[14%]  px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md ">
+                                <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[22%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                             </div>
+                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                        </div>
 
-                            <div className='w-1/2  flex'>
-                                <div className='p-3'>
+                        <div className='w-[10%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setAmountFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} columnName='amount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
 
-                                </div>
+                        <div className='w-[13%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setServiceAmountFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {serviceAmountFilter && <NumericFilter inputVariable={serviceAmountFilterInput} setInputVariable={setServiceAmountFilterInput} columnName='serviceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-[12%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReimbusmentAmountFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {reimbusmentAmountFilter && <NumericFilter inputVariable={reimbusmentAmountFilterInput} setInputVariable={setReimbusmentAmountFilterInput} columnName='reimbursementamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-[12%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type="date" />
+                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedDateFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-[13%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedModeFilterInput} onChange={(e) => setReceivedModeFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[23%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedModeFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-[11%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedByFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-[7%] px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[45%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTDSFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {TDSFilter && <NumericFilter inputVariable={TDSFilterInput} setInputVariable={setTDSFilterInput} columnName='tds' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
+
+                    </div>
+                    <div className="w-[13%] flex">
+                        <div className='w-1/2 px-3 py-2.5'>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                <button className='px-1 py-2 w-[40%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                            </div>
+                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                        </div>
+
+                        <div className='w-1/2  flex'>
+                            <div className='p-3'>
+
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-t-[1px]'>
@@ -1085,9 +1117,12 @@ const ManageClientReceipt = () => {
                                         </div>
                                     </div>
                                     <div className='w-[5%]  flex'>
-                                        <div className='p-3'>
-                                            <p></p>
-                                        </div>
+                                        <button onClick={handleOpenOrModel}>
+                                            <div className='p-3 text-blue-500'>
+                                                <p>OR</p>
+                                            </div>
+                                        </button>
+
                                     </div>
                                 </div>
                                 <div className="w-[13%] flex">
@@ -1195,46 +1230,198 @@ const ManageClientReceipt = () => {
             >
                 <div className='flex justify-center'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[370px] ml-[370px]">
-                                <div className="text-base">New Client Receipt</div>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[370px] ml-[370px]">
+                                    <div className="text-base">New Client Receipt</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                    <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+
+                            <div className="h-auto w-full mt-1">
+                                <div className="flex gap-12 justify-center ">
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878]">Cura Office </div>
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Received Date<label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">
+                                                Received By <label className="text-red-500">*</label>
+                                            </div>
+                                            <select
+                                                className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                name="receivedBy"
+                                                value={formValues.receivedBy}
+                                                onChange={handleChange}
+                                            >
+                                                {/* <option value="none" hidden >Select Received By</option> */}
+                                                {usersData.map((item) => (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">
+                                                Receipt Mode <label className="text-red-500">*</label>
+                                            </div>
+                                            <select
+                                                className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                name="receiptMode"
+                                                value={formValues.receiptMode}
+                                                onChange={handleChange}
+                                            >
+                                                {modesData.map((item) => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">
+                                                Client <label className="text-red-500">*</label>
+                                            </div>
+                                            <AsyncSelect
+                                                onChange={handleClientNameChange}
+                                                value={selectedOption}
+                                                loadOptions={loadOptions}
+                                                cacheOptions
+                                                defaultOptions
+                                                onInputChange={(value) => setQuery(value)}
+
+                                                styles={{
+                                                    control: (provided, state) => ({
+                                                        ...provided,
+                                                        minHeight: 23,
+                                                        lineHeight: '0.8',
+                                                        height: 4,
+                                                        width: 230,
+                                                        fontSize: 10,
+                                                        // padding: '1px'
+                                                    }),
+                                                    // indicatorSeparator: (provided, state) => ({
+                                                    //   ...provided,
+                                                    //   lineHeight : '0.5',
+                                                    //   height : 2,
+                                                    //   fontSize : 12 // hide the indicator separator
+                                                    // }),
+                                                    dropdownIndicator: (provided, state) => ({
+                                                        ...provided,
+                                                        padding: '1px', // adjust padding for the dropdown indicator
+                                                    }),
+                                                    options: (provided, state) => ({
+                                                        ...provided,
+                                                        fontSize: 10// adjust padding for the dropdown indicator
+                                                    }),
+                                                    menu: (provided, state) => ({
+                                                        ...provided,
+                                                        width: 230, // Adjust the width of the dropdown menu
+                                                    }),
+                                                }}
+                                            />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">
+                                                How Received <label className="text-red-500">*</label>
+                                            </div>
+                                            <select
+                                                className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                name="howReceived"
+                                                value={formValues.howReceived}
+                                                onChange={handleChange}
+                                            >
+                                                <option value=""> Select How Received</option>
+                                                {howReceivedData.map((item) => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.howreceived}</div>
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm">Service Amount </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Reimbursement Amount </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.reimbursementAmount}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">TDS </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.TDS}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Receipt Description</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="my-3 flex justify-center items-center gap-3">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientReceipt} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
+                        </div>
+                    </Draggable>
+                </div>
+            </Modal>
+
+            <Modal open={orModel}
+                fullWidth={true}
+                maxWidth={'md'}
+                className='flex justify-center items-center'
+            >
+                <div className='flex justify-center'>
+                    <Draggable>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[410px] ml-[410px]">
+                                <div className="text-[16px]">New Order Receipt</div>
+                            </div>
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <button onClick={() => {handleCloseOrModel()}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
-                        <div className="h-auto w-full mt-1">
-                            <div className="flex gap-12 justify-center ">
+                        <div className="h-auto w-full mt-[5px]">
+                            <div className="flex gap-[48px] justify-center ">
                                 <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Cura Office </div>
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Received Date<label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                        <div className="text-sm text-[#787878]">Receipt ID </div>
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">
-                                            Received By <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="receivedBy"
-                                            value={formValues.receivedBy}
-                                            onChange={handleChange}
-                                        >
-                                            {/* <option value="none" hidden >Select Received By</option> */}
-                                            {usersData.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                        <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -1256,6 +1443,33 @@ const ManageClientReceipt = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
+                                            Received By <label className="text-red-500">*</label>
+                                        </div>
+                                        <select
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                            name="receivedBy"
+                                            value={formValues.receivedBy}
+                                            onChange={handleChange}
+                                        >
+                                            {/* <option value="none" hidden >Select Received By</option> */}
+                                            {usersData.map((item) => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Receipt Description </div>
+                                        <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                    </div>
+                                    
+                                </div>
+                                <div className=" space-y-3 py-5">
+
+                                <div className="">
+                                        <div className="text-[13px] mb-0.5">
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
@@ -1298,57 +1512,53 @@ const ManageClientReceipt = () => {
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
+
                                     <div className="">
-                                        <div className="text-sm">
-                                            How Received <label className="text-red-500">*</label>
+                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                    </div>
+                                    
+                                    <div className="">
+                                        <div className="text-[13px]">
+                                            Order <label className="text-red-500">*</label>
                                         </div>
                                         <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="howReceived"
-                                            value={formValues.howReceived}
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                            name="order"
+                                            value={formValues.order}
                                             onChange={handleChange}
                                         >
-                                            <option value=""> Select How Received</option>
-                                            {howReceivedData.map((item) => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
+                                            <option value="" >Select A Order</option>
+                                            {orders.map((item) => (
+                                                <option key={item.id} value={item.id}>
+                                                    {item.ordername}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.howreceived}</div>
-                                    </div>
-                                </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm">Service Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Reimbursement Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.reimbursementAmount}</div>
+                                        <div className="text-sm ">Pending Amount </div>
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                        <div className="text-sm ">Order Date </div>
+                                        
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">TDS </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="TDS" value={formValues.TDS} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.TDS}</div>
+                                        <div className="text-sm ">Order Status </div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm">Receipt Description</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                        <div className="text-[13px]">TDS </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientReceipt} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                        <div className="my-3 flex justify-center items-center gap-[10px]">
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Add</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {handleCloseOrModel()}}>Cancel</button>
                         </div>
                     </div>
                     </Draggable>
