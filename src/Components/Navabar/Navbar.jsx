@@ -365,7 +365,7 @@ const Navbar = () => {
                   <div className="text-[11px] text-[#505050] space-y-1">
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/managepmaagreement" >PMA Agreement</Link></p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/managellagreement">L&L Agreement</Link> </p>
-                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>PMA Billing</p>
+                  <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'><Link to="/manage/pmaBilling">PMA Billing</Link> </p>
                   <p className='text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1'>Email PMA Statement</p>
                   </div>
                </div>
