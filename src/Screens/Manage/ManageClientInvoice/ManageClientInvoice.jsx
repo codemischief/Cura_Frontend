@@ -19,6 +19,7 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import EditClientInvoice from './EditClientInvoice';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import SaveConfirmationClientInvoice from './SaveConfirmationClientInvoice';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeleteClientInvoiceModal from './DeleteClientInvoiceModal';
@@ -333,9 +334,13 @@ const ManageClientInvoice = () => {
     };
 
     const handleClose = () => {
+        initials();
+        setIsClientInvoiceDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
         setFormValues(initialValues);
         setFormErrors({});
-        setIsClientInvoiceDialogue(false);
     }
     const handleAddClientInvoice = () => {
         console.log(formValues)
@@ -604,6 +609,24 @@ const ManageClientInvoice = () => {
         }, 2000)
         fetchData();
     }
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsClientInvoiceDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
     const openFailureModal = () => {
         setIsFailureModal(true);
         setTimeout(function () {
@@ -812,13 +835,15 @@ const ManageClientInvoice = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Invoice Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
-            {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currClient={selectedOption.label} addClientInvoice={addClientInvoice} />}
+            {openAddConfirmation && <SaveConfirmationClientInvoice handleClose={() => setOpenAddConfirmation(false)} currClient={selectedOption.label} addClientInvoice={addClientInvoice} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteClientInvoiceModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} />}
+            {deleteConfirmation && <DeleteClientInvoiceModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteClientInvoice} item={currClientInvoiceId} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Client Invoice added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>

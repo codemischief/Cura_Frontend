@@ -4,7 +4,7 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
-const EditClientInvoice = ({ handleClose, invoiceId, showSuccess }) => {
+const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
     const initialValues = {
         client: "",
         estimateAmount: "",
@@ -198,7 +198,10 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess }) => {
         return results
     }
 
-
+    const close = () =>{
+        handleClose();
+        showCancel();
+    }
 
 
     return (
@@ -215,7 +218,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess }) => {
                                 <div className="text-base">Edit Client Invoice </div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                <button onClick={() => {close()}}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
@@ -325,7 +328,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess }) => {
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
                             <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
-                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
+                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={() => {close()}}>Cancel</button>
                         </div>
 
                     </div>
