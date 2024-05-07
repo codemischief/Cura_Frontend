@@ -429,14 +429,14 @@ const ManageOrderReceipt = () => {
         setShowEditModal(true);
     }
     const initialValues = {
-        client: "",
+        client: null,
         order: null,
         receiptMode: 5,
         receivedBy: 1234,
         TDS: null,
-        receiptDescription: "",
+        receiptDescription: null,
         receivedDate: null,
-        amountReceived: ""
+        amountReceived: null
     };
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {

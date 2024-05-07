@@ -380,6 +380,10 @@ const ManageClientReceipt = () => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
+    const handleOrChange = (e) => {
+        const { name, value } = e.target;
+        setOrFormValues({ ...orFormValues, [name]: value });
+    };
     const [currClientReceipt, setCurrClientReceipt] = useState({});
 
     const handleEdit = (item) => {
@@ -584,6 +588,16 @@ const ManageClientReceipt = () => {
         console.log(formValues)
         setSelectedOption(e)
     }
+    
+    const  handleOrClientNameChange = (e) => {
+        const existing = {...orFormValues}
+        existing.client = e.value 
+        getOrOrdersByClientId(e.value)
+        setOrFormValues(existing)
+        setOrSelectedOption(e)
+    }
+
+
     const loadOptions = async (e) => {
         console.log(e)
         if (e.length < 3) return;
@@ -660,7 +674,7 @@ const ManageClientReceipt = () => {
         console.log(data)
 
     }
-    const deleteClientRceipt = async (id) => {
+    const deleteClientReceipt = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
@@ -825,27 +839,176 @@ const ManageClientReceipt = () => {
 
     const [orModel , setOrModel] = useState(false);
 
-    const handleOpenOrModel = () => {
+    const handleOpenOrModel = (item) => {
+        const existing = {...orFormValues}
+        existing.client = item.clientid 
+        getOrOrdersByClientId(item.clientid)
+        setOrFormValues(existing)
+        const temp = {...orSelectedOption}
+        temp.label = item.clientname 
+        temp.value = item.clientid 
+        setOrSelectedOption(temp)
         setOrModel(true);
     }
 
     const handleCloseOrModel = () => {
+        setOrFormValues({
+            client: null,
+            order: null,
+            receiptMode: 5,
+            receivedBy: 1234,
+            TDS: null,
+            receiptDescription: null,
+            receivedDate: null,
+            amountReceived: null
+        })
+        setOrFormErrors({})
         setOrModel(false);
     }
+    const [orFormValues,setOrFormValues] = useState(
+        {
+            client: null,
+            order: null,
+            receiptMode: 5,
+            receivedBy: 1234,
+            TDS: null,
+            receiptDescription: null,
+            receivedDate: null,
+            amountReceived: null
+        }
+    )
+    const [orSelectedOption,setOrSelectedOption] = useState({
+        label: "Select Client",
+        value: null
+    })
 
+    const [orFormErrors,setOrFormErrors] = useState({})
+    const orValidate = () => {
+        var res = true;
+
+        if (!orFormValues.client) {
+            setOrFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
+            })
+            res = false;
+        } else {
+            setOrFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
+        if (!orFormValues.receiptMode) {
+            setOrFormErrors((existing) => {
+                return { ...existing, receiptMode: "Select Receipt Mode" }
+            })
+            res = false;
+        } else {
+            setOrFormErrors((existing) => {
+                return { ...existing, receiptMode: "" }
+            })
+        }
+        if (!orFormValues.receivedBy) {
+            setOrFormErrors((existing) => {
+                return { ...existing, receivedBy: "Select Received By" }
+            })
+            res = false;
+        } else {
+            setOrFormErrors((existing) => {
+                return { ...existing, receivedBy: "" }
+            })
+        }
+        if (!orFormValues.receivedDate) {
+            setOrFormErrors((existing) => {
+                return { ...existing, receivedDate: "Select Received Date" }
+            })
+            res = false;
+        } else {
+            setOrFormErrors((existing) => {
+                return { ...existing, receivedDate: "" }
+            })
+        }
+        if (!orFormValues.amountReceived) {
+            setOrFormErrors((existing) => {
+                return { ...existing, amountReceived: "Enter Amount Received" }
+            })
+            res = false;
+        } else {
+            setOrFormErrors((existing) => {
+                return { ...existing, amountReceived: "" }
+            })
+        }
+        if (!orFormValues.order || orFormValues.order == "") {
+            setOrFormErrors((existing) => {
+                return { ...existing, order: "Select Order" }
+            })
+            res = false;
+        } else {
+            setOrFormErrors((existing) => {
+                return { ...existing, order: "" }
+            })
+        }
+
+        return res;
+    }
+    const addOrderReceipt = async  () => {
+        if(!orValidate()) {
+            return ;
+        }
+        const data = {
+            "user_id": 1234,
+            "clientid" : Number(orFormValues.client),
+            "receivedby": Number(orFormValues.receivedBy),
+            "amount": Number(orFormValues.amountReceived),
+            "tds": Number(orFormValues.TDS),
+            "recddate": orFormValues.receivedDate,
+            "paymentmode": Number(orFormValues.receiptMode),
+            "orderid": Number(orFormValues.order),
+            "receiptdesc": orFormValues.receiptDescription,
+            "entityid": 1,
+            "officeid" : 1
+        }
+        const response = await APIService.addOrderReceipt(data)
+        const res = await response.json()
+        console.log(res)
+        if(res.result == 'success') {
+            openOrAddSuccess()
+        }
+        
+    }
+    const [showOrAddSuccess,setShowOrAddSuccess] = useState(false)
+    const openOrAddSuccess = () => {
+        setOrModel(false)
+        setShowOrAddSuccess(true);
+        setTimeout(function () {
+            setShowOrAddSuccess(false);
+        }, 2000)
+        fetchData();
+    }
+    const [orOrders,setOrOrders] = useState([])
+    const getOrOrdersByClientId = async (id) => {
+        console.log('hello')
+        const data = {
+            "user_id" :1234,
+            "client_id" : id
+        }
+        const response = await APIService.getOrdersByClientId(data)
+        const res = await response.json()
+        console.log(res.data)
+        setOrOrders(res.data)
+    }
     return (
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Receipt Created Successfully" />}
+            {showOrAddSuccess && <SucessfullModal isOpen={showOrAddSuccess} message="Or Receipt Created Successfully"/>}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Receipt Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
 
-            {deleteConfirmation && <DeleteClientReceipt handleClose={() => { setDeleteConfirmation(false) }} handleDelete={deleteClientRceipt} item={currReceiptId} />}
+            {deleteConfirmation && <DeleteClientReceipt handleClose={() => { setDeleteConfirmation(false) }} handleDelete={deleteClientReceipt} item={currReceiptId} />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1117,7 +1280,7 @@ const ManageClientReceipt = () => {
                                         </div>
                                     </div>
                                     <div className='w-[5%]  flex'>
-                                        <button onClick={handleOpenOrModel}>
+                                        <button onClick={() => handleOpenOrModel(item)}>
                                             <div className='p-3 text-blue-500'>
                                                 <p>OR</p>
                                             </div>
@@ -1412,16 +1575,16 @@ const ManageClientReceipt = () => {
                                 <div className=" space-y-3 py-5">
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Cura Office </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"   >Pune</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Receipt ID </div>
-                                        
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={orFormValues.receivedDate} onChange={handleOrChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -1430,8 +1593,8 @@ const ManageClientReceipt = () => {
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="receiptMode"
-                                            value={formValues.receiptMode}
-                                            onChange={handleChange}
+                                            value={orFormValues.receiptMode}
+                                            onChange={handleOrChange}
                                         >
                                             {modesData.map((item) => (
                                                 <option key={item[0]} value={item[0]}>
@@ -1439,7 +1602,7 @@ const ManageClientReceipt = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receiptMode}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -1448,8 +1611,8 @@ const ManageClientReceipt = () => {
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
                                             name="receivedBy"
-                                            value={formValues.receivedBy}
-                                            onChange={handleChange}
+                                            value={orFormValues.receivedBy}
+                                            onChange={handleOrChange}
                                         >
                                             {/* <option value="none" hidden >Select Received By</option> */}
                                             {usersData.map((item) => (
@@ -1458,11 +1621,11 @@ const ManageClientReceipt = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedBy}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Receipt Description </div>
-                                        <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="receiptDescription" value={formValues.receiptDescription} onChange={handleChange} />
+                                        <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="receiptDescription" value={orFormValues.receiptDescription} onChange={handleOrChange} />
                                     </div>
                                     
                                 </div>
@@ -1473,8 +1636,8 @@ const ManageClientReceipt = () => {
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
+                                            onChange={handleOrClientNameChange}
+                                            value={orSelectedOption}
                                             loadOptions={loadOptions}
                                             cacheOptions
                                             defaultOptions
@@ -1483,7 +1646,7 @@ const ManageClientReceipt = () => {
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
-                                                    minHeight: 23,
+                                                    minHeight: 20,
                                                     lineHeight: '0.8',
                                                     height: 4,
                                                     width : 230,
@@ -1510,13 +1673,13 @@ const ManageClientReceipt = () => {
                                                   }),
                                             }}
                                         />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.client}</div>
                                     </div>
 
                                     <div className="">
                                         <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={orFormValues.amountReceived} onChange={handleOrChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.amountReceived}</div>
                                     </div>
                                     
                                     <div className="">
@@ -1526,38 +1689,39 @@ const ManageClientReceipt = () => {
                                         <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
-                                            value={formValues.order}
-                                            onChange={handleChange}
+                                            value={orFormValues.order}
+                                            onChange={handleOrChange}
                                         >
                                             <option value="" >Select A Order</option>
-                                            {orders.map((item) => (
+                                            {orOrders.map((item) => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.ordername}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.order}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm ">Pending Amount </div>
-                                        
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm ">Order Date </div>
-                                        
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-sm ">Order Status </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">TDS </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={null} onChange={handleOrChange} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => {}} >Add</button>
+                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addOrderReceipt} >Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {handleCloseOrModel()}}>Cancel</button>
                         </div>
                     </div>
