@@ -78,11 +78,11 @@ const ManageBuilder = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15,
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
             "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
@@ -101,9 +101,9 @@ const ManageBuilder = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": Number(page),
             "pg_size": Number(currentPages),
             "search_key" : searchInput
@@ -120,15 +120,16 @@ const ManageBuilder = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        setCurrentPages(quantity)
+        setCurrentPages(quantity);
+        setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages),
+            "pg_no": 1,
+            "pg_size": Number(quantity),
             "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
@@ -177,50 +178,52 @@ const ManageBuilder = () => {
     const handleSearch = async () => {
         setPageLoading(true);
         setIsSearchOn(true);
-
-
+        setCurrentPage(1)
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        console.log(result);
-        setExistingBuilders(result.builder_info);
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
         setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
     }
 
     const handleCloseSearch = async () => {
         setPageLoading(true);
         setSearchInput("");
         setIsSearchOn(false);
+        setCurrentPage(1);
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key" : ""
         };
         const response = await APIService.getNewBuilderInfo(data)
-        const temp = await response.json();
-        const result = temp.data;
-        const t = temp.total_count;
-        setTotalItems(t);
-        console.log(result);
-        setExistingBuilders(result.builder_info);
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
         setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
     }
 
     const deleteBuilder = async (item) => {
@@ -438,6 +441,7 @@ const ManageBuilder = () => {
     }
 
     const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async  (mapState) => {
         setPageLoading(true);
         const tempArray = [];
@@ -449,6 +453,8 @@ const ManageBuilder = () => {
                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
             }
         })
+        setFilterState(tempArray);
+        setCurrentPage(1);
         console.log('this is getting called')
         console.log(tempArray)
         const data = {
@@ -456,21 +462,20 @@ const ManageBuilder = () => {
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
             "filters": tempArray,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15,
+            "pg_size": Number(currentPages),
             "search_key" : searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
         console.log(res)
         const result = res.data.builder_info;
-        setExistingPayments(result.data);
-        setTotalItems(result.total_count)
         setTotalItems(res.total_count);
         console.log(res.total_count);
-        setExistingBuilders(result);
         setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
     }
     const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
         
@@ -483,7 +488,7 @@ const ManageBuilder = () => {
                 ...existing[columnName],
                  filterValue : type == 'noFilter' ? "" : inputVariable
             }}
-            if(type == 'noFilter') setInputVariable("");
+            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
         
         fetchFiltered(existing);
     }
@@ -495,6 +500,9 @@ const ManageBuilder = () => {
         const tempArray = [];
         // we need to query thru the object
         setSortField(field)
+        setFlag((prev) => {
+            return !prev
+        })
         console.log(filterMapState);
         Object.keys(filterMapState).forEach(key=> {
             if(filterMapState[key].filterType != "") {
@@ -504,14 +512,13 @@ const ManageBuilder = () => {
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": tempArray,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
+            "filters": filterState,
+            "sort_by": [field],
+            "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        setFlag((prev) => !prev);
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
         console.log(res)
