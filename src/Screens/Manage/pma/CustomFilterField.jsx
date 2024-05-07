@@ -53,9 +53,7 @@ const FilterField = (props) => {
     setAnchorEl(null);
   };
   let value = columnDef?.tableData?.filterValue;
-  value =
-    (value !== null && typeof value === "object" ? "Advance Filter" : value) ??
-    "";
+
   const open = Boolean(anchorEl);
   const optionType = {
     text: characterFilterData,
@@ -64,12 +62,21 @@ const FilterField = (props) => {
   };
   const handleFilter = (filter) => {
     if (search) {
-      const query = [[columnDef.field], [search], [filter], [""]];
+      let filterType = {
+        text: "String",
+        number: "Numeric",
+        date: "Date",
+      };
+      let queryType = type === "number" ? Number(search) : search;
+      const query = [[columnDef.field, filter, queryType, filterType[type]]];
       dispatch(setFilters(query));
     }
     handleClose();
   };
-
+  const handleResetFilter = () => {
+    setSearch("");
+    dispatch(setFilters([]));
+  };
   return (
     <>
       <div className="w-fit  p-3">
@@ -82,8 +89,13 @@ const FilterField = (props) => {
           />
           {search && (
             <Close
-              sx={{ height: "12px", w: "12px", color: "#C6C6C6",cursor:"pointer" }}
-              onClick={() => setSearch("")}
+              sx={{
+                height: "12px",
+                w: "12px",
+                color: "#C6C6C6",
+                cursor: "pointer",
+              }}
+              onClick={handleResetFilter}
             />
           )}
           <Tooltip title="Filters">
@@ -114,6 +126,3 @@ const FilterField = (props) => {
     </>
   );
 };
-
-
-

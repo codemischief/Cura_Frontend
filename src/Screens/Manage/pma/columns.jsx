@@ -1,5 +1,5 @@
 import { Chip, Stack } from "@mui/material";
-import { TextFilterField, NumberFilterField } from "./CustomFilterField";
+import { TextFilterField, NumberFilterField, DateFilterField } from "./CustomFilterField";
 import styleConst from "./styleConst";
 import { useDispatch, useSelector } from "react-redux";
 import { ArrowUpward } from "@mui/icons-material";
@@ -43,7 +43,7 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Invoice Date",
       field: "invoicedate",
-      filterComponent: TextFilterField,
+      filterComponent: DateFilterField,
       // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.connectionName),
     },
     {
@@ -51,28 +51,28 @@ export default function connectionDataColumn(onQuery) {
       field: "totalamt",
       grouping: true,
       // lookup: "totalamt",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
     {
       title: "Total Base Amount",
       field: "totalbaseamt",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
 
     {
       title: "Tax Amount",
       field: "totaltaxamt",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
     {
       title: "Fixed Amount",
       field: "fixedamt",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
     {
       title: "Fixed Tax Amount",
       field: "userName",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
       render: (rowData) => {
         return (
           <Stack direction="row" spacing={0.5}>
@@ -84,12 +84,12 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Rented Amount",
       field: "rentedamt",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
     {
       title: "Rented Tax Amount",
       field: "fixedtaxamt",
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
     },
   ];
   return columns;

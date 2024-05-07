@@ -1,15 +1,16 @@
 const commonFilterKeys = [
-  { key: "NoFilter", title: "No Filter" },
-  { key: "EqualTo", title: "Equal To" },
+  { key: "noFilter", title: "No Filter" },
+  { key: "equalTo", title: "Equal To" },
   { key: "isNotNull", title: "is Not Null" },
   { key: "isNull", title: "isNull" },
 ];
+
 export const characterFilterData = [
   ...commonFilterKeys,
-  { key: "Contains", title: "Contains" },
-  { key: "DoesNotContain", title: "Does not contain" },
-  { key: "StartsWith", title: "Starts With" },
-  { key: "EndsWith", title: "Ends With" },
+  { key: "contains", title: "Contains" },
+  { key: "doesNotContain", title: "Does not contain" },
+  { key: "startsWith", title: "Starts With" },
+  { key: "endsWith", title: "Ends With" },
 ];
 
 export const numericFilterData = [
