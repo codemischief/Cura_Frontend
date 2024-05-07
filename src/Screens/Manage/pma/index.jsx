@@ -178,8 +178,7 @@ const PmaBilling = () => {
                 })}
               </select>
             </div>
-          </Stack>
-          <Button
+            <Button
             variant="outlined"
             onClick={handleShow}
             sx={{
@@ -192,6 +191,7 @@ const PmaBilling = () => {
               border: "1px solid #004DD7",
               fontWeight: "600px",
               lineHeight: "18.9px",
+              marginTop:'4px',
               "&:hover": {
                 //you want this to be the same as the backgroundColor above
                 backgroundColor: "#004DD7",
@@ -202,8 +202,9 @@ const PmaBilling = () => {
           >
             Show
           </Button>
-          {/* {error.year && <p className="text-red-800">{error.year}</p>}
-          {error.month && <p className="text-red-800">{error.month}</p>} */}
+          </Stack>
+       
+        
           <CustomButton
             title="Add New PMA Invoice"
             onClick={() => {

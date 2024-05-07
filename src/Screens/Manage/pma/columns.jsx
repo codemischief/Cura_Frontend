@@ -18,12 +18,11 @@ export default function connectionDataColumn(onQuery) {
 
   const columns = [
     {
-      // filterComponent: TextFilterField,
       title: "Sr No",
+      width:'5%',
       render: (rowData) => {
-        // while grouping rowData will be just value not object
         return (
-          <Stack direction="row" spacing={0.5}>
+          <Stack direction="row" sx={{justifyContent:'center',width:'30px'}}>
             {rowData?.tableData.index + 1}
           </Stack>
         );
@@ -39,18 +38,18 @@ export default function connectionDataColumn(onQuery) {
       filterComponent: TextFilterField,
       title: "Quote Description",
       field: "briefdescription",
+      width:'20%',
+      
     },
     {
       title: "Invoice Date",
       field: "invoicedate",
       filterComponent: DateFilterField,
-      // customFilterAndSearch: (term, rowData) => filterQuery(term, rowData.connectionName),
     },
     {
       title: "Invoice Amount",
       field: "totalamt",
       grouping: true,
-      // lookup: "totalamt",
       filterComponent: NumberFilterField,
     },
     {

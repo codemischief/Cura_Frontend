@@ -116,7 +116,7 @@ export const CustomPaginationComponent = (props) => {
         </div>
         <div className="flex text-sm">
           <p className="mr-11 text-gray-700">
-            {countPerPage} Items in {Math.ceil(totalCount / +countPerPage)}{" "}
+            {totalCount} Items in {Math.ceil(totalCount / +countPerPage)}{" "}
             Pages
           </p>
         </div>

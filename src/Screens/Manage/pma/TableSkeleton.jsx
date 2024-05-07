@@ -4,8 +4,6 @@ import MaterialTable from "@material-table/core";
 import { ArrowUpward } from "@mui/icons-material";
 import { CustomPaginationComponent } from "./MyMaterialTable";
 
-
-
 export default function PmaBillingTable({
   column,
   data,
@@ -64,8 +62,12 @@ export default function PmaBillingTable({
           toolbacolumnResizablerButtonAlignment: "",
         }}
         icons={{
-          SortArrow: (props) => <ArrowUpward {...props} />
+          SortArrow: (props) => <ArrowUpward {...props} />,
         }}
+        // onOrderChange={(orderBy, orderDirection) => {
+        //   const key = orderBy < 1 ? 0 : orderBy;
+        //   console.log(`Changing order to ${key}:${orderDirection}`);
+        // }}
         components={{
           Pagination: (props) => {
             return (
@@ -76,11 +78,8 @@ export default function PmaBillingTable({
               />
             );
           },
-         
-         
         }}
       />
     </div>
   );
 }
-
