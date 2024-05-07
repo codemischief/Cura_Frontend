@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
-
+import AsyncSelect from "react-select/async"
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
@@ -956,6 +956,54 @@ const ManageBankStatement = () => {
         },2000)
         fetchBankStatement();
       }
+
+
+
+      
+  const [selectedOption,setSelectedOption] = useState({
+    label : "Select Tenant Of",
+    value : null
+   });
+   const [query,setQuery] = useState('')
+   const handleClientNameChange = (e) => {
+       console.log('hey')
+       console.log(e)
+      //  setFormValues({...formValues,client_property : {
+      //   ...formValues.client_property,
+      //   clientid : e.value
+      //  }})
+       const existing = {...formValues}
+       existing.client = e.value
+    //    const temp = {...existing.client_info}
+    //    getClientPropertyByClientId(e.value)
+    //    temp.tenantof = e.value
+    //    existing.client_info = temp;
+       setFormValues(existing)
+       console.log(formValues)
+       setSelectedOption(e)
+   }
+   const loadOptions = async (e) => {
+      console.log(e)
+      if(e.length < 3) return ;
+      const data = {
+        "user_id" : 1234,
+        "pg_no" : 0,
+        "pg_size" : 0,
+        "search_key" : e
+      }
+      const response = await APIService.getClientAdminPaginated(data)
+      const res = await response.json()
+      const results = res.data.map(e => {
+        return {
+          label : e[1],
+          value : e[0]
+        }
+      })
+      if(results === 'No Result Found') {
+        return []
+      }
+      return results
+   }
     return (
         <div className="h-screen">
             <Navbar/>
@@ -1329,7 +1377,7 @@ const ManageBankStatement = () => {
                                         </div>
 
                                         <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            {(!(item.clientid) && item.crdr === "CR                  ") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
+                                            {(!(item.clientid) && item.crdr === "CR") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
 
                                             {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                         </div>
@@ -1629,14 +1677,52 @@ const ManageBankStatement = () => {
 
                                         <div className="">
                                             <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} required >
+                                            <AsyncSelect
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
+                                            }}
+                                        />
+                                            {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} required >
                                                 <option >Select Client</option>
                                                 {client && client.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.client}</div>
                                         </div>
                                         <div className="">
