@@ -1076,7 +1076,7 @@ const ManageVendorInvoice = () => {
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
 
                         </div>
-                        <div className='w-[16%] px-3 py-2 '>
+                        <div className='w-[17%] px-3 py-2 ml-[2px]'>
                             <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1178,7 +1178,7 @@ const ManageVendorInvoice = () => {
                                 </div>
                                 <button onClick={() => handleSort('invoiceamount')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[10%]  flex '>
                                 <div className='p-3'>
                                     <p>Invoice</p>
                                     <p>Date</p>
@@ -1266,7 +1266,7 @@ const ManageVendorInvoice = () => {
                                             <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex'>
+                                    <div className='w-[10%]  flex ml-[2px]'>
                                         <div className='px-3 py-5'>
                                             <p>{item.invoicedate}</p>
                                         </div>
@@ -1276,7 +1276,7 @@ const ManageVendorInvoice = () => {
                                             <p>{item.entity}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
+                                    <div className='w-[11%]  flex ml-[2px]'>
                                         <div className='px-3 py-5'>
                                             <p>{item.createdbyname}</p>
                                         </div>
@@ -1440,7 +1440,7 @@ const ManageVendorInvoice = () => {
                                 </div>
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-[13px] ">
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
@@ -1454,11 +1454,12 @@ const ManageVendorInvoice = () => {
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
                                                 }),
                                                 // indicatorSeparator: (provided, state) => ({
                                                 //   ...provided,
@@ -1468,12 +1469,16 @@ const ManageVendorInvoice = () => {
                                                 // }),
                                                 dropdownIndicator: (provided, state) => ({
                                                     ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                    padding: '1px', // adjust padding for the dropdown indicator
                                                 }),
                                                 options: (provided, state) => ({
                                                     ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
                                             }}
                                         />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
