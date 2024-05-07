@@ -334,7 +334,7 @@ const ManageClientInvoice = () => {
     };
 
     const handleClose = () => {
-        initials();
+        
         setIsClientInvoiceDialogue(false);
         openAddCancelModal();
     }

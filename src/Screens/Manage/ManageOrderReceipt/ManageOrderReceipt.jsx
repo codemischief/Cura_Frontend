@@ -20,6 +20,7 @@ import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeleteOrderReceipt from './DeleteOrderReceipt';
@@ -193,8 +194,7 @@ const ManageOrderReceipt = () => {
         const res = await response.json()
         const existing = { ...formValues }
         existing.receivedBy = res.data[0].id,
-            console.log(existing.receivedBy)
-        setFormValues(existing)
+        console.log(existing.receivedBy)
         setUsersData(res.data)
     }
 
@@ -478,7 +478,13 @@ const ManageOrderReceipt = () => {
     };
 
     const handleClose = () => {
+        initials();
         SetIsOrderReceiptDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
 
     // harcoded dropdown
@@ -777,6 +783,25 @@ const ManageOrderReceipt = () => {
         fetchData();
     }
 
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        SetIsOrderReceiptDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
 
     const [selectedOption, setSelectedOption] = useState({
         label: "Enter Client Name",
@@ -1029,15 +1054,16 @@ const ManageOrderReceipt = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData}/>}
+            {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} showCancel={openCancelModal}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Order Receipt" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Order Receipt Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationOrderReceipt addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationOrderReceipt addOrderReceipt={addOrderReceipt} handleClose={() => setOpenAddConfirmation(false)} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-
-            {showDeleteModal && <DeleteOrderReceipt handleClose={() => setShowDeleteModal(false)} item={currOrderReceipt} handleDelete={deletePma} />}
+            {showDeleteModal && <DeleteOrderReceipt handleClose={() => setShowDeleteModal(false)} item={currOrderReceipt} handleDelete={deletePma} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Order Receipt added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1111,7 +1137,7 @@ const ManageOrderReceipt = () => {
                             {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
 
                         </div>
-                        <div className='w-[16%] px-3 py-2 '>
+                        <div className='w-[16%] px-3 py-2 ml-[-3px] '>
                             <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyFilterInput} onChange={(e) => setPropertyFilterInput(e.target.value)} />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1157,7 +1183,7 @@ const ManageOrderReceipt = () => {
                     </div>
                     <div className="w-[10%] flex">
 
-                        <div className='w-[65%] px-3 py-2 '>
+                        <div className='w-[65%] px-3 py-2 ml-[-3px] '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                 <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
                                 <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>

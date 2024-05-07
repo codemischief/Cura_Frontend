@@ -4,7 +4,7 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
-const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData}) => {
+const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData , showCancel}) => {
     const initialValues = {
         client: "",
         order: null,
@@ -243,6 +243,10 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
         }
         return results
     }
+    const close = () =>{
+        handleClose();
+        showCancel();
+    }
     return (
     <Modal open={true}
                 fullWidth={true}
@@ -258,7 +262,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
                                 <div className="text-[16px]">Edit Order Receipt</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
                         {!pageLoading && 
@@ -406,7 +410,7 @@ const EditOrderReceipt = ({handleClose,receiptId,showSuccess,modesData,usersData
                         }
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                         </div>
                     </div>
                     </Draggable>
