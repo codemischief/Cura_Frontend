@@ -342,7 +342,7 @@ const LOB = () => {
             "rows": ["id", "name"],
             "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": ""
