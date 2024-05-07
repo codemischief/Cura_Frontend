@@ -4,7 +4,7 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import Draggable from 'react-draggable'
 
-const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess}) => {
+const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess , showCancel}) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -171,6 +171,11 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
     }
   }
 
+  const close = () =>{
+    handleClose();
+    showCancel();
+  }
+
 
   // utility routes
 
@@ -197,7 +202,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                                 <div className="text-base">Edit Vendor </div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB]">
-                                <button onClick={handleClose}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                <button onClick={() => {close()}}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
@@ -389,7 +394,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
                             <button className='w-28 h-10 bg-[#505050] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
-                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
+                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={() => {close()}}>Cancel</button>
                         </div>
 
                     </div>

@@ -19,6 +19,7 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import EditClientInvoice from './EditVendor';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import SaveConfirmationVendor from './SaveConfirmationVendor';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeleteVendorModal from './DeleteVendorModal';
@@ -409,7 +410,13 @@ const ManageVendor = () => {
     };
 
     const handleClose = () => {
+        initials();
         setIsVendorDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const handleAddVendor = () => {
         console.log(formValues)
@@ -464,7 +471,7 @@ const ManageVendor = () => {
             "city": Number(formValues.city),
             "state": "Maharashtra",
             "country": 5,
-            "type": Number(formValues.typeOfOrganization),
+            "type": formValues.typeOfOrganization,
             "details": formValues.details,
             "category": Number(formValues.category),
             "phone1": formValues.phone,
@@ -588,8 +595,10 @@ const ManageVendor = () => {
         return res;
     }
     const [currVendorId, setCurrVendorId] = useState("");
-    const handleDelete = (id) => {
+    const [currVendorName, setCurrVendorName] = useState("");
+    const handleDelete = (id , name) => {
         setCurrVendorId(id);
+        setCurrVendorName(name);
         showDeleteConfirmation(true);
     }
     const deleteVendor = async (id) => {
@@ -795,6 +804,25 @@ const ManageVendor = () => {
             setShowEditSuccess(false);
         }, 2000)
         fetchData();
+    }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsVendorDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
     }
 
     const filterMapping = {
@@ -1028,13 +1056,15 @@ const ManageVendor = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess}/>}
+            {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
-            {openAddConfirmation && <SaveConfirmationVendor handleClose={() => setOpenAddConfirmation(false)} currVendor={formValues.vendorName} addVendor={addVendor} />}
+            {openAddConfirmation && <SaveConfirmationVendor handleClose={() => setOpenAddConfirmation(false)} currVendor={formValues.vendorName} addVendor={addVendor} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} currVendor={formValues.vendorName} />}
+            {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} currVendor={formValues.vendorName} showCancel={openCancelModal} name={currVendorName} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new vendor created." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1093,7 +1123,7 @@ const ManageVendor = () => {
                                 {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[19%]  px-3 py-2.5'>
+                            <div className='w-[19%]  px-3 py-2.5 mx-[-2px]'>
                                 <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)} />
                                     <button className='W-[25%] px-1 py-2' onClick={() => { setTdsSectionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1101,7 +1131,7 @@ const ManageVendor = () => {
                                 {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[19%]  px-3 py-2.5'>
+                            <div className='w-[19%]  px-3 py-2.5 '>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)} />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setTallyLedgerFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1126,7 +1156,7 @@ const ManageVendor = () => {
                             </div>
                         </div>
                         <div className="w-[25%] flex">
-                            <div className='w-[75%] px-3 py-2.5'>
+                            <div className='w-[75%] px-3 py-2.5 mx-[-3px]'>
                                 <div className="w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
@@ -1197,43 +1227,43 @@ const ManageVendor = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingVendors.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
-                                <div className="w-[75%] flex">
+                            return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                                <div className="w-[75%] flex items-center">
                                     <div className='w-[5%] flex'>
-                                        <div className='px-3 py-2'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[19%] flex'>
-                                        <div className='px-3 py-2'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.vendorname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[19%]  flex'>
-                                        <div className='px-3 py-2'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.tdssection}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex'>
-                                        <div className='px-3 py-2'>
+                                    <div className='w-[19%]  flex ml-[2px]'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.tallyledger}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex'>
-                                        <div className='px-3 py-2'>
+                                    <div className='w-[19%]  flex ml-[2px]'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.category}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex'>
-                                        <div className='px-3 py-2'>
+                                    <div className='w-[19%]  flex ml-[2px]'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.city}</p>
                                         </div>
                                     </div>
 
                                 </div>
-                                <div className="w-[25%] flex items-center">
-                                    <div className='w-[65%]  flex'>
-                                        <div className='px-3 py-2'>
+                                <div className="w-[25%] flex items-center ">
+                                    <div className='w-[65%]  flex ml-[2px]'>
+                                        <div className='px-3 py-2 overflow-x-hidden'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
@@ -1241,7 +1271,7 @@ const ManageVendor = () => {
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-3'>
                                                 <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <button onClick={() => handleDelete(item.id , item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>
