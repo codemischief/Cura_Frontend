@@ -230,16 +230,32 @@ const Locality = () => {
         console.log(filterMapState);
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }
+                
             }
         })
+        setFilterState(tempArray)
 
         console.log('here is the call')
         console.log(tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -568,8 +584,20 @@ const Locality = () => {
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
-            if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            if(mapState[key].filterData == 'Numeric') {
+                tempArray.push([
+                    key,
+                    mapState[key].filterType,
+                    Number(mapState[key].filterValue),
+                    mapState[key].filterData,
+                ]);
+            }else {
+                tempArray.push([
+                    key,
+                    mapState[key].filterType,
+                    mapState[key].filterValue,
+                    mapState[key].filterData,
+                ]);
             }
         })
         setFilterState(tempArray)
@@ -601,6 +629,37 @@ const Locality = () => {
         setShowDeleteModal(true);
 
     }
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        // fetchCityData()
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+                    
+                
+                
+              }
+      }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -636,6 +695,7 @@ const Locality = () => {
                                 placeholder="   Search"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -665,14 +725,28 @@ const Locality = () => {
                         </div>
                         <div className='w-[15%] px-3 py-2.5'>
                             <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,countryFilterInput,
+                                    setCountryFilterInput,
+                                    'contains',
+                                    'country')}
+
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
                         </div>
                         <div className='w-[20%] px-3 py-2.5 ml-1'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} 
+                                
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,stateFilterInput,
+                                    setStateFilterInput,
+                                    'contains',
+                                    'state')}
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {stateFilter && <CharacterFilter inputVariable={stateFilterInput} setInputVariable={setStateFilterInput} handleFilter={newHandleFilter} filterColumn='state' menuRef={menuRef} />}
@@ -680,14 +754,29 @@ const Locality = () => {
 
                         <div className='w-[20%] px-3 py-2.5 ml-1'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} 
+                                
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,cityFilterInput,
+                                    setCityFilterInput,
+                                    'contains',
+                                    'city')}
+                                
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
                         </div>
                         <div className='w-[20%] px-3 py-2.5 ml-[2px]'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} 
+                                
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,localityFilterInput,
+                                    setLocalityFilterInput,
+                                    'contains',
+                                    'locality')}
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {localityFilter && <CharacterFilter inputVariable={localityFilterInput} setInputVariable={setLocalityFilterInput} handleFilter={newHandleFilter} filterColumn='locality' menuRef={menuRef} />}
@@ -695,7 +784,15 @@ const Locality = () => {
                     </div>
                     <div className='w-1/6 px-3 py-2.5 '>
                         <div className='w-[40%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
-                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
+                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} 
+                            
+                            onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                setidFilterInput,
+                                'equalTo',
+                                'id')}
+                            
+                            
+                            />
                             <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
