@@ -57,7 +57,8 @@ const DeleteModal = (props) => {
                                 <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
                                     <img className="h-10 w-10" src={DeleteImage} alt="delete photo" />
                                 </div>
-                                <div className="mt-4 w-full text-center">
+                                <div className="font-semibold mt-8 mb-1"><h1>Country - {props.currentCountry}</h1></div>
+                                <div className="w-full text-center">
                                     <p>Are you sure you want to delete the Country</p>
                                 </div>
                                 <div className="my-5 flex justify-center items-center gap-[10px]">
