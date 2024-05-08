@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal } from "@mui/material"
 import Cross from "../../../assets/cross.png"
 import Draggable from 'react-draggable'
-const SaveConfirmationLocality = (props) => {
+const SaveConfirmationCity = (props) => {
     const handleClose = () =>{
         props.handleClose();
         props.showCancel();
@@ -15,7 +15,7 @@ const SaveConfirmationLocality = (props) => {
                     <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                         <div className="h-[40px] flex justify-center items-center">
                             <div className="w-[150px] mt-10 w-full text-center">
-                                <div className="text-[24px]">Save Locality</div>
+                                <div className="text-[24px]">Add  City</div>
                                 <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
                             </div>
 
@@ -24,13 +24,13 @@ const SaveConfirmationLocality = (props) => {
                             </div>
                         </div>
                         <div className="mt-8 w-full text-center">
-                            <div className="text-[14px]">Locality : {props.currentLocality}</div>
+                            <div className="text-[14px]">City : {props.currentCity}</div>
                         </div>
                         <div className="mt-4 w-full text-center">
-                            <p className="text-[14px]">Are you sure you want to Add new Locality</p>
+                            <p className="text-[14px]">Are you sure you want to Add new City</p>
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
-                            <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addLocality}>Add</button>
+                            <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addCity}>Add</button>
                             <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={() => {handleClose()}}>Cancel</button>
                         </div>
                     </div>
@@ -40,4 +40,4 @@ const SaveConfirmationLocality = (props) => {
     )
 }
 
-export default SaveConfirmationLocality
+export default SaveConfirmationCity

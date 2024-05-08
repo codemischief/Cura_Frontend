@@ -14,7 +14,7 @@ import Add from "./../../assets/add.png";
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png";
 import Filter from "../../assets/filter.png";
-import { LinearProgress, Modal, Pagination } from "@mui/material";
+import { LinearProgress, Modal, Pagination, useScrollTrigger } from "@mui/material";
 import * as XLSX from "xlsx";
 import FileSaver from "file-saver";
 import { APIService } from "../../services/API";
@@ -22,6 +22,11 @@ import { authService } from "../../services/authServices";
 import CharacterFilter from "../../Components/Filters/CharacterFilter";
 import NumericFilter from "../../Components/Filters/NumericFilter";
 import Draggable from "react-draggable";
+import SaveConfirmationCity from "./Modals/SaveConfirmationCity";
+import SucessfullModal from "../../Components/modals/SucessfullModal";
+import DeleteCityModal from "./Modals/DeleteCityModal";
+import CancelModel from "../../Components/modals/CancelModel";
+import EditCityModal from "./Modals/EditCityModal";
 const City = () => {
     const menuRef = useRef();
     // we have the module here
@@ -83,17 +88,34 @@ const City = () => {
         }
     }
     const fetchCityData = async () => {
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        // console.log(filterMapState);
+        Object.keys(filterMapState).forEach((key) => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([
+                    key,
+                    filterMapState[key].filterType,
+                    filterMapState[key].filterValue,
+                    filterMapState[key].filterData,
+                ]);
+            }
+        });
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
         // const user_id = await authService.getUserID();
         // console.log(user_id)
+        setCurrentPage((prev) => 1)
+        setCurrentPages((prev) => 15)
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
-            filters: [],
+            filters: tempArray,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",
             pg_no: 1,
-            pg_size: 15,
+            pg_size: 15
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
@@ -109,14 +131,16 @@ const City = () => {
         // const user_id = await authService.getUserID();
         // console.log(user_id)
         setCurrentPages(quantity);
+        setCurrentPage((prev) => 1)
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
-            filters: [],
+            filters: filterState,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",
-            pg_no: Number(currentPage),
+            pg_no: 1,
             pg_size: Number(quantity),
+            search_key : searchInput
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
@@ -128,7 +152,8 @@ const City = () => {
         setExistingCities(result);
     };
     useEffect(() => {
-        fetchCityData();
+        fetchCityData()
+        fetchCountryData()
 
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
@@ -146,9 +171,9 @@ const City = () => {
     }, []);
     //Validation of the form
     const initialValues = {
-        country : "",
-        state : "",
-        cityName: "",
+        country : 5,
+        state : null,
+        cityName: null,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -167,7 +192,10 @@ const City = () => {
         setIsCityDialogue(true);
     };
     const handleClose = () => {
+        setFormErrors({})
+        setFormValues(initialValues)
         setIsCityDialogue(false);
+        openCancel()
     };
     const handleDownload = () => {
         // we handle the download here
@@ -182,14 +210,16 @@ const City = () => {
     };
     const fetchPageData = async (page) => {
         setPageLoading(true);
+        setCurrentPage((prev) => page)
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
-            filters: [],
+            filters: filterState,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",
             pg_no: Number(page),
             pg_size: Number(currentPages),
+            search_key : searchInput
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
@@ -204,19 +234,27 @@ const City = () => {
         console.log("hey");
         fetchPageData(value);
     };
-
+    const enterSearch = (e) => {
+        e.preventDefault();
+        
+        console.log('hey')
+        handleSearch()
+    }
     const handleSearch = async () => {
-        console.log("clicked");
+        // e.preventDefault();
+        // console.log("clicked");
         setPageLoading(true);
-        setIsSearchOn(true);
+        // setIsSearchOn(true);
+        setCurrentPage((prev) => 1)
+
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
-            filters: [],
+            filters: filterState,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",
             pg_no: 1,
-            pg_size: 15,
+            pg_size: Number(currentPages),
             search_key: searchInput,
         };
         const response = await APIService.getCitiesAdmin(data);
@@ -232,14 +270,15 @@ const City = () => {
         setIsSearchOn(false);
         setPageLoading(true);
         setSearchInput("");
+        setCurrentPage((prev) => 1)
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
-            filters: [],
+            filters: filterState,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",
             pg_no: 1,
-            pg_size: 12,
+            pg_size: Number(currentPages),
             search_key: "",
         };
         const response = await APIService.getCitiesAdmin(data);
@@ -311,7 +350,8 @@ const City = () => {
     const [cityFilterInput, setCityFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
-
+   
+    const [filterState,setFilterState] = useState([])
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState);
         const tempArray = [];
@@ -328,16 +368,19 @@ const City = () => {
                 ]);
             }
         });
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
+        setCurrentPage((prev) => 1)
+
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
             filters: tempArray,
             sort_by: [sortField],
-            order: "desc",
-            pg_no: Number(currentPage),
+            order: flag ? "asc" : "desc",
+            pg_no: 1,
             pg_size: Number(currentPages),
-            search_key: isSearchOn ? searchInput : "",
+            search_key: searchInput,
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
@@ -371,36 +414,26 @@ const City = () => {
         };
 
         if (type == "noFilter") setInputVariable("");
-
+        
         fetchFiltered(existing);
     };
     const handleSort = async (field) => {
         setPageLoading(true);
-        const tempArray = [];
+        // const tempArray = [];
         // we need to query thru the object
         setSortField(field);
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach((key) => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([
-                    key,
-                    filterMapState[key].filterType,
-                    filterMapState[key].filterValue,
-                    filterMapState[key].filterData,
-                ]);
-            }
-        });
+        setFlag((prev) => !prev);
         const data = {
             user_id: 1234,
             rows: ["id", "city", "state", "countryid", "country"],
-            filters: tempArray,
+            filters: filterState,
             sort_by: [field],
-            order: flag ? "asc" : "desc",
+            order: !flag ? "asc" : "desc",
             pg_no: Number(currentPage),
             pg_size: Number(currentPages),
-            search_key: isSearchOn ? searchInput : "",
+            search_key: searchInput ,
         };
-        setFlag((prev) => !prev);
+        
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
         const result = res.data;
@@ -414,7 +447,7 @@ const City = () => {
     const validate = () => {
         var res = true;
        
-        if (!formValues.country) {
+        if (!formValues.country || formValues.country == "") {
             setFormErrors((existing) => {
                 return { ...existing, country: "Select Country" }
             })
@@ -424,9 +457,9 @@ const City = () => {
                 return { ...existing, country: "" }
             })
         }
-        if (!formValues.stateName) {
+        if (!formValues.state || formValues.state == "") {
             setFormErrors((existing) => {
-                return { ...existing, state: "Select State" }
+                return { ...existing, state: "Enter State" }
             })
             res = false;
         } else {
@@ -434,7 +467,7 @@ const City = () => {
                 return { ...existing, state: "" }
             })
         }
-        if (!formValues.cityName) {
+        if (!formValues.cityName || formValues.cityName == "") {
             setFormErrors((existing) => {
                 return { ...existing, cityName: "Enter City" }
             })
@@ -447,10 +480,150 @@ const City = () => {
 
         return res;
     }
+    const handleAddCity = () => {
 
+        if(!validate()) {
+            return ;
+        }
+        setButtonLoading(true)
+         setIsCityDialogue(false)
+         setCurrentCity(formValues.cityName)
+         setShowAddConfirmation(true)
+         setButtonLoading(false)
+    }
+    const addCity = async () => {
+        const data = {
+            "user_id":1234,
+            "city":formValues.cityName,
+            "state":formValues.state,
+            "countryid":formValues.country
+        }
+        const response = await APIService.addCities(data)
+        const res = await response.json()
+        if(res.result == 'success') {
+            setShowAddConfirmation(false)
+            openAddSuccess()
+        }else {
+           // we need to open error prompt here
+           
+        }
+    }  
+    const handleDeleteCity = (id) => {
+       setCurrentCity(id)
+       setShowDeleteModal(true)
+    }
+    const deleteCity = async (id) => {
+       const data = {
+        "user_id":1234,
+        "id":id
+       }
+       const response = await APIService.deleteCities(data)
+       const res = await response.json()
+       if(res.result === 'success') {
+          // delete success
+          setShowDeleteModal(false)
+          openDeleteSuccess()
+       }else {
+        // get Failure
+       }
+    }
+    const handleEdit = (item) => {
+        // setCurrentCity(id)
+        setCurrentCityData(item)
+        setShowEditModal(true)
+    }
+    const editCities = () => {
+
+    }
+    const [showAddConfirmation,setShowAddConfirmation] = useState(false)
+    const [showAddSuccess,setShowAddSuccess] = useState(false)
+    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
+    const [showEditSuccess,setShowEditSuccess] = useState(false)
+    const [currentCity,setCurrentCity] = useState("")
+
+    const [showDeleteModal,setShowDeleteModal] = useState(false)
+
+    const openAddSuccess = () => {
+        setShowAddSuccess(true);
+        setTimeout(function () {
+            setShowAddSuccess(false);
+        }, 2000)
+        fetchCityData()
+    }
+    const openDeleteSuccess = () => {
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        }, 2000)
+        fetchCityData()
+    }
+    const openEditSuccess = () => {
+        setShowEditModal(false)
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false);
+        }, 2000)
+        fetchCityData()
+    }
+    const openCancel = () => {
+        setShowCancelModal(true);
+        setTimeout(function () {
+            setShowCancelModal(false);
+        }, 2000)
+        // fetchCityData()
+    }
+    const initials = () => {
+        setFormErrors({})
+        setFormValues(initialValues)
+    }
+    
+    const [showCancelModal,setShowCancelModal] = useState(false)
+
+    const [errorMessage,setErrorMessage] = useState("Process Cancelled")
+    const [showEditModal,setShowEditModal] = useState(false)
+    const [currentCityData,setCurrentCityData] = useState({})
+    const [buttonLoading,setButtonLoading] = useState(false)
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+      const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        fetchCityData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+                    
+                
+                
+              }
+          
+      }
     return (
         <div className="h-screen">
             <Navbar />
+            {showAddConfirmation && <SaveConfirmationCity currentCity={currentCity} showCancel={openCancel} initials={initials} handleClose={() => setShowAddConfirmation(false)} addCity={addCity} />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New City added successfully"/>}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="City Deleted Successully"/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
+            {showDeleteModal && <DeleteCityModal handleDelete={deleteCity} handleClose={() => { openCancel(); setShowDeleteModal(false);}} showCancel={openCancel} id={currentCity} />}
+             {showEditModal  && <EditCityModal handleClose={() => {setShowEditModal(false);  openCancel()}} initialCountry={allCountry} initialData={currentCityData} openSuccess={openEditSuccess}/>}
+            {showCancelModal && <CancelModel isOpen={showCancelModal} message={errorMessage} />}
 
             <div className="h-[calc(100vh_-_7rem)] w-full px-10">
                 <div className="h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2">
@@ -467,6 +640,7 @@ const City = () => {
                         </div>
                     </div>
                     <div className="flex space-x-2 items-center">
+                        {/* <form onSubmit={enterSearch} > */}
                         <div className="flex bg-[#EBEBEB]">
                             {/* search button */}
                             <input
@@ -477,16 +651,19 @@ const City = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}>
                                 <img src={Cross} className="w-5 h-5 mx-2" />
                             </button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <button onClick={handleSearch}>
+                              
+                                <button onClick={handleSearch} >
                                     <img className="h-6" src={searchIcon} alt="search-icon" />
                                 </button>
                             </div>
                         </div>
+                                {/* </form> */}
 
                         <div>
                             {/* button */}
@@ -512,6 +689,10 @@ const City = () => {
                                     className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={countryFilterInput}
                                     onChange={(e) => setCountryFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,countryFilterInput,
+                                        setCountryFilterInput,
+                                        'contains',
+                                        'country')}
                                 />
                                 <button
                                     className="w-[25%] px-1 py-2"
@@ -538,6 +719,10 @@ const City = () => {
                                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={stateFilterInput}
                                     onChange={(e) => setStateFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,stateFilterInput,
+                                        setStateFilterInput,
+                                        'contains',
+                                        'state')}
                                 />
                                 <button
                                     className="w-[30%] px-1 py-2"
@@ -564,6 +749,10 @@ const City = () => {
                                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={cityFilterInput}
                                     onChange={(e) => setCityFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,cityFilterInput,
+                                        setCityFilterInput,
+                                        'contains',
+                                        'city')}
                                 />
                                 <button
                                     className="w-[30%] px-1 py-2"
@@ -592,6 +781,10 @@ const City = () => {
                                     className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={idFilterInput}
                                     onChange={(e) => setIdFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
                                 />
                                 <button
                                     className="w-[35%] px-1 py-2"
@@ -687,8 +880,8 @@ const City = () => {
                                                 <p>{item.id}</p>
                                             </div>
                                             <div className="w-1/2 0 p-4 flex justify-between items-center">
-                                                <img className="w-5 h-5" src={Edit} alt="edit" />
-                                                <img className="w-5 h-5" src={Trash} alt="trash" />
+                                                <button onClick={() => handleEdit(item)}><img className="w-5 h-5" src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDeleteCity(item.id)}><img className="w-5 h-5" src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>
@@ -726,8 +919,8 @@ const City = () => {
                             }}
                         >
                             <option>15</option>
-                            <option>20</option>
                             <option>25</option>
+                            <option>50</option>
                         </select>
                     </div>
                     <div className="flex text-sm">
@@ -779,22 +972,22 @@ const City = () => {
             className="flex justify-center items-center"
             >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                 <div className="flex justify-center ">
-                    <div className="w-[800px]  h-auto bg-white rounded-lg">
+                    <div className="w-[800px]  h-auto bg-white rounded-lg relative">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[270px] ml-[270px]">
-                                <div className="text-base">Add New City</div>
+                            <div className="">
+                                <div className="text-base"> New City</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                            <div className="flex justify-center items-center rounded-full w-7 h-7  bg-white absolute right-3">
                                 <button onClick={handleClose}>
-                                    <img className="w-5 h-5" src={Cross} alt="cross" />
+                                    <img className="w-5 h-5 " src={Cross} alt="cross" />
                                 </button>
                             </div>
                         </div>
                         <div className="h-auto w-full mt-4 mb-20 ">
                             <div className="flex gap-12 justify-center items-center">
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-5 py-5">
                                 <div className="">
                                         <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
                                         <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
@@ -803,12 +996,7 @@ const City = () => {
                                             defaultValue="Select Country"
                                             onChange={e => {
                                                 setCurrCountry(e.target.value);
-                                                fetchStateData(e.target.value);
-                                                setAllCity([]);
-                                                const existing = {...formValues}
-                                                existing.state = ""
-                                                existing.city = null;
-                                                setFormValues(existing)                                            
+                                                                                           
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, country: e.target.value }
                                                     return newData;
@@ -830,35 +1018,19 @@ const City = () => {
                                                 // }
                                             })}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                                        {/* <div className="h-[25px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute ">{formErrors.country}</div> */}
                                     </div>
                                     <div className="">
                                         <div className="text-sm">State Name <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                        <input
+                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            type="text"
                                             name="state"
                                             value={formValues.state}
-                                            defaultValue="Select State"
-                                            onChange={e => {
-                                                fetchCityData(e.target.value);
-                                                const existing = {...formValues}
-                                                existing.state = e.target.value
-                                                existing.city = null
-                                                console.log(existing)
-                                                setFormValues(existing)
-                                            }}
-                                        >
-                                            <option value="" > Select A State</option>
-                                            {allState && allState.map(item => {
-                                                
-                                                
-                                                    return <option value={item[0]} >
-                                                        {item[0]}
-                                                    </option>
-                                                
-
-                                            })}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                                            onChange={handleChange}
+                                        />
+                                        
+                                        <div className="h-[25px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute">{formErrors.state}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -867,11 +1039,11 @@ const City = () => {
                                         <input
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                             type="text"
-                                            name="city"
+                                            name="cityName"
                                             value={formValues.cityName}
                                             onChange={handleChange}
                                         />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                        <div className="h-[100px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute">{formErrors.cityName}</div>
                                     </div>
                                 </div>
                             </div>
@@ -879,8 +1051,9 @@ const City = () => {
 
                         <div className="my-2 flex justify-center items-center gap-[10px]">
                             <button
-                                className="w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md"
-                                type="submit"
+                                className={`w-[100px] h-[35px] ${buttonLoading ? "#505050"  : "bg-[#004DD7]"}  text-white rounded-md`}
+                                // type="submit"
+                                onClick={handleAddCity}
                             >
                                 Add
                             </button>
@@ -893,7 +1066,7 @@ const City = () => {
                         </div>
                     </div>
                 </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                     </>
             </Modal>
         </div>
