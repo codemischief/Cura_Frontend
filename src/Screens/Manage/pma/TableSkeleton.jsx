@@ -68,14 +68,12 @@ export default function PmaBillingTable({
           SortArrow: (props) => <ArrowUpward {...props} />,
         }}
         onOrderChange={(orderBy, orderDirection) => {
-          if (orderBy) {
-            dispatch(
-              setSorting({
-                sort_by: [column[orderBy]?.field],
-                sort_order: [orderDirection],
-              })
-            );
-          }
+          dispatch(
+            setSorting({
+              sort_by: column[orderBy]?.field,
+              sort_order: orderDirection,
+            })
+          );
         }}
         components={{
           Pagination: (props) => {

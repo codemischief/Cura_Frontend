@@ -12,8 +12,8 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   sorting: {
-    sort_by: [],
-    sort_order: [],
+    sort_by: "",
+    sort_order: "",
   },
 };
 
@@ -44,12 +44,24 @@ export const pmaSlice = createSlice({
         (state.totalCount = 0),
         (state.isLoading = false),
         (state.isSuccess = false);
+      state.sorting = {
+        sort_by: "",
+        sort_order: "",
+      };
     },
     setFilters: (state, { payload }) => {
       state.filter = payload;
     },
     setSorting: (state, { payload }) => {
-      state.sorting = payload;
+      const { sort_by, sort_order } = payload;
+      if (!sort_by && !sort_order) {
+        state.sorting = {
+          ...state.sorting,
+          sort_order: state.sorting.sort_order === "asc" ? "desc" : "asc",
+        };
+      } else {
+        state.sorting = payload;
+      }
     },
   },
 });
@@ -94,5 +106,9 @@ export const addNewInvoices = (payloadObj) => async (dispatch) => {
   } catch (err) {
     dispatch(setStatus("error"));
   }
+};
+
+export const handleRefresh = (payload) => async (dispatch) => {
+  
 };
 export default pmaSlice.reducer;
