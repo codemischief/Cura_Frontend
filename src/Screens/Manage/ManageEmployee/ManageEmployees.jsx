@@ -127,9 +127,7 @@ const ManageEmployees = () => {
 
         console.log(result.data);
         console.log('hey')
-        setFormValues((existing) => {
-            return { ...existing, userName: result.data[0].id }
-        })
+       
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -142,9 +140,7 @@ const ManageEmployees = () => {
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, role: result.data[0].id }
-        })
+        
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
         }
@@ -157,9 +153,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, entity: result.data[0][0] }
-        })
+        
         if (Array.isArray(result.data)) {
             setAllEntites(result.data);
         }
@@ -179,9 +173,7 @@ const ManageEmployees = () => {
         const response = await APIService.getLob(data);
         const result = (await response.json());
         console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
+        
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
         }
@@ -195,14 +187,25 @@ const ManageEmployees = () => {
         console.log(filterMapState);
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+                
             }
         })
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -350,7 +353,7 @@ const ManageEmployees = () => {
             "user_id": 1234,
             "employeename": formValues.employeeName,
             "employeeid": formValues.employeeId,
-            "userid": 1236,
+            "userid": Number(formValues.userName),
             "roleid": formValues.role,
             "dateofjoining": formValues.doj,
             "dob": formValues.dob,
@@ -393,26 +396,26 @@ const ManageEmployees = () => {
     }
 
     const initialValues = {
-        employeeName: "",
-        panNo: "",
-        userName: "",
+        employeeName: null,
+        panNo: null,
+        userName: 1234,
         doj: null,
-        designation: "",
-        email: "",
-        addressLine1: "",
-        employeeId: "",
+        designation: null,
+        email: null,
+        addressLine1: null,
+        employeeId: null,
         lob: null,
-        dob: "",
+        dob: null,
         lastDOW: null,
-        role: "",
-        phNo: "",
+        role: null,
+        phNo: null,
         status: false,
-        addressLine2: "",
+        addressLine2: null,
         country: 5,
         state: "Maharashtra",
         city: 847,
-        suburb: "",
-        zipCode: "",
+        suburb: null,
+        zipCode: null,
         entity: 1
     };
     const [formValues, setFormValues] = useState(initialValues);
@@ -592,6 +595,26 @@ const ManageEmployees = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, entity: "" }
+            })
+        }
+        if(!formValues.lob) {
+            setFormErrors((existing) => {
+                return { ...existing, lob: "Select Lob" }
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, lob: "" }
+            })
+        }
+        if(!formValues.role) {
+            setFormErrors((existing) => {
+                return { ...existing, role: "Select Role" }
+            })
+            res = false;
+        }else {
+            setFormErrors((existing) => {
+                return { ...existing, role: ""}
             })
         }
 
@@ -850,11 +873,18 @@ const ManageEmployees = () => {
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
-                console.log(key)
-                console.log(mapState[key])
-                console.log(mapState[key].filterData)
-                console.log(mapState[key])
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                if(mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+                
+                
             }
         })
         setFilterMapState(mapState)
@@ -970,6 +1000,35 @@ const ManageEmployees = () => {
         setExistingEmployees(result);
         setPageLoading(false);
     }
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    console.log(inputVariable)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        // fetchCityData()
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+              }
+      }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1006,6 +1065,7 @@ const ManageEmployees = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1042,7 +1102,12 @@ const ManageEmployees = () => {
                             </div>
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} />
+                                    <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,employeeNameInput,
+                                        setEmployeeNameInput,
+                                        'contains',
+                                        'employeename')}
+                                    />
                                     <button className='w-[32%] px-1 py-2' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {employeeNameFilter && <CharacterFilter inputVariable={employeeNameInput} setInputVariable={setEmployeeNameInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef} />}
@@ -1051,7 +1116,12 @@ const ManageEmployees = () => {
 
                             <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,employeeIdInput,
+                                        setEmployeeIdInput,
+                                        'contains',
+                                        'employeeid')}
+                                    />
                                     <button className='W-[30%] px-1 py-2' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {employeeIdFilter && <CharacterFilter inputVariable={employeeIdInput} setInputVariable={setEmployeeIdInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1059,7 +1129,12 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} />
+                                    <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,phoneFilterInput,
+                                        setPhoneFilterInput,
+                                        'contains',
+                                        'phoneno')}
+                                    />
                                     <button className='w-[38%] px-1 py-2' onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter} />}
@@ -1067,7 +1142,12 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
+                                    <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,emailInput,
+                                        setEmailInput,
+                                        'contains',
+                                        'email')}
+                                    />
                                     <button className='w-[34%] px-1 py-2' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {emailFilter && <CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput} filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter} />}
@@ -1075,7 +1155,12 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,roleInput,
+                                        setRoleInput,
+                                        'contains',
+                                        'role')}
+                                    />
                                     <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1083,7 +1168,12 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,pannoInput,
+                                        setPannoInput,
+                                        'contains',
+                                        'panno')}
+                                    />
                                     <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} />}
@@ -1091,7 +1181,14 @@ const ManageEmployees = () => {
 
                             <div className='w-[14%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,dateOfJoiningInput,
+                                        setDateOfJoiningInput
+                                        ,
+                                        'equalTo',
+                                        'dateofjoining')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setDateOfJoiningInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1099,14 +1196,30 @@ const ManageEmployees = () => {
 
                             <div className='w-[17%]  p-3 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput} onChange={(e) => setLdowInput(e.target.value)} />
+                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput} onChange={(e) => setLdowInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,ldowInput,
+                                        setLdowInput
+                                        ,
+                                        'equalTo',
+                                        'lastdateofworking')}
+                                    
+                                    />
                                     <button className='w-[20%] px-1 py-2' onClick={() => { setLdowFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%]  p-3 '>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)} 
+                                    
+
+                                    onKeyDown={(event) => handleEnterToFilter(event,statusInput,
+                                        setStatusInput
+                                        ,
+                                        'equalTo',
+                                        'status')}
+
+                                    />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1115,7 +1228,15 @@ const ManageEmployees = () => {
                         <div className="w-[15%] flex">
                             <div className='w-1/2 p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(Number(e.target.value))} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(Number(e.target.value))} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,idInput,
+                                        setIdInput
+                                        ,
+                                        'equalTo',
+                                        'id')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[35%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1359,7 +1480,7 @@ const ManageEmployees = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <Draggable>
+                    {/* <Draggable> */}
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                 <div className="mr-[410px] ml-[410px]">
@@ -1456,6 +1577,7 @@ const ManageEmployees = () => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
@@ -1489,6 +1611,7 @@ const ManageEmployees = () => {
                                                     </option>
                                                 ))}
                                             </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
@@ -1642,7 +1765,7 @@ const ManageEmployees = () => {
                             </div>
 
                         </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </div>
             </Modal>
         </div>

@@ -147,9 +147,20 @@ const Payments = () => {
         // we need to query thru the object
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else { 
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+                
             }
         })
+        setFilterState(tempArray)
         console.log(tempArray)
         const data = {
             "user_id": 1234,
@@ -174,7 +185,7 @@ const Payments = () => {
                 "month",
                 "deduction"
             ],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -809,13 +820,24 @@ const Payments = () => {
 
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
+        setFilterMapState((prev) => mapState)
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                if(mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+                
             }
         })
         console.log('this is getting called')
@@ -927,7 +949,36 @@ const Payments = () => {
         setTotalItems(result.total_count)
         setPageLoading(false);
     }
-
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+                    
+                
+                
+              }
+      }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -960,6 +1011,7 @@ const Payments = () => {
                                 placeholder="  Search"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-5 h-5 mx-2' /></button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -993,56 +1045,108 @@ const Payments = () => {
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,paymentToFilterInput,
+                                        setPaymentToFilterInput,
+                                        'contains',
+                                        'paymentto')}
+                                    />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentToFilter && <CharacterFilter inputVariable={paymentToFilterInput} setInputVariable={setPaymentToFilterInput} handleFilter={newHandleFilter} filterColumn='paymentto' menuRef={menuRef} />}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,paymentByFilterInput,
+                                        setPaymentByFilterInput,
+                                        'contains',
+                                        'paymentby')}
+                                    />
                                     <button className='px-1 py-2 w-[25%] ' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentByFilter && <CharacterFilter inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} filterColumn='paymentby' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
+                                        setAmountFilterInput,
+                                        'equalTo',
+                                        'amount')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} type='date' />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} type='date' 
+                                    onKeyDown={(event) => handleEnterToFilter(event,paidOnFilterInput,
+                                        setPaidOnFilterInput,
+                                        'equalTo',
+                                        'paidon')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paidOnFilter && <DateFilter inputVariable={paidOnFilterInput} setInputVariable={setPaidOnFilterInput} handleFilter={newHandleFilter} columnName='paidon' menuRef={menuRef} />}
                             </div>
                             <div className='w-[14%]  px-4 py-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,paymentModeFilterInput,
+                                        setPaymentModeFilterInput,
+                                        'contains',
+                                        'paymentmode')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentModeFilter && <CharacterFilter inputVariable={paymentModeFilterInput} setInputVariable={setPaymentModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmode' menuRef={menuRef} />}
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,paymentForFilterInput,
+                                        setPaymentForFilterInput,
+                                        'contains',
+                                        'paymentfor')}
+                                    />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentForFilter && <CharacterFilter inputVariable={paymentForFilterInput} setInputVariable={setPaymentForFilterInput} handleFilter={newHandleFilter} filterColumn='paymentfor' menuRef={menuRef} />}
                             </div>
                             <div className='w-[15%]  px-4 py-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)} 
+
+                                    onKeyDown={(event) => handleEnterToFilter(event,paymentStatusFilterInput,
+                                        setPaymentStatusFilterInput,
+                                        'contains',
+                                        'paymentstatus')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentStatusFilter && <CharacterFilter inputVariable={paymentStatusFilterInput} setInputVariable={setPaymentStatusFilterInput} handleFilter={newHandleFilter} filterColumn='paymentstatus' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
+                                    
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,entityFilterInput,
+                                        setEntityFilterInput,
+                                        'contains',
+                                        'entity')}
+                                    
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} handleFilter={newHandleFilter} filterColumn='entity' menuRef={menuRef} />}
@@ -1051,7 +1155,13 @@ const Payments = () => {
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
@@ -1325,7 +1435,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentMode}</div> */}
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentmode}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Entity <label className="text-red-500">*</label></div>

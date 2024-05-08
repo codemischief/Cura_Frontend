@@ -116,7 +116,9 @@ const EditManageEmployee = (props) => {
         console.log(data);
         const response = await APIService.getItembyId(data);
         const result = await response.json();
+        
         setFormValues(result.data);
+        
         console.log(result.data)
         // console.log(formValues.state);
         await fetchCountryData();
@@ -124,12 +126,23 @@ const EditManageEmployee = (props) => {
         setFormValues((existing) => {
             return { ...existing, dateofjoining: result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : null }
         })
+       
         setFormValues((existing) => {
             return { ...existing, dob: result.data.dob ? result.data.dob.split('T')[0] : null }
         })
         setFormValues((existing) => {
             return { ...existing, lastdateofworking: result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : null }
         })
+        setFormValues((existing) => {
+            return { ...existing, lob : result.data.lobid }
+        })
+        setFormValues((existing) => {
+            return { ...existing, role : result.data.roleid }
+        })
+        setFormValues((existing) => {
+            return { ...existing, userName : result.data.userid }
+        })
+
         setFormValues((existing) => {
             return { ...existing, dated: result.data.dated ? result.data.dated.split('T')[0] : null }
         })
@@ -153,8 +166,8 @@ const EditManageEmployee = (props) => {
             "id": formValues.id,
             "employeename": formValues.employeename,
             "employeeid": formValues.employeeid,
-            "userid": 1236,
-            "roleid": formValues.roleid,
+            "userid": formValues.userName,
+            "roleid": formValues.role,
             "dateofjoining": formValues.dateofjoining,
             "dob": formValues.dob,
             "panno": formValues.panno,
@@ -167,7 +180,7 @@ const EditManageEmployee = (props) => {
             "city": formValues.city,
             "state": formValues.state,
             "country": Number(formValues.country),
-            "lobid": formValues.lobid,
+            "lobid": formValues.lob,
             "zip": formValues.zip,
             "dated": formValues.dated,
             "createdby": 1234,
@@ -190,7 +203,32 @@ const EditManageEmployee = (props) => {
         // props.handleClose();
     }
     console.log(props.item);
-    const [formValues, setFormValues] = useState({});
+
+    
+    const initialValues = {
+        employeeName: null,
+        panNo: null,
+        userName: 1234,
+        doj: null,
+        designation: null,
+        email: null,
+        addressLine1: null,
+        employeeId: null,
+        lob: null,
+        dob: null,
+        lastDOW: null,
+        role: null,
+        phNo: null,
+        status: false,
+        addressLine2: null,
+        country: 5,
+        state: "Maharashtra",
+        city: 847,
+        suburb: null,
+        zipCode: null,
+        entity: 1
+    }
+    const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
 
     const handleChange = (e) => {
@@ -398,14 +436,20 @@ const EditManageEmployee = (props) => {
                                                 name="userName"
                                                 value={formValues.userName}
                                                 onChange={handleChange}
-                                            >{allUsername && allUsername.map(ele => (
+                                            >
+                                                {allUsername && allUsername.map((item) => {
+                                                    return <option value={item.id}>
+                                                          {item.name}
+                                                    </option>
+                                                })}
+                                                {/* {allUsername && allUsername.map(ele => (
                                                 (formValues.userid === ele.id) ?
                                                     <option>{ele.name}</option> : ""))}
                                                 {allUsername && allUsername.map(item => (
                                                     <option value={item.name} >
                                                         {item.name}
                                                     </option>
-                                                ))}
+                                                ))} */}
                                             </select>
                                         </div>
                                         <div className="">
@@ -436,19 +480,18 @@ const EditManageEmployee = (props) => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">LOB <label className="text-red-500">*</label></div>
+                                            {console.log(formValues.lob)}
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="lob"
                                                 value={formValues.lob}
                                                 defaultValue="Select lob"
                                                 onChange={handleChange}
-                                            >{allLOB && allLOB.map(ele => (
-                                                (formValues.lob === ele.id) ?
-                                                    <option>{ele.name}</option> : ""))}
-                                                {allLOB && allLOB.map(item => (
-                                                    <option value={item.name} >
+                                            >{allLOB && allLOB.map((item) => {
+                                               
+                                                return <option value={item.id} >
                                                         {item.name}
                                                     </option>
-                                                ))}
+                                            })}
                                             </select>
                                         </div>
                                         <div className="">
@@ -463,18 +506,26 @@ const EditManageEmployee = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">Assign Role<label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                                name="roleid"
-                                                value={formValues.roleid}
+                                                name="role"
+                                                value={formValues.role}
                                                 defaultValue="Select Role"
                                                 onChange={handleChange}
-                                            >{allRoles && allRoles.map(ele => (
+                                            >
+                                                {allRoles && allRoles.map((item) => {
+                                                    return <option value={item.id}>
+                                                         {item.name}
+                                                    </option>
+                                                }
+                                                
+                                                )}
+                                                {/* {allRoles && allRoles.map(ele => (
                                                 (formValues.roleid === ele.name) ?
                                                     <option>{ele.name}</option> : ((formValues.roleid === "NA_None") ? <option>NA_None</option> : " ")))}
                                                 {allRoles && allRoles.map(item => (
                                                     <option value={item.name} >
                                                         {item.name}
                                                     </option>
-                                                ))}
+                                                ))} */}
                                             </select>
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.role}</div> */}
                                         </div>
@@ -542,7 +593,7 @@ const EditManageEmployee = (props) => {
                                                 }}
                                             >
                                                 {console.log(formValues.state)}
-                                                <option value={null} > Select A State</option>
+                                                <option value={null} hidden> Select A State</option>
                                                 {allState && allState.map((item) => {
                                                     // if(item[0])
                                                     return <option value={item[0]}>
@@ -574,7 +625,7 @@ const EditManageEmployee = (props) => {
 
                                                 }}
                                             >
-                                                <option value={null}> Select City</option>
+                                                <option value={null} hidden> Select City</option>
                                                 {allCity.map((item) => {
                                                     if (item.id == formValues.city) {
 

@@ -94,12 +94,22 @@ const City = () => {
         // console.log(filterMapState);
         Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
-                tempArray.push([
-                    key,
-                    filterMapState[key].filterType,
-                    filterMapState[key].filterValue,
-                    filterMapState[key].filterData,
-                ]);
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }
+                
             }
         });
         setFilterState((prev) => tempArray)
@@ -360,12 +370,22 @@ const City = () => {
         console.log(filterMapState);
         Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
-                tempArray.push([
-                    key,
-                    mapState[key].filterType,
-                    mapState[key].filterValue,
-                    mapState[key].filterData,
-                ]);
+                if(mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        mapState[key].filterValue,
+                        mapState[key].filterData,
+                    ]);
+                }
+               
             }
         });
         setFilterState((prev) => tempArray)
@@ -612,7 +632,6 @@ const City = () => {
                 
                 
               }
-          
       }
     return (
         <div className="h-screen">
