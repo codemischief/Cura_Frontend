@@ -14,6 +14,7 @@ const EditManageBuilder = (props) => {
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    console.log(props.currBuilder)
     const openSuccessModal = () => {
         // set the state for true for some time
         props.setOpenDialog(false);
@@ -72,26 +73,49 @@ const EditManageBuilder = (props) => {
     const selectedCity = [
         "City1", "City2", "City3", "City4"
     ]
+    const fetchCountryData = async () => {
+        setPageLoading(true);
+        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries(data)
+        const result = (await response.json()).data;
+        console.log(result.data);
 
+        if (Array.isArray(result.data)) {
+            setAllCountry(result.data);
+        }
+    }
+    const [allState,setAllState] = useState([])
+    const [allCountry,setAllCountry] = useState([])
+    const [allCity,setAllCity] = useState([])
+    const fetchStateData = async (e) => {
+
+        const data = { "user_id": 1234, "country_id": e };
+        const response = await APIService.getState(data);
+        const result = (await response.json()).data;
+        console.log(result)
+        if (Array.isArray(result)) {
+            setAllState(result)
+        }
+    }
     const handleDialogClose = () => {
         props.setOpenDialog(false);
     };
     console.log(props.builder)
     const initialValues = {
-        builderName: props.builder.buildername ,
-        phone1: props.builder.phone1,
-        phone2: props.builder.phone2,
-        email1: props.builder.email1,
-        email2: props.builder.email2,
-        suburb : "deccan",
-        address1: props.builder.address1,
-        address2: props.builder.address2,
-        country: props.builder.country,
-        state: props.builder.state,
-        city: props.builder.city,
-        zip: props.builder.zip,
-        website: props.builder.website,
-        comment: props.builder.comment
+        builderName: null ,
+        phone1: null,
+        phone2: null,
+        email1: null,
+        email2: null,
+        suburb : null,
+        address1: null,
+        address2: null,
+        country: null,
+        state: null,
+        city: null,
+        zip: null,
+        website: null,
+        comment: null
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -137,7 +161,53 @@ const EditManageBuilder = (props) => {
 
         return errors;
     };
-
+    // just fetch the data here
+    const fetchCityData = async (d) => {
+        const data = { "user_id": 1234,"state_name": d };
+        const response = await APIService.getCities(data);
+        const result = (await response.json()).data;
+        if (Array.isArray(result)) {
+            setAllCity(result)
+        }
+    }
+    const getInitialData = async () => {
+        const data = {
+            "user_id":1234,
+            "table_name":"builder",
+            "item_id": props.builder.id
+        }
+        const response  = await APIService.getItembyId(data)
+        const res = await response.json()
+        fetchStateData(res.data.country)
+        fetchCityData(res.data.state)
+        const temp = {...formValues}
+        temp.builderName =  props.builder.buildername
+        temp.phone1 =  props.builder.phone1
+        temp.phone2 =  props.builder.phone2
+        temp.email1 =  props.builder.email1
+        temp.email2 =  props.builder.email2
+        temp.suburb  =  "deccan",
+        temp.address1 =  props.builder.addressline1
+        temp.address2 =  props.builder.addressline2
+        temp.country =  props.builder.country
+        temp.state =  props.builder.state
+        temp.city =  props.builder.city
+        temp.zip =  props.builder.zip
+        temp.website =  props.builder.website
+        temp.comment =  props.builder.comment
+        setFormValues(temp)
+        console.log(res)
+    }
+    useEffect(() => {
+        // we need to fetch the data first
+        setLoading(true)
+        getInitialData()
+        fetchCountryData()
+        // fetchStateData(props.builder.country)
+        setLoading(false)
+        // fetchCityData()
+    },[])
+    const [loading,setLoading] = useState(false)
     return (
         <>
             <SucessfullModal isOpen={showSucess} message="Builder has been edited " />
@@ -146,8 +216,9 @@ const EditManageBuilder = (props) => {
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center' >
+                    {!isLoading && 
                 <div className='flex justify-center rounded-lg'>
-                    <Draggable>
+                    {/* <Draggable> */}
                     <div className="w-[1050px] h-auto bg-white rounded-lg  ">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -198,9 +269,9 @@ const EditManageBuilder = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
-                                                {selectedCountry.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                {allCountry && allCountry.map(item => (
+                                                    <option key={item[0]} value={item[1]}>
+                                                        {item[1]}
                                                     </option>
                                                 ))}
                                             </select>
@@ -209,7 +280,7 @@ const EditManageBuilder = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">State <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
-                                                {selectedState.map(item => (
+                                                {allState && allState.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
@@ -220,9 +291,9 @@ const EditManageBuilder = (props) => {
                                         <div className="">
                                             <div className="text-[14px]">City <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
-                                                {selectedCity.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                {allCity && allCity.map(item => (
+                                                    <option key={item.id} value={item.city}>
+                                                        {item.city}
                                                     </option>
                                                 ))}
                                             </select>
@@ -251,8 +322,8 @@ const EditManageBuilder = (props) => {
                             </div>
                         </form>
                     </div>
-                    </Draggable>
-                </div>
+                    {/* </Draggable> */}
+                </div>}
             </Modal>
         </>
 

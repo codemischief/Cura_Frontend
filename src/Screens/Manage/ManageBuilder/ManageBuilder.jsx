@@ -298,20 +298,20 @@ const ManageBuilder = () => {
     }, []);
     //Validation of the form
     const initialValues = {
-        builderName: "",
-        phone1: "",
-        phone2: "",
-        email1: "",
-        email2: "",
-        address1: "",
-        address2: "",
+        builderName: null,
+        phone1: null,
+        phone2: null,
+        email1: null,
+        email2: null,
+        address1: null,
+        address2: null,
         country: 5,
         state: "Maharashtra",
-        city: 5,
-        zip: "",
-        website: "",
-        comment: "",
-        suburb: ""
+        city: 847,
+        zip: null,
+        website: null,
+        comment: null,
+        suburb: null
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -327,15 +327,28 @@ const ManageBuilder = () => {
         e.preventDefault();
         setFormErrors(validate(formValues)); // validate form and set error message
         console.log(formErrors)
-        if (formValues.builderName == "") {
-            return;
+        if (!formValues.builderName || formValues.builderName == "") {
+            return 
         }
-        if (formValues.address1 == "") {
-            return;
+        if (!formValues.phone1 || formValues.phone1 == "") {
+            return 
         }
-        if (formValues.phone1 == "") {
-            return;
+        if (!formValues.email1 || formValues.email1 == "") {
+            return 
         }
+        if (!formValues.address1 || formValues.address1 == "") {
+            return 
+        }
+        if (!formValues.country || formValues.country == "") {
+            return 
+        }
+        if (!formValues.state || formValues.state == "") {
+            return 
+        }
+        if (!formValues.city || formValues.city == "") {
+            return 
+        }
+
 
         // if(formValues.)
         setIsLoading(true);
@@ -346,17 +359,26 @@ const ManageBuilder = () => {
     // validate form and to throw Error message
     const validate = (values) => {
         const errors = {};
-        if (!values.builderName) {
+        if (!values.builderName || values.builderName == "") {
             errors.builderName = "Enter Builder name";
         }
-        if (!values.phone1) {
+        if (!values.phone1 || values.phone1 == "") {
             errors.phone1 = "Enter Phone number";
         }
-        if (!values.email1) {
+        if (!values.email1 || values.email1 == "") {
             errors.email1 = "Enter Email";
         }
-        if (!values.address1) {
+        if (!values.address1 || values.address1 == "") {
             errors.address1 = "Enter Builder Adress";
+        }
+        if (!values.country || values.country == "") {
+            errors.country = "Select Country";
+        }
+        if (!values.state || values.state == "") {
+            errors.state = "Select State";
+        }
+        if (!values.city || values.cty == "") {
+            errors.city = "Select City";
         }
         return errors;
     };
@@ -717,7 +739,7 @@ const ManageBuilder = () => {
                             </div>
                         })}
                         {/* we get all the existing builders here */}
-                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} />}
+                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity}/>}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData} />}
                     </div>
 
@@ -796,7 +818,7 @@ const ManageBuilder = () => {
                 className='flex justify-center items-center'
                  >
                 <div className='flex justify-center'>
-                    <Draggable>
+                    {/* <Draggable> */}
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -857,7 +879,7 @@ const ManageBuilder = () => {
                                                     setselectedCountry(e.target.value);
                                                     setAllCity([])
 
-                                                    fetchStateData(e.target.value);
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, country: e.target.value }
                                                         return newData;
@@ -870,7 +892,8 @@ const ManageBuilder = () => {
                                                         const newData = { ...existing, city: null }
                                                         return newData;
                                                     })
-                                                    
+                                                    setAllState([])
+                                                    fetchStateData(e.target.value);
                                                     // fetchStateData(res);
                                                 }}
                                             >
@@ -897,13 +920,19 @@ const ManageBuilder = () => {
                                                 defaultValue="Select State"
                                                 onChange={e => {
                                                     setSelectedState(e.target.value);
-                                                    fetchCityData(e.target.value)
+                                                    
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, state: e.target.value }
                                                         return newData;
                                                     })
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, city: null }
+                                                        return newData;
+                                                    })
+                                                    fetchCityData(e.target.value)
                                                     // fetchCityData(selectedState);
                                                 }} >
+                                                <option  hidden>Select A State</option>
                                                 {allState && allState.map(item => {
                                                     if(item[0] == formValues.state) {
                                                        return <option value={item[0]} selected>
@@ -920,13 +949,14 @@ const ManageBuilder = () => {
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">City<label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" onChange={(e) => {
+                                            {console.log(formValues.city)}
+                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.city} onChange={(e) => {
                                                 setFormValues((existing) => {
                                                     const newData = { ...existing, city: e.target.value };
                                                     return newData;
                                                 })
                                             }}>
-                                                <option selected disabled hidden > Select A city</option>
+                                                <option  hidden > Select A city</option>
                                                 {allCity && allCity.map((item) => {
                                                     return <option value={item.id}>
                                                         {item.city}
@@ -956,13 +986,13 @@ const ManageBuilder = () => {
 
                             <div className=" my-2 flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 {isLoading && <CircularProgress />}
                             </div>
                         </form>
                     </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </div>
             </Modal>
 
