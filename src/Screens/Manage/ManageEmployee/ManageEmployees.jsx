@@ -20,6 +20,7 @@ import Add from "../../../assets/add.png";
 import EditManageEmployee from './EditManageEmployee';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import SaveConfirmationEmployee from './SaveConfirmationManageEmployee';
+import CancelModel from './../../../Components/modals/CancelModel';
 import FailureModal from '../../../Components/modals/FailureModal';
 import DeleteEmployeeModal from './DeleteEmployeeModal';
 import * as XLSX from 'xlsx';
@@ -319,7 +320,13 @@ const ManageEmployees = () => {
     };
 
     const handleClose = () => {
+        initials();
         setIsEmployeeDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const handleAddEmployee = () => {
         console.log(formValues)
@@ -740,6 +747,25 @@ const ManageEmployees = () => {
         fetchData();
     }
 
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsEmployeeDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
     const filterMapping = {
         employeename: {
             filterType: "",
@@ -905,7 +931,7 @@ const ManageEmployees = () => {
                 }
             }
 
-            if (type == 'noFilter') setInputVariable("");
+            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
         }
 
         fetchFiltered(existing);
@@ -945,13 +971,15 @@ const ManageEmployees = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
-            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />}
+            {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} />}
+            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, No new employee created" />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
