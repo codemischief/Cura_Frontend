@@ -179,32 +179,31 @@ const PmaBilling = () => {
               </select>
             </div>
             <Button
-            variant="outlined"
-            onClick={handleShow}
-            sx={{
-              height: "36px",
-              textTransform: "none",
-              color: "#004DD7",
-              borderRadius: "8px",
-              width: "133px",
-              fontSize: "14px",
-              border: "1px solid #004DD7",
-              fontWeight: "600px",
-              lineHeight: "18.9px",
-              marginTop:'4px',
-              "&:hover": {
-                //you want this to be the same as the backgroundColor above
-                backgroundColor: "#004DD7",
-                color: "#fff",
-              },
-            }}
-            disabled={!(selectedYear && selectedMonth)}
-          >
-            Show
-          </Button>
+              variant="outlined"
+              onClick={handleShow}
+              sx={{
+                height: "36px",
+                textTransform: "none",
+                color: "#004DD7",
+                borderRadius: "8px",
+                width: "133px",
+                fontSize: "14px",
+                border: "1px solid #004DD7",
+                fontWeight: "600px",
+                lineHeight: "18.9px",
+                marginTop: "4px",
+                "&:hover": {
+                  //you want this to be the same as the backgroundColor above
+                  backgroundColor: "#004DD7",
+                  color: "#fff",
+                },
+              }}
+              disabled={!(selectedYear && selectedMonth)}
+            >
+              Show
+            </Button>
           </Stack>
-       
-        
+
           <CustomButton
             title="Add New PMA Invoice"
             onClick={() => {

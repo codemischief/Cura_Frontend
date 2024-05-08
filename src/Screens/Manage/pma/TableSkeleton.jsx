@@ -22,6 +22,7 @@ export default function PmaBillingTable({
         data={data}
         title={""}
         options={{
+          
           exportButton: {
             csv: true,
             pdf: false,
@@ -51,7 +52,7 @@ export default function PmaBillingTable({
             pt: 12,
             pb: 12,
           },
-          maxBodyHeight: "650px",
+          maxBodyHeight: "59vh",
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,

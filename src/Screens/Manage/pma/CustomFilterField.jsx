@@ -54,8 +54,12 @@ const FilterField = (props) => {
         date: "Date",
       };
       let queryType = type === "number" ? Number(search) : search;
-      const query = [[columnDef.field, filter, queryType, filterType[type]]]
+      let query = [[columnDef.field, filter, queryType, filterType[type]]];
+      if (filter === "noFilter") {
+        query = [];
+      }
       dispatch(setFilters(query));
+      setSearch("");
     }
     handleClose();
   };
