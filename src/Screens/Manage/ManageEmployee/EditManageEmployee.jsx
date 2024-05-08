@@ -371,7 +371,7 @@ const EditManageEmployee = (props) => {
 
                             <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg">
                                 <div className="mr-[360px] ml-[360px]">
-                                    <div className="text-[16px]">Update Employee Details</div>
+                                    <div className="text-[16px]">Edit Employee</div>
                                 </div>
                                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                     <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>

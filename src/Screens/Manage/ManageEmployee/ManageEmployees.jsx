@@ -599,8 +599,10 @@ const ManageEmployees = () => {
         return res;
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
-    const handleDelete = (id) => {
+    const [currEmployeeName, setCurrEmployeeName] = useState("");
+    const handleDelete = (id , name) => {
         setCurrEmployeeId(id);
+        setCurrEmployeeName(name);
         showDeleteConfirmation(true);
     }
     const deleteEmployee = async (id) => {
@@ -972,12 +974,12 @@ const ManageEmployees = () => {
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="successfully Added Employee" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New employee created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Employee" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesfully" />}
             {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} showCancel={openCancelModal} />}
+            {deleteConfirmation && <DeleteEmployeeModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteEmployee} item={currEmployeeId} name={currEmployeeName} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, No new employee created" />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
@@ -1265,7 +1267,7 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                        <button onClick={() => handleDelete(item.id , item.employeename)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 
