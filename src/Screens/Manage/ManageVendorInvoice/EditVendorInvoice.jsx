@@ -4,7 +4,7 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
-const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) => {
+const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,showCancel}) => {
     const initialValues = {
         client: null,
         vendor: null,
@@ -210,6 +210,11 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) =>
         return results
     }
 
+    const close = () =>{
+        handleClose();
+        showCancel();
+    }
+
 
 
     return (
@@ -226,7 +231,7 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) =>
                         <div className="text-[16px]">Edit Vendor Invoice</div>
                     </div>
                     <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                        <button onClick={() => (close())}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                     </div>
                 </div>
 
@@ -234,10 +239,10 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) =>
                     <div className="flex gap-[48px] justify-center ">
                         <div className=" space-y-3 py-5">
                             <div className="">
-                                <div className="text-sm text-[#787878]">Cura Office </div>
+                                <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                             </div>
-                            <div className="">
+                            <div className="pt-0.5">
                                 <div className="text-[13px]">Vendor</div>
                                 <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                     <option value={null}> Select Vendor</option>
@@ -264,42 +269,47 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) =>
                         </div>
                         <div className=" space-y-3 py-5">
                             <div className="">
-                                <div className="text-[13px]">
+                                <div className="text-[13px] mb-0.5">
                                     Client <label className="text-red-500">*</label>
                                 </div>
                                 <AsyncSelect
-                                    onChange={handleClientNameChange}
-                                    value={selectedOption}
-                                    loadOptions={loadOptions}
-                                    cacheOptions
-                                    defaultOptions
-                                    onInputChange={(value) => setQuery(value)}
+                                            onChange={handleClientNameChange}
+                                            value={selectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
 
-                                    styles={{
-                                        control: (provided, state) => ({
-                                            ...provided,
-                                            minHeight: 25,
-                                            lineHeight: '1.3',
-                                            height: 2,
-                                            fontSize: 12,
-                                            padding: '1px'
-                                        }),
-                                        // indicatorSeparator: (provided, state) => ({
-                                        //   ...provided,
-                                        //   lineHeight : '0.5',
-                                        //   height : 2,
-                                        //   fontSize : 12 // hide the indicator separator
-                                        // }),
-                                        dropdownIndicator: (provided, state) => ({
-                                            ...provided,
-                                            padding: '3px', // adjust padding for the dropdown indicator
-                                        }),
-                                        options: (provided, state) => ({
-                                            ...provided,
-                                            fontSize: 12 // adjust padding for the dropdown indicator
-                                        })
-                                    }}
-                                />
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 23,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
+                                            }}
+                                        />
                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                             </div>
                             <div className="">
@@ -340,23 +350,23 @@ const EditVendorInvoice = ({handleClose,currInvoice,showSuccess,vendorData,}) =>
                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                             </div>
                             <div className="">
-                                <div className="text-[13px]">Invoice Date </div>
+                                <div className="text-[13px] pt-[-2px]">Invoice Date </div>
                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
                             </div>
                             <div className="">
-                                <div className="text-[13px]">Invoice/Estimate Description </div>
-                                <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
+                                <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
                             </div>
                             <div className="">
-                                <div className="text-[13px]">Notes </div>
-                                <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                <div className="text-[13px] mb-0.5">Notes </div>
+                                <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="my-3 flex justify-center items-center gap-[10px]">
                     <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => (close())}>Cancel</button>
                 </div>
             </div>
             </Draggable>

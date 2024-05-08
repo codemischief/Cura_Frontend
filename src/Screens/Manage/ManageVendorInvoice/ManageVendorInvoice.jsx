@@ -24,13 +24,12 @@ import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeleteVendorInvoice from './DeleteVendorInvoice';
 import SaveConfirmationVendorInvoice from './SaveConfirmationVendorInvoice';
-// import EditPmaAgreement from './EditPmaAgreement';
+import CancelModel from './../../../Components/modals/CancelModel';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
-// import EditOrderReceipt from './EditOrderReceipt';
 import EditVendorInvoice from './EditVendorInvoice';
 import Draggable from 'react-draggable';
 const ManageVendorInvoice = () => {
@@ -488,7 +487,14 @@ const ManageVendorInvoice = () => {
     };
 
     const handleClose = () => {
+        initials();
         SetIsVendorInvoiceDialogue(false);
+        openAddCancelModal();
+    }
+
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
 
 
@@ -732,6 +738,25 @@ const ManageVendorInvoice = () => {
             setShowEditSuccess(false);
         }, 2000)
         fetchData();
+    }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        SetIsVendorInvoiceDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
     }
 
 
@@ -996,15 +1021,16 @@ const ManageVendorInvoice = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData}/>}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice Created successfully" />}
+            {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} showCancel={openCancelModal}/>}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationVendorInvoice addVendorInvoice={addVendorInvoice} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationVendorInvoice addVendorInvoice={addVendorInvoice} handleClose={() => setOpenAddConfirmation(false)} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-
-            {showDeleteModal && <DeleteVendorInvoice handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorInvoice} />}
+            {showDeleteModal && <DeleteVendorInvoice handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorInvoice} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no Vendor Invoice added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1413,7 +1439,7 @@ const ManageVendorInvoice = () => {
                                         <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
                                         <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
-                                    <div className="">
+                                    <div className="pt-0.5">
                                         <div className="text-[13px]">Vendor</div>
                                         <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                             <option value={null}> Select Vendor</option>
@@ -1520,17 +1546,17 @@ const ManageVendorInvoice = () => {
                                         </select>
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
-                                    <div className="">
+                                    <div className="pt-[-2px]">
                                         <div className="text-[13px]">Invoice Date </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Invoice/Estimate Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                        <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Notes </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                    <div className="pmt-[-10px]">
+                                        <div className="text-[13px] mb-0.5">Notes </div>
+                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
