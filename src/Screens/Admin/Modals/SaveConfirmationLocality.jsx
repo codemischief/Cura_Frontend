@@ -5,8 +5,9 @@ import Draggable from 'react-draggable'
 const SaveConfirmationLocality = (props) => {
     const handleClose = () =>{
         props.handleClose();
+        props.setDefault();
         props.showCancel();
-        props.initials();
+       
     }
     return (
         <Modal open={true} >

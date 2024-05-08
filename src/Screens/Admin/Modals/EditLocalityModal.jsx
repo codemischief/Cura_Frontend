@@ -77,7 +77,7 @@ const EditLocalityModal = (props) => {
 
                                 <div className="mt-[10px] flex justify-center items-center gap-[10px] mb-3">
 
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleUpdate}>Update</button>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleUpdate}>Save</button>
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {handleClose()}}>Cancel</button>
                                 </div>
 

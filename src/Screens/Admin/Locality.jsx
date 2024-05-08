@@ -605,12 +605,12 @@ const Locality = () => {
         <div className='h-screen'>
             <Navbar />
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} showCancel={openCancelModal} />}
-            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Locality" />}
+            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Locality added successfully" />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Locality added." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             {failureModal && <FailureModal isOpen={failureModal} message={errorMessage} />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Updated Locality" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Successfully Deleted Locality" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Changes saved succesfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} handleClose={() => setShowDeleteSuccess(false)} message="Locality Deleted Successfully" />}
             {showDeleteModal && <DeleteLocalityModal isOpen={showDeleteModal} handleDelete={deleteLocality} handleClose={() => setShowDeleteModal(false)} item={currItem} showCancel={openCancelModal} />}
             {addConfirmation && <SaveConfirmationLocality handleClose={() => setAddConfirmation(false)} currentLocality={formValues.locality} addLocality={addLocality} setDefault={initials} showCancel={openAddCancelModal} />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-7'>
@@ -680,7 +680,7 @@ const Locality = () => {
 
                         <div className='w-[20%] px-3 py-2.5 ml-1'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
