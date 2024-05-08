@@ -11,6 +11,11 @@ const DeletePaymentModal = (props) => {
         props.handleDelete(props.item);
     }
 
+    const close = () =>{
+        props.handleClose();
+        props.showCancel();
+    }
+
     return (
         <Modal open={true}
             fullWidth={true}
@@ -26,7 +31,7 @@ const DeletePaymentModal = (props) => {
                                     <div className="text-[16px]">Delete</div>
                                 </div>
                                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                    <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                    <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
                             <div className="mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
@@ -37,7 +42,7 @@ const DeletePaymentModal = (props) => {
                             </div>
                             <div className="my-5 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={handleDeleteClick}>Delete</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                             </div>
                         </div>
                     </div>

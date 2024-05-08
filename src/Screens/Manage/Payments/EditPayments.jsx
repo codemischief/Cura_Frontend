@@ -130,9 +130,9 @@ const EditPayments = (props) => {
             "entityid" : formValues.entityid,
             "officeid" : 10,
             "tds" : Number(formValues.tds),
-            "professiontax" : formValues.professiontax,
+            "professiontax" : Number(formValues.professiontax),
             "month" : formValues.month,
-            "deduction" : 10,
+            "deduction" : formValues.deduction,
         }
         const response = await APIService.editPayment(data);
         const result = await response.json();
@@ -150,6 +150,7 @@ const EditPayments = (props) => {
         paymentby: props.item.item.paymentby,
         amount: props.item.item.amount,
         description: "",
+        deduction: "",
         paymentfor: "",
         paymentmode: "",
         entity: "",
@@ -257,28 +258,7 @@ const EditPayments = (props) => {
                 return {...existing,month: ""}
             })
         }
-        if(formValues.tds === '') {
-            setFormErrors((existing) => {
-                return {...existing,tds: "Enter TDS amount"}
-            })
-            console.log('here')
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,tds: ""}
-            })
-        }
-        if(formValues.professiontax === '') {
-            setFormErrors((existing) => {
-                return {...existing,professiontax: "Enter profession Tax amount"}
-            })
-            console.log('here')
-            res = false;
-        }else {
-            setFormErrors((existing) => {
-                return {...existing,professiontax: ""}
-            })
-        }
+        
         return res;
     }
     const selectedMonth = [
@@ -331,6 +311,11 @@ const EditPayments = (props) => {
             month: "Dec"
         },
     ]
+
+    const close = () =>{
+        props.handleClose();
+        props.showCancel();
+    }
     return (
         <>
             <Modal open={props.isOpen}
@@ -347,7 +332,7 @@ const EditPayments = (props) => {
                                 <div className="text-[16px]">Edit Contractual Payments </div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={props.handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                <img onClick={() => {close()}} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </div>
                         </div>
                         {pageLoading && <div className='flex justify-center items-center mt-9 space-x-7 mb-6'><CircularProgress/><h1>Fetching Payment Data</h1></div>}
@@ -356,12 +341,12 @@ const EditPayments = (props) => {
                             <div className="flex gap-[48px] justify-center">
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
-                                        <div className="text-[13px] text-[#787878]">Cura Office </div>
+                                        <div className="text-[13px] text-[#787878] mb-0.5">Cura Office </div>
                                         <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
-                                    <div className="">
+                                    <div className="pt-0.5">
                                         <div className="text-[13px]">Payment To <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                         <option value="" hidden >Select User</option>
                                             <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                         {allUsername.map(item => (
@@ -379,7 +364,7 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Payment By <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                         <option value="" hidden >Select User</option>
                                             <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                             {allUsername.map(item => (
@@ -403,12 +388,12 @@ const EditPayments = (props) => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Description </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                        <div className="text-[13px]">Deduction </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="deduction" value={formValues.deduction} onChange={handleChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Payment For <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                        <div className="text-[13px]">Payment For </div>
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
                                             {paymentFor.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
@@ -417,11 +402,15 @@ const EditPayments = (props) => {
                                         </select>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
                                     </div>
+                                    <div className="">
+                                        <div className="text-[13px]">Description </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                    </div>
                                 </div>
                                 <div className=" space-y-[12px] py-[20px] px-[10px]">
                                     <div className="">
                                         <div className="text-[13px]">Payment Mode <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
                                             {paymentMode.map(item => (
                                                 <option key={item[0]} value={item[0]}>
                                                     {item[1]}
@@ -432,7 +421,7 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entity" value={formValues.entity} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entity" value={formValues.entity} onChange={handleChange} >
                                             {allEntities.map(item => (
                                                 <option key={item[0]} value={item[1]}>
                                                     {item[1]}
@@ -448,7 +437,7 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Month <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
                                             {selectedMonth.map(item => (
                                                 <option key={item.id} value={item.month}>
                                                     {item.month}
@@ -458,14 +447,14 @@ const EditPayments = (props) => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.month}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">TDS <label className="text-red-500">*</label></div>
+                                        <div className="text-[13px]">TDS </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.professiontax}</div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -475,7 +464,7 @@ const EditPayments = (props) => {
                             
                             <div className=" mb-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={handleEdit}>Save</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                             </div>
                         </div>
                         {/* </form> */}
