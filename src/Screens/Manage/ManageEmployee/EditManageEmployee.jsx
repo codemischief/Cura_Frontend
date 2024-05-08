@@ -16,7 +16,7 @@ const EditManageEmployee = (props) => {
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
-    const [pageLoading,setPageLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
     const [currentstate, setCurrentstate] = useState('')
     const [currentcity, setCurrentcity] = useState("");
     const [currentCountry, setCurrentCountry] = useState("");
@@ -32,7 +32,7 @@ const EditManageEmployee = (props) => {
     const fetchStateData = async (id) => {
         // console.log(id);
         console.log(id);
-        const data = { "user_id": 1234, "country_id":  id};
+        const data = { "user_id": 1234, "country_id": id };
         // const data = {"user_id":1234,"rows":["id","state"],"filters":[],"sort_by":[],"order":"asc","pg_no":0,"pg_size":0};
         const response = await APIService.getState(data);
         const result = (await response.json()).data;
@@ -42,9 +42,9 @@ const EditManageEmployee = (props) => {
     const fetchCityData = async (name) => {
         // console.log("Maharashtra");
         // console.log("hy")
-        if(name == null) return 
+        if (name == null) return
         console.log(name);
-        const data = { "user_id": 1234, "state_name" : name };
+        const data = { "user_id": 1234, "state_name": name };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         console.log(result);
@@ -58,7 +58,7 @@ const EditManageEmployee = (props) => {
         const response = await APIService.getUsers(data)
         const result = (await response.json()).data;
         // console.log(result);
-        
+
         if (Array.isArray(result)) {
             setAllUsername(result);
         }
@@ -89,15 +89,15 @@ const EditManageEmployee = (props) => {
     }
 
     const fetchLobData = async () => {
-        const data = { 
-            "user_id" : 1234,
-            "rows" : ["id","name","lob_head","company"],
-            "filters" : [],
-            "sort_by" : [],
-            "order" : "asc",
-            "pg_no" : 0,
-            "pg_size" : 0
-         };
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "name", "lob_head", "company"],
+            "filters": [],
+            "sort_by": [],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0
+        };
         const response = await APIService.getLob(data);
         const result = (await response.json()).data;
         // console.log(result);
@@ -109,9 +109,9 @@ const EditManageEmployee = (props) => {
     const fetchEmployeeData = async () => {
         setPageLoading(true);
         const data = {
-            "user_id" : 1234,
-            "table_name" : "employee",
-            "item_id" : props.item.id
+            "user_id": 1234,
+            "table_name": "employee",
+            "item_id": props.item.id
         }
         console.log(data);
         const response = await APIService.getItembyId(data);
@@ -121,18 +121,18 @@ const EditManageEmployee = (props) => {
         // console.log(formValues.state);
         await fetchCountryData();
         // console.log(result.data.dateofjoining.split('T')[0]);
-       setFormValues((existing) => {
-          return {...existing, dateofjoining : result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : null}
-       })
-       setFormValues((existing) => {
-        return {...existing, dob : result.data.dob ? result.data.dob.split('T')[0] : null}
-     })
-     setFormValues((existing) => {
-        return {...existing, lastdateofworking : result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : null}
-     })
-     setFormValues((existing) => {
-        return {...existing, dated :result.data.dated ?  result.data.dated.split('T')[0] : null}
-     })
+        setFormValues((existing) => {
+            return { ...existing, dateofjoining: result.data.dateofjoining ? result.data.dateofjoining.split('T')[0] : null }
+        })
+        setFormValues((existing) => {
+            return { ...existing, dob: result.data.dob ? result.data.dob.split('T')[0] : null }
+        })
+        setFormValues((existing) => {
+            return { ...existing, lastdateofworking: result.data.lastdateofworking ? result.data.lastdateofworking.split('T')[0] : null }
+        })
+        setFormValues((existing) => {
+            return { ...existing, dated: result.data.dated ? result.data.dated.split('T')[0] : null }
+        })
         await fetchStateData(result.data.country);
         await fetchCityData(result.data.state);
         setPageLoading(false);
@@ -150,11 +150,11 @@ const EditManageEmployee = (props) => {
     const handleEdit = async () => {
         const data = {
             "user_id": 1234,
-            "id" : formValues.id,
+            "id": formValues.id,
             "employeename": formValues.employeename,
             "employeeid": formValues.employeeid,
             "userid": 1236,
-            "roleid": formValues.roleid ,
+            "roleid": formValues.roleid,
             "dateofjoining": formValues.dateofjoining,
             "dob": formValues.dob,
             "panno": formValues.panno,
@@ -163,22 +163,22 @@ const EditManageEmployee = (props) => {
             "email": formValues.email,
             "addressline1": formValues.addressline1,
             "addressline2": formValues.addressline2,
-            "suburb": formValues.suburb , 
+            "suburb": formValues.suburb,
             "city": formValues.city,
             "state": formValues.state,
             "country": Number(formValues.country),
             "lobid": formValues.lobid,
-            "zip": formValues.zip ,
+            "zip": formValues.zip,
             "dated": formValues.dated,
             "createdby": 1234,
             "isdeleted": formValues.isdeleted,
             "entityid": Number(formValues.entityid),
             "lastdateofworking": formValues.lastdateofworking,
-            "designation": formValues.designation 
+            "designation": formValues.designation
         }
         console.log(data);
-        if(!validate()) {
-            return ;
+        if (!validate()) {
+            return;
         }
         console.log('here');
         console.log(data);
@@ -198,27 +198,27 @@ const EditManageEmployee = (props) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const validate = ()  => {
+    const validate = () => {
         var res = true;
-        if(!formValues.employeename) {
+        if (!formValues.employeename) {
             setFormErrors((existing) => {
-               return {...existing,employeename: "Enter Employee name"}
+                return { ...existing, employeename: "Enter Employee name" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,employeename: ""}
-             })
+                return { ...existing, employeename: "" }
+            })
         }
-        if(!formValues.panno) {
+        if (!formValues.panno) {
             setFormErrors((existing) => {
-               return  {...existing,panno: "Enter Pan Number"}
+                return { ...existing, panno: "Enter Pan Number" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return  {...existing,panno: ""}
-             })
+                return { ...existing, panno: "" }
+            })
         }
         // if(!formValues.userName) {
         //     setFormErrors((existing) => {
@@ -230,152 +230,152 @@ const EditManageEmployee = (props) => {
         //         return {...existing,userName: ""}
         //     })
         // }
-        if(!formValues.dateofjoining) {
+        if (!formValues.dateofjoining) {
             setFormErrors((existing) => {
-                return {...existing,dateofjoining: "Enter date of joining"}
+                return { ...existing, dateofjoining: "Enter date of joining" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,dateofjoining: ""}
+                return { ...existing, dateofjoining: "" }
             })
         }
-        if(!formValues.designation) {
+        if (!formValues.designation) {
             setFormErrors((existing) => {
-                return {...existing,designation: "Enter Designation"}
+                return { ...existing, designation: "Enter Designation" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,designation: ""}
+                return { ...existing, designation: "" }
             })
         }
-        if(!formValues.email) {
+        if (!formValues.email) {
             setFormErrors((existing) => {
-                return {...existing,email: "Enter email address"}
+                return { ...existing, email: "Enter email address" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,email: ""}
+                return { ...existing, email: "" }
             })
         }
-        if(!formValues.employeeid) {
+        if (!formValues.employeeid) {
             setFormErrors((existing) => {
-                return {...existing,employeeid: "Enter Employee Id"}
+                return { ...existing, employeeid: "Enter Employee Id" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,employeeid: ""}
+                return { ...existing, employeeid: "" }
             })
         }
-        if(!formValues.lobid) {
+        if (!formValues.lobid) {
             setFormErrors((existing) => {
-                return {...existing,lobid: "Select LOB"}
+                return { ...existing, lobid: "Select LOB" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,lobid: ""}
+                return { ...existing, lobid: "" }
             })
         }
-        if(!formValues.dob) {
+        if (!formValues.dob) {
             setFormErrors((existing) => {
-                return {...existing,dob: "enter date of birth"}
+                return { ...existing, dob: "enter date of birth" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,dob: ""}
+                return { ...existing, dob: "" }
             })
         }
-        if(!formValues.roleid) {
+        if (!formValues.roleid) {
             setFormErrors((existing) => {
-                return {...existing,roleid: "Select Role"}
+                return { ...existing, roleid: "Select Role" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,roleid: ""}
+                return { ...existing, roleid: "" }
             })
         }
-        if(!formValues.phoneno) {
+        if (!formValues.phoneno) {
             setFormErrors((existing) => {
-                return {...existing,phoneno: "Enter phone number"}
+                return { ...existing, phoneno: "Enter phone number" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,phoneno: ""}
+                return { ...existing, phoneno: "" }
             })
         }
-        if(!formValues.country) {
+        if (!formValues.country) {
             setFormErrors((existing) => {
-                return {...existing,country: "Select country"}
+                return { ...existing, country: "Select country" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,country: ""}
+                return { ...existing, country: "" }
             })
         }
-        if(!formValues.state) {
+        if (!formValues.state) {
             setFormErrors((existing) => {
-                return {...existing,state: "Select state"}
+                return { ...existing, state: "Select state" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,state: ""}
+                return { ...existing, state: "" }
             })
         }
-        if(!formValues.city) {
+        if (!formValues.city) {
             setFormErrors((existing) => {
-                return {...existing,city: "Select city"}
+                return { ...existing, city: "Select city" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,city: ""}
+                return { ...existing, city: "" }
             })
         }
-        if(!formValues.entityid) {
+        if (!formValues.entityid) {
             setFormErrors((existing) => {
-                return {...existing,entityid: "Select Entity"}
+                return { ...existing, entityid: "Select Entity" }
             })
             res = false;
-        }else {
+        } else {
             setFormErrors((existing) => {
-                return {...existing,entityid: ""}
+                return { ...existing, entityid: "" }
             })
         }
         return res;
     }
     return (
         <div>
-            
+
             <Modal open={props.isOpen}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
             >
-                
+
                 <div className='flex justify-center'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        
-                        <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg">
-                            <div className="mr-[360px] ml-[360px]">
-                                <div className="text-[16px]">Update Employee Details</div>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+
+                            <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg">
+                                <div className="mr-[360px] ml-[360px]">
+                                    <div className="text-[16px]">Update Employee Details</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={props.handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-                        
-                        {pageLoading  &&  <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress/><h1>Fetching Employee Data</h1></div>  }
-                        {!pageLoading && <div className="h-auto w-full mt-[5px]">
+
+                            {pageLoading && <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress /><h1>Fetching Employee Data</h1></div>}
+                            {!pageLoading && <div className="h-auto w-full mt-[5px]">
                                 <div className="flex gap-[48px] justify-center ">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
@@ -394,9 +394,9 @@ const EditManageEmployee = (props) => {
                                                 name="userName"
                                                 value={formValues.userName}
                                                 onChange={handleChange}
-                                            >{allUsername &&allUsername.map(ele => (
-                                                (formValues.userid === ele.id)?
-                                                <option>{ele.name}</option>:""))}
+                                            >{allUsername && allUsername.map(ele => (
+                                                (formValues.userid === ele.id) ?
+                                                    <option>{ele.name}</option> : ""))}
                                                 {allUsername && allUsername.map(item => (
                                                     <option value={item.name} >
                                                         {item.name}
@@ -407,7 +407,7 @@ const EditManageEmployee = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">Date of joining<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="dateofjoining" value={formValues.dateofjoining} onChange={handleChange} />
-                                            
+
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Designation<label className="text-red-500">*</label></div>
@@ -437,9 +437,9 @@ const EditManageEmployee = (props) => {
                                                 value={formValues.lob}
                                                 defaultValue="Select lob"
                                                 onChange={handleChange}
-                                            >{allLOB &&allLOB.map(ele => (
-                                                (formValues.lob === ele.id)?
-                                                <option>{ele.name}</option>:""))}
+                                            >{allLOB && allLOB.map(ele => (
+                                                (formValues.lob === ele.id) ?
+                                                    <option>{ele.name}</option> : ""))}
                                                 {allLOB && allLOB.map(item => (
                                                     <option value={item.name} >
                                                         {item.name}
@@ -463,9 +463,9 @@ const EditManageEmployee = (props) => {
                                                 value={formValues.roleid}
                                                 defaultValue="Select Role"
                                                 onChange={handleChange}
-                                            >{allRoles &&allRoles.map(ele => (
-                                                (formValues.roleid === ele.name)?
-                                                <option>{ele.name}</option>:((formValues.roleid === "NA_None")?<option>NA_None</option>:" ")))}
+                                            >{allRoles && allRoles.map(ele => (
+                                                (formValues.roleid === ele.name) ?
+                                                    <option>{ele.name}</option> : ((formValues.roleid === "NA_None") ? <option>NA_None</option> : " ")))}
                                                 {allRoles && allRoles.map(item => (
                                                     <option value={item.name} >
                                                         {item.name}
@@ -478,7 +478,7 @@ const EditManageEmployee = (props) => {
                                             <div className="text-[13px]">Phone Number<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phoneno" value={formValues.phoneno} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.phoneno}</div>
-                                            
+
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Address Line 2</div>
@@ -497,7 +497,7 @@ const EditManageEmployee = (props) => {
                                                     setAllState([])
                                                     fetchStateData(e.target.value);
                                                     setAllCity([])
-                                                    
+
                                                     setFormValues((existing) => {
                                                         const newData = { ...existing, country: e.target.value }
                                                         return newData;
@@ -510,7 +510,7 @@ const EditManageEmployee = (props) => {
                                                         const newData = { ...existing, city: null }
                                                         return newData;
                                                     })
-                                                     
+
                                                     // fetchStateData(res);
                                                 }}
                                             >
@@ -553,7 +553,7 @@ const EditManageEmployee = (props) => {
                                                     //         {item[0]}
                                                     //     </option>);
                                                     // }
-                                                 })}
+                                                })}
                                             </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
@@ -572,18 +572,18 @@ const EditManageEmployee = (props) => {
                                             >
                                                 <option value={null}> Select City</option>
                                                 {allCity.map((item) => {
-                                                    if(item.id == formValues.city) {
+                                                    if (item.id == formValues.city) {
 
                                                         return <option value={item.id} selected>
                                                             {item.city}
                                                         </option>
-                                                    }else {
+                                                    } else {
                                                         return <option value={item.id}>
-                                                              {item.city}
+                                                            {item.city}
                                                         </option>
                                                     }
                                                     return <option value={item.id}>{item.city}</option>
-                                                 })}
+                                                })}
                                             </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
@@ -614,24 +614,24 @@ const EditManageEmployee = (props) => {
                                         </div>
                                     </div>
                                 </div>
-                                </div>}
+                            </div>}
                             <div className="mt-[10px] flex justify-center items-center"><input
-                            type="checkbox"
-                            checked={formValues.status}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = { ...formValues };
-                                existing.status = !existing.status;
-                                setFormValues(existing)
-                            }}
-                        />Active</div>
+                                type="checkbox"
+                                checked={formValues.status}
+                                className='mr-3 h-4 w-4'
+                                onClick={(e) => {
+                                    // console.log(e.target.checked)
+                                    const existing = { ...formValues };
+                                    existing.status = !existing.status;
+                                    setFormValues(existing)
+                                }}
+                            />Active</div>
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
                             </div>
-                        {/* </form> */}
-                    </div>
+                            {/* </form> */}
+                        </div>
                     </Draggable>
                 </div>
             </Modal>
