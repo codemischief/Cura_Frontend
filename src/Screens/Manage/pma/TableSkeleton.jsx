@@ -43,8 +43,8 @@ export default function PmaBillingTable({
           grouping: true,
           columnsButton: true,
           paging: true,
-          pageSize: 15,
-          pageSizeOptions: [15, 25, 50],
+          pageSize:50,
+         
           padding: "default",
           headerStyle: {
             backgroundColor: "#F0F6FF",
@@ -62,7 +62,7 @@ export default function PmaBillingTable({
           tableLayout: columnResizable ? "fixed" : "auto",
           toolbar: false,
           pagination: false,
-          thirdSortClick: false,
+          thirdSortClick:false,
           toolbacolumnResizablerButtonAlignment: "",
         }}
         icons={{
@@ -76,6 +76,8 @@ export default function PmaBillingTable({
             })
           );
         }}
+        
+
         components={{
           Pagination: (props) => {
             return (
