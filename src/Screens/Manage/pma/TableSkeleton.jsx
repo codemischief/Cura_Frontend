@@ -62,6 +62,7 @@ export default function PmaBillingTable({
           tableLayout: columnResizable ? "fixed" : "auto",
           toolbar: false,
           pagination: false,
+          thirdSortClick: false,
           toolbacolumnResizablerButtonAlignment: "",
         }}
         icons={{

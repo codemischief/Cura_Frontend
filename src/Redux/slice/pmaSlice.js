@@ -5,7 +5,7 @@ import { env_URL_SERVER, updatedResponsePmaData } from "../helper";
 const initialState = {
   pmaBillingData: [],
   status: "",
-  filter: [],
+  filter: {},
   countPerPage: 15,
   pageNo: 1,
   totalCount: 0,
@@ -53,15 +53,7 @@ export const pmaSlice = createSlice({
       state.filter = payload;
     },
     setSorting: (state, { payload }) => {
-      const { sort_by, sort_order } = payload;
-      if (!sort_by && !sort_order) {
-        state.sorting = {
-          ...state.sorting,
-          sort_order: state.sorting.sort_order === "asc" ? "desc" : "asc",
-        };
-      } else {
-        state.sorting = payload;
-      }
+      state.sorting = payload;
     },
   },
 });
@@ -79,7 +71,6 @@ export const {
 } = pmaSlice.actions;
 
 export const getPmaBilling = (payloadObj, year, month) => async (dispatch) => {
-  console.log(payloadObj, "payloadObj");
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(

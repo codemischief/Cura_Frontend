@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tooltip, Popover, MenuItem } from "@mui/material";
 import { Close, FilterAlt } from "@mui/icons-material";
 
@@ -46,7 +46,8 @@ const FilterField = (props) => {
     number: numericFilterData,
     date: dateFilterData,
   };
-  const handleFilter = (filter) => {
+
+  const handleFilter = (filters) => {
     if (search) {
       let filterType = {
         text: "String",
@@ -54,22 +55,29 @@ const FilterField = (props) => {
         date: "Date",
       };
       let queryType = type === "number" ? Number(search) : search;
-      let query = [[columnDef.field, filter, queryType, filterType[type]]];
-      if (filter === "noFilter") {
-        query = [];
-        setSearch("");
+      if (filters === "noFilter") {
+        const prevFilters = { ...filter };
+        delete prevFilters[columnDef.field];
+        dispatch(setFilters(prevFilters));
+      } else {
+        const prevFilters = { ...filter };
+        prevFilters[columnDef.field] = [filters, queryType, filterType[type]];
+        dispatch(setFilters({ ...prevFilters }));
       }
-      dispatch(setFilters(query));
-      // setSearch("");
     }
     handleClose();
   };
+
   const handleResetFilter = () => {
     setSearch("");
-    if (filter.length > 0) {
-      dispatch(setFilters([]));
+    if (filter.hasOwnProperty([columnDef.field])) {
+      const prevFilters = { ...filter };
+      delete prevFilters[columnDef.field];
+      dispatch(setFilters(prevFilters));
     }
+   
   };
+
   return (
     <>
       <div className="w-full  p-3">
@@ -77,6 +85,7 @@ const FilterField = (props) => {
           <input
             className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
             type={type}
+            disabled={type === "date"}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -101,21 +110,23 @@ const FilterField = (props) => {
           </Tooltip>
         </div>
       </div>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-      >
-        {optionType[type]?.map((option) => (
-          <MenuItem key={option.key} onClick={() => handleFilter(option.key)}>
-            {option.title}
-          </MenuItem>
-        ))}
-      </Popover>
+      {type !== "date" && (
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          {optionType[type]?.map((option) => (
+            <MenuItem key={option.key} onClick={() => handleFilter(option.key)}>
+              {option.title}
+            </MenuItem>
+          ))}
+        </Popover>
+      )}
     </>
   );
 };

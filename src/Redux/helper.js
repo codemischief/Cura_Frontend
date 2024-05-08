@@ -22,4 +22,6 @@ export const updatedResponsePmaData = (data, year, month) => {
       : "---",
   }));
 };
+
+
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

@@ -14,7 +14,9 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Sr No",
       width: "5%",
+      sorting:false,
       render: (rowData) => {
+        console.log(rowData,"rowData");
         return (
           <Stack
             direction="row"
@@ -30,6 +32,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Client Name",
       field: "clientname",
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      
     },
     {
       filterComponent: TextFilterField,
@@ -41,6 +44,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Invoice Date",
       field: "invoicedate",
       filterComponent: DateFilterField,
+      sorting:false,
     },
     {
       title: "Invoice Amount",

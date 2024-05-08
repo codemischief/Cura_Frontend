@@ -52,23 +52,33 @@ const PmaBilling = () => {
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
 
+
+function convertData(obj) {
+    return Object.entries(obj).map(([key, value]) => {
+        if (Array.isArray(value) && value.length > 0) {
+            return [key, ...value];
+        } else {
+            return [];
+        }
+    });
+}
+
   useEffect(() => {
-    // console.log("sorting", sorting);
     if (selectedMonth && selectedYear) {
       let obj = {
         user_id: 1234,
         month: +selectedMonth,
-        year: selectedYear,
-        filters: filter,
-        pg_no: pageNo,
+        year: +selectedYear,
+        filters: convertData(filter),
+        pg_no: +pageNo,
         insertIntoDB: false,
         pg_size: +countPerPage,
-        sort_by: [sorting.sort_by],
-        order: [sorting.sort_order],
+        sort_by: sorting.sort_by ? [sorting.sort_by] :undefined,
+        order: sorting.sort_order ? [sorting.sort_order] :undefined,
       };
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
-  }, [pageNo, filter, countPerPage, sorting]);
+  }, [pageNo, filter, countPerPage, sorting.sort_by,sorting.sort_order]);
 
   // useEffect(() => {
   //   if (status === "success") {
@@ -89,11 +99,11 @@ const PmaBilling = () => {
       let obj = {
         user_id: 1234,
         month: +selectedMonth,
-        year: selectedYear,
+        year: +selectedYear,
         filters: [],
         pg_no: 1,
         insertIntoDB: false,
-        pg_size: countPerPage,
+        pg_size: +countPerPage,
       };
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth));
       setShowTable(true);
