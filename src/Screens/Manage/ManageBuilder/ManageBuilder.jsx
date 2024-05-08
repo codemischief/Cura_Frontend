@@ -242,23 +242,20 @@ const ManageBuilder = () => {
     }
     const addNewBuilder = async () => {
         const data = {
-            "user_id": userId || 1234,
+            "user_id": 1234,
             "buildername": formValues.builderName,
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
             "email1": formValues.email1,
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
-            "suburb": "deccan",
+            "suburb": formValues.suburb,
             "city": Number(formValues.city),
             "state": formValues.state,
             "country": formValues.country,
             "zip": formValues.zip,
             "website": formValues.website,
             "comments": formValues.comment,
-            "dated": "10-03-2024 08:29:00",
-            "createdby": 1234,
-            "isdeleted": false
         };
         const response = await APIService.addNewBuilder(data);
         const res = await response.json();
@@ -388,6 +385,7 @@ const ManageBuilder = () => {
         setIsManageBuidlerDialogue(true);
     };
     const handleClose = () => {
+        setFormValues(initialValues)
         setIsManageBuidlerDialogue(false);
     }
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -822,7 +820,7 @@ const ManageBuilder = () => {
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Add New Builder</div>
+                                <div className="text-[16px]"> New Builder</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                 <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
@@ -835,12 +833,12 @@ const ManageBuilder = () => {
                                         <div className="">
                                             <div className="text-[13px]">Builder Name<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.builderName}</div>
+                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.builderName}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Phone 1 <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.phone1}</div>
+                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.phone1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[14px]">Phone 2</div>
@@ -850,7 +848,7 @@ const ManageBuilder = () => {
                                         <div className="">
                                             <div className="text-[13px]">Email 1<label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
+                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.email1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email 2</div>
@@ -860,7 +858,7 @@ const ManageBuilder = () => {
                                         <div className="">
                                             <div className="text-[13px]">Address 1 <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.address1}</div>
+                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.address1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Address Line 2</div>
@@ -868,7 +866,7 @@ const ManageBuilder = () => {
                                             {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
                                         </div>
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className=" space-y-[12px]  px-[10px]">
                                         <div className="">
                                             <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -910,7 +908,7 @@ const ManageBuilder = () => {
                                                     
 })}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">State <label className="text-red-500">*</label></div>
@@ -945,7 +943,7 @@ const ManageBuilder = () => {
                                                     }
                                                 })}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">City<label className="text-red-500">*</label></div>
@@ -965,7 +963,12 @@ const ManageBuilder = () => {
                                                 })}
                                             </select>
 
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.city}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Website</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="website" value={formValues.website} onChange={handleChange} />
+
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">ZIP Code</div>
@@ -988,7 +991,7 @@ const ManageBuilder = () => {
 
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                                {isLoading && <CircularProgress />}
+                               
                             </div>
                         </form>
                     </div>

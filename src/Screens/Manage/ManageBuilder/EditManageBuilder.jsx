@@ -171,6 +171,7 @@ const EditManageBuilder = (props) => {
         }
     }
     const getInitialData = async () => {
+        setLoading(true)
         const data = {
             "user_id":1234,
             "table_name":"builder",
@@ -181,30 +182,31 @@ const EditManageBuilder = (props) => {
         fetchStateData(res.data.country)
         fetchCityData(res.data.state)
         const temp = {...formValues}
-        temp.builderName =  props.builder.buildername
-        temp.phone1 =  props.builder.phone1
-        temp.phone2 =  props.builder.phone2
-        temp.email1 =  props.builder.email1
-        temp.email2 =  props.builder.email2
+        temp.builderName =  res.data.buildername
+        temp.phone1 =  res.data.phone1
+        temp.phone2 =  res.data.phone2
+        temp.email1 =  res.data.email1
+        temp.email2 =  res.data.email2
         temp.suburb  =  "deccan",
-        temp.address1 =  props.builder.addressline1
-        temp.address2 =  props.builder.addressline2
-        temp.country =  props.builder.country
-        temp.state =  props.builder.state
-        temp.city =  props.builder.city
-        temp.zip =  props.builder.zip
-        temp.website =  props.builder.website
-        temp.comment =  props.builder.comment
+        temp.address1 =  res.data.addressline1
+        temp.address2 =  res.data.addressline2
+        temp.country =  res.data.country
+        temp.state =  res.data.state
+        temp.city =  res.data.city
+        temp.zip =  res.data.zip
+        temp.website =  res.data.website
+        temp.comment =  res.data.comment
         setFormValues(temp)
         console.log(res)
+        setLoading(false)
     }
     useEffect(() => {
         // we need to fetch the data first
-        setLoading(true)
+        
         getInitialData()
         fetchCountryData()
         // fetchStateData(props.builder.country)
-        setLoading(false)
+       
         // fetchCityData()
     },[])
     const [loading,setLoading] = useState(false)
@@ -270,7 +272,7 @@ const EditManageBuilder = (props) => {
                                             <div className="text-[14px]">Country <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" value={formValues.country} onChange={handleChange} >
                                                 {allCountry && allCountry.map(item => (
-                                                    <option key={item[0]} value={item[1]}>
+                                                    <option key={item[0]} value={item[0]}>
                                                         {item[1]}
                                                     </option>
                                                 ))}
@@ -281,7 +283,7 @@ const EditManageBuilder = (props) => {
                                             <div className="text-[14px]">State <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="state" value={formValues.state} onChange={handleChange} >
                                                 {allState && allState.map(item => (
-                                                    <option key={item} value={item}>
+                                                    <option value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
@@ -292,7 +294,7 @@ const EditManageBuilder = (props) => {
                                             <div className="text-[14px]">City <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="city" value={formValues.city} onChange={handleChange} >
                                                 {allCity && allCity.map(item => (
-                                                    <option key={item.id} value={item.city}>
+                                                    <option key={item.id} value={item.id}>
                                                         {item.city}
                                                     </option>
                                                 ))}

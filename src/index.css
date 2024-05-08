@@ -24,7 +24,9 @@ body{
 }
 input::selection {
     background-color: transparent;
+    padding-right: 20px;
   }
+
 /* 
 @layer components{
     .button-action {
