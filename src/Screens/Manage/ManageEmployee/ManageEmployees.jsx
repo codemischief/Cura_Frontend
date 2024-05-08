@@ -169,12 +169,12 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "name", "lob_head", "company"],
+            "rows": ["id", "name"],
             "filters": [],
-            "sort_by": [],
+            "sort_by": ["name"],
             "order": "asc",
-            "pg_no": Number(currentPage),
-            "pg_size": Number(currentPages)
+            "pg_no": 0,
+            "pg_size": 0
         };
         const response = await APIService.getLob(data);
         const result = (await response.json());
@@ -1092,7 +1092,7 @@ const ManageEmployees = () => {
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setLdowInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setDateOfJoiningInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[17%]  p-3 '>
@@ -1397,6 +1397,7 @@ const ManageEmployees = () => {
 
                                                 }}
                                             >
+                                                <option value="none" hidden>Select Username</option>
                                                 {allUsername && allUsername.map(item => (
                                                     <option value={item.id} >
                                                         {item.name}
@@ -1446,7 +1447,7 @@ const ManageEmployees = () => {
 
                                                 }}
                                             >
-                                                {/* <option value="none" hidden={true}>Select a LOB</option> */}
+                                                <option value="none" hidden>Select a LOB</option>
                                                 {allLOB && allLOB.map(item => (
                                                     <option value={item.id} >
                                                         {item.name}
@@ -1479,6 +1480,7 @@ const ManageEmployees = () => {
 
                                                 }}
                                             >
+                                                <option value="none" hidden>Select a Role</option>
                                                 {allRoles && allRoles.map(item => (
                                                     <option value={item.id} >
                                                         {item.name}
