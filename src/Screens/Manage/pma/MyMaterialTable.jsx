@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
 import { MenuItem, Pagination, Popover } from "@mui/material";
@@ -19,9 +19,7 @@ export const CustomPaginationComponent = (props) => {
   const { pageNo, totalCount, countPerPage } = useSelector(
     (state) => state.pmaBilling
   );
-  const {
-    tableRef,
-  } = props;
+  const { tableRef } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const downloadExcel = () => {
     const tableData = tableRef.current?.dataManager?.data;
@@ -116,8 +114,7 @@ export const CustomPaginationComponent = (props) => {
         </div>
         <div className="flex text-sm">
           <p className="mr-11 text-gray-700">
-            {totalCount} Items in {Math.ceil(totalCount / +countPerPage)}{" "}
-            Pages
+            {totalCount} Items in {Math.ceil(totalCount / +countPerPage)} Pages
           </p>
         </div>
         <Popover
@@ -148,7 +145,9 @@ export const CustomPaginationComponent = (props) => {
         <div
           className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
           onClick={() => {
-            dispatch(setInitialState())
+            // dispatch(setInitialState())
+            console.log(" tableRef.current", tableRef.current)
+            // tableRef.current.onQueryChange();
           }}
         >
           <button>
@@ -172,5 +171,3 @@ export const CustomPaginationComponent = (props) => {
     </div>
   );
 };
-
-

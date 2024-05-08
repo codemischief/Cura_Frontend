@@ -59,6 +59,7 @@ const FilterField = (props) => {
         const prevFilters = { ...filter };
         delete prevFilters[columnDef.field];
         dispatch(setFilters(prevFilters));
+        setSearch("");
       } else {
         const prevFilters = { ...filter };
         prevFilters[columnDef.field] = [filters, queryType, filterType[type]];
@@ -75,7 +76,6 @@ const FilterField = (props) => {
       delete prevFilters[columnDef.field];
       dispatch(setFilters(prevFilters));
     }
-   
   };
 
   return (
@@ -100,7 +100,7 @@ const FilterField = (props) => {
               onClick={handleResetFilter}
             />
           )}
-          <Tooltip title="Filters">
+          <Tooltip title={type === "date" ? "filter disabled" : "Filters"}>
             <button className="w-[32%] px-1 py-2" onClick={handleClick}>
               <FilterAlt
                 sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
@@ -121,7 +121,21 @@ const FilterField = (props) => {
           }}
         >
           {optionType[type]?.map((option) => (
-            <MenuItem key={option.key} onClick={() => handleFilter(option.key)}>
+            <MenuItem
+              key={option.key}
+              onClick={() => handleFilter(option.key)}
+              sx={{
+                ...(filter[columnDef?.field]?.[0] === option?.key &&
+                option?.key !== "noFilter"
+                  ? { background: "lightblue", color: "black" }
+                  : {}),
+                ":hover": {
+                  background: "#F0F6FF", // Change this to your desired hover background color
+                  color: "black", // Change this to your desired hover text color
+                },
+              }}
+              // className={` ${filter[columnDef.field][0] && bg-blue-400 text-white } `}
+            >
               {option.title}
             </MenuItem>
           ))}

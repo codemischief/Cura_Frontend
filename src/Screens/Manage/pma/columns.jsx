@@ -16,7 +16,7 @@ export default function connectionDataColumn(onQuery) {
       width: "5%",
       sorting:false,
       render: (rowData) => {
-        console.log(rowData,"rowData");
+        // console.log(rowData,"rowData");
         return (
           <Stack
             direction="row"

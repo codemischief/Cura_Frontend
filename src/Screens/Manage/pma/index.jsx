@@ -52,16 +52,15 @@ const PmaBilling = () => {
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
 
-
-function convertData(obj) {
+  function convertData(obj) {
     return Object.entries(obj).map(([key, value]) => {
-        if (Array.isArray(value) && value.length > 0) {
-            return [key, ...value];
-        } else {
-            return [];
-        }
+      if (Array.isArray(value) && value.length > 0) {
+        return [key, ...value];
+      } else {
+        return [];
+      }
     });
-}
+  }
 
   useEffect(() => {
     if (selectedMonth && selectedYear) {
@@ -73,13 +72,14 @@ function convertData(obj) {
         pg_no: +pageNo,
         insertIntoDB: false,
         pg_size: +countPerPage,
-        sort_by: sorting.sort_by ? [sorting.sort_by] :undefined,
-        order: sorting.sort_order ? [sorting.sort_order] :undefined,
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
       };
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
-  }, [pageNo, filter, countPerPage, sorting.sort_by,sorting.sort_order]);
+  }, [pageNo, filter, countPerPage, sorting.sort_by, sorting.sort_order]);
 
+  console.log("filter", filter);
   // useEffect(() => {
   //   if (status === "success") {
   //     setOpenModal(false);
