@@ -192,15 +192,15 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -222,14 +222,14 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -251,16 +251,16 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -624,18 +624,18 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         const data = {
             "user_id": 1234,
-            "rows": ["employeename", "employeeid", "phoneno", "email","role","panno","dateofjoining","lastdateofworking","status","id",],
+            "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "search_key" : searchInput,
+            "search_key": searchInput,
             "pg_no": 0,
             "pg_size": 0,
         };
@@ -654,16 +654,16 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setIsSearchOn(true);
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -686,14 +686,14 @@ const ManageEmployees = () => {
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -739,94 +739,94 @@ const ManageEmployees = () => {
         }, 2000)
         fetchData();
     }
-    
+
     const filterMapping = {
-        employeename : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        employeename: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        employeeid : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        employeeid: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        phoneno : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        phoneno: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        panno : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        panno: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        email : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        email: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        role : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        role: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        dateofjoining : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        dateofjoining: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        lastdateofworking : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        lastdateofworking: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        status : {
-            filterType : "",
-            filterValue : "",
-            filterData : "Numeric",
-            filterInput : ""
+        status: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
-    const [employeeNameFilter,setEmployeeNameFilter] = useState(false)
-    const [employeeNameInput,setEmployeeNameInput] = useState("");
-    const [employeeIdFilter,setEmployeeIdFilter] = useState(false)
-    const [employeeIdInput,setEmployeeIdInput] = useState("")
-    const [phoneFilter,setPhoneFilter] = useState(false)
-    const [phoneFilterInput,setPhoneFilterInput] = useState("");
-    const [dateOfJoiningFilter,setDateOfJoiningFilter] = useState(false)
-    const [dateOfJoiningInput,setDateOfJoiningInput] = useState(false)
-    const [filterState,setFilterState] = useState([]);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
+    const [employeeNameFilter, setEmployeeNameFilter] = useState(false)
+    const [employeeNameInput, setEmployeeNameInput] = useState("");
+    const [employeeIdFilter, setEmployeeIdFilter] = useState(false)
+    const [employeeIdInput, setEmployeeIdInput] = useState("")
+    const [phoneFilter, setPhoneFilter] = useState(false)
+    const [phoneFilterInput, setPhoneFilterInput] = useState("");
+    const [dateOfJoiningFilter, setDateOfJoiningFilter] = useState(false)
+    const [dateOfJoiningInput, setDateOfJoiningInput] = useState(false)
+    const [filterState, setFilterState] = useState([]);
 
-    const fetchFiltered = async  (mapState) => {
-       console.log(mapState)
-       const tempArray = [];
-       setCurrentPage((prev) => 1)
+    const fetchFiltered = async (mapState) => {
+        console.log(mapState)
+        const tempArray = [];
+        setCurrentPage((prev) => 1)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key=> {
-            if(mapState[key].filterType != "") {
-            console.log(key)
-            console.log(mapState[key])
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                console.log(key)
+                console.log(mapState[key])
                 console.log(mapState[key].filterData)
                 console.log(mapState[key])
-                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
         setFilterMapState(mapState)
@@ -834,7 +834,7 @@ const ManageEmployees = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -850,54 +850,66 @@ const ManageEmployees = () => {
         setTotalItems(t);
         setExistingEmployees(result);
         setPageLoading(false);
-    } 
-    const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
+    }
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-        if(columnName == 'status') {
+        if (columnName == 'status') {
             var existing = filterMapState;
-            if(type == 'noFilter') {
-                setInputVariable(""); 
+            if (type == 'noFilter') {
+                setInputVariable("");
             }
-            if(inputVariable.toLowerCase() == 'active') {
-                existing = {...existing, [columnName] : {
-                    ...existing[columnName],
-                     filterValue : 'true'
-                }}
-                existing = {...existing,[columnName] : {
-                    ...existing[columnName],
-                     filterType : type == 'noFilter' ? "" : type
-                }}
-            }else if(inputVariable.toLowerCase() == 'inactive') {
-                existing = {...existing, [columnName] : {
-                    ...existing[columnName],
-                     filterValue : 'false'
-                }}
-                existing = {...existing,[columnName] : {
-                    ...existing[columnName],
-                     filterType : type == 'noFilter' ? "" : type
-                }}
-            }else {
-                return ;
+            if (inputVariable.toLowerCase() == 'active') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'true'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else if (inputVariable.toLowerCase() == 'inactive') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'false'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else {
+                return;
             }
-             
-        }else {
-            var existing = filterMapState;
-            existing = {...existing,[columnName] : {
-                ...existing[columnName],
-                 filterType : type == 'noFilter' ? "" : type
-            }}
-            existing = {...existing, [columnName] : {
-                ...existing[columnName],
-                 filterValue : type == 'noFilter' ? "" : inputVariable
-            }}
 
-            if(type == 'noFilter') setInputVariable("");
+        } else {
+            var existing = filterMapState;
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterType: type == 'noFilter' ? "" : type
+                }
+            }
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterValue: type == 'noFilter' ? "" : inputVariable
+                }
+            }
+
+            if (type == 'noFilter') setInputVariable("");
         }
-        
+
         fetchFiltered(existing);
-    } 
+    }
     const handleSort = async (field) => {
         setPageLoading(true);
         setFlag((prev) => !prev);
@@ -905,14 +917,14 @@ const ManageEmployees = () => {
         // we need to query thru the object
         setSortField(field)
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         const data = {
             "user_id": 1234,
-            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status","role"],
+            "rows": ["id", "employeename", "employeeid", "phoneno", "email", "userid", "roleid", "panno", "dateofjoining", "lastdateofworking", "status", "role"],
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -920,7 +932,7 @@ const ManageEmployees = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        
+
         const response = await APIService.getEmployees(data);
         const temp = await response.json();
         const result = temp.data;
@@ -944,7 +956,7 @@ const ManageEmployees = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                        <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
+                            <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
@@ -1001,26 +1013,26 @@ const ManageEmployees = () => {
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} />
-                                    <button className='w-[32%] px-1 py-2' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3'  /></button>
+                                    <button className='w-[32%] px-1 py-2' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {employeeNameFilter && <CharacterFilter inputVariable={employeeNameInput} setInputVariable={setEmployeeNameInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef}/>}
-                                
+                                {employeeNameFilter && <CharacterFilter inputVariable={employeeNameInput} setInputVariable={setEmployeeNameInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef} />}
+
                             </div>
 
                             <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} />
-                                    <button className='W-[30%] px-1 py-2' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3'  /></button>
+                                    <button className='W-[30%] px-1 py-2' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {employeeIdFilter && <CharacterFilter inputVariable={employeeIdInput} setInputVariable={setEmployeeIdInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                                {employeeIdFilter && <CharacterFilter inputVariable={employeeIdInput} setInputVariable={setEmployeeIdInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} />
-                                    <button className='w-[38%] px-1 py-2'  onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <button className='w-[38%] px-1 py-2' onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter}/>}
+                                {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter} />}
                             </div>
 
                             <div className='w-[10%] p-3'>
@@ -1028,7 +1040,7 @@ const ManageEmployees = () => {
                                     <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} />
                                     <button className='w-[34%] px-1 py-2' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {emailFilter &&<CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput}filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter}/>}
+                                {emailFilter && <CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput} filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter} />}
                             </div>
 
                             <div className='w-[10%]  p-3'>
@@ -1036,7 +1048,7 @@ const ManageEmployees = () => {
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} />
                                     <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                                {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[10%] p-3'>
@@ -1046,28 +1058,28 @@ const ManageEmployees = () => {
                                 </div>
                                 {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} />}
                             </div>
-                            
+
                             <div className='w-[14%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)}  />
-                                    <button className='px-1 py-2 w-[30%]'  onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]' onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setLdowInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setLdowInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[17%]  p-3 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput}onChange={(e) => setLdowInput(e.target.value)} />
-                                    <button className='w-[20%] px-1 py-2' onClick={() => { setLdowFilter((prev) => !prev)}}> <img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput} onChange={(e) => setLdowInput(e.target.value)} />
+                                    <button className='w-[20%] px-1 py-2' onClick={() => { setLdowFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef}/>}
+                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%]  p-3 '>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
                         <div className="w-[15%] flex">
@@ -1076,7 +1088,7 @@ const ManageEmployees = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(Number(e.target.value))} />
                                     <button className='px-1 py-2 w-[35%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef}/>}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1318,286 +1330,286 @@ const ManageEmployees = () => {
             >
                 <div className='flex justify-center'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-base">Add New Employee</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-
-                        <div className="h-auto w-full mt-1 ">
-                            <div className="flex gap-12 justify-center">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm">Employee Name <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Pan No <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Username <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="userName"
-                                            value={formValues.userName}
-                                            defaultValue="Select Username"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, userName: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-                                            {allUsername && allUsername.map(item => (
-                                                <option value={item.id} >
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Date of joining <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Designation <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Email <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-4 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email" value={formValues.email} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Address Line 1</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-                                    </div>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-base">Add New Employee</div>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm">Employee ID <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">LOB <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="lob"
-                                            value={formValues.lob}
-                                            defaultValue="Select lob"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, lob: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-                                            {/* <option value="none" hidden={true}>Select a LOB</option> */}
-                                            {allLOB && allLOB.map(item => (
-                                                <option value={item.id} >
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Last Date of Working</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="role"
-                                            value={formValues.role}
-                                            defaultValue="Select Role"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, role: e.target.value }
-                                                    return newData;
-                                                })
-
-                                            }}
-                                        >
-                                            {allRoles && allRoles.map(item => (
-                                                <option value={item.id} >
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Address Line 2</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
-                                    </div>
+                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                    <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="country"
-                                            value={formValues.country}
-                                            defaultValue="Select Country"
-                                            onChange={e => {
-                                                setCurrCountry(e.target.value);
-                                                fetchStateData(e.target.value);
-                                                setAllCity([]);
-                                                const existing = {...formValues}
-                                                existing.state = ""
-                                                existing.city = null;
-                                                setFormValues(existing)                                            
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, country: e.target.value }
-                                                    return newData;
-                                                })
-                                                // fetchStateData(res);
-                                            }}
-                                        >
+                            </div>
 
-                                            {allCountry && allCountry.map(item => {
-                                                return <option value={item[0]}> {item[1]}</option>
-                                                // if (item[0] == 5) {
-                                                //     return <option value={item[0]} selected>
-                                                //         {item[1]}
-                                                //     </option>
-                                                // } else {
-                                                //     return <option value={item[0]} >
-                                                //         {item[1]}
-                                                //     </option>
-                                                // }
-                                            })}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                            <div className="h-auto w-full mt-1 ">
+                                <div className="flex gap-12 justify-center">
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm">Employee Name <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Pan No <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Username <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="userName"
+                                                value={formValues.userName}
+                                                defaultValue="Select Username"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, userName: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                {allUsername && allUsername.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Date of joining <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Designation <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Email <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-4 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Address Line 1</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                        </div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-sm">State Name<label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="state"
-                                            value={formValues.state}
-                                            defaultValue="Select State"
-                                            onChange={e => {
-                                                fetchCityData(e.target.value);
-                                                const existing = {...formValues}
-                                                existing.state = e.target.value
-                                                existing.city = null
-                                                console.log(existing)
-                                                setFormValues(existing)
-                                            }}
-                                        >
-                                            <option value="" > Select A State</option>
-                                            {allState && allState.map(item => {
-                                                
-                                                
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm">Employee ID <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">LOB <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                name="lob"
+                                                value={formValues.lob}
+                                                defaultValue="Select lob"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, lob: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                {/* <option value="none" hidden={true}>Select a LOB</option> */}
+                                                {allLOB && allLOB.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Last Date of Working</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="role"
+                                                value={formValues.role}
+                                                defaultValue="Select Role"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, role: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                {allRoles && allRoles.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Address Line 2</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="country"
+                                                value={formValues.country}
+                                                defaultValue="Select Country"
+                                                onChange={e => {
+                                                    setCurrCountry(e.target.value);
+                                                    fetchStateData(e.target.value);
+                                                    setAllCity([]);
+                                                    const existing = { ...formValues }
+                                                    existing.state = ""
+                                                    existing.city = null;
+                                                    setFormValues(existing)
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, country: e.target.value }
+                                                        return newData;
+                                                    })
+                                                    // fetchStateData(res);
+                                                }}
+                                            >
+
+                                                {allCountry && allCountry.map(item => {
+                                                    return <option value={item[0]}> {item[1]}</option>
+                                                    // if (item[0] == 5) {
+                                                    //     return <option value={item[0]} selected>
+                                                    //         {item[1]}
+                                                    //     </option>
+                                                    // } else {
+                                                    //     return <option value={item[0]} >
+                                                    //         {item[1]}
+                                                    //     </option>
+                                                    // }
+                                                })}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">State Name<label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="state"
+                                                value={formValues.state}
+                                                defaultValue="Select State"
+                                                onChange={e => {
+                                                    fetchCityData(e.target.value);
+                                                    const existing = { ...formValues }
+                                                    existing.state = e.target.value
+                                                    existing.city = null
+                                                    console.log(existing)
+                                                    setFormValues(existing)
+                                                }}
+                                            >
+                                                <option value="" > Select A State</option>
+                                                {allState && allState.map(item => {
+
+
                                                     return <option value={item[0]} >
                                                         {item[0]}
                                                     </option>
-                                                
 
-                                            })}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">City Name <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="city"
-                                            value={formValues.city}
-                                            defaultValue="Select City"
-                                            onChange={e => {
-                                                // fetchCityData(e.target.value);
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, city: e.target.value }
-                                                    return newData;
-                                                })
 
-                                            }}
-                                        >
-                                            {/* <option value="none" hidden={true}>Select a City</option> */}
-                                            <option value="none" hidden> Select A City</option>
-                                            {allCity && allCity.map(item => (
-                                                <option value={item.id} >
-                                                    {item.city}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Suburb</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                        {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Zip Code</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Entities <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="entity"
-                                            value={formValues.entity}
-                                            defaultValue="Select entity"
-                                            onChange={e => {
-                                                console.log(e.target.value);
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, entity: e.target.value }
-                                                    return newData;
-                                                })
-                                            }}
-                                        >
-                                            {allEntities && allEntities.map(item => (
-                                                <option value={item[0]} >
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
+                                                })}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">City Name <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="city"
+                                                value={formValues.city}
+                                                defaultValue="Select City"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, city: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                <option value="none" hidden> Select A City</option>
+                                                {allCity && allCity.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.city}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Suburb</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Zip Code</div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Entities <label className="text-red-500">*</label></div>
+                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="entity"
+                                                value={formValues.entity}
+                                                defaultValue="Select entity"
+                                                onChange={e => {
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, entity: e.target.value }
+                                                        return newData;
+                                                    })
+                                                }}
+                                            >
+                                                {allEntities && allEntities.map(item => (
+                                                    <option value={item[0]} >
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="mt-3 flex justify-center items-center text-sm font-semibold"><input
-                            type="checkbox"
-                            checked={formValues.status}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = { ...formValues };
-                                existing.status = !existing.status;
-                                setFormValues(existing)
-                            }}
-                        />Active</div>
-                        <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddEmployee} >Add</button>
-                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
-                        </div>
+                            <div className="mt-3 flex justify-center items-center text-sm font-semibold"><input
+                                type="checkbox"
+                                checked={formValues.status}
+                                className='mr-3 h-4 w-4'
+                                onClick={(e) => {
+                                    // console.log(e.target.checked)
+                                    const existing = { ...formValues };
+                                    existing.status = !existing.status;
+                                    setFormValues(existing)
+                                }}
+                            />Active</div>
+                            <div className="my-3 flex justify-center items-center gap-3">
+                                <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddEmployee} >Add</button>
+                                <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
+                            </div>
 
-                    </div>
+                        </div>
                     </Draggable>
                 </div>
             </Modal>

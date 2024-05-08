@@ -1410,8 +1410,8 @@ const ManageVendorInvoice = () => {
                             <div className="flex gap-[48px] justify-center ">
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-sm text-[#787878]">Cura Office </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
+                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Vendor</div>
@@ -1440,7 +1440,7 @@ const ManageVendorInvoice = () => {
                                 </div>
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px] ">
+                                        <div className="text-[13px] mb-0.5">
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <AsyncSelect
