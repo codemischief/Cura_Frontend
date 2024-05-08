@@ -40,7 +40,7 @@ const EditLobModal = (props) => {
                 <>
                     <Draggable>
                         <div className='flex justify-center'>
-                            <div className="w-[778px]  h-[255px] bg-white rounded-lg">
+                            <div className="w-[778px]  h-auto bg-white rounded-lg">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                     <div className="mr-[290px] ml-[290px]">
                                         <div className="text-[16px]">Edit Lob</div>
@@ -49,7 +49,7 @@ const EditLobModal = (props) => {
                                         <button onClick={() => {handleClose()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
-                                <div className="space-y-16">
+                                <div className="space-y-16 mb-3">
                                     <div className="h-auto w-full mt-[15px] ">
                                         <div className="flex gap-[48px] justify-center items-center">
                                             <div className=" space-y-[12px] py-[20px] px-[10px]">
