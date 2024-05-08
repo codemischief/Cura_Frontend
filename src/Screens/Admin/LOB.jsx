@@ -97,10 +97,33 @@ const LOB = () => {
     }
     const fetchData = async () => {
         setPageLoading(true);
+
+        const tempArray = []
+        Object.keys(filterMapState).forEach((key) => {
+            if (filterMapState[key].filterType != "") {
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }
+                
+            }
+        });
+        setFilterState((prev) => tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "name"],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -406,11 +429,26 @@ const LOB = () => {
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key => {
+        Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                if(mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        mapState[key].filterValue,
+                        mapState[key].filterData,
+                    ]);
+                }
+               
             }
-        })
+        });
         setFilterState(tempArray)
         console.log('this is getting called')
         console.log(tempArray)
@@ -438,6 +476,41 @@ const LOB = () => {
     const [deleteLobModal, setDeleteLobModal] = useState(false);
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
+
+
+
+
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+      const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+                    
+                
+                
+              }
+      }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -473,6 +546,7 @@ const LOB = () => {
                                 placeholder="   Search"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -502,7 +576,13 @@ const LOB = () => {
                         </div>
                         <div className='w-[20%] px-3 py-2.5'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} 
+                                onKeyDown={(event) => handleEnterToFilter(event,lobFilterInput,
+                                    setLobFilterInput,
+                                    'contains',
+                                    'name')}
+                                
+                                />
                                 <button className='px-1 py-2 w-[30%]' onClick={toggleLobFilter}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} />}
@@ -510,7 +590,13 @@ const LOB = () => {
                     </div>
                     <div className='w-1/6 px-3 py-2.5'>
                         <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+                            
+                            onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                setIdFilterInput,
+                                'equalTo',
+                                'id')}
+                            />
                             <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' />}
