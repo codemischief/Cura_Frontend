@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import MaterialTable from "@material-table/core";
 import { ArrowUpward } from "@mui/icons-material";
 import { CustomPaginationComponent } from "./MyMaterialTable";
+import { useDispatch } from "react-redux";
+import { setSorting } from "../../../Redux/slice/pmaSlice";
 
 export default function PmaBillingTable({
   column,
@@ -12,6 +14,7 @@ export default function PmaBillingTable({
 }) {
   const [columnResizable, setColumnResizable] = useState(false);
   const tableRef = useRef();
+  const dispatch = useDispatch();
 
   return (
     <div className="max-h-[501px]">
@@ -22,7 +25,6 @@ export default function PmaBillingTable({
         data={data}
         title={""}
         options={{
-          
           exportButton: {
             csv: true,
             pdf: false,
@@ -52,7 +54,7 @@ export default function PmaBillingTable({
             pt: 12,
             pb: 12,
           },
-          maxBodyHeight: "59vh",
+          maxBodyHeight: "68vh",
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,
@@ -65,10 +67,16 @@ export default function PmaBillingTable({
         icons={{
           SortArrow: (props) => <ArrowUpward {...props} />,
         }}
-        // onOrderChange={(orderBy, orderDirection) => {
-        //   const key = orderBy < 1 ? 0 : orderBy;
-        //   console.log(`Changing order to ${key}:${orderDirection}`);
-        // }}
+        onOrderChange={(orderBy, orderDirection) => {
+          if (orderBy) {
+            dispatch(
+              setSorting({
+                sort_by: [column[orderBy]?.field],
+                sort_order: [orderDirection],
+              })
+            );
+          }
+        }}
         components={{
           Pagination: (props) => {
             return (

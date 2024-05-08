@@ -57,15 +57,18 @@ const FilterField = (props) => {
       let query = [[columnDef.field, filter, queryType, filterType[type]]];
       if (filter === "noFilter") {
         query = [];
+        setSearch("");
       }
       dispatch(setFilters(query));
-      setSearch("");
+      // setSearch("");
     }
     handleClose();
   };
   const handleResetFilter = () => {
     setSearch("");
-    if (filter.length > 0) dispatch(setFilters([]));
+    if (filter.length > 0) {
+      dispatch(setFilters([]));
+    }
   };
   return (
     <>

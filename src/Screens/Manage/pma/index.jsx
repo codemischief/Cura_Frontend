@@ -35,8 +35,15 @@ const MONTHS = [
 ];
 const PmaBilling = () => {
   const dispatch = useDispatch();
-  const { pmaBillingData, status, totalCount, countPerPage, pageNo, filter } =
-    useSelector((state) => state.pmaBilling);
+  const {
+    pmaBillingData,
+    status,
+    totalCount,
+    sorting,
+    countPerPage,
+    pageNo,
+    filter,
+  } = useSelector((state) => state.pmaBilling);
   const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState({ year: false, month: false });
   const [selectedYear, setSelectedYear] = useState("");
@@ -46,6 +53,7 @@ const PmaBilling = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
 
   useEffect(() => {
+    console.log("sorting", sorting);
     if (selectedMonth && selectedYear) {
       let obj = {
         user_id: 1234,
@@ -54,11 +62,12 @@ const PmaBilling = () => {
         filters: filter,
         pg_no: pageNo,
         insertIntoDB: false,
-        pg_size: countPerPage,
+        pg_size: +countPerPage,
+        sort_by:[sorting.sort_by, sorting.sort_order]
       };
-      dispatch(getPmaBilling(obj, selectedYear, selectedMonth));
+      dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
-  }, [pageNo, filter]);
+  }, [pageNo, filter, countPerPage, sorting]);
 
   // useEffect(() => {
   //   if (status === "success") {
