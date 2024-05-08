@@ -631,7 +631,7 @@ const Locality = () => {
                         <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 w-48 outline-none"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2 w-48 outline-none w-48"
                                 type="text"
                                 placeholder="   Search"
                                 value={searchQuery}

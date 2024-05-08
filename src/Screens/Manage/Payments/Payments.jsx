@@ -955,7 +955,7 @@ const Payments = () => {
                         <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none w-48"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
