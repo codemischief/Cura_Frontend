@@ -638,6 +638,12 @@ const ManageOrder = () => {
             filterData: "String",
             filterInput: ""
         },
+        earlieststartdate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
+        },
         expectedcompletiondate: {
             filterType: "",
             filterValue: null,
