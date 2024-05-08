@@ -446,11 +446,12 @@ const Country = () => {
     const data = {
       "user_id": 1234,
       "rows": ["name", "id"],
-      "filters": [],
-      "sort_by": ["id"],
-      "order": "desc",
+      "filters": filterState,
+      "sort_by": [sortField],
+      "order": flag ? "asc" : "desc",
       "pg_no": 0,
       "pg_size": 0,
+      "search_key": searchQuery 
     };
     const response = await APIService.getCountries(data)
     const temp = (await response.json()).data;

@@ -1023,16 +1023,16 @@ const ManageBankStatement = () => {
                                 </div>
                             </div>
                             <div className='flex space-x-2 items-center'>
-                                <div className='flex relative'>
+                                <div className='flex bg-[#EBEBEB]'>
                                     {/* search button */}
                                     <input
                                         className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
                                         type="text"
-                                        placeholder="Search"
+                                        placeholder="   Search"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                     />
-                                    <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                                    <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                                     <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                         <img onClick={handleSearch} className="h-[26px] " src={searchIcon} alt="search-icon" />
                                     </div>

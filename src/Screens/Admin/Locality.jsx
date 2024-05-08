@@ -377,10 +377,10 @@ const Locality = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "country", "cityid", "city", "state", "locality"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "rows": ["country", "state", "city", "locality" , "id"],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
             "search_key": isSearchOn ? searchQuery : ""
