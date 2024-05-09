@@ -393,6 +393,10 @@ const EditClientProperty = (props) => {
             props.openEditSuccess();
         }
     }
+    const close = () =>{
+        props.handleClose();
+        props.showCancel();
+    }
   return (
     <Modal open={true}
     fullWidth={true}
@@ -407,7 +411,7 @@ const EditClientProperty = (props) => {
                     <div className="text-[16px]">Edit Client Property : </div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                    <button onClick={props.handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                    <button onClick={() => {close()}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                 </div>
             </div>
 
@@ -435,7 +439,7 @@ const EditClientProperty = (props) => {
             {selectedDialog == 4 && <EditOwnerDetails  formValues={formValues} setFormValues={setFormValues}/>}
             <div className="my-2 flex justify-center items-center gap-[10px]">
                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={props.handleClose}>Cancel</button>
+                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
             </div>
 
         </div>

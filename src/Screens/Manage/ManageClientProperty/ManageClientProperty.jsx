@@ -23,6 +23,7 @@ import Add from "../../../assets/add.png";
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import Joystick from "../../../assets/four_direction_arrow.png";
 import Trash from "../../../assets/trash.png"
 import Edit from "../../../assets/edit.png"
@@ -459,8 +460,13 @@ const ManageClientProperty = () => {
     };
 
     const handleClose = () => {
-        setFormErrors({})
+        initials();
         setIsClientPropertyDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
 
     const addEmployee = async () => {
@@ -603,7 +609,7 @@ const ManageClientProperty = () => {
             "poaoccupation": null,
             "poabirthyear": null,
             "poaphoto": null,
-            "poaemployername":null,
+            "poaemployername": null,
             "poarelation": null,
             "poarelationwith": null,
             "poaeffectivedate": null,
@@ -727,7 +733,7 @@ const ManageClientProperty = () => {
                 return { ...existing, state: "" }
             })
         }
-        
+
         return res;
     }
 
@@ -793,7 +799,7 @@ const ManageClientProperty = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getClientProperty(data);
         const temp = await response.json();
@@ -954,14 +960,14 @@ const ManageClientProperty = () => {
         }, 2000)
         fetchData();
     }
-    const [currClientName,setCurrClientName] = useState("")
+    const [currClientName, setCurrClientName] = useState("")
     const handleAddClientProperty = () => {
         console.log(formValues);
         // setIsClientInfoDialogue(false);
-        if(!validate()) {
+        if (!validate()) {
             setSelectedDialogue(1)
             console.log('here')
-            return ;
+            return;
         }
         setIsClientPropertyDialogue(false);
         setCurrClientProperty(formValues.client_property.clientid)
@@ -1000,7 +1006,7 @@ const ManageClientProperty = () => {
                 "poagiven": true,
                 "poaid": 202,
                 "electricitybillingunit": formValues.client_property.electricitybillingunit,
-                "indexiicollected" : formValues.client_property.indexiicollected
+                "indexiicollected": formValues.client_property.indexiicollected
             },
             "client_property_photos": formValues.client_property_photos,
             "client_property_owner": {
@@ -1080,58 +1086,77 @@ const ManageClientProperty = () => {
     const [currClientProperty, setCurrClientProperty] = useState("");
     const [selectedOption, setSelectedOption] = useState("");
 
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsClientPropertyDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
     const filterMapping = {
-        client : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        client: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        suburb : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        suburb: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        city : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        city: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        propertytype : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        propertytype: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        status : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        status: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        project : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        project: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        description : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        description: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
 
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
 
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
@@ -1151,20 +1176,20 @@ const ManageClientProperty = () => {
         }
         console.log(type)
         if (type === 'noFilter') setInputVariable("");
-        
+
         fetchFiltered(existing);
     }
-    const [filterState,setFilterState] = useState([]);
-    const fetchFiltered = async  (mapState) => {
+    const [filterState, setFilterState] = useState([]);
+    const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
         setFilterMapState(mapState)
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key=> {
-            if(mapState[key].filterType != "") {
-                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
         setFilterState((prev) => tempArray)
@@ -1235,9 +1260,9 @@ const ManageClientProperty = () => {
         // we need to query thru the object
         setSortField(field)
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         setFlag((prev) => !prev)
@@ -1303,18 +1328,21 @@ const ManageClientProperty = () => {
     return (
         <div className="h-screen">
             <Navbar />
-            {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientName={currClientName} addClientProperty={addClientProperty} />}
-            {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess} />}
+            {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientName={currClientName} addClientProperty={addClientProperty} showCancel={openAddCancelModal} setDefault={initials} />}
+            {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Property created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Property Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty} item={currItem} />}
+            {showDeleteModal && <DeleteClientProperty handleClose={() => setShowDeleteModal(false)} handleDelete={deleteClientProperty}
+                item={currItem} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new property created." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                        <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
+                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
@@ -1372,7 +1400,7 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} /> 
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} />}
@@ -1432,7 +1460,7 @@ const ManageClientProperty = () => {
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput}  handleFilter={newHandleFilter} columnName='id' menuRef={menuRef}/>}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1681,42 +1709,42 @@ const ManageClientProperty = () => {
             >
                 <div className='flex justify-center relative'>
                     <Draggable>
-                    <div className="w-[1150px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Client Property</div>
+                        <div className="w-[1150px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">New Client Property</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                    <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+
+                            <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
+                                <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
+                                    <div>Project Information</div>
+                                </div>
+                                <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
+                                    <div>Photos</div>
+                                </div>
+                                <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
+                                    <div>POA Details</div>
+                                </div>
+                                <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
+                                    <div>Owner Details</div>
+                                </div>
                             </div>
+
+                            {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={"Select Client Name"} clientid={null} />}
+                            {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
+
+                            <div className="my-2 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientProperty} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
+
                         </div>
-
-                        <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
-                                <div>Project Information</div>
-                            </div>
-                            <div className={`${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
-                                <div>Photos</div>
-                            </div>
-                            <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
-                                <div>POA Details</div>
-                            </div>
-                            <div className={`${selectedDialog == 4 ? "bg-blue-200" : "bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectForth}>
-                                <div>Owner Details</div>
-                            </div>
-                        </div>
-
-                        {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={"Select Client Name"} clientid={null}/>}
-                        {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
-                        {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
-                        {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}
-
-                        <div className="my-2 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddClientProperty} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-
-                    </div>
                     </Draggable>
                 </div>
             </Modal>
