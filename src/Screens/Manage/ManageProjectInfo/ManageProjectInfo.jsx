@@ -781,10 +781,10 @@ const ManageProjectInfo = () => {
                     </div>
                     <div className='flex space-x-2 items-center'>
 
-                        <div className='flex relative'>
+                    <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878]"
+                                className="h-9 w-48 bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
@@ -792,9 +792,9 @@ const ManageProjectInfo = () => {
                                     setSearchInput(e.target.value);
                                 }}
                             />
-                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
-                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                            <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
+                            <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <button onClick={handleSearch}><img className="h-6" src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
@@ -916,17 +916,17 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-[14%]  flex'>
                                 <div className='p-3'>
-                                    <p>Other details/issues <button onClick={() => handleSort('otherdetails')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Other details/issues </p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Mail Group <button onClick={() => handleSort('mailgroup1')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Mail Group </p>
                                 </div>
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Subscribed email <button onClick={() => handleSort('mailgroup2')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Subscribed email </p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
@@ -936,7 +936,7 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-[12%]  flex'>
                                 <div className='p-3'>
-                                    <p>Tenant <span className="font-extrabold">↑↓</span></p>
+                                    <p>Tenant </p>
                                 </div>
                             </div>
                         </div>
@@ -997,7 +997,7 @@ const ManageProjectInfo = () => {
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                        <div className='p-3 '>
                                             <p>{item.rules}</p>
                                         </div>
                                     </div>

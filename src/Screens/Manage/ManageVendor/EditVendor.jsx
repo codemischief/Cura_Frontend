@@ -393,7 +393,7 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
                             </div>
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#505050] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
+                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={() => {close()}}>Cancel</button>
                         </div>
 
