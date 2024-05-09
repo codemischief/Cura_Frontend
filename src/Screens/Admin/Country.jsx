@@ -623,7 +623,7 @@ const handleEnterToFilter = (event,inputVariable,
   return (
     <div className='h-screen w-full'>
       <Navbar />
-      {showSucess && <SucessfullModal isOpen={showSucess} message="Country Added Successfully" />}
+      {showSucess && <SucessfullModal isOpen={showSucess} message="New Country Added Successfully" />}
       {showCancel && <CancelModel isOpen={showCancel} message="Process cancelled, no new Country added." />}
       {showCancelEdit && <CancelModel isOpen={showCancelEdit} message="Process cancelled, no changes saved." />}
       {showFailure && <FailureModal isOpen={showFailure} message={failureMessage} />}
