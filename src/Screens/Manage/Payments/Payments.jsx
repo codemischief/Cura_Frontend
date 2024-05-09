@@ -1384,7 +1384,7 @@ const Payments = () => {
                                                     <option value="" hidden >Select User</option>
                                                     <option value="">Name   Username </option>
                                                     {allUsername.map(item => (
-                                                        <option key={item.id} value={item.id} className=''>
+                                                        <option key={item.id} value={item.id} className='flex'>
                                                             
                                                             
                                                             <p>
