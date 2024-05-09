@@ -14,13 +14,14 @@ export default function connectionDataColumn(onQuery) {
       title: "Sr No",
       width: "5%",
       sorting: false,
-      render: (rowData) => {
+      render: (rowData, rowIndex) => {
         return (
           <Stack
             direction="row"
             sx={{ justifyContent: "center", width: "30px" }}
           >
-            {rowData?.tableData.index + 1}
+            {/* {rowData?.tableData.index + 1} */}
+            {rowIndex + 1}
           </Stack>
         );
       },

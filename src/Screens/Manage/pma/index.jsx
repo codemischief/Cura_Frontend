@@ -9,6 +9,7 @@ import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import SimpleTable from "./SimpleTable";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -78,7 +79,6 @@ const PmaBilling = () => {
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
   }, [pageNo, filter, countPerPage, sorting.sort_by, sorting.sort_order]);
-  
 
   console.log("filter", filter);
   // useEffect(() => {
@@ -250,14 +250,15 @@ const PmaBilling = () => {
           />
         </Stack>
 
-        {pmaBillingData && (
+        {/* {pmaBillingData && (
           <PmaBillingTable
             data={pmaBillingData}
             column={columns}
             loading={status === "loading"}
             onRefresh={handleRefresh}
           />
-        )}
+        )} */}
+        <SimpleTable columns={columns} />
       </Stack>
       <ConfirmationModal
         open={openModal}

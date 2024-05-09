@@ -55,12 +55,8 @@ export default function PmaBillingTable({
             top: 0,
             pt: 12,
             pb: 12,
-            "&:hover": {
-              backgroundColor: "#F0F6FF", // Keep the same background color
-              color: "black",
-            },
           },
-          maxBodyHeight: "65vh",
+          maxBodyHeight: "63vh",
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,
