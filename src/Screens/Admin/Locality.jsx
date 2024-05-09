@@ -399,7 +399,7 @@ const Locality = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key": isSearchOn ? searchQuery : ""
+            "search_key": searchQuery
         };
         const response = await APIService.getLob(data)
         const temp = await response.json();

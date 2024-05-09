@@ -308,12 +308,13 @@ const City = () => {
     const handleExcelDownload = async () => {
         const data = {
             user_id: 1234,
-            rows: ["id", "city", "state", "countryid", "country"],
-            filters: [],
-            sort_by: [],
-            order: "asc",
+            rows: ["country","state","city","id"],
+            filters: filterState,
+            sort_by: [sortField],
+            order: flag ? "asc" : "desc",
             pg_no: 0,
             pg_size: 0,
+            search_key : searchInput
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();

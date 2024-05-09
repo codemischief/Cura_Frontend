@@ -653,14 +653,7 @@ const ManageEmployees = () => {
         setDownloadModal(false);
     }
     const handleExcelDownload = async () => {
-        const tempArray = [];
-        // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
+        
         const data = {
             "user_id": 1234,
             "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
@@ -674,6 +667,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data)
         const temp = await response.json();
         const result = temp.data;
+        
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");

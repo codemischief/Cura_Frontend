@@ -481,7 +481,17 @@ const Country = () => {
     const response = await APIService.getCountries(data)
     const temp = (await response.json()).data;
     const result = temp.data;
-    const worksheet = XLSX.utils.json_to_sheet(result);
+
+
+
+    const t = []
+        for(var i=0;i<result.length;i++) {
+           t.push({
+            "country_name" : result[i][1],
+            "country_id" : result[i][0]
+           })
+        }
+    const worksheet = XLSX.utils.json_to_sheet(t);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, "CountryData.xlsx");
