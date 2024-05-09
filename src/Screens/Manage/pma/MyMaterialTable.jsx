@@ -15,7 +15,6 @@ import {
 import { useSelector } from "react-redux";
 
 export const CustomPaginationComponent = (props) => {
- 
   const dispatch = useDispatch();
   const { pageNo, totalCount, countPerPage } = useSelector(
     (state) => state.pmaBilling
@@ -106,7 +105,10 @@ export const CustomPaginationComponent = (props) => {
             className="text-gray-700 border-black border-[1px] rounded-md p-1"
             name="currentPages"
             value={countPerPage}
-            onChange={(e) => dispatch(setCountPerPage(e.target.value))}
+            onChange={(e) => {
+              dispatch(setPageNumber(1));
+              dispatch(setCountPerPage(e.target.value));
+            }}
           >
             <option key={15}>15</option>
             <option key={25}>25</option>

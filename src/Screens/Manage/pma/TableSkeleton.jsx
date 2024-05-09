@@ -60,7 +60,7 @@ export default function PmaBillingTable({
               color: "black",
             },
           },
-          maxBodyHeight: 'calc(100vh - 19rem)',
+          maxBodyHeight: "calc(100vh - 19rem)",
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,
@@ -87,14 +87,14 @@ export default function PmaBillingTable({
         }}
         components={{
           Pagination: (props) => {
-            return (
+            return data && data.length > 0 ? (
               <CustomPaginationComponent
                 {...props}
                 tableRef={tableRef}
                 onRefresh={onRefresh}
                 // handleQueryChange={handleQueryChange}
               />
-            );
+            ) : null;
           },
         }}
       />
