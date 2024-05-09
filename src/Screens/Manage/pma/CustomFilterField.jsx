@@ -40,6 +40,14 @@ const FilterField = (props) => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    let copiedFilters = { ...filter };
+    if (search === "" && copiedFilters?.hasOwnProperty(columnDef.field)) {
+      delete copiedFilters[columnDef.field];
+      dispatch(setFilters(copiedFilters));
+    }
+  }, [search]);
+  
   const open = Boolean(anchorEl);
   const optionType = {
     text: characterFilterData,
@@ -78,6 +86,31 @@ const FilterField = (props) => {
     }
   };
 
+  const handleEnterKeyPress = (e) => {
+    console.log("e", e.key);
+    if (search) {
+      if (e.key === "Enter" || e.key === "Return" || e.key === 13) {
+        let filters = {
+          text: "contains",
+          number: "equalTo",
+        };
+        let filterType = {
+          text: "String",
+          number: "Numeric",
+          date: "Date",
+        };
+        let queryType = type === "number" ? Number(search) : search;
+        const prevFilters = { ...filter };
+        prevFilters[columnDef.field] = [
+          filters[type],
+          queryType,
+          filterType[type],
+        ];
+        dispatch(setFilters({ ...prevFilters }));
+      }
+    }
+  };
+
   return (
     <>
       <div className="w-full  p-3">
@@ -88,6 +121,7 @@ const FilterField = (props) => {
             disabled={type === "date"}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleEnterKeyPress}
           />
           {search && (
             <Close

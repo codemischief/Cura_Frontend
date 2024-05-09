@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
 import MaterialTable from "@material-table/core";
-import { ArrowUpward } from "@mui/icons-material";
+import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { CustomPaginationComponent } from "./MyMaterialTable";
 import { useDispatch } from "react-redux";
 import { setSorting } from "../../../Redux/slice/pmaSlice";
@@ -10,6 +10,7 @@ export default function PmaBillingTable({
   column,
   data,
   loading,
+  onRefresh,
   // handleQueryChange,
 }) {
   const [columnResizable, setColumnResizable] = useState(false);
@@ -25,6 +26,7 @@ export default function PmaBillingTable({
         data={data}
         title={""}
         options={{
+          idSynonym: 1,
           exportButton: {
             csv: true,
             pdf: false,
@@ -43,8 +45,8 @@ export default function PmaBillingTable({
           grouping: true,
           columnsButton: true,
           paging: true,
-          pageSize:50,
-         
+          pageSize: 50,
+
           padding: "default",
           headerStyle: {
             backgroundColor: "#F0F6FF",
@@ -53,8 +55,12 @@ export default function PmaBillingTable({
             top: 0,
             pt: 12,
             pb: 12,
+            "&:hover": {
+              backgroundColor: "#F0F6FF", // Keep the same background color
+              color: "black",
+            },
           },
-          maxBodyHeight: "68vh",
+          maxBodyHeight: "65vh",
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,
@@ -62,11 +68,14 @@ export default function PmaBillingTable({
           tableLayout: columnResizable ? "fixed" : "auto",
           toolbar: false,
           pagination: false,
-          thirdSortClick:false,
+          thirdSortClick: false,
           toolbacolumnResizablerButtonAlignment: "",
         }}
         icons={{
-          SortArrow: (props) => <ArrowUpward {...props} />,
+          SortArrow: (props, index) => {
+            // console.log("props", props, index);
+            return <ArrowDownward {...props} />;
+          },
         }}
         onOrderChange={(orderBy, orderDirection) => {
           dispatch(
@@ -76,14 +85,13 @@ export default function PmaBillingTable({
             })
           );
         }}
-        
-
         components={{
           Pagination: (props) => {
             return (
               <CustomPaginationComponent
                 {...props}
                 tableRef={tableRef}
+                onRefresh={onRefresh}
                 // handleQueryChange={handleQueryChange}
               />
             );

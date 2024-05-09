@@ -15,11 +15,12 @@ import {
 import { useSelector } from "react-redux";
 
 export const CustomPaginationComponent = (props) => {
+ 
   const dispatch = useDispatch();
   const { pageNo, totalCount, countPerPage } = useSelector(
     (state) => state.pmaBilling
   );
-  const { tableRef } = props;
+  const { tableRef, onRefresh } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const downloadExcel = () => {
     const tableData = tableRef.current?.dataManager?.data;
@@ -146,7 +147,8 @@ export const CustomPaginationComponent = (props) => {
           className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
           onClick={() => {
             // dispatch(setInitialState())
-            console.log(" tableRef.current", tableRef.current)
+            onRefresh();
+            console.log(" tableRef.current", tableRef.current);
             // tableRef.current.onQueryChange();
           }}
         >

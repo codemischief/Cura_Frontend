@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types"; // Import PropTypes
-import { Modal, Stack, Typography } from "@mui/material";
+import { CircularProgress, Modal, Stack, Typography } from "@mui/material";
 // import Cross from "../../../../assets/cross.png"
 import Draggable from "react-draggable";
 import { CloseOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ const ConfirmationModal = ({
   btnTitle,
   onClose,
   onSubmit,
+  loading,
 }) => {
   return (
     <Modal open={open}>
@@ -50,7 +51,11 @@ const ConfirmationModal = ({
                 className="w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md"
                 onClick={onSubmit}
               >
-                {btnTitle}
+                {loading ? (
+                  <CircularProgress color="inherit" size={"24px"} />
+                ) : (
+                  btnTitle
+                )}
               </button>
               <button
                 className="w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md"

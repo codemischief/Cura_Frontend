@@ -78,6 +78,7 @@ const PmaBilling = () => {
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
   }, [pageNo, filter, countPerPage, sorting.sort_by, sorting.sort_order]);
+  
 
   console.log("filter", filter);
   // useEffect(() => {
@@ -137,6 +138,23 @@ const PmaBilling = () => {
       });
     }
   };
+
+  const handleRefresh = () => {
+    if (selectedMonth && selectedYear) {
+      let obj = {
+        user_id: 1234,
+        month: +selectedMonth,
+        year: +selectedYear,
+        filters: convertData(filter),
+        pg_no: +pageNo,
+        insertIntoDB: false,
+        pg_size: +countPerPage,
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
+      };
+      dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
+    }
+  };
   return (
     <Stack gap="1rem">
       <Navbar />
@@ -168,7 +186,7 @@ const PmaBilling = () => {
                 onChange={handleSelectYear}
               >
                 <option selected value={""} className="hidden"></option>
-                {YEARS.map((item, index) => {
+                {YEARS.map((item) => {
                   return (
                     <option value={item} key={item}>
                       {item}
@@ -237,11 +255,13 @@ const PmaBilling = () => {
             data={pmaBillingData}
             column={columns}
             loading={status === "loading"}
+            onRefresh={handleRefresh}
           />
         )}
       </Stack>
       <ConfirmationModal
         open={openModal}
+        loading={status === "loading"}
         btnTitle="Confirm"
         onClose={() => {
           setOpenModal(false);

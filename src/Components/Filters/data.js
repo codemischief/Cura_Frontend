@@ -20,8 +20,8 @@ export const numericFilterData = [
   { key: "lessThan", title: "Less Than" },
   { key: "greaterThanOrEqualTo", title: "Greater Than Or Equal To" },
   { key: "lessThanOrEqualTo", title: "Less Than Or Equal To" },
-  { key: "between", title: "Between" },
-  { key: "notBetween", title: "Not Between" },
+  // { key: "between", title: "Between" },
+  // { key: "notBetween", title: "Not Between" },
 ];
 
 export const dateFilterData = [

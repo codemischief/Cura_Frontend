@@ -3,7 +3,7 @@ export const getPmaBillingPayload = (obj) => {
 };
 
 export const updatedResponsePmaData = (data, year, month) => {
-  return data.map((billing) => ({
+  return data.map((billing, index) => ({
     ...billing,
     data: billing.data ? billing.date : "--",
     totaltaxamt: billing.totaltaxamt ? billing.totaltaxamt?.toFixed(2) : "---",
