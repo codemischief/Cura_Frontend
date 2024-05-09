@@ -24,6 +24,7 @@ import Contact from './ManageProjectInfoForm/Contact';
 import Photos from './ManageProjectInfoForm/Photos';
 import EditProjectInfo from './EditProjectInfo';
 import SucessfullModal from "../../../Components/modals/SucessfullModal"
+import CancelModel from './../../../Components/modals/CancelModel';
 import DeleteProjectInfo from './DeleteProjectInfo';
 import CharacterFilter from '../../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
@@ -373,8 +374,14 @@ const ManageProjectInfo = () => {
         setIsStateDialogue(true);
     };
     const handleClose = () => {
+        initials();
         setSelectedDialogue(1);
         setIsStateDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const handlePageChange = (event, value) => {
         console.log(value);
@@ -587,6 +594,25 @@ const ManageProjectInfo = () => {
         setProjectLegalData(res.data)
     }
 
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsStateDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
     const [projectNameFilter, setProjectNameFilter] = useState(false);
     const [projectNameFilterInput, setProjectNameFilterInput] = useState("");
     const [builderNameFilter, setBuilderNameFilter] = useState(false);
@@ -759,12 +785,14 @@ const ManageProjectInfo = () => {
     return (
         <div className="h-screen">
             <Navbar />
-            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} />}
-            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} />}
+            {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Project Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Project Deleted Successfully" />}
-            {showAddConfirmation && <SaveConfirmationProjectInfo currProject={currProject} handleClose={() => setShowAddConfirmation(false)} addProject={addProjectInfo}/>}
+            {showAddConfirmation && <SaveConfirmationProjectInfo currProject={currProject} handleClose={() => setShowAddConfirmation(false)} addProject={addProjectInfo} showCancel={openAddCancelModal} setDefault={initials}/>}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new project created." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 

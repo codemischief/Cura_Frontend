@@ -13,7 +13,7 @@ import EditContact from './ManageProjectInfoForm/EditContact';
 import EditPhotos from './ManageProjectInfoForm/EditPhotos';
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
-const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
+const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
     const [selectedDialogue,setSelectedDialogue] = useState(1)
     const initialValues = {
         "project_info": {
@@ -421,6 +421,10 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
           }
         
     }
+    const close = () =>{
+        handleClose();
+        showCancel();
+    }
   return ( 
     <Modal open={true}
                 fullWidth={true}
@@ -436,7 +440,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
                                     <div className="text-[16px]">Edit project</div>
                                 </div>
                                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
-                                    <button onClick={handleClose}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                                    <button onClick={() => {close()}}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
                             <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
@@ -470,7 +474,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess}) => {
                             {selectedDialogue == 5 && <Photos formValues={formValues} setFormValues={setFormValues}/>} */}
                             <div className="my-2 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                             </div>
                         </div>
                         </Draggable>
