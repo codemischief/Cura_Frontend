@@ -60,7 +60,7 @@ export default function PmaBillingTable({
               color: "black",
             },
           },
-          maxBodyHeight: "65vh",
+          maxBodyHeight: 'calc(100vh - 350px)',
           filterCellStyle: { padding: "4px" },
           selection: false,
           exportAllData: true,
