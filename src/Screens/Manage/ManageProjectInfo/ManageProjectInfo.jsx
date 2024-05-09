@@ -67,10 +67,30 @@ const ManageProjectInfo = () => {
     const fetchData = async () => {
         setCurrentPage((prev) => 1)
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+                
+            }
+        })
+        // setFilterState((prev) => tempArray)
+        setStateArray((prev) => tempArray)
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": stateArray,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -712,6 +732,14 @@ const ManageProjectInfo = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
+        setProjectNameFilter(false)
+                setBuilderNameFilter(false)
+                setSuburbFilter(false)
+                setOtherDetailsFilter(false)
+                setMailGroupFilter(false)
+                setSubscribedEmailFilter(false)
+                setRulesFilter(false)
+                setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
@@ -782,6 +810,37 @@ const ManageProjectInfo = () => {
         fetchData();
     }
     const [showAddConfirmation,setShowAddConfirmation] = useState(false);
+
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    console.log(inputVariable)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        // fetchCityData()
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+              }
+      }
     return (
         <div className="h-screen">
             <Navbar />
@@ -819,6 +878,7 @@ const ManageProjectInfo = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -847,59 +907,109 @@ const ManageProjectInfo = () => {
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={projectNameFilterInput} onChange={(e) => setProjectNameFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={projectNameFilterInput} onChange={(e) => setProjectNameFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,projectNameFilterInput,
+                                        setProjectNameFilterInput,
+                                        'contains',
+                                        'projectname')}
+                                    />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setProjectNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} filterColumn="projectname" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={builderNameFilterInput} onChange={(e) => setBuilderNameFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={builderNameFilterInput} onChange={(e) => setBuilderNameFilterInput(e.target.value)} 
+                                    
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,builderNameFilterInput,
+                                        setBuilderNameFilterInput,
+                                        'contains',
+                                        'buildername')}
+                                    
+                                    
+                                    />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setBuilderNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,suburbFilterInput,
+                                        setSuburbFilterInput,
+                                        'contains',
+                                        'suburb')}
+                                    
+                                    />
                                     <button className='w-[30%] px-1 py-2'  onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} />}
                             </div>
                             <div className='w-[14%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,otherDetailsFilterInput,
+                                        setOtherDetailsFilterInput,
+                                        'contains',
+                                        'otherdetails')}
+                                    
+                                    />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setOtherDetailsFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} filterColumn="otherdetails" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,mailGroupFilterInput,
+                                        setMailGroupFilterInput,
+                                        'contains',
+                                        'mailgroup1')}
+                                    
+                                    />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setMailGroupFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,subscribedEmailFilterInput,
+                                        setSubscribedEmailFilterInput,
+                                        'contains',
+                                        'mailgroup2')}
+                                    
+                                    />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setSubscribedEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup2" menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,rulesFilterInput,
+                                        setRulesFilterInput,
+                                        'contains',
+                                        'rules')}
+                                    
+                                    />
                                     <button className='w-[30%] px-1 py-2'onClick={() => { setRulesFilter((prev) => !prev) }} ><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} />}
                             </div>
-                            <div className='w-[12%] px-3 py-2.5'>
+                            {/* <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" />
                                     <button className='w-[30%] px-1 py-2' ><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="w-[15%] px-3 py-2.5">
                             <div className='w-1/2  '>
@@ -990,22 +1100,22 @@ const ManageProjectInfo = () => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
                                 <div className="w-[85%] flex min-h-0">
                                     <div className='w-[4%] flex  overflow-hidden'>
-                                        <div className='p-3'>
+                                        <div className='p-3 flex items-center'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                        <div className='p-3 flex items-center'>
                                             <p>{item.projectname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                        <div className='p-3 flex items-center'>
                                             <p>{item.buildername}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                        <div className='p-3 flex items-center'>
                                             <p>{item.suburb}</p>
                                         </div>
                                     </div>
@@ -1025,18 +1135,24 @@ const ManageProjectInfo = () => {
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 '>
+                                        <div className='p-3 flex items-center '>
                                             <p>{item.rules}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                        <div className='flex items-center p-3 text-[9px]'>
                                             <p>{item.tenantworkingbachelorsallowed || item.tenantforeignersallowed || item.tenantstudentsallowed}</p>
+                                            <p>
+                                                {`${item.tenantworkingbachelorsallowed ? "Tenant Working Bachelors Allowed," : ""}
+                                                  ${item.tenantforeignersallowed ? "Tenant Foregners Allowed," : ""}
+                                                  ${item.tenantstudentsallowed ? "Tenant Students Allowed," : ""}
+                                                `}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex overflow-hidden'>
+                                    <div className='w-1/2  flex overflow-hidden items-center'>
                                         <div className='p-3 ml-1'>
                                             <p>{item.id}</p>
                                         </div>
