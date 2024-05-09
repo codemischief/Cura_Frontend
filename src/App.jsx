@@ -72,7 +72,7 @@ const App = () => {
            
          
            
-               {/* <Route element={<RequireAuth/>}>  */}
+               <Route element={<RequireAuth/>}> 
                     <Route path="/dashboard" element={<Dashboard />}/>
                     <Route path="/admin/manageuser" element={<ManageUser />}/>
                     <Route path="/admin/manageemployees" element={<ManageEmployees />}/>
@@ -116,7 +116,7 @@ const App = () => {
                     <Route path="/manage/manageclientproperty/pmaagreement/:clientname" element={<ClientPmaArgreement />}/>
                     <Route path="/manage/manageclientproperty/llagreement/:clientname" element={<ClientLLAgreement />}/>
                     <Route path='admin/temp' element={<Temp/>}/>
-               {/* </Route>  */}
+               </Route> 
 
 
               <Route path="/*" element={<NotFound />}/>
