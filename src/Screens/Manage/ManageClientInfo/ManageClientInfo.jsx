@@ -22,6 +22,7 @@ import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import DeleteClientInfo from './Modals/DeleteClientInfoModal';
 import EditClientInfoModal from './Modals/EditClientInfoModal';
 import SaveConfirmationClient from './Modals/SaveConfirmationClient';
@@ -499,9 +500,14 @@ const ManageClientInfo = () => {
     };
 
     const handleClose = () => {
+        initials();
         setSelectedDialogue(1)
-        setFormErrors(() => { })
         setIsClientInfoDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const [clientTypeData, setClientTypeData] = useState([]);
     const fetchClientTypeData = async () => {
@@ -1135,6 +1141,25 @@ const ManageClientInfo = () => {
             fetchData();
         }, 2000)
     }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsClientInfoDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
     const [clientNameFilter, setClientNameFilter] = useState(false)
     const [clientNameInput, setClientNameInput] = useState("");
     const [clientTypeNameFilter, setClientTypeNameFilter] = useState(false)
@@ -1317,12 +1342,14 @@ const ManageClientInfo = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} />}
+            {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Deleted Successfully" />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)} />}
-            {showAddConfirmation && <SaveConfirmationClient addClient={addClientInfo} handleClose={() => { setShowAddConfirmation(false) }} currClient={currClientName} />}
+            {showDelete && <DeleteClientInfo handleDelete={handleDelete} item={currItem} handleClose={() => setShowDelete(false)} showCancel={openCancelModal} />}
+            {showAddConfirmation && <SaveConfirmationClient addClient={addClientInfo} handleClose={() => { setShowAddConfirmation(false) }} currClient={currClientName} showCancel={openAddCancelModal} setDefault={initials} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new user created." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
