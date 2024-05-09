@@ -434,7 +434,7 @@ const City = () => {
             },
         };
 
-        if (type == "noFilter") setInputVariable("");
+        if (type == "noFilter" || type == "isNull" || type == "isNotNull") setInputVariable("");
         
         fetchFiltered(existing);
     };
@@ -503,9 +503,13 @@ const City = () => {
     }
     const handleAddCity = () => {
 
+      
+
+        
         if(!validate()) {
             return ;
         }
+        setErrorMessage((prev) => "Proccess Cancelled, Changes Not Saved")
         setButtonLoading(true)
          setIsCityDialogue(false)
          setCurrentCity(formValues.cityName)
@@ -523,6 +527,8 @@ const City = () => {
         const res = await response.json()
         if(res.result == 'success') {
             setShowAddConfirmation(false)
+            setFormValues(initialValues)
+            setFormErrors({})
             openAddSuccess()
         }else {
            // we need to open error prompt here
@@ -530,6 +536,7 @@ const City = () => {
         }
     }  
     const handleDeleteCity = (id) => {
+    setErrorMessage((prev) => "Proccess Cancelled,Changes Not Saved")
        setCurrentCity(id)
        setShowDeleteModal(true)
     }
@@ -550,6 +557,7 @@ const City = () => {
     }
     const handleEdit = (item) => {
         // setCurrentCity(id)
+        setErrorMessage((prev) => "Proccess Cancelled,Changes Not Saved")
         setCurrentCityData(item)
         setShowEditModal(true)
     }
@@ -600,7 +608,7 @@ const City = () => {
     
     const [showCancelModal,setShowCancelModal] = useState(false)
 
-    const [errorMessage,setErrorMessage] = useState("Process Cancelled")
+    const [errorMessage,setErrorMessage] = useState("Process Cancelled, No New City Added")
     const [showEditModal,setShowEditModal] = useState(false)
     const [currentCityData,setCurrentCityData] = useState({})
     const [buttonLoading,setButtonLoading] = useState(false)

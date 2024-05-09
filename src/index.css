@@ -22,10 +22,10 @@ body{
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
-input::selection {
+/* input::selection {
     background-color: transparent;
     padding-right: 20px;
-  }
+  } */
 
 /* 
 @layer components{

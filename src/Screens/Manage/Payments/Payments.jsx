@@ -1380,19 +1380,25 @@ const Payments = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs block" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                                     <option value="" hidden >Select User</option>
-                                                    <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
+                                                    <option value="">Name   Username </option>
                                                     {allUsername.map(item => (
-                                                        <option key={item.id} value={item.id}>
+                                                        <option key={item.id} value={item.id} className=''>
+                                                            
+                                                            
+                                                            <p>
                                                             {item.name}
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            {item.username}
+                                                            </p>
+                                                             
+                                                           
+                                                            <p >
+
+                                                               {item.username}
+                                                            </p>  
+                                                            
+                                                            
+                                                            
                                                         </option>
                                                     ))}
                                                 </select>
