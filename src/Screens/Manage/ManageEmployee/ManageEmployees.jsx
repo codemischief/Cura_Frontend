@@ -861,6 +861,16 @@ const ManageEmployees = () => {
     const fetchFiltered = async (mapState) => {
         console.log(mapState)
         const tempArray = [];
+        setEmployeeNameFilter(false)
+        setEmployeeIdFilter(false)
+        setPannoFilter(false)
+        setPhoneFilter(false)
+        setEmailFilter(false)
+        setRoleFilter(false)
+        setDateOfJoiningFilter(false)
+        setLdowFilter(false)
+        setStatusFilter(false)
+        setIdFilter(false);
         setCurrentPage((prev) => 1)
         // we need to query thru the object
         // console.log(filterMapState);

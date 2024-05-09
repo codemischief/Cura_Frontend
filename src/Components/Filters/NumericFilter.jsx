@@ -39,14 +39,7 @@ const NumericFilter = ({inputVariable,setInputVariable,handleFilter,columnName,m
                                     </div>
                                             </button>
                                         <button onClick={() => handleFilter(inputVariable,setInputVariable,'between', columnName)} className='w-[150px] p-1'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
-                                            <h1 >Between</h1>
-                                    </div>
-                                            </button>
-                                        <button onClick={() => handleFilter(inputVariable,setInputVariable,'notBetween', columnName)} className='w-[150px] p-1'>
-                                    <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
-                                            <h1 >NotBetween</h1>
-                                    </div>
+                                   
                                             </button>
                                         <button onClick={() => handleFilter(inputVariable,setInputVariable,'isNull', columnName)} className='w-[150px] p-1'>
                                             <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>

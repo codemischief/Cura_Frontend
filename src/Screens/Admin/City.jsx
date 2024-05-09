@@ -366,6 +366,10 @@ const City = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState);
         const tempArray = [];
+        setCountryFilter(false);
+                setStateFilter(false);
+                setCityFilter(false);
+                setIdFilter(false);
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState);

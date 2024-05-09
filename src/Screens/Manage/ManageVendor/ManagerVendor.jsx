@@ -186,14 +186,15 @@ const ManageVendor = () => {
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         console.log('ugm')
-        // const tempArray = [];
-        // // we need to query thru the object
-        // console.log(filterMapState);
-        // Object.keys(filterMapState).forEach(key => {
-        //     if (filterMapState[key].filterType != "") {
-        //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-        //     }
-        // })
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -231,7 +232,7 @@ const ManageVendor = () => {
                 "tallyledgerid",
                 "tallyledger"
             ],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -362,7 +363,7 @@ const ManageVendor = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key": isSearchOn ? searchInput : ""
+            "search_key": searchInput 
         };
         const response = await APIService.getVendors(data);
         const temp = await response.json();
@@ -868,6 +869,12 @@ const ManageVendor = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
+        setVendorNameFilter(false)
+        setTdsSectionFilter(false)
+        setTallyLedgerFilter(false)
+        setCategoryFilter(false)
+        setCityFilter(false)
+        setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
@@ -1051,7 +1058,36 @@ const ManageVendor = () => {
         setTallyLedgerData(res.data)
     }
 
-
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+      setInputVariable,
+      type,
+      columnName) => {
+          if (event.keyCode === 13) {
+                  // if its empty then we remove that 
+                  // const temp = {...filterMapState};
+                  // temp[columnName].type = "".
+                  // setFilterMapState(temp)
+                  if(inputVariable == "") {
+                      const temp = {...filterMapState}
+                      temp[columnName].filterType = ""
+                      setFilterMapState(temp)
+                      fetchData()
+                  }else {
+                      newHandleFilter(inputVariable,
+                          setInputVariable,
+                          type,
+                          columnName)
+                  }
+                  
+              
+              
+            }
+    }
     // fetching utility routes end here
     return (
         <div className='h-screen'>
@@ -1089,6 +1125,7 @@ const ManageVendor = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1117,7 +1154,14 @@ const ManageVendor = () => {
                             </div>
                             <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,vendorNameFilterInput,
+                                        setVendorNameFilterInput,
+                                        'contains',
+                                        'vendorname')}
+                                    
+                                    />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
@@ -1125,7 +1169,14 @@ const ManageVendor = () => {
 
                             <div className='w-[19%]  px-3 py-2.5 mx-[-2px]'>
                                 <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,tdsSectionFilterInput,
+                                        setTdsSectionFilterInput,
+                                        'contains',
+                                        'tdssection')}
+                                    
+                                    />
                                     <button className='W-[25%] px-1 py-2' onClick={() => { setTdsSectionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1133,7 +1184,16 @@ const ManageVendor = () => {
 
                             <div className='w-[19%]  px-3 py-2.5 '>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)} 
+                                    
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,tallyLedgerFilterInput,
+                                        setTallyLedgerFilterInput,
+                                        'contains',
+                                        'tallyledger')}
+                                    
+                                    
+                                    />
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setTallyLedgerFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {tallyLedgerFilter && <CharacterFilter inputVariable={tallyLedgerFilterInput} setInputVariable={setTallyLedgerFilterInput} filterColumn='tallyledger' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1141,7 +1201,14 @@ const ManageVendor = () => {
 
                             <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,categoryFilterInput,
+                                        setCategoryFilterInput,
+                                        'contains',
+                                        'category')}
+
+                                    />
                                     <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCategoryFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {categoryFilter && <CharacterFilter inputVariable={categoryFilterInput} setInputVariable={setCategoryFilterInput} filterColumn='category' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1149,7 +1216,14 @@ const ManageVendor = () => {
 
                             <div className='w-[19%] px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,cityFilterInput,
+                                        setCityFilterInput,
+                                        'contains',
+                                        'city')}
+                                    
+                                    />
                                     <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} filterColumn='city' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1158,7 +1232,14 @@ const ManageVendor = () => {
                         <div className="w-[25%] flex">
                             <div className='w-[75%] px-3 py-2.5 mx-[-3px]'>
                                 <div className="w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1360,7 +1441,7 @@ const ManageVendor = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                 <div className='flex justify-center'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-10  justify-center flex items-center rounded-t-lg">
@@ -1565,7 +1646,7 @@ const ManageVendor = () => {
 
                     </div>
                 </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                     </>
             </Modal>
         </div>

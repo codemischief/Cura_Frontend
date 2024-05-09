@@ -427,6 +427,8 @@ const LOB = () => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
+        setLobFilter(false);
+            setIdFilter(false);
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach((key) => {

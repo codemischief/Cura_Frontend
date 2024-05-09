@@ -377,7 +377,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
               "policestation" : formValues.project_info.policestation
             },
             "project_amenities" : {
-                "id" : currProject,
+                "id" : helperData.project_amenities.id,
                 "swimmingpool": formValues.project_amenities.swimmingpool,
                 "lift": formValues.project_amenities.lift,
                 "liftbatterybackup": formValues.project_amenities.liftbatterybackup,

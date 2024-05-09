@@ -543,6 +543,8 @@ const Country = () => {
     setFilterMapState(mapState)
     const tempArray = [];
     // we need to query thru the object
+    setCountryFilter(false)
+    setIdFilter(false)
     // console.log(filterMapState);
     console.log(filterMapState)
     Object.keys(mapState).forEach(key => {

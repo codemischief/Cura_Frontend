@@ -580,6 +580,11 @@ const Locality = () => {
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
+        setCountryFilter(false);
+                setStateFilter(false);
+                setCityFilter(false)
+                setLocalityFilter(false)
+                setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)

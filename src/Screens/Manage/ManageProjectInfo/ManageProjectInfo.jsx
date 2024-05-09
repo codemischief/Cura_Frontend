@@ -365,7 +365,7 @@ const ManageProjectInfo = () => {
             setIsStateDialogue(false)
             setFormValues(initialValues);
             openAddSuccess();
-            // we need to fetch the data and open the success modal
+            
         }
     }
     // validate form and to throw Error message
