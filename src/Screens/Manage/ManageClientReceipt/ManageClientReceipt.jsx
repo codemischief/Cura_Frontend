@@ -215,11 +215,30 @@ const ManageClientReceipt = () => {
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         console.log('ugm')
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+                
+            }
+        })
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": initialRows,
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -995,6 +1014,35 @@ const ManageClientReceipt = () => {
         console.log(res.data)
         setOrOrders(res.data)
     }
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    console.log(inputVariable)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        // fetchCityData()
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+              }
+      }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1033,6 +1081,7 @@ const ManageClientReceipt = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1069,7 +1118,13 @@ const ManageClientReceipt = () => {
                         </div>
                         <div className='w-[14%]  px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md ">
-                                <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <input className="w-[78%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
+                                    setClientNameFilterInput,
+                                    'contains',
+                                    'clientname')}
+                                />
                                 <button className='px-1 py-2 w-[22%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
@@ -1077,7 +1132,13 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[10%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
+                                    setAmountFilterInput,
+                                    'equalTo',
+                                    'amount')}
+                                />
                                 <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setAmountFilter((prev) => !prev) }} /></button>
                             </div>
                             {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} columnName='amount' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1085,7 +1146,14 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[13%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceAmountFilterInput} onChange={(e) => setServiceAmountFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,serviceAmountFilterInput,
+                                    setServiceAmountFilterInput,
+                                    'equalTo',
+                                    'serviceamount')}
+                                
+                                />
                                 <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setServiceAmountFilter((prev) => !prev) }} /></button>
                             </div>
                             {serviceAmountFilter && <NumericFilter inputVariable={serviceAmountFilterInput} setInputVariable={setServiceAmountFilterInput} columnName='serviceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1093,7 +1161,14 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[12%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={reimbusmentAmountFilterInput} onChange={(e) => setReimbusmentAmountFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,reimbusmentAmountFilterInput,
+                                    setReimbusmentAmountFilterInput,
+                                    'equalTo',
+                                    'reimbursementamount')}
+                                
+                                />
                                 <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReimbusmentAmountFilter((prev) => !prev) }} /></button>
                             </div>
                             {reimbusmentAmountFilter && <NumericFilter inputVariable={reimbusmentAmountFilterInput} setInputVariable={setReimbusmentAmountFilterInput} columnName='reimbursementamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1101,7 +1176,13 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[12%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type="date" />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedDateFilterInput} onChange={(e) => setReceivedDateFilterInput(e.target.value)} type="date" 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,receivedDateFilterInput,
+                                    setReceivedDateFilterInput,
+                                    'equalTo',
+                                    'recddate')}
+                                />
                                 <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedDateFilter((prev) => !prev) }} /></button>
                             </div>
                             {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} />}
@@ -1109,7 +1190,14 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[13%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedModeFilterInput} onChange={(e) => setReceivedModeFilterInput(e.target.value)} />
+                                <input className="w-[77%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedModeFilterInput} onChange={(e) => setReceivedModeFilterInput(e.target.value)} 
+                                
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,receivedModeFilterInput,
+                                    setReceivedModeFilterInput,
+                                    'contains',
+                                    'paymentmodename')}
+                                />
                                 <button className='px-1 py-2 w-[23%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedModeFilter((prev) => !prev) }} /></button>
                             </div>
                             {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} />}
@@ -1117,7 +1205,13 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[11%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={receivedByFilterInput} onChange={(e) => setReceivedByFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,receivedByFilterInput,
+                                    setReceivedByFilterInput,
+                                    'contains',
+                                    'receivedbyname')}
+                                />
                                 <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedByFilter((prev) => !prev) }} /></button>
                             </div>
                             {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} />}
@@ -1125,7 +1219,14 @@ const ManageClientReceipt = () => {
 
                         <div className='w-[7%] px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} />
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={TDSFilterInput} onChange={(e) => setTDSFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,TDSFilterInput,
+                                    setTDSFilterInput,
+                                    'equalTo',
+                                    'tds')}
+                                
+                                />
                                 <button className='px-1 py-2 w-[45%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTDSFilter((prev) => !prev) }} /></button>
                             </div>
                             {TDSFilter && <NumericFilter inputVariable={TDSFilterInput} setInputVariable={setTDSFilterInput} columnName='tds' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1135,7 +1236,14 @@ const ManageClientReceipt = () => {
                     <div className="w-[13%] flex">
                         <div className='w-1/2 px-3 py-2.5'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                <input className="w-[60%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                    setIdFilterInput,
+                                    'equalTo',
+                                    'id')}
+                                
+                                />
                                 <button className='px-1 py-2 w-[40%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                             </div>
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
