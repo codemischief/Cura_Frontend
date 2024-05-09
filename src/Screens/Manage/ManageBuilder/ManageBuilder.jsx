@@ -22,6 +22,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Filter from "../../../assets/filter.png"
 import SaveConfirmationBuilder from "./SaveConfirmationBuilder";
+import CancelModel from './../../../Components/modals/CancelModel';
 import { ScreenSearchDesktopTwoTone } from "@mui/icons-material";
 import Draggable from "react-draggable";
 const ManageBuilder = () => {
@@ -330,9 +331,6 @@ const ManageBuilder = () => {
         if (!formValues.phone1 || formValues.phone1 == "") {
             return 
         }
-        if (!formValues.email1 || formValues.email1 == "") {
-            return 
-        }
         if (!formValues.address1 || formValues.address1 == "") {
             return 
         }
@@ -343,6 +341,9 @@ const ManageBuilder = () => {
             return 
         }
         if (!formValues.city || formValues.city == "") {
+            return 
+        }
+        if (!formValues.suburb || formValues.suburb == "") {
             return 
         }
 
@@ -377,6 +378,9 @@ const ManageBuilder = () => {
         if (!values.city || values.cty == "") {
             errors.city = "Select City";
         }
+        if (!formValues.suburb || formValues.suburb == "") {
+            errors.suburb = "Select suburb"; 
+        }
         return errors;
     };
 
@@ -385,8 +389,13 @@ const ManageBuilder = () => {
         setIsManageBuidlerDialogue(true);
     };
     const handleClose = () => {
-        setFormValues(initialValues)
+        initials();
         setIsManageBuidlerDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const editBuilder = (item) => {
@@ -414,6 +423,35 @@ const ManageBuilder = () => {
         setCurrentPage(value)
         fetchPageData(value)
     }
+
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+    const openDeleteSuccess = () => {
+        setShowDeleteSuccess(true);
+        setTimeout(function () {
+            setShowDeleteSuccess(false);
+        }, 2000)
+        fetchData();
+    }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsManageBuidlerDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
     const [downloadModal, setDownloadModal] = useState(false)
     const [builderFilter, setBuilderFilter] = useState(false)
     const [builderFilterInput, setBuilderFilterInput] = useState("")
@@ -556,10 +594,12 @@ const ManageBuilder = () => {
         <div className="h-screen">
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Builder Deleted Successfully" />}
             <FailureModal isOpen={showFailure} message={errorMessage} />
-            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
-            {addConfirmation && <SaveConfirmationBuilder handleClose={() => setAddConfirmation(false)} addBuilder={addNewBuilder} currentBuilder={currentBuilder}/>}
-
+            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} showSuccess = {openDeleteSuccess} showCancel={openCancelModal} />
+            {addConfirmation && <SaveConfirmationBuilder handleClose={() => setAddConfirmation(false)} addBuilder={addNewBuilder} currentBuilder={currentBuilder} showCancel={openAddCancelModal} setDefault={initials}/>}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new builder created." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -737,7 +777,7 @@ const ManageBuilder = () => {
                             </div>
                         })}
                         {/* we get all the existing builders here */}
-                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity}/>}
+                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity} showCancel={openCancelModal} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData} />}
                     </div>
 
@@ -846,9 +886,9 @@ const ManageBuilder = () => {
                                             {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">Email 1<label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Email 1</div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.email1}</div>
+                                            
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email 2</div>
@@ -946,7 +986,7 @@ const ManageBuilder = () => {
                                             <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.state}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">City<label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">City <label className="text-red-500">*</label></div>
                                             {console.log(formValues.city)}
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.city} onChange={(e) => {
                                                 setFormValues((existing) => {
@@ -966,9 +1006,9 @@ const ManageBuilder = () => {
                                             <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.city}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">Website</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="website" value={formValues.website} onChange={handleChange} />
-
+                                            <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.suburb}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">ZIP Code</div>

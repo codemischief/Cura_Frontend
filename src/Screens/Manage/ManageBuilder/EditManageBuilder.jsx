@@ -39,12 +39,13 @@ const EditManageBuilder = (props) => {
             "phone_1": String(formValues.phone1),
             "phone_2": String(formValues.phone2),
             "email1": String(formValues.email1),
+            "email2": String(formValues.email2),
             "addressline1": String(formValues.address1) == "" ? "" : String(formValues.address1),
             "addressline2": String(formValues.address2),
-            "suburb": "deccan",
-            "city": 360,
-            "state": "Maharashtra",
-            "country": 5,
+            "suburb":String(formValues.suburb),
+            "city": Number(formValues.city),
+            "state": String(formValues.state),
+            "country": Number(formValues.country),
             "zip": String(formValues.zip),
             "website": String(formValues.website),
             "comments": String(formValues.comment),
@@ -55,12 +56,11 @@ const EditManageBuilder = (props) => {
         console.log(data);
         const response = await APIService.editBuilderInfo(data);
         if (response.ok) {
-            
             openSuccessModal();
         } else {
-           
             openFailureModal();
         }
+        console.log("done");
         
     }
 
@@ -97,8 +97,9 @@ const EditManageBuilder = (props) => {
             setAllState(result)
         }
     }
-    const handleDialogClose = () => {
+    const close = () => {
         props.setOpenDialog(false);
+        props.showCancel(false);
     };
     console.log(props.builder)
     const initialValues = {
@@ -158,6 +159,9 @@ const EditManageBuilder = (props) => {
         if (!values.city) {
             errors.city = "Select city";
         }
+        if (!values.suburb) {
+            errors.suburb = "Select suburb";
+        }
 
         return errors;
     };
@@ -187,7 +191,7 @@ const EditManageBuilder = (props) => {
         temp.phone2 =  res.data.phone2
         temp.email1 =  res.data.email1
         temp.email2 =  res.data.email2
-        temp.suburb  =  "deccan",
+        temp.suburb  =  res.data.suburb,
         temp.address1 =  res.data.addressline1
         temp.address2 =  res.data.addressline2
         temp.country =  res.data.country
@@ -212,7 +216,7 @@ const EditManageBuilder = (props) => {
     const [loading,setLoading] = useState(false)
     return (
         <>
-            <SucessfullModal isOpen={showSucess} message="Builder has been edited " />
+            <SucessfullModal isOpen={showSucess} message="Changes saved succesfully " />
             <FailureModal isOpen={showFailure} message="Error! cannot edit the builder" />
             <Modal open={props.openDialog}
                 fullWidth={true}
@@ -227,7 +231,7 @@ const EditManageBuilder = (props) => {
                                 <div className="text-[16px]">Edit Builder</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                <img onClick={() => {close()}} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </div>
                         </div>
                         <form onSubmit={handleSubmit}>
@@ -302,6 +306,11 @@ const EditManageBuilder = (props) => {
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
+                                            <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.suburb}</div>
+                                        </div>
+                                        <div className="">
                                             <div className="text-[13px]">Zip Code</div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
                                         </div>
@@ -319,7 +328,7 @@ const EditManageBuilder = (props) => {
 
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                                 {isLoading && <CircularProgress />}
                             </div>
                         </form>
