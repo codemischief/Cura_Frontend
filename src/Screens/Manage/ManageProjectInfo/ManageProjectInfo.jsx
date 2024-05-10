@@ -745,9 +745,27 @@ const ManageProjectInfo = () => {
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             console.log(key)
+            if(mapState[key].filterData == 'Numeric') {
+                tempArray.push([
+                    key,
+                    mapState[key].filterType,
+                    Number(mapState[key].filterValue),
+                    mapState[key].filterData,
+                ]);
+            }
             if (mapState[key].filterType != "") {
-                console.log(key)
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                if(mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                }else {
+                    console.log(key)
+                   tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                }
+               
             }
         })
         console.log(tempArray)
@@ -1014,7 +1032,13 @@ const ManageProjectInfo = () => {
                         <div className="w-[15%] px-3 py-2.5">
                             <div className='w-1/2  '>
                                 <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                    />
                                     <button className='w-[30%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
