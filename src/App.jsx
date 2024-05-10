@@ -49,6 +49,7 @@ import Temp from './Screens/Admin/temp';
 import ManageClientPropertyByClientName from "./Screens/Manage/ManageClientInfo/ManageClientProperties/ManageClientPropertyByClientName" ; 
 import ClientPmaArgreement from './Screens/Manage/ManageClientProperty/ClientPmaAgreement/ClientPmaAgreement';
 import ClientLLAgreement from './Screens/Manage/ManageClientProperty/ClientLLAgreement/ClientLLAgreement copy';
+import PmaBilling from "./Screens/Manage/pma";
 
 const App = () => {
   const ROLES = {
@@ -115,6 +116,7 @@ const App = () => {
                     <Route path="/manage/manageclientinfo/properties/:clientname" element={<ManageClientPropertyByClientName/>}/>
                     <Route path="/manage/manageclientproperty/pmaagreement/:clientname" element={<ClientPmaArgreement />}/>
                     <Route path="/manage/manageclientproperty/llagreement/:clientname" element={<ClientLLAgreement />}/>
+                    <Route path="/manage/pmaBilling" element={<PmaBilling />} />
                     <Route path='admin/temp' element={<Temp/>}/>
                </Route> 
 

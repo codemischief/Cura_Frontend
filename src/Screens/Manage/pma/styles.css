@@ -1,0 +1,10 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+#m--table--filter--row {
+  position: sticky;
+  top: 0; /* Adjust this value as needed to position the row */
+  z-index: 1; /* Ensure the row is above other content */
+  background-color: white; /* Optional: Set background color if needed */
+}
