@@ -30,6 +30,7 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
+import DropDown from '../../../Components/Dropdown/Dropdown';
 const ManageClientInvoice = () => {
 
     const menuRef = useRef();
@@ -334,6 +335,15 @@ const ManageClientInvoice = () => {
     };
 
     const handleClose = () => {
+        setFormValues(initialValues)
+        setFormErrors({})
+        setSelectedOption(
+            {
+                label: "Select Client",
+                value: null
+            }
+        )
+        setOrders([])
         
         setIsClientInvoiceDialogue(false);
         openAddCancelModal();
@@ -1285,7 +1295,7 @@ const ManageClientInvoice = () => {
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        <select
+                                        {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
@@ -1297,7 +1307,8 @@ const ManageClientInvoice = () => {
                                                     {item.ordername}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                         <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="id" handleChange={handleChange} formValueName="order" value={formValues.order}/>
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
