@@ -53,7 +53,7 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
         getOrdersData(res.data.orderid)
         existing.vendorid = res.data.vendorid 
         existing.mode = res.data.mode 
-        existing.description = res.data.briefdescription 
+        existing.description = res.data.description 
         existing.tds = res.data.tds
         existing.servicetaxamount = res.data.servicetaxamount
         existing.ordername = res.data.briefdescription
