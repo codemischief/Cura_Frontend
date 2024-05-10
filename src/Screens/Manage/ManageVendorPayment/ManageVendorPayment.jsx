@@ -5,6 +5,7 @@ import AsyncSelect from "react-select/async";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import Add from "../../../assets/add.png";
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
@@ -430,7 +431,14 @@ const ManageVendorPayment = () => {
     };
 
     const handleClose = () => {
+        initials();
         SetIsVendorPaymentDialogue(false);
+        openAddCancelModal();
+    }
+
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
 
 
@@ -510,7 +518,7 @@ const ManageVendorPayment = () => {
         }
         if (formValues.paymentdate == null || formValues.paymentdate == "") {
             setFormErrors((existing) => {
-                return { ...existing, paymentdate: "Enter Payment date" }
+                return { ...existing, paymentdate: "Enter Payment Date" }
             })
             res = false;
         } else {
@@ -672,6 +680,25 @@ const ManageVendorPayment = () => {
             setShowEditSuccess(false);
         }, 2000)
         fetchData();
+    }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        SetIsVendorPaymentDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
     }
 
 
@@ -881,18 +908,52 @@ const ManageVendorPayment = () => {
         setExistingVendorPayment(result);
         setPageLoading(false);
     }
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess}/>}
+            {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Payment Created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Payment Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationVendorPayment addVendorPayment={addVendorPayment} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationVendorPayment addVendorPayment={addVendorPayment} handleClose={() => setOpenAddConfirmation(false)} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {showDeleteModal && <DeleteVendorPayment handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorPayment} />}
+            {showDeleteModal && <DeleteVendorPayment handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorPayment} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no Vendor Payment added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -917,6 +978,7 @@ const ManageVendorPayment = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -951,74 +1013,124 @@ const ManageVendorPayment = () => {
                         </div>
                         <div className='w-[12%] px-3 py-2  '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, vendorNameFilterInput,
+                                        setVendorNameFilterInput,
+                                        'contains',
+                                        'vendorname')}
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%]  px-3 py-2 '>
                             <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, clientNameFilterInput,
+                                        setClientNameFilterInput,
+                                        'contains',
+                                        'clientname')}
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[12%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, propertyDescriptionFilterInput,
+                                        setPropertyDescriptionFilterInput,
+                                        'contains',
+                                        'propertydescription')}
+                                />
                                 <button className='w-[35%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {propertyDescriptionFilter && <CharacterFilter filterColumn='propertydescription' inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[15%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, orderDescriptionFilterInput,
+                                        setOrderDescriptionFilterInput,
+                                        'contains',
+                                        'briefdescription')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, amountFilterInput,
+                                        setAmountFilterInput,
+                                        'equalTo',
+                                        'amount')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
                         </div>
                         <div className='w-[12%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentDateFilterInput} onChange={(e) => setPaymentDateFilterInput(e.target.value)} type="date" />
-                                <button className='w-[30%] px-1 py-2' onClick={() => { setPaymentDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentDateFilterInput} onChange={(e) => setPaymentDateFilterInput(e.target.value)} type="date"
+                                    onKeyDown={(event) => handleEnterToFilter(event, paymentDateFilterInput,
+                                        setPaymentDateFilterInput,
+                                        'equalTo',
+                                        'paymentdate')}
+                                />
+                                <button className='w-[25%] px-1 py-2' onClick={() => { setPaymentDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {paymentDateFilter && <DateFilter inputVariable={paymentDateFilterInput} setInputVariable={setPaymentDateFilterInput} handleFilter={newHandleFilter} columnName='paymentdate' menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={modeOfPaymentFilterInput} onChange={(e) => setModeOfPaymentFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={modeOfPaymentFilterInput} onChange={(e) => setModeOfPaymentFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, modeOfPaymentFilterInput,
+                                        setModeOfPaymentFilterInput,
+                                        'contains',
+                                        'modeofpayment')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setModeOfPaymentFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {modeOfPaymentFilter && <CharacterFilter inputVariable={modeOfPaymentFilterInput} setInputVariable={setModeOfPaymentFilterInput} handleFilter={newHandleFilter} filterColumn='modeofpayment' menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%] px-3 py-2'>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, paymentByFilterInput,
+                                        setPaymentByFilterInput,
+                                        'contains',
+                                        'paymentbyname')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setPaymentByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {paymentByFilter && <CharacterFilter filterColumn='paymentbyname' inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, createdByFilterInput,
+                                        setCreatedByFilterInput,
+                                        'contains',
+                                        'createdbyname')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
                         </div>
-                        
+
                     </div>
                     <div className="w-[10%] flex">
 
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))}
+                                    onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                />
                                 <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                             </div>
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1073,7 +1185,7 @@ const ManageVendorPayment = () => {
                             </div>
                             <div className='w-[11%]  flex'>
                                 <div className='p-3'>
-                                    <p>Mode OF</p>
+                                    <p>Mode of</p>
                                     <p>Payment</p>
                                 </div>
                                 <button onClick={() => handleSort('modeofpayment')}><span className="font-extrabold">↑↓</span></button>
@@ -1273,172 +1385,177 @@ const ManageVendorPayment = () => {
             >
                 <>
                     <Draggable>
-                <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Vendor Payment</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Cura Office </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                        <div className='flex justify-center'>
+                            <div className="w-[1050px] h-auto bg-white rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">New Vendor Payment</div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
-                                        </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
-
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
-                                            }}
-                                        />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">
-                                            Mode <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="mode"
-                                            value={formValues.mode}
-                                            onChange={handleChange}
-                                        >
-                                            {modesData.map((item) => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">GST/ST </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Payment ID </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
+
+                                <div className="h-auto w-full mt-[5px]">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
+                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px] mb-0.5">
+                                                    Client <label className="text-red-500">*</label>
+                                                </div>
+                                                <AsyncSelect
+                                                    onChange={handleClientNameChange}
+                                                    value={selectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
+
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 23,
+                                                            lineHeight: '0.8',
+                                                            height: 4,
+                                                            width: 230,
+                                                            fontSize: 10,
+                                                            // padding: '1px'
+                                                        }),
+                                                        // indicatorSeparator: (provided, state) => ({
+                                                        //   ...provided,
+                                                        //   lineHeight : '0.5',
+                                                        //   height : 2,
+                                                        //   fontSize : 12 // hide the indicator separator
+                                                        // }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '1px', // adjust padding for the dropdown indicator
+                                                        }),
+                                                        options: (provided, state) => ({
+                                                            ...provided,
+                                                            fontSize: 10// adjust padding for the dropdown indicator
+                                                        }),
+                                                        menu: (provided, state) => ({
+                                                            ...provided,
+                                                            width: 230, // Adjust the width of the dropdown menu
+                                                        }),
+                                                    }}
+                                                />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">
+                                                    Mode <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                    name="mode"
+                                                    value={formValues.mode}
+                                                    onChange={handleChange}
+                                                >
+                                                    {modesData.map((item) => (
+                                                        <option key={item[0]} value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">GST/ST </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px] mb-0.5">Description </div>
+                                                <textarea className="w-[230px] h-[75px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                            </div>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="orderid"
-                                            value={formValues.orderid}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" >Select A Order</option>
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
-                                            <option value={null}> Select Vendor</option>
-                                            {vendorData.map(item => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">TDS Deduction </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                    </div>
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-sm text-[#787878] mb-0.5">Payment ID </div>
+                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Order <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="orderid"
+                                                    value={formValues.orderid}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="" >Select A Order</option>
+                                                    {orders.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.ordername}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
+                                                <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
+                                                    <option value={null}> Select Vendor</option>
+                                                    {vendorData.map(item => (
+                                                        <option key={item[0]} value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">TDS Deduction </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                            </div>
 
-                                    <div className="">
-                                        <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
-                                            {usersData.map(item => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <div className="">
+                                                <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
+                                                <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                                    {usersData.map(item => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
 
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
+                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#787878]">Order Date </div>
+                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#787878]">Order Status </div>
+                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Order Date </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Order Status </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
+                                </div>
+                                <div className="my-3 flex justify-center items-center gap-[10px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorPayment} >Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
                             </div>
                         </div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorPayment} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-                    </div>
-                </div>
                     </Draggable>
-                    </>
+                </>
             </Modal>
         </div>
     )
