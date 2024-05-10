@@ -28,6 +28,7 @@ import CancelModel from './../../../Components/modals/CancelModel';
 import DeletePaymentModal from './DeletePaymentModal';
 import DateFilter from '../../../Components/Filters/DateFilter';
 import Draggable from 'react-draggable';
+import DropDown from '../../../Components/dropdown/Dropdown';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -1341,7 +1342,7 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                         <div className=''>
                             <div className="w-[1100px]  h-auto bg-white rounded-lg ">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
@@ -1380,7 +1381,7 @@ const Payments = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs block" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                                {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs block" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                                     <option value="" hidden >Select User</option>
                                                     <option value="">Name   Username </option>
                                                     {allUsername.map(item => (
@@ -1401,7 +1402,8 @@ const Payments = () => {
                                                             
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                <DropDown options={allUsername}/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                             </div>
@@ -1493,7 +1495,7 @@ const Payments = () => {
                                 {/* </form> */}
                             </div>
                         </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </>
             </Modal>
         </div>
