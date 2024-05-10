@@ -18,6 +18,16 @@ const EditBankDetails = ({formValues,setFormValues}) => {
     }
     ]})
   }
+  const [accType ,setAccType] = useState([
+    {
+      id:1,
+      type:"Current"
+    },
+    {
+      id:2,
+      type:"Savings"
+    },
+  ])
   return (
         <div className='flex-col justify-center items-center mx-5 mt-10'>
           <div className="w-full h-full">
@@ -54,7 +64,7 @@ const EditBankDetails = ({formValues,setFormValues}) => {
               
             {formValues.project_bank_details.map((data, index) => {
               return (
-                <AddFeildBank index={index} formValues={formValues} setFormValues={setFormValues}/>
+                <AddFeildBank index={index} formValues={formValues} setFormValues={setFormValues} accType={accType}/>
               )
             })}
             <div className="w-full h-full bg-[#E6ECF5] cursor-pointer p-2 mt-1 flex justify-center items-center">
