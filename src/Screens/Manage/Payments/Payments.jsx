@@ -28,6 +28,7 @@ import CancelModel from './../../../Components/modals/CancelModel';
 import DeletePaymentModal from './DeletePaymentModal';
 import DateFilter from '../../../Components/Filters/DateFilter';
 import Draggable from 'react-draggable';
+import DropDown from '../../../Components/Dropdown/Dropdown';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -298,7 +299,7 @@ const Payments = () => {
     const initialValues = {
         curaoffice: "",
         paymentto: null,
-        paymentby: 1234,
+        paymentby: null,
         amount: "",
         description: "",
         paymentfor: "",
@@ -441,6 +442,7 @@ const Payments = () => {
     const [formErrors, setFormErrors] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(value)
         setFormValues({ ...formValues, [name]: value });
     };
 
@@ -1232,7 +1234,7 @@ const Payments = () => {
                                         <p>{item.amount.toFixed(2)}</p>
                                     </div>
                                     <div className='w-[10%] h-[50%] px-4 py-2 '>
-                                        <p>{item.paidon.split('T')[0]}</p>
+                                        <p>{item.paidon}</p>
                                     </div>
                                     <div className='w-[14%] h-[50%] px-4 py-2 ml-[2px]'>
                                         <p>{item.paymentmode}</p>
@@ -1341,7 +1343,7 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                         <div className=''>
                             <div className="w-[1100px]  h-auto bg-white rounded-lg ">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
@@ -1362,7 +1364,7 @@ const Payments = () => {
                                             </div>
                                             <div className="pt-0.5">
                                                 <div className="text-sm ">Payment To <label className="text-red-500">*</label></div>
-                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                                {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                                     <option value="" hidden >Select User</option>
                                                     <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                                     {allUsername.map(item => (
@@ -1375,12 +1377,13 @@ const Payments = () => {
                                                             {item.username}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs block" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                                {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs block" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                                     <option value="" hidden >Select User</option>
                                                     <option value="">Name   Username </option>
                                                     {allUsername.map(item => (
@@ -1401,7 +1404,9 @@ const Payments = () => {
                                                             
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                
+                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby}/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                             </div>
@@ -1493,7 +1498,7 @@ const Payments = () => {
                                 {/* </form> */}
                             </div>
                         </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </>
             </Modal>
         </div>

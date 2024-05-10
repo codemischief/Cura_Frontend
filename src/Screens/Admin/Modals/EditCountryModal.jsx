@@ -63,7 +63,7 @@ const EditCountryModal = (props) => {
                                                     onChange={handleChange}
                                                     autoComplete="off"
                                                 />
-                                                <div className="text-[12px] text-[#CD0000] ">{errorMessage}</div>
+                                                <div className="h-[12px] w-[200px] text-[12px] text-[#CD0000] absolute">{errorMessage}</div>
                                             </div>
                                         </div>
                                     </div>

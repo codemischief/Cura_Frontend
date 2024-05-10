@@ -870,7 +870,8 @@ const handleEnterToFilter = (event,inputVariable,
                             onChange={handleChange}
                             autoComplete="off"
                           />
-                          <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div>
+                          <div className="h-[12px] w-[200px] text-[12px] text-[#CD0000] absolute">{formErrors.countryName}</div>
+                          {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.countryName}</div> */}
                         </div>
                       </div>
                     </div>

@@ -5,6 +5,7 @@ import { APIService } from '../../../services/API';
 import { Modal,CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import Draggable from 'react-draggable';
+import DropDown from '../../../Components/Dropdown/Dropdown';
 // import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 const EditPayments = (props) => {
     console.log(props.item.item);
@@ -94,11 +95,14 @@ const EditPayments = (props) => {
        const data = {"user_id":1234,"table_name":"ref_contractual_payments","item_id": props.item.item.id};
        const response = await APIService.getItembyId(data);
        const result = await response.json();
-       setFormValues(result.data);
-       setFormValues((existing) => {
-        return {...existing, paidon : result.data.paidon.split('T')[0]}
-     })
-     setPageLoading(false);
+       setFormValues((existing) => result.data);
+    //    setFormValues((existing) => {
+    //     return {...existing, paidon : result.data.paidon.split('T')[0]}
+    //  })
+     setTimeout(() => {
+         setPageLoading(false)
+     },1000)
+    //  setPageLoading(false);
        console.log(result)
     }
     useEffect(() => {
@@ -324,7 +328,7 @@ const EditPayments = (props) => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                 <div className=''>
                     <div className="w-[1100px]  h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
@@ -346,7 +350,7 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="pt-0.5">
                                         <div className="text-[13px]">Payment To <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
+                                        {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                         <option value="" hidden >Select User</option>
                                             <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                         {allUsername.map(item => (
@@ -359,12 +363,13 @@ const EditPayments = (props) => {
                                                     {item.username}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                        <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Payment By <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                         <option value="" hidden >Select User</option>
                                             <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
                                             {allUsername.map(item => (
@@ -379,7 +384,8 @@ const EditPayments = (props) => {
                                                 </option>
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                        <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} />
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                     </div>
                                     <div className="">
@@ -470,7 +476,7 @@ const EditPayments = (props) => {
                         {/* </form> */}
                     </div>
                 </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                     </>
             </Modal>
         </>

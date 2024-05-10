@@ -539,9 +539,11 @@ const City = () => {
            
         }
     }  
-    const handleDeleteCity = (id) => {
+    const [currentCityName,setCurrentCityName] = useState("")
+    const handleDeleteCity = (item) => {
     setErrorMessage((prev) => "Proccess Cancelled,Changes Not Saved")
-       setCurrentCity(id)
+       setCurrentCity(item.id)
+       setCurrentCityName(item.city)
        setShowDeleteModal(true)
     }
     const deleteCity = async (id) => {
@@ -653,7 +655,7 @@ const City = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New City added successfully"/>}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="City Deleted Successully"/>}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
-            {showDeleteModal && <DeleteCityModal handleDelete={deleteCity} handleClose={() => { openCancel(); setShowDeleteModal(false);}} showCancel={openCancel} id={currentCity} />}
+            {showDeleteModal && <DeleteCityModal handleDelete={deleteCity} handleClose={() => { openCancel(); setShowDeleteModal(false);}} showCancel={openCancel} id={currentCity} currentCityName={currentCityName} />}
              {showEditModal  && <EditCityModal handleClose={() => {setShowEditModal(false);  openCancel()}} initialCountry={allCountry} initialData={currentCityData} openSuccess={openEditSuccess}/>}
             {showCancelModal && <CancelModel isOpen={showCancelModal} message={errorMessage} />}
 
@@ -913,7 +915,7 @@ const City = () => {
                                             </div>
                                             <div className="w-1/2 0 p-4 flex justify-between items-center">
                                                 <button onClick={() => handleEdit(item)}><img className="w-5 h-5" src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDeleteCity(item.id)}><img className="w-5 h-5" src={Trash} alt="trash" /></button>
+                                                <button onClick={() => handleDeleteCity(item)}><img className="w-5 h-5" src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>

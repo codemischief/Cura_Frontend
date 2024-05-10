@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, Navigate, useNavigate } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -32,7 +32,8 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Draggable from 'react-draggable';
 const ManageClientInfo = () => {
-
+    // const Navigate = useNavigate()
+    // const history = useHistory()
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -669,6 +670,8 @@ const ManageClientInfo = () => {
             "pg_size": 0,
             "search_key": searchInput
         };
+        // window.open("https://stackoverflow.com/questions/31079081/how-to-programmatically-navigate-using-react-router", '_blank');
+        // Navigate.call()
         const response = await APIService.getClientInfo(data)
         const temp = await response.json();
         const result = await temp.data.client_info;
