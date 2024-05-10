@@ -13,25 +13,25 @@ const AddFeildContacts = ({index,formValues,setFormValues}) => {
                 {index+1}
               </div>
               <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" value={formValues.project_contacts[index].contactname} name='contactname' onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_contacts[index].contactname} name='contactname' onChange={handleChange}/>
               </div>
               <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" name='phone' value={formValues.project_contacts[index].phone} onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" name='phone' value={formValues.project_contacts[index].phone} onChange={handleChange}/>
               </div>
               <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" value={formValues.project_contacts[index].email} name='email' onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_contacts[index].email} name='email' onChange={handleChange}/>
               </div>
               <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" name='role' value={formValues.project_contacts[index].role} onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" name='role' value={formValues.project_contacts[index].role} onChange={handleChange}/>
               </div>
               <div className="w-[16%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="date" value={formValues.project_contacts[index].effectivedate} name='effectivedate' onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="date" value={formValues.project_contacts[index].effectivedate} name='effectivedate' onChange={handleChange}/>
               </div>
               <div className="w-[17%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="date" value={formValues.project_contacts[index].tenureenddate} name='tenureenddate' onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="date" value={formValues.project_contacts[index].tenureenddate} name='tenureenddate' onChange={handleChange}/>
               </div>
               <div className="w-[13%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5]' type="text" value={formValues.project_contacts[index].details} name='details' onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_contacts[index].details} name='details' onChange={handleChange}/>
               </div>
             </div>
   )

@@ -420,7 +420,17 @@ const ManageProjectInfo = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": dataRows,
+            "rows": 
+            [
+                "projectname",
+                "buildername",
+                "suburb",
+                "otherdetails",
+                "mailgroup1",
+                "mailgroup2",
+                "rules",
+                "id"
+            ],
             "filters": stateArray,
             "sort_by": [sortField],
             "order": flag  ? "asc" : "desc",
@@ -613,6 +623,7 @@ const ManageProjectInfo = () => {
         console.log(res.data)
         setProjectLegalData(res.data)
     }
+    
 
     const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
     const [showCancelModel, setShowCancelModel] = useState(false);
