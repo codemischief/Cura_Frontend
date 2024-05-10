@@ -28,10 +28,10 @@ const AddFeildBank = ({index,formValues,setFormValues}) => {
                 <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_bank_details[index].bankaccountno} name="bankaccountno" onChange={handleChange}/>
               </div>
               <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_bank_details[index].bankifsccode} name="bankifsccode"  onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_bank_details[index].banktypeofaccount} name="banktypeofaccount" onChange={handleChange}/>
               </div>
               <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
-                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_bank_details[index].banktypeofaccount} name="banktypeofaccount" onChange={handleChange}/>
+                <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_bank_details[index].bankifsccode} name="bankifsccode"  onChange={handleChange}/>
               </div>
               <div className="w-[12%] h-full py-1 px-3 text-[11px]" >
               <input className='w-full h-full bg-[#F5F5F5] pl-1 outline-none' type="text" value={formValues.project_bank_details[index].bankmicrcode} name="bankmicrcode" onChange={handleChange}/>
