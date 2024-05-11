@@ -30,6 +30,7 @@ const ManageBuilderContact = () => {
     console.log(params.builderid)
     // console.log(params)
     const [existingProjects, setExistingProjects] = useState([]);
+    const [existingContacts,setExistingContacts] = useState([])
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -73,61 +74,46 @@ const ManageBuilderContact = () => {
     }
 
     const fetchBuilderData = async () => {
-        setPageLoading(true);
-        const data = {
+        // we make the calls here
+        const data ={
             "user_id": 1234,
+            "builderid": 101,
             "rows": [
-                "buildername",
-                "builderid",
-                "projectname",
-                "addressline1",
-                "addressline2",
-                "suburb",
-                "city",
-                "state",
-                "country",
-                "zip",
-                "nearestlandmark",
-                "project_type",
-                "mailgroup1",
-                "mailgroup2",
-                "website",
-                "project_legal_status",
-                "rules",
-                "completionyear",
-                "jurisdiction",
-                "taluka",
-                "corporationward",
-                "policechowkey",
-                "policestation",
-                "maintenance_details",
-                "numberoffloors",
-                "numberofbuildings",
-                "approxtotalunits",
-                "tenantstudentsallowed",
-                "tenantworkingbachelorsallowed",
-                "tenantforeignersallowed",
-                "otherdetails",
-                "duespayablemonth",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "id"
+              "id",
+              "buildername",
+              "builderid",
+              "contactname",
+              "jobtitle",
+              "businessphone",
+              "homephone",
+              "mobilephone",
+              "addressline1",
+              "addressline2",
+              "suburb",
+              "city",
+              "state",
+              "country",
+              "zip",
+              "notes",
+              "dated",
+              "createdby",
+              "isdeleted"
             ],
-            "builderid": currBuilderId,
             "filters": [],
-            "sort_by": [],
+            "sort_by": [
+              "id"
+            ],
             "order": "asc",
-            "pg_no": 0,
-            "pg_size": 0
-        };
-        const response = await APIService.getProjectsByBuilderId(data)
+            "pg_no": 1,
+            "pg_size": 15
+          }
+        
+        const response = await APIService.getBuilderContactsById(data);
         const res = await response.json()
-        console.log(res)
-        const result = res.data;
-        setPageLoading(false);
-        // console.log(result);
-        setExistingProjects(result);
+        console.log(res.data)
+        setPageLoading((prev) => false)
+        setExistingContacts((prev) => res.data)
+
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -313,6 +299,12 @@ const ManageBuilderContact = () => {
     }
     const handlePageChange = () => {
 
+    } 
+    const handleCloseSearch = () => {
+
+    }
+    const handleSearch = () => {
+
     }
     const [downloadModal, setDownloadModal] = useState(false)
     const [builderFilter, setBuilderFilter] = useState(false)
@@ -325,236 +317,378 @@ const ManageBuilderContact = () => {
     const [suburbFilterInput, setSuburbFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("")
+    
+    const [searchInput,setSearchInput] = useState("")
 
     return (
-        <div >
-            <Navbar />
-            <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
-            <FailureModal isOpen={showFailure} message="Error! cannot create the builder" />
-            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} />
-            <div className='flex-col w-full h-full  bg-white'>
-                <div className='flex-col'>
-                    {/* this div will have all the content */}
-                    <div className='w-full  flex-col px-6'>
-                        {/* the top section of the div */}
-                        <div className='h-1/2 w-full  flex justify-between items-center p-2 '>
-                            <div className='flex items-center space-x-3'>
-                                <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                                    <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
-                                </div>
-                                <div className='flex-col'>
-                                    <h1 className="text-[18px]">Manage Builder Contact</h1>
-                                    <p className="text-[14px]">Manage &gt; Manage Builder &gt; Builder Contact</p>
-                                </div>
-                            </div>
-                            <div className='flex space-x-2 items-center'>
-                                <div className='flex'>
-                                    {/* search button */}
-                                    <input
-                                        className="h-[36px] bg-[#EBEBEB] text-[#787878]"
-                                        type="text"
-                                        placeholder="  Search"
-                                    />
-                                    <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                                        <img className="h-[26px] " src={searchIcon} alt="search-icon" />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    {/* button */}
-                                    <button className="bg-[#004DD7] text-white h-[36px] w-[280px] rounded-lg" onClick={handleOpen}>
-                                        <div className="flex items-center justify-center gap-4">
-                                            Add New Buider Contact
-                                            <img className='h-[18px] w-[18px]' src={Add} alt="add" />
-                                        </div>
-                                    </button>
-                                </div>
-
-                            </div>
-
+        <div className="h-screen">
+            <Navbar/>
+             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
+                <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
+                    <div className='flex items-center space-x-3'>
+                        <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
+                        <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
                         </div>
-                        <div className="h-10 w-full flex items-center border-gray-400 border-b-[1px]">
-                            <h1 className="font-bold text-[18px]">Builder Name : {params.buildername}</h1>
-                        </div>
-                        <div className='h-12 w-full bg-white'>
-                            <div className='w-full h-12 flex items-center gap-52'>
-                                <div className=' flex '>
-                                    <div className='p-3'>
 
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-24 ml-7">
-                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
-                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px] ml-5">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
-                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px] ml-5">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
-                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
-                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                    <div className="w-[37%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                        <input className="w-14 bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2" />
-                                        <button className='p-1'><img src={Filter} className='h-[15px] w-[15px]' /></button>
-                                    </div>
-                                </div>
+                        <div className='flex-col'>
+                            <h1 className='text-[18px]'>Manage Client</h1>
+                            <p className='text-[14px]'>Manage &gt; Manage Client</p>
+                        </div>
+                    </div>
+                    <div className='flex space-x-2 items-center'>
+
+                        <div className='flex relative'>
+                            {/* search button */}
+                            <input
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-2"
+                                type="text"
+                                placeholder="  Search"
+                                value={searchInput}
+                                onChange={(e) => {
+                                    setSearchInput(e.target.value);
+                                }}
+                            />
+                            <button onClick={handleCloseSearch}><img src={Cross} className='absolute w-[20px] h-[20px] left-[160px] top-2' /></button>
+                            <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
+                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
+                        </div>
+
+                        <div>
+                            {/* button */}
+                            <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
+                                <div className="flex items-center justify-center gap-4 text-[14px]">
+                                    Add New Client
+                                    <img className='h-[18px] w-[18px]' src={Add} alt="add" />
+                                </div>
+                            </button>
                         </div>
 
                     </div>
 
-                    <div className='w-full h-[400px] bg-white px-6  text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex items-center gap-52'>
-                            <div className=' flex '>
+                </div>
+
+
+
+
+                <div className='h-12 w-full bg-white'>
+                    <div className='w-full h-12 bg-white flex justify-between'>
+                        <div className="w-[85%] flex">
+                            <div className='w-[3%] flex'>
                                 <div className='p-3'>
-                                    <p>Sr.</p>
+                                    {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className="flex items-center gap-20">
-                                <div className='  flex'>
-                                    <div className='p-3'>
-                                        <p>Contact Name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
+                            <div className='w-[13%] px-3 py-2.5 '>
+                                {/* <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameInput} onChange={(e) => setClientNameInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
-                                <div className='  flex'>
-                                    <div className='p-3'>
-                                        <p>Builder Name <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='  flex'>
-                                    <div className='p-3'>
-                                        <p>Job Title <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='  flex'>
-                                    <div className='p-3'>
-                                        <p>Suburb <span className="font-extrabold">↑↓</span></p>
-                                    </div>
-                                </div>
-                                <div className='  flex'>
-                                    <div className='p-3'>
-                                        <p>City </p>
-                                    </div>
-                                </div>
+
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameInput} setInputVariable={setClientNameInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />} */}
+
                             </div>
+
+                            <div className='w-[11%] px-3 py-2.5 '>
+                                {/* <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[73%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientTypeNameInput} onChange={(e) => setClientTypeNameInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[27%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientTypeNameFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {clientTypeNameFilter && <CharacterFilter inputVariable={clientTypeNameInput} setInputVariable={setClientTypeNameInput} handleFilter={newHandleFilter} filterColumn='clienttypename' menuRef={menuRef} />} */}
+
+                            </div>
+
+                            <div className='w-[8%] px-3 py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {tenantOfTypeNameFilter && <CharacterFilter inputVariable={tenantOfTypeNameInput} setInputVariable={setTenantOfTypeNameInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofname' />} */}
+
+                            </div>
+
+                            <div className='w-[8%] px-3 py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {tenantOfPropertyFilter && <CharacterFilter inputVariable={tenantOfPropertyInput} setInputVariable={setTenantOfPropertyInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='tenantofpropertyname' />} */}
+                                {/* {tenantOfPropertyFilter && <CharacterFilter handleFilter={handleFilter} menuRef={menuRef} filterColumn='tenentof' />} } */}
+
+                            </div>
+
+                            <div className='w-[8%]  px-3 py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryInput} onChange={(e) => setCountryInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCountryFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {countryFilter && <CharacterFilter inputVariable={countryInput} setInputVariable={setCountryInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />} */}
+                            </div>
+
+                            <div className='w-[6%] px-3 py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[50%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityInput} onChange={(e) => setCityInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[50%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {cityFilter && <CharacterFilter inputVariable={cityInput} setInputVariable={setCityInput} filterColumn='city' menuRef={menuRef} handleFilter={newHandleFilter} />} */}
+                            </div>
+
+                            <div className='w-[10%] px-3 py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[28%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPhoneFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {phoneFilter && <CharacterFilter inputVariable={phoneInput} setInputVariable={setPhoneInput} filterColumn='mobilephone' handleFilter={newHandleFilter} menuRef={menuRef} />} */}
+
+                            </div>
+
+                            <div className='w-[11%] px-3 py-2.5'>
+                                {/* <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={email1Input} onChange={(e) => setEmail1Input(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setEmail1Filter((prev) => !prev) }} /></button>
+                                </div>
+                                {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email1' handleFilter={newHandleFilter} menuRef={menuRef} />} */}
+                            </div>
+
+                            <div className='w-[9%] px-3 py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={employerInput} onChange={(e) => setEmployerInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setEmployerFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {employerFilter && <CharacterFilter inputVariable={employerInput} setInputVariable={setEmployerInput} filterColumn='employername' handleFilter={newHandleFilter} menuRef={menuRef} />} */}
+                            </div>
+
                         </div>
-                        <div className='w-full h-[400px] overflow-auto'>
-                            {/* we map our items here */}
-                            {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                            {!pageLoading && existingProjects.map((item, index) => {
-                                return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
-                                    <div className="w-[85%] flex min-h-0">
-                                        <div className='w-[4%] flex  overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{index + 1}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.projectname}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.buildername}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.suburb}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[14%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.otherdetails}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.mailgroup1}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[10%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p>{item.rules}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-[12%]  flex overflow-hidden'>
-                                            <div className='p-3'>
-                                                <p></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="w-[15%] flex">
-                                        <div className='w-1/2  flex overflow-hidden'>
-                                            <div className='p-3 ml-1'>
-                                                <p>{item.id}</p>
-                                            </div>
-                                        </div>
-                                        <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
-                                            <img className=' w-5 h-5' src={Edit} alt="edit" />
-                                            <button onClick={() => { }}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
-                                        </div>
-                                    </div>
+                        <div className="w-[15%] ">
+                            <div className='w-1/2   p-3'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                    <input className="w-[63%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} />
+                                    <button className='px-1 py-2 w-[37%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                </div>
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setidFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} />} */}
+                            </div>
+
+                            <div className='w-1/2  flex'>
+                                <div className='p-3'>
 
                                 </div>
-                            })}
-                        </div>
-                    </div>
-
-                    <div className='w-full h-[250] flex justify-between justify-self-end px-6 fixed bottom-2 '>
-                        {/* footer component */}
-                        <div className='ml-2'>
-                            <div className='flex items-center w-auto h-full'>
-                                {/* items */}
-                                {/* <Pagination count={Math.ceil(totalItems/currentPages)} onChange={handlePageChange} page={currentPage}/> */}
-
-                            </div>
-                        </div>
-                        <div className='flex mr-10 justify-center items-center space-x-2 '>
-                            <div className="flex mr-8 space-x-2 text-sm items-center">
-
-                            </div>
-                            <div className="flex text-sm">
-                                {/* <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems/currentPages)} Pages</p> */}
-                            </div>
-                            {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
-
-                                <div className='flex'>
-                                    <p>Download as pdf</p>
-                                    {/* <img src=''/> */}
-                                </div>
-                                <div>
-                                    <p>Download as Excel</p>
-                                </div>
-                            </div>}
-
-                            <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
-                                {/* refresh */}
-                                <button onClick={handleRefresh}><p>Refresh</p></button>
-                                <img src={refreshIcon} className="h-2/3" />
-                            </div>
-                            <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
-                                {/* download */}
-                                <button onClick={handleDownload}><p>Download</p></button>
-                                <img src={downloadIcon} className="h-2/3" />
                             </div>
                         </div>
                     </div>
                 </div>
 
+
+                <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
+                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                        <div className="w-[100%] flex">
+                            <div className='w-[15%] flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Sr.</p>
+                                </div>
+                            </div>
+                            <div className='w-[20%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Contact Name <button onClick={() => handleSort('clientname')}> <span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[15%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Builder Name <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[15%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>Job Title <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[15%]  flex'>
+                                <div className='px-3 py-3.5 flex space-x-2'>
+                                    <div>
+
+                                        <p>Suburb</p>
+                                        
+                                    </div>
+                                    <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
+                                </div>
+                            </div>
+                            <div className='w-[5%]  flex'>
+                                <div className='px-3 py-5'>
+                                    <p>City<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+
+                    </div>
+
+
+
+                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
+
+
+                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingContacts && existingContacts.map((item, index) => {
+                            return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                                <div className="w-[85%] flex">
+                                    <div className='w-[3%] flex overflow-x-hidden'>
+                                        <div className='p-3'>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[13%]  flex '>
+                                        <div className='p-3'>
+                                            <p>{item.clientname} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[11%]  flex'>
+                                        <div className='p-3'>
+                                            <p> {item.clienttypename}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[8%]  flex '>
+                                        <div className='p-3'>
+                                            <p>{item.tenantofname} </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[8%]  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.tenantofpropertyname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[8%]  flex '>
+                                        <div className='p-3 ml-2'>
+                                            <p>{item.country}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[6%]  flex overflow-hidden'>
+                                        <div className='p-3 ml-1'>
+                                            <p>{item.city}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[10%]  flex overflow-hidden'>
+                                        <div className='p-3'>
+                                            <p>{item.mobilephone}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[11%]  flex'>
+                                        <div className='p-3 overflow-hidden '>
+                                            <p>{item.email1 || item.email2}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[9%]  flex ml-2'>
+                                        <div className='p-3'>
+                                            <p>{item.employername}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[7%]  flex'>
+                                        <div className='p-3 text-[11px] text-blue-500'>
+                                            
+                                            {/* <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link> */}
+                                        </div>
+                                    </div>
+                                    <div className='w-[6%]  flex'>
+                                        <div className='p-3 text-[11px] text-blue-500'>
+                                            <Link to="">Orders</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[15%] flex">
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3'>
+                                            <p>{item.id}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-1/2  flex'>
+                                        <div className='p-3 flex space-x-2'>
+                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
+                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        })}
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+
+            <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
+                {/* footer component */}
+                <div className='ml-2'>
+                    <div className='flex items-center w-auto h-full'>
+                        {/* items */}
+                        <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
+
+                    </div>
+                </div>
+                <div className='flex mr-10 justify-center items-center space-x-2 '>
+                    <div className="flex mr-8 space-x-2 text-sm items-center">
+                        <p className="text-gray-700">Items Per page</p>
+                        <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
+                            name="currentPages"
+                            value={currentPages}
+                            //  defaultValue="Select State"
+                            onChange={e => {
+                                setCurrentPages(e.target.value);
+                                console.log(e.target.value);
+
+                                fetchQuantityData(e.target.value)
+                            }}
+
+                        >
+                            <option>
+                                15
+                            </option>
+                            <option>
+                                25
+                            </option>
+                            <option>
+                                50
+                            </option>
+                        </select>
+                    </div>
+                    <div className="flex text-sm">
+                        <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
+                    </div>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
+
+                        <button>
+                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+
+                                <p>Download as pdf</p>
+                                <img src={Pdf} />
+                            </div>
+                        </button>
+                        <button onClick={handleExcelDownload}>
+                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                <p>Download as Excel</p>
+                                <img src={Excel} />
+                            </div>
+                        </button>
+                    </div>}
+
+                    <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
+                        {/* refresh */}
+                        <button onClick={() => {}}><p>Refresh</p></button>
+                        <img src={refreshIcon} className="h-2/3" />
+                    </div>
+                    <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
+                        {/* download */}
+                        <button onClick={() => {}}><p>Download</p></button>
+                        <img src={downloadIcon} className="h-2/3" />
+                    </div>
+                </div>
             </div>
 
             {/* modal goes here */}
