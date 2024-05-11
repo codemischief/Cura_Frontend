@@ -17,11 +17,14 @@ const EditManageBuilder = (props) => {
     console.log(props.currBuilder)
     const openSuccessModal = () => {
         // set the state for true for some time
-        props.setOpenDialog(false);
+        // props.setOpenDialog(false);
         setShowSucess(true);
+        props.setOpenDialog(false)
         setTimeout(function () {
             setShowSucess(false)
+            
         }, 2000)
+        
     }
     const openFailureModal = () => {
         props.setOpenDialog(false);
@@ -35,28 +38,28 @@ const EditManageBuilder = (props) => {
         const data = {
             "user_id": 1234,
             "builder_id": Number(props.builder.id),
-            "builder_name": String(formValues.builderName),
-            "phone_1": String(formValues.phone1),
-            "phone_2": String(formValues.phone2),
-            "email1": String(formValues.email1),
-            "email2": String(formValues.email2),
-            "addressline1": String(formValues.address1) == "" ? "" : String(formValues.address1),
-            "addressline2": String(formValues.address2),
-            "suburb":String(formValues.suburb),
+            "builder_name": formValues.builderName,
+            "phone_1": formValues.phone1,
+            "phone_2": formValues.phone2,
+            "email1": formValues.email1,
+            "email2": formValues.email2,
+            "addressline1": formValues.address1,
+            "addressline2":formValues.address2,
+            "suburb":formValues.suburb,
             "city": Number(formValues.city),
-            "state": String(formValues.state),
+            "state": formValues.state,
             "country": Number(formValues.country),
-            "zip": String(formValues.zip),
-            "website": String(formValues.website),
-            "comments": String(formValues.comment),
-            "dated": "10-03-2024 08:29:00",
-            "created_by": 1234,
-            "is_deleted": false
+            "zip": formValues.zip,
+            "website": formValues.website,
+            "comments": formValues.comment
         }
         console.log(data);
         const response = await APIService.editBuilderInfo(data);
-        if (response.ok) {
-            openSuccessModal();
+        const res = await response.json()
+        if (res.result == 'success') {
+              
+            // openSuccessModal();
+            props.showSuccess();
         } else {
             openFailureModal();
         }
@@ -133,9 +136,10 @@ const EditManageBuilder = (props) => {
         if (formValues.builderName == "") {
             return;
         }
+        console.log('here')
         setIsLoading(true);
-        await editNewBuilder();
-         await props.fetchData();   
+        editNewBuilder();
+         
         setIsLoading(false);
     };
     // validate form and to throw Error message
@@ -199,7 +203,7 @@ const EditManageBuilder = (props) => {
         temp.city =  res.data.city
         temp.zip =  res.data.zip
         temp.website =  res.data.website
-        temp.comment =  res.data.comment
+        temp.comment =  res.data.comments
         setFormValues(temp)
         console.log(res)
         setLoading(false)
@@ -218,7 +222,7 @@ const EditManageBuilder = (props) => {
         <>
             <SucessfullModal isOpen={showSucess} message="Changes saved succesfully " />
             <FailureModal isOpen={showFailure} message="Error! cannot edit the builder" />
-            <Modal open={props.openDialog}
+            <Modal open={true}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center' >
@@ -274,7 +278,14 @@ const EditManageBuilder = (props) => {
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"  name="country" value={formValues.country} onChange={handleChange} >
+                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"  name="country" value={formValues.country} onChange={(e) => {
+                                                handleChange(e)
+                                                setFormValues({ ...formValues, state: null });
+                                                setFormValues({ ...formValues, city: null });
+                                                setAllState([])
+                                                fetchStateData(e.target.value)
+                                                setAllCity([])
+                                            }} >
                                                 {allCountry && allCountry.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
@@ -286,6 +297,7 @@ const EditManageBuilder = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">State <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="state" value={formValues.state} onChange={handleChange} >
+                                            <option  hidden>Select A State</option>
                                                 {allState && allState.map(item => (
                                                     <option value={item}>
                                                         {item}
@@ -297,6 +309,7 @@ const EditManageBuilder = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">City <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="city" value={formValues.city} onChange={handleChange} >
+                                                <option  hidden>Select A City</option>
                                                 {allCity && allCity.map(item => (
                                                     <option key={item.id} value={item.id}>
                                                         {item.city}
