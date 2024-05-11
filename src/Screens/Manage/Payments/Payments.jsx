@@ -1220,41 +1220,41 @@ const Payments = () => {
                     <div className=' w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {pageLoading && <LinearProgress />}
                         {!pageLoading && existingPayments.map((item, index) => {
-                            return <div className='w-full min-h-8 h-auto  flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full min-h-10 h-auto  flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className='w-[85%] flex text-xs'>
-                                    <div className='w-[5%] h-[50%] p-4'>
+                                    <div className='w-[5%] h-[50%] px-4'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                     </div>
-                                    <div className='w-[13%] h-[50%] px-4 py-2 '>
+                                    <div className='w-[13%] h-[50%] px-4  '>
                                         <p>{item.paymentto}</p>
                                     </div>
-                                    <div className='w-[13%] h-[50%] px-4 py-2 ml-1'>
+                                    <div className='w-[13%] h-[50%] px-4  ml-1'>
                                         <p>{item.paymentby}</p>
                                     </div>
-                                    <div className='w-[10%] h-[50%] px-4 py-2 '>
+                                    <div className='w-[10%] h-[50%] px-4  '>
                                         <p>{item.amount.toFixed(2)}</p>
                                     </div>
-                                    <div className='w-[10%] h-[50%] px-4 py-2 '>
+                                    <div className='w-[10%] h-[50%] px-4  '>
                                         <p>{item.paidon}</p>
                                     </div>
-                                    <div className='w-[14%] h-[50%] px-4 py-2 ml-[2px]'>
+                                    <div className='w-[14%] h-[50%] px-4  ml-[2px]'>
                                         <p>{item.paymentmode}</p>
                                     </div>
-                                    <div className='w-[13%] h-[50%] px-4 py-2 '>
+                                    <div className='w-[13%] h-[50%] px-4  '>
                                         <p>{item.paymentfor}</p>
                                     </div>
                                     {/* <div className='w-[15%] h-[50%] px-4 py-2 ml-1'>
                                         <p>{item.paymentstatus}</p>
                                     </div> */}
-                                    <div className='w-[10%] h-[50%] pl-4 py-2 '>
+                                    <div className='w-[10%] h-[50%] pl-4  '>
                                         <p>{item.entity}</p>
                                     </div>
                                 </div>
-                                <div className='w-[15%] flex'>
-                                    <div className='w-1/2 h-[50%] px-4 py-2 ml-1'>
+                                <div className='w-[15%] flex items-center'>
+                                    <div className='w-1/2 h-[50%] px-4 ml-1'>
                                         <p>{item.id}</p>
                                     </div>
-                                    <div className='w-1/2 0 p-4 flex space-x-2'>
+                                    <div className='w-1/2 0 px-4 flex space-x-2'>
                                         <button onClick={() => editStatement(item)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
                                         <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
@@ -1364,7 +1364,7 @@ const Payments = () => {
                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
                                             <div className="pt-0.5">
-                                                <div className="text-sm ">Payment To <label className="text-red-500">*</label></div>
+                                                <div className="text-sm mb-1">Payment To <label className="text-red-500">*</label></div>
                                                 {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                                     <option value="" hidden >Select User</option>
                                                     <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
@@ -1382,8 +1382,8 @@ const Payments = () => {
                                                  <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                             </div>
-                                            <div className="">
-                                                <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
+                                            <div className="pt-0.5">
+                                                <div className="text-sm mb-1">Payment By <label className="text-red-500">*</label></div>
                                                 {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs block" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                                     <option value="" hidden >Select User</option>
                                                     <option value="">Name   Username </option>
