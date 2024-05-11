@@ -346,7 +346,7 @@ const EditPayments = (props) => {
                                         <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="pt-0.5">
-                                        <div className="text-[13px]">Payment To <label className="text-red-500">*</label></div>
+                                        <div className="text-[13px] mb-1">Payment To <label className="text-red-500">*</label></div>
                                         {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentto" value={formValues.paymentto} onChange={handleChange} >
                                         <option value="" hidden >Select User</option>
                                             <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
@@ -364,8 +364,8 @@ const EditPayments = (props) => {
                                         <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
                                         {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentTo}</div> */}
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Payment By <label className="text-red-500">*</label></div>
+                                    <div className="pt-0.5">
+                                        <div className="text-[13px] mb-1">Payment By <label className="text-red-500">*</label></div>
                                         {/* <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                         <option value="" hidden >Select User</option>
                                             <option value="" >Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Username </option>
