@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import {DownOutlined} from "@ant-design/icons"
-const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,pageLoading}) => {
+const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,pageLoading}) => {
   const ref = useRef();
   const [show, setShow] = useState(false);
-  const [text,setText] = useState(initialValue)
+//   const [text,setText] = useState(orderText)
   const onSelect = (item) => {
     setShow(false)
-    setText(item[toSelect])
+    setOrderText(item[toSelect])
     // we need to call handle change her
     handleChange({
         target : {
@@ -19,7 +19,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
     console.log('rendered')
     console.log('called')
     console.log(text)
-      setText((prev) => text)
+      setOrderText((prev) => text)
   }
   useEffect(() => {
     // we might have to set the initial value here
@@ -31,7 +31,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
             // if any value matches the initial value
             if(item.id == value) {
                 // this should be the default value
-                setTextValue(item[toSelect])
+                setOrderText(item[toSelect])
             }
         })
     }
@@ -52,7 +52,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
       document.removeEventListener("mousedown", listener);
       document.removeEventListener("touchstart", listener);
     };
-  }, [value,show,text]);
+  }, [value,show,orderText]);
 
   return (
     <div className="relative flex flex-col" ref={ref}>
@@ -60,7 +60,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
       <button onClick={() => {setShow((prev) => !prev)}}>
         <div className="w-56 h-5  border-[1px] border-[#C6C6C6] flex items-center justify-between">
         
-                  <p className="text-[10px] text-start pl-[15px]">{text} </p>
+                  <p className="text-[10px] text-start pl-[15px]">{orderText} </p>
                   <div className="mr-[10px]">
                   <DownOutlined style={{ fontSize: '60%'}} />
                   </div>
@@ -113,7 +113,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
                     className="flex justify-between text-[12px] cursor-pointer px-[8px] hover:bg-blue-400"
                     onClick={() => onSelect(item)}
                   >
-                    <p className="max-w-[50%]">{item[leftAttr]}</p>
+                   <p className="max-w-[50%]">{item[leftAttr]}</p>
                     <p className="max-w-[50%]" >{item[rightAttr]}</p>
                   </div>
                 );
@@ -126,4 +126,4 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
   );
 };
 
-export default DropDown;
+export default OrderDropDown;

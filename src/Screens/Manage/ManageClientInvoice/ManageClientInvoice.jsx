@@ -30,7 +30,8 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
-import DropDown from '../../../Components/Dropdown/Dropdown';
+// import DropDown from '../../../Components/Dropdown/Dropdown';
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const ManageClientInvoice = () => {
 
     const menuRef = useRef();
@@ -95,8 +96,10 @@ const ManageClientInvoice = () => {
         //   ...formValues.client_property,
         //   clientid : e.value
         //  }})
+        setOrderText((prev) => "Select Order")
         const existing = { ...formValues }
         existing.client = e.value
+        existing.order = null
         getOrdersByClientId(e.value)
         setFormValues(existing)
         //    const existing = {...formValues}
@@ -842,6 +845,8 @@ const ManageClientInvoice = () => {
         setExistingClientInvoice(result);
         setPageLoading(false);
     }
+
+    const [orderText,setOrderText] = useState("Select Order")
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1308,7 +1313,8 @@ const ManageClientInvoice = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                         <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="id" handleChange={handleChange} formValueName="order" value={formValues.order}/>
+                                          <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText}leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/>
+                                         {/* <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/> */}
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
