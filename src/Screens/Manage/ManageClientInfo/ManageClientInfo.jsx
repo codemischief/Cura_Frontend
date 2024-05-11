@@ -34,6 +34,7 @@ import Draggable from 'react-draggable';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
     // const history = useHistory()
+    const navigate = useNavigate();
     const menuRef = useRef();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
@@ -1357,7 +1358,7 @@ const ManageClientInfo = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                        <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
+                        <button onClick={() => {navigate(-1)}}><img className='h-5 w-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
