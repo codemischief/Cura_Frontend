@@ -400,6 +400,7 @@ const EditPayments = (props) => {
                                     <div className="">
                                         <div className="text-[13px]">Payment For </div>
                                         <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                            <option hidden>Select Payment For</option>
                                             {paymentFor.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}

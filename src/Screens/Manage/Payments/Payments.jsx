@@ -96,9 +96,9 @@ const Payments = () => {
         const result = (await response.json());
         // console.log(result.data);
         setPaymentMode(result.data);
-        setFormValues((existing) => {
-            return { ...existing, paymentmode: result.data[0][0] }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, paymentmode: result.data[0][0] }
+        // })
     }
     const fetchPaymentFor = async () => {
         const data = {
@@ -108,9 +108,9 @@ const Payments = () => {
         const result = (await response.json())
         setPaymentFor(result.data);
         // console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, paymentfor: result.data[0].id }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, paymentfor: result.data[0].id }
+        // })
         // console.log(result);
     }
     useEffect(() => {
@@ -300,18 +300,19 @@ const Payments = () => {
         curaoffice: "",
         paymentto: null,
         paymentby: null,
-        amount: "",
-        description: "",
-        paymentfor: "",
-        paymentmode: "",
+        amount: null,
+        description: null,
+        paymentfor: null,
+        paymentmode: null,
         entity: 1,
-        paidon: "",
-        month: "january",
-        tds: "",
-        professiontax: "",
-        deduction: ""
+        paidon: null,
+        month: null,
+        tds: null,
+        professiontax: null,
+        deduction: null
     };
     const handleAddPayment = () => {
+        console.log(formValues)
         if (!validate()) {
             return;
         }
@@ -487,16 +488,16 @@ const Payments = () => {
                 return { ...existing, amount: "" }
             })
         }
-        if (!formValues.paymentfor) {
-            setFormErrors((existing) => {
-                return { ...existing, paymentfor: "Select Tally Ledger" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, paymentfor: "" }
-            })
-        }
+        // if (!formValues.paymentfor) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, paymentfor: "Select Tally Ledger" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, paymentfor: "" }
+        //     })
+        // }
         if (!formValues.paymentmode) {
             setFormErrors((existing) => {
                 return { ...existing, paymentmode: "Select a payment mode" }
@@ -1123,7 +1124,7 @@ const Payments = () => {
                                 </div>
                                 {paymentForFilter && <CharacterFilter inputVariable={paymentForFilterInput} setInputVariable={setPaymentForFilterInput} handleFilter={newHandleFilter} filterColumn='paymentfor' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[15%]  px-4 py-3'>
+                            {/* <div className='w-[15%]  px-4 py-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentStatusFilterInput} onChange={(e) => setPaymentStatusFilterInput(e.target.value)} 
 
@@ -1136,7 +1137,7 @@ const Payments = () => {
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {paymentStatusFilter && <CharacterFilter inputVariable={paymentStatusFilterInput} setInputVariable={setPaymentStatusFilterInput} handleFilter={newHandleFilter} filterColumn='paymentstatus' menuRef={menuRef} />}
-                            </div>
+                            </div> */}
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
@@ -1200,9 +1201,9 @@ const Payments = () => {
                             <div className='w-[13%]  p-4'>
                                 <p>Payment For <button onClick={() => handleSort('paymentfor')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[15%]  p-4'>
+                            {/* <div className='w-[15%]  p-4'>
                                 <p>Payment Status <button onClick={() => handleSort('paymentstatus')}><span className="font-extrabold">↑↓</span></button></p>
-                            </div>
+                            </div> */}
                             <div className='w-[10%]  p-4'>
                                 <p>Entity <button onClick={() => handleSort('entity')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
@@ -1242,9 +1243,9 @@ const Payments = () => {
                                     <div className='w-[13%] h-[50%] px-4 py-2 '>
                                         <p>{item.paymentfor}</p>
                                     </div>
-                                    <div className='w-[15%] h-[50%] px-4 py-2 ml-1'>
+                                    {/* <div className='w-[15%] h-[50%] px-4 py-2 ml-1'>
                                         <p>{item.paymentstatus}</p>
-                                    </div>
+                                    </div> */}
                                     <div className='w-[10%] h-[50%] pl-4 py-2 '>
                                         <p>{item.entity}</p>
                                     </div>
@@ -1378,7 +1379,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
+                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="">
@@ -1422,6 +1423,7 @@ const Payments = () => {
                                             <div className="">
                                                 <div className="text-sm">Payment For </div>
                                                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
+                                                    <option hidden>Select Payment For</option>
                                                     {paymentFor.map(item => (
                                                         <option key={item.id} value={item.id}>
                                                             {item.name}
@@ -1439,7 +1441,7 @@ const Payments = () => {
                                             <div className="">
                                                 <div className="text-sm">Payment Mode <label className="text-red-500">*</label></div>
                                                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
-                                                    <option value="none" hidden>Select Payment Mode</option>
+                                                    <option  hidden>Select Payment Mode</option>
                                                     {paymentMode.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
@@ -1467,6 +1469,7 @@ const Payments = () => {
                                             <div className="">
                                                 <div className="text-sm">Month <label className="text-red-500">*</label></div>
                                                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="month" value={formValues.month} onChange={handleChange} >
+                                                    <option hidden>Select Month</option>
                                                     {selectedMonth.map(item => (
                                                         <option key={item.id} value={item.month}>
                                                             {item.month}

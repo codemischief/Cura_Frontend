@@ -248,6 +248,7 @@ const ManageBuilder = () => {
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
             "email1": formValues.email1,
+            "email2" : formValues.email2,
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
             "suburb": formValues.suburb,
@@ -589,7 +590,44 @@ const ManageBuilder = () => {
 
     }
 
-
+    const [showEditSuccess,setShowEditSuccess] = useState(false)
+    const openEditSuccess = () => {
+        setIsEditDialogue(false);
+        setShowEditSuccess(true);
+        setTimeout(function () {
+            setShowEditSuccess(false)
+        }, 2000)
+    }
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+      setInputVariable,
+      type,
+      columnName) => {
+          if (event.keyCode === 13) {
+                  // if its empty then we remove that 
+                  // const temp = {...filterMapState};
+                  // temp[columnName].type = "".
+                  // setFilterMapState(temp)
+                  if(inputVariable == "") {
+                      const temp = {...filterMapState}
+                      temp[columnName].filterType = ""
+                      setFilterMapState(temp)
+                      fetchData()
+                  }else {
+                      newHandleFilter(inputVariable,
+                          setInputVariable,
+                          type,
+                          columnName)
+                  }
+                  
+              
+              
+            }
+    }
     return (
         <div className="h-screen">
             <Navbar />
@@ -599,6 +637,7 @@ const ManageBuilder = () => {
             <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} showSuccess = {openDeleteSuccess} showCancel={openCancelModal} />
             {addConfirmation && <SaveConfirmationBuilder handleClose={() => setAddConfirmation(false)} addBuilder={addNewBuilder} currentBuilder={currentBuilder} showCancel={openAddCancelModal} setDefault={initials}/>}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new builder created." />}
+           {showEditSuccess &&  <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesfully "/>}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
@@ -621,6 +660,7 @@ const ManageBuilder = () => {
                                 placeholder="  Search"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -649,14 +689,27 @@ const ManageBuilder = () => {
                         </div>
                         <div className='w-[25%]  px-3 py-2.5'>
                             <div className='w-[46%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[77%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} />
+                                <input className="w-[77%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,builderFilterInput,
+                                    setBuilderFilterInput,
+                                    'contains',
+                                    'buildername')}
+                                
+                                />
                                 <button className='w-[23%] px-1 py-2' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} />}
                         </div>
                         <div className='w-[15%]  px-3 py-2.5'>
                             <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,builderFilterInput,
+                                    setBuilderFilterInput,
+                                    'contains',
+                                    'buildername')}
+                                />
                                 <button className='px-1 py-2 w-[25%]' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
@@ -777,7 +830,7 @@ const ManageBuilder = () => {
                             </div>
                         })}
                         {/* we get all the existing builders here */}
-                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity} showCancel={openCancelModal} />}
+                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity} showCancel={openCancelModal} showSuccess={openEditSuccess}/>}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData} />}
                     </div>
 
@@ -967,6 +1020,7 @@ const ManageBuilder = () => {
                                                         const newData = { ...existing, city: null }
                                                         return newData;
                                                     })
+                                                    setAllCity([])
                                                     fetchCityData(e.target.value)
                                                     // fetchCityData(selectedState);
                                                 }} >
