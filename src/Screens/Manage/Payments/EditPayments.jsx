@@ -128,10 +128,7 @@ const EditPayments = (props) => {
             "paymentmode" : formValues.paymentmode,
             "description" : formValues.description,
             "paymentfor" : formValues.paymentfor,
-            "dated" : "2021-01-01 12:00:00",
-            "createdby" : 1234,
-            "isdeleted" : false,
-            "entityid" : formValues.entityid,
+            "entityid" : Number(formValues.entityid),
             "officeid" : 10,
             "tds" : Number(formValues.tds),
             "professiontax" : Number(formValues.professiontax),
@@ -157,7 +154,7 @@ const EditPayments = (props) => {
         deduction: "",
         paymentfor: "",
         paymentmode: "",
-        entity: "",
+        entityid : "",
         paidon: "",
         month: "january",
         tds: "",
@@ -428,9 +425,9 @@ const EditPayments = (props) => {
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Entity <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entity" value={formValues.entity} onChange={handleChange} >
+                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="entityid" value={formValues.entityid} onChange={handleChange} >
                                             {allEntities.map(item => (
-                                                <option key={item[0]} value={item[1]}>
+                                                <option key={item[0]} value={item[0]}>
                                                     {item[1]}
                                                 </option>
                                             ))}
@@ -459,7 +456,7 @@ const EditPayments = (props) => {
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.tds}</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Profession Tax <label className="text-red-500">*</label></div>
+                                        <div className="text-[13px]">Profession Tax </div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
                                         
                                     </div>
