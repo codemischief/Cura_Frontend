@@ -346,7 +346,8 @@ const ManageClientInvoice = () => {
                 value: null
             }
         )
-        setOrders([])
+        setOrders([]);
+        setOrderText("Select Order");
 
         setIsClientInvoiceDialogue(false);
         openAddCancelModal();

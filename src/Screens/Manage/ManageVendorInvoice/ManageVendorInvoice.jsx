@@ -32,6 +32,7 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditVendorInvoice from './EditVendorInvoice';
 import Draggable from 'react-draggable';
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const ManageVendorInvoice = () => {
 
     const menuRef = useRef();
@@ -488,6 +489,15 @@ const ManageVendorInvoice = () => {
 
     const handleClose = () => {
         initials();
+        setSelectedOption(
+            {
+                label: "Select Client",
+                value: null
+            }
+        )
+        setOrders([]);
+        setOrderText("Select Order");
+        
         SetIsVendorInvoiceDialogue(false);
         openAddCancelModal();
     }
@@ -1018,6 +1028,7 @@ const ManageVendorInvoice = () => {
         setExistingVendorInvoice(result);
         setPageLoading(false);
     }
+    const [orderText, setOrderText] = useState("Select Order")
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1528,10 +1539,10 @@ const ManageVendorInvoice = () => {
                                 </div>
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-[13px] mb-1">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        <select
+                                        {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
@@ -1543,7 +1554,8 @@ const ManageVendorInvoice = () => {
                                                     {item.ordername}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="pt-[-2px]">
