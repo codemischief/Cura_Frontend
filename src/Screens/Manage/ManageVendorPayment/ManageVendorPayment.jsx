@@ -952,6 +952,8 @@ const ManageVendorPayment = () => {
         }
     }
 
+    
+
     return (
         <div className='h-screen'>
             <Navbar />
