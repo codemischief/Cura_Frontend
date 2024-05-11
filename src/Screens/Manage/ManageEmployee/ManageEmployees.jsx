@@ -191,7 +191,7 @@ const ManageEmployees = () => {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
-                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterValue,
                         filterMapState[key].filterData,
                     ]);
                 }else {
@@ -881,7 +881,7 @@ const ManageEmployees = () => {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
-                        Number(mapState[key].filterValue),
+                        mapState[key].filterValue,
                         mapState[key].filterData,
                     ]);
                 }else {
@@ -1226,7 +1226,7 @@ const ManageEmployees = () => {
                                     />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {statusFilter && <CharacterFilter inputVariable={statusInput} setInputVariable={setStatusInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
                         <div className="w-[15%] flex">
