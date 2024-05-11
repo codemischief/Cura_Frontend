@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Modal } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
-import AsyncSelect from "react-select/async"
+import AsyncSelect from "react-select/async";
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable'
 const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel }) => {
     const initialValues = {
@@ -203,6 +204,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         showCancel();
     }
 
+    const [orderText, setOrderText] = useState("Select Order")
 
     return (
         <Modal open={true}
@@ -293,10 +295,10 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                 </div>
                                 <div className=" space-y-3 py-5">
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-[13px] mb-1">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        <select
+                                        {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
@@ -308,7 +310,8 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                     {item.ordername}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
