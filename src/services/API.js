@@ -537,12 +537,28 @@ const getBuilderContactsById = async (data) => {
   const response = await fetch(`${env_URL_SERVER}getBuilderContactsById`, METHOD_POST(data));
   return response;
 }
+const getUser = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}getUserInfo`, METHOD_POST(data));
+  return response;
+}
+const addUser = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}addUser`, METHOD_POST(data));
+  return response;
+}
+const editUser = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}editUser`, METHOD_POST(data));
+  return response;
+}
+const deleteUser = async (data) => {
+  const response = await fetch(`${env_URL_SERVER}deleteUser`, METHOD_POST(data));
+  return response;
+}
 export const APIService = {
   getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities, addNewBuilder, editBuilderInfo, deleteBuilderInfo, deleteCountries,
   getStatesAdmin, getCitiesAdmin, getLob, addLob, editLob, getBankStatement, editBankStatement, deleteBankStatement, getVendorAdmin, deleteLob, getEmployees, addEmployee,
   getLocality, addBankStatement, addLocality, deleteLocality, getModesAdmin, getEntityAdmin, getHowReceivedAdmin, getClientAdmin, addClientReceipt, getPayment, getProjectInfo, editLocality, getUsers, getRoles, deleteEmployee, getPaymentFor, getPaymentMode, addPayment, getProspects, addProspects, editProspects, deleteProspects, editEmployee, getItembyId, editPayment, deletePayment, getItemByAttr, getProjectsByBuilderId, getClientInfo, getClientProperty, getClientTypeAdmin, getTenantOfPropertyAdmin, getRelationAdmin, addClientInfo, deleteClientInfo, getClientInfoByClientId, editCLientInfo, getBuildersAndProjectsList, getPropertyStatusAdmin, getLevelOfFurnishingAdmin, getPropertyType, addClientProperty, getClientAdminPaginated, getClientPropertyById, editClientProperty, deleteClientProperty, getClientReceipt, getPmaAgreement, deleteClientReceipt, editClientReceipt, deletePmaAgreement, addPmaAgreement, getLLAgreement, getClientPropertyByClientId, getOrdersByClientId, editClientPMAAgreement, addLLAgreement, deleteLLAgreement, editClientLLAgreement, addProject, deleteProject, getOrder, addOrder, getOrderStatusAdmin, getClientPropertyAdmin, getServiceAdmin, getTallyLedgerAdmin, deleteOrders, getOrderDataById,
 
-  getOrderReceipt, addOrderReceipt, getClientInvoice, deleteOrderReceipt, addClientInvoice, deleteClientInvoice, getOrderStatusHistory, editOrder, editOrdersReceipt, editOrdersInvoice, addOrderStatusChange, getVendors, addVendors, getBuildersAdmin, getProjectTypeAdmin, getProjectLegalStatusAdmin, deleteVendors, getVendorsInvoice, addVendorsInvoice, getProjectById, editProject, deleteVendorsInvoice, editVendorInvoice,getVendorCategoryAdmin,getVendorPayment,addVendorPayment,editVendorPayment,deleteVendorPayment, editVendors , addLLTenant, addCities, deleteCities , editCities, getBuilderContactsById
+  getOrderReceipt, addOrderReceipt, getClientInvoice, deleteOrderReceipt, addClientInvoice, deleteClientInvoice, getOrderStatusHistory, editOrder, editOrdersReceipt, editOrdersInvoice, addOrderStatusChange, getVendors, addVendors, getBuildersAdmin, getProjectTypeAdmin, getProjectLegalStatusAdmin, deleteVendors, getVendorsInvoice, addVendorsInvoice, getProjectById, editProject, deleteVendorsInvoice, editVendorInvoice,getVendorCategoryAdmin,getVendorPayment,addVendorPayment,editVendorPayment,deleteVendorPayment, editVendors , addLLTenant, addCities, deleteCities , editCities, getBuilderContactsById , getUser , addUser , editUser , deleteUser
 };
 
 
