@@ -73,6 +73,7 @@ const EditManageStatement = (props) => {
 
     const handleDialogClose = () => {
         props.setOpenDialog(false);
+        props.showCancel();
     };
     console.log(props)
     const initialValues = {
@@ -136,9 +137,9 @@ const EditManageStatement = (props) => {
                 return  {...existing,particulars: ""}
              })
         }
-        if(!formValues.amount || !Number.isInteger(formValues.amount)) {
+        if(!formValues.amount ) {
             setFormErrors((existing) => {
-                return {...existing,amount: "Amount is Mandatory"}
+                return {...existing,amount: "Enter Amount"}
             })
             res = false;
         }else {
@@ -175,26 +176,29 @@ const EditManageStatement = (props) => {
             <FailureModal isOpen={showFailure} message="Error! cannot edit the Bank Statement" />
             <Modal open={props.openDialog}
                 fullWidth={true}
+                className='flex justify-center items-center'
                  >
                     <>
                     <Draggable>
-                <div className='flex justify-center items-center mt-[70px] '>
-                    <div className="w-[1050px] h-[500px] bg-white rounded-lg">
+                <div className='flex justify-center items-center  '>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">Edit Bank Statement</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleDialogClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                <button onClick={handleDialogClose}>
+                                <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                </button>
                             </div>
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div className="h-auto w-full">
-                                <div className="flex gap-[48px] justify-center items-center">
+                                <div className="flex gap-[48px] justify-center ">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Payment Mode <label className="text-red-500">*</label></div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
+                                            <div className="text-[13px]"> Mode <label className="text-red-500">*</label></div>
+                                            <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
                                             <option>{currentMode}</option>
                                                 {mode && mode.map(item => (
                                                     <option key={item[0]} value={item[0]}>
@@ -202,22 +206,23 @@ const EditManageStatement = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Particulars <label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Particulars <label className="text-red-500">*</label></div>
                                             {/* <input className="break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs "  name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
-                                            <textarea className=" text-[12px] pl-4 break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} required/>
+                                            <input className=" text-[12px] pl-4 break-all w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} />
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
 
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Amount<label className="text-red-500">*</label> </div>
-                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} required/>
+                                            <div className="text-[13px]">Amount <label className="text-red-500">*</label> </div>
+                                            <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">Vendor</div> 
-                                            <select className=" text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                            <div className="text-[13px]">Vendor</div> 
+                                            <select className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
                                             
                                                 {vendorList && vendorList.map(item => (
                                                     <option value={item[0]}>
@@ -231,24 +236,24 @@ const EditManageStatement = (props) => {
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-[14px]">Date <label className="text-red-500">*</label></div>
-                                            <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} required />
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                            <div className="text-[13px]">Date <label className="text-red-500">*</label></div>
+                                            <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} required />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.date}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">DR/CR <label className="text-red-500">*</label></div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} required>
+                                            <div className="text-[13px]">DR/CR <label className="text-red-500">*</label></div>
+                                            <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} required>
                                                 {crdr && crdr.map(item => (
                                                     <option key={item} value={item}>
                                                         {item}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.crdr}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.crdr}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[14px]">How Recieved(CR)? </div>
-                                            <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
+                                            <div className="text-[13px]">How Recieved(CR)? </div>
+                                            <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
                                             
                                                 {howReceived && howReceived.map(item => (
                                                     <option value={item[0]}>
@@ -256,13 +261,13 @@ const EditManageStatement = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.how}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="my-[125px] flex justify-center items-center gap-[10px]">
+                            <div className="my-10 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                                 {isLoading && <CircularProgress />}
