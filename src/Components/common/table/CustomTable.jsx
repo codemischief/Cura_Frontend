@@ -8,7 +8,7 @@ import { FilePdfOutlined } from "@ant-design/icons";
 import Pdf from "../../../assets/pdf.png";
 import { useState } from "react";
 
-const SimpleTable = ({ columns }) => {
+const SimpleTable = ({ columns,data }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const {
@@ -22,9 +22,9 @@ const SimpleTable = ({ columns }) => {
   } = useSelector((state) => state.pmaBilling);
 
   return (
-    <div className="h-[calc(100vh_-_14rem)] w-full text-[12px]">
-      <table className="w-full border-gray-400 border-b-[1px]">
-        <thead className="">
+    <div className="w-full text-[12px]">
+      <table className="w-full border-gray-400 border-b-[1px] table-auto">
+        <thead className="h-[115px] block">
           <tr className="h-[56px]">
             {columns.map((column, index) => (
               <th key={index} style={{ width: column.width }}>
@@ -34,7 +34,7 @@ const SimpleTable = ({ columns }) => {
               </th>
             ))}
           </tr>
-          <tr className="bg-[#F0F6FF]">
+          <tr className="bg-[#F0F6FF] h-[56px] ">
             {columns.map((column, index) => (
               <th key={index} style={{ width: column.width }}>
                 {column.title}
@@ -42,12 +42,12 @@ const SimpleTable = ({ columns }) => {
             ))}
           </tr>
         </thead>
-        <tbody className="overflow-auto h-[calc(100vh_-_18rem)]">
+        <tbody  className="overflow-y-auto block max-h-[calc(100vh-375px)]" >
           {status === "loading" && <LinearProgress />}
-          {pmaBillingData.map((rowData, rowIndex) => (
-            <tr key={rowIndex}>
+          {data.map((rowData, rowIndex) => (
+            <tr key={rowIndex} className='border-b dark:border-gray-700'>
               {columns.map((column, colIndex) => (
-                <td key={colIndex} style={{ ...column.cellStyle }}>
+                <td key={colIndex} colSpan={1} style={{ width: column.width }} className="py-3 text-center px-2">
                   {column.render
                     ? column.render(rowData, rowIndex)
                     : rowData[column.field]}
@@ -58,7 +58,7 @@ const SimpleTable = ({ columns }) => {
         </tbody>
       </table>
       <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
-        {/* footer component */}
+      
         <div className="ml-2">
           <div className="flex items-center w-auto h-full">
             <Pagination
@@ -102,7 +102,7 @@ const SimpleTable = ({ columns }) => {
             <Refresh sx={{ height: "16px", width: "16px" }} />
           </div>
           <div className="border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2">
-            {/* download */}
+           
             <button
               onClick={(e) => {
                 // setAnchorEl(e.currentTarget);
@@ -110,7 +110,6 @@ const SimpleTable = ({ columns }) => {
             >
               <p>Download</p>
             </button>
-            {/* <img src={"downloadIcon"} className="h-2/3" /> */}
             <FilePdfOutlined height={"16px"} width={"16px"} />
           </div>
         </div>
