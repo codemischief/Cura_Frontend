@@ -20,6 +20,7 @@ import FileSaver from 'file-saver';
 import { authService } from "../../../services/authServices";
 import Filter from "../../../assets/filter.png"
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import CancelModel from './../../../Components/modals/CancelModel';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
@@ -516,12 +517,20 @@ const ManageBankStatement = () => {
         setIsConfirmManageStatementDialogue(false);
     };
     const handleClose = () => {
+        initials();
         setIsManageStatementDialogue(false);
         setIsConfirmManageStatementDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
     const handleCloseForConfirm = () => {
+        initials();
         setIsManageStatementDialogue(true);
         setIsConfirmManageStatementDialogue(false)
+        openAddCancelModal();
     }
 
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
@@ -591,6 +600,26 @@ const ManageBankStatement = () => {
         setTotalItems(result.total_count);
         setPageLoading(false);
     }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsManageStatementDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+    
     const [typeFilter, setTypeFilter] = useState(false);
     const [typeFilterInput, setTypeFilterInput] = useState("");
 
@@ -859,8 +888,10 @@ const ManageBankStatement = () => {
             <Navbar />
             <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
-            <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} />
+            <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} showCancel={openCancelModal} />
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="successfully Updated Bank Statement" />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Bank Statement created." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className="w-full h-[calc(100vh_-_7rem)] px-10">
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1108,8 +1139,8 @@ const ManageBankStatement = () => {
                             </div>
                         })}
                         {/* we get all the existing builders here */}
-                        {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} />}
-                        {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} />}
+                        {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+                        {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} showCancel={openCancelModal} />}
                     </div>
                 </div>
             </div>
@@ -1186,11 +1217,13 @@ const ManageBankStatement = () => {
 
             <Modal open={isManageStatementDialogue}
                 fullWidth={true}
-                maxWidth={'md'} >
+                maxWidth={'md'} 
+                className="flex justify-center items-center"
+                >
                 <>
                     <Draggable>
-                        <div className='flex justify-center items-center mt-[70px]'>
-                            <div className="w-[1050px] h-[500px] bg-white rounded-lg">
+                        <div className='flex justify-center items-center '>
+                            <div className="w-[1050px] h-auto bg-white rounded-lg">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">New Bank Statement</div>
@@ -1201,11 +1234,11 @@ const ManageBankStatement = () => {
                                 </div>
                                 <form onSubmit={handleSubmit}>
                                     <div className="w-full mt-[5px] ">
-                                        <div className="flex gap-[48px] justify-center items-center">
+                                        <div className="flex gap-[48px] justify-center ">
                                             <div className=" space-y-[12px] py-[20px] px-[10px]">
                                                 <div className="">
-                                                    <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
+                                                    <div className="text-[13px]">Mode<label className="text-red-500">*</label></div>
+                                                    <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm " name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
                                                         <option value="none" hidden >Select Mode</option>
                                                         {mode && mode.map(item => (
                                                             <option key={item[0]} value={item[0]}>
@@ -1213,22 +1246,22 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
+                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">Particulars<label className="text-red-500">*</label></div>
+                                                    <div className="text-[13px]">Particulars<label className="text-red-500">*</label></div>
                                                     {/* <input className="w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
-                                                    <textarea className=" text-[12px] pl-4 break-all w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange} required />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.particulars}</div>
+                                                    <input className=" text-[11px] pl-4 break-all w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange}  />
+                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.particulars}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">Amount<label className="text-red-500">*</label></div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} required />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div>
+                                                    <div className="text-[13px]">Amount<label className="text-red-500">*</label></div>
+                                                    <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange}  />
+                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">Vendor</div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                                    <div className="text-[13px]">Vendor</div>
+                                                    <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                         <option >Select Vendor List</option>
                                                         {vendorList && vendorList.map(item => (
                                                             <option value={item}>
@@ -1236,18 +1269,18 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.vendor}</div>
+                                                    
                                                 </div>
                                             </div>
-                                            <div className="space-y-[40px] py-[20px] px-[10px]">
+                                            <div className="space-y-[12px] py-[20px] px-[10px]">
                                                 <div className="">
-                                                    <div className="text-[14px]">Date <label className="text-red-500">*</label></div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange} required />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.date}</div>
+                                                    <div className="text-[13px]">Date <label className="text-red-500">*</label></div>
+                                                    <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange}  />
+                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.date}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">CR/DR <label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
+                                                    <div className="text-[13px]">CR/DR <label className="text-red-500">*</label></div>
+                                                    <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
                                                         <option >Select CR/DR</option>
                                                         {crdr && crdr.map(item => (
                                                             <option value={item}>
@@ -1255,10 +1288,10 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.crdr}</div>
+                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.crdr}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">How Recieved(CR)?</div>
+                                                    <div className="text-[13px]">How Recieved(CR)?</div>
                                                     <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
                                                         <option >Select how Received</option>
                                                         {howReceived && howReceived.map(item => (
@@ -1267,14 +1300,12 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="my-[125px] flex justify-center items-center gap-[10px]">
+                                    <div className="my-10 flex justify-center items-center gap-[10px]">
 
                                         <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
