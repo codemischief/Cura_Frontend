@@ -28,6 +28,7 @@ import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable';
 const ManageClientReceipt = () => {
     const initialRows = [
@@ -867,6 +868,7 @@ const ManageClientReceipt = () => {
         temp.label = item.clientname 
         temp.value = item.clientid 
         setOrSelectedOption(temp)
+        getOrOrdersByClientId(item.clientid)
         setOrModel(true);
     }
 
@@ -1043,6 +1045,24 @@ const ManageClientReceipt = () => {
                     }
               }
       }
+      const [orderText,setOrderText] = useState('Select Order')
+
+      const [orderData,setOrderData] = useState({
+        pendingamount : null,
+        orderdate : null,
+        orderstatus : null
+    })
+    const getOrderData = async  (id) => {
+       const data = {"user_id":1234,"orderid": Number(id)}
+       const response = await APIService.getOrderPending(data)
+       const res = await response.json()
+       console.log(res)
+       const temp = {...orderData}
+       temp.pendingamount = res.data.pending 
+       temp.orderdate = res.data.orderdate
+       temp.orderstatus = res.data.orderstatus
+       setOrderData(temp)
+    }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1564,6 +1584,7 @@ const ManageClientReceipt = () => {
                                             <div className="text-sm">
                                                 Client <label className="text-red-500">*</label>
                                             </div>
+                                           
                                             <AsyncSelect
                                                 onChange={handleClientNameChange}
                                                 value={selectedOption}
@@ -1686,14 +1707,52 @@ const ManageClientReceipt = () => {
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"   >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-sm text-[#787878]">Receipt ID </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
+                                        <div className="text-[13px] mb-0.5">
+                                            Client <label className="text-red-500">*</label>
+                                        </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"  value={orSelectedOption.label} readOnly />
+                                        {/* <AsyncSelect
+                                            onChange={handleOrClientNameChange}
+                                            value={orSelectedOption}
+                                            loadOptions={loadOptions}
+                                            cacheOptions
+                                            defaultOptions
+                                            onInputChange={(value) => setQuery(value)}
+
+                                            styles={{
+                                                control: (provided, state) => ({
+                                                    ...provided,
+                                                    minHeight: 20,
+                                                    lineHeight: '0.8',
+                                                    height: 4,
+                                                    width : 230,
+                                                    fontSize: 10,
+                                                    // padding: '1px'
+                                                }),
+                                                // indicatorSeparator: (provided, state) => ({
+                                                //   ...provided,
+                                                //   lineHeight : '0.5',
+                                                //   height : 2,
+                                                //   fontSize : 12 // hide the indicator separator
+                                                // }),
+                                                dropdownIndicator: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: '1px', // adjust padding for the dropdown indicator
+                                                }),
+                                                options: (provided, state) => ({
+                                                    ...provided,
+                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                }),
+                                                menu: (provided, state) => ({
+                                                    ...provided,
+                                                    width: 230, // Adjust the width of the dropdown menu
+                                                  }),
+                                            }}
+                                        /> */}
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.client}</div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={orFormValues.receivedDate} onChange={handleOrChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedDate}</div>
-                                    </div>
+                                    
+                                    
                                     <div className="">
                                         <div className="text-sm">
                                             Receipt Mode <label className="text-red-500">*</label>
@@ -1732,69 +1791,29 @@ const ManageClientReceipt = () => {
                                         <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedBy}</div>
                                     </div>
                                     <div className="">
+                                        <div className="text-[13px]">TDS </div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={null} onChange={handleOrChange} />
+                                    </div>
+                                    <div className="">
                                         <div className="text-[13px]">Receipt Description </div>
                                         <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="receiptDescription" value={orFormValues.receiptDescription} onChange={handleOrChange} />
                                     </div>
                                     
                                 </div>
                                 <div className=" space-y-3 py-5">
-
                                 <div className="">
-                                        <div className="text-[13px] mb-0.5">
-                                            Client <label className="text-red-500">*</label>
-                                        </div>
-                                        <AsyncSelect
-                                            onChange={handleOrClientNameChange}
-                                            value={orSelectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
-
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 20,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width : 230,
-                                                    fontSize: 10,
-                                                    // padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
-                                                }),
-                                                menu: (provided, state) => ({
-                                                    ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
-                                                  }),
-                                            }}
-                                        />
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.client}</div>
+                                        <div className="text-sm text-[#787878]">Receipt ID </div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
                                     </div>
+                               
 
-                                    <div className="">
-                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={orFormValues.amountReceived} onChange={handleOrChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.amountReceived}</div>
-                                    </div>
+                                    
                                     
                                     <div className="">
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        <select
+                                        {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={orFormValues.order}
@@ -1806,25 +1825,36 @@ const ManageClientReceipt = () => {
                                                     {item.ordername}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                         <OrderDropDown options={orOrders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
+                                                 handleOrChange(e)
+                                                 getOrderData(e.target.value)
+                                        }} formValueName="order" value={orFormValues.order}  />
                                         <div className="text-[10px] text-[#CD0000] ">{orFormErrors.order}</div>
                                     </div>
                                     <div className="">
+                                        <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={orFormValues.receivedDate} onChange={handleOrChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedDate}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={orFormValues.amountReceived} onChange={handleOrChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.amountReceived}</div>
+                                    </div>
+                                    <div className="">
                                         <div className="text-sm ">Pending Amount </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
+                                        <input className="w-56 h-5  rounded-sm px-3 text-xs  bg-[#F5F5F5]" type="text" name="amountReceived" value={orderData.pendingamount} readOnly />
                                     </div>
                                     <div className="">
                                         <div className="text-sm ">Order Date </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
+                                        <input className="w-56 h-5  rounded-sm px-3 text-xs bg-[#F5F5F5]" type="text" name="amountReceived" value={orderData.orderdate} readOnly />
                                     </div>
                                     <div className="">
                                         <div className="text-sm ">Order Status </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
+                                        <input className="w-56 h-5  rounded-sm px-3 text-xs bg-[#F5F5F5]" type="text" name="amountReceived" value={orderData.orderstatus} readOnly />
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">TDS </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={null} onChange={handleOrChange} />
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
