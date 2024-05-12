@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link ,useNavigate } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -35,6 +35,7 @@ import Draggable from 'react-draggable';
 const ManageClientProperty = () => {
     const menuRef = useRef();
     // we have the module here
+    const navigate = useNavigate()
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
     const [existingClientProperty, setExistingClientProperty] = useState([]);
@@ -225,6 +226,25 @@ const ManageClientProperty = () => {
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
         // console.log('ugm')
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }else {
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+                
+            }
+        })
+        setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         setPageLoading(true);
         const data = {
@@ -268,7 +288,7 @@ const ManageClientProperty = () => {
                 "electricitybillingduedate",
                 "description"
             ],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -1182,6 +1202,14 @@ const ManageClientProperty = () => {
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
+        setClientNameFilter(false);
+                setPropertySuburbFilter(false);
+                setPropertyCityFilter(false);
+                setPropertyTypeFilter(false);
+                setPropertyStatusFilter(false);
+                setPropertyDescriptionFilter(false);
+                setPorjectNameFilter(false);
+                setIdFilter(false);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
@@ -1324,7 +1352,38 @@ const ManageClientProperty = () => {
         setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
+    
 
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    console.log(inputVariable)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        // fetchCityData()
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+              }
+      }
     return (
         <div className="h-screen">
             <Navbar />
@@ -1342,7 +1401,7 @@ const ManageClientProperty = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='h-5 w-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -1362,6 +1421,7 @@ const ManageClientProperty = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-5 h-5 mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1400,7 +1460,13 @@ const ManageClientProperty = () => {
                             </div>
                             <div className='w-[10%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} 
+                                     onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
+                                        setClientNameFilterInput,
+                                        'contains',
+                                        'client')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} />}
@@ -1408,7 +1474,14 @@ const ManageClientProperty = () => {
 
                             <div className='w-[9%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertySuburbFilterInput} onChange={(e) => setPropertySuburbFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertySuburbFilterInput} onChange={(e) => setPropertySuburbFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertySuburbFilterInput,
+                                        setPropertySuburbFilterInput,
+                                        'contains',
+                                        'suburb')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} />}
@@ -1416,7 +1489,14 @@ const ManageClientProperty = () => {
 
                             <div className='w-[8%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyCityFilterInput} onChange={(e) => setPropertyCityFilterInput(e.target.value)} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyCityFilterInput} onChange={(e) => setPropertyCityFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertyCityFilterInput,
+                                        setPropertyCityFilterInput,
+                                        'contains',
+                                        'city')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyCityFilter && <CharacterFilter inputVariable={propertyCityFilterInput} setInputVariable={setPropertyCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
@@ -1424,7 +1504,14 @@ const ManageClientProperty = () => {
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyTypeFilterInput} onChange={(e) => setPropertyTypeFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyTypeFilterInput} onChange={(e) => setPropertyTypeFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertyTypeFilterInput,
+                                        setPropertyTypeFilterInput,
+                                        'contains',
+                                        'propertytype')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} />}
@@ -1432,7 +1519,15 @@ const ManageClientProperty = () => {
 
                             <div className='w-[9%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertyStatusFilterInput,
+                                        setPropertyStatusFilterInput,
+                                        'contains',
+                                        'status')}
+                                    
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
@@ -1440,7 +1535,13 @@ const ManageClientProperty = () => {
 
                             <div className='w-[16%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertyDescriptionFilterInput,
+                                        setPropertyDescriptionFilterInput,
+                                        'contains',
+                                        'description')}
+                                    />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
@@ -1448,7 +1549,14 @@ const ManageClientProperty = () => {
 
                             <div className='w-[17%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={porjectNameFilterInput} onChange={(e) => setPorjectNameFilterInput(e.target.value)} />
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={porjectNameFilterInput} onChange={(e) => setPorjectNameFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,porjectNameFilterInput,
+                                        setPorjectNameFilterInput,
+                                        'contains',
+                                        'project')}
+                                    
+                                    />
                                     <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPorjectNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} />}
@@ -1457,7 +1565,13 @@ const ManageClientProperty = () => {
                         <div className="w-[15%] ">
                             <div className='w-1/2   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                    />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
@@ -1601,7 +1715,7 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-1 text-[11px] text-blue-500'>
-                                            <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>PMA Agreement</Link>
+                                            <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id , clientid : item.clientid , clientname : item.client , description : item.description, project : item.project}}>PMA Agreement</Link>
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
