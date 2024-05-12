@@ -491,17 +491,17 @@ const ManageBuilderContact = () => {
                                     <p>Contact Name <button onClick={() => handleSort('clientname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[15%]  flex'>
+                            <div className='w-[20%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Builder Name <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[15%]  flex'>
+                            <div className='w-[20%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Job Title <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[15%]  flex'>
+                            <div className='w-[20%]  flex'>
                                 <div className='px-3 py-3.5 flex space-x-2'>
                                     <div>
 
@@ -511,9 +511,14 @@ const ManageBuilderContact = () => {
                                     <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
                                 </div>
                             </div>
-                            <div className='w-[5%]  flex'>
+                            <div className='w-[20%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>City<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className="w-[20%] flex">
+                                 <div className='px-3 py-5'>
+                                    <p>ID<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             
@@ -531,70 +536,44 @@ const ManageBuilderContact = () => {
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingContacts && existingContacts.map((item, index) => {
                             return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex">
-                                    <div className='w-[3%] flex overflow-x-hidden'>
-                                        <div className='p-3'>
-                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[13%]  flex '>
-                                        <div className='p-3'>
-                                            <p>{item.clientname} </p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[11%]  flex'>
-                                        <div className='p-3'>
-                                            <p> {item.clienttypename}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8%]  flex '>
-                                        <div className='p-3'>
-                                            <p>{item.tenantofname} </p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8%]  flex'>
-                                        <div className='p-3'>
-                                            <p>{item.tenantofpropertyname}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[8%]  flex '>
-                                        <div className='p-3 ml-2'>
-                                            <p>{item.country}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[6%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-1'>
-                                            <p>{item.city}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3'>
-                                            <p>{item.mobilephone}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[11%]  flex'>
-                                        <div className='p-3 overflow-hidden '>
-                                            <p>{item.email1 || item.email2}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[9%]  flex ml-2'>
-                                        <div className='p-3'>
-                                            <p>{item.employername}</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[7%]  flex'>
-                                        <div className='p-3 text-[11px] text-blue-500'>
-                                            
-                                            {/* <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link> */}
-                                        </div>
-                                    </div>
-                                    <div className='w-[6%]  flex'>
-                                        <div className='p-3 text-[11px] text-blue-500'>
-                                            <Link to="">Orders</Link>
-                                        </div>
-                                    </div>
+                                <div className="w-[100%] flex">
+                                    <div className='w-[15%] flex'>
+                                                <div className='px-3 py-5'>
+                                                    <p>Sr.</p>
+                                                </div>
+                                            </div>
+                                            <div className='w-[20%]  flex'>
+                                                <div className='px-3 py-5'>
+                                                    <p>Contact Name <button onClick={() => handleSort('clientname')}> <span className="font-extrabold">↑↓</span></button></p>
+                                                </div>
+                                            </div>
+                                            <div className='w-[15%]  flex'>
+                                                <div className='px-3 py-5'>
+                                                    <p>Builder Name <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
+                                                </div>
+                                            </div>
+                                            <div className='w-[15%]  flex'>
+                                                <div className='px-3 py-5'>
+                                                    <p>Job Title <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
+                                                </div>
+                                            </div>
+                                            <div className='w-[15%]  flex'>
+                                                <div className='px-3 py-3.5 flex space-x-2'>
+                                                    <div>
+
+                                                        <p>Suburb</p>
+                                                        
+                                                    </div>
+                                                    <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
+                                                </div>
+                                            </div>
+                                            <div className='w-[5%]  flex'>
+                                                <div className='px-3 py-5'>
+                                                    <p>City<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
+                                                </div>
+                                            </div>
                                 </div>
-                                <div className="w-[15%] flex">
+                                {/* <div className="w-[15%] flex">
                                     <div className='w-1/2  flex'>
                                         <div className='p-3'>
                                             <p>{item.id}</p>
@@ -606,7 +585,7 @@ const ManageBuilderContact = () => {
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} />
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div>
                         })}

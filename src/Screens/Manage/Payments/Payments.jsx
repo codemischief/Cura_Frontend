@@ -1379,7 +1379,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
+                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id"/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="pt-0.5">
@@ -1407,7 +1407,7 @@ const Payments = () => {
                                                     ))}
                                                 </select> */}
                                                 
-                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby}/>
+                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                             </div>

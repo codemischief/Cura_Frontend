@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link ,useLocation } from "react-router-dom";
+import { Outlet, Link ,useLocation , useNavigate } from "react-router-dom";
 import backLink from "../../../../assets/back.png";
 import searchIcon from "../../../../assets/searchIcon.png";
 import nextIcon from "../../../../assets/next.png";
@@ -31,7 +31,9 @@ import CharacterFilter from "../../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
+import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
 const ClientPmaArgreement = () => {
+    const navigate = useNavigate()
     let { state } = useLocation();
     console.log(state);
     const dataRows = [
@@ -108,7 +110,8 @@ const ClientPmaArgreement = () => {
     const [poaEndFilterInput, setPoaEndFilterInput] = useState("");
     const [poaHolderFilter, setPoaHolderFilter] = useState(false);
     const [poaHolderFilterInput, setPoaHolderFilterInput] = useState("");
-
+    const [idFilter,setIdFilter] = useState(false)
+    const [idFilterInput,setIdFilterInput] = useState("")
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -400,7 +403,7 @@ const ClientPmaArgreement = () => {
         console.log(formValues.order)
         const data = {
             "user_id": 1234,
-            "clientpropertyid": Number(formValues.clientProperty),
+            "clientpropertyid": state.clientPropertyId,
             "startdate": formValues.pmaStartDate,
             "enddate": formValues.pmaEndDate,
             "actualenddate": formValues.actualEndDate,
@@ -443,7 +446,7 @@ const ClientPmaArgreement = () => {
     }
     const initialValues = {
         client: "",
-        clientProperty: null,
+        clientProperty: state.clientPropertyId,
         pmaStartDate: null,
         pmaEndDate: null,
         poaStartDate: null,
@@ -463,6 +466,7 @@ const ClientPmaArgreement = () => {
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
         fetchData();
+        getOrdersByClientId(state.clientid)
         fetchCountryData();
         fetchStateData(5)
         // fetchClientPropertyData()
@@ -485,6 +489,7 @@ const ClientPmaArgreement = () => {
                 setPoaStartFilter(false);
                 setPoaEndFilter(false);
                 setPoaHolderFilter(false);
+                setIdFilter(false)
             }
         }
 
@@ -839,12 +844,6 @@ const ClientPmaArgreement = () => {
             filterData : "Date",
             filterInput : ""
         },
-        poastartdate : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
-        },
         poaenddate : {
             filterType : "",
             filterValue : null,
@@ -857,6 +856,12 @@ const ClientPmaArgreement = () => {
             filterData : "String",
             filterInput : ""
         },
+        id : {
+            filterType : "",
+            filterValue : "",
+            filterData : "Numeric",
+            filterInput : ""
+        }
     }
     const [filterMapState,setFilterMapState] = useState(filterMapping);
 
@@ -949,6 +954,36 @@ const ClientPmaArgreement = () => {
         setExistingPmaAgreement(result);
         setPageLoading(false);
     }
+    const [orderText,setOrderText] = useState("Select Order")
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+          handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event,inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+            if (event.keyCode === 13) {
+                    // if its empty then we remove that 
+                    // const temp = {...filterMapState};
+                    // temp[columnName].type = "".
+                    // setFilterMapState(temp)
+                    console.log(inputVariable)
+                    if(inputVariable == "") {
+                        const temp = {...filterMapState}
+                        temp[columnName].filterType = ""
+                        setFilterMapState(temp)
+                        // fetchCityData()
+                        fetchData()
+                    }else {
+                        newHandleFilter(inputVariable,
+                            setInputVariable,
+                            type,
+                            columnName)
+                    }
+              }
+      }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -966,7 +1001,7 @@ const ClientPmaArgreement = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -986,6 +1021,7 @@ const ClientPmaArgreement = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1022,21 +1058,42 @@ const ClientPmaArgreement = () => {
                         </div>
                         <div className='w-[10.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
+                                    setClientNameFilterInput,
+                                    'contains',
+                                    'clientname')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[14.8%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,propertyDescriptionFilterInput,
+                                    setPropertyDescriptionFilterInput,
+                                    'contains',
+                                    'propertydescription')}
+                                
+                                
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%]  px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
+                                    setOrderDescriptionFilterInput,
+                                    'contains',
+                                    'orderdescription')}
+                                
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='orderdescription' menuRef={menuRef} />}
@@ -1044,49 +1101,100 @@ const ClientPmaArgreement = () => {
                         </div>
                         <div className='w-[8.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,propertyStatusFilterInput,
+                                    setPropertyStatusFilterInput,
+                                    'contains',
+                                    'propertystatusname')}
+                                
+                                
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,descriptionFilterInput,
+                                    setDescriptionFilterInput,
+                                    'contains',
+                                    'description')}
+                                
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
                         </div>
                         <div className='w-[7.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,statusFilterInput,
+                                    setStatusFilterInput,
+                                    'contains',
+                                    'status')}
+                                
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date' 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,pmaStartFilterInput,
+                                    setPmaStartFilterInput,
+                                    'equalTo',
+                                    'startdate')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef}/>}
                         </div>
                         <div className='w-[8.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date' 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,pmaEndFilterInput,
+                                    setPmaEndFilterInput,
+                                    'equalTo',
+                                    'enddate')}
+                                
+                                
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef}/>}
                         </div>
                         <div className='w-[8.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date' />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)} type='text' 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,poaHolderFilterInput,
+                                    setPoaHolderFilterInput,
+                                    'contains',
+                                    'poaholder')}
+                                
+                                />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef}/>}
+                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef}/>}
                         </div>
                         <div className='w-[8.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date' 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,poaEndFilterInput,
+                                    setPoaEndFilterInput,
+                                    'equalTo',
+                                    'poaenddate')}
+                                
+                                
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef}/>}
@@ -1096,10 +1204,16 @@ const ClientPmaArgreement = () => {
 
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)} />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                
+                                onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                    setIdFilterInput,
+                                    'equalTo',
+                                    'id')}
+                                />
+                                <button className='w-[32%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} />}
+                            {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
                         </div>
                         <div className='w-[35%]  flex'>
                             <div className='px-3 py-5'>
@@ -1169,8 +1283,8 @@ const ClientPmaArgreement = () => {
                             </div>
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
-                                    <p>POA</p>
-                                    <p>Start Date</p>
+                                    <p>POA Holder</p>
+                                    {/* <p>Start Date</p> */}
                                 </div>
                                 <button onClick={() => handleSort('poastartdate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
@@ -1183,12 +1297,11 @@ const ClientPmaArgreement = () => {
                             </div>
                         </div>
                         <div className="w-[10%] flex">
-                            <div className='w-[65%]  flex'>
-                                <div className='p-3'>
-                                    <p>POA</p>
-                                    <p>Holder</p>
+                            <div className='w-[65%]  flex items-center'>
+                                <div className='p-3 flex space-x-1'>
+                                    <p>ID</p><button onClick={() => handleSort('poaholder')}><span className="font-extrabold">↑↓</span></button>
                                 </div>
-                                <button onClick={() => handleSort('poaholder')}><span className="font-extrabold">↑↓</span></button>
+                                
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-5'>
@@ -1208,37 +1321,40 @@ const ClientPmaArgreement = () => {
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingPmaAgreement.length == 0 && <div className='w-full h-[35px] border-gray-400 border-b-[1px] flex items-center'>
+                                     <p className='ml-12'>No Records To Display</p>
+                            </div>}
                         {!pageLoading && existingPmaAgreement.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex">
-                                    <div className='w-[2%] flex'>
+                                    <div className='w-[2%] flex items-center'>
                                         <div className='px-3 py-5'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10.8%]  flex'>
+                                    <div className='w-[10.8%]  flex items-center'>
                                         <div className='px-3 py-5'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14.8%]  flex'>
+                                    <div className='w-[14.8%]  flex items-center'>
                                         <div className='px-3 py-5'>
                                             <p>{item.propertydescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex '>
+                                    <div className='w-[9.8%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.orderdescription}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
+                                    <div className='w-[8.8%]  flex items-center'>
                                         <div className='p-3'>
                                             {item.propertystatusname}
                                         </div>
 
                                     </div>
-                                    <div className='w-[9.8%]  flex'>
+                                    <div className='w-[9.8%]  flex items-center'>
                                         <div className='px-3 py-5'>
                                             <p>{item.description}</p>
                                         </div>
@@ -1250,25 +1366,25 @@ const ClientPmaArgreement = () => {
                                                 <p> inactive</p></>}
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex'>
+                                    <div className='w-[9.8%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.startdate ? item.startdate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
+                                    <div className='w-[8.8%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.enddate ? item.enddate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
+                                    <div className='w-[8.8%]  flex items-center'>
                                         <div className='p-3'>
-                                            <p>{item.poastartdate ? item.poastartdate.split('T')[0] : ""}</p>
+                                            <p>{item.poaholder}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
+                                    <div className='w-[8.8%]  flex items-center'>
                                         <div className='p-3'>
                                             <p>{item.poaenddate ? item.poaenddate.split('T')[0] : ""}</p>
 
@@ -1277,13 +1393,13 @@ const ClientPmaArgreement = () => {
                                     </div>
                                 </div>
                                 <div className="w-[10%] flex">
-                                    <div className='w-[65%]  flex'>
+                                    <div className='w-[65%]  flex items-center'>
                                         <div className='p-3'>
-                                            <p>{item.poaholder}</p>
+                                            <p>{item.id}</p>
                                         </div>
                                         {/* <div className="font-extrabold py-5">↑↓</div> */}
                                     </div>
-                                    <div className='w-[35%] py-3  flex'>
+                                    <div className='w-[35%] py-3  flex items-center'>
                                         <div className='flex space-x-1'>
                                             <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
@@ -1397,7 +1513,9 @@ const ClientPmaArgreement = () => {
                                         <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
                                         </div>
-                                        <AsyncSelect
+                                        {/* <h1>{state.clientname}</h1> */}
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={state.clientname} readOnly/>
+                                        {/* <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
                                             loadOptions={loadOptions}
@@ -1434,7 +1552,7 @@ const ClientPmaArgreement = () => {
                                                     width: 230, // Adjust the width of the dropdown menu
                                                   }),
                                             }}
-                                        />
+                                        /> */}
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -1451,35 +1569,8 @@ const ClientPmaArgreement = () => {
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" hidden >Select A Order</option>
-                                            <option value="" >
-                                                  <div className='flex justify-between'>
-                                                            <p className="float-left">Order Id</p>
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            &nbsp;
-                                                            <p className="float-right">Order Name</p>
-                                                    </div>
-                                                {/* Id &nbsp; &nbsp; &nbsp; &nbsp;Order Name */}
-                                            </option>
-
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.id} 
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
@@ -1517,7 +1608,8 @@ const ClientPmaArgreement = () => {
                                         <div className="text-[13px]">
                                             Client Property <label className="text-red-500">*</label>
                                         </div>
-                                        <select
+                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={state.project + "  " + state.description} readOnly/>
+                                        {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="clientProperty"
                                             value={formValues.clientProperty}
@@ -1532,7 +1624,7 @@ const ClientPmaArgreement = () => {
                                                     {item.propertyname}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
                                     </div>
                                     <div className="">

@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import { APIService } from "../../../../services/API";
+import DropDown from "../../../../Components/Dropdown/Dropdown"
 const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,formErrors,setCurrClientName,clientname,clientid}) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
@@ -272,7 +273,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             <div className="text-[13px]">
               Society/Project Name <label className="text-red-500">*</label>
             </div>
-            <select
+            {/* <select
               className="text-[12px]  w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="projectid"
               onChange={handleChange}
@@ -289,7 +290,10 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
                        <p>{item.projectname}</p> 
                   </option>
                 ))}
-            </select>
+            </select> */}
+            {/* {"Hey"}
+            {formValues.client_property.projectid} */}
+            <DropDown options={existingSociety} initialValue="Select Project" leftLabel="Builder Name" rightLabel="Project" leftAttr="buildername" rightAttr="projectname" toSelect="projectname" handleChange={handleChange} formValueName="projectid" value={formValues.client_property.projectid} idName="projectid"/>
             <div className="text-[10px] text-[#CD0000] ">{formErrors.projectid}</div>
           </div>
           <div className="">

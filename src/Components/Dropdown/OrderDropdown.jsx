@@ -109,8 +109,8 @@ const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, right
               options?.map((item, index) => {
                 return (
                   <div
-                    // key={item.id}
-                    className="flex justify-between text-[12px] cursor-pointer px-[8px] hover:bg-blue-400"
+                    key={item.id}
+                    className={`flex justify-between text-[10px] cursor-pointer px-[8px] hover:bg-blue-400 ${item.id == value ? "bg-blue-400 " : "" }`}
                     onClick={() => onSelect(item)}
                   >
                    <p className="max-w-[50%]">{item[leftAttr]}</p>

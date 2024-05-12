@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {DownOutlined} from "@ant-design/icons"
-const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,pageLoading}) => {
+const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,idName}) => {
   const ref = useRef();
   const [show, setShow] = useState(false);
   const [text,setText] = useState(initialValue)
@@ -11,7 +11,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
     handleChange({
         target : {
             name : formValueName,
-            value : item.id
+            value : item[idName]
         }
     })
   }
@@ -29,7 +29,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
     }else {
         options.map((item) => {
             // if any value matches the initial value
-            if(item.id == value) {
+            if(item[idName] == value) {
                 // this should be the default value
                 setTextValue(item[toSelect])
             }
@@ -110,7 +110,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
                 return (
                   <div
                     // key={item.id}
-                    className="flex justify-between text-[12px] cursor-pointer px-[8px] hover:bg-blue-400"
+                    className={`flex justify-between text-[10px] cursor-pointer px-[8px] hover:bg-blue-400 ${item[idName] == value ? "bg-blue-400 " : "" }`}
                     onClick={() => onSelect(item)}
                   >
                     <p className="max-w-[50%]">{item[leftAttr]}</p>
