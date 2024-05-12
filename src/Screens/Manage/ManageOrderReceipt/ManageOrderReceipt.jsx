@@ -33,6 +33,7 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditOrderReceipt from './EditOrderReceipt';
 import Draggable from 'react-draggable';
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const ManageOrderReceipt = () => {
 
     const menuRef = useRef();
@@ -1051,6 +1052,23 @@ const ManageOrderReceipt = () => {
         setExistingOrderReceipt(result);
         setPageLoading(false);
     }
+    const [orderData,setOrderData] = useState({
+        pendingamount : null,
+        orderdate : null,
+        orderstatus : null
+    })
+    const getOrderData = async  (id) => {
+       const data = {"user_id":1234,"orderid": Number(id)}
+       const response = await APIService.getOrderPending(data)
+       const res = await response.json()
+       console.log(res)
+       const temp = {...orderData}
+       temp.pendingamount = res.data.pending 
+       temp.orderdate = res.data.orderdate
+       temp.orderstatus = res.data.orderstatus
+       setOrderData(temp)
+    }
+    const [orderText,setOrderText] = useState("Select Order")
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1552,11 +1570,15 @@ const ManageOrderReceipt = () => {
                                         <div className="text-[13px]">
                                             Order <label className="text-red-500">*</label>
                                         </div>
-                                        <select
+
+                                        {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
-                                            onChange={handleChange}
+                                            onChange={(e) => {
+                                                handleChange(e)
+                                                getOrderData(e.target.value)
+                                            }}
                                         >
                                             <option value="" >Select A Order</option>
                                             {orders.map((item) => (
@@ -1564,7 +1586,11 @@ const ManageOrderReceipt = () => {
                                                     {item.ordername}
                                                 </option>
                                             ))}
-                                        </select>
+                                        </select> */}
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
+                                                 handleChange(e)
+                                                 getOrderData(e.target.value)
+                                        }} formValueName="order" value={formValues.order}  />
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
                                     <div className="">
@@ -1579,15 +1605,15 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Pending Amount </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" value={orderData.pendingamount} readOnly />
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Date </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]"  value={orderData.orderdate} readOnly/>
                                     </div>
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Order Status </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" value={orderData.orderdate} readOnly/>
                                     </div>
                                 </div>
                             </div>
