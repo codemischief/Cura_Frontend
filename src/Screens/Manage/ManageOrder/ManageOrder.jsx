@@ -993,14 +993,15 @@ const ManageOrder = () => {
                 </div>
 
                 {/* from here we need to divide the page into two parts */}
+                
                 <div className='h-[calc(100vh_-_11rem)] w-full text-[12px] flex mb-60'>
                    {/* this has everything */}
-                    <div className='w-[95%] h-full  overflow-x-auto overflow-y-hidden grid  grid-flow-row ordergrid relative'>
-                        <div className='w-full h-12 bg-white grid grid-flow-col-dense gap-6'>
-                            <div className='w-[30px] '>
+                    <div className='w-full h-full  overflow-x-auto overflow-y-hidden grid  grid-flow-row ordergrid relative'>
+                        <div className='w-full h-12 bg-white grid grid-flow-col auto-cols-max '>
+                            <div className='w-[40px] '>
                                  
                             </div>
-                            <div className='w-[140px]   py-2.5'>
+                            <div className='w-[165px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
@@ -1008,71 +1009,112 @@ const ManageOrder = () => {
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                                 
                             </div>
-                            <div className='w-[130px]   py-2.5'>
+                            <div className='w-[150px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={assignedToFilterInput} onChange={(e) => setAssignedToFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setAssignedToFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {assignedToFilter && <CharacterFilter inputVariable={assignedToFilterInput} setInputVariable={setAssignedToFilterInput} handleFilter={newHandleFilter} filterColumn='ownername' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[150px]   py-2.5'>
+                            <div className='w-[175px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[190px]   py-2.5'>
+                            <div className='w-[215px]  px-4 py-2.5'>
                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[100px]   py-2.5'>
+                            <div className='w-[125px] px-4  py-2.5'>
                              <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceFilterInput} onChange={(e) => setServiceFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setServiceFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} handleFilter={newHandleFilter} filterColumn='servicename' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[105px]   py-2.5'>
+                            <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderStatusFilterInput} onChange={(e) => setOrderStatusFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setOrderStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {orderStatusFilter && <CharacterFilter inputVariable={orderStatusFilterInput} setInputVariable={setOrderStatusFilterInput} handleFilter={newHandleFilter} filterColumn='orderstatus' menuRef={menuRef} />}
                             </div>
-                            <div className='w-[100px]   py-2.5'>
+                            <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={startDateFilterInput} onChange={(e) => setStartDateFilterInput(e.target.value)} type='date' />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setStartDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef}/>}
                             </div>
-                            <div className='w-[120px]   py-2.5'>
+                            <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 
                             </div>
-                            <div className='w-[160px]   py-2.5'>
+                            <div className='w-[100px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 
                             </div>
-                            <div className='w-[160px]   py-2.5'>
+                            <div className='w-[80px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 
                             </div>
-                            
-                           
+                            <div className='w-[120px] px-4  py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                
+                            </div>
+                            <div className='w-[70px]  px-4  py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div> */}
+                                
+                            </div>
+                            <div className='w-[70px] px-4  py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div> */}
+                                
+                            </div>
+                            <div className='w-[70px] px-4  py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div> */}
+                                
+                            </div>
+                            <div className='w-[70px] px-4  py-2.5'>
+                                {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div> */}
+                                
+                            </div>
+
+                            <div className='w-[110px] px-4  py-2.5'>
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                </div>
+                                
+                            </div>
                         </div>
                         {/* pending space here */}
                         <div className='h-12 w-full bg-[#F0F6FF] flex'>
@@ -1103,11 +1145,32 @@ const ManageOrder = () => {
                             <div className='w-[130px] p-4'>
                                  <p> Completion Date</p> 
                             </div>
-                            <div className='w-[180px] p-4'>
+                            <div className='w-[100px] p-4'>
                                  <p>Order Date</p> 
                             </div>
-                            <div className='w-[180px] p-4'>
+                            <div className='w-[80px] p-4'>
                                  <p>Ageing</p> 
+                            </div>
+                            <div className='w-[120px] p-4'>
+                                 <p>Created By</p> 
+                            </div>
+                            <div className='w-[70px] p-4'>
+                               {/* <p>Temp</p> */}
+                            </div>
+                            <div className='w-[70px] p-4'>
+                               {/* <p>Temp</p> */}
+                            </div>
+                            <div className='w-[70px] p-4'>
+                               {/* <p>Temp</p> */}
+                            </div>
+                            <div className='w-[70px] p-4'>
+                               {/* <p>Temp</p> */}
+                            </div>
+                            <div className='w-[110px] p-4'>
+                               <p>ID</p>
+                            </div>
+                            <div className='w-[110px] p-4'>
+                               <p>Edit</p>
                             </div>
                         </div>
                         <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto '>
@@ -1115,54 +1178,82 @@ const ManageOrder = () => {
                         {!pageLoading && existingOrder.length == 0 && <h1 className='ml-10 text-lg mt-3'>No Records Found</h1>}
                         {!pageLoading && existingOrder.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className='w-[85%] flex'>
-                                    <div className='w-[3%] p-4'>
-                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                <div className='w-full flex'>
+                                <div className='w-[40px] p-4'>
+                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p> 
                                     </div>
-                                    <div className='w-[12%]  p-4'>
-                                        <p>{item.clientname}</p>
+                                    <div className='w-[165px] p-4'>
+                                        <p> {item.clientname}</p> 
                                     </div>
-                                    <div className='w-[11%]  p-4'>
-                                        <p>{item.ownername}</p>
+                                    <div className='w-[150px] p-4'>
+                                        <p>{item.ownername}</p> 
                                     </div>
-                                    <div className='w-[13%]  p-4'>
-                                        <p>{item.briefdescription}</p>
+                                    <div className='w-[175px] p-4'>
+                                        <p> {item.briefdescription}</p> 
                                     </div>
-                                    <div className='w-[16%]  p-4'>
-                                        <p>{item.clientproperty}</p>
+                                    <div className='w-[215px] p-4'>
+                                        <p> {item.clientproperty}</p> 
                                     </div>
-                                    <div className='w-[9%]  p-4'>
-                                        <p>{item.servicename}</p>
+                                    <div className='w-[125px] p-4'>
+                                        <p> {item.servicename}</p> 
                                     </div>
-                                    <div className='w-[8%]  p-4'>
-                                        <p>{item.orderstatus}</p>
+                                    <div className='w-[130px] p-4'>
+                                        <p> {item.orderstatus}</p> 
                                     </div>
-                                    <div className='w-[11%]  p-4'>
-                                        <p>{item.earlieststartdate}</p>
+                                    <div className='w-[120px] p-4'>
+                                        <p> {item.earlieststartdate}</p> 
                                     </div>
-                                    <div className='w-[13%]  p-4'>
-                                        <p>{item.expectedcompletiondate}</p>
+                                    <div className='w-[130px] p-4'>
+                                        <p>{item.expectedcompletiondate}</p> 
+                                    </div>
+                                    <div className='w-[100px] p-4'>
+                                        <p>{item.orderdate}</p> 
+                                    </div>
+                                    <div className='w-[80px] p-4'>
+                                        <p>Ageing</p> 
+                                    </div>
+                                    <div className='w-[120px] p-4'>
+                                        <p>{item.createdbyname ?? "Rudra Sen Malik"}</p> 
+                                    </div>
+                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                    <p>Payments</p>
+                                    </div>
+                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                    <p>Receipts</p>
+                                    </div>
+                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                    <p>Invoices</p>
+                                    </div>
+                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                    <p>Show All</p>
+                                    </div>
+                                    <div className='w-[110px] p-4'>
+                                       <p>{item.id}</p>
+                                    </div>
+                                    <div className='w-[110px] p-4'>
+                                          <div className='flex space-x-3'>
+                                                <button  onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+                                                <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                            </div>
                                     </div>
                                 </div>
-                                <div className='w-[15%]  flex'>
-                                    <div className='w-[62%]  p-4'>
-                                        <p>{item.orderdate}</p>
-                                    </div>
-                                    {/* <div className='w-[38%] p-4'>
-                                        <div className='flex space-x-1'>
-                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
-                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
-                                        </div>
-                                    </div> */}
-                                </div>
+                                
 
                             </div>
                         })}
                         </div>
                    </div>
-                   <div className='w-[5%] h-full bg-blue-300'>
+                   {/* <div className='w-[5%] h-full bg-blue-300 grid  grid-flow-row'>
+                       <div className='w-full h-12 bg-green-300'>
 
-                   </div>
+                       </div>
+                       <div className='w-full h-12 bg-yellow-300'>
+
+                        </div>
+                        <div className='h-[calc(100vh_-_17rem)] w-full bg-slate-600'>
+
+                        </div>
+                   </div> */}
                 </div>
                 {/*<div className='h-12 w-full bg-white'>
                     <div className='flex justify-between'>
