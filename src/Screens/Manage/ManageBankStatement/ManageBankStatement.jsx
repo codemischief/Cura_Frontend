@@ -152,11 +152,11 @@ const ManageBankStatement = () => {
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
-            "order": "desc",
-            "pg_no": 1,
-            "pg_size": 15,
+            "order": flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
         }
         const response = await APIService.getBankStatement(data);
@@ -240,16 +240,10 @@ const ManageBankStatement = () => {
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
         setCurrentPage(pageNumber);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
         const data = {
             "user_id": 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": tempFilters,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
@@ -266,20 +260,15 @@ const ManageBankStatement = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
-        setCurrentPages(number)
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
+        setCurrentPages(number);
+        setCurrentPage(1);
         const data = {
             "user_id": 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": tempFilters,
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(number),
             "search_key": isSearchOn ? searchQuery : ""
         };
@@ -294,19 +283,16 @@ const ManageBankStatement = () => {
     const handleSort = async (field) => {
         setPageLoading(true);
         setSortField(field);
-        const tempFilters = [];
-        for (var i = 0; i < 4; i++) {
-            if (filterArray[i][2] != "") {
-                tempFilters.push(filterArray[i]);
-            }
-        }
+        setFlag((prev) => {
+            return !prev;
+        })
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid", "crdr"],
-            "filters": tempFilters,
+            "filters": filterState,
             "sort_by": [field],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 1,
+            "order": !flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchQuery : ""
         };
@@ -316,9 +302,7 @@ const ManageBankStatement = () => {
         const t = temp.total_count;
         setTotalItems(t);
         setExistingStatement(result);
-        setFlag((prev) => {
-            return !prev;
-        })
+
         setPageLoading(false);
     }
 
@@ -338,6 +322,7 @@ const ManageBankStatement = () => {
                 setTypeFilter(false);
                 setParticularsFilter(false);
                 setCRFilter(false);
+                setIdFilter(false);
 
             }
         }
@@ -565,13 +550,14 @@ const ManageBankStatement = () => {
     const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
         setPageLoading(true);
+        setCurrentPage(1);
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid"],
-            "filters": [],
+            "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchQuery
         };
@@ -588,14 +574,16 @@ const ManageBankStatement = () => {
     const handleCloseSearch = async () => {
         setPageLoading(true);
         setSearchQuery("");
+        setCurrentPage(1);
         const data = {
             "user_id": userId || 1234,
             "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 1,
-            "pg_size": 15
+            "pg_size": Number(currentPages),
+            "search_key": ""
         }
         const response = await APIService.getBankStatement(data);
         const result = await response.json();
@@ -605,22 +593,22 @@ const ManageBankStatement = () => {
     }
     const [typeFilter, setTypeFilter] = useState(false);
     const [typeFilterInput, setTypeFilterInput] = useState("");
-    
+
     const [modeFilter, setModeFilter] = useState(false);
     const [modeFilterInput, setModeFilterInput] = useState("");
-    
+
     const [dateFilter, setDateFilter] = useState(false);
     const [dateFilterInput, setDateFilterInput] = useState("");
-   
+
     const [amountFilter, setAmountFilter] = useState(false);
     const [amountFilterInput, setAmountFilterInput] = useState("");
-    
+
     const [clientFilter, setClientFilter] = useState(false);
     const [clientFilterInput, setClientFilterInput] = useState("");
-    
+
     const [particularsFilter, setParticularsFilter] = useState(false);
     const [particularsFilterInput, setParticularsFilterInput] = useState("");
-    
+
     const [crFilter, setCRFilter] = useState(false);
     const [crFilterInput, setCRFilterInput] = useState("");
 
@@ -628,49 +616,61 @@ const ManageBankStatement = () => {
     const [idFilterInput, setIdFilterInput] = useState("")
 
     const filterMapping = {
-        buildername : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        modeofpayment: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        country : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        amount: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
         },
-        city : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        crdr: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        suburb : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        date: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        particulars: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        clientid: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
 
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
     const [filterState, setFilterState] = useState([]);
-    const fetchFiltered = async  (mapState) => {
+    const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key=> {
-            if(mapState[key].filterType != "") {
-                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
             }
         })
         setFilterState(tempArray);
@@ -679,49 +679,50 @@ const ManageBankStatement = () => {
         console.log(tempArray)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchQuery
         };
-        const response = await APIService.getNewBuilderInfo(data)
-        const res = await response.json()
-        console.log(res)
-        const result = res.data.builder_info;
-        setTotalItems(res.total_count);
-        console.log(res.total_count);
+        const response = await APIService.getBankStatement(data);
+        const result = await response.json();
+        setExistingStatement(result.data);
+        setTotalItems(result.total_count);
         setPageLoading(false);
-        // console.log(result);
-        setExistingBuilders(result);
     }
-    const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
-        
-            var existing = filterMapState;
-            existing = {...existing,[columnName] : {
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
                 ...existing[columnName],
-                 filterType : type == 'noFilter' ? "" : type
-            }}
-            existing = {...existing, [columnName] : {
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
                 ...existing[columnName],
-                 filterValue : type == 'noFilter' ? "" : inputVariable
-            }}
-            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+
         fetchFiltered(existing);
     }
-    
+
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": [],
-            "sort_by": [],
-            "order": "asc",
+            "rows": ["modeofpayment", "date", "crdr", "amount", "particulars", "clientid", "id",],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
-            "pg_size": 0
+            "pg_size": 0,
+            "search_key": searchQuery
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -823,6 +824,36 @@ const ManageBankStatement = () => {
         }
         return results
     }
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
     return (
         <div className="h-screen">
             <Navbar />
@@ -850,6 +881,7 @@ const ManageBankStatement = () => {
                                 placeholder="   Search"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -880,63 +912,99 @@ const ManageBankStatement = () => {
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={modeFilterInput} onChange={(e) => setModeFilterInput(e.target.value)} 
+                                    onKeyDown={(event) => handleEnterToFilter(event,modeFilterInput,
+                                        setModeFilterInput,
+                                        'contains',
+                                        'modeofpayment')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} />}
+                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='modeofpayment' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] rounded-[5px] bg-[#EBEBEB] text-[11px] pl-2 outline-none" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)} />
+                                    <input className="w-[70%] rounded-[5px] bg-[#EBEBEB] text-[11px] pl-2 outline-none" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,dateFilterInput,
+                                        setDateFilterInput,
+                                        'equalTo',
+                                        'date')}
+                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
-
                                 </div>
+                                {dateFilter && <DateFilter inputVariable={dateFilterInput} setInputVariable={setDateFilterInput} handleFilter={newHandleFilter} columnName='date' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={typeFilterInput} onChange={(e) => setTypeFilterInput(e.target.value)} 
+                                    onKeyDown={(event) => handleEnterToFilter(event,typeFilterInput,
+                                        setTypeFilterInput,
+                                        'contains',
+                                        'crdr')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
-
                                 </div>
+                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
+                                        setAmountFilterInput,
+                                        'equalTo',
+                                        'amount')}
+                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
-
                                 </div>
+                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
                             </div>
                             <div className='w-[30%] px-4 py-2.5'>
                                 <div className='w-[29%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={particularsFilterInput} onChange={(e) => setParticularsFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,particularsFilterInput,
+                                        setParticularsFilterInput,
+                                        'contains',
+                                        'particulars')}
+                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
-
                                 </div>
+                                {particularsFilter && <CharacterFilter inputVariable={particularsFilterInput} setInputVariable={setParticularsFilterInput} handleFilter={newHandleFilter} filterColumn='particulars' menuRef={menuRef} />}
                             </div>
                             <div className='w-[20%] px-4 py-2.5'>
                                 <div className='w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientFilterInput} onChange={(e) => setClientFilterInput(e.target.value)} 
+                                    onKeyDown={(event) => handleEnterToFilter(event,clientFilterInput,
+                                        setClientFilterInput,
+                                        'contains',
+                                        'clientid')}
+                                    />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
-
                                 </div>
+                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientid' menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-4 py-2.5'>
-                                <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                                {/* <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={crFilterInput} onChange={(e) => setCRFilterInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setCRFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                </div> */}
 
-                                </div>
                             </div>
 
                         </div>
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  px-4 py-2.5'>
                                 <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                    <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
+                                    <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none text-[11px]" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} 
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                    />
                                     <button className='px-1 py-2 w-[33%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
                             </div>
-                            <div className='w-1/2 0 p-4'>
+                            <div className='w-1/2 p-4'>
 
                             </div>
                         </div>
@@ -951,22 +1019,22 @@ const ManageBankStatement = () => {
                                 <p>Sr. </p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p onClick={() => handleSort("modeofpayment")}>Mode <span className="font-extrabold">↑↓</span></p>
+                                <p>Mode <button onClick={() => handleSort("modeofpayment")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p onClick={() => handleSort("date")}>Date ↑↓</p>
+                                <p>Date <button onClick={() => handleSort("date")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p onClick={() => handleSort("crdr")}>Type ↑↓</p>
+                                <p>Type <button onClick={() => handleSort("crdr")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p onClick={() => handleSort("amount")}>Amount ↑↓ </p>
+                                <p>Amount <button onClick={() => handleSort("amount")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[30%]  p-4'>
-                                <p onClick={() => handleSort("particulars")}>Particulars ↑↓</p>
+                                <p>Particulars <button onClick={() => handleSort("particulars")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[20%] p-4 '>
-                                <p onClick={() => handleSort("clientid")}>Client Name ↑↓</p>
+                                <p>Client Name <button onClick={() => handleSort("clientid")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
 
                             <div className='w-[12%] p-4 '>
@@ -975,7 +1043,7 @@ const ManageBankStatement = () => {
                         </div>
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  p-4'>
-                                <p onClick={() => handleSort("id")}>ID ↑↓</p>
+                                <p>ID <button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-1/2 0 p-4'>
                                 <p>Edit</p>
@@ -1031,7 +1099,6 @@ const ManageBankStatement = () => {
                                 <div className='w-[15%] flex'>
                                     <div className='w-1/2  p-4'>
                                         <p>{item.id}</p>
-
                                     </div>
                                     <div className='w-1/2 0 p-4 flex justify-between items-center'>
                                         <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item, vendorList, howReceived, mode)} />
@@ -1044,21 +1111,7 @@ const ManageBankStatement = () => {
                         {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} />}
                     </div>
-
-
-
-
-
-
-
                 </div>
-
-
-
-
-
-
-
             </div>
 
 
@@ -1099,7 +1152,7 @@ const ManageBankStatement = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
