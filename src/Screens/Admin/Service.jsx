@@ -262,14 +262,14 @@ const Service = () => {
     const addService = async () => {
         const data = {
             "user_id": 1234,
-            "lob": 2,
-            "service": "testservice",
+            "lob": Number(formValues.lob),
+            "service": formValues.serviceName,
             "active": true,
             "servicetype": "New service",
             "category2": "Category",
             "tallyledgerid": 28
         }
-        const response = await APIService.addUser(data);
+        const response = await APIService.addService(data);
 
         const result = (await response.json())
 
