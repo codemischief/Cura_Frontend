@@ -18,6 +18,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         orderdate: null,
         orderstatus: null,
         pendingAmount: null,
+        ordername : null
     }
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
@@ -144,7 +145,9 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         existing.receiptDescription = res.data.receiptdesc
         existing.receivedDate = res.data.recddate
         existing.amountReceived = res.data.amount
+        getOrderData(res.data.orderid)
         // existing.pendingAmount = res.data.amount
+        existing.ordername = res.data.briefdescription
         existing.orderstatus = res.data.status
         existing.orderdate = res.data.orderdate
         setFormValues(existing)
@@ -154,6 +157,11 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         setSelectedOption(temp)
         setPageLoading(false)
     }
+    const [orderData,setOrderData] = useState({
+        pendingamount : null,
+        orderdate : null,
+        orderstatus : null
+    })
     useEffect(() => {
 
         fetchInitialData()
@@ -249,6 +257,17 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         handleClose();
         showCancel();
     }
+    const getOrderData = async  (id) => {
+        const data = {"user_id":1234,"orderid": Number(id)}
+        const response = await APIService.getOrderPending(data)
+        const res = await response.json()
+        console.log(res)
+        const temp = {...orderData}
+        temp.pendingamount = res.data.pending 
+        temp.orderdate = res.data.orderdate
+        temp.orderstatus = res.data.orderstatus
+        setOrderData(temp)
+     }
     return (
         <Modal open={true}
             fullWidth={true}
@@ -279,7 +298,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                             <div className="text-[13px]">
                                                 Client <label className="text-red-500">*</label>
                                             </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={initialValues.clientname} readOnly />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.clientname} readOnly />
                                         </div>
                                         <div className="">
                                             <div className="text-sm">
@@ -336,7 +355,8 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                             <div className="text-[13px]">
                                                 Order <label className="text-red-500">*</label>
                                             </div>
-                                            <select
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" value={formValues.ordername} readOnly />
+                                            {/* <select
                                                 className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                 name="order"
                                                 value={formValues.order}
@@ -348,7 +368,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                                         {item.ordername}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                         </div>
                                         <div className="">
@@ -363,15 +383,15 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                         </div>
                                         <div className="">
                                             <div className="text-sm text-[#787878]">Pending Amount </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.pendingAmount} readOnly />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.pendingamount} readOnly />
                                         </div>
                                         <div className="">
                                             <div className="text-sm text-[#787878]">Order Date </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.orderdate} readOnly />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderdate} readOnly />
                                         </div>
                                         <div className="">
                                             <div className="text-sm text-[#787878]">Order Status </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.orderstatus} readOnly />
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderstatus} readOnly />
                                         </div>
                                     </div>
                                 </div>

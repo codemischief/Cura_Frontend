@@ -24,8 +24,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         setFormValues({ ...formValues, [name]: value });
     };
     const [orders, setOrders] = useState([])
-
+    const [pageLoading,setPageLoading] = useState(false)
     const fetchInitialData = async () => {
+        setPageLoading(true)
         const data = {
             "user_id": 1234,
             "table_name": "get_orders_invoice_view",
@@ -55,6 +56,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         temp.value = res.data.clientid
         temp.label = res.data.clientname
         setSelectedOption(temp)
+        setTimeout(() => {
+          setPageLoading(false)
+        },1000)
     }
     useEffect(() => {
         fetchInitialData();
@@ -145,6 +149,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
+        existing.order = null
+        setOrders([])
+        setOrderText((prev) => "Select Order")
         getOrdersByClientId(e.value)
         setFormValues(existing)
         //    const existing = {...formValues}
@@ -212,6 +219,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             maxWidth={'md'}
             className='flex justify-center items-center'
         >
+
             <div className='flex justify-center'>
                 
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
@@ -223,9 +231,9 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                 <button onClick={() => {close()}}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-
+                        
                         <div className="text-sm text-center mt-1 font-semibold">Invoice ID: {invoiceId}</div>
-
+                        {!pageLoading &&
                         <div className="h-auto w-full mt-1 ">
                             <div className="flex gap-12 justify-center">
                                 <div className=" space-y-3 py-5">
@@ -328,7 +336,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="my-3 flex justify-center items-center gap-3">
                             <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={() => {close()}}>Cancel</button>

@@ -1,17 +1,18 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, useScrollTrigger } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
+import DropDown from '../../../Components/Dropdown/Dropdown';
 import Draggable from 'react-draggable'
-const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersData,showSuccess,showCancel}) => {
+const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, usersData, showSuccess, showCancel }) => {
     const initialValues = {
         client: null,
         paymentby: null,
         amount: null,
         paymentdate: null,
         orderid: null,
-        ordername : null,
+        ordername: null,
         vendorid: null,
         mode: null,
         description: null,
@@ -19,46 +20,46 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
         servicetaxamount: null,
         entityid: null,
         officeid: null,
-        orderdate : null,
-        orderstatus : null
+        orderdate: null,
+        orderstatus: null
     };
-    const [formValues,setFormValues ] = useState(initialValues)
-    const [formErrors,setFormErrors] = useState({})
+    const [formValues, setFormValues] = useState(initialValues)
+    const [formErrors, setFormErrors] = useState({})
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    
+
     // const [modesData,setModesData] = useState([])
-    const [orders,setOrders] = useState([])
+    const [orders, setOrders] = useState([])
     // const [vendorData,setVendorData] = useState([])
     // const [usersData,setUsersData] = useState([])
     const fetchInitialData = async () => {
         const data = {
-            "user_id" : 1234,
-            "table_name" : "get_vendor_payment_view",
-            "item_id" : currPayment
+            "user_id": 1234,
+            "table_name": "get_vendor_payment_view",
+            "item_id": currPayment
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
         console.log(res.data)
-        const existing = {...formValues}
-        existing.client = res.data.clientid 
+        const existing = { ...formValues }
+        existing.client = res.data.clientid
         getOrdersByClientId(res.data.clientid)
-        
+
         existing.paymentby = res.data.paymentby
-        existing.amount = res.data.amount 
-        existing.paymentdate = res.data.paymentdate 
-        existing.orderid = res.data.orderid 
+        existing.amount = res.data.amount
+        existing.paymentdate = res.data.paymentdate
+        existing.orderid = res.data.orderid
         getOrdersData(res.data.orderid)
-        existing.vendorid = res.data.vendorid 
-        existing.mode = res.data.mode 
-        existing.description = res.data.description 
+        existing.vendorid = res.data.vendorid
+        existing.mode = res.data.mode
+        existing.description = res.data.description
         existing.tds = res.data.tds
         existing.servicetaxamount = res.data.servicetaxamount
         existing.ordername = res.data.briefdescription
-        const temp = {...selectedOption}
-        temp.label = res.data.clientname 
+        const temp = { ...selectedOption }
+        temp.label = res.data.clientname
         temp.value = res.data.clientid
         setSelectedOption(temp)
         // existing.entityid = res.data 
@@ -76,20 +77,20 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
         console.log(res.data)
         setOrders(res.data)
     }
-    const [tempFormValues,setTempFormValues] = useState({})
+    const [tempFormValues, setTempFormValues] = useState({})
     const getOrdersData = async (id) => {
-        const data = {"user_id":1234,"item_id": id,"table_name" : "get_orders_view"}
+        const data = { "user_id": 1234, "item_id": id, "table_name": "get_orders_view" }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
-        const existing = {...tempFormValues}
+        const existing = { ...tempFormValues }
         existing.orderdate = res.data.orderdate
         existing.orderstatus = res.data.orderstatus
         setTempFormValues(existing)
         console.log(res.data)
     }
     useEffect(() => {
-       fetchInitialData()
-    },[])
+        fetchInitialData()
+    }, [])
 
 
 
@@ -141,12 +142,16 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
         }
         return results
     }
-    const handleEdit  = async () => {
+    const handleEdit = async () => {
+        if (!validate()) {
+            console.log('hu')
+            return;
+        }
         console.log(formValues)
-       const data = {
-        "user_id" : 1234,
-        "id" : currPayment,
-        "paymentby": Number(formValues.paymentby),
+        const data = {
+            "user_id": 1234,
+            "id": currPayment,
+            "paymentby": Number(formValues.paymentby),
             "amount": Number(formValues.amount),
             "paymentdate": formValues.paymentdate,
             "orderid": Number(formValues.orderid),
@@ -157,49 +162,127 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
             "servicetaxamount": Number(formValues.servicetaxamount),
             "entityid": 1,
             "officeid": 2
-       }
-       const response = await APIService.editVendorPayment(data)
-       const res = await response.json()
-       if(res.result == 'success') {
+        }
+        const response = await APIService.editVendorPayment(data)
+        const res = await response.json()
+        if (res.result == 'success') {
             showSuccess()
-       }
+        }
     }
-    const close = () =>{
+
+    const validate = () => {
+        var res = true;
+
+        if (!formValues.client) {
+            setFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
+        if (formValues.orderid == null || formValues.orderid == "") {
+            setFormErrors((existing) => {
+                return { ...existing, orderid: "Select Order" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, orderid: "" }
+            })
+        }
+        if (formValues.mode == null || formValues.mode == "") {
+            setFormErrors((existing) => {
+                return { ...existing, mode: "Select Mode" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, mode: "" }
+            })
+        }
+        if (formValues.amount == null || formValues.amount == "") {
+            setFormErrors((existing) => {
+                return { ...existing, amount: "Enter Amount" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, amount: "" }
+            })
+        }
+        if (formValues.vendorid == null || formValues.vendorid == "") {
+            setFormErrors((existing) => {
+                return { ...existing, vendorid: "Enter Vendor" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, vendorid: "" }
+            })
+        }
+        if (formValues.paymentdate == null || formValues.paymentdate == "") {
+            setFormErrors((existing) => {
+                return { ...existing, paymentdate: "Enter Payment Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, paymentdate: "" }
+            })
+        }
+        if (formValues.paymentby == null || formValues.paymentby == "") {
+            setFormErrors((existing) => {
+                return { ...existing, paymentby: "Enter Payment By" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, paymentby: "" }
+            })
+        }
+
+        return res;
+    }
+
+    const close = () => {
         handleClose();
         showCancel();
     }
-  return (
-    <Modal open={true}
-                fullWidth={true}
-                maxWidth={'md'}
-                className='flex justify-center items-center'
-            >
-                <>
-                    <Draggable>
-                <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Vendor Payment</div>
+    return (
+        <Modal open={true}
+            fullWidth={true}
+            maxWidth={'md'}
+            className='flex justify-center items-center'
+        >
+            <>
+                <Draggable>
+                    <div className='flex justify-center'>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit Vendor Payment</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={() => { close() }}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={() => {close()}}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
 
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Cura Office </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
+                            <div className="h-auto w-full mt-[5px]">
+                                <div className="flex gap-[48px] justify-center ">
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878]">Cura Office </div>
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly/>
-                                        {/* <AsyncSelect
+                                        <div className="">
+                                            <div className="text-[13px]">
+                                                Client <label className="text-red-500">*</label>
+                                            </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
+                                            {/* <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
                                             loadOptions={loadOptions}
@@ -232,51 +315,51 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
                                                 })
                                             }}
                                         /> */}
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">
-                                            Mode <label className="text-red-500">*</label>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                            name="mode"
-                                            value={formValues.mode}
-                                            onChange={handleChange}
-                                        >
-                                            {modesData.map((item) => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">GST/ST </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
-                                    </div>
-                                </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Payment ID </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
+                                        <div className="">
+                                            <div className="text-sm">
+                                                Mode <label className="text-red-500">*</label>
+                                            </div>
+                                            <select
+                                                className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                name="mode"
+                                                value={formValues.mode}
+                                                onChange={handleChange}
+                                            >
+                                                {modesData.map((item) => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
                                         </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly/>
-                                        {/* <select
+                                        <div className="">
+                                            <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">GST/ST </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Description </div>
+                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878]">Payment ID </div>
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">
+                                                Order <label className="text-red-500">*</label>
+                                            </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly />
+                                            {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="orderid"
                                             value={formValues.orderid}
@@ -289,63 +372,63 @@ const EditVendorPayment = ({handleClose,currPayment,modesData,vendorData,usersDa
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
-                                            <option value={null}> Select Vendor</option>
-                                            {vendorData.map(item => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">TDS Deduction </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                    </div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
+                                                <option value={null}> Select Vendor</option>
+                                                {vendorData.map(item => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">TDS Deduction </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                        </div>
 
-                                    <div className="">
-                                        <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                        <div className="">
+                                            <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
+                                            {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                             {usersData.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
                                                 </option>
                                             ))}
-                                        </select>
-
-                                        <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Order Date </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderdate} readOnly />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#787878]">Order Status </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderstatus} readOnly/>
+                                        </select> */}
+                                            <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} />
+                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentBy}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm text-[#787878]">Order Date </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderdate} readOnly />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm text-[#787878]">Order Status </div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderstatus} readOnly />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
+                            <div className="my-3 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                    </Draggable>
-                    </>
-            </Modal>
-  )
+                </Draggable>
+            </>
+        </Modal>
+    )
 }
 
 export default EditVendorPayment

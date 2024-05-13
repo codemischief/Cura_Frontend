@@ -64,7 +64,10 @@ const EditClientProperty = (props) => {
         await fetchClientName(res.data.client_property.clientid);
         setFormValues(res.data);
         setInitialClientPropertyData({...res.data});
-        setPageLoading(false);
+        // setPageLoading(false);
+        setTimeout(() => {
+            setPageLoading(false)
+        },1000)
         console.log(formValues);
     }
     const fetchClientData = async () => {

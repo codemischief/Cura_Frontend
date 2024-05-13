@@ -33,6 +33,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditVendorInvoice from './EditVendorInvoice';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+
 const ManageVendorInvoice = () => {
 
     const menuRef = useRef();
@@ -201,9 +202,9 @@ const ManageVendorInvoice = () => {
         setUsersData(res.data)
     }
 
-    const [vendorData,setVendorData] = useState([])
+    const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = {"user_id" : 1234}
+        const data = { "user_id": 1234 }
         const response = await APIService.getVendorAdmin(data)
         const res = await response.json()
         console.log(res)
@@ -430,7 +431,7 @@ const ManageVendorInvoice = () => {
         }
     }
     const [showEditModal, setShowEditModal] = useState(false);
-    const [currInvoice,setCurrInvoice] = useState(0);
+    const [currInvoice, setCurrInvoice] = useState(0);
     const handleEdit = (id) => {
         // we need to open the edit modal
         console.log(id)
@@ -452,7 +453,7 @@ const ManageVendorInvoice = () => {
         order: null,
         invoiceDate: null,
         invoicedescription: null,
-        notes:null,
+        notes: null,
     };
     const [formValues, setFormValues] = useState(initialValues);
     useEffect(() => {
@@ -481,7 +482,7 @@ const ManageVendorInvoice = () => {
         };
     }, []);
 
-    
+
 
     const handleOpen = () => {
         SetIsVendorInvoiceDialogue(true);
@@ -497,7 +498,7 @@ const ManageVendorInvoice = () => {
         )
         setOrders([]);
         setOrderText("Select Order");
-        
+
         SetIsVendorInvoiceDialogue(false);
         openAddCancelModal();
     }
@@ -1028,11 +1029,41 @@ const ManageVendorInvoice = () => {
         setExistingVendorInvoice(result);
         setPageLoading(false);
     }
-    const [orderText, setOrderText] = useState("Select Order")
+    const [orderText, setOrderText] = useState("Select Order");
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
     return (
         <div className='h-screen'>
             <Navbar />
-            {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} showCancel={openCancelModal}/>}
+            {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Deleted successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
@@ -1066,6 +1097,7 @@ const ManageVendorInvoice = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1100,14 +1132,24 @@ const ManageVendorInvoice = () => {
                         </div>
                         <div className='w-[13%] px-3 py-2  '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event, vendorNameFilterInput,
+                                    setVendorNameFilterInput,
+                                    'contains',
+                                    'vendorname')}
+                                 />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[14%]  px-3 py-2 '>
                             <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event, clientNameFilterInput,
+                                    setClientNameFilterInput,
+                                    'contains',
+                                    'clientname')}
+                                 />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
@@ -1115,7 +1157,12 @@ const ManageVendorInvoice = () => {
                         </div>
                         <div className='w-[17%] px-3 py-2 ml-[2px]'>
                             <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} 
+                                onKeyDown={(event) => handleEnterToFilter(event, orderDescriptionFilterInput,
+                                    setOrderDescriptionFilterInput,
+                                    'contains',
+                                    'briefdescription')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
@@ -1123,42 +1170,72 @@ const ManageVendorInvoice = () => {
 
                         <div className='w-[10%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} />
+                                <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event, invoiceAmountFilterInput,
+                                    setInvoiceAmountFilterInput,
+                                    'equalTo',
+                                    'invoiceamount')}
+                                 />
                                 <button className='w-[35%] px-1 py-2' onClick={() => { setInvoiceAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {invoiceAmountFilter && <NumericFilter columnName='invoiceamount' inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[10%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type='date'
+                                onKeyDown={(event) => handleEnterToFilter(event, invoiceDateFilterInput,
+                                    setInvoiceDateFilterInput,
+                                    'equalTo',
+                                    'invoicedate')}
+                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setInvoiceDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} />
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
+                                onKeyDown={(event) => handleEnterToFilter(event, entityFilterInput,
+                                    setEntityFilterInput,
+                                    'contains',
+                                    'entity')}
+                                />
                                 <button className='w-[30%] px-1 py-2' onClick={() => { setEntityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} handleFilter={newHandleFilter} filterColumn='entity' menuRef={menuRef} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event, createdByFilterInput,
+                                    setCreatedByFilterInput,
+                                    'contains',
+                                    'createdbyname')}
+                                 />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[10%] px-3 py-2  '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event, estimateAmountFilterInput,
+                                    setEstimateAmountFilterInput,
+                                    'equalTo',
+                                    'amount')}
+                                 />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {estimateAmountFilter && <NumericFilter columnName='amount' inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[10%] px-3 py-2  '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type='date' />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type='date' 
+                                onKeyDown={(event) => handleEnterToFilter(event, estimateDateFilterInput,
+                                    setEstimateDateFilterInput,
+                                    'equalTo',
+                                    'estimatedate')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef} />}
@@ -1168,7 +1245,12 @@ const ManageVendorInvoice = () => {
 
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))} />
+                                <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))}
+                                onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                    setIdFilterInput,
+                                    'equalTo',
+                                    'id')}
+                                 />
                                 <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                             </div>
                             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1279,7 +1361,7 @@ const ManageVendorInvoice = () => {
                                 <div className="w-[90%] flex">
                                     <div className='w-[4%] flex'>
                                         <div className='px-3 py-5'>
-                                            
+
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
@@ -1433,116 +1515,116 @@ const ManageVendorInvoice = () => {
             >
                 <div className='flex justify-center'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Vendor Invoice</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
-                                        <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
-                                    </div>
-                                    <div className="pt-0.5">
-                                        <div className="text-[13px]">Vendor</div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                            <option value={null}> Select Vendor</option>
-                                            {vendorData.map(item => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Invoice Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Estimate Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Vat 5% </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
-                                    </div>
-
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">New Vendor Invoice</div>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px] mb-0.5">
-                                            Client <label className="text-red-500">*</label>
-                                        </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
-
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width : 230,
-                                                    fontSize: 10,
-                                                    // padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
-                                                }),
-                                                menu: (provided, state) => ({
-                                                    ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
-                                                  }),
-                                            }}
-                                        />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Invoice Number </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">GST/ST </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Estimate Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">VAT 12.5% </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
-                                    </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px] mb-1">
-                                            Order <label className="text-red-500">*</label>
+                            </div>
+
+                            <div className="h-auto w-full mt-[5px]">
+                                <div className="flex gap-[48px] justify-center ">
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
+                                            <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
-                                        {/* <select
+                                        <div className="pt-0.5">
+                                            <div className="text-[13px]">Vendor</div>
+                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                                <option value={null}> Select Vendor</option>
+                                                {vendorData.map(item => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Invoice Amount </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Estimate Date </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Vat 5% </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
+                                        </div>
+
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">
+                                                Client <label className="text-red-500">*</label>
+                                            </div>
+                                            <AsyncSelect
+                                                onChange={handleClientNameChange}
+                                                value={selectedOption}
+                                                loadOptions={loadOptions}
+                                                cacheOptions
+                                                defaultOptions
+                                                onInputChange={(value) => setQuery(value)}
+
+                                                styles={{
+                                                    control: (provided, state) => ({
+                                                        ...provided,
+                                                        minHeight: 23,
+                                                        lineHeight: '0.8',
+                                                        height: 4,
+                                                        width: 230,
+                                                        fontSize: 10,
+                                                        // padding: '1px'
+                                                    }),
+                                                    // indicatorSeparator: (provided, state) => ({
+                                                    //   ...provided,
+                                                    //   lineHeight : '0.5',
+                                                    //   height : 2,
+                                                    //   fontSize : 12 // hide the indicator separator
+                                                    // }),
+                                                    dropdownIndicator: (provided, state) => ({
+                                                        ...provided,
+                                                        padding: '1px', // adjust padding for the dropdown indicator
+                                                    }),
+                                                    options: (provided, state) => ({
+                                                        ...provided,
+                                                        fontSize: 10// adjust padding for the dropdown indicator
+                                                    }),
+                                                    menu: (provided, state) => ({
+                                                        ...provided,
+                                                        width: 230, // Adjust the width of the dropdown menu
+                                                    }),
+                                                }}
+                                            />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Invoice Number </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">GST/ST </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Estimate Amount </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">VAT 12.5% </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-[13px] mb-1">
+                                                Order <label className="text-red-500">*</label>
+                                            </div>
+                                            {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
@@ -1555,29 +1637,29 @@ const ManageVendorInvoice = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
-                                    </div>
-                                    <div className="pt-[-2px]">
-                                        <div className="text-[13px]">Invoice Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
-                                    </div>
-                                    <div className="pmt-[-10px]">
-                                        <div className="text-[13px] mb-0.5">Notes </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                            <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        </div>
+                                        <div className="pt-[-2px]">
+                                            <div className="text-[13px]">Invoice Date </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
+                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                        </div>
+                                        <div className="pmt-[-10px]">
+                                            <div className="text-[13px] mb-0.5">Notes </div>
+                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div className="my-3 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorInvoice} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            </div>
                         </div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendorInvoice} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-                    </div>
                     </Draggable>
                 </div>
             </Modal>

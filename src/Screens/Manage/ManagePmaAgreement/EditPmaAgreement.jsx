@@ -4,7 +4,7 @@ import { Modal } from '@mui/material'
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
-const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
+const EditPmaAgreement = ({handleClose,currPma,showSuccess , showCancel}) => {
     console.log(currPma)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -242,6 +242,11 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
       fetchInitialData()
        
     },[])
+
+    const close = () =>{
+        handleClose();
+        showCancel();
+    }
   return (
     <Modal open={true}
     fullWidth={true}
@@ -257,7 +262,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
                     <div className="text-[16px]">Edit PMA Agreement</div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                    <button onClick={handleClose}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                    <button onClick={() => {close()}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                 </div>
             </div>
 
@@ -452,7 +457,7 @@ const EditPmaAgreement = ({handleClose,currPma,showSuccess}) => {
             />Active</div>
             <div className="my-3 flex justify-center items-center gap-[10px]">
                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Save</button>
-                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
             </div>
         </div>
     </div>

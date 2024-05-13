@@ -167,6 +167,15 @@ const ManageClientInvoice = () => {
         //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
         //     }
         // })
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -188,7 +197,7 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -724,6 +733,15 @@ const ManageClientInvoice = () => {
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
+        setClientNameFilter(false)
+        setOrderDescriptionFilter(false)
+        setEstimateAmountFilter(false)
+        setEstimateDateFilter(false)
+        setInvoiceDateFilter(false)
+        setInvoiceAmountFilter(false)
+        setEntityFilter(false)
+        setCreatedByFilter(false)
+        setIdFilter(false)
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
@@ -948,8 +966,8 @@ const ManageClientInvoice = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[12%]  p-3'>
-                                <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
+                            <div className='w-[21%]  p-3 '>
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
                                         setClientNameFilterInput,
@@ -960,8 +978,8 @@ const ManageClientInvoice = () => {
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[14%]  p-3'>
-                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                            <div className='w-[26%]  p-3 '>
+                                <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
                                         setOrderDescriptionFilterInput,
@@ -973,7 +991,7 @@ const ManageClientInvoice = () => {
                                 {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[13%]  p-3'>
+                            {/* <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,estimateAmountFilterInput,
@@ -984,9 +1002,9 @@ const ManageClientInvoice = () => {
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {estimateAmountFilter && <NumericFilter inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} columnName="estimateamount" menuRef={menuRef} handleFilter={newHandleFilter} />}
-                            </div>
+                            </div> */}
 
-                            <div className='w-[12%] p-3'>
+                            {/* <div className='w-[12%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type="date"
                                     onKeyDown={(event) => handleEnterToFilter(event,estimateDateFilterInput,
@@ -997,9 +1015,9 @@ const ManageClientInvoice = () => {
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef} />}
-                            </div>
+                            </div> */}
 
-                            <div className='w-[13%]  p-3'>
+                            <div className='w-[14%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceAmountFilterInput} onChange={(e) => setInvoiceAmountFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,invoiceAmountFilterInput,
@@ -1012,7 +1030,7 @@ const ManageClientInvoice = () => {
                                 {invoiceAmountFilter && <NumericFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} columnName='invoiceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[12%] p-3'>
+                            <div className='w-[13%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={invoiceDateFilterInput} onChange={(e) => setInvoiceDateFilterInput(e.target.value)} type="date" 
                                     onKeyDown={(event) => handleEnterToFilter(event,invoiceDateFilterInput,
@@ -1025,9 +1043,9 @@ const ManageClientInvoice = () => {
                                 {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[8%] p-3'>
+                            <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,entityFilterInput,
                                         setEntityFilterInput,
                                         'contains',
@@ -1082,17 +1100,17 @@ const ManageClientInvoice = () => {
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[12%]  flex'>
+                            <div className='w-[21%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[14%]  flex'>
+                            <div className='w-[26%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Order Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[13%]  flex'>
+                            {/* <div className='w-[13%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Estimate Amount <button onClick={() => handleSort('estimateamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1101,18 +1119,18 @@ const ManageClientInvoice = () => {
                                 <div className='px-3 py-3.5'>
                                     <p>Estimate Date <button onClick={() => handleSort('estimatedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
-                            </div>
-                            <div className='w-[13%]  flex'>
+                            </div> */}
+                            <div className='w-[14%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Invoice Amount <button onClick={() => handleSort('invoiceamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[12%]  flex'>
+                            <div className='w-[13%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Invoice Date <button onClick={() => handleSort('invoicedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[8%]  flex'>
+                            <div className='w-[10%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Entity <button onClick={() => handleSort('entityname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1142,6 +1160,9 @@ const ManageClientInvoice = () => {
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingClientInvoice && existingClientInvoice.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingClientInvoice.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex">
@@ -1150,17 +1171,17 @@ const ManageClientInvoice = () => {
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%] flex'>
+                                    <div className='w-[21%] flex'>
                                         <div className='p-3'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex'>
+                                    <div className='w-[26%]  flex'>
                                         <div className='p-3'>
                                             <p>{item.quotedescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex pl-0.5'>
+                                    {/* <div className='w-[13%]  flex pl-0.5'>
                                         <div className='p-3'>
                                             <p>{item.estimateamount ? item.estimateamount.toFixed(2) : null}</p>
                                         </div>
@@ -1169,24 +1190,24 @@ const ManageClientInvoice = () => {
                                         <div className='p-3'>
                                             <p>{item.estimatedate ? item.estimatedate.split('T')[0] : ""}</p>
                                         </div>
-                                    </div>
-                                    <div className='w-[13%]  flex pl-0.5'>
+                                    </div> */}
+                                    <div className='w-[14%]  flex pl-0.5'>
                                         <div className='p-3'>
                                             <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : null}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex pl-1'>
+                                    <div className='w-[13%]  flex pl-1'>
                                         <div className='p-3'>
                                             <p>{item.invoicedate}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex pl-1'>
+                                    <div className='w-[10%]  flex pl-1'>
                                         <div className='p-3'>
                                             <p>{item.entityname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
-                                        <div className='p-3 '>
+                                        <div className='p-3'>
                                             <p>{item.createdbyname}</p>
                                         </div>
                                     </div>
@@ -1386,7 +1407,7 @@ const ManageClientInvoice = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />
                                         {/* <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/> */}
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>

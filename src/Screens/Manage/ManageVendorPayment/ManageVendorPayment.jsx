@@ -30,6 +30,8 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 // import EditVendorInvoice from './EditVendorPayment';
 import EditVendorPayment from "./EditVendorPayment";
 import Draggable from "react-draggable";
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import DropDown from '../../../Components/Dropdown/Dropdown';
 const ManageVendorPayment = () => {
 
     const menuRef = useRef();
@@ -432,6 +434,15 @@ const ManageVendorPayment = () => {
 
     const handleClose = () => {
         initials();
+        setSelectedOption(
+            {
+                label: "Select Client",
+                value: null
+            }
+        )
+        setOrders([]);
+        setOrderText("Select Order");
+
         SetIsVendorPaymentDialogue(false);
         openAddCancelModal();
     }
@@ -441,6 +452,7 @@ const ManageVendorPayment = () => {
         setFormErrors({});
     }
 
+    const [orderText, setOrderText] = useState("Select Order")
 
     const handleAddVendorPayment = () => {
         console.log(formValues)
@@ -940,6 +952,8 @@ const ManageVendorPayment = () => {
         }
     }
 
+    
+
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1228,62 +1242,62 @@ const ManageVendorPayment = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingVendorPayment.map((item, index) => {
-                            return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full h-auto py-2 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex">
                                     <div className='w-[4%] flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='px-3 '>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='px-3 '>
                                             <p>{item.vendorname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='px-3'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex '>
-                                        <div className='px-3 py-5'>
+                                        <div className='px-3 '>
                                             <p>{item.propertydescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[15%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[15%]  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.briefdescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[9%]  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[12%]  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.paymentdate}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[11%]  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.modeofpayment}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[11%]  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.paymentbyname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[11%]  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.createdbyname}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[10%] flex">
-                                    <div className='w-1/2  flex'>
-                                        <div className='px-3 py-5'>
+                                <div className="w-[10%] flex items-center">
+                                    <div className='w-1/2  flex pl-1'>
+                                        <div className='px-3 '>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
@@ -1485,10 +1499,10 @@ const ManageVendorPayment = () => {
                                                 <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">
+                                                <div className="text-[13px] mb-1">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                     className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="orderid"
                                                     value={formValues.orderid}
@@ -1500,7 +1514,9 @@ const ManageVendorPayment = () => {
                                                             {item.ordername}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="orderid" value={formValues.orderid} />
+                                                
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
                                             </div>
                                             <div className="">
@@ -1519,23 +1535,22 @@ const ManageVendorPayment = () => {
                                                 <div className="text-[13px]">TDS Deduction </div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
                                             </div>
-
                                             <div className="">
                                                 <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                                <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                                <div className="text-sm mb-1">Payment By <label className="text-red-500">*</label></div>
+                                                {/* <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                                     {usersData.map(item => (
                                                         <option key={item.id} value={item.id}>
                                                             {item.name}
                                                         </option>
                                                     ))}
-                                                </select>
-
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div>
+                                                </select> */}
+                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Date </div>

@@ -823,6 +823,15 @@ const Payments = () => {
 
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
+        setPaymentByFilter(false);
+        setPaymentToFilter(false);
+        setAmountFilter(false);
+        setPaidOnFilter(false);
+        setPaymentModeFilter(false)
+        setPaymentForFilter(false)
+        setPaymentStatusFilter(false)
+        setEntityFilter(false)
+        setIdFilter(false)
         setFilterMapState((prev) => mapState)
         const tempArray = [];
         // we need to query thru the object
@@ -985,7 +994,7 @@ const Payments = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="Successfully Added Payments" />}
+            {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Contractual Payment Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="SuccessFully Deleted Payment" />}
             {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPayment={formValues.paymentby} addPayment={addPayment} showCancel={openAddCancelModal} setDefault={initials} />}
@@ -1219,6 +1228,9 @@ const Payments = () => {
                     </div>
                     <div className=' w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {pageLoading && <LinearProgress />}
+                        {!pageLoading && existingPayments && existingPayments.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingPayments.map((item, index) => {
                             return <div className='w-full min-h-10 h-auto  flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className='w-[85%] flex text-xs'>
@@ -1379,8 +1391,8 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto}/>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentto}</div>
+                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id"/>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="pt-0.5">
                                                 <div className="text-sm mb-1">Payment By <label className="text-red-500">*</label></div>
@@ -1407,14 +1419,14 @@ const Payments = () => {
                                                     ))}
                                                 </select> */}
                                                 
-                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby}/>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
+                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentby}</div>
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Amount <label className="text-red-500">*</label></div>
                                                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amount" value={formValues.amount} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.amount}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Deduction </div>
@@ -1448,7 +1460,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentmode}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.paymentmode}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Entity <label className="text-red-500">*</label></div>
@@ -1464,7 +1476,7 @@ const Payments = () => {
                                             <div className="">
                                                 <div className="text-sm">Paid On <label className="text-red-500">*</label></div>
                                                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="paidon" value={formValues.paidon} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paidon}</div>
+                                                <div className="text-[10px] text-[#CD0000] absolute">{formErrors.paidon}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Month <label className="text-red-500">*</label></div>
@@ -1476,7 +1488,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.month}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.month}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">TDS </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
+import DropDown from "../../../../Components/Dropdown/Dropdown";
 const EditProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,clientNameOption,formErrors}) => {
   // console.log(levelOfFurnishing)
   console.log(clientNameOption);
@@ -215,7 +216,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             <div className="text-[13px]">
               Society/Project Name <label className="text-red-500">*</label>
             </div>
-            <select
+            {/* <select
               className="text-[12px]  w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="projectid"
               onChange={handleChange}
@@ -232,7 +233,9 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
                        <p>{item.projectname}</p> 
                   </option>
                 ))}
-            </select>
+            </select> */}
+            {/* {formValues.client_property.projectid} */}
+            <DropDown options={initialSociety} initialValue="Select Project" leftLabel="Builder Name" rightLabel="Project" leftAttr="buildername" rightAttr="projectname" toSelect="projectname" handleChange={handleChange} formValueName="projectid" value={formValues.client_property.projectid} idName="projectid" />
             <div className="text-[10px] text-[#CD0000] ">{formErrors.projectid}</div>
           </div>
           <div className="">

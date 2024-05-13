@@ -20,6 +20,7 @@ import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import { Description } from '@mui/icons-material';
 import AsyncSelect from "react-select/async"
 import DeletePmaAgreement from './DeletePmaAgreement';
@@ -233,7 +234,7 @@ const ManagePmaArgreement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
             ;
         const response = await APIService.getPmaAgreement(data);
@@ -282,7 +283,7 @@ const ManagePmaArgreement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
@@ -344,43 +345,43 @@ const ManagePmaArgreement = () => {
         setExistingPmaAgreement(result);
         setPageLoading(false);
     }
-    const [clientPropertyData,setClientPropertyData] = useState([]);
+    const [clientPropertyData, setClientPropertyData] = useState([]);
     const getClientPropertyByClientId = async (id) => {
-       const data = {
-        "user_id" : 1234,
-        "client_id" : id
-       }
+        const data = {
+            "user_id": 1234,
+            "client_id": id
+        }
 
-       const response = await APIService.getClientPropertyByClientId(data)
-       const res = await response.json()
-       console.log(res)
-       setClientPropertyData(res.data)
-    //    if(res.data.length >= 1) {
-    //     const existing = {...formValues}
-    //     existing.clientProperty = res.data[0].id
-    //     console.log(res.data[0].id)
-    //     setFormValues(existing)
-    //  } 
+        const response = await APIService.getClientPropertyByClientId(data)
+        const res = await response.json()
+        console.log(res)
+        setClientPropertyData(res.data)
+        //    if(res.data.length >= 1) {
+        //     const existing = {...formValues}
+        //     existing.clientProperty = res.data[0].id
+        //     console.log(res.data[0].id)
+        //     setFormValues(existing)
+        //  } 
     }
-    const [orders,setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
 
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
-            "user_id" :1234,
-            "client_id" : id
+            "user_id": 1234,
+            "client_id": id
         }
         const response = await APIService.getOrdersByClientId(data)
         const res = await response.json()
         console.log(res.data)
         setOrders(res.data)
-        
+
         // if(res.data.length >= 1) {
         //    const existing = {...formValues}
         //    existing.order = res.data[0].id
         //    console.log(res.data[0].id)
         //    setFormValues(existing)
-           
+
         // } 
     }
     const addPmaAgreement = async () => {
@@ -411,9 +412,9 @@ const ManagePmaArgreement = () => {
         setOpenAddConfirmation(false);
         setIsPmaAgreementDialogue(false);
         if (res.result == "success") {
-            const temp = {...selectedOption}
+            const temp = { ...selectedOption }
             temp.label = "Select Client"
-            temp.value = null 
+            temp.value = null
             setSelectedOption(temp)
             setFormValues(initialValues);
             openAddSuccess();
@@ -492,15 +493,21 @@ const ManagePmaArgreement = () => {
     };
 
     const handleClose = () => {
+        initials();
         setIsPmaAgreementDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
 
     // harcoded dropdown
     const clientProperty = [1, 2, 3, 4];
-   
+
     const client = [1, 2, 3, 4];
-    
-    
+
+
     const handleAddPmaAgreement = () => {
         console.log(formValues)
         if (!validate()) {
@@ -512,7 +519,7 @@ const ManagePmaArgreement = () => {
         setOpenAddConfirmation(true)
 
     }
-    
+
     const [formErrors, setFormErrors] = useState({});
     const [showEditSuccess, setShowEditSuccess] = useState(false);
     const handleChange = (e) => {
@@ -524,7 +531,7 @@ const ManagePmaArgreement = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
-        if (!formValues.clientProperty || formValues.clientProperty == "" ) {
+        if (!formValues.clientProperty || formValues.clientProperty == "") {
             setFormErrors((existing) => {
                 return { ...existing, clientProperty: "Select Client Property" }
             })
@@ -612,7 +619,7 @@ const ManagePmaArgreement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
@@ -721,6 +728,25 @@ const ManagePmaArgreement = () => {
         fetchData();
     }
 
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsPmaAgreementDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
 
     const [selectedOption, setSelectedOption] = useState({
         label: "Enter Client Name",
@@ -747,7 +773,7 @@ const ManagePmaArgreement = () => {
         console.log(formValues)
         setSelectedOption(e)
     }
-    
+
     const loadOptions = async (e) => {
         console.log(e)
         if (e.length < 3) return;
@@ -772,74 +798,74 @@ const ManagePmaArgreement = () => {
     }
 
     const filterMapping = {
-        clientname : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        clientname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        propertydescription : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        propertydescription: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        orderdescription : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        orderdescription: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        propertystatusname : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        propertystatusname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        description : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        description: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        status : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        status: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        startdate : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        startdate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        enddate : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        enddate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        poastartdate : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        poastartdate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        poaenddate : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Date",
-            filterInput : ""
+        poaenddate: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Date",
+            filterInput: ""
         },
-        poaholder : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        poaholder: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
     }
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
 
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
         console.log(columnName)
@@ -865,41 +891,41 @@ const ManagePmaArgreement = () => {
 
         fetchFiltered(existing);
     }
-    const [filterState,setFilterState] = useState([])
+    const [filterState, setFilterState] = useState([])
 
-    const fetchFiltered = async  (mapState) => {
+    const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
-         // we need to query thru the object
-         // console.log(filterMapState);
-         console.log(filterMapState)
-         Object.keys(mapState).forEach(key=> {
-             if(mapState[key].filterType != "") {
-                 tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
-             }
-         })
-         setFilterState((prev) => tempArray)
-         setCurrentPage((prev) => 1)
-         setPageLoading(true);
-         const data = {
-             "user_id": 1234,
-             "rows": dataRows,
-             "filters": tempArray,
-             "sort_by": [sortField],
-             "order": flag ? "asc" : "desc",
-             "pg_no": 1,
-             "pg_size": Number(currentPages),
-             "search_key": searchInput
-         };
-         const response = await APIService.getPmaAgreement(data);
-         const temp = await response.json();
-         const result = temp.data;
-         console.log(result);
-         const t = temp.total_count;
-         setTotalItems(t);
-         setExistingPmaAgreement(result);
-         setPageLoading(false);
-     } 
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+            }
+        })
+        setFilterState((prev) => tempArray)
+        setCurrentPage((prev) => 1)
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": dataRows,
+            "filters": tempArray,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 1,
+            "pg_size": Number(currentPages),
+            "search_key": searchInput
+        };
+        const response = await APIService.getPmaAgreement(data);
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(result);
+        const t = temp.total_count;
+        setTotalItems(t);
+        setExistingPmaAgreement(result);
+        setPageLoading(false);
+    }
 
 
 
@@ -908,7 +934,7 @@ const ManagePmaArgreement = () => {
         // const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        
+
         setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
@@ -920,7 +946,7 @@ const ManagePmaArgreement = () => {
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
-        
+
         const response = await APIService.getPmaAgreement(data);
         const temp = await response.json();
         const result = temp.data;
@@ -930,19 +956,52 @@ const ManagePmaArgreement = () => {
         setExistingPmaAgreement(result);
         setPageLoading(false);
     }
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
-            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} />}
+            {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New PMA Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)} />}
+            {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-
-            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma} />}
+            {showDeleteModal && <DeletePmaAgreement handleClose={() => setShowDeleteModal(false)} item={currPma} handleDelete={deletePma} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, No pma agreement created" />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -967,6 +1026,7 @@ const ManagePmaArgreement = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1003,21 +1063,36 @@ const ManagePmaArgreement = () => {
                         </div>
                         <div className='w-[10.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
+                                    setClientNameFilterInput,
+                                    'contains',
+                                    'clientname')}
+                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[14.8%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
+                                onKeyDown={(event) => handleEnterToFilter(event,propertyDescriptionFilterInput,
+                                    setPropertyDescriptionFilterInput,
+                                    'contains',
+                                    'propertydescription')}
+                                />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%]  px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} 
+                                onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
+                                    setOrderDescriptionFilterInput,
+                                    'contains',
+                                    'orderdescription')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='orderdescription' menuRef={menuRef} />}
@@ -1025,59 +1100,99 @@ const ManagePmaArgreement = () => {
                         </div>
                         <div className='w-[8.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} 
+                                onKeyDown={(event) => handleEnterToFilter(event,propertyStatusFilterInput,
+                                    setPropertyStatusFilterInput,
+                                    'contains',
+                                    'propertystatusname')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event,descriptionFilterInput,
+                                    setDescriptionFilterInput,
+                                    'contains',
+                                    'description')}
+                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
                         </div>
                         <div className='w-[7.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event,statusFilterInput,
+                                    setStatusFilterInput,
+                                    'equalTo',
+                                    'status')}
+                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {statusFilter && <CharacterFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
+                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='status' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date'
+                                onKeyDown={(event) => handleEnterToFilter(event,pmaStartFilterInput,
+                                    setPmaStartFilterInput,
+                                    'equalTo',
+                                    'startdate')} 
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef}/>}
+                            {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} />}
                         </div>
                         <div className='w-[8.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date'
+                                onKeyDown={(event) => handleEnterToFilter(event,pmaEndFilterInput,
+                                    setPmaEndFilterInput,
+                                    'equalTo',
+                                    'enddate')}
+                                     />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef}/>}
+                            {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef} />}
                         </div>
                         <div className='w-[8.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date'
+                                onKeyDown={(event) => handleEnterToFilter(event,poaStartFilterInput,
+                                    setPoaStartFilterInput,
+                                    'equalTo',
+                                    'poastartdate')}
+                                     />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef}/>}
+                            {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef} />}
                         </div>
                         <div className='w-[8.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date' />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date'
+                                onKeyDown={(event) => handleEnterToFilter(event,poaEndFilterInput,
+                                    setPoaEndFilterInput,
+                                    'equalTo',
+                                    'poaenddate')}
+                                     />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef}/>}
+                            {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef} />}
                         </div>
                     </div>
                     <div className="w-[10%] flex">
 
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)} />
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)}
+                                onKeyDown={(event) => handleEnterToFilter(event,poaHolderFilterInput,
+                                    setPoaHolderFilterInput,
+                                    'contains',
+                                    'poaholder')}
+                                     />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} />}
@@ -1189,77 +1304,80 @@ const ManagePmaArgreement = () => {
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingPmaAgreement && existingPmaAgreement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingPmaAgreement.map((item, index) => {
-                            return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full h-auto bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex">
-                                    <div className='w-[2%] flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[2%] flex overflow-x-hidden'>
+                                        <div className='px-3 '>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10.8%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='px-3 '>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[14.8%]  flex'>
-                                        <div className='px-3 py-5'>
+                                        <div className='px-3 '>
                                             <p>{item.propertydescription}</p>
                                         </div>
                                     </div>
                                     <div className='w-[9.8%]  flex '>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             <p>{item.orderdescription}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[8.8%]  flex pl-0.5'>
+                                        <div className='px-3'>
                                             {item.propertystatusname}
                                         </div>
 
                                     </div>
-                                    <div className='w-[9.8%]  flex'>
-                                        <div className='px-3 py-5'>
+                                    <div className='w-[9.8%]  flex pl-1'>
+                                        <div className='px-3'>
                                             <p>{item.description}</p>
                                         </div>
                                     </div>
                                     <div className='w-[7.8%]  flex'>
-                                    <div className='p-3 ml-1 flex items-center space-x-2'>
+                                        <div className='px-3 ml-1 flex items-center space-x-2'>
                                             {item.active ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
                                                 <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
                                                 <p> inactive</p></>}
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[9.8%]  flex pl-0.5'>
+                                        <div className='px-3'>
                                             <p>{item.startdate ? item.startdate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[8.8%]  flex pl-1'>
+                                        <div className='px-3'>
                                             <p>{item.enddate ? item.enddate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[8.8%]  flex pl-1'>
+                                        <div className='px-3'>
                                             <p>{item.poastartdate ? item.poastartdate.split('T')[0] : ""}</p>
                                         </div>
 
                                     </div>
-                                    <div className='w-[8.8%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[8.8%]  flex pl-1'>
+                                        <div className='px-3'>
                                             <p>{item.poaenddate ? item.poaenddate.split('T')[0] : ""}</p>
 
                                         </div>
 
                                     </div>
                                 </div>
-                                <div className="w-[10%] flex">
-                                    <div className='w-[65%]  flex'>
-                                        <div className='p-3'>
+                                <div className="w-[10%] flex items-center">
+                                    <div className='w-[65%]  flex pl-2'>
+                                        <div className='px-3'>
                                             <p>{item.poaholder}</p>
                                         </div>
                                         {/* <div className="font-extrabold py-5">↑↓</div> */}
@@ -1360,221 +1478,221 @@ const ManagePmaArgreement = () => {
             >
                 <>
                     <Draggable>
-                <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New PMA Agreement</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
+                        <div className='flex justify-center'>
+                            <div className="w-[1050px] h-auto bg-white rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">New PMA Agreement</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                    </div>
+                                </div>
 
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
-                                        </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
+                                <div className="h-auto w-full mt-[5px]">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Client <label className="text-red-500">*</label>
+                                                </div>
+                                                <AsyncSelect
+                                                    onChange={handleClientNameChange}
+                                                    value={selectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
 
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width : 230,
-                                                    fontSize: 10,
-                                                    // padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
-                                                }),
-                                                menu: (provided, state) => ({
-                                                    ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
-                                                  }),
-                                            }}
-                                        />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">PMA Start Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="pmaStartDate" value={formValues.pmaStartDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.pmaStartDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">POA Start Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="poaStartDate" value={formValues.poaStartDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.poaStartDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="order"
-                                            value={formValues.order}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" hidden >Select A Order</option>
-                                            <option value="" >
-                                                  <div className='flex justify-between'>
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 23,
+                                                            lineHeight: '0.8',
+                                                            height: 4,
+                                                            width: 230,
+                                                            fontSize: 10,
+                                                            // padding: '1px'
+                                                        }),
+                                                        // indicatorSeparator: (provided, state) => ({
+                                                        //   ...provided,
+                                                        //   lineHeight : '0.5',
+                                                        //   height : 2,
+                                                        //   fontSize : 12 // hide the indicator separator
+                                                        // }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '1px', // adjust padding for the dropdown indicator
+                                                        }),
+                                                        options: (provided, state) => ({
+                                                            ...provided,
+                                                            fontSize: 10// adjust padding for the dropdown indicator
+                                                        }),
+                                                        menu: (provided, state) => ({
+                                                            ...provided,
+                                                            width: 230, // Adjust the width of the dropdown menu
+                                                        }),
+                                                    }}
+                                                />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">PMA Start Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="pmaStartDate" value={formValues.pmaStartDate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.pmaStartDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">POA Start Date </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="poaStartDate" value={formValues.poaStartDate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.poaStartDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Order <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="order"
+                                                    value={formValues.order}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="" hidden >Select A Order</option>
+                                                    <option value="" >
+                                                        <div className='flex justify-between'>
                                                             <p className="float-left">Order Id</p>
                                                             &nbsp;
                                                             &nbsp;
                                                             &nbsp;
                                                             &nbsp;
                                                             <p className="float-right">Order Name</p>
-                                                    </div>
-                                                {/* Id &nbsp; &nbsp; &nbsp; &nbsp;Order Name */}
-                                            </option>
+                                                        </div>
+                                                        {/* Id &nbsp; &nbsp; &nbsp; &nbsp;Order Name */}
+                                                    </option>
 
-                                            {orders.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.id} 
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    {item.ordername}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Actual End Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="actualEndDate" value={formValues.actualEndDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.actualEndDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Reason for Early Termination if Applicable </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="reason" value={formValues.reason} onChange={handleChange} />
+                                                    {orders.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.id}
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            {item.ordername}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Actual End Date </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="actualEndDate" value={formValues.actualEndDate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.actualEndDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Reason for Early Termination if Applicable </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="reason" value={formValues.reason} onChange={handleChange} />
 
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Rented Fee in % </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="rentFee" value={formValues.rentFee} onChange={handleChange} min="0" max="100"  onInput={(e) => {
-    if (parseInt(e.target.value) > parseInt(e.target.max)) {
-      e.target.value = e.target.max;
-    }
-  }}/>
-                                    </div>
-                                    <div className=" flex items-center text-[13px]"><input
-                                        type="checkbox"
-                                        checked={formValues.gst1}
-                                        className='mr-3 h-4 w-4'
-                                        onClick={(e) => {
-                                            // console.log(e.target.checked)
-                                            const existing = { ...formValues };
-                                            existing.gst1 = !existing.gst1;
-                                            setFormValues(existing)
-                                        }}
-                                    />Gst Additional ?</div>
-                                </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client Property <label className="text-red-500">*</label>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Rented Fee in % </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="rentFee" value={formValues.rentFee} onChange={handleChange} min="0" max="100" onInput={(e) => {
+                                                    if (parseInt(e.target.value) > parseInt(e.target.max)) {
+                                                        e.target.value = e.target.max;
+                                                    }
+                                                }} />
+                                            </div>
+                                            <div className=" flex items-center text-[13px]"><input
+                                                type="checkbox"
+                                                checked={formValues.gst1}
+                                                className='mr-3 h-4 w-4'
+                                                onClick={(e) => {
+                                                    // console.log(e.target.checked)
+                                                    const existing = { ...formValues };
+                                                    existing.gst1 = !existing.gst1;
+                                                    setFormValues(existing)
+                                                }}
+                                            />Gst Additional ?</div>
                                         </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="clientProperty"
-                                            value={formValues.clientProperty}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="" >Select A Client Property</option>
-                                            {clientPropertyData.map((item) => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.id} 
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    {item.propertyname}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Client Property <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="clientProperty"
+                                                    value={formValues.clientProperty}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="" >Select A Client Property</option>
+                                                    {clientPropertyData.map((item) => (
+                                                        <option key={item.id} value={item.id}>
+                                                            {item.id}
+                                                            &nbsp;
+                                                            &nbsp;
+                                                            {item.propertyname}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">PMA End Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="pmaEndDate" value={formValues.pmaEndDate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.pmaEndDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">POA End Date </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="poaEndDate" value={formValues.poaEndDate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.poaEndDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">POA Holder Name </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="poaHolderName" value={formValues.poaHolderName} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Description </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Scan Copy </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Fixed Fees in Rs </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="fixedfee" value={formValues.fixedfee} onChange={handleChange} />
+                                            </div>
+                                            <div className=" flex items-center text-[13px]"><input
+                                                type="checkbox"
+                                                checked={formValues.gst2}
+                                                className='mr-3 h-4 w-4'
+                                                onClick={(e) => {
+                                                    // console.log(e.target.checked)
+                                                    const existing = { ...formValues };
+                                                    existing.gst2 = !existing.gst2;
+                                                    setFormValues(existing)
+                                                }}
+                                            />Gst Additional ?</div>
+                                        </div>
                                     </div>
-                                    <div className="">
-                                        <div className="text-[13px]">PMA End Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="pmaEndDate" value={formValues.pmaEndDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.pmaEndDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">POA End Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="poaEndDate" value={formValues.poaEndDate} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.poaEndDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">POA Holder Name </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="poaHolderName" value={formValues.poaHolderName} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Description </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Scan Copy </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Fixed Fees in Rs </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="fixedfee" value={formValues.fixedfee} onChange={handleChange} />
-                                    </div>
-                                    <div className=" flex items-center text-[13px]"><input
-                                        type="checkbox"
-                                        checked={formValues.gst2}
-                                        className='mr-3 h-4 w-4'
-                                        onClick={(e) => {
-                                            // console.log(e.target.checked)
-                                            const existing = { ...formValues };
-                                            existing.gst2 = !existing.gst2;
-                                            setFormValues(existing)
-                                        }}
-                                    />Gst Additional ?</div>
+                                </div>
+                                <div className="mt-2 flex justify-center items-center "><input
+                                    type="checkbox"
+                                    checked={formValues.status}
+                                    className='mr-3 h-4 w-4'
+                                    onClick={(e) => {
+                                        // console.log(e.target.checked)
+                                        const existing = { ...formValues };
+                                        existing.status = !existing.status;
+                                        setFormValues(existing)
+                                    }}
+                                />Active</div>
+                                <div className="my-3 flex justify-center items-center gap-[10px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddPmaAgreement} >Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-2 flex justify-center items-center "><input
-                            type="checkbox"
-                            checked={formValues.status}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = { ...formValues };
-                                existing.status = !existing.status;
-                                setFormValues(existing)
-                            }}
-                        />Active</div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddPmaAgreement} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                        </div>
-                    </div>
-                </div>
                     </Draggable>
-                    </>
+                </>
             </Modal>
         </div>
     )
