@@ -167,6 +167,15 @@ const ManageClientInvoice = () => {
         //         tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
         //     }
         // })
+        const tempArray = [];
+        // we need to query thru the object
+        console.log(filterMapState);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -188,7 +197,7 @@ const ManageClientInvoice = () => {
                 "entityname",
                 "createdbyname"
             ],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -724,6 +733,15 @@ const ManageClientInvoice = () => {
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
+        setClientNameFilter(false)
+        setOrderDescriptionFilter(false)
+        setEstimateAmountFilter(false)
+        setEstimateDateFilter(false)
+        setInvoiceDateFilter(false)
+        setInvoiceAmountFilter(false)
+        setEntityFilter(false)
+        setCreatedByFilter(false)
+        setIdFilter(false)
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
@@ -948,7 +966,7 @@ const ManageClientInvoice = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[12%]  p-3'>
+                            <div className='w-[15%]  p-3 mr-[65px]'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
@@ -960,7 +978,7 @@ const ManageClientInvoice = () => {
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[14%]  p-3'>
+                            <div className='w-[20%]  p-3 mr-[60px]'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
@@ -973,7 +991,7 @@ const ManageClientInvoice = () => {
                                 {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[13%]  p-3'>
+                            {/* <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateAmountFilterInput} onChange={(e) => setEstimateAmountFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,estimateAmountFilterInput,
@@ -984,9 +1002,9 @@ const ManageClientInvoice = () => {
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {estimateAmountFilter && <NumericFilter inputVariable={estimateAmountFilterInput} setInputVariable={setEstimateAmountFilterInput} columnName="estimateamount" menuRef={menuRef} handleFilter={newHandleFilter} />}
-                            </div>
+                            </div> */}
 
-                            <div className='w-[12%] p-3'>
+                            {/* <div className='w-[12%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={estimateDateFilterInput} onChange={(e) => setEstimateDateFilterInput(e.target.value)} type="date"
                                     onKeyDown={(event) => handleEnterToFilter(event,estimateDateFilterInput,
@@ -997,7 +1015,7 @@ const ManageClientInvoice = () => {
                                     <button className='w-[25%] px-1 py-2' onClick={() => { setEstimateDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {estimateDateFilter && <DateFilter inputVariable={estimateDateFilterInput} setInputVariable={setEstimateDateFilterInput} handleFilter={newHandleFilter} columnName='estimatedate' menuRef={menuRef} />}
-                            </div>
+                            </div> */}
 
                             <div className='w-[13%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1025,7 +1043,7 @@ const ManageClientInvoice = () => {
                                 {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[8%] p-3'>
+                            <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,entityFilterInput,
@@ -1082,17 +1100,17 @@ const ManageClientInvoice = () => {
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[12%]  flex'>
+                            <div className='w-[20%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[14%]  flex'>
+                            <div className='w-[25%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Order Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[13%]  flex'>
+                            {/* <div className='w-[13%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Estimate Amount <button onClick={() => handleSort('estimateamount')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1101,7 +1119,7 @@ const ManageClientInvoice = () => {
                                 <div className='px-3 py-3.5'>
                                     <p>Estimate Date <button onClick={() => handleSort('estimatedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className='w-[13%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Invoice Amount <button onClick={() => handleSort('invoiceamount')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1112,7 +1130,7 @@ const ManageClientInvoice = () => {
                                     <p>Invoice Date <button onClick={() => handleSort('invoicedate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[8%]  flex'>
+                            <div className='w-[10%]  flex'>
                                 <div className='px-3 py-3.5'>
                                     <p>Entity <button onClick={() => handleSort('entityname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1150,17 +1168,17 @@ const ManageClientInvoice = () => {
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%] flex'>
+                                    <div className='w-[20%] flex'>
                                         <div className='p-3'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex'>
+                                    <div className='w-[25%]  flex'>
                                         <div className='p-3'>
                                             <p>{item.quotedescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex pl-0.5'>
+                                    {/* <div className='w-[13%]  flex pl-0.5'>
                                         <div className='p-3'>
                                             <p>{item.estimateamount ? item.estimateamount.toFixed(2) : null}</p>
                                         </div>
@@ -1169,7 +1187,7 @@ const ManageClientInvoice = () => {
                                         <div className='p-3'>
                                             <p>{item.estimatedate ? item.estimatedate.split('T')[0] : ""}</p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className='w-[13%]  flex pl-0.5'>
                                         <div className='p-3'>
                                             <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : null}</p>
@@ -1180,7 +1198,7 @@ const ManageClientInvoice = () => {
                                             <p>{item.invoicedate}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex pl-1'>
+                                    <div className='w-[10%]  flex pl-1'>
                                         <div className='p-3'>
                                             <p>{item.entityname}</p>
                                         </div>
