@@ -1130,22 +1130,22 @@ const ManageUser = () => {
                             </div>
                             <div className='w-[24%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Name <button onClick={() => handleSort('vendorname')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Name <button onClick={() => handleSort('fullname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[30%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Username <button onClick={() => handleSort('tdssection')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Username <button onClick={() => handleSort('username')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[20%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Role <button onClick={() => handleSort('tallyledger')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Role <button onClick={() => handleSort('role_name')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[20%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Status <button onClick={() => handleSort('category')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Status <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
@@ -1467,7 +1467,7 @@ const ManageUser = () => {
                                     }}
                                 />Active</div>
                                 <div className="my-2 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddUser}>Save</button>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddUser}>Add</button>
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { handleClose() }}>Cancel</button>
                                 </div>
                             </div>
