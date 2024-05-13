@@ -1,8 +1,11 @@
 import { Chip, Stack } from "@mui/material";
 
-
-import { DateFilterField, NumberFilterField, TextFilterField } from "../Manage/pma/CustomFilterField";
-import styleConst from "../Manage/pma/styleConst";
+import {
+  DateFilterField,
+  NumberFilterField,
+  TextFilterField,
+} from "../../Manage/pma/CustomFilterField";
+import styleConst from "./styleConst";
 
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
@@ -18,8 +21,7 @@ export default function connectionDataColumn(onQuery) {
             direction="row"
             sx={{ justifyContent: "center", width: "30px" }}
           >
-            1
-            {/* {rowData?.tableData.index + 1} */}
+            1{/* {rowData?.tableData.index + 1} */}
           </Stack>
         );
       },
@@ -30,7 +32,6 @@ export default function connectionDataColumn(onQuery) {
       field: "clientname",
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
       width: "10%",
-
     },
     {
       filterComponent: TextFilterField,
@@ -45,7 +46,6 @@ export default function connectionDataColumn(onQuery) {
       filterComponent: DateFilterField,
       sorting: false,
       width: "10%",
-
     },
     {
       title: "Fiscal Year",
@@ -54,7 +54,6 @@ export default function connectionDataColumn(onQuery) {
       grouping: true,
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
     {
       title: "Amount",
@@ -62,7 +61,6 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
 
     {
@@ -71,7 +69,6 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
     {
       title: "Mode",
@@ -79,7 +76,6 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
     {
       title: "Client ID",
@@ -87,7 +83,6 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
     {
       title: "Rented Amount",
@@ -95,7 +90,6 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
     {
       title: "Client Name",
@@ -103,7 +97,6 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
-
     },
   ];
   return columns;
