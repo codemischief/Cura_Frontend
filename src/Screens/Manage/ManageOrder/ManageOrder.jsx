@@ -87,7 +87,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -139,7 +141,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -190,7 +194,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -453,7 +459,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -508,7 +516,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -561,7 +571,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -729,7 +741,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -792,7 +806,9 @@ const ManageOrder = () => {
                 "isdeleted",
                 "entityid",
                 "entity",
-                "tallyledgerid"
+                "tallyledgerid",
+                "ageing",
+                "createdbyname"
             ],
             "filters": tempArray,
             "sort_by": [field],
@@ -1210,10 +1226,10 @@ const ManageOrder = () => {
                                         <p>{item.orderdate}</p> 
                                     </div>
                                     <div className='w-[80px] p-4'>
-                                        <p>Ageing</p> 
+                                        <p>{item.ageing}</p> 
                                     </div>
                                     <div className='w-[120px] p-4'>
-                                        <p>{item.createdbyname ?? "Rudra Sen Malik"}</p> 
+                                        <p>{item.createdbyname}</p> 
                                     </div>
                                     <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                     <p>Payments</p>
