@@ -385,6 +385,14 @@ const ManageOrder = () => {
           },
           "order_photos" : formValues.order_photos
        }
+       const d = {
+        "user_id" : 1234,
+        "orderid" : currOrderId,
+        "statusid" : Number(formValues.order_info.status)
+    }
+        const statusresponse = await APIService.addOrderStatusChange(d);
+        const statusres = await statusresponse.json();
+        console.log(res)
        const response = await APIService.addOrder(data);
        const res = await response.json();
        if(res.result == 'success') {
