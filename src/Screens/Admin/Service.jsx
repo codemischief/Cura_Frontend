@@ -48,7 +48,7 @@ const Service = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isUserDialogue, setIsUserDialogue] = useState(false);
+    const [isServiceDialogue, setIsServiceDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
@@ -80,7 +80,7 @@ const Service = () => {
         const response = await APIService.getLob(data);
         const result = (await response.json());
         console.log(result.data);
-        
+
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
         }
@@ -237,53 +237,37 @@ const Service = () => {
     };
 
     const handleOpen = () => {
-        setIsUserDialogue(true);
+        setIsServiceDialogue(true);
     };
 
     const handleClose = () => {
         initials();
-        setIsUserDialogue(false);
+        setIsServiceDialogue(false);
         openAddCancelModal();
     }
     const initials = () => {
         setFormValues(initialValues);
         setFormErrors({});
     }
-    const handleAddUser = () => {
+    const handleAddService = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
         }
-        setIsUserDialogue(false);
+        setIsServiceDialogue(false);
         setOpenAddConfirmation(true);
 
     }
-    const addUser = async () => {
+    const addService = async () => {
         const data = {
             "user_id": 1234,
-            "username": "newuser",
-            "roleid": 3,
-            "password": "newpass",
-            "officeid": 2,
-            "lobid": 2,
-            "usercode": "code",
-            "firstname": "New",
-            "lastname": "User",
-            "status": true,
-            "effectivedate": "12-05-2024 00:00:00",
-            "homephone": "9999999999",
-            "workphone": "8888888888",
-            "email1": "email1email.com",
-            "email2": "email2@email.com",
-            "addressline1": "Addr l1",
-            "addressline2": "Addr l2",
-            "suburb": "Sub1",
-            "city": 847,
-            "state": "Maharashtra",
-            "country": 5,
-            "zip": "411039",
-            "entityid": 1
+            "lob": 2,
+            "service": "testservice",
+            "active": true,
+            "servicetype": "New service",
+            "category2": "Category",
+            "tallyledgerid": 28
         }
         const response = await APIService.addUser(data);
 
@@ -291,7 +275,7 @@ const Service = () => {
 
         setOpenAddConfirmation(false);
         console.log(result)
-        setIsUserDialogue(false);
+        setIsServiceDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -342,7 +326,7 @@ const Service = () => {
                 return { ...existing, lob: "" }
             })
         }
-        
+
         return res;
     }
     const [currId, setCurrId] = useState("");
@@ -487,7 +471,7 @@ const Service = () => {
     const [showCancelModel, setShowCancelModel] = useState(false);
     const openAddCancelModal = () => {
         // set the state for true for some time
-        setIsUserDialogue(false);
+        setIsServiceDialogue(false);
         setShowCancelModelAdd(true);
         setTimeout(function () {
             setShowCancelModelAdd(false)
@@ -676,37 +660,18 @@ const Service = () => {
 
         }
     }
-    const [type1, setType1] = useState("password");
-    const [type2, setType2] = useState("password");
-
-    // password visibility
-    const passwordToggle = () => {
-        if (type1 === "password") {
-            setType1("text");
-        } else {
-            setType1("password");
-        }
-    };
-
-    const confirmPasswordToggle = () => {
-        if (type2 === "password") {
-            setType2("text");
-        } else {
-            setType2("password");
-        }
-    };
     // fetching utility routes end here
     return (
         <div className='h-screen'>
             <Navbar />
             {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New User created succesfully" />}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="User deleted succesfully" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Service created succesfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Service deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
-            {openAddConfirmation && <SaveConfirmationUser handleClose={() => setOpenAddConfirmation(false)} currName={formValues.nameOfTheUser} addUser={addUser} showCancel={openAddCancelModal} setDefault={initials} />}
+            {openAddConfirmation && <SaveConfirmationService handleClose={() => setOpenAddConfirmation(false)} currName={formValues.serviceName} add={addService} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteUserModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteUser} item={currId} showCancel={openCancelModal} name={currName} />}
-            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new user created." />}
+            {deleteConfirmation && <DeleteServiceModel handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteUser} item={currId} showCancel={openCancelModal} name={currName} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new service created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
@@ -881,7 +846,7 @@ const Service = () => {
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-5'>
                                                 <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id, item.fullname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.service)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>
@@ -963,7 +928,7 @@ const Service = () => {
                 </div>
             </div>
 
-            <Modal open={isUserDialogue}
+            <Modal open={isServiceDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -1020,7 +985,7 @@ const Service = () => {
                                     </div>
                                 </div>
                                 <div className="my-2 mt-10 flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddUser}>Add</button>
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddService}>Add</button>
                                     <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { handleClose() }}>Cancel</button>
                                 </div>
                             </div>

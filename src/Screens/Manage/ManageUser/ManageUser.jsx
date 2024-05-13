@@ -76,6 +76,26 @@ const ManageUser = () => {
     const [idFilterInput, setIdFilterInput] = useState("");
     // const [filterArray,setFilterArray] = useState([]);
 
+    const fetchLobData = async () => {
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "name"],
+            "filters": [],
+            "sort_by": ["name"],
+            "order": "asc",
+            "pg_no": 0,
+            "pg_size": 0
+        };
+        const response = await APIService.getLob(data);
+        const result = (await response.json());
+        console.log(result.data);
+
+        if (Array.isArray(result.data)) {
+            setAllLOB(result.data);
+        }
+    }
+
     const [typeOfOrganization, setTypeOfOrganization] = useState([
         {
             id: 1,
@@ -272,6 +292,7 @@ const ManageUser = () => {
         fetchTallyLedgerData();
         getVendorCategoryAdmin();
         fetchRoleData();
+        fetchLobData();
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setNameFilter(false)
@@ -1340,8 +1361,28 @@ const ManageUser = () => {
                                                 <div className="text-[10px] text-[#CD0000]">{formErrors.password}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">LOB <label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lob" value={formValues.lob} onChange={handleChange} />
+                                                <div className="text-sm">LOB <label className="text-red-500">*</label></div>
+                                                <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                    name="lob"
+                                                    value={formValues.lob}
+                                                    defaultValue="Select lob"
+                                                    onChange={e => {
+                                                        // fetchCityData(e.target.value);
+                                                        console.log(e.target.value);
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, lob: e.target.value }
+                                                            return newData;
+                                                        })
+
+                                                    }}
+                                                >
+                                                    <option value="none" hidden>Select a LOB</option>
+                                                    {allLOB && allLOB.map(item => (
+                                                        <option value={item.id} >
+                                                            {item.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
                                             </div>
                                             <div className="">
