@@ -308,9 +308,9 @@ const ManageUser = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
-    const [invoiceId, setInvoiceId] = useState(0);
+    const [editId, setEditId] = useState(0);
     const handleEdit = (id) => {
-        setInvoiceId((prev) => id)
+        setEditId((prev) => id)
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
@@ -343,62 +343,30 @@ const ManageUser = () => {
 
     }
     const addUser = async () => {
-        // console.log('clicked')
-        // console.log(formValues)
-        // setPageLoading(true);
-        // const data = {
-
-        //     "user_id": 1234,
-        //     "vendorname": formValues.vendorName,
-        //     "addressline1": formValues.addressLine1,
-        //     "addressline2": formValues.addressLine2,
-        //     "suburb": formValues.suburb,
-        //     "city": 847,
-        //     "state": "Maharashtra",
-        //     "country": 5,
-        //     "type": formValues.typeOfOrganization,
-        //     "details": formValues.details,
-        //     "category": formValues.category,
-        //     "phone1": formValues.phone,
-        //     "email": formValues.email,
-        //     "ownerinfo": formValues.ownerDetails,
-        //     "panno": formValues.pan,
-        //     "tanno": formValues.tan,
-        //     "gstservicetaxno": formValues.gstin,
-        //     "tdssection": formValues.tdsSection,
-        //     "bankname": formValues.bankName,
-        //     "bankbranch": formValues.bankBranch,
-        //     "bankcity": formValues.bankBranchCity,
-        //     "bankacctholdername": formValues.accountHolderName,
-        //     "bankacctno": formValues.accountNumber,
-        //     "bankifsccode": formValues.ifscCode,
-        //     "bankaccttype": formValues.accountType,
-        //     "companydeductee": formValues.companydeductee,
-        //     "tallyledgerid": formValues.tallyLedger
-        // }
+       
         const data = {
             "user_id": 1234,
-            "username": "newuser",
-            "roleid": 3,
-            "password": "newpass",
+            "username": formValues.userName,
+            "roleid": Number(formValues.role),
+            "password": formValues.password,
             "officeid": 2,
-            "lobid": 2,
+            "lobid": Number(formValues.lob),
             "usercode": "code",
             "firstname": "New",
             "lastname": "User",
-            "status": true,
-            "effectivedate": "12-05-2024 00:00:00",
-            "homephone": "9999999999",
-            "workphone": "8888888888",
-            "email1": "email1email.com",
-            "email2": "email2@email.com",
-            "addressline1": "Addr l1",
-            "addressline2": "Addr l2",
-            "suburb": "Sub1",
-            "city": 847,
+            "status": formValues.status,
+            "effectivedate": formValues.effectiveDate,
+            "homephone": formValues.homePhone,
+            "workphone": formValues.workPhone,
+            "email1": formValues.email1,
+            "email2": formValues.email2,
+            "addressline1": formValues.addressLine1,
+            "addressline2": formValues.addressLine2,
+            "suburb": formValues.suburb,
+            "city": Number(formValues.city),
             "state": "Maharashtra",
             "country": 5,
-            "zip": "411039",
+            "zip": formValues.zipCode,
             "entityid": 1
         }
         const response = await APIService.addUser(data);
@@ -994,7 +962,7 @@ const ManageUser = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currUser={editId} allCity={allCity} allLOB={allLOB} allRoles={allRoles} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New User created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="User deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
