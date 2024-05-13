@@ -1,297 +1,432 @@
-import React, { useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, responsiveFontSizes } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
-import Draggable from 'react-draggable'
+import Draggable from 'react-draggable';
+import eyeIcon from "../../../assets/eye.jpg";
 
-const EditUser = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess , showCancel}) => {
+const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-  const initialValues = {
-    vendorName: null,
-    addressLine1: null,
-    suburb: null,
-    phone: null,
-    ownerDetails: null,
-    category: null,
-    addressLine2: null,
-    city: null,
-    email: null,
-    details: null,
-    typeOfOrganization: null,
-    pan: null,
-    gstin: null,
-    tallyLedger: null,
-    tan: null,
-    tdsSection: null,
-    accountHolderName: null,
-    accountNumber: null,
-    accountType: null,
-    bankName: null,
-    bankBranch: null,
-    ifscCode: null,
-    bankBranchCity: null,
-};
-  const [formValues,setFormValues] = useState(initialValues)
-  const [formErrors,setFormErrors] = useState({})
-  // const [typeOfOrganization,setTypeOfOrganization] = useState([])
-  // const [allCategory,setAllCategory] = useState([])
-  // const [tallyLedgerData,setTallyLedgerData] = useState([])
-  // const [allCity,setAllCity] = useState([])
-  const fetchInitialData = async () => {
-    console.log(currVendor)
-      const data = {
-        "user_id" : 1234,
-        "item_id" : currVendor,
-        "table_name" : "get_vendor_view"
-      }
-      const response = await APIService.getItembyId(data)
-      const res = await response.json()
-      console.log(res)
-      const existing = {...formValues}
-      existing.vendorName = res.data.vendorname 
-      existing.addressLine1 = res.data.addressline1 
-      existing.addressLine2 = res.data.addressline2 
-      existing.city = res.data.cityid
-      existing.suburb = res.data.suburb 
-      existing.phone = res.data.phone1 
-      existing.ownerDetails = res.data.ownerinfo 
-      existing.typeOfOrganization = res.data.type
-      existing.pan = res.data.panno 
-      existing.gstin = res.data.gstservicetaxno
-      existing.category = res.data.categoryid
-      existing.email = res.data.email 
-      existing.details = res.data.details 
-      existing.tallyLedger = res.data.tallyledgerid
-      existing.tan = res.data.tanno
-      existing.tdsSection = res.data.tdssection 
-      existing.accountHolderName = res.data.bankacctholdername
-      existing.accountNumber = res.data.bankacctno
-      existing.accountType = res.data.bankaccttype 
-      existing.bankName = res.data.bankname 
-      existing.bankBranch = res.data.bankbranch 
-      existing.ifscCode = res.data.bankifsccode 
-      existing.bankBranchCity = res.data.bankcity 
-      setFormValues(existing)
-  }
-  useEffect(() => {
-     fetchInitialData()
-  },[])
-  const validate = () => {
-    var res = true;
+    const initialValues = {
+        nameOfTheUser: null,
+        userName: null,
+        password: null,
+        lob: null,
+        email1: null,
+        workPhone: null,
+        addressLine1: null,
+        effectiveDate: null,
+        confirmPassword: null,
+        role: null,
+        email2: null,
+        homePhone: null,
+        addressLine2: null,
+        city: null,
+        suburb: null,
+        zipCode: null,
+        status: false
+    };
+    const [formValues, setFormValues] = useState(initialValues)
+    const [formErrors, setFormErrors] = useState({})
+    // const [typeOfOrganization,setTypeOfOrganization] = useState([])
+    // const [allCategory,setAllCategory] = useState([])
+    // const [tallyLedgerData,setTallyLedgerData] = useState([])
+    // const [allCity,setAllCity] = useState([])
+    const fetchInitialData = async () => {
+        console.log(currUser)
+        const data = {
+            "user_id": 1234,
+            "item_id": currUser,
+            "table_name": "get_users_view"
+        }
+        const response = await APIService.getItembyId(data)
+        const res = await response.json()
+        console.log(res)
+        const existing = { ...formValues }
+        existing.nameOfTheUser = res.data.fullname
+        existing.userName = res.data.username
+        existing.password = res.data.password
+        existing.confirmPassword = res.data.password
+        existing.lob = res.data.lobid
+        existing.email1 = res.data.email1
+        existing.email2 = res.data.email2
+        existing.workPhone = res.data.workphone
+        existing.homePhone = res.data.homephone
+        existing.addressLine1 = res.data.addressline1
+        existing.addressLine2 = res.data.addressline2
+        existing.effectiveDate = res.data.effectivedate
+        existing.role = res.data.roleid
+        existing.city = res.data.cityid
+        existing.suburb = res.data.suburb
+        existing.zipCode = res.data.zip
+        setFormValues(existing)
+    }
+    useEffect(() => {
+        fetchInitialData()
+    }, [])
+    const validate = () => {
+        var res = true;
 
-    if (!formValues.vendorName) {
-        setFormErrors((existing) => {
-            return { ...existing, vendorName: "Enter Vendor name" }
-        })
-        res = false;
-    } else {
-        setFormErrors((existing) => {
-            return { ...existing, vendorName: "" }
-        })
+        if (!formValues.nameOfTheUser) {
+            setFormErrors((existing) => {
+                return { ...existing, nameOfTheUser: "Enter The Name Of The User" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, nameOfTheUser: "" }
+            })
+        }
+
+        if (!formValues.userName) {
+            setFormErrors((existing) => {
+                return { ...existing, userName: "Enter UserName" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, userName: "" }
+            })
+        }
+
+        if (!formValues.password) {
+            setFormErrors((existing) => {
+                return { ...existing, password: "Enter Password" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, password: "" }
+            })
+        }
+
+        if (!formValues.lob) {
+            setFormErrors((existing) => {
+                return { ...existing, lob: "Enter Lob" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, lob: "" }
+            })
+        }
+        if (!formValues.email1) {
+            setFormErrors((existing) => {
+                return { ...existing, email1: "Enter Email" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, email1: "" }
+            })
+        }
+        if (!formValues.addressLine1) {
+            setFormErrors((existing) => {
+                return { ...existing, addressLine1: "Enter Address" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, addressLine1: "" }
+            })
+        }
+        if (!formValues.effectiveDate) {
+            setFormErrors((existing) => {
+                return { ...existing, effectiveDate: "Select Effective Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, effectiveDate: "" }
+            })
+        }
+        if (!formValues.confirmPassword) {
+            setFormErrors((existing) => {
+                return { ...existing, confirmPassword: "Enter Confirm Password" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, confirmPassword: "" }
+            })
+        }
+        if (!formValues.role) {
+            setFormErrors((existing) => {
+                return { ...existing, role: "select Role" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, role: "" }
+            })
+        }
+        if (!formValues.homePhone) {
+            setFormErrors((existing) => {
+                return { ...existing, homePhone: "Enter home phone number" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, homePhone: "" }
+            })
+        }
+        if (!formValues.city) {
+            setFormErrors((existing) => {
+                return { ...existing, city: "Select City" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, city: "" }
+            })
+        }
+        if (!formValues.suburb) {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter Suburb" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+        if (!formValues.zipCode) {
+            setFormErrors((existing) => {
+                return { ...existing, zipCode: "Enter Zip Code" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, zipCode: "" }
+            })
+        }
+
+        return res;
+    }
+    const handleEdit = async () => {
+        // we handle edit here
+        if (!validate()) {
+            return;
+        }
+        const data = {
+            "user_id": 1234,
+            "username": formValues.userName,
+            "roleid": Number(formValues.role),
+            "password": formValues.password,
+            "officeid": 2,
+            "lobid": Number(formValues.lob),
+            "usercode": "code",
+            "firstname": "New",
+            "lastname": "User",
+            "status": formValues.status,
+            "effectivedate": formValues.effectiveDate,
+            "homephone": formValues.homePhone,
+            "workphone": formValues.workPhone,
+            "email1": formValues.email1,
+            "email2": formValues.email2,
+            "addressline1": formValues.addressLine1,
+            "addressline2": formValues.addressLine2,
+            "suburb": formValues.suburb,
+            "city": Number(formValues.city),
+            "state": "Maharashtra",
+            "country": 5,
+            "zip": formValues.zipCode,
+            "entityid": 1
+        }
+        const response = await APIService.editUser(data)
+        const res = await response.json()
+        if (res.result == 'success') {
+            //  we need to open edit Modal
+            showSuccess()
+        }
     }
 
-    if (!formValues.phone) {
-        setFormErrors((existing) => {
-            return { ...existing, phone: "Enter Phone Number" }
-        })
-        res = false;
-    } else {
-        setFormErrors((existing) => {
-            return { ...existing, phone: "" }
-        })
+    const close = () => {
+        handleClose();
+        showCancel();
     }
 
-    if (!formValues.category) {
-        setFormErrors((existing) => {
-            return { ...existing, category: "Select Category" }
-        })
-        res = false;
-    } else {
-        setFormErrors((existing) => {
-            return { ...existing, category: "" }
-        })
-    }
+    const [type1, setType1] = useState("password");
+    const [type2, setType2] = useState("password");
 
-    if (!formValues.email) {
-        setFormErrors((existing) => {
-            return { ...existing, email: "Enter Email" }
-        })
-        res = false;
-    } else {
-        setFormErrors((existing) => {
-            return { ...existing, email: "" }
-        })
-    }
+    // password visibility
+    const passwordToggle = () => {
+        if (type1 === "password") {
+            setType1("text");
+        } else {
+            setType1("password");
+        }
+    };
 
-    return res;
-}
-  const handleEdit = async () => {
-    // we handle edit here
-    if(!validate()) {
-        return ;
-    }
-    const data  = {
-      "user_id":1234,
-      "id":currVendor,
-      "vendorname":formValues.vendorName,
-      "addressline1":formValues.addressLine1,
-      "addressline2":formValues.addressLine2,
-      "suburb":formValues.suburb,
-      "city": Number(formValues.city),
-      "state":"Maharashtra",
-      "country":5,
-      "type":formValues.typeOfOrganization,
-      "details":formValues.details,
-      "category":Number(formValues.category),
-      "phone1":formValues.phone,
-      "email":formValues.email,
-      "ownerinfo":formValues.ownerDetails,
-      "panno":formValues.pan,
-      "tanno":formValues.tan,
-      "gstservicetaxno":formValues.gstin,
-      "tdssection":formValues.tdsSection,
-      "bankname":formValues.bankName,
-      "bankbranch":formValues.bankBranch,
-      "bankcity":formValues.bankBranchCity,
-      "bankacctholdername":formValues.accountHolderName,
-      "bankacctno":formValues.accountNumber,
-      "bankifsccode":formValues.ifscCode,
-      "bankaccttype":formValues.accountType,
-      "companydeductee":true,
-      "tallyledgerid":formValues.tallyLedger
-    }
-    const response  = await APIService.editVendors(data)
-    const res = await response.json()
-    if(res.result == 'success') {
-        //  we need to open edit Modal
-        showSuccess()
-    }
-  }
+    const confirmPasswordToggle = () => {
+        if (type2 === "password") {
+            setType2("text");
+        } else {
+            setType2("password");
+        }
+    };
 
-  const close = () =>{
-    handleClose();
-    showCancel();
-  }
-
-
-  // utility routes
-
-
-
-
-
-
-
-
-  // end utility routes here
-  return (
-    <Modal open={true}
-                fullWidth={true}
-                maxWidth={'md'}
-                className='flex justify-center items-center'
-            >
-                <>
-                    <Draggable>
-                <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-base">Edit Vendor </div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB]">
-                                <button onClick={() => {close()}}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-
-                        <div className="h-auto w-full mt-1 ">
-                            <div className="flex gap-12 justify-center">
-                                <div className="">
-                                    <div className=" space-y-1 py-1">
-                                        <div className="font-semibold text-sm text-[#282828]">Basic Information</div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Vendor Name <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="vendorName" value={formValues.vendorName} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorName}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Address Line 1</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Suburb</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.phone}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Owner Details </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-1 py-1 mt-2">
-                                        <div className="font-semibold text-sm text-[#282828]">Accounting Information</div>
-                                        <div className="">
-                                            <div className="text-[13px] text-[#505050]">Type Of Organization </div>
-                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] outline-none" name="typeOfOrganization"
-                                                value={formValues.typeOfOrganization}
-                                                onChange={
-                                                    handleChange
-                                                }>
-                                                <option hidden>Select Type Of Organization</option>
-                                                {typeOfOrganization && typeOfOrganization.map(item => (
-                                                    <option key={item.id} value={item.type}>
-                                                        {item.type}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">PAN </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="pan" value={formValues.pan} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">GSTIN</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gstin" value={formValues.gstin} onChange={handleChange} />
-
-                                        </div>
-                                    </div>
+    // end utility routes here
+    return (
+        <Modal open={true}
+            fullWidth={true}
+            maxWidth={'md'}
+            className='flex justify-center items-center'
+        >
+            <>
+                <Draggable>
+                    <div className='flex justify-center '>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit User</div>
                                 </div>
-                                <div className="">
-                                    <div className=" space-y-1 py-1 mt-6">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={() => { handleClose() }}>
+                                        <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="h-auto w-full">
+                                <div className="flex gap-[48px] justify-center items-center">
+                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">Category <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="category"
-                                                value={formValues.category}
-                                                defaultValue="Select Category"
-                                                onChange={handleChange}
+                                            <div className="text-[13px]">Name of the User <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="nameOfTheUser" value={formValues.nameOfTheUser} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.nameOfTheUser}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Create Username <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="userName" value={formValues.userName} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Create Password <label className="text-red-500">*</label></div>
+                                            <div className="m-0 p-0 relative">
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
+                                                <span className="w-4 h-4 absolute right-1 bottom-0.5">
+                                                    <img
+                                                        className='cursor-pointer'
+                                                        onClick={passwordToggle}
+                                                        src={eyeIcon}
+                                                        alt="eye-icon"
+                                                    />
+                                                </span>
+                                            </div>
+                                            <div className="text-[10px] text-[#CD0000]">{formErrors.password}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-sm">LOB <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                name="lob"
+                                                value={formValues.lob}
+                                                defaultValue="Select lob"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, lob: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
                                             >
-                                                {/* <option value="none" hidden={true}>Select a City</option> */}
-                                                <option value="none" hidden> Select Category</option>
-                                                {allCategory && allCategory.map(item => (
-                                                    <option key={item.id} value={item.id} >
+                                                <option value="none" hidden>Select a LOB</option>
+                                                {allLOB && allLOB.map(item => (
+                                                    <option value={item.id} >
                                                         {item.name}
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.category}</div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">Address Line 2</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                            <div className="text-[13px]">Email 1 <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email1" value={formValues.email1} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">City</div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            <div className="text-[13px]">Work Phone</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="workPhone" value={formValues.workPhone} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Address Line 1 <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div>
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878] mb-0.5">Office </div>
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Effective Date <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="effectiveDate" value={formValues.effectiveDate} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.effectiveDate}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Confirm Password <label className="text-red-500">*</label></div>
+                                            <div className="m-0 p-0 relative">
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
+                                                <span className="w-4 h-4 absolute right-1 bottom-0.5">
+                                                    <img
+                                                        className='cursor-pointer'
+                                                        onClick={confirmPasswordToggle}
+                                                        src={eyeIcon}
+                                                        alt="eye-icon"
+                                                    />
+                                                </span>
+                                            </div>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.confirmPassword}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Assign Role <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                name="role"
+                                                value={formValues.role}
+                                                defaultValue="Select Role"
+                                                onChange={e => {
+                                                    // fetchCityData(e.target.value);
+                                                    console.log(e.target.value);
+                                                    setFormValues((existing) => {
+                                                        const newData = { ...existing, role: e.target.value }
+                                                        return newData;
+                                                    })
+
+                                                }}
+                                            >
+                                                <option value="none" hidden>Select a Role</option>
+                                                {allRoles && allRoles.map(item => (
+                                                    <option value={item.id} >
+                                                        {item.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Email 2</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email2" value={formValues.email2} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Home Phone <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="homePhone" value={formValues.homePhone} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.homePhone}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Address Line 2</div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-[12px] py-[20px] px-[10px] ">
+                                        <div className="">
+                                            <div className="text-[13px] ">City <label className="text-red-500">*</label></div>
+                                            <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                 name="city"
                                                 value={formValues.city}
                                                 defaultValue="Select City"
@@ -305,104 +440,42 @@ const EditUser = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,t
                                                     </option>
                                                 ))}
                                             </select>
-                                            {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">Email <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="email" value={formValues.email} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
-                                        </div>
-                                        <div className=""> 
-                                            <div className="text-sm text-[#505050]">Details </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="details" value={formValues.details} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-1 py-1 mt-8">
-
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]" >Tally Ledger </div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="tallyLedger"
-                                                value={formValues.tallyLedger}
-                                                defaultValue="Select Tally Ledger"
-                                                onChange={handleChange}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a City</option> */}
-                                                <option value="none" hidden> Select Tally Ledger</option>
-                                                {tallyLedgerData && tallyLedgerData.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-
-
-
-                                            {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} /> */}
-
+                                            <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">TAN</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tan" value={formValues.tan} onChange={handleChange} />
-
+                                            <div className="text-[13px]">Zip Code <label className="text-red-500">*</label></div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.zipCode}</div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">TDS Section</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tdsSection" value={formValues.tdsSection} onChange={handleChange} />
-
-                                        </div>
-
                                     </div>
                                 </div>
-                                <div className=" space-y-1 py-1">
-                                    <div className="font-semibold text-sm text-[#282828]">Vendor Bank Details </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Account Holder Name </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountHolderName" value={formValues.accountHolderName} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Account Number</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountNumber" value={formValues.accountNumber} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Account Type</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountType" value={formValues.accountType} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Bank Name </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankName" value={formValues.bankName} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Bank Branch </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranch" value={formValues.bankBranch} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">IFSC Code </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ifscCode" value={formValues.ifscCode} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Bank Branch City </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranchCity" value={formValues.bankBranchCity} onChange={handleChange} />
-                                    </div>
-                                </div>
-
+                            </div>
+                            <div className="mt-2 flex justify-center items-center text-sm font-semibold"><input
+                                type="checkbox"
+                                checked={formValues.status}
+                                className='mr-3 h-4 w-4'
+                                onClick={(e) => {
+                                    // console.log(e.target.checked)
+                                    const existing = { ...formValues };
+                                    existing.status = !existing.status;
+                                    setFormValues(existing)
+                                }}
+                            />Active</div>
+                            <div className="my-2 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit}>Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { handleClose() }}>Cancel</button>
                             </div>
                         </div>
-                        <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
-                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={() => {close()}}>Cancel</button>
-                        </div>
-
                     </div>
-                </div>
-                    </Draggable>
-                    </>
-            </Modal>
-  )
+                </Draggable>
+            </>
+        </Modal>
+    )
 }
 
 export default EditUser
