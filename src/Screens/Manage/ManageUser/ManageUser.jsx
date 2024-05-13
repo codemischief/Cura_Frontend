@@ -1209,7 +1209,7 @@ const ManageUser = () => {
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-5'>
                                                 <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.fullname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>
