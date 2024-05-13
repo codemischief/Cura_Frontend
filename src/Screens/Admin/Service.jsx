@@ -225,9 +225,9 @@ const Service = () => {
             document.removeEventListener("mousedown", handler);
         };
     }, []);
-    const [invoiceId, setInvoiceId] = useState(0);
+    const [editId, setEditId] = useState(0);
     const handleEdit = (id) => {
-        setInvoiceId((prev) => id)
+        setEditId((prev) => id)
         setIsEditDialogue(true)
     }
     const handleOpenEdit = (oldItem) => {
@@ -664,7 +664,7 @@ const Service = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditService handleClose={() => setIsEditDialogue(false)} currService={editId} allLOB={allLOB}  showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Service created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Service deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
@@ -817,6 +817,9 @@ const Service = () => {
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingService && existingService.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingService.map((item, index) => {
                             return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[70%] flex items-center">
