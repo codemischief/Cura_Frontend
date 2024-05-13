@@ -17,19 +17,19 @@ import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
-import EditClientInvoice from './EditVendor';
+import EditClientInvoice from './EditUser';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import CancelModel from './../../../Components/modals/CancelModel';
-import SaveConfirmationVendor from './SaveConfirmationVendor';
+import SaveConfirmationUser from './SaveConfirmationUser';
 import FailureModal from '../../../Components/modals/FailureModal';
-import DeleteVendorModal from './DeleteVendorModal';
+import DeleteUserModal from './DeleteUserModal';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
-import EditVendor from './EditVendor';
+import EditUser from './EditUser';
 import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
 
@@ -54,7 +54,7 @@ const ManageUser = () => {
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
     const [currCountry, setCurrCountry] = useState(-1);
-    const [isUserDialogue, setIsVendorDialogue] = useState(false);
+    const [isUserDialogue, setIsUserDialogue] = useState(false);
     const [isEditDialogue, setIsEditDialogue] = React.useState(false);
     const [currItem, setCurrItem] = useState({});
     const [showAddSuccess, setShowAddSuccess] = useState(false);
@@ -64,16 +64,14 @@ const ManageUser = () => {
     const [isFailureModal, setIsFailureModal] = useState(false)
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
 
-    const [vendorNameFilter, setVendorNameFilter] = useState(false)
-    const [vendorNameFilterInput, setVendorNameFilterInput] = useState("");
-    const [tdsSectionFilter, setTdsSectionFilter] = useState(false)
-    const [tdsSectionFilterInput, setTdsSectionFilterInput] = useState("");
-    const [tallyLedgerFilter, setTallyLedgerFilter] = useState(false)
-    const [tallyLedgerFilterInput, setTallyLedgerFilterInput] = useState("");
-    const [categoryFilter, setCategoryFilter] = useState(false)
-    const [categoryFilterInput, setCategoryFilterInput] = useState("");
-    const [cityFilter, setCityFilter] = useState(false)
-    const [cityFilterInput, setCityFilterInput] = useState("");
+    const [nameFilter, setNameFilter] = useState(false)
+    const [nameFilterInput, setNameFilterInput] = useState("");
+    const [usernameFilter, setUsernameFilter] = useState(false)
+    const [usernameFilterInput, setUsernameFilterInput] = useState("");
+    const [roleFilter, setRoleFilter] = useState(false)
+    const [roleFilterInput, setRoleFilterInput] = useState("");
+    const [statusFilter, setStatusFilter] = useState(false)
+    const [statusFilterInput, setStatusFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("");
     // const [filterArray,setFilterArray] = useState([]);
@@ -276,11 +274,10 @@ const ManageUser = () => {
         fetchRoleData();
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
-                setVendorNameFilter(false)
-                setTdsSectionFilter(false)
-                setTallyLedgerFilter(false)
-                setCategoryFilter(false)
-                setCityFilter(false)
+                setNameFilter(false)
+                setUsernameFilter(false)
+                setRoleFilter(false)
+                setStatusFilter(false)
                 setIdFilter(false)
             }
         }
@@ -302,29 +299,29 @@ const ManageUser = () => {
     };
 
     const handleOpen = () => {
-        setIsVendorDialogue(true);
+        setIsUserDialogue(true);
     };
 
     const handleClose = () => {
         initials();
-        setIsVendorDialogue(false);
+        setIsUserDialogue(false);
         openAddCancelModal();
     }
     const initials = () => {
         setFormValues(initialValues);
         setFormErrors({});
     }
-    const handleAddVendor = () => {
+    const handleAddUser = () => {
         console.log(formValues)
         if (!validate()) {
             console.log('hu')
             return;
         }
-        setIsVendorDialogue(false);
+        setIsUserDialogue(false);
         setOpenAddConfirmation(true);
 
     }
-    const addVendor = async () => {
+    const addUser = async () => {
         // console.log('clicked')
         // console.log(formValues)
         // setPageLoading(true);
@@ -360,40 +357,36 @@ const ManageUser = () => {
         // }
         const data = {
             "user_id": 1234,
-            "vendorname": formValues.vendorName,
-            "addressline1": formValues.addressLine1,
-            "addressline2": formValues.addressLine2,
-            "suburb": formValues.suburb,
-            "city": Number(formValues.city),
+            "username": "newuser",
+            "roleid": 3,
+            "password": "newpass",
+            "officeid": 2,
+            "lobid": 2,
+            "usercode": "code",
+            "firstname": "New",
+            "lastname": "User",
+            "status": true,
+            "effectivedate": "12-05-2024 00:00:00",
+            "homephone": "9999999999",
+            "workphone": "8888888888",
+            "email1": "email1email.com",
+            "email2": "email2@email.com",
+            "addressline1": "Addr l1",
+            "addressline2": "Addr l2",
+            "suburb": "Sub1",
+            "city": 847,
             "state": "Maharashtra",
             "country": 5,
-            "type": formValues.typeOfOrganization,
-            "details": formValues.details,
-            "category": Number(formValues.category),
-            "phone1": formValues.phone,
-            "email": formValues.email,
-            "ownerinfo": formValues.ownerDetails,
-            "panno": formValues.pan,
-            "tanno": formValues.tan,
-            "gstservicetaxno": formValues.gstin,
-            "tdssection": formValues.tdsSection,
-            "bankname": formValues.bankName,
-            "bankbranch": formValues.bankBranch,
-            "bankcity": formValues.bankBranchCity,
-            "bankacctholdername": formValues.accountHolderName,
-            "bankacctno": formValues.accountNumber,
-            "bankifsccode": formValues.ifscCode,
-            "bankaccttype": formValues.accountType,
-            "companydeductee": true,
-            "tallyledgerid": Number(formValues.tallyLedger)
+            "zip": "411039",
+            "entityid": 1
         }
-        const response = await APIService.addVendors(data);
+        const response = await APIService.addUser(data);
 
         const result = (await response.json())
 
         setOpenAddConfirmation(false);
         console.log(result)
-        setIsVendorDialogue(false);
+        setIsUserDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -407,29 +400,24 @@ const ManageUser = () => {
     }
 
     const initialValues = {
-        vendorName: null,
+        nameOfTheUser: null,
+        userName: null,
+        password: null,
+        lob: null,
+        email1: null,
+        workPhone: null,
         addressLine1: null,
-        suburb: null,
-        phone: null,
-        ownerDetails: null,
-        category: null,
+        effectiveDate: null,
+        confirmPassword: null,
+        role: null,
+        email2: null,
+        homePhone: null,
         addressLine2: null,
         city: 847,
-        email: null,
-        details: null,
-        typeOfOrganization: null,
-        pan: null,
-        gstin: null,
-        tallyLedger: null,
-        tan: null,
-        tdsSection: null,
-        accountHolderName: null,
-        accountNumber: null,
-        accountType: null,
-        bankName: null,
-        bankBranch: null,
-        ifscCode: null,
-        bankBranchCity: null,
+        suburb: null,
+        zipCode: null,
+        status: false
+
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -444,67 +432,156 @@ const ManageUser = () => {
     const validate = () => {
         var res = true;
 
-        if (!formValues.vendorName) {
+        if (!formValues.nameOfTheUser) {
             setFormErrors((existing) => {
-                return { ...existing, vendorName: "Enter Vendor name" }
+                return { ...existing, nameOfTheUser: "Enter The Name Of The User" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, vendorName: "" }
+                return { ...existing, nameOfTheUser: "" }
             })
         }
 
-        if (!formValues.phone) {
+        if (!formValues.userName) {
             setFormErrors((existing) => {
-                return { ...existing, phone: "Enter Phone Number" }
+                return { ...existing, userName: "Enter UserName" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, phone: "" }
+                return { ...existing, userName: "" }
             })
         }
 
-        if (!formValues.category) {
+        if (!formValues.password) {
             setFormErrors((existing) => {
-                return { ...existing, category: "Select Category" }
+                return { ...existing, password: "Enter Password" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, category: "" }
+                return { ...existing, password: "" }
             })
         }
 
-        if (!formValues.email) {
+        if (!formValues.lob) {
             setFormErrors((existing) => {
-                return { ...existing, email: "Enter Email" }
+                return { ...existing, lob: "Enter Lob" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, email: "" }
+                return { ...existing, lob: "" }
+            })
+        }
+        if (!formValues.email1) {
+            setFormErrors((existing) => {
+                return { ...existing, email1: "Enter Email" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, email1: "" }
+            })
+        }
+        if (!formValues.addressLine1) {
+            setFormErrors((existing) => {
+                return { ...existing, addressLine1: "Enter Address" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, addressLine1: "" }
+            })
+        }
+        if (!formValues.effectiveDate) {
+            setFormErrors((existing) => {
+                return { ...existing, effectiveDate: "Select Effective Date" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, effectiveDate: "" }
+            })
+        }
+        if (!formValues.confirmPassword) {
+            setFormErrors((existing) => {
+                return { ...existing, confirmPassword: "Enter Confirm Password" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, confirmPassword: "" }
+            })
+        }
+        if (!formValues.role) {
+            setFormErrors((existing) => {
+                return { ...existing, role: "select Role" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, role: "" }
+            })
+        }
+        if (!formValues.homePhone) {
+            setFormErrors((existing) => {
+                return { ...existing, homePhone: "Enter home phone number" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, homePhone: "" }
+            })
+        }
+        if (!formValues.city) {
+            setFormErrors((existing) => {
+                return { ...existing, city: "Select City" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, city: "" }
+            })
+        }
+        if (!formValues.suburb) {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "Enter Suburb" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, suburb: "" }
+            })
+        }
+        if (!formValues.zipCode) {
+            setFormErrors((existing) => {
+                return { ...existing, zipCode: "Enter Zip Code" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, zipCode: "" }
             })
         }
 
         return res;
     }
-    const [currVendorId, setCurrVendorId] = useState("");
-    const [currVendorName, setCurrVendorName] = useState("");
+    const [currId, setCurrId] = useState("");
+    const [currName, setCurrName] = useState("");
     const handleDelete = (id, name) => {
-        setCurrVendorId(id);
-        setCurrVendorName(name);
+        setCurrId(id);
+        setCurrName(name);
         showDeleteConfirmation(true);
     }
-    const deleteVendor = async (id) => {
+    const deleteUser = async (id) => {
         const data = {
             "user_id": 1234,
             "id": id
         }
-        const response = await APIService.deleteVendors(data);
+        const response = await APIService.deleteUser(data);
         showDeleteConfirmation(false);
-
         openDeleteSuccess();
     }
     const handlePageChange = (event, value) => {
@@ -635,7 +712,7 @@ const ManageUser = () => {
     const [showCancelModel, setShowCancelModel] = useState(false);
     const openAddCancelModal = () => {
         // set the state for true for some time
-        setIsVendorDialogue(false);
+        setIsUserDialogue(false);
         setShowCancelModelAdd(true);
         setTimeout(function () {
             setShowCancelModelAdd(false)
@@ -651,34 +728,28 @@ const ManageUser = () => {
     }
 
     const filterMapping = {
-        vendorname: {
+        fullname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        tdssection: {
+        username: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        tallyledger: {
+        role_name: {
             filterType: "",
             filterValue: "",
             filterData: "String",
             filterInput: ""
         },
-        category: {
+        status: {
             filterType: "",
             filterValue: "",
-            filterData: "String",
-            filterInput: ""
-        },
-        city: {
-            filterType: "",
-            filterValue: "",
-            filterData: "String",
+            filterData: "Numeric",
             filterInput: ""
         },
         id: {
@@ -693,11 +764,10 @@ const ManageUser = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
-        setVendorNameFilter(false)
-        setTdsSectionFilter(false)
-        setTallyLedgerFilter(false)
-        setCategoryFilter(false)
-        setCityFilter(false)
+        setNameFilter(false)
+        setUsernameFilter(false)
+        setRoleFilter(false)
+        setStatusFilter(false)
         setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
@@ -737,22 +807,59 @@ const ManageUser = () => {
         console.log('hey')
         console.log(filterMapState);
 
-        var existing = filterMapState;
-        existing = {
-            ...existing, [columnName]: {
-                ...existing[columnName],
-                filterType: type == 'noFilter' ? "" : type
+        if (columnName == 'status') {
+            var existing = filterMapState;
+            if (type == 'noFilter') {
+                setInputVariable("");
             }
-        }
-        existing = {
-            ...existing, [columnName]: {
-                ...existing[columnName],
-                filterValue: type == 'noFilter' ? "" : inputVariable
+            if (inputVariable.toLowerCase() == 'active') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'true'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else if (inputVariable.toLowerCase() == 'inactive') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'false'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else {
+                return;
             }
+
         }
+        else {
+            var existing = filterMapState;
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterType: type == 'noFilter' ? "" : type
+                }
+            }
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterValue: type == 'noFilter' ? "" : inputVariable
+                }
+            }
 
-        if (type == 'noFilter') setInputVariable("");
-
+            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+        }
 
         fetchFiltered(existing);
     }
@@ -866,13 +973,13 @@ const ManageUser = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New User created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="User deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
-            {openAddConfirmation && <SaveConfirmationVendor handleClose={() => setOpenAddConfirmation(false)} currVendor={formValues.vendorName} addVendor={addVendor} showCancel={openAddCancelModal} setDefault={initials} />}
+            {openAddConfirmation && <SaveConfirmationUser handleClose={() => setOpenAddConfirmation(false)} currName={formValues.nameOfTheUser} addUser={addUser} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteVendorModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteVendor} item={currVendorId} currVendor={formValues.vendorName} showCancel={openCancelModal} name={currVendorName} />}
+            {deleteConfirmation && <DeleteUserModal handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteUser} item={currId} showCancel={openCancelModal} name={currName} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new user created." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
@@ -928,64 +1035,64 @@ const ManageUser = () => {
                             </div>
                             <div className='w-[24%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={nameFilterInput} onChange={(e) => setNameFilterInput(e.target.value)}
 
-                                        onKeyDown={(event) => handleEnterToFilter(event, vendorNameFilterInput,
-                                            setVendorNameFilterInput,
+                                        onKeyDown={(event) => handleEnterToFilter(event, nameFilterInput,
+                                            setNameFilterInput,
                                             'contains',
-                                            'vendorname')}
+                                            'fullname')}
 
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <button className='w-[25%] px-1 py-2' onClick={() => { setNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
+                                {nameFilter && <CharacterFilter inputVariable={nameFilterInput} setInputVariable={setNameFilterInput} handleFilter={newHandleFilter} filterColumn='fullname' menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[30%]  px-3 py-2.5 mx-[-2px]'>
                                 <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={usernameFilterInput} onChange={(e) => setUsernameFilterInput(e.target.value)}
 
-                                        onKeyDown={(event) => handleEnterToFilter(event, tdsSectionFilterInput,
-                                            setTdsSectionFilterInput,
+                                        onKeyDown={(event) => handleEnterToFilter(event, usernameFilterInput,
+                                            setUsernameFilterInput,
                                             'contains',
-                                            'tdssection')}
+                                            'username')}
 
                                     />
-                                    <button className='W-[25%] px-1 py-2' onClick={() => { setTdsSectionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <button className='W-[25%] px-1 py-2' onClick={() => { setUsernameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {usernameFilter && <CharacterFilter inputVariable={usernameFilterInput} setInputVariable={setUsernameFilterInput} filterColumn='username' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5 '>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleFilterInput} onChange={(e) => setRoleFilterInput(e.target.value)}
 
 
-                                        onKeyDown={(event) => handleEnterToFilter(event, tallyLedgerFilterInput,
-                                            setTallyLedgerFilterInput,
+                                        onKeyDown={(event) => handleEnterToFilter(event, roleFilterInput,
+                                            setRoleFilterInput,
                                             'contains',
-                                            'tallyledger')}
+                                            'role_name')}
 
 
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setTallyLedgerFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <button className='w-[25%] px-1 py-2' onClick={() => { setRoleFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {tallyLedgerFilter && <CharacterFilter inputVariable={tallyLedgerFilterInput} setInputVariable={setTallyLedgerFilterInput} filterColumn='tallyledger' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {roleFilter && <CharacterFilter inputVariable={roleFilterInput} setInputVariable={setRoleFilterInput} filterColumn='role_name' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
 
-                                        onKeyDown={(event) => handleEnterToFilter(event, categoryFilterInput,
-                                            setCategoryFilterInput,
-                                            'contains',
-                                            'category')}
+                                        onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
+                                            setStatusFilterInput,
+                                            'equalTo',
+                                            'status')}
 
                                     />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCategoryFilter((prev) => !prev) }} /></button>
+                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
-                                {categoryFilter && <CharacterFilter inputVariable={categoryFilterInput} setInputVariable={setCategoryFilterInput} filterColumn='category' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
@@ -1193,12 +1300,12 @@ const ManageUser = () => {
                     <Draggable>
                         <div className='flex justify-center '>
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">Add New User</div>
                                     </div>
                                     <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={() => (handleClose)}>
+                                        <button onClick={() => { handleClose() }}>
                                             <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                                         </button>
                                     </div>
@@ -1208,19 +1315,19 @@ const ManageUser = () => {
                                     <div className="flex gap-[48px] justify-center items-center">
                                         <div className=" space-y-[12px] py-[20px] px-[10px]">
                                             <div className="">
-                                                <div className="text-[14px]">Name of the User<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="nameOfTheUser" value={formValues.nameOfTheUser} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.nameOfTheUser}</div>
+                                                <div className="text-[13px]">Name of the User <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="nameOfTheUser" value={formValues.nameOfTheUser} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.nameOfTheUser}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Create Username<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="username" value={formValues.userName} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.userName}</div>
+                                                <div className="text-[13px]">Create Username <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="userName" value={formValues.userName} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Create Password<label className="text-red-500">*</label></div>
+                                                <div className="text-[13px]">Create Password <label className="text-red-500">*</label></div>
                                                 <div className="m-0 p-0 relative">
-                                                    <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type={type1} name="password" value={formValues.password} onChange={handleChange} />
+                                                    <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
                                                     <span className="w-4 h-4 absolute right-1 bottom-0.5">
                                                         <img
                                                             className='cursor-pointer'
@@ -1230,42 +1337,42 @@ const ManageUser = () => {
                                                         />
                                                     </span>
                                                 </div>
-                                                <div className="text-[12px] text-[#CD0000]">{formErrors.password}</div>
+                                                <div className="text-[10px] text-[#CD0000]">{formErrors.password}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">LOB<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="lob" value={formValues.lob} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.lob}</div>
+                                                <div className="text-[13px]">LOB <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lob" value={formValues.lob} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Email 1<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="email1" value={formValues.email} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.email}</div>
+                                                <div className="text-[13px]">Email 1 <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email1" value={formValues.email1} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Work Phone</div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="email" name="Work phone" />
+                                                <div className="text-[13px]">Work Phone</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="workPhone" value={formValues.workPhone} onChange={handleChange} />
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Address Line 1<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="AddressLine1" value={formValues.addressLine1} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.addressLine1}</div>
+                                                <div className="text-[13px]">Address Line 1 <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div>
                                             </div>
                                         </div>
                                         <div className=" space-y-[12px] py-[20px] px-[10px]">
                                             <div className="">
-                                                <div className="text-[14px]">Office<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Office" />
+                                                <div className="text-sm text-[#787878] mb-0.5">Office </div>
+                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Effective Date<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="EffectiveDate" value={formValues.effectiveDate} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.effectiveDate}</div>
+                                                <div className="text-[13px]">Effective Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="effectiveDate" value={formValues.effectiveDate} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.effectiveDate}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Confirm Password<label className="text-red-500">*</label></div>
+                                                <div className="text-[13px]">Confirm Password <label className="text-red-500">*</label></div>
                                                 <div className="m-0 p-0 relative">
-                                                    <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
+                                                    <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
                                                     <span className="w-4 h-4 absolute right-1 bottom-0.5">
                                                         <img
                                                             className='cursor-pointer'
@@ -1275,11 +1382,11 @@ const ManageUser = () => {
                                                         />
                                                     </span>
                                                 </div>
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.confirmPassword}</div>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.confirmPassword}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
-                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                <div className="text-[13px]">Assign Role <label className="text-red-500">*</label></div>
+                                                <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                     name="role"
                                                     value={formValues.role}
                                                     defaultValue="Select Role"
@@ -1303,23 +1410,23 @@ const ManageUser = () => {
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Email 2</div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Email2" />
+                                                <div className="text-[13px]">Email 2</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email2" value={formValues.email2} onChange={handleChange} />
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Home Phone<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="HomePhone" value={formValues.homePhone} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.homePhone}</div>
+                                                <div className="text-[13px]">Home Phone <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="homePhone" value={formValues.homePhone} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.homePhone}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Address Line 2</div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="addressLine2" />
+                                                <div className="text-[13px]">Address Line 2</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
                                             </div>
                                         </div>
                                         <div className=" space-y-[12px] py-[20px] px-[10px] ">
                                             <div className="">
-                                                <div className="text-sm text-[#505050]">City</div>
-                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                <div className="text-[13px] ">City <label className="text-red-500">*</label></div>
+                                                <select className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
                                                     name="city"
                                                     value={formValues.city}
                                                     defaultValue="Select City"
@@ -1333,25 +1440,35 @@ const ManageUser = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.city}</div>
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Suburb<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                                <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[14px]">Zip Code<label className="text-red-500">*</label></div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="zipcode" value={formValues.zipCode} onChange={handleChange} />
-                                                <div className="text-[12px] text-[#CD0000] ">{formErrors.zipCode}</div>
+                                                <div className="text-[13px]">Zip Code <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.zipCode}</div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mt-[10px] flex justify-center items-center"> Active</div>
-                                <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddVendor}>Save</button>
-                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => (handleClose)}>Cancel</button>
+                                <div className="mt-2 flex justify-center items-center text-sm font-semibold"><input
+                                    type="checkbox"
+                                    checked={formValues.status}
+                                    className='mr-3 h-4 w-4'
+                                    onClick={(e) => {
+                                        // console.log(e.target.checked)
+                                        const existing = { ...formValues };
+                                        existing.status = !existing.status;
+                                        setFormValues(existing)
+                                    }}
+                                />Active</div>
+                                <div className="my-2 flex justify-center items-center gap-[10px]">
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddUser}>Save</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { handleClose() }}>Cancel</button>
                                 </div>
                             </div>
                         </div>

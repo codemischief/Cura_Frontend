@@ -4,7 +4,7 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import Draggable from 'react-draggable'
 
-const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess , showCancel}) => {
+const EditUser = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory,typeOfOrganization,showSuccess , showCancel}) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -405,4 +405,4 @@ const EditVendor = ({handleClose ,currVendor,allCity,tallyLedgerData,allCategory
   )
 }
 
-export default EditVendor
+export default EditUser
