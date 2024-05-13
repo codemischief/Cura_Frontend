@@ -5,7 +5,7 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
-const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
+const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCancel}) => {
     const initialValues = {
         client: "",
         clientProperty: null,
@@ -388,6 +388,11 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
         }
         return results
     }
+
+    const close = () =>{
+        handleClose();
+        showCancel();
+    }
   return (
     <Modal open={true}
                 fullWidth={true}
@@ -404,7 +409,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                                 <div className="text-[16px]">Edit L&L Agreement</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <button onClick={() => {close()}}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
@@ -578,7 +583,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess}) => {
                             />Active</div>
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                         </div>
                     </div>
                 </div>

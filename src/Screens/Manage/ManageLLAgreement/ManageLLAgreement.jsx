@@ -19,6 +19,7 @@ import DateIcon from "../../../assets/dateFilter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import SaveConfirmationLLAgreement from './SaveConfirmationLLAgreement';
 import DeleteLLAgreement from './DeleteLLAgreement';
 import AsyncSelect from "react-select/async"
@@ -273,11 +274,11 @@ const ManageLLAgreement = () => {
         console.log(formValues)
         setSelectedOption(e)
     }
-    const handleTenantClientNameChange = (e,index) => {
-       const temp = [...selectedOptions]
+    const handleTenantClientNameChange = (e, index) => {
+        const temp = [...selectedOptions]
 
-       temp[index] = e;
-       setSelectedOptions(temp);
+        temp[index] = e;
+        setSelectedOptions(temp);
     }
     const loadOptions = async (e) => {
         console.log(e)
@@ -412,7 +413,13 @@ const ManageLLAgreement = () => {
     };
 
     const handleClose = () => {
+        initials();
         setIsLLAgreementDialogue(false);
+        openAddCancelModal();
+    }
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
     }
 
     const handleOpenTenantDetails = (id) => {
@@ -857,6 +864,25 @@ const ManageLLAgreement = () => {
         fetchData();
     }
 
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsLLAgreementDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
+    }
+
     const handleSort = async (field) => {
         setPageLoading(true);
         // const tempArray = [];
@@ -1023,10 +1049,10 @@ const ManageLLAgreement = () => {
         setExistingLLAgreement(result);
         setPageLoading(false);
     }
-    const [selectedOptions,setSelectedOptions] = useState([
+    const [selectedOptions, setSelectedOptions] = useState([
         {
-            label : "Select Client",
-            value : null
+            label: "Select Client",
+            value: null
         }
     ])
 
@@ -1034,37 +1060,71 @@ const ManageLLAgreement = () => {
         console.log('called')
         const temp = [...selectedOptions];
         temp.push({
-                label : "Select Client",
-                value : null
+            label: "Select Client",
+            value: null
         })
         setSelectedOptions(temp)
     }
     const handleAddTenant = async () => {
         // we need the id here as well
         const temp = []
-        for(var i=0;i<selectedOptions.length;i++) {
-            temp.push({ "tenantid"  : selectedOptions[i].value})
+        for (var i = 0; i < selectedOptions.length; i++) {
+            temp.push({ "tenantid": selectedOptions[i].value })
         }
         const data = {
-            "user_id":1234,
-            "leavelicenseid":currItem,
-            "tenants":temp
-          }
-          const response = await APIService.addLLTenant(data)
-          const res = await response.json()
-          console.log(res)
+            "user_id": 1234,
+            "leavelicenseid": currItem,
+            "tenants": temp
+        }
+        const response = await APIService.addLLTenant(data)
+        const res = await response.json()
+        console.log(res)
     }
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
+
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New L&L Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="L&L Agreement Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
-            {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} />}
+            {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-            {deleteConfirmation && <DeleteLLAgreement handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteLLAgreement} item={currLL} />}
+            {deleteConfirmation && <DeleteLLAgreement handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteLLAgreement} item={currLL} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, No ll agreement created" />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1089,6 +1149,7 @@ const ManageLLAgreement = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1125,7 +1186,12 @@ const ManageLLAgreement = () => {
                             </div>
                             <div className='w-[18%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
+                                        setClientNameFilterInput,
+                                        'contains',
+                                        'clientname')}
+                                         />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
@@ -1133,7 +1199,12 @@ const ManageLLAgreement = () => {
 
                             <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertyDescriptionFilterInput,
+                                        setPropertyDescriptionFilterInput,
+                                        'contains',
+                                        'propertydescription')}
+                                         />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
@@ -1141,7 +1212,12 @@ const ManageLLAgreement = () => {
 
                             <div className='w-[15%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} 
+                                    onKeyDown={(event) => handleEnterToFilter(event,propertyStatusFilterInput,
+                                        setPropertyStatusFilterInput,
+                                        'contains',
+                                        'propertystatusname')}
+                                        />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
@@ -1149,7 +1225,12 @@ const ManageLLAgreement = () => {
 
                             <div className='w-[15%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,statusFilterInput,
+                                        setStatusFilterInput,
+                                        'equalTo',
+                                        'active')}
+                                         />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='active' handleFilter={newHandleFilter} menuRef={menuRef} />}
@@ -1157,7 +1238,12 @@ const ManageLLAgreement = () => {
 
                             <div className='w-[15%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={startFilterInput} onChange={(e) => setStartFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={startFilterInput} onChange={(e) => setStartFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,startFilterInput,
+                                        setStartFilterInput,
+                                        'equalTo',
+                                        'startdate')}
+                                         />
                                     <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setStartFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {startFilter && <DateFilter inputVariable={startFilterInput} setInputVariable={setStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} />}
@@ -1165,7 +1251,12 @@ const ManageLLAgreement = () => {
 
                             <div className='w-[15%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={endFilterInput} onChange={(e) => setEndFilterInput(e.target.value)} />
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={endFilterInput} onChange={(e) => setEndFilterInput(e.target.value)} 
+                                    onKeyDown={(event) => handleEnterToFilter(event,endFilterInput,
+                                        setEndFilterInput,
+                                        'equalTo',
+                                        'actualenddate')}
+                                        />
                                     <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setEndFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {endFilter && <DateFilter inputVariable={endFilterInput} setInputVariable={setEndFilterInput} handleFilter={newHandleFilter} columnName='actualenddate' menuRef={menuRef} />}
@@ -1228,12 +1319,12 @@ const ManageLLAgreement = () => {
                             </div>
                         </div>
                         <div className="w-[17%] flex">
-                            <div className='w-1/2  flex'>
+                            <div className='w-[65%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Tenant</p>
                                 </div>
                             </div>
-                            <div className='w-1/2  flex'>
+                            <div className='w-[35%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Edit</p>
                                 </div>
@@ -1251,58 +1342,61 @@ const ManageLLAgreement = () => {
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingLLAgreement && existingLLAgreement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingLLAgreement.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[83%] flex">
+                            return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1'>
+                                <div className="w-[83%] flex items-center">
                                     <div className='w-[3%] flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[18%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             {item.clientname}
                                         </div>
                                     </div>
                                     <div className='w-[19%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             {item.propertydescription}
                                         </div>
                                     </div>
-                                    <div className='w-[15%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[15%]  flex pl-0.5'>
+                                        <div className='px-3'>
                                             {item.propertystatusname}
                                         </div>
 
                                     </div>
                                     <div className='w-[15%]  flex'>
-                                        <div className='p-3 ml-1 flex items-center space-x-2'>
+                                        <div className='px-3 ml-1 flex items-center space-x-2'>
                                             {item.active ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
                                                 <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
                                                 <p> inactive</p></>}
                                         </div>
                                     </div>
-                                    <div className='w-[15%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[15%]  flex pl-1'>
+                                        <div className='px-3'>
                                             {item.startdate}
                                         </div>
                                     </div>
-                                    <div className='w-[15%]  flex'>
-                                        <div className='p-3'>
+                                    <div className='w-[15%]  flex pl-1'>
+                                        <div className='px-3'>
                                             {item.actualenddate}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="w-[17%] flex">
-                                    <div className='w-1/2  flex'>
+                                    <div className='w-[65%]  flex pl-1'>
                                         <button onClick={() => handleOpenTenantDetails(item.id)} >
-                                            <div className='p-3 text-blue-400 cursor-pointer'>
+                                            <div className='px-3 text-blue-400 cursor-pointer'>
                                                 Tenant Details
                                             </div>
                                         </button>
 
                                     </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
+                                    <div className='w-[35%]  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
                                         <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
                                     </div>
@@ -1617,45 +1711,45 @@ const ManageLLAgreement = () => {
                                         <div className=" space-y-3 py-5">
                                             <div className="">
                                                 {/* this should a list */}
-                                                {selectedOptions.map((item,index) => {
+                                                {selectedOptions.map((item, index) => {
                                                     return <>
-                                                          <div className="text-[13px]">
-                                                    Client
-                                                </div>
-                                                <AsyncSelect
-                                                    onChange={(e) => handleTenantClientNameChange(e,index)}
-                                                    value={selectedOptions[index]}
-                                                    loadOptions={loadOptions}
-                                                    cacheOptions
-                                                    defaultOptions
-                                                    onInputChange={(value) => setQuery(value)}
+                                                        <div className="text-[13px]">
+                                                            Client
+                                                        </div>
+                                                        <AsyncSelect
+                                                            onChange={(e) => handleTenantClientNameChange(e, index)}
+                                                            value={selectedOptions[index]}
+                                                            loadOptions={loadOptions}
+                                                            cacheOptions
+                                                            defaultOptions
+                                                            onInputChange={(value) => setQuery(value)}
 
-                                                    styles={{
-                                                        control: (provided, state) => ({
-                                                            ...provided,
-                                                            minHeight: 25,
-                                                            lineHeight: '1.3',
-                                                            height: 2,
-                                                            fontSize: 12,
-                                                            padding: '1px'
-                                                        }),
-                                                        // indicatorSeparator: (provided, state) => ({
-                                                        //   ...provided,
-                                                        //   lineHeight : '0.5',
-                                                        //   height : 2,
-                                                        //   fontSize : 12 // hide the indicator separator
-                                                        // }),
-                                                        dropdownIndicator: (provided, state) => ({
-                                                            ...provided,
-                                                            padding: '3px', // adjust padding for the dropdown indicator
-                                                        }),
-                                                        options: (provided, state) => ({
-                                                            ...provided,
-                                                            fontSize: 12 // adjust padding for the dropdown indicator
-                                                        })
-                                                    }}
-                                                />
-                                                    
+                                                            styles={{
+                                                                control: (provided, state) => ({
+                                                                    ...provided,
+                                                                    minHeight: 25,
+                                                                    lineHeight: '1.3',
+                                                                    height: 2,
+                                                                    fontSize: 12,
+                                                                    padding: '1px'
+                                                                }),
+                                                                // indicatorSeparator: (provided, state) => ({
+                                                                //   ...provided,
+                                                                //   lineHeight : '0.5',
+                                                                //   height : 2,
+                                                                //   fontSize : 12 // hide the indicator separator
+                                                                // }),
+                                                                dropdownIndicator: (provided, state) => ({
+                                                                    ...provided,
+                                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                                }),
+                                                                options: (provided, state) => ({
+                                                                    ...provided,
+                                                                    fontSize: 12 // adjust padding for the dropdown indicator
+                                                                })
+                                                            }}
+                                                        />
+
                                                     </>
                                                 })}
                                                 {/* <div className="text-[13px]">
@@ -1696,7 +1790,7 @@ const ManageLLAgreement = () => {
                                                 /> */}
                                             </div>
                                             <button className="bg-[#282828] text-white h-[36px] w-[300px] rounded-lg" onClick={handleAddClient}>
-                                                
+
                                                 <div className="flex items-center justify-center gap-4">
                                                     Add Client
                                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />

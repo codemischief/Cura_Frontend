@@ -872,21 +872,60 @@ const ManagePmaArgreement = () => {
         console.log('hey')
         console.log(filterMapState);
 
-        var existing = filterMapState;
-        existing = {
-            ...existing, [columnName]: {
-                ...existing[columnName],
-                filterType: type == 'noFilter' ? "" : type
+        if (columnName == 'status') {
+            var existing = filterMapState;
+            if (type == 'noFilter') {
+                setInputVariable("");
             }
-        }
-        existing = {
-            ...existing, [columnName]: {
-                ...existing[columnName],
-                filterValue: type == 'noFilter' ? "" : inputVariable
+            if (inputVariable.toLowerCase() == 'active') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'true'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else if (inputVariable.toLowerCase() == 'inactive') {
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: 'false'
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+            } else {
+                return;
             }
-        }
 
-        if (type == 'noFilter') setInputVariable("");
+        }
+        else {
+
+            var existing = filterMapState;
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterType: type == 'noFilter' ? "" : type
+                }
+            }
+            existing = {
+                ...existing, [columnName]: {
+                    ...existing[columnName],
+                    filterValue: type == 'noFilter' ? "" : inputVariable
+                }
+            }
+
+            if (type == 'noFilter') setInputVariable("");
+        }
 
 
         fetchFiltered(existing);
@@ -1064,22 +1103,22 @@ const ManagePmaArgreement = () => {
                         <div className='w-[10.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)}
-                                onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
-                                    setClientNameFilterInput,
-                                    'contains',
-                                    'clientname')}
-                                 />
+                                    onKeyDown={(event) => handleEnterToFilter(event, clientNameFilterInput,
+                                        setClientNameFilterInput,
+                                        'contains',
+                                        'clientname')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                         </div>
                         <div className='w-[14.8%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
-                                onKeyDown={(event) => handleEnterToFilter(event,propertyDescriptionFilterInput,
-                                    setPropertyDescriptionFilterInput,
-                                    'contains',
-                                    'propertydescription')}
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, propertyDescriptionFilterInput,
+                                        setPropertyDescriptionFilterInput,
+                                        'contains',
+                                        'propertydescription')}
                                 />
                                 <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -1087,11 +1126,11 @@ const ManagePmaArgreement = () => {
                         </div>
                         <div className='w-[9.8%]  px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} 
-                                onKeyDown={(event) => handleEnterToFilter(event,orderDescriptionFilterInput,
-                                    setOrderDescriptionFilterInput,
-                                    'contains',
-                                    'orderdescription')}
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, orderDescriptionFilterInput,
+                                        setOrderDescriptionFilterInput,
+                                        'contains',
+                                        'orderdescription')}
                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -1100,11 +1139,11 @@ const ManagePmaArgreement = () => {
                         </div>
                         <div className='w-[8.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)} 
-                                onKeyDown={(event) => handleEnterToFilter(event,propertyStatusFilterInput,
-                                    setPropertyStatusFilterInput,
-                                    'contains',
-                                    'propertystatusname')}
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyStatusFilterInput} onChange={(e) => setPropertyStatusFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, propertyStatusFilterInput,
+                                        setPropertyStatusFilterInput,
+                                        'contains',
+                                        'propertystatusname')}
                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -1113,11 +1152,11 @@ const ManagePmaArgreement = () => {
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={descriptionFilterInput} onChange={(e) => setDescriptionFilterInput(e.target.value)}
-                                onKeyDown={(event) => handleEnterToFilter(event,descriptionFilterInput,
-                                    setDescriptionFilterInput,
-                                    'contains',
-                                    'description')}
-                                 />
+                                    onKeyDown={(event) => handleEnterToFilter(event, descriptionFilterInput,
+                                        setDescriptionFilterInput,
+                                        'contains',
+                                        'description')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
@@ -1125,11 +1164,11 @@ const ManagePmaArgreement = () => {
                         <div className='w-[7.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
-                                onKeyDown={(event) => handleEnterToFilter(event,statusFilterInput,
-                                    setStatusFilterInput,
-                                    'equalTo',
-                                    'status')}
-                                 />
+                                    onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
+                                        setStatusFilterInput,
+                                        'equalTo',
+                                        'status')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='status' menuRef={menuRef} />}
@@ -1137,10 +1176,10 @@ const ManagePmaArgreement = () => {
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaStartFilterInput} onChange={(e) => setPmaStartFilterInput(e.target.value)} type='date'
-                                onKeyDown={(event) => handleEnterToFilter(event,pmaStartFilterInput,
-                                    setPmaStartFilterInput,
-                                    'equalTo',
-                                    'startdate')} 
+                                    onKeyDown={(event) => handleEnterToFilter(event, pmaStartFilterInput,
+                                        setPmaStartFilterInput,
+                                        'equalTo',
+                                        'startdate')}
                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -1149,11 +1188,11 @@ const ManagePmaArgreement = () => {
                         <div className='w-[8.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pmaEndFilterInput} onChange={(e) => setPmaEndFilterInput(e.target.value)} type='date'
-                                onKeyDown={(event) => handleEnterToFilter(event,pmaEndFilterInput,
-                                    setPmaEndFilterInput,
-                                    'equalTo',
-                                    'enddate')}
-                                     />
+                                    onKeyDown={(event) => handleEnterToFilter(event, pmaEndFilterInput,
+                                        setPmaEndFilterInput,
+                                        'equalTo',
+                                        'enddate')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef} />}
@@ -1161,11 +1200,11 @@ const ManagePmaArgreement = () => {
                         <div className='w-[8.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date'
-                                onKeyDown={(event) => handleEnterToFilter(event,poaStartFilterInput,
-                                    setPoaStartFilterInput,
-                                    'equalTo',
-                                    'poastartdate')}
-                                     />
+                                    onKeyDown={(event) => handleEnterToFilter(event, poaStartFilterInput,
+                                        setPoaStartFilterInput,
+                                        'equalTo',
+                                        'poastartdate')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef} />}
@@ -1173,11 +1212,11 @@ const ManagePmaArgreement = () => {
                         <div className='w-[8.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date'
-                                onKeyDown={(event) => handleEnterToFilter(event,poaEndFilterInput,
-                                    setPoaEndFilterInput,
-                                    'equalTo',
-                                    'poaenddate')}
-                                     />
+                                    onKeyDown={(event) => handleEnterToFilter(event, poaEndFilterInput,
+                                        setPoaEndFilterInput,
+                                        'equalTo',
+                                        'poaenddate')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef} />}
@@ -1188,11 +1227,11 @@ const ManagePmaArgreement = () => {
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)}
-                                onKeyDown={(event) => handleEnterToFilter(event,poaHolderFilterInput,
-                                    setPoaHolderFilterInput,
-                                    'contains',
-                                    'poaholder')}
-                                     />
+                                    onKeyDown={(event) => handleEnterToFilter(event, poaHolderFilterInput,
+                                        setPoaHolderFilterInput,
+                                        'contains',
+                                        'poaholder')}
+                                />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
                             {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} />}
@@ -1305,11 +1344,11 @@ const ManagePmaArgreement = () => {
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
                         {!pageLoading && existingPmaAgreement && existingPmaAgreement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                                        <h1 className='ml-10'>No Records To Show</h1>
-                            </div>}
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingPmaAgreement.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
-                                <div className="w-[90%] flex">
+                                <div className="w-[90%] flex items-center">
                                     <div className='w-[2%] flex overflow-x-hidden'>
                                         <div className='px-3 '>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
