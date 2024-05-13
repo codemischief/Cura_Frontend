@@ -2,37 +2,15 @@ import { Button, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useMemo, useState } from "react";
-import AddButton from "../../../Components/common/CustomButton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
-import connectionDataColumn from "../Columns";
-import SearchBar from '../../../Components/common/SearchBar/SearchBar'
-
-
-function getYearsRange() {
-  const currentYear = new Date().getFullYear();
-  const yearsRange = [];
-  for (let i = currentYear - 10; i <= currentYear + 10; i++) {
-    yearsRange.push(i.toString());
-  }
-  return yearsRange;
-}
-let YEARS = getYearsRange();
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+import connectionDataColumn from "./Columns";
+import SearchBar from "../../../Components/common/SearchBar/SearchBar";
+import {
+  SelectMonth,
+  SelectYear,
+} from "../../../Components/common/select/CustomNativeSelect";
 
 const data = [
   {
@@ -41,8 +19,7 @@ const data = [
     leavelicenseid: 12856,
     clientname: "Ashish Paranjape (PMA)",
     orderid: 431049,
-    briefdescription:
-      " Property Management for Varad Vinayak Jun-2021 Charges",
+    briefdescription: " Property Management for Varad Vinayak Jun-2021 Charges",
     start_day: 1,
     vacatingdate: null,
     rentamount: 11000,
@@ -432,20 +409,13 @@ const OrderPaymentList = () => {
     setSearchInput(e.target.value);
   };
 
- 
-  const handlePageChange = ()=>{
+  const handleSelectYear = () => {};
+  const handleSelectMonth = () => {};
+  const handlePageChange = () => {};
 
-  }
+  const handlePageCountChange = () => {};
 
-  const handlePageCountChange = ()=>{
-
-  }
-
-
-  const handleRefresh = ()=>{
-
-  }
- 
+  const handleRefresh = () => {};
 
   return (
     <Stack gap="1rem">
@@ -456,7 +426,7 @@ const OrderPaymentList = () => {
             heading={"Order Payment List"}
             path={["Reports", "Lists", "Order Payment List"]}
           />
-          <SearchBar value={searchInput} handleSearch={handleSearch}/>
+          <SearchBar value={searchInput} handleSearch={handleSearch} />
         </div>
 
         <Stack
@@ -471,47 +441,21 @@ const OrderPaymentList = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[281px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Select Year <span className="text-[#CD0000]">*</span>
-              </label>
-              <select
-                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="year"
-                // value={selectedYear}
-                // onChange={handleSelectYear}
-              >
-                <option selected value={""} className="hidden"></option>
-                {YEARS.map((item) => {
-                  return (
-                    <option value={item} key={item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="flex flex-col h-16 w-[281px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Select Month <span className="text-[#CD0000]">*</span>
-              </label>
-              <select
-                className="w-[281px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="year"
-                value={selectedMonth}
-                defaultValue="Select State"
-                // onChange={handleSelectMonth}
-              >
-                <option selected value={""} className="hidden"></option>
-                {MONTHS.map((item, index) => {
-                  return (
-                    <option value={index + 1} key={index}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
+            <SelectYear
+              value={selectedYear}
+              name="year"
+              label={`Select Year`}
+              selectContainerClass="h-16 w-[281px]"
+              onChange={handleSelectYear}
+            />
+            <SelectMonth
+              value={selectedMonth}
+              name="month"
+              label={`Select Month`}
+              selectContainerClass="h-16 w-[281px]"
+              onChange={handleSelectMonth}
+            />
+
             <Button
               variant="outlined"
               //   onClick={handleShow}
@@ -538,18 +482,24 @@ const OrderPaymentList = () => {
             </Button>
           </Stack>
         </Stack>
-        
-        <SimpleTable columns={columns} data={data} pageNo={1} countPerPage={15} totalCount={150} />
+
+        <SimpleTable
+          columns={columns}
+          data={data}
+          pageNo={1}
+          countPerPage={15}
+          totalCount={150}
+        />
       </div>
       <ConfirmationModal
         open={openModal}
-        loading={status === "loading"}
+        loading={false}
         btnTitle="Confirm"
         onClose={() => {
           setOpenModal(false);
         }}
         onSubmit={() => {
-          hadleConfirm();
+          // hadleConfirm();
         }}
         title="Generate New Invoices"
         description={
