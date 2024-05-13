@@ -112,10 +112,10 @@ const EditService = ({
             <div className="w-[700px] h-auto bg-white rounded-lg">
               <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                 <div className="mr-[210px] ml-[210px]">
-                  <div className="text-[16px]">New Service</div>
+                  <div className="text-[16px]">Edit Service</div>
                 </div>
                 <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                  <button onClick={() => { handleClose() }}>
+                  <button onClick={() => { close() }}>
                     <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                   </button>
                 </div>
@@ -159,7 +159,7 @@ const EditService = ({
               </div>
               <div className="my-2 mt-10 flex justify-center items-center gap-[10px]">
                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit}>Save</button>
-                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { handleClose() }}>Cancel</button>
+                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
               </div>
             </div>
           </div>
