@@ -360,7 +360,7 @@ const ManageUser = () => {
             "user_id": 1234,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
-            "password": formValues.password,
+            "password": bcrypt.hashSync(formValues.password, 10),
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
@@ -1178,6 +1178,9 @@ const ManageUser = () => {
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingUsers && existingUsers.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingUsers.map((item, index) => {
                             return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[70%] flex items-center">
