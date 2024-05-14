@@ -360,7 +360,6 @@ const Service = () => {
         setDownloadModal(false);
     }
     const handleExcelDownload = async () => {
-        console.log(tempArray)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -381,7 +380,7 @@ const Service = () => {
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "UserData.xlsx");
+        XLSX.writeFile(workbook, "ServiceData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const handleSearch = async () => {
@@ -511,8 +510,8 @@ const Service = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
-        setNameFilter(false)
-        setUsernameFilter(false)
+        setLobNameFilter(false)
+        setServiceFilter(false)
         setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
@@ -821,7 +820,7 @@ const Service = () => {
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
                         {!pageLoading && existingService.map((item, index) => {
-                            return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                            return <div className='w-full py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[70%] flex items-center">
                                     <div className='w-[6%] flex'>
                                         <div className='px-3 overflow-x-hidden'>
@@ -833,7 +832,7 @@ const Service = () => {
                                             <p>{item.lob}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[47%]  flex'>
+                                    <div className='w-[47%]  flex pl-0.5'>
                                         <div className='px-3 overflow-x-hidden'>
                                             <p>{item.service}</p>
                                         </div>
@@ -846,7 +845,7 @@ const Service = () => {
                                         </div>
                                     </div>
                                     <div className='w-[30%]  flex'>
-                                        <div className=' py-5 flex ml-4'>
+                                        <div className=' flex ml-4'>
                                             <div className='flex space-x-5'>
                                                 <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDelete(item.id, item.service)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
