@@ -1,38 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Tooltip, Popover, MenuItem } from "@mui/material";
 import { Close, FilterAlt } from "@mui/icons-material";
-
+import PropTypes from "prop-types";
 import {
   characterFilterData,
   dateFilterData,
   numericFilterData,
-} from "../../../Components/Filters/data";
-import { useDispatch } from "react-redux";
-import { setFilters } from "../../../Redux/slice/pmaSlice";
-import { useSelector } from "react-redux";
+} from "../../Filters/data";
 
-export function clearFilterAll(noOfColumns, tableRef) {
-  // i is column id which is assigned by Material Table;
-  for (let i = 0; i < noOfColumns; i++) {
-    tableRef.current.onFilterChange(i, "");
-  }
-}
-
-export function TextFilterField(props) {
-  return <FilterField {...props} type="text" />;
-}
-
-export function NumberFilterField(props) {
-  return <FilterField {...props} type="number" />;
-}
-export function DateFilterField(props) {
-  return <FilterField {...props} type="date" />;
-}
-
-const FilterField = (props) => {
-  const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.pmaBilling);
-  const { columnDef, onFilterChanged, type } = props;
+export const FilterField = (props) => {
+  const { columnfield, type, onFilterChange, filter } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -42,14 +19,14 @@ const FilterField = (props) => {
 
   useEffect(() => {
     let copiedFilters = { ...filter };
-    if (search === "" && copiedFilters?.hasOwnProperty(columnDef.field)) {
-      delete copiedFilters[columnDef.field];
-      dispatch(setFilters(copiedFilters));
+    if (search === "" && copiedFilters?.hasOwnProperty(columnfield)) {
+      delete copiedFilters[columnfield];
+      onFilterChange(copiedFilters);
     }
   }, [search]);
-  
+
   const open = Boolean(anchorEl);
-  
+
   const optionType = {
     text: characterFilterData,
     number: numericFilterData,
@@ -66,13 +43,13 @@ const FilterField = (props) => {
       let queryType = type === "number" ? Number(search) : search;
       if (filters === "noFilter") {
         const prevFilters = { ...filter };
-        delete prevFilters[columnDef.field];
-        dispatch(setFilters(prevFilters));
+        delete prevFilters[columnfield];
+        onFilterChange(prevFilters);
         setSearch("");
       } else {
         const prevFilters = { ...filter };
-        prevFilters[columnDef.field] = [filters, queryType, filterType[type]];
-        dispatch(setFilters({ ...prevFilters }));
+        prevFilters[columnfield] = [filters, queryType, filterType[type]];
+        onFilterChange({ ...prevFilters });
       }
     }
     handleClose();
@@ -80,10 +57,10 @@ const FilterField = (props) => {
 
   const handleResetFilter = () => {
     setSearch("");
-    if (filter.hasOwnProperty([columnDef.field])) {
+    if (filter.hasOwnProperty(columnfield)) {
       const prevFilters = { ...filter };
-      delete prevFilters[columnDef.field];
-      dispatch(setFilters(prevFilters));
+      delete prevFilters[columnfield];
+      onFilterChange(prevFilters);
     }
   };
 
@@ -102,12 +79,8 @@ const FilterField = (props) => {
         };
         let queryType = type === "number" ? Number(search) : search;
         const prevFilters = { ...filter };
-        prevFilters[columnDef.field] = [
-          filters[type],
-          queryType,
-          filterType[type],
-        ];
-        dispatch(setFilters({ ...prevFilters }));
+        prevFilters[columnfield] = [filters[type], queryType, filterType[type]];
+        onFilterChange({ ...prevFilters });
       }
     }
   };
@@ -159,17 +132,17 @@ const FilterField = (props) => {
             <MenuItem
               key={option.key}
               onClick={() => handleFilter(option.key)}
-              sx={{
-                ...(filter[columnDef?.field]?.[0] === option?.key &&
-                option?.key !== "noFilter"
-                  ? { background: "lightblue", color: "black" }
-                  : {}),
-                ":hover": {
-                  background: "#F0F6FF", // Change this to your desired hover background color
-                  color: "black", // Change this to your desired hover text color
-                },
-              }}
-              // className={` ${filter[columnDef.field][0] && bg-blue-400 text-white } `}
+              // sx={{
+              //   ...(filter[columnfield]?.[0] === option?.key &&
+              //   option?.key !== "noFilter"
+              //     ? { background: "lightblue", color: "black" }
+              //     : {}),
+              //   ":hover": {
+              //     background: "#F0F6FF", // Change this to your desired hover background color
+              //     color: "black", // Change this to your desired hover text color
+              //   },
+              // }}
+              // className={` ${filter[columnfield][0] && bg-blue-400 text-white } `}
             >
               {option.title}
             </MenuItem>
@@ -178,4 +151,11 @@ const FilterField = (props) => {
       )}
     </>
   );
+};
+
+FilterField.propTypes = {
+  columnfield: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["text", "number", "date"]).isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+  filter: PropTypes.object.isRequired,
 };

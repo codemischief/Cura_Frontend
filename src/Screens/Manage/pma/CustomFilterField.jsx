@@ -30,7 +30,7 @@ export function DateFilterField(props) {
 }
 
 const FilterField = (props) => {
-  console.log(props,"props");
+  // console.log(props,"props");
   const dispatch = useDispatch();
   const { filter } = useSelector((state) => state.pmaBilling);
   const { columnDef, onFilterChanged, type } = props;

@@ -1,11 +1,11 @@
-import { Chip, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 
+import styleConst from "./styleConst";
 import {
   DateFilterField,
   NumberFilterField,
   TextFilterField,
-} from "../../Manage/pma/CustomFilterField";
-import styleConst from "./styleConst";
+} from "./CustomFilterField";
 
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
@@ -29,19 +29,19 @@ export default function connectionDataColumn(onQuery) {
     {
       filterComponent: TextFilterField,
       title: "Type",
-      field: "clientname",
+      field: "type",
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
       width: "10%",
     },
     {
       filterComponent: TextFilterField,
-      title: "payment date",
-      field: "briefdescription",
+      title: "Payment Date",
+      field: "paymentdate",
       width: "20%",
     },
     {
       title: "Fiscal Month",
-      field: "invoicedate",
+      field: "monthyear",
 
       filterComponent: DateFilterField,
       sorting: false,
@@ -49,7 +49,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Fiscal Year",
-      field: "totalamt",
+      field: "fy",
       type: "numeric",
       grouping: true,
       filterComponent: NumberFilterField,
@@ -57,7 +57,7 @@ export default function connectionDataColumn(onQuery) {
     },
     {
       title: "Amount",
-      field: "totalbaseamt",
+      field: "amount",
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
@@ -65,35 +65,63 @@ export default function connectionDataColumn(onQuery) {
 
     {
       title: "Entity",
-      field: "totaltaxamt",
+      field: "entityname",
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
     },
     {
       title: "Mode",
-      field: "fixedamt",
+      field: "mode_of_payment",
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
     },
     {
       title: "Client ID",
-      field: "fixedtaxamt",
-      type: "numeric",
-      filterComponent: NumberFilterField,
-      width: "8%",
-    },
-    {
-      title: "Rented Amount",
-      field: "rentedamt",
+      field: "clientid",
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",
     },
     {
       title: "Client Name",
-      field: "rentedtaxamt",
+      field: "clientname",
+      type: "numeric",
+      filterComponent: NumberFilterField,
+      width: "8%",
+    },
+    {
+      title: "Vendor Name",
+      field: "vendorname",
+      type: "numeric",
+      filterComponent: NumberFilterField,
+      width: "8%",
+    },
+    {
+      title: "Order Id",
+      field: "orderid",
+      type: "numeric",
+      filterComponent: NumberFilterField,
+      width: "8%",
+    },
+    {
+      title: "Service Id",
+      field: "serviceid",
+      type: "numeric",
+      filterComponent: NumberFilterField,
+      width: "8%",
+    },
+    {
+      title: "Service ",
+      field: "service",
+      type: "numeric",
+      filterComponent: NumberFilterField,
+      width: "8%",
+    },
+    {
+      title: "LOB Name",
+      field: "lobname",
       type: "numeric",
       filterComponent: NumberFilterField,
       width: "8%",

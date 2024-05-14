@@ -1,10 +1,10 @@
-import { LinearProgress} from "@mui/material";
-
-// import connectionDataColumn from "./columns";
+import { LinearProgress } from "@mui/material";
+import PropTypes from "prop-types";
 
 import PaginationComponent from "./Pagination";
 
 const SimpleTable = ({
+  isLoading,
   columns,
   data,
   pageNo,
@@ -14,7 +14,6 @@ const SimpleTable = ({
   handlePageCountChange,
   handleRefresh,
 }) => {
-
   return (
     <div className="w-full text-[12px]">
       <table className="w-full border-gray-400 border-b-[1px] table-auto">
@@ -23,7 +22,7 @@ const SimpleTable = ({
             {columns.map((column, index) => (
               <th key={index} style={{ width: column.width }}>
                 {column.filterComponent && (
-                  <column.filterComponent columnDef={{ field: column.field }} />
+                  <column.filterComponent columnfield={column.field} />
                 )}
               </th>
             ))}
@@ -37,7 +36,7 @@ const SimpleTable = ({
           </tr>
         </thead>
         <tbody className="overflow-y-auto block max-h-[calc(100vh-375px)]">
-          {status === "loading" && <LinearProgress />}
+          {isLoading && <LinearProgress />}
           {data.map((rowData, rowIndex) => (
             <tr key={rowIndex} className="border-b dark:border-gray-700">
               {columns.map((column, colIndex) => (
@@ -69,3 +68,23 @@ const SimpleTable = ({
 };
 
 export default SimpleTable;
+
+SimpleTable.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      field: PropTypes.string.isRequired,
+      width: PropTypes.string.isRequired,
+      render: PropTypes.func,
+      filterComponent: PropTypes.elementType,
+    })
+  ).isRequired,
+  data: PropTypes.array.isRequired,
+  pageNo: PropTypes.number.isRequired,
+  countPerPage: PropTypes.number.isRequired,
+  totalCount: PropTypes.number.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+  handlePageCountChange: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
+};
