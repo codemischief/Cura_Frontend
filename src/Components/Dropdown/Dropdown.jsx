@@ -62,7 +62,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
         
                   <p className="text-[10px] text-start pl-[15px]">{text} </p>
                   <div className="mr-[10px]">
-                  <DownOutlined style={{ fontSize: '60%'}} />
+                     <DownOutlined style={{ fontSize: '60%'}} />
                   </div>
                   
         </div>
