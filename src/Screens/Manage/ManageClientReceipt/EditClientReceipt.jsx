@@ -6,7 +6,7 @@ import { APIService } from '../../../services/API';
 import { useEffect } from 'react';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
-const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
+const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCancel}) => {
     console.log(currClientReceipt)
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -176,6 +176,11 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
         fetchModesData()
         fetchHowReceivedData()
     },[])
+
+    const close = () => {
+        handleClose();
+        showCancel();
+    }
   return (
     <Modal open={true}
                 fullWidth={true}
@@ -190,7 +195,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
                                 <div className="text-base">Edit Client Receipt</div>
                             </div>
                             <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={handleClose}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                <button onClick={() => {close()}}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
@@ -332,7 +337,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess}) => {
                         </div>
                         <div className="my-3 flex justify-center items-center gap-3">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={() => handleEdit()} >Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                         </div>
                     </div>
                     </Draggable>

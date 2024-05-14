@@ -490,6 +490,13 @@ const ManageVendorInvoice = () => {
 
     const handleClose = () => {
         initials();
+        SetIsVendorInvoiceDialogue(false);
+        openAddCancelModal();
+    }
+
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
         setSelectedOption(
             {
                 label: "Select Client",
@@ -498,14 +505,6 @@ const ManageVendorInvoice = () => {
         )
         setOrders([]);
         setOrderText("Select Order");
-
-        SetIsVendorInvoiceDialogue(false);
-        openAddCancelModal();
-    }
-
-    const initials = () => {
-        setFormValues(initialValues);
-        setFormErrors({});
     }
 
 

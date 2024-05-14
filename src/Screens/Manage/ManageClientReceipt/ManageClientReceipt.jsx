@@ -19,6 +19,7 @@ import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import FailureModal from '../../../Components/modals/FailureModal';
+import CancelModel from './../../../Components/modals/CancelModel';
 import AsyncSelect from "react-select/async"
 import DeleteClientReceipt from './deleteClientReceipt';
 import SaveConfirmationClientReceipt from './SaveConfirmationClientReceipt';
@@ -343,7 +344,20 @@ const ManageClientReceipt = () => {
     };
 
     const handleClose = () => {
+        initials();
         setIsClientReceiptDialogue(false);
+        openAddCancelModal();
+    }
+
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
+        setSelectedOption(
+            {
+                label: "Select Client",
+                value: null
+            }
+        )
     }
 
     // harcoded dropdown
@@ -584,6 +598,25 @@ const ManageClientReceipt = () => {
             setShowEditSuccess(false);
         }, 2000)
         fetchData();
+    }
+
+    const [showCancelModelAdd, setShowCancelModelAdd] = useState(false);
+    const [showCancelModel, setShowCancelModel] = useState(false);
+    const openAddCancelModal = () => {
+        // set the state for true for some time
+        setIsClientReceiptDialogue(false);
+        setShowCancelModelAdd(true);
+        setTimeout(function () {
+            setShowCancelModelAdd(false)
+        }, 2000)
+    }
+    const openCancelModal = () => {
+        // set the state for true for some time
+
+        setShowCancelModel(true);
+        setTimeout(function () {
+            setShowCancelModel(false)
+        }, 2000)
     }
 
 
@@ -1066,17 +1099,18 @@ const ManageClientReceipt = () => {
     return (
         <div className='h-screen'>
             <Navbar />
-            {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess} />}
+            {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Receipt Created Successfully" />}
             {showOrAddSuccess && <SucessfullModal isOpen={showOrAddSuccess} message="Or Receipt Created Successfully"/>}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Receipt Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
-            {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName} />}
+            {openAddConfirmation && <SaveConfirmationClientReceipt handleClose={() => setOpenAddConfirmation(false)} addClientReceipt={addClientReceipt} currClientName={currClientName} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
-
-            {deleteConfirmation && <DeleteClientReceipt handleClose={() => { setDeleteConfirmation(false) }} handleDelete={deleteClientReceipt} item={currReceiptId} />}
+            {deleteConfirmation && <DeleteClientReceipt handleClose={() => { setDeleteConfirmation(false) }} handleDelete={deleteClientReceipt} item={currReceiptId} showCancel={openCancelModal} />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no New Client Receipt added." />}
+            {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
@@ -1359,73 +1393,76 @@ const ManageClientReceipt = () => {
 
                         {/* we map our items here */}
                         {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {!pageLoading && existingClientReceipt && existingClientReceipt.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingClientReceipt.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px] h-10 overflow-hidden'>
-                                <div className="w-[87%] flex">
+                            return <div className='w-full py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                                <div className="w-[87%] flex items-center">
                                     <div className='w-[3%] flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
                                     <div className='w-[14%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex'>
-                                        <div className='p-3 '>
+                                        <div className='px-3 '>
                                             <p> {item.serviceamount ? item.serviceamount.toFixed(2) : ""} </p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             {item.reimbursementamount ? item.reimbursementamount.toFixed(2) : ""}
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex'>
-                                        <div className='p-3 ml-1'>
+                                        <div className='px-3 ml-1'>
                                             <p>{item.recddate}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex'>
-                                        <div className='p-3 ml-1'>
+                                        <div className='px-3 ml-1'>
                                             <p>{item.paymentmodename} </p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex'>
-                                        <div className='p-3 ml-1'>
+                                        <div className='px-3 ml-1'>
                                             <p>{item.receivedbyname}</p>
                                         </div>
                                     </div>
                                     <div className='w-[7%]  flex'>
-                                        <div className='p-3 ml-1'>
+                                        <div className='px-3 ml-1'>
                                             <p>{item.tds ? item.tds.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[5%]  flex'>
                                         <button onClick={() => handleOpenOrModel(item)}>
-                                            <div className='p-3 text-blue-500'>
+                                            <div className='px-3 text-blue-500'>
                                                 <p>OR</p>
                                             </div>
                                         </button>
 
                                     </div>
                                 </div>
-                                <div className="w-[13%] flex">
+                                <div className="w-[13%] flex items-center">
                                     <div className='w-1/2  flex'>
-                                        <div className='p-3'>
+                                        <div className='px-3'>
                                             <p>{item.id} </p>
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex'>
-                                        <div className='px-3 py-2.5 flex space-x-2'>
-                                            <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
-                                            <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
+                                        <div className='px-3 flex space-x-2'>
+                                            <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item)} />
+                                            <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
                                         </div>
                                     </div>
                                 </div>
