@@ -138,11 +138,29 @@ const Service = () => {
     const fetchData = async () => {
         console.log('ugm')
         // we need to query thru the object
+        const tempArray = [];
+        // we need to query thru the object
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                if(filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                }else { 
+                    tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                }
+                
+            }
+        })
+        setFilterState(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["*"],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
