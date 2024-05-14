@@ -1,4 +1,4 @@
-import { CircularProgress, Modal, Pagination } from "@mui/material";
+import { CircularProgress, Modal, Pagination , LinearProgress} from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
@@ -27,9 +27,11 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from "react-draggable";
+import DropDown from "../../../Components/Dropdown/Dropdown";
 // import DayJS from 'react-dayjs';
 const ManageBankStatement = () => {
     // we have the module here
+    
     const menuRef = useRef();
     const [existingStatement, setExistingStatement] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
@@ -65,7 +67,18 @@ const ManageBankStatement = () => {
     const [isSearchOn, setIsSearchOn] = useState(false);
 
     // const [selectedBuilder,setSelectedBuilder] = useState();
-
+    const [existingUsers,setExistingUsers] = useState([])
+    const fetchUsersData = async () => {
+        const data = {
+        "user_id" : 1234
+        }
+        const response = await APIService.getUsers(data)
+        const res = await response.json()
+        setExistingUsers((prev) => res.data)
+        
+    }
+   
+    
     const getEmployees = async () => {
         const data = {
             "user_id": userId || 1234,
@@ -150,15 +163,28 @@ const ManageBankStatement = () => {
 
     const fetchBankStatement = async () => {
         setPageLoading(true);
+        setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setFilterState((prev) => tempArray);
+        setCurrentPage((prev) => 1)
+        setCurrentPages((prev) => 15)
         const data = {
             "user_id": userId || 1234,
-            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
-            "filters": filterState,
+            "rows": ["*"],
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchQuery : ""
+            "search_key": searchQuery 
         }
         const response = await APIService.getBankStatement(data);
         const temp = await response.json();
@@ -167,13 +193,6 @@ const ManageBankStatement = () => {
         setTotalItems(t);
         setPageLoading(false);
         setExistingStatement(result);
-        // existingStatement.map(ele => {
-        //     client.map(item => {
-        //         if (ele.clientid === item[0]) {
-        //             console.log(item[1])
-        //         }
-        //     })
-        // })
     }
 
     const deleteStatement = async (item) => {
@@ -240,16 +259,16 @@ const ManageBankStatement = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        setCurrentPage(pageNumber);
+        setCurrentPage((prev) => pageNumber);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
+            "rows": ["*"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchQuery : ""
+            "search_key": searchQuery
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -261,17 +280,17 @@ const ManageBankStatement = () => {
     }
     const fetchQuantityData = async (number) => {
         setPageLoading(true);
-        setCurrentPages(number);
-        setCurrentPage(1);
+        setCurrentPages((prev) => number);
+        setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
+            "rows": ["*"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(number),
-            "search_key": isSearchOn ? searchQuery : ""
+            "search_key": searchQuery 
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -289,13 +308,13 @@ const ManageBankStatement = () => {
         })
         const data = {
             "user_id": userId || 1234,
-            "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid", "crdr"],
+            "rows": ["*"],
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key": isSearchOn ? searchQuery : ""
+            "search_key": searchQuery 
         };
         const response = await APIService.getBankStatement(data)
         const temp = await response.json();
@@ -308,7 +327,7 @@ const ManageBankStatement = () => {
     }
 
     useEffect(() => {
-
+        fetchUsersData()
         fetchUserId();
         getCRDetails();
         getVendorAdmin();
@@ -368,10 +387,14 @@ const ManageBankStatement = () => {
     const [crValues, setCrValues] = useState(initialValues);
     const handleCR = (e) => {
         console.log("started");
-        e.preventDefault();
+        // e.preventDefault();
         // if(!validateCR()) {
         //     return ;
         // }
+        if(!crValidate()) {
+            return ;
+        }
+        // if()
 
         addCreditRecipt();
         setCreditReceipt(false)
@@ -559,10 +582,10 @@ const ManageBankStatement = () => {
     const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
         setPageLoading(true);
-        setCurrentPage(1);
+        setCurrentPage((prev) => 1);
         const data = {
             "user_id": userId || 1234,
-            "rows": ["id", "modeofpayment", "amount", "date", "particulars", "clientid"],
+            "rows": ["*"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -586,7 +609,7 @@ const ManageBankStatement = () => {
         setCurrentPage(1);
         const data = {
             "user_id": userId || 1234,
-            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
+            "rows": ["*"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -645,7 +668,7 @@ const ManageBankStatement = () => {
     const [idFilterInput, setIdFilterInput] = useState("")
 
     const filterMapping = {
-        modeofpayment: {
+        mode: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -675,7 +698,7 @@ const ManageBankStatement = () => {
             filterData: "String",
             filterInput: ""
         },
-        clientid: {
+        clientname: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -708,7 +731,7 @@ const ManageBankStatement = () => {
         console.log(tempArray)
         const data = {
             "user_id": 1234,
-            "rows": ["id", "modeofpayment", "amount", "crdr", "chequeno", "date", "particulars", "clientid"],
+            "rows": ["*"],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -745,7 +768,7 @@ const ManageBankStatement = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["modeofpayment", "date", "crdr", "amount", "particulars", "clientid", "id",],
+            "rows": ["modeofpayment", "date", "crdr", "amount", "particulars", "clientid", "id"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -808,9 +831,71 @@ const ManageBankStatement = () => {
 
 
 
+    const [crFormErrors,setCrFormErrors] = useState({})
+    const crValidate = () => {
+        var res = true;
+        
+        if (!formValues.employee) {
+            setFormErrors((existing) => {
+                return { ...existing, employee: "Select Received By" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, employee: "" }
+            })
+        }
 
+
+
+
+
+        // if (!formValues.receivedDate) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, receivedDate: "Select Received Date" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, receivedDate: "" }
+        //     })
+        // }
+        // if (!formValues.howReceived) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, howreceived: "Select How Received" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, howreceived: "" }
+        //     })
+        // }
+
+        // if (!formValues.client) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, client: "Select Client" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, client: "" }
+        //     })
+        // }
+        // if (!formValues.amountReceived) {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, amountReceived: "Enter Amount Received" }
+        //     })
+        //     res = false;
+        // } else {
+        //     setFormErrors((existing) => {
+        //         return { ...existing, amountReceived: "" }
+        //     })
+        // }
+
+        return res;
+    }
     const [selectedOption, setSelectedOption] = useState({
-        label: "Select Tenant Of",
+        label: "Select Client Name",
         value: null
     });
     const [query, setQuery] = useState('')
@@ -871,7 +956,7 @@ const ManageBankStatement = () => {
                 const temp = { ...filterMapState }
                 temp[columnName].filterType = ""
                 setFilterMapState(temp)
-                fetchData()
+                fetchBankStatement()
             } else {
                 newHandleFilter(inputVariable,
                     setInputVariable,
@@ -883,6 +968,40 @@ const ManageBankStatement = () => {
 
         }
     }
+    const [modeFooter,setModeFooter] = useState([
+         {
+            modename : "Z-ADSK-BOM",
+            modeamount : 43.00
+         },
+         {
+            modename : "Z-ADSK-AXIS",
+            modeamount : 234.00
+         },
+         {
+            modename : "Z-PRIME-ADSK",
+            modeamount : 43.00
+         },
+         {
+            modename : "Z-PRIME-HDFC",
+            modeamount : 143.00
+         },
+         {
+            modename : "Z-DAP-BOM",
+            modeamount : 143.00
+         },
+         {
+            modename : "DAP-ICICI-42",
+            modeamount : 1423.00
+         },
+         {
+            modename : "DAP-ICICI-53",
+            modeamount : 1423.00
+         },
+         {
+            modename : "DAP-ICICI-65-S",
+            modeamount : 1423.00
+         }
+    ])
     return (
         <div className="h-screen">
             <Navbar />
@@ -947,11 +1066,11 @@ const ManageBankStatement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event,modeFilterInput,
                                         setModeFilterInput,
                                         'contains',
-                                        'modeofpayment')}
+                                        'mode')}
                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='modeofpayment' menuRef={menuRef} />}
+                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='mode' menuRef={menuRef} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1007,11 +1126,11 @@ const ManageBankStatement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event,clientFilterInput,
                                         setClientFilterInput,
                                         'contains',
-                                        'clientid')}
+                                        'clientname')}
                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientid' menuRef={menuRef} />}
+                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
                             </div>
                             <div className='w-[12%] px-4 py-2.5'>
                                 {/* <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1042,7 +1161,7 @@ const ManageBankStatement = () => {
                     </div>
                 </div>
 
-                <div className="w-full h-[calc(100vh_-_14rem)] text-[12px]">
+                <div className="w-full h-[calc(100vh_-_14rem)] text-[12px] font-medium">
 
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
                         <div className='w-[85%] flex'>
@@ -1084,21 +1203,24 @@ const ManageBankStatement = () => {
 
 
 
-                    <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
+                    <div className='w-full h-[calc(100vh_-_20rem)] overflow-auto'>
                         {pageLoading && <div className='ml-11 mt-9'>
-                            <CircularProgress />
+                            <LinearProgress />
                         </div>}
+                        {!pageLoading && existingStatement && existingStatement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingStatement && existingStatement.map((item, index) => {
-                            return <div className='w-full   flex justify-between border-gray-400 border-b-[1px]'>
+                            return <div className='w-full   flex justify-between border-gray-400 border-b-[1px] font-medium'>
                                 <div className='w-[85%] text-[11px] min-h-0  flex'>
                                     <div className='w-[5%] px-3 py-4 overflow-x-auto'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                     </div>
                                     <div className='w-[10%]  p-4'>
-
-                                        {mode && mode.map(ele => (
+                                        <p>{item.mode}</p>
+                                        {/* {mode && mode.map(ele => (
                                             (item.modeofpayment === ele[0]) ?
-                                                <p>{ele[1]}</p> : ""))}
+                                                <p>{ele[1]}</p> : ""))} */}
                                     </div>
                                     <div className='w-[10%]  p-4'>
                                         {/* <p>{item.date}</p> */}
@@ -1115,13 +1237,14 @@ const ManageBankStatement = () => {
                                         <p>{item.particulars}</p>
                                     </div>
                                     <div className='w-[20%] break-all px-5 py-4  '>
+                                       <p> {item.clientname}</p>
                                         {/* <p>{item.clientid}</p> */}
-                                        {client && client.map(ele => (
+                                        {/* {client && client.map(ele => (
                                             (item.clientid === ele[0]) ?
-                                                <p>{ele[1]}</p> : ""))}
+                                                <p>{ele[1]}</p> : ""))} */}
                                     </div>
 
-                                    <div className='w-[12%] px-6  py-4 text-blue-500 cursor-pointer '>
+                                    <div className='w-[12%] px-6  py-4 text-blue-600 cursor-pointer font-medium '>
                                         {(!(item.clientid) && item.crdr === "CR") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
 
                                         {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
@@ -1142,11 +1265,48 @@ const ManageBankStatement = () => {
                         {isEditDialogue && <EditManageStatement openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} bankStatement={currentStatement} fetchData={fetchBankStatement} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentStatement={currentStatement} fetch={fetchBankStatement} showCancel={openCancelModal} />}
                     </div>
+                        <div className="h-[3rem] w-full bg-[#F0F6FF] flex">
+                            <div className='w-[85%] flex'>
+                                <div className='w-[5%] p-4 border-[1px] border-gray-300'>
+                                    
+                                </div>
+                                <div className='w-[10%]  p-4 '>
+                                    
+                                </div>
+                                <div className='w-[10%]  p-4 border-[1px] border-gray-300'>
+                                    
+                                </div>
+                                <div className='w-[10%]  p-4 '>
+                                    
+                                </div>
+                                <div className='w-[10%]  p-4 border-[1px] border-gray-300'>
+                                    Total : 12345
+                                </div>
+                                <div className='w-[30%]  p-4 '>
+                                    
+                                </div>
+                                <div className='w-[20%] p-4 border-[1px] border-gray-300 '>
+                                   
+                                </div>
+
+                                <div className='w-[12%] p-4  '>
+                                    
+                                </div>
+                            </div>
+                            <div className='w-[15%] flex'>
+                                <div className='w-1/2  p-4 border-[1px] border-gray-300'>
+                                    
+                                </div>
+                                <div className='w-1/2 0 p-4 '>
+                                    
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
+            
 
-
-            <div className='w-full h-12 flex justify-between px-6 '>
+            <div className='w-full h-12 flex justify-between px-6 font-medium'>
                 {/* footer component */}
                 <div className='ml-2'>
                     <div className='flex items-center w-auto h-full'>
@@ -1212,8 +1372,21 @@ const ManageBankStatement = () => {
                     </div>
                 </div>
             </div>
-
-
+            <div className="px-6">
+               <div className="bg-[#F5F5F5] w-full h-[120px] flex justify-around mt-6">
+                   {/* <div className="h-[3rem] w-full bg-green-400 flex justify-between"> */}
+                            {
+                                modeFooter.map((item) => {
+                                    return <div className="flex flex-col items-center justify-center">
+                                               <h1 className="font-semibold">{item.modename}</h1>
+                                               <p className="self-start text-xs text-gray-500">{item.modeamount.toFixed(2)}</p>
+                                          </div>
+                                })
+                            }
+                        {/* </div> */}
+               </div>
+            </div>
+             
 
             <Modal open={isManageStatementDialogue}
                 fullWidth={true}
@@ -1221,7 +1394,7 @@ const ManageBankStatement = () => {
                 className="flex justify-center items-center"
                 >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                         <div className='flex justify-center items-center '>
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
@@ -1314,7 +1487,7 @@ const ManageBankStatement = () => {
                                 </form>
                             </div>
                         </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </>
             </Modal>
 
@@ -1325,8 +1498,8 @@ const ManageBankStatement = () => {
                 maxwidth={'md'} bankStatement={currentStatement}>
                 {/* <h1>{currentStatement}</h1> */}
                 <>
-                    <Draggable>
-                        <div className='flex justify-center items-center mt-[70px]'>
+                    {/* <Draggable> */}
+                        <div className='flex justify-center items-center mt-[100px]'>
                             <div className="w-[1050px] h-[500px] bg-white rounded-lg">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                                     <div className="mr-[410px] ml-[410px]">
@@ -1336,7 +1509,7 @@ const ManageBankStatement = () => {
                                         <img onClick={handleCloseCR} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                                     </div>
                                 </div>
-                                <form onSubmit={handleCR} >
+                                {/* <form onSubmit={handleCR} > */}
                                     <div className="w-full mt-[5px] ">
                                         <div className="flex gap-[48px] justify-center items-center">
                                             <div className=" space-y-[5px] py-[5px] px-[5px]">
@@ -1346,14 +1519,16 @@ const ManageBankStatement = () => {
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Recieved By<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
+                                                    {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="employee" value={formValues.employee} onChange={handleChange} required >
                                                         <option >Select Employee</option>
-                                                        {employees && employees.map(item => (
+                                                        {existingUsers && existingUsers.map(item => (
                                                             <option key={item} value={item.id}>
                                                                 {item.employeename}
                                                             </option>
                                                         ))}
-                                                    </select>
+                                                    </select> */}
+                                                    
+                                                    <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={() => {}} formValueName="employee" value={formValues.employee} idName="id"/>
                                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.employee}</div>
                                                 </div>
                                                 <div className="">
@@ -1490,14 +1665,14 @@ const ManageBankStatement = () => {
 
                                     <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Save</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>
-                                </form>
+                                {/* </form> */}
                             </div>
                         </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </>
             </Modal>
 
@@ -1506,7 +1681,7 @@ const ManageBankStatement = () => {
 
             <Modal open={isConfirmManageStatementDialogue} >
                 <>
-                    <Draggable>
+                    {/* <Draggable> */}
                         <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                             <div className="h-[40px] flex justify-center items-center">
                                 <div className="w-[150px] mt-10 w-full text-center">
@@ -1525,11 +1700,11 @@ const ManageBankStatement = () => {
                                 <p className="text-[14px]">Are you sure you want to Add new Bank statement</p>
                             </div>
                             <div className="my-10 flex justify-center items-center gap-[10px]">
-                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Save</button>
+                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={handleCR}>Save</button>
                                 <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
                             </div>
                         </div>
-                    </Draggable>
+                    {/* </Draggable> */}
                 </>
             </Modal>
 

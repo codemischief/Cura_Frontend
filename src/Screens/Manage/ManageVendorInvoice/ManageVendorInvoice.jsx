@@ -217,6 +217,17 @@ const ManageVendorInvoice = () => {
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        // setCurrentPage((prev) => 1)
+        setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
@@ -247,7 +258,7 @@ const ManageVendorInvoice = () => {
                 "createdbyname",
                 "clientname"
             ],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -911,6 +922,16 @@ const ManageVendorInvoice = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
+        setVendorNameFilter(false);
+        setClientNameFilter(false);
+        setOrderDescriptionFilter(false);
+        setInvoiceAmountFilter(false);
+        setInvoiceDateFilter(false);
+        setEntityFilter(false);
+        setCreatedByFilter(false);
+        setEstimateAmountFilter(false);
+        setEstimateDateFilter(false);
+        setIdFilter(false);
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
@@ -1354,7 +1375,17 @@ const ManageVendorInvoice = () => {
 
 
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {pageLoading && <div className='ml-5 mt-5'>
+                             
+                            
+                            <LinearProgress />
+                            
+                            
+                            
+                            </div>}
+                        {!pageLoading && existingVendorInvoice && existingVendorInvoice.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingVendorInvoice.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex">
@@ -1381,7 +1412,7 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[10%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : ""}</p>
+                                            <p>{item.invoiceamount !== null ? item.invoiceamount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex ml-[2px]'>
@@ -1401,7 +1432,7 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[10%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
+                                            <p>{item.amount !== null ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>

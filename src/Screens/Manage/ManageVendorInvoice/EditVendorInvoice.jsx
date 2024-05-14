@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from '@mui/material'
+import { Modal , CircularProgress} from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
@@ -35,6 +35,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     }
     const [orderText, setOrderText] = useState("Select Order")
     const fetchInitialData = async () => {
+        setPageLoading(true)
         const data = {
             "user_id": 1234,
             "item_id": currInvoice,
@@ -66,6 +67,10 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         temp.value = res.data.clientid
         temp.label = res.data.clientname
         setSelectedOption(temp)
+        setTimeout(() => {
+           setPageLoading(false);
+        },1000)
+        // setPageLoading(false)
     }
     useEffect(() => {
         fetchInitialData()
@@ -218,7 +223,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     }
 
 
-
+    const [pageLoading,setPageLoading] = useState(false)
     return (
         <Modal open={true}
             fullWidth={true}
@@ -226,7 +231,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
             className='flex justify-center items-center'
         >
             <div className='flex justify-center'>
-                <Draggable>
+                {/* <Draggable> */}
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="mr-[410px] ml-[410px]">
@@ -236,7 +241,12 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                 <button onClick={() => (close())}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-
+                        {pageLoading && <div className='flex items-center justify-center space-x-4 my-3'>
+                                <h1>Fetching Data</h1>
+                                <CircularProgress/>
+                            </div>
+                            }
+                        {!pageLoading && 
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center ">
                                 <div className=" space-y-3 py-5">
@@ -366,13 +376,13 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => (close())}>Cancel</button>
                         </div>
                     </div>
-                </Draggable>
+                {/* </Draggable> */}
             </div>
         </Modal>
     )

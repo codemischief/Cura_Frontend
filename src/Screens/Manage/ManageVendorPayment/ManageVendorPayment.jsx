@@ -951,7 +951,22 @@ const ManageVendorPayment = () => {
 
         }
     }
-
+    const [orderData,setOrderData] = useState({
+        orderdate : "",
+        orderstatus : ""
+    })
+    const getOrderData = async (id) => {
+        const data = {
+            "user_id" : 1234,
+            "orderid" : id
+        }
+        const response = await APIService.getOrderPending(data)
+        const res = await response.json()
+        const temp = {...orderData}
+        temp.orderdate = res.data.orderdate 
+        temp.orderstatus = res.data.orderstatus 
+        setOrderData(temp)
+    }
     
 
     return (
@@ -1471,6 +1486,7 @@ const ManageVendorPayment = () => {
                                                     value={formValues.mode}
                                                     onChange={handleChange}
                                                 >
+                                                    <option value="" hidden> Select Mode</option>
                                                     {modesData.map((item) => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
@@ -1515,7 +1531,10 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="orderid" value={formValues.orderid} />
+                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
+                                                    handleChange(e)
+                                                    getOrderData(e.target.value)
+                                                }} formValueName="orderid" value={formValues.orderid} />
                                                 
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
                                             </div>
@@ -1554,11 +1573,11 @@ const ManageVendorPayment = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Date </div>
-                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderdate}  readOnly/>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Status </div>
-                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderstatus} readOnly/>
                                             </div>
                                         </div>
                                     </div>
