@@ -35,15 +35,23 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, openPrompt,openAddSucc
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
     setLoading(false);
-    console.log(result.data);
     setCountryData(result.data);
   };
 
-  useEffect(() => {
+
+
+  // useEffect(() => {
+  
+  //   fetchCountryData();
+    
+  //   fetchStateData(item.country);
+  //   fetchCity(item.state);
+  // }, [item]);
+
+  useEffect(()=>{
+
     fetchCountryData();
-    fetchStateData(item.country);
-    fetchCity(item.state);
-  }, [item.id]);
+  },[])
 
 
   const fetchStateData = async (id) => {
