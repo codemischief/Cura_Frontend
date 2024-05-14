@@ -19,6 +19,7 @@ export const FilterField = (props) => {
 
   useEffect(() => {
     let copiedFilters = { ...filter };
+    console.log(copiedFilters,"copiedFilters",columnfield);
     if (search === "" && copiedFilters?.hasOwnProperty(columnfield)) {
       delete copiedFilters[columnfield];
       onFilterChange(copiedFilters);
@@ -57,11 +58,12 @@ export const FilterField = (props) => {
 
   const handleResetFilter = () => {
     setSearch("");
-    if (filter.hasOwnProperty(columnfield)) {
-      const prevFilters = { ...filter };
-      delete prevFilters[columnfield];
-      onFilterChange(prevFilters);
-    }
+    console.log(filter,columnfield,"columnfield");
+    // if (filter.hasOwnProperty(columnfield)) {
+    //   const prevFilters = { ...filter };
+    //   delete prevFilters[columnfield];
+    //   onFilterChange(prevFilters);
+    // }
   };
 
   const handleEnterKeyPress = (e) => {

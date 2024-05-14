@@ -9,10 +9,17 @@ import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 
 import { useDispatch } from "react-redux";
-import { getOrderPaymentData } from "../../../Redux/slice/reporting/OrderPaymentSlice";
+import {
+  getOrderPaymentData,
+  setCountPerPage,
+  setPageNumber,
+  setSorting,
+} from "../../../Redux/slice/reporting/OrderPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
+import * as XLSX from "xlsx";
+
 
 const OrderPaymentList = () => {
   const dispatch = useDispatch();
@@ -32,8 +39,9 @@ const OrderPaymentList = () => {
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
 
-  const handleSearch = (e) => {
+  const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
 
@@ -47,11 +55,58 @@ const OrderPaymentList = () => {
     }
   };
 
-  const handlePageChange = () => {};
+  const handlePageChange = (value) => {
+    dispatch(setPageNumber(value));
+  };
 
-  const handlePageCountChange = () => {};
+  const handlePageCountChange = (e) => {
+    dispatch(setCountPerPage(e.target.value));
+  };
 
-  const handleRefresh = () => {};
+  const handleRefresh = () => {
+    if (startDate && endDate) {
+      let obj = {
+        user_id: 1234,
+        startdate: startDate ?? "2021-01-01",
+        enddate: endDate ?? "2022-01-01",
+        rows: [
+          "paymentdate",
+          "monthyear",
+          "fy",
+          "amount",
+          "entityname",
+          "mode_of_payment",
+          "clientid",
+          "clientname",
+          "vendorname",
+          "orderid",
+          "orderdescription",
+          "serviceid",
+          "service",
+          "lobname",
+        ],
+        sort_by: ["id"],
+        order: "desc",
+        filters: formatedFilterData(filter),
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+      };
+      dispatch(getOrderPaymentData(obj));
+    }
+  };
+
+  const handleSearch = ()=>{
+    setSearch(searchInput)
+  }
+  
+
+
+  const removeSearchValue = ()=>{
+    setSearch("")
+    setSearchInput("")
+
+  }
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -65,7 +120,7 @@ const OrderPaymentList = () => {
           "fy",
           "amount",
           "entityname",
-          "mode",
+          "mode_of_payment",
           "clientid",
           "clientname",
           "vendorname",
@@ -75,16 +130,35 @@ const OrderPaymentList = () => {
           "service",
           "lobname",
         ],
-        sort_by: ["id"],
+        sort_by: [sorting.sort_by],
         order: "desc",
         filters: formatedFilterData(filter),
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
+        search_key: search,
+        pg_no: +pageNo,
+        pg_size: +countPerPage,
+        sort_order:sorting.sort_order
       };
       dispatch(getOrderPaymentData(obj));
     }
-  }, [filter]);
+  }, [filter, countPerPage, pageNo, search,sorting.sort_order,sorting.sort_by]);
+
+
+  const handleSortingChange = (accessor) => {
+    const sortOrder = accessor === sorting.sort_by && sorting.sort_order === "asc" ? "desc" : "asc";
+    dispatch(setSorting({sort_by:accessor,sort_order:sortOrder}))
+    
+   };
+
+
+    const downloadExcel = () => {
+      const tableData = orderPaymentData
+      const worksheet = XLSX.utils.json_to_sheet(tableData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      XLSX.writeFile(workbook, "orderPayment.xlsx");
+    };
+   
+
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -134,7 +208,7 @@ const OrderPaymentList = () => {
             heading={"Order Payment List"}
             path={["Reports", "Lists", "Order Payment List"]}
           />
-          <SearchBar value={searchInput} handleSearch={handleSearch} />
+          <SearchBar value={searchInput} handleSearchvalue={handleSearchvalue} handleSearch={handleSearch} removeSearchValue={removeSearchValue}/>
         </div>
 
         <Stack
@@ -190,10 +264,18 @@ const OrderPaymentList = () => {
         <SimpleTable
           columns={columns}
           data={orderPaymentData}
-          pageNo={1}
+          pageNo={pageNo}
           isLoading={status === "loading"}
-          countPerPage={15}
-          totalCount={150}
+          totalCount={totalCount}
+          style={"text-center"}
+          countPerPage={countPerPage}
+          handlePageCountChange={handlePageCountChange}
+          handlePageChange={handlePageChange}
+          handleRefresh={handleRefresh}
+          handleSortingChange={handleSortingChange}
+          downloadExcel={downloadExcel}
+          
+
         />
       </div>
       <ConfirmationModal

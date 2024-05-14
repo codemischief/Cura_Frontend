@@ -1,6 +1,5 @@
 import { LinearProgress } from "@mui/material";
 import PropTypes from "prop-types";
-
 import PaginationComponent from "./Pagination";
 
 const SimpleTable = ({
@@ -13,7 +12,10 @@ const SimpleTable = ({
   handlePageChange,
   handlePageCountChange,
   handleRefresh,
+  handleSortingChange,
+  downloadExcel
 }) => {
+
   return (
     <div className="w-full text-[12px]">
       <table className="w-full border-gray-400 border-b-[1px] table-auto">
@@ -21,9 +23,9 @@ const SimpleTable = ({
           <tr className="h-[56px]">
             {columns.map((column, index) => (
               <th key={index} style={{ width: column.width }}>
-                {column.filterComponent && (
+                {column.filterComponent && [
                   <column.filterComponent columnfield={column.field} />
-                )}
+                ]}
               </th>
             ))}
           </tr>
@@ -31,6 +33,11 @@ const SimpleTable = ({
             {columns.map((column, index) => (
               <th key={index} style={{ width: column.width }}>
                 {column.title}
+                {column.sorting && (
+                  <button onClick={()=>handleSortingChange(column.field,)}>
+                    <span className="font-extrabold px-1">↑↓</span>
+                  </button>
+                )}
               </th>
             ))}
           </tr>
@@ -62,6 +69,7 @@ const SimpleTable = ({
         handlePageChange={handlePageChange}
         handlePageCountChange={handlePageCountChange}
         handleRefresh={handleRefresh}
+        downloadExcel={downloadExcel}
       />
     </div>
   );

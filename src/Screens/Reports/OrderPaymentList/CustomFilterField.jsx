@@ -7,16 +7,15 @@ export function CustomFilterField(props) {
   const dispatch = useDispatch();
   const { filter } = useSelector((state) => state.orderPayment);
 
-  const handleFilterChange = (filter) => {
-    console.log("filter", filter);
-    dispatch(setOrderPayFilters(filter));
+  const handleFilterChange = (filters) => {
+    dispatch(setOrderPayFilters({...filters}));
   };
 
   return (
     <FilterField
       {...props}
       onFilterChange={handleFilterChange}
-      filters={filter}
+      filter={filter}
     />
   );
 }

@@ -50,7 +50,7 @@ export const pmaSlice = createSlice({
       };
     },
     setOrderPayFilters: (state, { payload }) => {
-      state.filter = payload;
+      state.filter = {...payload};
     },
     setSorting: (state, { payload }) => {
       state.sorting = payload;

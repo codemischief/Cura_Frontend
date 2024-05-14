@@ -1,9 +1,14 @@
 import { FilePdfOutlined } from "@ant-design/icons";
 import { Refresh } from "@mui/icons-material";
-import { Pagination } from "@mui/material";
-import React from "react";
+import { MenuItem, Pagination, Popover } from "@mui/material";
+import React, { useState } from "react";
+import Pdf from "../../../assets/pdf.png";
+import Excel from "../../../assets/excel.png";
 
-const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,handlePageCountChange,handleRefresh }) => {
+const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,handlePageCountChange,handleRefresh,downloadExcel }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
   return (
     <div className="w-full h-12 flex justify-between justify-self-end px-6 ">
       <div className="ml-2">
@@ -35,6 +40,31 @@ const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,
             {totalCount} Items in {Math.ceil(totalCount / +countPerPage)} Pages
           </p>
         </div>
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          onClose={() => setAnchorEl(null)}
+          sx={{ top: "-50px", left: "-20px" }}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem
+            className="flex space-x-2 justify-center items-center ml-3 mt-3"
+            // onClick={downloadPDF}/
+          >
+            <p>Download as Pdf</p>
+            <img src={Pdf} />
+          </MenuItem>
+          <MenuItem
+            className="flex space-x-2 justify-center items-center ml-3 mt-3"
+            onClick={downloadExcel}
+          >
+            <p> Download as Excel</p>
+            <img src={Excel} />
+          </MenuItem>
+        </Popover>
 
         <div
           className="border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2 cursor-pointer"
@@ -48,7 +78,7 @@ const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,
         <div className="border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2">
           <button
             onClick={(e) => {
-              // setAnchorEl(e.currentTarget);
+              setAnchorEl(e.currentTarget);
             }}
           >
             <p>Download</p>
