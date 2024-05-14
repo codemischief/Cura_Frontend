@@ -918,6 +918,7 @@ const ManageClientReceipt = () => {
         })
         setOrFormErrors({})
         setOrModel(false);
+        openCancelModal();
     }
     const [orFormValues,setOrFormValues] = useState(
         {
@@ -1572,7 +1573,7 @@ const ManageClientReceipt = () => {
                                 <div className="flex gap-12 justify-center ">
                                     <div className=" space-y-3 py-5">
                                         <div className="">
-                                            <div className="text-sm text-[#787878]">Cura Office </div>
+                                            <div className="text-sm text-[#787878] mb-1">Cura Office </div>
                                             <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
                                         <div className="">
@@ -1618,7 +1619,7 @@ const ManageClientReceipt = () => {
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm">
+                                            <div className="text-sm mb-0.5">
                                                 Client <label className="text-red-500">*</label>
                                             </div>
                                            
@@ -1744,7 +1745,7 @@ const ManageClientReceipt = () => {
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"   >Pune</div>
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px] mb-0.5">
+                                        <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
                                         </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"  value={orSelectedOption.label} readOnly />
@@ -1832,7 +1833,7 @@ const ManageClientReceipt = () => {
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="TDS" value={null} onChange={handleOrChange} />
                                     </div>
                                     <div className="">
-                                        <div className="text-[13px]">Receipt Description </div>
+                                        <div className="text-[13px] mb-0.5">Receipt Description </div>
                                         <textarea className="w-[230px] h-[70px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="receiptDescription" value={orFormValues.receiptDescription} onChange={handleOrChange} />
                                     </div>
                                     
@@ -1840,14 +1841,10 @@ const ManageClientReceipt = () => {
                                 <div className=" space-y-3 py-5">
                                 <div className="">
                                         <div className="text-sm text-[#787878]">Receipt ID </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={null} onChange={handleOrChange} />
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"></div>
                                     </div>
-                               
-
-                                    
-                                    
                                     <div className="">
-                                        <div className="text-[13px]">
+                                        <div className="text-[13px] mb-0.5">
                                             Order <label className="text-red-500">*</label>
                                         </div>
                                         {/* <select

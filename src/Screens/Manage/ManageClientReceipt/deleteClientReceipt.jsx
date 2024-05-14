@@ -43,7 +43,7 @@ const DeleteClientReceipt = (props) => {
                                 <img className="h-10 w-10" src={DeleteImage} alt="delete photo" />
                             </div>
                             <div className="mt-4 w-full text-center">
-                                <p>Are you sure you want to delete ?</p>
+                                <p>Are you sure you want to delete the Client Receipt?</p>
                             </div>
                             <div className="my-5 flex justify-center items-center gap-[10px]">
                                 <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed disabled" : "bg-red-700"} w-[100px] h-[35px]  text-white rounded-md`} onClick={handleDeleteClick}>Delete</button>

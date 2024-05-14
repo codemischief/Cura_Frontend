@@ -68,7 +68,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                 return { ...existing, receivedDate: "" }
             })
         }
-        if (!formValues.howReceived) {
+        if (!formValues.howreceived) {
             setFormErrors((existing) => {
                 return { ...existing, howreceived: "Select How Received" }
             })
@@ -104,6 +104,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
     } 
     const handleEdit = async () => {
         if(!validate()) {
+            console.log("heyyy")
             return ;
         }
         const data = {
