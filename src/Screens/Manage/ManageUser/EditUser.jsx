@@ -6,6 +6,7 @@ import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
 
 const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel }) => {
+    let password ="";
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -48,8 +49,8 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         const existing = { ...formValues }
         existing.nameOfTheUser = res.data.fullname
         existing.userName = res.data.username
-        existing.password = res.data.password
-        existing.confirmPassword = res.data.password
+        password = res.data.password
+        // existing.confirmPassword = res.data.password
         existing.lob = res.data.lobid
         existing.email1 = res.data.email1
         existing.email2 = res.data.email2
@@ -92,17 +93,6 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             })
         }
 
-        if (!formValues.password) {
-            setFormErrors((existing) => {
-                return { ...existing, password: "Enter Password" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, password: "" }
-            })
-        }
-
         if (!formValues.lob) {
             setFormErrors((existing) => {
                 return { ...existing, lob: "Enter Lob" }
@@ -141,16 +131,6 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         } else {
             setFormErrors((existing) => {
                 return { ...existing, effectiveDate: "" }
-            })
-        }
-        if (!formValues.confirmPassword) {
-            setFormErrors((existing) => {
-                return { ...existing, confirmPassword: "Enter Confirm Password" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, confirmPassword: "" }
             })
         }
         if (!formValues.role) {
@@ -203,6 +183,13 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                 return { ...existing, zipCode: "" }
             })
         }
+        if(formValues.password && formValues.confirmPassword && formValues.password!==formValues.confirmPassword){
+            console.log("ayoo")
+            setFormErrors((existing) => {
+                return { ...existing, confirmPassword: "Password does not match" }
+            })
+            res = false;
+        }
 
         return res;
     }
@@ -210,6 +197,22 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         // we handle edit here
         if (!validate()) {
             return;
+        }
+
+        if(!formValues.password){
+            formValues.password = password;
+            console.log(formValues.password);
+        }
+
+        let arr = (formValues.nameOfTheUser).split(" ");
+        let firstName = arr[0];
+        let lastName = "";
+        if (arr.length >= 1) {
+            lastName = arr[1];
+            for (let i = 2; i < arr.length; i++) {
+                lastName += " ";
+                lastName += arr[i];
+            }
         }
         const data = {
             "user_id": 1234,
@@ -219,8 +222,8 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
-            "firstname": "New",
-            "lastname": "User",
+            "firstname": firstName,
+            "lastname": lastName,
             "status": formValues.status,
             "effectivedate": formValues.effectiveDate,
             "homephone": formValues.homePhone,
@@ -242,6 +245,8 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             //  we need to open edit Modal
             showSuccess()
         }
+        console.log("working")
+
     }
 
     const close = () => {
@@ -305,7 +310,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">Create Password <label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Create Password </div>
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
                                                 <span className="w-4 h-4 absolute right-1 bottom-0.5">
@@ -317,7 +322,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                     />
                                                 </span>
                                             </div>
-                                            <div className="text-[10px] text-[#CD0000]">{formErrors.password}</div>
+                                            
                                         </div>
                                         <div className="">
                                             <div className="text-sm">LOB <label className="text-red-500">*</label></div>
@@ -370,7 +375,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.effectiveDate}</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">Confirm Password <label className="text-red-500">*</label></div>
+                                            <div className="text-[13px]">Confirm Password </div>
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
                                                 <span className="w-4 h-4 absolute right-1 bottom-0.5">

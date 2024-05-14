@@ -32,6 +32,7 @@ import AsyncSelect from "react-select/async"
 import EditUser from './EditUser';
 import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
+import bcrypt from 'bcryptjs';
 
 const ManageUser = () => {
 
@@ -343,7 +344,18 @@ const ManageUser = () => {
 
     }
     const addUser = async () => {
-       
+
+        let arr = (formValues.nameOfTheUser).split(" ");
+        let firstName = arr[0];
+        let lastName = "";
+        if (arr.length >= 1) {
+            lastName = arr[1];
+            for (let i = 2; i < arr.length; i++) {
+                lastName += " ";
+                lastName += arr[i];
+            }
+        }
+
         const data = {
             "user_id": 1234,
             "username": formValues.userName,
@@ -352,8 +364,8 @@ const ManageUser = () => {
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
-            "firstname": "New",
-            "lastname": "User",
+            "firstname": firstName,
+            "lastname": lastName,
             "status": formValues.status,
             "effectivedate": formValues.effectiveDate,
             "homephone": formValues.homePhone,
@@ -495,11 +507,20 @@ const ManageUser = () => {
             })
         }
         if (!formValues.confirmPassword) {
+            console.log("whyyyy")
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Enter Confirm Password" }
             })
             res = false;
-        } else {
+        } else if(formValues.password && formValues.confirmPassword && formValues.password!==formValues.confirmPassword){
+            console.log("ayoo")
+            setFormErrors((existing) => {
+                return { ...existing, confirmPassword: "Password does not match" }
+            })
+            res = false;
+        }
+         else {
+            console.log("good");
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "" }
             })
