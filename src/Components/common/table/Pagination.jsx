@@ -5,7 +5,16 @@ import React, { useState } from "react";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
 
-const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,handlePageCountChange,handleRefresh,downloadExcel }) => {
+const PaginationComponent = ({
+  pageNo,
+  countPerPage,
+  totalCount,
+  handlePageChange,
+  handlePageCountChange,
+  handleRefresh,
+  downloadExcel,
+  disabled
+}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -53,6 +62,7 @@ const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,
           <MenuItem
             className="flex space-x-2 justify-center items-center ml-3 mt-3"
             // onClick={downloadPDF}/
+            disabled={disabled}
           >
             <p>Download as Pdf</p>
             <img src={Pdf} />
@@ -60,6 +70,7 @@ const PaginationComponent = ({  pageNo,countPerPage,totalCount,handlePageChange,
           <MenuItem
             className="flex space-x-2 justify-center items-center ml-3 mt-3"
             onClick={downloadExcel}
+            disabled={disabled}
           >
             <p> Download as Excel</p>
             <img src={Excel} />

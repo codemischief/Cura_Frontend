@@ -60,7 +60,7 @@ const OrderPaymentList = () => {
 
   const handlePageCountChange = (e) => {
     dispatch(setCountPerPage(e.target.value));
-    dispatch(setPageNumber(1))
+    dispatch(setPageNumber(1));
   };
 
   const handleRefresh = () => {
@@ -86,7 +86,7 @@ const OrderPaymentList = () => {
           "lobname",
         ],
         sort_by: ["id"],
-       
+
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
@@ -127,13 +127,13 @@ const OrderPaymentList = () => {
           "service",
           "lobname",
         ],
-        sort_by: sorting.sort_by ? [sorting.sort_by]: undefined,
-        
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        sort_order: sorting.sort_order ? sorting.sort_order:undefined
+        sort_order: sorting.sort_order ? sorting.sort_order : undefined,
       };
       dispatch(getOrderPaymentData(obj));
     }
@@ -204,7 +204,7 @@ const OrderPaymentList = () => {
   return (
     <Stack gap="1rem">
       <Navbar />
-      <div className="flex flex-col p-4">
+      <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"Order Payment List"}
@@ -263,7 +263,7 @@ const OrderPaymentList = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "4px",
+                marginTop: "12px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",
@@ -293,32 +293,6 @@ const OrderPaymentList = () => {
           downloadExcel={downloadExcel}
         />
       </div>
-      <ConfirmationModal
-        open={openModal}
-        loading={false}
-        btnTitle="Confirm"
-        onClose={() => {
-          setOpenModal(false);
-        }}
-        onSubmit={() => {
-          // hadleConfirm();
-        }}
-        title="Generate New Invoices"
-        description={
-          <Typography
-            sx={{
-              fontFamily: "Open Sans",
-              fontSize: "14px",
-              fontStyle: "normal",
-              fontWeight: 400,
-              lineHeight: "150%" /* 21px */,
-              color: "#282828",
-            }}
-          >
-            Are you sure you want to generate new invoices?
-          </Typography>
-        }
-      />
       {toast && (
         <SucessfullModal
           isOpen={toast}

@@ -25,13 +25,13 @@ const SimpleTable = ({
         <thead className="h-[115px] block">
           <tr className="h-[56px]">
             {columns.map((column, index) => (
-              <th key={index} style={{ width: column.width }}>
+              <th key={index} style={{ width: column.width,...column.cellStyle }}>
                 {column.filterComponent && [
                   <column.filterComponent
                     key={column.field}
                     columnfield={column.field}
                     isDisabled={column.filterDisabled || false}
-                  />
+                  />,
                 ]}
               </th>
             ))}
@@ -53,7 +53,7 @@ const SimpleTable = ({
           {isLoading && <LinearProgress />}
 
           {data.length > 0 ? (
-            data.map((rowData, rowIndex) => (
+            data?.map((rowData, rowIndex) => (
               <tr key={rowIndex} className="border-b dark:border-gray-700">
                 {columns.map((column, colIndex) => (
                   <td
@@ -63,14 +63,14 @@ const SimpleTable = ({
                     className="py-3 text-center px-2"
                   >
                     {column.render
-                      ? column.render(rowData, rowIndex)
+                      ? column.render(rowIndex)
                       : rowData[column.field]}
                   </td>
                 ))}
               </tr>
             ))
           ) : (
-            <tr className="border border-b border-[#CBCBCB] text-[#282828]">
+            <tr className="border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
               No records to display.
             </tr>
           )}
@@ -84,6 +84,7 @@ const SimpleTable = ({
         handlePageCountChange={handlePageCountChange}
         handleRefresh={handleRefresh}
         downloadExcel={downloadExcel}
+        disabled={data.length < 1}
       />
     </div>
   );
