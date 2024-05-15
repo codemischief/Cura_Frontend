@@ -922,7 +922,7 @@ const ManageVendorInvoice = () => {
             }
         }
 
-        if (type == 'noFilter') setInputVariable("");
+        if (type == 'noFilter' || type == "isNull" || type == 'isNotNull') setInputVariable("");
 
 
         fetchFiltered(existing);

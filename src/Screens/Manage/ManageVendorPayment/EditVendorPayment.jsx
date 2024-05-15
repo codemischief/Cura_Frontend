@@ -356,7 +356,7 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Description </div>
-                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className=" space-y-3 py-5">

@@ -239,13 +239,24 @@ const ManageVendorPayment = () => {
     const [flag, setFlag] = useState(false)
     const [existingVendorPayment, setExistingVendorPayment] = useState([]);
     const fetchData = async () => {
-        console.log('ugm')
         setPageLoading(true);
+
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        // setCurrentPage((prev) => 1)
+        setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -367,6 +378,17 @@ const ManageVendorPayment = () => {
         SetIsVendorPaymentDialogue(false);
         if (res.result == "success") {
             setFormValues(initialValues);
+            const temp1 = {...selectedOption}
+            temp1.label = "Select Client"
+            temp1.value = null 
+            setSelectedOption(temp1)
+            setOrderText("Select Order")
+            const temp2 = {
+                ...orderData
+            }
+            temp2.orderdate = null
+            temp2.orderstatus = null
+            setOrderData(temp2);
             openAddSuccess();
         } else {
             openFailureModal();
@@ -434,6 +456,13 @@ const ManageVendorPayment = () => {
 
     const handleClose = () => {
         initials();
+        SetIsVendorPaymentDialogue(false);
+        openAddCancelModal();
+    }
+
+    const initials = () => {
+        setFormValues(initialValues);
+        setFormErrors({});
         setSelectedOption(
             {
                 label: "Select Client",
@@ -442,14 +471,12 @@ const ManageVendorPayment = () => {
         )
         setOrders([]);
         setOrderText("Select Order");
-
-        SetIsVendorPaymentDialogue(false);
-        openAddCancelModal();
-    }
-
-    const initials = () => {
-        setFormValues(initialValues);
-        setFormErrors({});
+        const temp = {
+            ...orderData
+        }
+        temp.orderdate = null
+        temp.orderstatus = null
+        setOrderData(temp);
     }
 
     const [orderText, setOrderText] = useState("Select Order")
@@ -846,7 +873,7 @@ const ManageVendorPayment = () => {
             }
         }
 
-        if (type == 'noFilter') setInputVariable("");
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
 
 
         fetchFiltered(existing);
