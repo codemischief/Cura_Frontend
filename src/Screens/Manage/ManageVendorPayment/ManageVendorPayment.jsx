@@ -1077,7 +1077,7 @@ const ManageVendorPayment = () => {
                             {propertyDescriptionFilter && <CharacterFilter filterColumn='propertydescription' inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                         </div>
                         <div className='w-[15%] px-3 py-2 '>
-                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
+                            <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md ml-1">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event, orderDescriptionFilterInput,
                                         setOrderDescriptionFilterInput,
@@ -1100,8 +1100,8 @@ const ManageVendorPayment = () => {
                             </div>
                             {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
                         </div>
-                        <div className='w-[12%] px-3 py-2'>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                        <div className='w-[11%] px-3 py-2'>
+                            <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentDateFilterInput} onChange={(e) => setPaymentDateFilterInput(e.target.value)} type="date"
                                     onKeyDown={(event) => handleEnterToFilter(event, paymentDateFilterInput,
                                         setPaymentDateFilterInput,
@@ -1255,26 +1255,29 @@ const ManageVendorPayment = () => {
 
 
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {!pageLoading && existingVendorPayment && existingVendorPayment.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                        <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
                         {!pageLoading && existingVendorPayment.map((item, index) => {
-                            return <div className='w-full h-auto py-2 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
-                                <div className="w-[90%] flex">
-                                    <div className='w-[4%] flex'>
+                            return <div className='w-full h-auto py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                                <div className="w-[90%] flex items-center">
+                                    <div className='w-[4%] flex overflow-x-hidden'>
                                         <div className='px-3 '>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex'>
+                                    <div className='w-[12%]  flex pl-0.5'>
                                         <div className='px-3 '>
                                             <p>{item.vendorname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
+                                    <div className='w-[11%]  flex pl-0.5'>
                                         <div className='px-3'>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex '>
+                                    <div className='w-[12%]  flex pl-0.5'>
                                         <div className='px-3 '>
                                             <p>{item.propertydescription}</p>
                                         </div>
@@ -1316,7 +1319,7 @@ const ManageVendorPayment = () => {
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2 py-5 flex ml-4'>
+                                    <div className='w-1/2 flex ml-4'>
                                         <div className='flex space-x-2'>
                                             <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
