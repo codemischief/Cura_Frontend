@@ -4,9 +4,10 @@ import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
+import bcrypt from 'bcryptjs';
 
 const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel }) => {
-    let password ="";
+    const [pass , setPass] = useState("");
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
@@ -49,7 +50,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         const existing = { ...formValues }
         existing.nameOfTheUser = res.data.fullname
         existing.userName = res.data.username
-        password = res.data.password
+        setPass(res.data.password) 
         // existing.confirmPassword = res.data.password
         existing.lob = res.data.lobid
         existing.email1 = res.data.email1
@@ -63,7 +64,9 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         existing.city = res.data.cityid
         existing.suburb = res.data.suburb
         existing.zipCode = res.data.zip
+        existing.status = res.data.status
         setFormValues(existing)
+        console.log(pass)
     }
     useEffect(() => {
         fetchInitialData()
@@ -200,7 +203,10 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         }
 
         if(!formValues.password){
-            formValues.password = password;
+            formValues.password = pass;
+            console.log(formValues.password);
+        } else{
+            formValues.password = bcrypt.hashSync(formValues.password, 10)
             console.log(formValues.password);
         }
 
@@ -216,6 +222,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         }
         const data = {
             "user_id": 1234,
+            "id" : currUser,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
             "password": formValues.password,
@@ -313,7 +320,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                             <div className="text-[13px]">Create Password </div>
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
-                                                <span className="w-4 h-4 absolute right-1 bottom-0.5">
+                                                <span className="w-4 h-4 absolute right-1 top-2">
                                                     <img
                                                         className='cursor-pointer'
                                                         onClick={passwordToggle}
@@ -378,7 +385,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                             <div className="text-[13px]">Confirm Password </div>
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
-                                                <span className="w-4 h-4 absolute right-1 bottom-0.5">
+                                                <span className="w-4 h-4 absolute right-1 top-2">
                                                     <img
                                                         className='cursor-pointer'
                                                         onClick={confirmPasswordToggle}
@@ -472,7 +479,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                 }}
                             />Active</div>
                             <div className="my-2 flex justify-center items-center gap-[10px]">
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit}>Add</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
                             </div>
                         </div>

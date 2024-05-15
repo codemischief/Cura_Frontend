@@ -1341,7 +1341,7 @@ const ManageUser = () => {
                                                 <div className="text-[13px]">Create Password <label className="text-red-500">*</label></div>
                                                 <div className="m-0 p-0 relative">
                                                     <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
-                                                    <span className="w-4 h-4 absolute right-1 bottom-0.5">
+                                                    <span className="w-4 h-4 absolute right-1 top-2">
                                                         <img
                                                             className='cursor-pointer'
                                                             onClick={passwordToggle}
@@ -1406,7 +1406,7 @@ const ManageUser = () => {
                                                 <div className="text-[13px]">Confirm Password <label className="text-red-500">*</label></div>
                                                 <div className="m-0 p-0 relative">
                                                     <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
-                                                    <span className="w-4 h-4 absolute right-1 bottom-0.5">
+                                                    <span className="w-4 h-4 absolute right-1 top-2">
                                                         <img
                                                             className='cursor-pointer'
                                                             onClick={confirmPasswordToggle}
