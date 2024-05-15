@@ -1415,7 +1415,7 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[10%]  flex pl-0.5'>
                                         <div className='px-3 '>
-                                            <p>{item.invoiceamount !== null ? item.invoiceamount.toFixed(2) : ""}</p>
+                                        <p>{item.invoiceamount !== null ? item.invoiceamount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex pl-0.5'>
