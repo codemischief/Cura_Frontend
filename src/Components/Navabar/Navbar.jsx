@@ -521,9 +521,11 @@ const Navbar = () => {
                 Lists
               </h1>
               <div className="text-[11px] text-[#505050] space-y-[2px]">
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Order Payment List
-                </p>
+                <Link to={"/orderPaymentList"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Order Payment List
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Order Receipt List
                 </p>

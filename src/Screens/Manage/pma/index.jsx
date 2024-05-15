@@ -78,14 +78,6 @@ const PmaBilling = () => {
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
   }, [pageNo, filter, countPerPage, sorting.sort_by, sorting.sort_order]);
-  
-
-  console.log("filter", filter);
-  // useEffect(() => {
-  //   if (status === "success") {
-  //     setOpenModal(false);
-  //   }
-  // }, [status]);
 
   const handleSelectMonth = (e) => {
     setSelectedMonth(e.target.value);
