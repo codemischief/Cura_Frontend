@@ -27,10 +27,10 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-      filterComponent: TextFilterField,
+      // filterComponent: TextFilterField,
       title: "Type",
       field: "type",
-      sorting: true,
+      sorting: false,
       filterDisabled: true,
       width: "6.66%",
     },
@@ -48,7 +48,7 @@ export default function connectionDataColumn(onQuery) {
       field: "monthyear",
       sorting: true,
       cellStyle: { minWidth: "20px", maxWidth: "34px" },
-      filterComponent: DateFilterField,
+      filterComponent: TextFilterField,
       // filterComponent:TextFilterField,
 
       width: "6.66%",
