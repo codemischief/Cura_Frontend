@@ -30,7 +30,8 @@ const SimpleTable = ({
                   <column.filterComponent
                     key={column.field}
                     columnfield={column.field}
-                  />,
+                    isDisabled={column.filterDisabled || false}
+                  />
                 ]}
               </th>
             ))}
@@ -69,7 +70,9 @@ const SimpleTable = ({
               </tr>
             ))
           ) : (
-            <tr className="border border-b border-[#CBCBCB] text-[#282828]">No records to display.</tr>
+            <tr className="border border-b border-[#CBCBCB] text-[#282828]">
+              No records to display.
+            </tr>
           )}
         </tbody>
       </table>

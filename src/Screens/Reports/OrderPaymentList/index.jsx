@@ -60,6 +60,7 @@ const OrderPaymentList = () => {
 
   const handlePageCountChange = (e) => {
     dispatch(setCountPerPage(e.target.value));
+    dispatch(setPageNumber(1))
   };
 
   const handleRefresh = () => {
@@ -85,7 +86,7 @@ const OrderPaymentList = () => {
           "lobname",
         ],
         sort_by: ["id"],
-        order: "desc",
+       
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
@@ -126,13 +127,13 @@ const OrderPaymentList = () => {
           "service",
           "lobname",
         ],
-        sort_by: [sorting.sort_by],
-        order: "desc",
+        sort_by: sorting.sort_by ? [sorting.sort_by]: undefined,
+        
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        sort_order: sorting.sort_order,
+        sort_order: sorting.sort_order ? sorting.sort_order:undefined
       };
       dispatch(getOrderPaymentData(obj));
     }

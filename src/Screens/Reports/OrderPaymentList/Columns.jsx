@@ -31,6 +31,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Type",
       field: "type",
       sorting: true,
+      filterDisabled: true,
       cellStyle: { ...cellStyleCommon, justifyContent: "center" },
       width: "6.66%",
     },
@@ -38,6 +39,7 @@ export default function connectionDataColumn(onQuery) {
       filterComponent: TextFilterField,
       title: "Payment Date",
       field: "paymentdate",
+      filterDisabled: false,
       sorting: true,
       cellStyle: { ...cellStyleCommon, justifyContent: "center" },
       width: "6.66%",
@@ -49,7 +51,7 @@ export default function connectionDataColumn(onQuery) {
       // cellStyle: { ...cellStyleCommon, justifyContent: "center" },
       filterComponent: DateFilterField,
       // filterComponent:TextFilterField,
-     
+
       width: "6.66%",
     },
     {

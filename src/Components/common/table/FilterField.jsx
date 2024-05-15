@@ -9,7 +9,7 @@ import {
 } from "../../Filters/data";
 
 export const FilterField = (props) => {
-  const { columnfield, type, onFilterChange, filter } = props;
+  const { columnfield, type, onFilterChange, filter, isDisabled } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -19,7 +19,7 @@ export const FilterField = (props) => {
 
   useEffect(() => {
     let copiedFilters = { ...filter };
-    console.log(copiedFilters,"copiedFilters",columnfield);
+    console.log(copiedFilters, "copiedFilters", columnfield);
     if (search === "" && copiedFilters?.hasOwnProperty(columnfield)) {
       delete copiedFilters[columnfield];
       onFilterChange(copiedFilters);
@@ -58,7 +58,7 @@ export const FilterField = (props) => {
 
   const handleResetFilter = () => {
     setSearch("");
-    console.log(filter,columnfield,"columnfield");
+    console.log(filter, columnfield, "columnfield");
     // if (filter.hasOwnProperty(columnfield)) {
     //   const prevFilters = { ...filter };
     //   delete prevFilters[columnfield];
@@ -94,7 +94,7 @@ export const FilterField = (props) => {
           <input
             className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
             type={type}
-            disabled={type === "date"}
+            disabled={isDisabled}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleEnterKeyPress}
@@ -110,7 +110,7 @@ export const FilterField = (props) => {
               onClick={handleResetFilter}
             />
           )}
-          <Tooltip title={type === "date" ? "filter disabled" : "Filters"}>
+          <Tooltip title={isDisabled ? "filter disabled" : "Filters"}>
             <button className="w-[32%] px-1 py-2" onClick={handleClick}>
               <FilterAlt
                 sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
@@ -120,7 +120,7 @@ export const FilterField = (props) => {
           </Tooltip>
         </div>
       </div>
-      {type !== "date" && (
+      {!isDisabled && (
         <Popover
           open={open}
           anchorEl={anchorEl}
