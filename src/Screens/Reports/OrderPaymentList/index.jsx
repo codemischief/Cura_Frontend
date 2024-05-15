@@ -104,10 +104,8 @@ const OrderPaymentList = () => {
   };
 
   const handleSearchEnterKey = (e) => {
-    if (search) {
+    if (searchInput) {
       if (e.key === "Enter" || e.key === "Return" || e.key === 13) {
-        console.log("search");
-
         handleSearch();
       }
     }
@@ -116,7 +114,9 @@ const OrderPaymentList = () => {
     setSearch("");
     setSearchInput("");
   };
-
+  useEffect(() => {
+    if (searchInput === "") setSearch("");
+  }, [searchInput]);
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
