@@ -1,4 +1,9 @@
-import { LinearProgress } from "@mui/material";
+import {
+  Backdrop,
+  CircularProgress,
+  LinearProgress,
+  Modal,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import PaginationComponent from "./Pagination";
 
@@ -25,7 +30,10 @@ const SimpleTable = ({
         <thead className="h-[115px] block">
           <tr className="h-[56px]">
             {columns.map((column, index) => (
-              <th key={index} style={{ width: column.width,...column.cellStyle }}>
+              <th
+                key={index}
+                style={{ width: column.width, ...column.cellStyle }}
+              >
                 {column.filterComponent && [
                   <column.filterComponent
                     key={column.field}
@@ -50,7 +58,30 @@ const SimpleTable = ({
           </tr>
         </thead>
         <tbody className="overflow-y-auto block max-h-[calc(100vh-375px)]">
-          {isLoading && <LinearProgress />}
+          {isLoading && (
+            <tr>
+              <td colSpan={columns.length} className="text-center">
+                <Modal
+                  open={isLoading}
+                  BackdropComponent={Backdrop}
+                  BackdropProps={{
+                    invisible: true, // To make the backdrop invisible while loading
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100%",
+                    }}
+                  >
+                    <CircularProgress sx={{ color: "white" }} />
+                  </div>
+                </Modal>
+              </td>
+            </tr>
+          )}
 
           {data.length > 0 ? (
             data?.map((rowData, rowIndex) => (
@@ -63,16 +94,16 @@ const SimpleTable = ({
                     className="py-3 text-center px-2"
                   >
                     {column.render
-                      ? column.render(rowIndex)
+                      ? column.render((pageNo - 1) * countPerPage + rowIndex)
                       : rowData[column.field]}
                   </td>
                 ))}
               </tr>
             ))
           ) : (
-            <tr className="border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
-              No records to display.
-            </tr>
+            <div className="flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center h-[28px]">
+              <p> No records to display.</p>
+            </div>
           )}
         </tbody>
       </table>

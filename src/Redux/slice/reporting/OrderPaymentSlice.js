@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
+import {
+  env_URL_SERVER,
+  updatedOrderPaymentData,
+  updatedResponsePmaData,
+} from "../../helper";
 
 const initialState = {
   orderPaymentData: [],
@@ -23,7 +27,7 @@ export const pmaSlice = createSlice({
   reducers: {
     setOrderPaymentData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.orderPaymentData = updatedResponsePmaData(data.data, year, month);
+      state.orderPaymentData = updatedOrderPaymentData(data.data, year, month);
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {
@@ -50,7 +54,7 @@ export const pmaSlice = createSlice({
       };
     },
     setOrderPayFilters: (state, { payload }) => {
-      state.filter = {...payload};
+      state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
       state.sorting = payload;
@@ -81,6 +85,23 @@ export const getOrderPaymentData =
 
       dispatch(setOrderPaymentData({ data: response.data, year, month }));
       dispatch(setStatus("success"));
+    } catch (err) {
+      dispatch(setStatus("error"));
+    }
+  };
+
+export const downloadPaymentDataXls =
+  (payloadObj, year, month) => async (dispatch) => {
+    try {
+      dispatch(setStatus("loading"));
+      const response = await axios.post(
+        `${env_URL_SERVER}getReportOrderPayment`,
+        payloadObj
+      );
+
+      return response.data;
+      // dispatch(setOrderPaymentData({ data: response.data, year, month }));
+      // dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
     }

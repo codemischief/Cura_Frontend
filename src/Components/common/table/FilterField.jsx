@@ -19,7 +19,6 @@ export const FilterField = (props) => {
 
   useEffect(() => {
     let copiedFilters = { ...filter };
-    console.log(copiedFilters, "copiedFilters", columnfield);
     if (search === "" && copiedFilters?.hasOwnProperty(columnfield)) {
       delete copiedFilters[columnfield];
       onFilterChange(copiedFilters);
@@ -58,7 +57,6 @@ export const FilterField = (props) => {
 
   const handleResetFilter = () => {
     setSearch("");
-    console.log(filter, columnfield, "columnfield");
     // if (filter.hasOwnProperty(columnfield)) {
     //   const prevFilters = { ...filter };
     //   delete prevFilters[columnfield];
@@ -67,7 +65,6 @@ export const FilterField = (props) => {
   };
 
   const handleEnterKeyPress = (e) => {
-    console.log("e", e.key);
     if (search) {
       if (e.key === "Enter" || e.key === "Return" || e.key === 13) {
         let filters = {
@@ -134,17 +131,26 @@ export const FilterField = (props) => {
             <MenuItem
               key={option.key}
               onClick={() => handleFilter(option.key)}
-              // sx={{
-              //   ...(filter[columnfield]?.[0] === option?.key &&
-              //   option?.key !== "noFilter"
-              //     ? { background: "lightblue", color: "black" }
-              //     : {}),
-              //   ":hover": {
-              //     background: "#F0F6FF", // Change this to your desired hover background color
-              //     color: "black", // Change this to your desired hover text color
-              //   },
-              // }}
-              // className={` ${filter[columnfield][0] && bg-blue-400 text-white } `}
+              sx={{
+                ...(filter &&
+                filter[columnfield] &&
+                filter[columnfield]?.[0] &&
+                filter[columnfield]?.[0] === option?.key &&
+                option?.key !== "noFilter"
+                  ? { background: "lightblue", color: "black" }
+                  : {}),
+                ":hover": {
+                  background: "#F0F6FF", // Change this to your desired hover background color
+                  color: "black", // Change this to your desired hover text color
+                },
+              }}
+              className={` ${
+                filter &&
+                filter[columnfield] &&
+                filter[columnfield]?.[0] &&
+                filter[columnfield]?.[0] &&
+                " bg-blue-400 text-white"
+              } `}
             >
               {option.title}
             </MenuItem>
@@ -160,4 +166,5 @@ FilterField.propTypes = {
   type: PropTypes.oneOf(["text", "number", "date"]).isRequired,
   onFilterChange: PropTypes.func.isRequired,
   filter: PropTypes.object.isRequired,
+  isDisabled: PropTypes.bool,
 };

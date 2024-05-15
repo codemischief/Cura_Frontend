@@ -3,7 +3,13 @@ import { useState } from "react";
 
 import { CloseOutlined, SearchOutlined } from "@mui/icons-material";
 
-const SearchBar = ({value,handleSearch,handleSearchvalue,removeSearchValue}) => {
+const SearchBar = ({
+  value,
+  handleSearch,
+  handleSearchvalue,
+  removeSearchValue,
+  ...searchProps
+}) => {
   return (
     <div className="flex bg-[#EBEBEB] h-[36px] focus:!outline-none !focus:border-none">
       <input
@@ -12,13 +18,17 @@ const SearchBar = ({value,handleSearch,handleSearchvalue,removeSearchValue}) => 
         placeholder="Search"
         value={value}
         onChange={handleSearchvalue}
+        {...searchProps}
       />
       <button>
-        <CloseOutlined  onClick={removeSearchValue}/>
+        <CloseOutlined onClick={removeSearchValue} />
       </button>
       <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
         <button>
-          <SearchOutlined className="m-2 fill-white text-white " onClick={handleSearch}/>
+          <SearchOutlined
+            className="m-2 fill-white text-white "
+            onClick={handleSearch}
+          />
         </button>
       </div>
     </div>

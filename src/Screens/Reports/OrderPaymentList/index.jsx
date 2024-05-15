@@ -10,10 +10,12 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 
 import { useDispatch } from "react-redux";
 import {
+  downloadPaymentDataXls,
   getOrderPaymentData,
   setCountPerPage,
   setPageNumber,
   setSorting,
+  setStatus,
 } from "../../../Redux/slice/reporting/OrderPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
@@ -98,8 +100,18 @@ const OrderPaymentList = () => {
 
   const handleSearch = () => {
     setSearch(searchInput);
+    dispatch(setPageNumber(1));
   };
 
+  const handleSearchEnterKey = (e) => {
+    if (search) {
+      if (e.key === "Enter" || e.key === "Return" || e.key === 13) {
+        console.log("search");
+
+        handleSearch();
+      }
+    }
+  };
   const removeSearchValue = () => {
     setSearch("");
     setSearchInput("");
@@ -133,7 +145,7 @@ const OrderPaymentList = () => {
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        sort_order: sorting.sort_order ? sorting.sort_order : undefined,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
       };
       dispatch(getOrderPaymentData(obj));
     }
@@ -154,12 +166,43 @@ const OrderPaymentList = () => {
     dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
   };
 
-  const downloadExcel = () => {
-    const tableData = orderPaymentData;
-    const worksheet = XLSX.utils.json_to_sheet(tableData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(workbook, "orderPayment.xlsx");
+  const downloadExcel = async () => {
+    let obj = {
+      user_id: 1234,
+      startdate: startDate ?? "2021-01-01",
+      enddate: endDate ?? "2022-01-01",
+      rows: [
+        "paymentdate",
+        "monthyear",
+        "fy",
+        "amount",
+        "entityname",
+        "mode_of_payment",
+        "clientid",
+        "clientname",
+        "vendorname",
+        "orderid",
+        "orderdescription",
+        "serviceid",
+        "service",
+        "lobname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: 0,
+      pg_size: 0,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(downloadPaymentDataXls(obj)).then((response) => {
+      const tableData = response.data;
+      const worksheet = XLSX.utils.json_to_sheet(tableData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      XLSX.writeFile(workbook, "orderPayment.xlsx");
+      dispatch(setStatus("success"));
+    });
   };
 
   const handleShow = () => {
@@ -223,6 +266,7 @@ const OrderPaymentList = () => {
               handleSearchvalue={handleSearchvalue}
               handleSearch={handleSearch}
               removeSearchValue={removeSearchValue}
+              onKeyDown={handleSearchEnterKey}
             />
           </div>
         </div>
