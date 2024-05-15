@@ -736,15 +736,16 @@ const ManageBuilder = () => {
                             {/* <p>Projects</p> */}
                         </div>
                     </div>
-                    <div className="w-[15%]  h-full flex">
+                    <div className="w-[15%] flex">
                         <div className='w-1/2  px-3 py-2.5'>
-                            <div className=' flex items-center bg-[#EBEBEB] rounded-[5px]'>
+                            <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                 <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
                                 <button className='px-1 py-2 w-[33%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
+                            {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' />}
                         </div>
-                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterColumn='id' />}
-                        <div className='w-1/2 0 p-4'>
+                        
+                        <div className='w-1/2 p-4'>
                             {/* <p>Edit</p> */}
                         </div>
                     </div>

@@ -284,12 +284,12 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                 <div className="flex gap-[48px] justify-center ">
                                     <div className=" space-y-3 py-5">
                                         <div className="">
-                                            <div className="text-sm text-[#787878]">Cura Office </div>
+                                            <div className="text-sm text-[#787878] mb-1">Cura Office </div>
                                             <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">
-                                                Client <label className="text-red-500">*</label>
+                                            <div className="text-[13px] text-[#787878]">
+                                                Client 
                                             </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
                                             {/* <AsyncSelect
@@ -362,11 +362,11 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                     <div className=" space-y-3 py-5">
                                         <div className="">
                                             <div className="text-sm text-[#787878]">Payment ID </div>
-                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
+                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={currPayment} readOnly />
                                         </div>
                                         <div className="">
-                                            <div className="text-[13px]">
-                                                Order <label className="text-red-500">*</label>
+                                            <div className="text-[13px] text-[#787878]">
+                                                Order 
                                             </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly />
                                             {/* <select
