@@ -208,7 +208,26 @@ const ManageVendorPayment = () => {
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
-        setModesData(res.data)
+        const tempArray = []
+        const len = res.data.length
+        for(var i=0;i<len;i++) {
+            if(res.data[i][1][0] == 'Z') {
+
+            }else {
+                tempArray.push(res.data[i])
+            }
+            
+        }
+        setModesData(tempArray)
+        // setModesData(res.data && res.data.map((item) => {
+        //     // console.log()
+        //    if(item[1].startsWith('Z')) {
+
+        //    }else {
+        //     return item
+        //    }
+        // }))
+        console.log(modesData)
         console.log(res)
     }
 
@@ -1517,7 +1536,7 @@ const ManageVendorPayment = () => {
                                                     onChange={handleChange}
                                                 >
                                                     <option value="" hidden> Select Mode</option>
-                                                    {modesData.map((item) => (
+                                                    {modesData && modesData.length > 0 && modesData.map((item) => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
                                                         </option>

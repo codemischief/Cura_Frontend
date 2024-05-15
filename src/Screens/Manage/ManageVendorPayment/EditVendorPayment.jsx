@@ -5,7 +5,7 @@ import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import Draggable from 'react-draggable'
-const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, usersData, showSuccess, showCancel }) => {
+const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, showSuccess, showCancel }) => {
     const initialValues = {
         client: null,
         paymentby: null,
@@ -29,6 +29,18 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
+    const [modesData,setModesData] = useState([])
+    const fetchModesData = async () => {
+        const data = {
+            "user_id": 1234
+        }
+        const response = await APIService.getModesAdmin(data)
+        const res = await response.json()
+        
+        setModesData(res.data)
+        console.log(modesData)
+        console.log(res)
+    }
 
     // const [modesData,setModesData] = useState([])
     const [orders, setOrders] = useState([])
@@ -54,6 +66,7 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
         existing.paymentdate = res.data.paymentdate
         existing.orderid = res.data.orderid
         getOrdersData(res.data.orderid)
+        
         existing.vendorid = res.data.vendorid
         existing.mode = res.data.mode
         existing.description = res.data.description
@@ -84,8 +97,8 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
     }
     const [tempFormValues, setTempFormValues] = useState({})
     const getOrdersData = async (id) => {
-        const data = { "user_id": 1234, "item_id": id, "table_name": "get_orders_view" }
-        const response = await APIService.getItembyId(data)
+        const data = { "user_id": 1234, "orderid": id }
+        const response = await APIService.getOrderPending(data)
         const res = await response.json()
         const existing = { ...tempFormValues }
         existing.orderdate = res.data.orderdate
@@ -94,6 +107,7 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
         console.log(res.data)
     }
     useEffect(() => {
+        fetchModesData()
         fetchInitialData()
     }, [])
 
@@ -337,11 +351,25 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                                 value={formValues.mode}
                                                 onChange={handleChange}
                                             >
-                                                {modesData.map((item) => (
-                                                    <option key={item[0]} value={item[0]}>
+                                                {modesData.map((item) => {
+                                                    if(item[0] == formValues.mode && item[1][0] == 'Z') {
+                                                        return <option key={item[0]} value={item[0]} selected hidden>
+                                                                {item[1]}
+                                                            </option>
+                                                    }else if(item[0] == formValues.mode) {
+                                                        <option key={item[0]} value={item[0]} selected >
+                                                                {item[1]}
+                                                            </option>
+                                                    }else if( item[1][0] == 'Z'){
+                                                    return <option key={item[0]} value={item[0]} hidden>
+                                                        {item[1]}
+                                                    </option>}
+                                                    else {
+                                                        return <option key={item[0]} value={item[0]} >
                                                         {item[1]}
                                                     </option>
-                                                ))}
+                                                    }
+})}
                                             </select>
                                             <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
                                         </div>
