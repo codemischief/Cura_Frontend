@@ -412,7 +412,7 @@ const ManageVendorPayment = () => {
         paymentdate: null,
         orderid: null,
         vendorid: null,
-        mode: null,
+        mode: 5,
         description: "",
         tds: null,
         servicetaxamount: null,
