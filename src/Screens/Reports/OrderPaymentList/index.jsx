@@ -20,7 +20,6 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 
-
 const OrderPaymentList = () => {
   const dispatch = useDispatch();
   const {
@@ -96,17 +95,14 @@ const OrderPaymentList = () => {
     }
   };
 
-  const handleSearch = ()=>{
-    setSearch(searchInput)
-  }
-  
+  const handleSearch = () => {
+    setSearch(searchInput);
+  };
 
-
-  const removeSearchValue = ()=>{
-    setSearch("")
-    setSearchInput("")
-
-  }
+  const removeSearchValue = () => {
+    setSearch("");
+    setSearchInput("");
+  };
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -136,29 +132,34 @@ const OrderPaymentList = () => {
         search_key: search,
         pg_no: +pageNo,
         pg_size: +countPerPage,
-        sort_order:sorting.sort_order
+        sort_order: sorting.sort_order,
       };
       dispatch(getOrderPaymentData(obj));
     }
-  }, [filter, countPerPage, pageNo, search,sorting.sort_order,sorting.sort_by]);
-
+  }, [
+    filter,
+    countPerPage,
+    pageNo,
+    search,
+    sorting.sort_order,
+    sorting.sort_by,
+  ]);
 
   const handleSortingChange = (accessor) => {
-    const sortOrder = accessor === sorting.sort_by && sorting.sort_order === "asc" ? "desc" : "asc";
-    dispatch(setSorting({sort_by:accessor,sort_order:sortOrder}))
-    
-   };
+    const sortOrder =
+      accessor === sorting.sort_by && sorting.sort_order === "asc"
+        ? "desc"
+        : "asc";
+    dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
+  };
 
-
-    const downloadExcel = () => {
-      const tableData = orderPaymentData
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "orderPayment.xlsx");
-    };
-   
-
+  const downloadExcel = () => {
+    const tableData = orderPaymentData;
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "orderPayment.xlsx");
+  };
 
   const handleShow = () => {
     if (startDate && endDate) {
@@ -208,7 +209,21 @@ const OrderPaymentList = () => {
             heading={"Order Payment List"}
             path={["Reports", "Lists", "Order Payment List"]}
           />
-          <SearchBar value={searchInput} handleSearchvalue={handleSearchvalue} handleSearch={handleSearch} removeSearchValue={removeSearchValue}/>
+          <div className="flex justify-between gap-7 h-[36px]">
+            {showTable && (
+              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+                <p>
+                  Generated on: <span> {new Date().toLocaleString()}</span>
+                </p>
+              </div>
+            )}
+            <SearchBar
+              value={searchInput}
+              handleSearchvalue={handleSearchvalue}
+              handleSearch={handleSearch}
+              removeSearchValue={removeSearchValue}
+            />
+          </div>
         </div>
 
         <Stack
@@ -216,6 +231,7 @@ const OrderPaymentList = () => {
           justifyContent={"space-between"}
           direction={"row"}
           alignItems={"center"}
+          height={"3.875rem"}
         >
           <Stack
             direction={"row"}
@@ -274,8 +290,6 @@ const OrderPaymentList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          
-
         />
       </div>
       <ConfirmationModal

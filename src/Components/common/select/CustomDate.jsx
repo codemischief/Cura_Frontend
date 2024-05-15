@@ -4,7 +4,7 @@ const DatePicker = ({ label, selectContainerClass, ...dateProps }) => {
       <label className="font-sans text-sm font-normal leading-5">
         {label} <span className="text-[#CD0000]">*</span>
       </label>
-      <input type="date" {...dateProps} />
+      <input type="date" {...dateProps} className="border border-[#C6C6C6] text-[#505050]"/>
       {/* <select
         className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
         {...dateProps}
