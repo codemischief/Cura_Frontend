@@ -59,7 +59,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         existing.homePhone = res.data.homephone
         existing.addressLine1 = res.data.addressline1
         existing.addressLine2 = res.data.addressline2
-        existing.effectiveDate = res.data.effectivedate
+        existing.effectiveDate = res.data.effectivedate ?  res.data.effectivedate.split('T')[0] : ""
         existing.role = res.data.roleid
         existing.city = res.data.cityid
         existing.suburb = res.data.suburb
@@ -206,10 +206,10 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             formValues.password = pass;
             console.log(formValues.password);
         } else{
-            formValues.password = bcrypt.hashSync(formValues.password, 10)
+            formValues.password = btoa(formValues.password)
             console.log(formValues.password);
         }
-
+ 
         let arr = (formValues.nameOfTheUser).split(" ");
         let firstName = arr[0];
         let lastName = "";

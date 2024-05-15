@@ -360,7 +360,7 @@ const ManageUser = () => {
             "user_id": 1234,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
-            "password": bcrypt.hashSync(formValues.password, 10),
+            "password": btoa(formValues.password),
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
