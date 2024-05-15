@@ -435,6 +435,11 @@ const ManageVendorInvoice = () => {
         SetIsVendorInvoiceDialogue(false);
         if (res.result == "success") {
             setFormValues(initialValues);
+            const temp = {...selectedOption}
+            temp.label = "Select Client"
+            temp.value = null 
+            setSelectedOption(temp)
+            setOrderText("Select Order")
             openAddSuccess();
         } else {
             openFailureModal();
@@ -514,7 +519,9 @@ const ManageVendorInvoice = () => {
                 value: null
             }
         )
+
         setOrders([]);
+
         setOrderText("Select Order");
     }
 

@@ -183,6 +183,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         existing.order = null
         existing.client = e.value
         getOrdersByClientId(e.value)
+        setOrderText("Select Order")
         // getClientPropertyByClientId(e.value)
         setFormValues(existing)
         //    const existing = {...formValues}

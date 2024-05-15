@@ -861,6 +861,8 @@ const ManageOrder = () => {
         setIsStateDialogue(true);
     };
     const handleClose = () => {
+        setFormValues(initialValues)
+        
         setIsStateDialogue(false);
     }
     const [showAddSuccess,setShowAddSuccess] = useState(false);
