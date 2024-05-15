@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, useScrollTrigger } from '@mui/material'
+import { CircularProgress, Modal, useScrollTrigger } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
@@ -33,8 +33,10 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
     // const [modesData,setModesData] = useState([])
     const [orders, setOrders] = useState([])
     // const [vendorData,setVendorData] = useState([])
+    const [pageLoading,setPageLoading] = useState(false)
     // const [usersData,setUsersData] = useState([])
     const fetchInitialData = async () => {
+        setPageLoading(true)
         const data = {
             "user_id": 1234,
             "table_name": "get_vendor_payment_view",
@@ -65,6 +67,9 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
         // existing.entityid = res.data 
         // existing.officeid = res.data.
         setFormValues(existing)
+        setTimeout(() => {
+           setPageLoading(false)
+        },1000)
     }
     const getOrdersByClientId = async (id) => {
         // console.log('hello')
@@ -258,7 +263,7 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
             className='flex justify-center items-center'
         >
             <>
-                <Draggable>
+                {/* <Draggable> */}
                     <div className='flex justify-center'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
@@ -269,7 +274,12 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                     <button onClick={() => { close() }}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
-
+                            {pageLoading && <div className='flex space-x-2 items-center justify-center py-4'>
+                                   <CircularProgress/>
+                                   <h1>Fetching Data</h1>
+                                </div> 
+                                 }
+                            {!pageLoading  && 
                             <div className="h-auto w-full mt-[5px]">
                                 <div className="flex gap-[48px] justify-center ">
                                     <div className=" space-y-3 py-5">
@@ -405,7 +415,7 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                                 </option>
                                             ))}
                                         </select> */}
-                                            <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} />
+                                            <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
                                             <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentBy}</div>
                                         </div>
                                         <div className="">
@@ -418,14 +428,14 @@ const EditVendorPayment = ({ handleClose, currPayment, modesData, vendorData, us
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
                             <div className="my-3 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
                             </div>
                         </div>
                     </div>
-                </Draggable>
+                {/* </Draggable> */}
             </>
         </Modal>
     )

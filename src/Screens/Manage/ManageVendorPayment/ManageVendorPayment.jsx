@@ -1571,7 +1571,8 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} />
+                                                {/* <OrderDropDown options={user} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
+                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                             </div>
                                             <div className="">
