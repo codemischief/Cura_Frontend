@@ -169,7 +169,7 @@ const App = () => {
           />
           <Route path="/manage/pmaBilling" element={<PmaBilling />} />
           <Route path="admin/temp" element={<Temp />} />
-          <Route path="/report" element={<OrderPaymentList />} />
+          <Route path="/orderPaymentList" element={<OrderPaymentList />} />
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
