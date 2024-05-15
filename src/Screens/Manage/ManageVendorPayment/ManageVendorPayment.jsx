@@ -1335,7 +1335,7 @@ const ManageVendorPayment = () => {
                                     </div>
                                     <div className='w-[9%]  flex pl-1'>
                                         <div className='px-3 '>
-                                            <p>{item.amount ? item.amount.toFixed(2) : ""}</p>
+                                            <p>{item.amount !== null ? item.amount.toFixed(2) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[12%]  flex pl-1'>
