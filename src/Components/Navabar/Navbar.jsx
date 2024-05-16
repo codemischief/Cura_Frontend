@@ -134,36 +134,32 @@ const Navbar = () => {
         <div className="flex text-stone-50	space-x-9 items-center">
           {/* this will have the center bar */}
           <div
-            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${
-              isToggledAdmin ? "bg-white text-accent-blue" : ""
-            }`}
+            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledAdmin ? "bg-white text-accent-blue" : ""
+              }`}
           >
             <button onClick={handleAdminChange}>
               <p className=" font-sans text-md">Admin</p>
             </button>
           </div>
           <div
-            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${
-              isToggledManage ? "bg-white text-accent-blue" : ""
-            }`}
+            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledManage ? "bg-white text-accent-blue" : ""
+              }`}
           >
             <button onClick={handleManageChange}>
               <p className="font-thin font-sans text-md">Manage</p>
             </button>
           </div>
           <div
-            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${
-              isToggledReport ? "bg-white text-accent-blue" : ""
-            }`}
+            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledReport ? "bg-white text-accent-blue" : ""
+              }`}
           >
             <button onClick={handleReportChange}>
               <p className="font-thin font-sans text-md">Report</p>
             </button>
           </div>
           <div
-            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${
-              isToggledResearch ? "bg-white text-accent-blue" : ""
-            }`}
+            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledResearch ? "bg-white text-accent-blue" : ""
+              }`}
           >
             <button onClick={handleResearchChange}>
               <p className="font-thin font-sans text-md">Research</p>
@@ -173,9 +169,8 @@ const Navbar = () => {
         <div className="flex  text-stone-50	space-x-5 items-center mr-4">
           {/* this will have the right content */}
           <div
-            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${
-              isToggledDash || isFirstOpen ? "bg-white text-accent-blue" : ""
-            }`}
+            className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash || isFirstOpen ? "bg-white text-accent-blue" : ""
+              }`}
           >
             <button onClick={handleDashChange}>
               <p className=" font-sans text-md">Dashboard</p>
@@ -526,9 +521,11 @@ const Navbar = () => {
                     Order Payment List
                   </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Order Receipt List
-                </p>
+                <Link to={"/orderReceiptList"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Order Receipt List
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Order Invoice List
                 </p>

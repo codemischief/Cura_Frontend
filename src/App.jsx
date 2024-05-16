@@ -56,6 +56,7 @@ import ClientPmaArgreement from "./Screens/Manage/ManageClientProperty/ClientPma
 import ClientLLAgreement from "./Screens/Manage/ManageClientProperty/ClientLLAgreement/ClientLLAgreement copy";
 import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
+import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
 
 const App = () => {
   const ROLES = {
@@ -170,6 +171,7 @@ const App = () => {
           <Route path="/manage/pmaBilling" element={<PmaBilling />} />
           <Route path="admin/temp" element={<Temp />} />
           <Route path="/orderPaymentList" element={<OrderPaymentList />} />
+          <Route path="/orderReceiptList" element={<OrderReceiptList />} />
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
