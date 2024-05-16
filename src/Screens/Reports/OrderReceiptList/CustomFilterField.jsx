@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setOrderPayFilters, setPageNumber } from "../../../Redux/slice/reporting/OrderPaymentSlice";
+import { setOrderReceiptFilters, setPageNumber } from "../../../Redux/slice/reporting/OrderReceiptSlice";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
@@ -8,7 +8,7 @@ export function CustomFilterField(props) {
   const { filter } = useSelector((state) => state.orderPayment);
 
   const handleFilterChange = (filters) => {
-    dispatch(setOrderPayFilters({...filters}));
+    dispatch(setOrderReceiptFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 
