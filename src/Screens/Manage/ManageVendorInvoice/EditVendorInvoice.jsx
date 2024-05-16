@@ -150,23 +150,6 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     const [selectedOption, setSelectedOption] = useState({
         label: "Enter Client Name",
         value: null

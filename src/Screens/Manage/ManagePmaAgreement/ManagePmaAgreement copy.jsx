@@ -32,6 +32,7 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const ManagePmaArgreement = () => {
     const dataRows = [
         "id",
@@ -225,11 +226,21 @@ const ManagePmaArgreement = () => {
     const fetchData = async () => {
         console.log('ugm')
         setPageLoading(true);
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -416,6 +427,8 @@ const ManagePmaArgreement = () => {
             temp.label = "Select Client"
             temp.value = null
             setSelectedOption(temp)
+            setOrderText("Select Order")
+            setPropertyText("Select Client Property")
             setFormValues(initialValues);
             openAddSuccess();
         } else {
@@ -500,6 +513,18 @@ const ManagePmaArgreement = () => {
     const initials = () => {
         setFormValues(initialValues);
         setFormErrors({});
+        setSelectedOption(
+            {
+                label: "Select Client",
+                value: null
+            }
+        )
+
+        setOrders([]);
+        setClientPropertyData([]);
+
+        setOrderText("Select Order");
+        setPropertyText("Select Client Property")
     }
 
     // harcoded dropdown
@@ -765,6 +790,8 @@ const ManagePmaArgreement = () => {
         getOrdersByClientId(e.value)
         getClientPropertyByClientId(e.value)
         setFormValues(existing)
+        setOrderText("Select Order")
+        setPropertyText("Select Client Property")
         //    const existing = {...formValues}
         //    const temp = {...existing.client_property}
         //    temp.clientid = e.value
@@ -1026,6 +1053,9 @@ const ManagePmaArgreement = () => {
 
         }
     }
+
+    const [orderText, setOrderText] = useState("Select Order");
+    const [propertyText , setPropertyText] = useState("Select Client Property");
 
     return (
         <div className='h-screen'>
@@ -1589,7 +1619,7 @@ const ManagePmaArgreement = () => {
                                                 <div className="text-[13px]">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="order"
                                                     value={formValues.order}
@@ -1605,7 +1635,6 @@ const ManagePmaArgreement = () => {
                                                             &nbsp;
                                                             <p className="float-right">Order Name</p>
                                                         </div>
-                                                        {/* Id &nbsp; &nbsp; &nbsp; &nbsp;Order Name */}
                                                     </option>
 
                                                     {orders.map((item) => (
@@ -1617,7 +1646,8 @@ const ManagePmaArgreement = () => {
                                                             {item.ordername}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                             </div>
                                             <div className="">
@@ -1632,11 +1662,7 @@ const ManagePmaArgreement = () => {
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Rented Fee in % </div>
-                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="rentFee" value={formValues.rentFee} onChange={handleChange} min="0" max="100" onInput={(e) => {
-                                                    if (parseInt(e.target.value) > parseInt(e.target.max)) {
-                                                        e.target.value = e.target.max;
-                                                    }
-                                                }} />
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="rentFee" value={formValues.rentFee} onChange={handleChange}  />
                                             </div>
                                             <div className=" flex items-center text-[13px]"><input
                                                 type="checkbox"
@@ -1655,7 +1681,7 @@ const ManagePmaArgreement = () => {
                                                 <div className="text-[13px]">
                                                     Client Property <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="clientProperty"
                                                     value={formValues.clientProperty}
@@ -1670,7 +1696,8 @@ const ManagePmaArgreement = () => {
                                                             {item.propertyname}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">
