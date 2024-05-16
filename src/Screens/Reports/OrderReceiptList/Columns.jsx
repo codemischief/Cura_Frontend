@@ -84,7 +84,6 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Mode",
       field: "mode_of_payment",
-      type: "numeric",
       sorting: true,
       filterComponent: TextFilterField,
       width: "5.88%",
@@ -92,7 +91,6 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Client ID",
       field: "clientid",
-      type: "numeric",
       sorting: true,
       filterComponent: NumberFilterField,
       width: "5.88%",
@@ -101,18 +99,15 @@ export default function connectionDataColumn(onQuery) {
       title: "Client Name",
       field: "clientname",
       sorting: true,
-      type: "numeric",
       filterComponent: TextFilterField,
       width: "5.88%",
     },
     {
       title: "Vendor Name",
       field: "vendorname",
-      sorting: true,
-      type: "numeric",
-      filterComponent: TextFilterField,
+      sorting: false,
+      // filterComponent: TextFilterField,
       width: "5.88%",
-      sorting: true,
     },
     {
       title: "Order Id",

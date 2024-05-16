@@ -218,7 +218,18 @@ const ManageUser = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        // setCurrentPage((prev) => 1)
+        setFilterState(tempArray)
+        setCurrentPage((prev) => 1)
         // we need to query thru the object
         setPageLoading(true);
         const data = {
@@ -227,7 +238,7 @@ const ManageUser = () => {
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
-            "pg_no": Number(currentPage),
+            "pg_no": 1,
             "pg_size": Number(currentPages),
             "search_key": searchInput
         };
@@ -1044,7 +1055,7 @@ const ManageUser = () => {
                                 </div>
                             </div>
                             <div className='w-[24%]  px-3 py-2.5'>
-                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={nameFilterInput} onChange={(e) => setNameFilterInput(e.target.value)}
 
                                         onKeyDown={(event) => handleEnterToFilter(event, nameFilterInput,
@@ -1059,7 +1070,7 @@ const ManageUser = () => {
                             </div>
 
                             <div className='w-[30%]  px-3 py-2.5 mx-[-2px]'>
-                                <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <div className="w-[45%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={usernameFilterInput} onChange={(e) => setUsernameFilterInput(e.target.value)}
 
                                         onKeyDown={(event) => handleEnterToFilter(event, usernameFilterInput,
@@ -1074,7 +1085,7 @@ const ManageUser = () => {
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5 '>
-                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleFilterInput} onChange={(e) => setRoleFilterInput(e.target.value)}
 
 
@@ -1091,7 +1102,7 @@ const ManageUser = () => {
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5'>
-                                <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={statusFilterInput} onChange={(e) => setStatusFilterInput(e.target.value)}
 
                                         onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
@@ -1107,7 +1118,7 @@ const ManageUser = () => {
                         </div>
                         <div className="w-[30%] flex">
                             <div className='w-[75%] px-3 py-2.5 mx-[-3px]'>
-                                <div className="w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]">
+                                <div className="w-[30%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
 
                                         onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
@@ -1199,12 +1210,12 @@ const ManageUser = () => {
                                             <p>{item.username}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[20%]  flex '>
+                                    <div className='w-[20%]  flex pl-0.5'>
                                         <div className='px-3 overflow-x-hidden'>
                                             <p>{item.role_name}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[20%]  flex '>
+                                    <div className='w-[20%]  flex pl-0.5'>
                                         <div className='px-3 flex items-center space-x-2'>
                                             {item.status ? <><div className='w-[7px] h-[7px] rounded-xl bg-green-600'></div>
                                                 <p>active</p></> : <><div className='w-[7px] h-[7px] rounded-xl bg-red-600'></div>
