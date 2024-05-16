@@ -262,33 +262,7 @@ const ManagePmaArgreement = () => {
         setCurrentPage(pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -312,33 +286,7 @@ const ManagePmaArgreement = () => {
         setCurrentPages((prev) => quantity)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientpropertyid",
-                "startdate",
-                "enddate",
-                "actualenddate",
-                "active",
-                "scancopy",
-                "reasonforearlyterminationifapplicable",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "description",
-                "rented",
-                "fixed",
-                "rentedtax",
-                "fixedtax",
-                "orderid",
-                "orderdescription",
-                "poastartdate",
-                "poaenddate",
-                "poaholder",
-                "clientname",
-                "status",
-                "propertystatus",
-                "propertydescription"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -951,7 +899,7 @@ const ManagePmaArgreement = () => {
                 }
             }
 
-            if (type == 'noFilter') setInputVariable("");
+            if (type == 'noFilter' || type == "isNull" || type == "isNotNull") setInputVariable("");
         }
 
 
@@ -1372,29 +1320,29 @@ const ManagePmaArgreement = () => {
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {pageLoading && <div className=''><LinearProgress /></div>}
                         {!pageLoading && existingPmaAgreement && existingPmaAgreement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
                         {!pageLoading && existingPmaAgreement.map((item, index) => {
-                            return <div className='w-full h-auto bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                            return <div className='w-full h-auto bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1'>
                                 <div className="w-[90%] flex items-center">
                                     <div className='w-[2%] flex overflow-x-hidden'>
                                         <div className='px-3 '>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10.8%]  flex'>
+                                    <div className='w-[10.8%]  flex pl-0.5'>
                                         <div className='px-3 '>
                                             <p>{item.clientname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14.8%]  flex'>
+                                    <div className='w-[14.8%]  flex pl-0.5'>
                                         <div className='px-3 '>
                                             <p>{item.propertydescription}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex '>
+                                    <div className='w-[9.8%]  flex pl-0.5'>
                                         <div className='px-3'>
                                             <p>{item.orderdescription}</p>
                                         </div>
@@ -1418,7 +1366,7 @@ const ManagePmaArgreement = () => {
                                                 <p> inactive</p></>}
                                         </div>
                                     </div>
-                                    <div className='w-[9.8%]  flex pl-0.5'>
+                                    <div className='w-[9.8%]  flex pl-1'>
                                         <div className='px-3'>
                                             <p>{item.startdate ? item.startdate.split('T')[0] : ""}</p>
                                         </div>
@@ -1451,7 +1399,7 @@ const ManagePmaArgreement = () => {
                                         </div>
                                         {/* <div className="font-extrabold py-5">↑↓</div> */}
                                     </div>
-                                    <div className='w-[35%] py-3  flex'>
+                                    <div className='w-[35%]  flex'>
                                         <div className='flex space-x-1'>
                                             <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" onClick={() => handleDelete(item.id)} />
