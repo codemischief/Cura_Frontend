@@ -504,6 +504,16 @@ const ManagePmaArgreement = () => {
     // validate form and to throw Error message
     const validate = () => {
         var res = true;
+        if (!formValues.client) {
+            setFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
         if (!formValues.clientProperty || formValues.clientProperty == "") {
             setFormErrors((existing) => {
                 return { ...existing, clientProperty: "Select Client Property" }
@@ -803,10 +813,10 @@ const ManagePmaArgreement = () => {
             filterData: "String",
             filterInput: ""
         },
-        status: {
+        active: {
             filterType: "",
             filterValue: "",
-            filterData: "String",
+            filterData: "Numeric",
             filterInput: ""
         },
         startdate: {
@@ -847,7 +857,7 @@ const ManagePmaArgreement = () => {
         console.log('hey')
         console.log(filterMapState);
 
-        if (columnName == 'status') {
+        if (columnName == 'active') {
             var existing = filterMapState;
             if (type == 'noFilter') {
                 setInputVariable("");
@@ -1010,9 +1020,9 @@ const ManagePmaArgreement = () => {
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New PMA Agreement Created Successfully" />}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New PMA Agreement created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Pma Agreement" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
             {/* {openAddConfirmation && <SaveConfirmationEmployee handleClose={() => setOpenAddConfirmation(false)} currEmployee={formValues.employeeName} addEmployee={addEmployee} />} */}
             {openAddConfirmation && <SaveConfirmationPmaAgreement addPmaAgreement={addPmaAgreement} handleClose={() => setOpenAddConfirmation(false)} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
@@ -1145,11 +1155,11 @@ const ManagePmaArgreement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event, statusFilterInput,
                                         setStatusFilterInput,
                                         'equalTo',
-                                        'status')}
+                                        'active')}
                                 />
                                 <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
-                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='status' menuRef={menuRef} />}
+                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='active' menuRef={menuRef} />}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1263,7 +1273,7 @@ const ManagePmaArgreement = () => {
                             </div>
                             <div className='w-[7.8%]  flex'>
                                 <div className='px-3 py-5'>
-                                    <p>Status <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Status <button onClick={() => handleSort('active')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[9.8%]  flex'>
