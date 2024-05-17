@@ -51,7 +51,7 @@ const Locality = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [filterArray, setFilterArray] = useState([["country", "contains", ""], ["state", "contains", ""], ["city", "contains", ""], ["locality", "contains", ""]]);
 
-    
+
     const [sortField, setSortField] = useState("id");
     const initialValues = {
         country: 5,
@@ -230,14 +230,14 @@ const Locality = () => {
         console.log(filterMapState);
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         Number(filterMapState[key].filterValue),
                         filterMapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
@@ -245,7 +245,7 @@ const Locality = () => {
                         filterMapState[key].filterData,
                     ]);
                 }
-                
+
             }
         })
         setFilterState(tempArray)
@@ -393,7 +393,7 @@ const Locality = () => {
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
-            "rows": ["country", "state", "city", "locality" , "id"],
+            "rows": ["country", "state", "city", "locality", "id"],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -401,13 +401,13 @@ const Locality = () => {
             "pg_size": 0,
             "search_key": searchQuery
         };
-        const response = await APIService.getLob(data)
+        const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "LobData.xlsx");
+        XLSX.writeFile(workbook, "LocalityData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const [lobName, setLobName] = useState("");
@@ -556,47 +556,47 @@ const Locality = () => {
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-    
+
         var existing = filterMapState;
         existing = {
-          ...existing, [columnName]: {
-            ...existing[columnName],
-            filterType: type == 'noFilter' ? "" : type
-          }
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterType: type == 'noFilter' ? "" : type
+            }
         }
         existing = {
-          ...existing, [columnName]: {
-            ...existing[columnName],
-            filterValue: type == 'noFilter' ? "" : inputVariable
-          }
+            ...existing, [columnName]: {
+                ...existing[columnName],
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
         }
-    
+
         if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
-    
-    
+
+
         fetchFiltered(existing);
-      }
-      const [filterState, setFilterState] = useState([]);
+    }
+    const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
         const tempArray = [];
         setCountryFilter(false);
-                setStateFilter(false);
-                setCityFilter(false)
-                setLocalityFilter(false)
-                setIdFilter(false)
+        setStateFilter(false);
+        setCityFilter(false)
+        setLocalityFilter(false)
+        setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
-            if(mapState[key].filterData == 'Numeric') {
+            if (mapState[key].filterData == 'Numeric') {
                 tempArray.push([
                     key,
                     mapState[key].filterType,
                     Number(mapState[key].filterValue),
                     mapState[key].filterData,
                 ]);
-            }else {
+            } else {
                 tempArray.push([
                     key,
                     mapState[key].filterType,
@@ -627,7 +627,7 @@ const Locality = () => {
         setExistingLocalities(result);
         setPageLoading(false);
     }
-   
+
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const handleDelete = (item) => {
         setCurrItem(item)
@@ -636,35 +636,35 @@ const Locality = () => {
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
-            if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        // fetchCityData()
-                        fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-                    
-                
-                
-              }
-      }
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                // fetchCityData()
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -730,12 +730,12 @@ const Locality = () => {
                         </div>
                         <div className='w-[15%] px-3 py-2.5'>
                             <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} 
-                                
-                                onKeyDown={(event) => handleEnterToFilter(event,countryFilterInput,
-                                    setCountryFilterInput,
-                                    'contains',
-                                    'country')}
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)}
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, countryFilterInput,
+                                        setCountryFilterInput,
+                                        'contains',
+                                        'country')}
 
                                 />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
@@ -744,13 +744,13 @@ const Locality = () => {
                         </div>
                         <div className='w-[20%] px-3 py-2.5 ml-1'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)} 
-                                
-                                
-                                onKeyDown={(event) => handleEnterToFilter(event,stateFilterInput,
-                                    setStateFilterInput,
-                                    'contains',
-                                    'state')}
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={stateFilterInput} onChange={(e) => setStateFilterInput(e.target.value)}
+
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, stateFilterInput,
+                                        setStateFilterInput,
+                                        'contains',
+                                        'state')}
                                 />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -759,14 +759,14 @@ const Locality = () => {
 
                         <div className='w-[20%] px-3 py-2.5 ml-1'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} 
-                                
-                                
-                                onKeyDown={(event) => handleEnterToFilter(event,cityFilterInput,
-                                    setCityFilterInput,
-                                    'contains',
-                                    'city')}
-                                
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)}
+
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, cityFilterInput,
+                                        setCityFilterInput,
+                                        'contains',
+                                        'city')}
+
                                 />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -774,13 +774,13 @@ const Locality = () => {
                         </div>
                         <div className='w-[20%] px-3 py-2.5 ml-[2px]'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)} 
-                                
-                                
-                                onKeyDown={(event) => handleEnterToFilter(event,localityFilterInput,
-                                    setLocalityFilterInput,
-                                    'contains',
-                                    'locality')}
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={localityFilterInput} onChange={(e) => setLocalityFilterInput(e.target.value)}
+
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, localityFilterInput,
+                                        setLocalityFilterInput,
+                                        'contains',
+                                        'locality')}
                                 />
                                 <button className='w-[30%] px-1 py-2' onClick={() => setLocalityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                             </div>
@@ -789,14 +789,14 @@ const Locality = () => {
                     </div>
                     <div className='w-1/6 px-3 py-2.5 '>
                         <div className='w-[40%] flex  items-center bg-[#EBEBEB] rounded-[5px] ml-4'>
-                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)} 
-                            
-                            onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                setidFilterInput,
-                                'equalTo',
-                                'id')}
-                            
-                            
+                            <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setidFilterInput(e.target.value)}
+
+                                onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                    setidFilterInput,
+                                    'equalTo',
+                                    'id')}
+
+
                             />
                             <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                         </div>
@@ -843,8 +843,8 @@ const Locality = () => {
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {pageLoading && <LinearProgress />}
                         {!pageLoading && existingLocalities.map((item, index) => {
-                            return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className='w-[85%] flex'>
+                            return <div className='w-full h-10  flex justify-between items-center border-gray-400 border-b-[1px]'>
+                                <div className='w-[85%] flex items-center'>
                                     <div className='w-[5%] p-4'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                     </div>
@@ -861,7 +861,7 @@ const Locality = () => {
                                         <p>{item.locality}</p>
                                     </div>
                                 </div>
-                                <div className='w-[15%] flex'>
+                                <div className='w-[15%] flex items-center'>
                                     <div className='w-1/2  p-4 ml-1'>
                                         <p>{item.id}</p>
                                     </div>
@@ -914,7 +914,7 @@ const Locality = () => {
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
-                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 left-1 w-4 h-4' /></button>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
@@ -974,6 +974,11 @@ const Locality = () => {
 
                                                             setCurrCountry(e.target.value);
                                                             fetchStateData(e.target.value);
+                                                            setAllCity([]);
+                                                            const existing = { ...formValues }
+                                                            existing.state = ""
+                                                            existing.city = null;
+                                                            setFormValues(existing)
                                                             setFormValues((existing) => {
                                                                 const newData = { ...existing, country: e.target.value }
                                                                 return newData;
@@ -982,15 +987,16 @@ const Locality = () => {
                                                     >
                                                         {/* <option value="none" hidden={true}>Select a Country</option> */}
                                                         {allCountry && allCountry.map(item => {
-                                                            if (item[1] == 5) {
-                                                                return <option value={item[0]} selected>
-                                                                    {item[1]}
-                                                                </option>
-                                                            } else {
-                                                                return <option value={item[0]}>
-                                                                    {item[1]}
-                                                                </option>
-                                                            }
+                                                            return <option value={item[0]}> {item[1]}</option>
+                                                            // if (item[1] == 5) {
+                                                            //     return <option value={item[0]} selected>
+                                                            //         {item[1]}
+                                                            //     </option>
+                                                            // } else {
+                                                            //     return <option value={item[0]}>
+                                                            //         {item[1]}
+                                                            //     </option>
+                                                            // }
                                                         })}
                                                     </select>
                                                     <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
@@ -1004,29 +1010,20 @@ const Locality = () => {
                                                         // defaultValue={formValues.state}
                                                         onChange={e => {
                                                             fetchCityData(e.target.value);
-                                                            setFormValues((existing) => {
-                                                                const newData = { ...existing, state: e.target.value }
-                                                                return newData;
-                                                            })
-
+                                                            const existing = { ...formValues }
+                                                            existing.state = e.target.value
+                                                            existing.city = null
+                                                            console.log(existing)
+                                                            setFormValues(existing)
                                                         }}
                                                     >
-                                                        {/* <option value="none" hidden={true}>Select a State</option> */}
-                                                        {allState.map(item => {
-
-                                                            if (item[0] === "Maharashtra") {
-                                                                return <option value={item[0]} selected>
-                                                                    {item[0]}
-                                                                </option>
-                                                            } else {
-                                                                return <option value={item[0]}>
-                                                                    {item[0]}
-                                                                </option>
-                                                                //     return <option value={item[0]} >
-                                                                //     {item[0]}
-                                                                // </option>
-                                                            }
+                                                        <option value="" > Select A State</option>
+                                                        {allState && allState.map(item => {
+                                                            return <option value={item[0]} >
+                                                                {item[0]}
+                                                            </option>
                                                         })}
+
                                                     </select>
                                                     <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
                                                 </div>

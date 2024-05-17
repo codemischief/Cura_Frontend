@@ -965,9 +965,8 @@ const City = () => {
                     {downloadModal && (
                         <div className="h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5">
                             <button onClick={() => setDownloadModal(false)}>
-                                <img src={Cross} className="absolute top-1 left-1 w-4 h-4" />
+                                <img src={Cross} className="absolute top-1 right-1 w-4 h-4" />
                             </button>
-
                             <button>
                                 <div className="flex space-x-2 justify-center items-center ml-3 mt-3">
                                     <p>Download as pdf</p>

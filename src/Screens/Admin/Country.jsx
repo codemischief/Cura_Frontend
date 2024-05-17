@@ -8,7 +8,7 @@ import downloadIcon from "../../assets/download.png";
 import Cross from "../../assets/cross.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
-import { Modal, CircularProgress, Pagination } from "@mui/material";
+import { Modal, CircularProgress, Pagination, LinearProgress } from "@mui/material";
 import Edit from '../../assets/edit.png';
 import Trash from "../../assets/trash.png";
 import Add from "./../../assets/add.png";
@@ -188,30 +188,30 @@ const Country = () => {
     // setCurrentPage(pageNumber);
     // const user_id = await authService.getUserID();
     const tempArray = [];
-        // we need to query thru the object
-        // console.log(filterMapState);
-        // console.log(filterMapState);
-        Object.keys(filterMapState).forEach((key) => {
-            if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        Number(filterMapState[key].filterValue),
-                        filterMapState[key].filterData,
-                    ]);
-                }else {
-                    tempArray.push([
-                        key,
-                        filterMapState[key].filterType,
-                        filterMapState[key].filterValue,
-                        filterMapState[key].filterData,
-                    ]);
-                }
-                
-            }
-        });
-        setFilterState((prev) => tempArray)
+    // we need to query thru the object
+    // console.log(filterMapState);
+    // console.log(filterMapState);
+    Object.keys(filterMapState).forEach((key) => {
+      if (filterMapState[key].filterType != "") {
+        if (filterMapState[key].filterData == 'Numeric') {
+          tempArray.push([
+            key,
+            filterMapState[key].filterType,
+            Number(filterMapState[key].filterValue),
+            filterMapState[key].filterData,
+          ]);
+        } else {
+          tempArray.push([
+            key,
+            filterMapState[key].filterType,
+            filterMapState[key].filterValue,
+            filterMapState[key].filterData,
+          ]);
+        }
+
+      }
+    });
+    setFilterState((prev) => tempArray)
     const data = {
       "user_id": 1234,
       "rows": ["id", "name"],
@@ -476,7 +476,7 @@ const Country = () => {
       "order": flag ? "asc" : "desc",
       "pg_no": 0,
       "pg_size": 0,
-      "search_key": searchQuery 
+      "search_key": searchQuery
     };
     const response = await APIService.getCountries(data)
     const temp = (await response.json()).data;
@@ -485,12 +485,12 @@ const Country = () => {
 
 
     const t = []
-        for(var i=0;i<result.length;i++) {
-           t.push({
-            "country_name" : result[i][1],
-            "country_id" : result[i][0]
-           })
-        }
+    for (var i = 0; i < result.length; i++) {
+      t.push({
+        "country_name": result[i][1],
+        "country_id": result[i][0]
+      })
+    }
     const worksheet = XLSX.utils.json_to_sheet(t);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -549,23 +549,23 @@ const Country = () => {
     console.log(filterMapState)
     Object.keys(mapState).forEach(key => {
       if (mapState[key].filterType != "") {
-        if(mapState[key].filterData == 'Numeric') {
-            tempArray.push([
-                key,
-                mapState[key].filterType,
-                Number(mapState[key].filterValue),
-                mapState[key].filterData,
-            ]);
-        }else {
-            tempArray.push([
-                key,
-                mapState[key].filterType,
-                mapState[key].filterValue,
-                mapState[key].filterData,
-            ]);
+        if (mapState[key].filterData == 'Numeric') {
+          tempArray.push([
+            key,
+            mapState[key].filterType,
+            Number(mapState[key].filterValue),
+            mapState[key].filterData,
+          ]);
+        } else {
+          tempArray.push([
+            key,
+            mapState[key].filterType,
+            mapState[key].filterValue,
+            mapState[key].filterData,
+          ]);
         }
-       
-    }
+
+      }
     })
     setFilterState(tempArray)
     setCurrentPage((prev) => 1)
@@ -596,32 +596,32 @@ const Country = () => {
     if (event.keyCode === 13) {
       handleSearch()
     }
-}
-const handleEnterToFilter = (event,inputVariable,
-  setInputVariable,
-  type,
-  columnName) => {
-      if (event.keyCode === 13) {
-              // if its empty then we remove that 
-              // const temp = {...filterMapState};
-              // temp[columnName].type = "".
-              // setFilterMapState(temp)
-              if(inputVariable == "") {
-                  const temp = {...filterMapState}
-                  temp[columnName].filterType = ""
-                  setFilterMapState(temp)
-                  fetchCountryData()
-              }else {
-                  newHandleFilter(inputVariable,
-                      setInputVariable,
-                      type,
-                      columnName)
-              }
-              
-          
-          
-        }
-}
+  }
+  const handleEnterToFilter = (event, inputVariable,
+    setInputVariable,
+    type,
+    columnName) => {
+    if (event.keyCode === 13) {
+      // if its empty then we remove that 
+      // const temp = {...filterMapState};
+      // temp[columnName].type = "".
+      // setFilterMapState(temp)
+      if (inputVariable == "") {
+        const temp = { ...filterMapState }
+        temp[columnName].filterType = ""
+        setFilterMapState(temp)
+        fetchCountryData()
+      } else {
+        newHandleFilter(inputVariable,
+          setInputVariable,
+          type,
+          columnName)
+      }
+
+
+
+    }
+  }
   return (
     <div className='h-screen w-full'>
       <Navbar />
@@ -681,13 +681,13 @@ const handleEnterToFilter = (event,inputVariable,
             </div>
             <div className='w-[20%] px-3 py-2.5'>
               <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)} 
-                
-                onKeyDown={(event) => handleEnterToFilter(event,countryFilterInput,
-                  setCountryFilterInput,
-                  'contains',
-                  'name')}
-                
+                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => setCountryFilterInput(e.target.value)}
+
+                  onKeyDown={(event) => handleEnterToFilter(event, countryFilterInput,
+                    setCountryFilterInput,
+                    'contains',
+                    'name')}
+
 
 
                 />
@@ -700,12 +700,12 @@ const handleEnterToFilter = (event,inputVariable,
           <div className='w-[20%] px-3 py-2.5'>
             <div className='w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
               <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
-              
-              onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                setIdFilterInput,
-                'equalTo',
-                'id')}
-              
+
+                onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                  setIdFilterInput,
+                  'equalTo',
+                  'id')}
+
               />
               <button className='px-1 py-2 w-[25%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
             </div>
@@ -737,25 +737,27 @@ const handleEnterToFilter = (event,inputVariable,
           <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
 
 
-            {pageLoading && <div className='ml-11 mt-9'>
-              <CircularProgress />
+            {pageLoading && <div className=''>
+              <LinearProgress />
             </div>}
-            {/* {existingCountries.length == 0 && <h1 className='ml-5 mt-5 text-lg'>No Data To Show!</h1>} */}
+            {!pageLoading && existingCountries && existingCountries.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+              <h1 className='ml-10'>No Records To Show</h1>
+            </div>}
             {!pageLoading && existingCountries.map((item, index) => {
-              return <div className='w-full h-10 flex justify-between border-gray-400 border-b-[1px] text-xs'>
-                <div className='w-[80%] flex'>
-                  <div className='w-[5%] px-3 py-2'>
+              return <div className='w-full h-10 flex justify-between items-center border-gray-400 border-b-[1px] text-xs'>
+                <div className='w-[80%] flex items-center'>
+                  <div className='w-[5%] px-3'>
                     <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                   </div>
-                  <div className='w-[95%]  px-3 py-2'>
+                  <div className='w-[95%]  px-3 '>
                     <p>{item.country_name}</p>
                   </div>
                 </div>
-                <div className='w-[20%] flex'>
-                  <div className='w-1/2  px-3 py-2 ml-1'>
+                <div className='w-[20%] flex items-center'>
+                  <div className='w-1/2  px-3 ml-1'>
                     <p>{item.sl}</p>
                   </div>
-                  <div className='w-1/2 px-3 py-2 flex items-center gap-5'>
+                  <div className='w-1/2 px-3 flex items-center gap-5'>
                     <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
                     <button onClick={() => deleteCountry(item)}> <img className='w-5 h-5' src={Trash} alt="trash" /></button>
                   </div>
