@@ -13,13 +13,13 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      width: "3%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "50px" },
       sorting: false,
       render: (index) => {
         return (
           <Stack
             direction="row"
-            sx={{ justifyContent: "center", width: "30px" }}
+            sx={{ justifyContent: "center", width: "50px" }}
           >
             {index + 1}
           </Stack>
@@ -32,7 +32,7 @@ export default function connectionDataColumn(onQuery) {
       field: "type",
       sorting: false,
       filterDisabled: true,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       filterComponent: NumberFilterField,
@@ -41,7 +41,7 @@ export default function connectionDataColumn(onQuery) {
       field: "id",
       filterDisabled: false,
       sorting: true,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Received Date",
@@ -50,21 +50,21 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { minWidth: "20px", maxWidth: "34px" },
       filterComponent: DateFilterField,
       // filterComponent:TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Fiscal Month",
       field: "monthyear",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Fiscal Year",
       field: "fy",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
 
     {
@@ -72,42 +72,42 @@ export default function connectionDataColumn(onQuery) {
       field: "amount",
       sorting: true,
       filterComponent: NumberFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Entity",
       field: "entityname",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Mode",
-      field: "mode_of_payment",
+      field: "paymentmode",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Client ID",
       field: "clientid",
       sorting: true,
       filterComponent: NumberFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Client Name",
       field: "clientname",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Vendor Name",
       field: "vendorname",
       sorting: false,
       // filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Order Id",
@@ -115,15 +115,15 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       type: "numeric",
       filterComponent: NumberFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Order Description",
       field: "orderdescription",
       sorting: true,
       type: "numeric",
-      filterComponent: NumberFilterField,
-      width: "5.88%",
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Service Id",
@@ -131,7 +131,7 @@ export default function connectionDataColumn(onQuery) {
       type: "numeric",
       sorting: true,
       filterComponent: NumberFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "Service ",
@@ -139,7 +139,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       type: "numeric",
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
       title: "LOB Name",
@@ -147,7 +147,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       type: "numeric",
       filterComponent: TextFilterField,
-      width: "5.88%",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
   ];
   return columns;
