@@ -29,6 +29,7 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
+import DropDown from '../../../Components/Dropdown/Dropdown';
 
 const ManageEmployees = () => {
 
@@ -127,7 +128,7 @@ const ManageEmployees = () => {
 
         console.log(result.data);
         console.log('hey')
-       
+
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -140,7 +141,7 @@ const ManageEmployees = () => {
         const response = await APIService.getRoles(data)
         const result = (await response.json());
         console.log(result.data);
-        
+
         if (Array.isArray(result.data)) {
             setAllRoles(result.data);
         }
@@ -153,7 +154,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
-        
+
         if (Array.isArray(result.data)) {
             setAllEntites(result.data);
         }
@@ -173,7 +174,7 @@ const ManageEmployees = () => {
         const response = await APIService.getLob(data);
         const result = (await response.json());
         console.log(result.data);
-        
+
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
         }
@@ -187,17 +188,17 @@ const ManageEmployees = () => {
         console.log(filterMapState);
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         filterMapState[key].filterValue,
                         filterMapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
                 }
-                
+
             }
         })
         setFilterState((prev) => tempArray)
@@ -372,7 +373,7 @@ const ManageEmployees = () => {
             "createdby": 1234,
             "isdeleted": false,
             "entityid": formValues.entity,
-            "lobid": formValues.lob == null ? "" : formValues.lob,
+            "lobid": Number(formValues.lob),
             "lastdateofworking": formValues.lastDOW,
             "designation": formValues.designation
         }
@@ -502,17 +503,6 @@ const ManageEmployees = () => {
             })
         }
         console.log('employeeId ok')
-        if (!formValues.lob) {
-            console.log('issue is in lob')
-            setFormErrors((existing) => {
-                return { ...existing, lob: "Select LOB" }
-            })
-            res = false;
-        } else {
-            setFormErrors((existing) => {
-                return { ...existing, lob: "" }
-            })
-        }
         console.log('lob ok')
         if (!formValues.dob) {
             console.log('issue is in dob')
@@ -597,24 +587,26 @@ const ManageEmployees = () => {
                 return { ...existing, entity: "" }
             })
         }
-        if(!formValues.lob) {
+        if (!formValues.suburb) {
             setFormErrors((existing) => {
-                return { ...existing, lob: "Select Lob" }
+                return { ...existing, suburb: "Enter Suburb" }
             })
             res = false;
-        }else {
+        } else {
+            console.log('issue is in empname')
             setFormErrors((existing) => {
-                return { ...existing, lob: "" }
+                return { ...existing, suburb: "" }
             })
         }
-        if(!formValues.role) {
+        if (!formValues.userName) {
             setFormErrors((existing) => {
-                return { ...existing, role: "Select Role" }
+                return { ...existing, userName: "Select Username" }
             })
             res = false;
-        }else {
+        } else {
+            console.log('issue is in empname')
             setFormErrors((existing) => {
-                return { ...existing, role: ""}
+                return { ...existing, userName: "" }
             })
         }
 
@@ -623,7 +615,7 @@ const ManageEmployees = () => {
     }
     const [currEmployeeId, setCurrEmployeeId] = useState("");
     const [currEmployeeName, setCurrEmployeeName] = useState("");
-    const handleDelete = (id , name) => {
+    const handleDelete = (id, name) => {
         setCurrEmployeeId(id);
         setCurrEmployeeName(name);
         showDeleteConfirmation(true);
@@ -653,7 +645,7 @@ const ManageEmployees = () => {
         setDownloadModal(false);
     }
     const handleExcelDownload = async () => {
-        
+
         const data = {
             "user_id": 1234,
             "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
@@ -667,7 +659,7 @@ const ManageEmployees = () => {
         const response = await APIService.getEmployees(data)
         const temp = await response.json();
         const result = temp.data;
-        
+
         const worksheet = XLSX.utils.json_to_sheet(result);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -877,18 +869,18 @@ const ManageEmployees = () => {
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
-                if(mapState[key].filterData == 'Numeric') {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
                         mapState[key].filterValue,
                         mapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
                 }
-                
-                
+
+
             }
         })
         setFilterMapState(mapState)
@@ -1006,33 +998,33 @@ const ManageEmployees = () => {
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
-            if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    console.log(inputVariable)
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        // fetchCityData()
-                        fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-              }
-      }
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            console.log(inputVariable)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                // fetchCityData()
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+        }
+    }
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1098,7 +1090,7 @@ const ManageEmployees = () => {
                 {/* filter component */}
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[85%] flex">
+                        <div className="w-[90%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='p-3'>
                                     {/* <p>Sr.</p> */}
@@ -1106,11 +1098,11 @@ const ManageEmployees = () => {
                             </div>
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,employeeNameInput,
-                                        setEmployeeNameInput,
-                                        'contains',
-                                        'employeename')}
+                                    <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, employeeNameInput,
+                                            setEmployeeNameInput,
+                                            'contains',
+                                            'employeename')}
                                     />
                                     <button className='w-[32%] px-1 py-2' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1118,13 +1110,13 @@ const ManageEmployees = () => {
 
                             </div>
 
-                            <div className='w-[13%]  p-3'>
+                            <div className='w-[11%]  p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,employeeIdInput,
-                                        setEmployeeIdInput,
-                                        'contains',
-                                        'employeeid')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, employeeIdInput,
+                                            setEmployeeIdInput,
+                                            'contains',
+                                            'employeeid')}
                                     />
                                     <button className='W-[30%] px-1 py-2' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1133,11 +1125,11 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,phoneFilterInput,
-                                        setPhoneFilterInput,
-                                        'contains',
-                                        'phoneno')}
+                                    <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, phoneFilterInput,
+                                            setPhoneFilterInput,
+                                            'contains',
+                                            'phoneno')}
                                     />
                                     <button className='w-[38%] px-1 py-2' onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1146,24 +1138,24 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,emailInput,
-                                        setEmailInput,
-                                        'contains',
-                                        'email')}
+                                    <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, emailInput,
+                                            setEmailInput,
+                                            'contains',
+                                            'email')}
                                     />
                                     <button className='w-[34%] px-1 py-2' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {emailFilter && <CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput} filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter} />}
                             </div>
 
-                            <div className='w-[10%]  p-3'>
+                            <div className='w-[9%]  p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,roleInput,
-                                        setRoleInput,
-                                        'contains',
-                                        'role')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, roleInput,
+                                            setRoleInput,
+                                            'contains',
+                                            'role')}
                                     />
                                     <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
                                 </div>
@@ -1172,41 +1164,41 @@ const ManageEmployees = () => {
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,pannoInput,
-                                        setPannoInput,
-                                        'contains',
-                                        'panno')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, pannoInput,
+                                            setPannoInput,
+                                            'contains',
+                                            'panno')}
                                     />
                                     <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} />}
                             </div>
 
-                            <div className='w-[14%] p-3'>
+                            <div className='w-[12%] p-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,dateOfJoiningInput,
-                                        setDateOfJoiningInput
-                                        ,
-                                        'equalTo',
-                                        'dateofjoining')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, dateOfJoiningInput,
+                                            setDateOfJoiningInput
+                                            ,
+                                            'equalTo',
+                                            'dateofjoining')}
                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setDateOfJoiningInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[17%]  p-3 '>
+                            <div className='w-[15%]  p-3 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput} onChange={(e) => setLdowInput(e.target.value)} 
-                                     onKeyDown={(event) => handleEnterToFilter(event,ldowInput,
-                                        setLdowInput
-                                        ,
-                                        'equalTo',
-                                        'lastdateofworking')}
-                                    
+                                    <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput} onChange={(e) => setLdowInput(e.target.value)}
+                                        onKeyDown={(event) => handleEnterToFilter(event, ldowInput,
+                                            setLdowInput
+                                            ,
+                                            'equalTo',
+                                            'lastdateofworking')}
+
                                     />
                                     <button className='w-[20%] px-1 py-2' onClick={() => { setLdowFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1214,14 +1206,14 @@ const ManageEmployees = () => {
                             </div>
                             <div className='w-[10%]  p-3 '>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)} 
-                                    
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)}
 
-                                    onKeyDown={(event) => handleEnterToFilter(event,statusInput,
-                                        setStatusInput
-                                        ,
-                                        'equalTo',
-                                        'status')}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, statusInput,
+                                            setStatusInput
+                                            ,
+                                            'equalTo',
+                                            'status')}
 
                                     />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
@@ -1229,24 +1221,24 @@ const ManageEmployees = () => {
                                 {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
                         </div>
-                        <div className="w-[15%] flex">
-                            <div className='w-1/2 p-3'>
+                        <div className="w-[10%] flex">
+                            <div className='w-[65%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,idInput,
-                                        setIdInput
-                                        ,
-                                        'equalTo',
-                                        'id')}
-                                    
+                                    <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, idInput,
+                                            setIdInput
+                                            ,
+                                            'equalTo',
+                                            'id')}
+
                                     />
                                     <button className='px-1 py-2 w-[35%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-1/2  flex'>
+                            <div className='w-[35%]  flex'>
                                 <div className='p-3'>
 
                                 </div>
@@ -1257,7 +1249,7 @@ const ManageEmployees = () => {
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[85%] flex">
+                        <div className="w-[90%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='p-3'>
                                     <p>Sr.</p>
@@ -1268,7 +1260,7 @@ const ManageEmployees = () => {
                                     <p>Employee <button onClick={() => handleSort('employeename')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[13%]  flex'>
+                            <div className='w-[11%]  flex'>
                                 <div className='p-3'>
                                     <p>Employee ID <button onClick={() => handleSort('employeeid')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1283,22 +1275,22 @@ const ManageEmployees = () => {
                                     <p>Email <button onClick={() => handleSort('email')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex'>
+                            <div className='w-[9%]  flex'>
                                 <div className='p-3'>
                                     <p>Role <button onClick={() => handleSort('role')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
-                                    <p>Pan No <button onClick={() => handleSort('panno')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>PAN No <button onClick={() => handleSort('panno')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[14%]  flex'>
+                            <div className='w-[12%]  flex'>
                                 <div className='p-3'>
                                     <p>Date of joining <button onClick={() => handleSort('dateofjoining')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[17%]  flex'>
+                            <div className='w-[15%]  flex'>
                                 <div className='p-3'>
                                     <p>Last Date of working <button onClick={() => handleSort('lastdateofworking')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1309,7 +1301,7 @@ const ManageEmployees = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[15%] flex">
+                        <div className="w-[10%] flex">
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
                                     <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1327,10 +1319,13 @@ const ManageEmployees = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {!pageLoading && existingEmployees && existingEmployees.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingEmployees.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[85%] flex min-h-0">
+                                <div className="w-[90%] flex min-h-0">
                                     <div className='w-[3%] flex'>
                                         <div className='p-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -1341,7 +1336,7 @@ const ManageEmployees = () => {
                                             <p>{item.employeename} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[13%]  flex overflow-hidden'>
+                                    <div className='w-[11%]  flex overflow-hidden'>
                                         <div className='p-3 '>
                                             <p >{item.employeeid}</p>
                                         </div>
@@ -1356,22 +1351,22 @@ const ManageEmployees = () => {
                                             <p>{item.email}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
+                                    <div className='w-[9%]  flex overflow-hidden pl-0.5'>
                                         <div className='p-3'>
                                             <p>{item.role}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 ml-[3px]'>
+                                    <div className='w-[10%]  flex overflow-hidden pl-0.5'>
+                                        <div className='p-3 '>
                                             <p>{item.panno}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex overflow-hidden'>
+                                    <div className='w-[12%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1'>
                                             <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : ""}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[17%]  flex  overflow-hidden'>
+                                    <div className='w-[15%]  flex  overflow-hidden'>
                                         <div className='p-3 ml-1'>
                                             <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : ""}</p>
                                         </div>
@@ -1384,15 +1379,15 @@ const ManageEmployees = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[15%] flex">
+                                <div className="w-[10%] flex">
                                     <div className='w-1/2  flex overflow-hidden'>
                                         <div className='p-3 ml-[6px]'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id , item.employeename)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                    <div className='w-1/2  flex overflow-hidden items-center space-x-2 ml-3'>
+                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id, item.employeename)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 
@@ -1485,290 +1480,292 @@ const ManageEmployees = () => {
             >
                 <div className='flex justify-center'>
                     {/* <Draggable> */}
-                        <div className="w-[1050px] h-auto bg-white rounded-lg">
-                            <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                <div className="mr-[410px] ml-[410px]">
-                                    <div className="text-base">Add New Employee</div>
-                                </div>
-                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                    <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
-                                </div>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg">
+                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                            <div className="mr-[410px] ml-[410px]">
+                                <div className="text-base">Add New Employee</div>
                             </div>
-
-                            <div className="h-auto w-full mt-1 ">
-                                <div className="flex gap-12 justify-center">
-                                    <div className=" space-y-3 py-5">
-                                        <div className="">
-                                            <div className="text-sm">Employee Name <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Pan No <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Username <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="userName"
-                                                value={formValues.userName}
-                                                defaultValue="Select Username"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, userName: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                <option value="none" hidden>Select Username</option>
-                                                {allUsername && allUsername.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Date of joining <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Designation <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Email <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-4 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email" value={formValues.email} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Address Line 1</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-3 py-5">
-                                        <div className="">
-                                            <div className="text-sm">Employee ID <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">LOB <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                                name="lob"
-                                                value={formValues.lob}
-                                                defaultValue="Select lob"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, lob: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                <option value="none" hidden>Select a LOB</option>
-                                                {allLOB && allLOB.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Last Date of Working</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="role"
-                                                value={formValues.role}
-                                                defaultValue="Select Role"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, role: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                <option value="none" hidden>Select a Role</option>
-                                                {allRoles && allRoles.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Address Line 2</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-3 py-5">
-                                        <div className="">
-                                            <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="country"
-                                                value={formValues.country}
-                                                defaultValue="Select Country"
-                                                onChange={e => {
-                                                    setCurrCountry(e.target.value);
-                                                    fetchStateData(e.target.value);
-                                                    setAllCity([]);
-                                                    const existing = { ...formValues }
-                                                    existing.state = ""
-                                                    existing.city = null;
-                                                    setFormValues(existing)
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, country: e.target.value }
-                                                        return newData;
-                                                    })
-                                                    // fetchStateData(res);
-                                                }}
-                                            >
-
-                                                {allCountry && allCountry.map(item => {
-                                                    return <option value={item[0]}> {item[1]}</option>
-                                                    // if (item[0] == 5) {
-                                                    //     return <option value={item[0]} selected>
-                                                    //         {item[1]}
-                                                    //     </option>
-                                                    // } else {
-                                                    //     return <option value={item[0]} >
-                                                    //         {item[1]}
-                                                    //     </option>
-                                                    // }
-                                                })}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">State Name<label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="state"
-                                                value={formValues.state}
-                                                defaultValue="Select State"
-                                                onChange={e => {
-                                                    fetchCityData(e.target.value);
-                                                    const existing = { ...formValues }
-                                                    existing.state = e.target.value
-                                                    existing.city = null
-                                                    console.log(existing)
-                                                    setFormValues(existing)
-                                                }}
-                                            >
-                                                <option value="" > Select A State</option>
-                                                {allState && allState.map(item => {
-
-
-                                                    return <option value={item[0]} >
-                                                        {item[0]}
-                                                    </option>
-
-
-                                                })}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">City Name <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="city"
-                                                value={formValues.city}
-                                                defaultValue="Select City"
-                                                onChange={e => {
-                                                    // fetchCityData(e.target.value);
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, city: e.target.value }
-                                                        return newData;
-                                                    })
-
-                                                }}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a City</option> */}
-                                                <option value="none" hidden> Select A City</option>
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Suburb</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.suburb}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Zip Code</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Entities <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="entity"
-                                                value={formValues.entity}
-                                                defaultValue="Select entity"
-                                                onChange={e => {
-                                                    console.log(e.target.value);
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, entity: e.target.value }
-                                                        return newData;
-                                                    })
-                                                }}
-                                            >
-                                                {allEntities && allEntities.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
-                            <div className="mt-3 flex justify-center items-center text-sm font-semibold"><input
-                                type="checkbox"
-                                checked={formValues.status}
-                                className='mr-3 h-4 w-4'
-                                onClick={(e) => {
-                                    // console.log(e.target.checked)
-                                    const existing = { ...formValues };
-                                    existing.status = !existing.status;
-                                    setFormValues(existing)
-                                }}
-                            />Active</div>
-                            <div className="my-3 flex justify-center items-center gap-3">
-                                <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddEmployee} >Add</button>
-                                <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
-                            </div>
-
                         </div>
+
+                        <div className="h-auto w-full mt-1 ">
+                            <div className="flex gap-12 justify-center">
+                                <div className=" space-y-3 py-5">
+                                    <div className="">
+                                        <div className="text-sm">Employee Name <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">PAN No. <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm mb-1">Username <label className="text-red-500">*</label></div>
+                                        {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="userName"
+                                            value={formValues.userName}
+                                            defaultValue="Select Username"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, userName: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            <option value="none" hidden>Select Username</option>
+                                            {allUsername && allUsername.map(item => (
+                                                <option value={item.id} >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select> */}
+                                        <DropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Date of joining <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Designation <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Email <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email" value={formValues.email} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Address Line 1</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+                                    </div>
+                                </div>
+                                <div className=" space-y-3 py-5">
+                                    <div className="">
+                                        <div className="text-sm">Employee ID <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">LOB </div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                            name="lob"
+                                            value={formValues.lob}
+                                            defaultValue="Select lob"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, lob: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            <option value="none" hidden>Select a LOB</option>
+                                            {allLOB && allLOB.map(item => (
+                                                <option value={item.id} >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Last Date of Working</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="lastDOW" value={formValues.lastDOW} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Assign Role <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="role"
+                                            value={formValues.role}
+                                            defaultValue="Select Role"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, role: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            <option value="none" hidden>Select a Role</option>
+                                            {allRoles && allRoles.map(item => (
+                                                <option value={item.id} >
+                                                    {item.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Address Line 2</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                    </div>
+                                </div>
+                                <div className=" space-y-3 py-5">
+                                    <div className="">
+                                        <div className="text-sm">Country <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="country"
+                                            value={formValues.country}
+                                            defaultValue="Select Country"
+                                            onChange={e => {
+                                                setCurrCountry(e.target.value);
+                                                fetchStateData(e.target.value);
+                                                setAllCity([]);
+                                                const existing = { ...formValues }
+                                                existing.state = ""
+                                                existing.city = null;
+                                                setFormValues(existing)
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, country: e.target.value }
+                                                    return newData;
+                                                })
+                                                // fetchStateData(res);
+                                            }}
+                                        >
+
+                                            {allCountry && allCountry.map(item => {
+                                                return <option value={item[0]}> {item[1]}</option>
+                                                // if (item[0] == 5) {
+                                                //     return <option value={item[0]} selected>
+                                                //         {item[1]}
+                                                //     </option>
+                                                // } else {
+                                                //     return <option value={item[0]} >
+                                                //         {item[1]}
+                                                //     </option>
+                                                // }
+                                            })}
+                                        </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">State <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="state"
+                                            value={formValues.state}
+                                            defaultValue="Select State"
+                                            onChange={e => {
+                                                fetchCityData(e.target.value);
+                                                const existing = { ...formValues }
+                                                existing.state = e.target.value
+                                                existing.city = null
+                                                console.log(existing)
+                                                setFormValues(existing)
+                                            }}
+                                        >
+                                            <option value="" > Select A State</option>
+                                            {allState && allState.map(item => {
+
+
+                                                return <option value={item[0]} >
+                                                    {item[0]}
+                                                </option>
+
+
+                                            })}
+                                        </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">City <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="city"
+                                            value={formValues.city}
+                                            defaultValue="Select City"
+                                            onChange={e => {
+                                                // fetchCityData(e.target.value);
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, city: e.target.value }
+                                                    return newData;
+                                                })
+
+                                            }}
+                                        >
+                                            {/* <option value="none" hidden={true}>Select a City</option> */}
+                                            <option value="none" hidden> Select A City</option>
+                                            {allCity && allCity.map(item => (
+                                                <option value={item.id} >
+                                                    {item.city}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Suburb <label className="text-red-500">*</label></div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Zip Code</div>
+                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
+                                    </div>
+                                    <div className="">
+                                        <div className="text-sm">Entities <label className="text-red-500">*</label></div>
+                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                            name="entity"
+                                            value={formValues.entity}
+                                            defaultValue="Select entity"
+                                            onChange={e => {
+                                                console.log(e.target.value);
+                                                setFormValues((existing) => {
+                                                    const newData = { ...existing, entity: e.target.value }
+                                                    return newData;
+                                                })
+                                            }}
+                                        >
+                                            {allEntities && allEntities.map(item => (
+                                                <option value={item[0]} >
+                                                    {item[1]}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-3 flex justify-center items-center text-sm font-semibold"><input
+                            type="checkbox"
+                            checked={formValues.status}
+                            className='mr-3 h-4 w-4'
+                            onClick={(e) => {
+                                // console.log(e.target.checked)
+                                const existing = { ...formValues };
+                                existing.status = !existing.status;
+                                setFormValues(existing)
+                            }}
+                        />Active</div>
+                        <div className="my-3 flex justify-center items-center gap-3">
+                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddEmployee} >Add</button>
+                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
+                        </div>
+
+                    </div>
                     {/* </Draggable> */}
                 </div>
             </Modal>
