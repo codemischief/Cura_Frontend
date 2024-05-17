@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.orderPayment);
+  const { filter } = useSelector((state) => state.orderReceipt);
 
   const handleFilterChange = (filters) => {
     dispatch(setOrderReceiptFilters({...filters}));

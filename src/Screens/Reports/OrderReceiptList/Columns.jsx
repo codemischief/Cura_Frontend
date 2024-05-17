@@ -13,7 +13,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      width: "2.88%",
+      width: "3%",
       sorting: false,
       render: (index) => {
         return (
@@ -32,7 +32,7 @@ export default function connectionDataColumn(onQuery) {
       field: "type",
       sorting: false,
       filterDisabled: true,
-      width: "3.88%",
+      width: "5.88%",
     },
     {
       filterComponent: NumberFilterField,
@@ -41,7 +41,7 @@ export default function connectionDataColumn(onQuery) {
       field: "id",
       filterDisabled: false,
       sorting: true,
-      width: "3.88%",
+      width: "5.88%",
     },
     {
       title: "Received Date",
@@ -50,21 +50,21 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { minWidth: "20px", maxWidth: "34px" },
       filterComponent: DateFilterField,
       // filterComponent:TextFilterField,
-      width: "6.88%",
+      width: "5.88%",
     },
     {
       title: "Fiscal Month",
       field: "monthyear",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "6.88%",
+      width: "5.88%",
     },
     {
       title: "Fiscal Year",
       field: "fy",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "6.88%",
+      width: "5.88%",
     },
 
     {
@@ -72,21 +72,21 @@ export default function connectionDataColumn(onQuery) {
       field: "amount",
       sorting: true,
       filterComponent: NumberFilterField,
-      width: "6.88%",
+      width: "5.88%",
     },
     {
       title: "Entity",
       field: "entityname",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "6.88%",
+      width: "5.88%",
     },
     {
       title: "Mode",
       field: "mode_of_payment",
       sorting: true,
       filterComponent: TextFilterField,
-      width: "6.88%",
+      width: "5.88%",
     },
     {
       title: "Client ID",
