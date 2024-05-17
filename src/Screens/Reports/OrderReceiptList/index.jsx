@@ -174,8 +174,8 @@ const OrderPaymentList = () => {
       rows: [
         "id",
         "recddate",
-        "fy",
         "monthyear",
+        "fy",
         "amount",
         "entityname",
         "paymentmode",
@@ -185,7 +185,7 @@ const OrderPaymentList = () => {
         "orderdescription",
         "serviceid",
         "service",
-        "lobname"
+        "lobname",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
@@ -200,7 +200,7 @@ const OrderPaymentList = () => {
       const worksheet = XLSX.utils.json_to_sheet(tableData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "orderPayment.xlsx");
+      XLSX.writeFile(workbook, "orderReceipt.xlsx");
       dispatch(setStatus("success"));
     });
   };
