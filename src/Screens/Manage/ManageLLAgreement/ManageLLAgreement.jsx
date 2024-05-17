@@ -310,7 +310,16 @@ const ManageLLAgreement = () => {
         console.log('ugm')
         setPageLoading(true);
         setCurrentPage((prev) => 1)
-
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setFilterState((prev) => tempArray)
         const data = {
             "user_id": 1234,
             "rows": dataRows,
@@ -428,7 +437,23 @@ const ManageLLAgreement = () => {
         const data = {"user_id":1234,"leavelicenseid":id}
         const response = await APIService.getLLTenant(data)
         const res  = await response.json()
+        const tempArray = []
+        if(res.result == 'success') {
+            for(var i=0;i<res.data.length;i++) {
+                tempArray.push({
+                    label : res.data[i].tenantname,
+                    value : res.data[i].tenantid
+                })
+            }
+        }
+        setSelectedOptions((prev) => tempArray)
+
         console.log(res)
+        
+        // now we need to set the data
+
+
+
         setTenantDetails(true);
     }
 
@@ -1084,7 +1109,10 @@ const ManageLLAgreement = () => {
 
             const temp = []
             for (var i = 0; i < selectedOptions.length; i++) {
-                temp.push({ "tenantid": selectedOptions[i].value })
+                if(selectedOptions[i].value != null) {
+                    temp.push({ "tenantid": selectedOptions[i].value })
+                }
+                
             }
             const data = {
                 "user_id": 1234,
@@ -1732,9 +1760,9 @@ const ManageLLAgreement = () => {
                                             <div className="">
                                                 {/* this should a list */}
                                                 {selectedOptions.map((item, index) => {
-                                                    return <>
+                                                    return <div className='mb-2'>
                                                         <div className="text-[13px]">
-                                                            Client
+                                                            Tenant {index + 1}
                                                         </div>
                                                         <AsyncSelect
                                                             onChange={(e) => handleTenantClientNameChange(e, index)}
@@ -1770,7 +1798,7 @@ const ManageLLAgreement = () => {
                                                             }}
                                                         />
 
-                                                    </>
+                                                    </div>
                                                 })}
                                                 {/* <div className="text-[13px]">
                                                     Client
