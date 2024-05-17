@@ -422,8 +422,13 @@ const ManageLLAgreement = () => {
         setFormErrors({});
     }
 
-    const handleOpenTenantDetails = (id) => {
+    const handleOpenTenantDetails = async  (id) => {
         setCurrItem(id);
+        // here we need to fetch the existing data as well
+        const data = {"user_id":1234,"leavelicenseid":id}
+        const response = await APIService.getLLTenant(data)
+        const res  = await response.json()
+        console.log(res)
         setTenantDetails(true);
     }
 
@@ -1067,18 +1072,33 @@ const ManageLLAgreement = () => {
     }
     const handleAddTenant = async () => {
         // we need the id here as well
-        const temp = []
-        for (var i = 0; i < selectedOptions.length; i++) {
-            temp.push({ "tenantid": selectedOptions[i].value })
-        }
-        const data = {
-            "user_id": 1234,
-            "leavelicenseid": currItem,
-            "tenants": temp
-        }
-        const response = await APIService.addLLTenant(data)
-        const res = await response.json()
-        console.log(res)
+        // in this we need to firstly delete the elements of the current id
+
+        const d = {"user_id":1234,"leavelicenseid":currItem}
+
+        const r = await APIService.deleteLLTenant(d)
+
+        const rs = await r.json()
+
+        if(rs.result == 'success') {
+
+            const temp = []
+            for (var i = 0; i < selectedOptions.length; i++) {
+                temp.push({ "tenantid": selectedOptions[i].value })
+            }
+            const data = {
+                "user_id": 1234,
+                "leavelicenseid": currItem,
+                "tenants": temp
+            }
+            const response = await APIService.addLLTenant(data)
+            const res = await response.json()
+            console.log(res)
+            setTenantDetails(false)
+        }else {
+
+        } 
+        
     }
 
     function handleKeyDown(event) {
