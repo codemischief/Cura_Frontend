@@ -21,19 +21,16 @@ const SimpleTable = ({
   downloadExcel,
   height = "calc(100vh - 19rem)",
 }) => {
-  return (
+  return [
     <div
-      className={`w-full text-[12px] h-[${height}]`}
+      className={`w-full text-[12px] h-[${height}] overflow-x-auto `}
       style={{ height: "calc(100vh - 18rem" }}
     >
-      <table className="w-full border-gray-400 border-b-[1px] table-auto h-full">
-        <thead className="h-[115px] block">
+      <table className="table-auto ">
+        <thead className="h-[115px] sticky top-0 z-100 bg-white">
           <tr className="h-[56px]">
             {columns.map((column, index) => (
-              <th
-                key={index}
-                style={{ width: column.width, ...column.cellStyle }}
-              >
+              <th key={index} style={{ ...column.cellStyle }}>
                 {column.filterComponent && [
                   <column.filterComponent
                     key={column.field}
@@ -46,7 +43,7 @@ const SimpleTable = ({
           </tr>
           <tr className="bg-[#F0F6FF] h-[56px] ">
             {columns.map((column, index) => (
-              <th key={index} style={{ width: column.width }}>
+              <th key={index} style={{ ...column.cellStyle }}>
                 {column.title}
                 {column.sorting && (
                   <button onClick={() => handleSortingChange(column.field)}>
@@ -57,7 +54,7 @@ const SimpleTable = ({
             ))}
           </tr>
         </thead>
-        <tbody className="overflow-y-auto block max-h-[calc(100vh-375px)]">
+        <tbody className=" max-h-[calc(100vh-375px)]  overflow-y-auto">
           {isLoading && (
             <tr>
               <td colSpan={columns.length} className="text-center">
@@ -85,13 +82,17 @@ const SimpleTable = ({
 
           {data.length > 0 ? (
             data?.map((rowData, rowIndex) => (
-              <tr key={rowIndex} className="border-b dark:border-gray-700">
+              <tr key={rowIndex} className="border-b dark:border-gray-700 h-[56px]">
                 {columns.map((column, colIndex) => (
                   <td
                     key={colIndex}
                     colSpan={1}
-                    style={{ width: column.width }}
-                    className="py-3 text-center px-2"
+                    style={{
+                      ...column.cellStyle,
+                      paddingTop: "4px",
+                      paddingBottom: "4px",
+                    }}
+                    className="py-3 text-center "
                   >
                     {column.render
                       ? column.render((pageNo - 1) * countPerPage + rowIndex)
@@ -101,24 +102,23 @@ const SimpleTable = ({
               </tr>
             ))
           ) : (
-            <div className="flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center h-[28px]">
+            <div className="flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
               <p> No records to display.</p>
             </div>
           )}
         </tbody>
       </table>
-      <PaginationComponent
-        pageNo={pageNo}
-        countPerPage={countPerPage}
-        totalCount={totalCount}
-        handlePageChange={handlePageChange}
-        handlePageCountChange={handlePageCountChange}
-        handleRefresh={handleRefresh}
-        downloadExcel={downloadExcel}
-        disabled={data.length < 1}
-      />
-    </div>
-  );
+    </div>,
+    <PaginationComponent
+      pageNo={pageNo}
+      countPerPage={countPerPage}
+      totalCount={totalCount}
+      handlePageChange={handlePageChange}
+      handlePageCountChange={handlePageCountChange}
+      handleRefresh={handleRefresh}
+      downloadExcel={downloadExcel}
+    />,
+  ];
 };
 
 export default SimpleTable;
