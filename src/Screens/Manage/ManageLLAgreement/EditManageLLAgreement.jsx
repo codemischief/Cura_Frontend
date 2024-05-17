@@ -1,11 +1,12 @@
 import { useScrollTrigger } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Modal } from '@mui/material'
+import { Modal , CircularProgress } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable'
-const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCancel}) => {
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+const EditManageLLAgreement = ({ handleClose, currItem, openEditSuccess, showCancel }) => {
     const initialValues = {
         client: "",
         clientProperty: null,
@@ -157,8 +158,8 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
             type: "Notarized"
         }
     ];
-    const [formValues,setFormValues] = useState(initialValues)
-    const [formErrors,setFormErrors] = useState({})
+    const [formValues, setFormValues] = useState(initialValues)
+    const [formErrors, setFormErrors] = useState({})
     // const handleClose = () => {
 
     // }
@@ -166,27 +167,28 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    const [clientPropertyData,setClientPropertyData] = useState([])
-    const [orders,setOrders] = useState([])
+    const [clientPropertyData, setClientPropertyData] = useState([])
+    const [propertyText, setPropertyText] = useState("Select Client Property");
+    const [orders, setOrders] = useState([])
+    const [orderText, setOrderText] = useState("Select Order");
     // const [rentPaymentDate,setRentPaymentDate] = useState([])
     // const [registrationType,setRegistrationType] = useState([])
-    const handleAddLLAgreement = () => {
-
-    }
+    const [pageLoading, setPageLoading] = useState(false)
     const fetchInitialData = async (id) => {
+        setPageLoading(true)
         const data = {
-            "user_id" : 1234,
-            "item_id" : id,
-            "table_name" : "get_client_property_lla_view"
+            "user_id": 1234,
+            "item_id": id,
+            "table_name": "get_client_property_lla_view"
         }
         const response = await APIService.getItembyId(data)
         const res = await response.json()
         console.log(res)
         console.log('temp')
-        const existing = {...formValues}
+        const existing = { ...formValues }
         existing.depositeAmount = res.data.depositamount
         existing.client = res.data.clientid
-        existing.endDate  = res.data.actualenddate
+        existing.endDate = res.data.actualenddate
         existing.durationInMonth = res.data.durationinmonth
         existing.noticePeriod = res.data.noticeperiodindays
         existing.status = res.data.active
@@ -197,16 +199,16 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
         existing.startDate = res.data.startdate
         existing.clientProperty = res.data.clientpropertyid
         existing.order = res.data.orderid
-        const temp = {...selectedOption}
+        const temp = { ...selectedOption }
         temp.label = res.data.clientname
-        temp.value = res.data.clientid 
+        temp.value = res.data.clientid
         getClientPropertyByClientId(res.data.clientid)
         getOrdersByClientId(res.data.clientid)
         setSelectedOption(temp)
         setFormValues(existing)
-        
-        
-
+        setTimeout(() => {
+            setPageLoading(false)
+        }, 1000)
     }
     const validate = () => {
         var res = true;
@@ -285,35 +287,35 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
     }
     const handleEdit = async () => {
         console.log(formValues)
-        if(!validate()) {
-            return ;
+        if (!validate()) {
+            return;
         }
         const data = {
-            "user_id":1234,
+            "user_id": 1234,
             "id": currItem.id,
-            "clientpropertyid":formValues.clientProperty,
-            "orderid":formValues.order,
-            "durationinmonth":formValues.durationInMonth,
-            "depositamount":formValues.depositeAmount,
-            "startdate":formValues.startDate,
-            "actualenddate":formValues.endDate,
-            "rentamount":formValues.rentAmount,
-            "registrationtype":formValues.registrationType,
-            "rentpaymentdate":formValues.rentPaymentDate,
-            "noticeperiodindays":formValues.noticePeriod,
-            "active":formValues.status,
-            "llscancopy":formValues.scan
+            "clientpropertyid": formValues.clientProperty,
+            "orderid": formValues.order,
+            "durationinmonth": formValues.durationInMonth,
+            "depositamount": formValues.depositeAmount,
+            "startdate": formValues.startDate,
+            "actualenddate": formValues.endDate,
+            "rentamount": formValues.rentAmount,
+            "registrationtype": formValues.registrationType,
+            "rentpaymentdate": formValues.rentPaymentDate,
+            "noticeperiodindays": formValues.noticePeriod,
+            "active": formValues.status,
+            "llscancopy": formValues.scan
         }
         const response = await APIService.editClientLLAgreement(data)
         const res = await response.json()
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             openEditSuccess()
         }
         console.log(res.data)
     }
     useEffect(() => {
         fetchInitialData(currItem.id)
-    },[])
+    }, [])
     const getClientPropertyByClientId = async (id) => {
         const data = {
             "user_id": 1234,
@@ -325,7 +327,7 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
         console.log(res)
         setClientPropertyData(res.data)
     }
-    
+
     const getOrdersByClientId = async (id) => {
         console.log('hello')
         const data = {
@@ -353,10 +355,11 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
-        existing.order = null
         getOrdersByClientId(e.value)
         getClientPropertyByClientId(e.value)
         setFormValues(existing)
+        setOrderText("Select Order")
+        setPropertyText("Select Client Property")
         //    const existing = {...formValues}
         //    const temp = {...existing.client_property}
         //    temp.clientid = e.value
@@ -389,77 +392,82 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
         return results
     }
 
-    const close = () =>{
+    const close = () => {
         handleClose();
         showCancel();
     }
-  return (
-    <Modal open={true}
-                fullWidth={true}
-                maxWidth={'md'}
-                className='flex justify-center items-center'
-            >
-                <>
+    return (
+        <Modal open={true}
+            fullWidth={true}
+            maxWidth={'md'}
+            className='flex justify-center items-center'
+        >
+            <>
                 <Draggable>
-                <div className='flex justify-center'>
-                    
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit L&L Agreement</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={() => {close()}}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
+                    <div className='flex justify-center'>
 
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client <label className="text-red-500">*</label>
-                                        </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
-                                            
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 25,
-                                                    lineHeight: '1.3',
-                                                    height: 2,
-                                                    fontSize: 12,
-                                                    padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '3px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                })
-                                            }}
-                                        />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Client Property <label className="text-red-500">*</label>
-                                        </div>
-                                        <select
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit L&L Agreement</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={() => { close() }}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
+                            </div>
+                            {pageLoading && <div className='flex space-x-2 items-center justify-center py-4'>
+                                <CircularProgress />
+                                <h1>Fetching Data</h1>
+                            </div>
+                            }
+                            {!pageLoading &&
+                                <div className="h-auto w-full mt-[5px]">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Client <label className="text-red-500">*</label>
+                                                </div>
+                                                <AsyncSelect
+                                                    onChange={handleClientNameChange}
+                                                    value={selectedOption}
+                                                    loadOptions={loadOptions}
+                                                    cacheOptions
+                                                    defaultOptions
+                                                    onInputChange={(value) => setQuery(value)}
+
+                                                    styles={{
+                                                        control: (provided, state) => ({
+                                                            ...provided,
+                                                            minHeight: 25,
+                                                            lineHeight: '1.3',
+                                                            height: 2,
+                                                            fontSize: 12,
+                                                            padding: '1px'
+                                                        }),
+                                                        // indicatorSeparator: (provided, state) => ({
+                                                        //   ...provided,
+                                                        //   lineHeight : '0.5',
+                                                        //   height : 2,
+                                                        //   fontSize : 12 // hide the indicator separator
+                                                        // }),
+                                                        dropdownIndicator: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: '3px', // adjust padding for the dropdown indicator
+                                                        }),
+                                                        options: (provided, state) => ({
+                                                            ...provided,
+                                                            fontSize: 12 // adjust padding for the dropdown indicator
+                                                        })
+                                                    }}
+                                                />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px] mb-1">
+                                                    Client Property <label className="text-red-500">*</label>
+                                                </div>
+                                                {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="clientProperty"
                                             value={formValues.clientProperty}
@@ -467,41 +475,42 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
                                             >
                                             {clientPropertyData.map((item) => (
                                                 <option key={item.id} value={item.id}>
-                                                    {item.id}
-                                                    &nbsp;
-                                                    &nbsp;
-                                                    {item.propertyname}
+                                                {item.id}
+                                                &nbsp;
+                                                &nbsp;
+                                                {item.propertyname}
                                                 </option>
                                             ))}
-                                        </select>
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
-                                        <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.startDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Rent Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
+                                        </select> */}
+                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Start Date<label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="startDate" value={formValues.startDate} onChange={handleChange} />
+                                                <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.startDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Rent Amount </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="rentAmount" value={formValues.rentAmount} onChange={handleChange} />
 
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Deposit Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Deposit Amount </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="depositeAmount" value={formValues.depositeAmount} onChange={handleChange} />
 
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">LL & PV Scan Copy </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
-                                    </div>
-                                </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">LL & PV Scan Copy </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="scan" value={formValues.scan} onChange={handleChange} />
+                                            </div>
                                         </div>
-                                        <select
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-[13px] mb-1">
+                                                    Order <label className="text-red-500">*</label>
+                                                </div>
+                                                {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
@@ -511,86 +520,88 @@ const EditManageLLAgreement = ({handleClose, currItem,openEditSuccess , showCanc
                                             <option value="" >ID &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Order Description</option>
                                             {orders.map((item) => (
                                                 <option key={item.id} value={item.id}>
-                                                    {item.ordername}
+                                                {item.ordername}
                                                 </option>
                                             ))}
-                                        </select>
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
-                                        <div className="text-[8px] text-[#CD0000] absolute">{formErrors.endDate}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Rent payment Date
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="rentPaymentDate"
-                                            value={formValues.rentPaymentDate}
-                                            onChange={handleChange}
-                                            >
-                                            {rentPaymentDate.map((item) => (
-                                                <option key={item.id} value={item.day}>
-                                                    {item.day}
-                                                </option>
-                                            ))}
-                                        </select>
+                                        </select> */}
+                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Duration in Month <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="durationInMonth" value={formValues.durationInMonth} onChange={handleChange} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.durationInMonth}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">End Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="endDate" value={formValues.endDate} onChange={handleChange} />
+                                                <div className="text-[8px] text-[#CD0000] absolute">{formErrors.endDate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Rent payment Date
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="rentPaymentDate"
+                                                    value={formValues.rentPaymentDate}
+                                                    onChange={handleChange}
+                                                >
+                                                    {rentPaymentDate.map((item) => (
+                                                        <option key={item.id} value={item.day}>
+                                                            {item.day}
+                                                        </option>
+                                                    ))}
+                                                </select>
 
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Notice Period in Days </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Registeration Type
-                                        </div>
-                                        <select
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                            name="registrationType"
-                                            value={formValues.registrationType}
-                                            onChange={handleChange}
-                                            >
-                                            {registrationType.map(item => (
-                                                <option key={item.id} value={item.type}>
-                                                    {item.type}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Notice Period in Days </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="noticePeriod" value={formValues.noticePeriod} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">
+                                                    Registeration Type
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                                                    name="registrationType"
+                                                    value={formValues.registrationType}
+                                                    onChange={handleChange}
+                                                >
+                                                    {registrationType.map(item => (
+                                                        <option key={item.id} value={item.type}>
+                                                            {item.type}
+                                                        </option>
+                                                    ))}
+                                                </select>
 
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            }
+                            <div className="mt-[10px] flex justify-center items-center "><input
+                                type="checkbox"
+                                checked={formValues.status}
+                                className='mr-3 h-4 w-4'
+                                onClick={(e) => {
+                                    // console.log(e.target.checked)
+                                    const existing = { ...formValues };
+                                    existing.status = !existing.status;
+                                    setFormValues(existing)
+                                }}
+                            />Active</div>
+                            <div className="my-3 flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
                             </div>
                         </div>
-                        <div className="mt-[10px] flex justify-center items-center "><input
-                            type="checkbox"
-                            checked={formValues.status}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = { ...formValues };
-                                existing.status = !existing.status;
-                                setFormValues(existing)
-                            }}
-                            />Active</div>
-                        <div className="my-3 flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
-                        </div>
                     </div>
-                </div>
-                    </Draggable>
-                            </>
-            </Modal>
-  )
+                </Draggable>
+            </>
+        </Modal>
+    )
 }
 
 export default EditManageLLAgreement

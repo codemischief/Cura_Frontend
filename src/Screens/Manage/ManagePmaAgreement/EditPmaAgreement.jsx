@@ -213,9 +213,11 @@ const EditPmaAgreement = ({ handleClose, currPma, showSuccess, showCancel }) => 
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
-        // getOrdersByClientId(e.value)
-        // getClientPropertyByClientId(e.value)
+        getOrdersByClientId(e.value)
+        getClientPropertyByClientId(e.value)
         setFormValues(existing)
+        setOrderText("Select Order")
+        setPropertyText("Select Client Property")
         //    const existing = {...formValues}
         //    const temp = {...existing.client_property}
         //    temp.clientid = e.value

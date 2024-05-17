@@ -30,6 +30,7 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditManageLLAgreement from './EditManageLLAgreement';
 import Draggable from "react-draggable"
+import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const ManageLLAgreement = () => {
     // const initialRows = [
     //     "id",
@@ -266,6 +267,8 @@ const ManageLLAgreement = () => {
         getOrdersByClientId(e.value)
         getClientPropertyByClientId(e.value)
         setFormValues(existing)
+        setOrderText("Select Order")
+        setPropertyText("Select Client Property")
         //    const existing = {...formValues}
         //    const temp = {...existing.client_property}
         //    temp.clientid = e.value
@@ -429,6 +432,18 @@ const ManageLLAgreement = () => {
     const initials = () => {
         setFormValues(initialValues);
         setFormErrors({});
+        setSelectedOption(
+            {
+                label: "Select Client",
+                value: null
+            }
+        )
+
+        setOrders([]);
+        setClientPropertyData([]);
+
+        setOrderText("Select Order");
+        setPropertyText("Select Client Property")
     }
 
     const handleOpenTenantDetails = async  (id) => {
@@ -640,13 +655,13 @@ const ManageLLAgreement = () => {
         console.log(result)
         setIsLLAgreementDialogue(false);
         if (result.result == "success") {
+            const temp = { ...selectedOption }
+            temp.label = "Select Client"
+            temp.value = null
+            setSelectedOption(temp)
+            setOrderText("Select Order")
+            setPropertyText("Select Client Property")
             setFormValues(initialValues);
-            setSelectedOption({
-
-                label: "Enter Client Name",
-                value: null
-
-            })
             openAddSuccess();
         } else {
             setFormValues(initialValues);
@@ -1160,6 +1175,9 @@ const ManageLLAgreement = () => {
         }
     }
 
+    const [orderText, setOrderText] = useState("Select Order");
+    const [propertyText , setPropertyText] = useState("Select Client Property");
+
     return (
         <div className='h-screen'>
             <Navbar />
@@ -1190,7 +1208,7 @@ const ManageLLAgreement = () => {
                         <div className='flex bg-[#EBEBEB]'>
                             {/* search button */}
                             <input
-                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3"
+                                className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 outline-none"
                                 type="text"
                                 placeholder="  Search"
                                 value={searchInput}
@@ -1445,8 +1463,8 @@ const ManageLLAgreement = () => {
 
                                     </div>
                                     <div className='w-[35%]  flex overflow-hidden items-center space-x-4 ml-3'>
-                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-5 ml-3' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' h-5' src={Trash} alt="trash" /></button>
+                                        <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id)}><img className=' h-4 w-4' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 
@@ -1596,10 +1614,10 @@ const ManageLLAgreement = () => {
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-[13px]">
+                                                <div className="text-[13px] mb-1">
                                                     Client Property <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="clientProperty"
                                                     value={formValues.clientProperty}
@@ -1614,7 +1632,8 @@ const ManageLLAgreement = () => {
                                                             {item.propertyname}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">
@@ -1639,10 +1658,10 @@ const ManageLLAgreement = () => {
                                         </div>
                                         <div className=" space-y-3 py-5">
                                             <div className="">
-                                                <div className="text-[13px]">
+                                                <div className="text-[13px] mb-1">
                                                     Order <label className="text-red-500">*</label>
                                                 </div>
-                                                <select
+                                                {/* <select
                                                     className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                                     name="order"
                                                     value={formValues.order}
@@ -1659,7 +1678,8 @@ const ManageLLAgreement = () => {
                                                             {item.ordername}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </select> */}
+                                                <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.order}</div>
                                             </div>
                                             <div className="">
