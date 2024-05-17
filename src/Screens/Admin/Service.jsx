@@ -326,7 +326,7 @@ const Service = () => {
 
         if (!formValues.serviceName) {
             setFormErrors((existing) => {
-                return { ...existing, serviceName: "Enter The Name Of The Service" }
+                return { ...existing, serviceName: "Enter Service Name" }
             })
             res = false;
         } else {
@@ -336,7 +336,7 @@ const Service = () => {
         }
         if (!formValues.lob) {
             setFormErrors((existing) => {
-                return { ...existing, lob: "Enter Lob" }
+                return { ...existing, lob: "Enter LOB" }
             })
             res = false;
         } else {
