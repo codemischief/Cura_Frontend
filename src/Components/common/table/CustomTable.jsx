@@ -82,7 +82,10 @@ const SimpleTable = ({
 
           {data.length > 0 ? (
             data?.map((rowData, rowIndex) => (
-              <tr key={rowIndex} className="border-b dark:border-gray-700 h-[56px]">
+              <tr
+                key={rowIndex}
+                className="border-b dark:border-gray-700 h-[56px]"
+              >
                 {columns.map((column, colIndex) => (
                   <td
                     key={colIndex}
@@ -102,9 +105,9 @@ const SimpleTable = ({
               </tr>
             ))
           ) : (
-            <div className="flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
-              <p> No records to display.</p>
-            </div>
+            <tr className="w-full flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
+              No records to display{" "}
+            </tr>
           )}
         </tbody>
       </table>
