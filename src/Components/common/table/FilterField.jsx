@@ -70,6 +70,7 @@ export const FilterField = (props) => {
         let filters = {
           text: "contains",
           number: "equalTo",
+          date:"equalTo"
         };
         let filterType = {
           text: "String",

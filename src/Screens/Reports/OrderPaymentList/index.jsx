@@ -13,6 +13,7 @@ import {
   downloadPaymentDataXls,
   getOrderPaymentData,
   setCountPerPage,
+  setInitialState,
   setPageNumber,
   setSorting,
   setStatus,
@@ -208,34 +209,9 @@ const OrderPaymentList = () => {
 
   const handleShow = () => {
     if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "paymentdate",
-          "monthyear",
-          "fy",
-          "amount",
-          "entityname",
-          "mode_of_payment",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
-        order: "desc",
-        filters: [],
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
-      };
-      dispatch(getOrderPaymentData(obj));
+
+      dispatch(setInitialState())
+
       setShowTable(true);
     } else {
       // setError((prev) => ({
