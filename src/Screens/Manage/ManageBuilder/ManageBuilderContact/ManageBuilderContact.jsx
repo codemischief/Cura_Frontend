@@ -30,7 +30,7 @@ const ManageBuilderContact = () => {
     console.log(params.builderid)
     // console.log(params)
     const [existingProjects, setExistingProjects] = useState([]);
-    const [existingContacts,setExistingContacts] = useState([])
+    const [existingContacts, setExistingContacts] = useState([])
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
@@ -74,46 +74,44 @@ const ManageBuilderContact = () => {
     }
 
     const fetchBuilderData = async () => {
-        // we make the calls here
-        const data ={
+        
+        const data = {
             "user_id": 1234,
             "builderid": 101,
             "rows": [
-              "id",
-              "buildername",
-              "builderid",
-              "contactname",
-              "jobtitle",
-              "businessphone",
-              "homephone",
-              "mobilephone",
-              "addressline1",
-              "addressline2",
-              "suburb",
-              "city",
-              "state",
-              "country",
-              "zip",
-              "notes",
-              "dated",
-              "createdby",
-              "isdeleted"
+                "id",
+                "buildername",
+                "builderid",
+                "contactname",
+                "jobtitle",
+                "businessphone",
+                "homephone",
+                "mobilephone",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "notes",
+                "dated",
+                "createdby",
+                "isdeleted"
             ],
             "filters": [],
             "sort_by": [
-              "id"
+                "id"
             ],
-            "order": "asc",
-            "pg_no": 1,
-            "pg_size": 15
-          }
-        
+            "order": "desc",
+            "pg_no": 0,
+            "pg_size": 0
+        }
         const response = await APIService.getBuilderContactsById(data);
         const res = await response.json()
         console.log(res.data)
         setPageLoading((prev) => false)
         setExistingContacts((prev) => res.data)
-
     }
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -297,15 +295,93 @@ const ManageBuilderContact = () => {
         XLSX.writeFile(workbook, "BuilderData.xlsx");
         FileSaver.saveAs(workbook, "demo.xlsx");
     }
-    const handlePageChange = () => {
 
-    } 
-    const handleCloseSearch = () => {
-
+    const handleSearch = async () => {
+        setPageLoading(true);
+        setCurrentPage(1)
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "buildername",
+                "builderid",
+                "contactname",
+                "jobtitle",
+                "businessphone",
+                "homephone",
+                "mobilephone",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "notes",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key" : searchInput
+        };
+        const response = await APIService.getBuilderContactsById(data);
+        const res = await response.json()
+        console.log(res.data)
+        setPageLoading((prev) => false)
+        setExistingContacts((prev) => res.data)
     }
-    const handleSearch = () => {
 
+    const handleCloseSearch = async () => {
+        setPageLoading(true);
+        setSearchInput("");
+        setIsSearchOn(false);
+        setCurrentPage(1);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "id",
+                "buildername",
+                "builderid",
+                "contactname",
+                "jobtitle",
+                "businessphone",
+                "homephone",
+                "mobilephone",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "country",
+                "zip",
+                "notes",
+                "dated",
+                "createdby",
+                "isdeleted"
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key" : ""
+        };
+        const response = await APIService.getNewBuilderInfo(data)
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
+        setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
     }
+
     const [downloadModal, setDownloadModal] = useState(false)
     const [builderFilter, setBuilderFilter] = useState(false)
     const [builderFilterInput, setBuilderFilterInput] = useState("")
@@ -317,17 +393,41 @@ const ManageBuilderContact = () => {
     const [suburbFilterInput, setSuburbFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("")
-    
-    const [searchInput,setSearchInput] = useState("")
+
+    const [searchInput, setSearchInput] = useState("")
+
+    const handleSort = async (field) => {
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
+            "filters": filterState,
+            "sort_by": [field],
+            "order": !flag ? "asc" : "desc",
+            "pg_no": Number(currentPage),
+            "pg_size": Number(currentPages),
+            "search_key": searchInput 
+        };
+        const response = await APIService.getNewBuilderInfo(data)
+        const res = await response.json()
+        console.log(res)
+        const result = res.data.builder_info;
+        setTotalItems(res.total_count);
+        console.log(res.total_count);
+        setPageLoading(false);
+        // console.log(result);
+        setExistingBuilders(result);
+
+    }
 
     return (
         <div className="h-screen">
-            <Navbar/>
-             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
+            <Navbar />
+            <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                        <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
+                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
                         </div>
 
                         <div className='flex-col'>
@@ -358,7 +458,7 @@ const ManageBuilderContact = () => {
                             {/* button */}
                             <button className="bg-[#004DD7] text-white h-[36px] w-[250px] rounded-lg" onClick={handleOpen}>
                                 <div className="flex items-center justify-center gap-4 text-[14px]">
-                                    Add New Client
+                                    Add New Contact
                                     <img className='h-[18px] w-[18px]' src={Add} alt="add" />
                                 </div>
                             </button>
@@ -374,7 +474,7 @@ const ManageBuilderContact = () => {
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
                         <div className="w-[85%] flex">
-                            <div className='w-[3%] flex'>
+                            <div className='w-[5%] flex'>
                                 <div className='p-3'>
                                     {/* <p>Sr.</p> */}
                                 </div>
@@ -479,114 +579,106 @@ const ManageBuilderContact = () => {
 
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
-                    <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[100%] flex">
-                            <div className='w-[15%] flex'>
-                                <div className='px-3 py-5'>
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
+                        <div className="w-[85%] flex items-center">
+                            <div className='w-[5%] flex '>
+                                <div className='px-3'>
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[20%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Contact Name <button onClick={() => handleSort('clientname')}> <span className="font-extrabold">↑↓</span></button></p>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3'>
+                                    <p>Contact Name <button onClick={() => handleSort('contactname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[20%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Builder Name <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
+                            <div className='w-[19%]  flex'>
+                                <div className='px-3'>
+                                    <p>Builder Name <button onClick={() => handleSort('buildername')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[20%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>Job Title <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
+                            <div className='w-[19%] flex'>
+                                <div className='px-3'>
+                                    <p>Job Title <button onClick={() => handleSort('jobtitle')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[20%]  flex'>
-                                <div className='px-3 py-3.5 flex space-x-2'>
-                                    <div>
-
-                                        <p>Suburb</p>
-                                        
-                                    </div>
-                                    <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
+                            <div className='w-[19%] flex'>
+                                <div className='px-3 '>
+                                    <p>Suburb
+                                        <button onClick={() => handleSort('suburb')}> <span className="font-extrabold">↑↓</span></button>
+                                    </p>
                                 </div>
                             </div>
-                            <div className='w-[20%]  flex'>
-                                <div className='px-3 py-5'>
-                                    <p>City<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
+                            <div className='w-[19%] flex'>
+                                <div className='px-3'>
+                                    <p>City<button onClick={() => handleSort('city')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className="w-[20%] flex">
-                                 <div className='px-3 py-5'>
-                                    <p>ID<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
-                                </div>
-                            </div>
-                            
-                            
                         </div>
-                        
-
-                    </div>
-
-
-
-                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
-
-
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
-                        {!pageLoading && existingContacts && existingContacts.map((item, index) => {
-                            return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className="w-[100%] flex">
-                                    <div className='w-[15%] flex'>
-                                                <div className='px-3 py-5'>
-                                                    <p>Sr.</p>
-                                                </div>
-                                            </div>
-                                            <div className='w-[20%]  flex'>
-                                                <div className='px-3 py-5'>
-                                                    <p>Contact Name <button onClick={() => handleSort('clientname')}> <span className="font-extrabold">↑↓</span></button></p>
-                                                </div>
-                                            </div>
-                                            <div className='w-[15%]  flex'>
-                                                <div className='px-3 py-5'>
-                                                    <p>Builder Name <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
-                                                </div>
-                                            </div>
-                                            <div className='w-[15%]  flex'>
-                                                <div className='px-3 py-5'>
-                                                    <p>Job Title <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
-                                                </div>
-                                            </div>
-                                            <div className='w-[15%]  flex'>
-                                                <div className='px-3 py-3.5 flex space-x-2'>
-                                                    <div>
-
-                                                        <p>Suburb</p>
-                                                        
-                                                    </div>
-                                                    <button onClick={() => handleSort('tenantofpropertyname')}> <span className="font-extrabold">↑↓</span></button>
-                                                </div>
-                                            </div>
-                                            <div className='w-[5%]  flex'>
-                                                <div className='px-3 py-5'>
-                                                    <p>City<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
-                                                </div>
-                                            </div>
+                        <div className="w-[15%] flex items-center">
+                            <div className='w-1/2 flex'>
+                                <div className='px-3 '>
+                                    <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
-                                {/* <div className="w-[15%] flex">
-                                    <div className='w-1/2  flex'>
+                            </div>
+                            <div className='w-1/2 flex'>
+                                <div className='px-3 '>
+                                    <p>Edit</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
+                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {!pageLoading && existingContacts && existingContacts.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
+                        {!pageLoading && existingContacts && existingContacts.map((item, index) => {
+                            return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                                <div className="w-[100%] flex items-center">
+                                    <div className='w-[5%] flex'>
+                                        <div className='px-3'>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[19%] flex'>
+                                        <div className='px-3'>
+                                            <p>{item.contactname}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[19%] flex'>
+                                        <div className='px-3'>
+                                            <p>{item.buildername}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[19%] flex'>
+                                        <div className='px-3'>
+                                            <p>{item.jobtitle}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[19%] flex'>
+                                        <div className='px-3'>
+                                            <p>{item.suburb}</p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[19%] flex'>
+                                        <div className='px-3'>
+                                            <p>{item.city}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-[15%] flex">
+                                    <div className='w-1/2 flex'>
                                         <div className='p-3'>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
                                     <div className='w-1/2  flex'>
-                                        <div className='p-3 flex space-x-2'>
+                                        <div className='px-3 flex space-x-2'>
                                             <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => handleEdit(item.id)} />
                                             <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => { openDelete(item.id) }} />
                                         </div>
                                     </div>
-                                </div> */}
-
+                                </div>
                             </div>
                         })}
 
@@ -604,14 +696,12 @@ const ManageBuilderContact = () => {
             <div className='w-full h-12 flex justify-between justify-self-end px-6 mt-5 fixed bottom-0 bg-white '>
                 {/* footer component */}
                 <div className='ml-2'>
-                    <div className='flex items-center w-auto h-full'>
-                        {/* items */}
+                    {/* <div className='flex items-center w-auto h-full'>
                         <Pagination count={Math.ceil(totalItems / currentPages)} onChange={handlePageChange} page={currentPage} />
-
-                    </div>
+                    </div> */}
                 </div>
                 <div className='flex mr-10 justify-center items-center space-x-2 '>
-                    <div className="flex mr-8 space-x-2 text-sm items-center">
+                    {/* <div className="flex mr-8 space-x-2 text-sm items-center">
                         <p className="text-gray-700">Items Per page</p>
                         <select className="text-gray-700 border-black border-[1px] rounded-md p-1"
                             name="currentPages"
@@ -635,10 +725,10 @@ const ManageBuilderContact = () => {
                                 50
                             </option>
                         </select>
-                    </div>
-                    <div className="flex text-sm">
+                    </div> */}
+                    {/* <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
-                    </div>
+                    </div> */}
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
@@ -659,12 +749,12 @@ const ManageBuilderContact = () => {
 
                     <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
                         {/* refresh */}
-                        <button onClick={() => {}}><p>Refresh</p></button>
+                        <button onClick={() => { }}><p>Refresh</p></button>
                         <img src={refreshIcon} className="h-2/3" />
                     </div>
                     <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                         {/* download */}
-                        <button onClick={() => {}}><p>Download</p></button>
+                        <button onClick={() => { }}><p>Download</p></button>
                         <img src={downloadIcon} className="h-2/3" />
                     </div>
                 </div>
@@ -675,19 +765,19 @@ const ManageBuilderContact = () => {
                 fullWidth={true}
                 maxWidth={'md'}
                 className="flex justify-center items-center"
-                 >
+            >
                 <div className='flex justify-center'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[360px] ml-[360px]">
-                                <div className="text-[16px]">New Builder Contact</div>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[360px] ml-[360px]">
+                                    <div className="text-[16px]">New Builder Contact</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
-                            </div>
-                        </div>
-                        
+
                             <div className="h-auto w-full mt-[5px] ">
                                 <div className="flex gap-[48px] justify-center">
                                     <div className=" space-y-[10px] pt-[20px] px-[10px]">
@@ -820,11 +910,11 @@ const ManageBuilderContact = () => {
 
                             <div className="my-2 flex justify-center items-center gap-[10px]">
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={() => {}}>Save</button>
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={() => { }}>Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                                 {isLoading && <CircularProgress />}
                             </div>
-                    </div>
+                        </div>
                     </Draggable>
                 </div>
             </Modal>
