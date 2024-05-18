@@ -73,6 +73,7 @@ const OrderPaymentList = () => {
         enddate: endDate ?? "2022-01-01",
         rows: [
           "id",
+          "type",
           "recddate",
           "fy",
           "monthyear",
@@ -125,6 +126,7 @@ const OrderPaymentList = () => {
         enddate: endDate ?? "2022-01-01",
         rows: [
           "id",
+          "type",
           "recddate",
           "fy",
           "monthyear",
@@ -215,6 +217,7 @@ const OrderPaymentList = () => {
         enddate: endDate ?? "2022-01-01",
         rows: [
           "id",
+          "type",
           "recddate",
           "fy",
           "monthyear",
