@@ -930,8 +930,8 @@ const ManageProjectInfo = () => {
 
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[85%] flex">
-                            <div className='w-[4%] flex'>
+                        <div className="w-[88%] flex">
+                            <div className='w-[3%] flex'>
 
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
@@ -963,7 +963,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} />}
                             </div>
-                            <div className='w-[12%] px-3 py-2.5'>
+                            <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={suburbFilterInput} onChange={(e) => setSuburbFilterInput(e.target.value)} 
                                     
@@ -977,7 +977,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} />}
                             </div>
-                            <div className='w-[14%] px-3 py-2.5'>
+                            <div className='w-[15%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={otherDetailsFilterInput} onChange={(e) => setOtherDetailsFilterInput(e.target.value)} 
                                     
@@ -991,7 +991,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} filterColumn="otherdetails" menuRef={menuRef} />}
                             </div>
-                            <div className='w-[12%] px-3 py-2.5'>
+                            <div className='w-[12%] px-3 py-2.5 ml-[-1px]'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={mailGroupFilterInput} onChange={(e) => setMailGroupFilterInput(e.target.value)} 
                                     
@@ -1005,7 +1005,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} />}
                             </div>
-                            <div className='w-[12%] px-3 py-2.5'>
+                            <div className='w-[14%] px-3 py-2.5 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={subscribedEmailFilterInput} onChange={(e) => setSubscribedEmailFilterInput(e.target.value)} 
                                     
@@ -1019,7 +1019,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup2" menuRef={menuRef} />}
                             </div>
-                            <div className='w-[10%] px-3 py-2.5'>
+                            <div className='w-[10%] px-3 py-2.5 ml-[-2px]'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={rulesFilterInput} onChange={(e) => setRulesFilterInput(e.target.value)} 
                                     
@@ -1040,8 +1040,8 @@ const ManageProjectInfo = () => {
                                 </div>
                             </div> */}
                         </div>
-                        <div className="w-[15%] px-3 py-2.5">
-                            <div className='w-1/2  '>
+                        <div className="w-[12%] px-3 py-2.5">
+                            <div className='w-[65%]  '>
                                 <div className="w-[77%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none"  value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
                                     
@@ -1054,7 +1054,7 @@ const ManageProjectInfo = () => {
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
-                            <div className='w-1/2  flex'>
+                            <div className='w-[35%]  flex'>
                                 <div className='p-3'>
 
                                 </div>
@@ -1065,9 +1065,9 @@ const ManageProjectInfo = () => {
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
 
-                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                        <div className="w-[85%] flex">
-                            <div className='w-[4%] flex'>
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between items-center'>
+                        <div className="w-[88%] flex items-center">
+                            <div className='w-[3%] flex overflow-x-hidden'>
                                 <div className='p-3'>
                                     <p>Sr.</p>
                                 </div>
@@ -1082,24 +1082,24 @@ const ManageProjectInfo = () => {
                                     <p>Builder Name <button onClick={() => handleSort('buildername')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[12%]  flex'>
+                            <div className='w-[10%]  flex'>
                                 <div className='p-3'>
                                     <p>Suburb <button onClick={() => handleSort('suburb')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
+                            <div className='w-[15%]  flex'>
+                                <div className='p-3'>
+                                    <p>Other details/issues <button onClick={() => handleSort('otherdetails')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
+                            <div className='w-[12%]  flex'>
+                                <div className='p-3'>
+                                    <p>Mail Group <button onClick={() => handleSort('mailgroup1')}><span className="font-extrabold">↑↓</span></button></p>
+                                </div>
+                            </div>
                             <div className='w-[14%]  flex'>
                                 <div className='p-3'>
-                                    <p>Other details/issues </p>
-                                </div>
-                            </div>
-                            <div className='w-[12%]  flex'>
-                                <div className='p-3'>
-                                    <p>Mail Group </p>
-                                </div>
-                            </div>
-                            <div className='w-[12%]  flex'>
-                                <div className='p-3'>
-                                    <p>Subscribed email </p>
+                                    <p>Subscribed email <button onClick={() => handleSort('mailgroup2')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             <div className='w-[10%]  flex'>
@@ -1113,7 +1113,7 @@ const ManageProjectInfo = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[15%] flex">
+                        <div className="w-[12%] flex items-center">
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
                                     <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1130,52 +1130,55 @@ const ManageProjectInfo = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {!pageLoading && existingProjectInfo && existingProjectInfo.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingProjectInfo.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between border-gray-400 border-b-[1px]' key={item.id}>
-                                <div className="w-[85%] flex min-h-0">
-                                    <div className='w-[4%] flex  overflow-hidden'>
-                                        <div className='p-3 flex items-center'>
+                            return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1' key={item.id}>
+                                <div className="w-[88%] flex items-center ">
+                                    <div className='w-[3%] flex overflow-x-hidden'>
+                                        <div className='px-3 '>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3 flex items-center'>
+                                    <div className='w-[12%] '>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.projectname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3 flex items-center'>
+                                    <div className='w-[12%]  flex pl-0.5'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.buildername}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3 flex items-center'>
+                                    <div className='w-[10%]  flex pl-0.5'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.suburb}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[14%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                    <div className='w-[15%]  flex pl-1'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.otherdetails}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                    <div className='w-[12%]  flex pl-1'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.mailgroup1}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='p-3'>
+                                    <div className='w-[14%]  flex pl-1'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.mailgroup2}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
-                                        <div className='p-3 flex items-center '>
+                                    <div className='w-[10%]  flex pl-1'>
+                                        <div className='px-3 overflow-x-hidden'>
                                             <p>{item.rules}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[12%]  flex overflow-hidden'>
-                                        <div className='flex items-center p-3 text-[9px]'>
+                                    <div className='w-[12%]  flex pl-1.5'>
+                                        <div className='pl-3 overflow-x-hidden'>
                                             <p>{item.tenantworkingbachelorsallowed || item.tenantforeignersallowed || item.tenantstudentsallowed}</p>
                                             <p>
                                                 {`${item.tenantworkingbachelorsallowed ? "Tenant Working Bachelors Allowed," : ""}
@@ -1186,13 +1189,13 @@ const ManageProjectInfo = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[15%] flex">
+                                <div className="w-[12%] flex items-center">
                                     <div className='w-1/2  flex overflow-hidden items-center'>
-                                        <div className='p-3 ml-1'>
+                                        <div className='px-3 '>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
-                                    <div className='w-1/2  flex overflow-hidden items-center p-3 justify-around '>
+                                    <div className='w-1/2 flex overflow-hidden items-center px-3 justify-around '>
                                         <button onClick={() => handleEdit(item.id)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
                                         <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
                                     </div>
