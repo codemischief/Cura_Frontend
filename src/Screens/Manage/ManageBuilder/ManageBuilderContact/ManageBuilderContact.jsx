@@ -331,8 +331,8 @@ const ManageBuilderContact = () => {
                         </div>
 
                         <div className='flex-col'>
-                            <h1 className='text-[18px]'>Manage Client</h1>
-                            <p className='text-[14px]'>Manage &gt; Manage Client</p>
+                            <h1 className='text-[18px]'>Manage Builder Contact</h1>
+                            <p className='text-[14px]'>Manage &gt;  Manage Builder &gt; Contact </p>
                         </div>
                     </div>
                     <div className='flex space-x-2 items-center'>
