@@ -148,17 +148,17 @@ const Payments = () => {
         // we need to query thru the object
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         Number(filterMapState[key].filterValue),
                         filterMapState[key].filterData,
                     ]);
-                }else { 
+                } else {
                     tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
                 }
-                
+
             }
         })
         setFilterState(tempArray)
@@ -488,16 +488,16 @@ const Payments = () => {
                 return { ...existing, amount: "" }
             })
         }
-        // if (!formValues.paymentfor) {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, paymentfor: "Select Tally Ledger" }
-        //     })
-        //     res = false;
-        // } else {
-        //     setFormErrors((existing) => {
-        //         return { ...existing, paymentfor: "" }
-        //     })
-        // }
+        if (!formValues.paymentfor) {
+            setFormErrors((existing) => {
+                return { ...existing, paymentfor: "Select Payment For" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, paymentfor: "" }
+            })
+        }
         if (!formValues.paymentmode) {
             setFormErrors((existing) => {
                 return { ...existing, paymentmode: "Select a payment mode" }
@@ -536,6 +536,26 @@ const Payments = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, month: "" }
+            })
+        }
+        if (!formValues.tds) {
+            setFormErrors((existing) => {
+                return { ...existing, tds: "Enter Tds" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, tds: "" }
+            })
+        }
+        if (!formValues.professiontax) {
+            setFormErrors((existing) => {
+                return { ...existing, professiontax: "Enter Profession Tax" }
+            })
+            res = false;
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, professiontax: "" }
             })
         }
         return res;
@@ -839,17 +859,17 @@ const Payments = () => {
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
-                if(mapState[key].filterData == 'Numeric') {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
                         Number(mapState[key].filterValue),
                         mapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
                 }
-                
+
             }
         })
         console.log('this is getting called')
@@ -963,41 +983,41 @@ const Payments = () => {
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
-            if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-                    
-                
-                
-              }
-      }
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
     return (
         <div className='h-screen'>
             <Navbar />
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Contractual Payment Created Successfully" />}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Successfully Edited Payments" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Changes Saved Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="SuccessFully Deleted Payment" />}
-            {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPayment={formValues.paymentby} addPayment={addPayment} showCancel={openAddCancelModal} setDefault={initials} />}
+            {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPaymentby={formValues.paymentby} currPaymentto={formValues.paymentto} addPayment={addPayment} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {deleteConfirmationModal && <DeletePaymentModal handleClose={() => setDeleteConfirmationModal(false)} item={currPaymentId} handleDelete={deletePayments} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, No Contractual payment created" />}
@@ -1057,12 +1077,12 @@ const Payments = () => {
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,paymentToFilterInput,
-                                        setPaymentToFilterInput,
-                                        'contains',
-                                        'paymentto')}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentToFilterInput} onChange={(e) => setPaymentToFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, paymentToFilterInput,
+                                            setPaymentToFilterInput,
+                                            'contains',
+                                            'paymentto')}
                                     />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentToFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1070,12 +1090,12 @@ const Payments = () => {
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,paymentByFilterInput,
-                                        setPaymentByFilterInput,
-                                        'contains',
-                                        'paymentby')}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentByFilterInput} onChange={(e) => setPaymentByFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, paymentByFilterInput,
+                                            setPaymentByFilterInput,
+                                            'contains',
+                                            'paymentby')}
                                     />
                                     <button className='px-1 py-2 w-[25%] ' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1083,12 +1103,12 @@ const Payments = () => {
                             </div>
                             <div className='w-[10%] px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,amountFilterInput,
-                                        setAmountFilterInput,
-                                        'equalTo',
-                                        'amount')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={amountFilterInput} onChange={(e) => setAmountFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, amountFilterInput,
+                                            setAmountFilterInput,
+                                            'equalTo',
+                                            'amount')}
                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1096,11 +1116,11 @@ const Payments = () => {
                             </div>
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} type='date' 
-                                    onKeyDown={(event) => handleEnterToFilter(event,paidOnFilterInput,
-                                        setPaidOnFilterInput,
-                                        'equalTo',
-                                        'paidon')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paidOnFilterInput} onChange={(e) => setPaidOnFilterInput(e.target.value)} type='date'
+                                        onKeyDown={(event) => handleEnterToFilter(event, paidOnFilterInput,
+                                            setPaidOnFilterInput,
+                                            'equalTo',
+                                            'paidon')}
                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setPaidOnFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1108,13 +1128,13 @@ const Payments = () => {
                             </div>
                             <div className='w-[14%]  px-4 py-3'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,paymentModeFilterInput,
-                                        setPaymentModeFilterInput,
-                                        'contains',
-                                        'paymentmode')}
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentModeFilterInput} onChange={(e) => setPaymentModeFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, paymentModeFilterInput,
+                                            setPaymentModeFilterInput,
+                                            'contains',
+                                            'paymentmode')}
+
                                     />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1122,12 +1142,12 @@ const Payments = () => {
                             </div>
                             <div className='w-[13%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,paymentForFilterInput,
-                                        setPaymentForFilterInput,
-                                        'contains',
-                                        'paymentfor')}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={paymentForFilterInput} onChange={(e) => setPaymentForFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, paymentForFilterInput,
+                                            setPaymentForFilterInput,
+                                            'contains',
+                                            'paymentfor')}
                                     />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setPaymentForFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1149,15 +1169,15 @@ const Payments = () => {
                             </div> */}
                             <div className='w-[10%]  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)} 
-                                    
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,entityFilterInput,
-                                        setEntityFilterInput,
-                                        'contains',
-                                        'entity')}
-                                    
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-xs text-xs pl-2 outline-none" value={entityFilterInput} onChange={(e) => setEntityFilterInput(e.target.value)}
+
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, entityFilterInput,
+                                            setEntityFilterInput,
+                                            'contains',
+                                            'entity')}
+
+
                                     />
                                     <button className='px-1 py-2 w-[25%]' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1167,12 +1187,12 @@ const Payments = () => {
                         <div className='w-[15%] flex'>
                             <div className='w-1/2  px-4 py-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                        setIdFilterInput,
-                                        'equalTo',
-                                        'id')}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                            setIdFilterInput,
+                                            'equalTo',
+                                            'id')}
                                     />
                                     <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1221,7 +1241,7 @@ const Payments = () => {
                             <div className='w-1/2  p-4'>
                                 <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-1/2 0 p-4'>
+                            <div className='w-1/2 p-4'>
                                 <p>Edit</p>
                             </div>
                         </div>
@@ -1229,11 +1249,11 @@ const Payments = () => {
                     <div className=' w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {pageLoading && <LinearProgress />}
                         {!pageLoading && existingPayments && existingPayments.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                                        <h1 className='ml-10'>No Records To Show</h1>
-                            </div>}
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingPayments.map((item, index) => {
                             return <div className='w-full min-h-10 h-auto  flex justify-between items-center border-gray-400 border-b-[1px]'>
-                                <div className='w-[85%] flex text-xs'>
+                                <div className='w-[85%] flex text-xs items-center'>
                                     <div className='w-[5%] h-[50%] px-4'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                     </div>
@@ -1356,12 +1376,12 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    {/* <Draggable> */}
+                    <Draggable>
                         <div className=''>
                             <div className="w-[1100px]  h-auto bg-white rounded-lg ">
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                     <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-base">New Contractual Payments </div>
+                                        <div className="text-base">New Contractual Payment</div>
                                     </div>
                                     <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
                                         <button onClick={handleClose}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
@@ -1391,7 +1411,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                 <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id"/>
+                                                <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id" />
                                                 <div className="text-[9px] text-[#CD0000] absolute">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="pt-0.5">
@@ -1418,8 +1438,8 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                
-                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
+
+                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentby}</div>
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                             </div>
@@ -1433,7 +1453,7 @@ const Payments = () => {
                                                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="deduction" value={formValues.deduction} onChange={handleChange} />
                                             </div>
                                             <div className="">
-                                                <div className="text-sm">Payment For </div>
+                                                <div className="text-sm">Payment For <label className="text-red-500">*</label></div>
                                                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentfor" value={formValues.paymentfor} onChange={handleChange} >
                                                     <option hidden>Select Payment For</option>
                                                     {paymentFor.map(item => (
@@ -1442,7 +1462,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.tallyLedger}</div> */}
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.paymentfor}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">Description </div>
@@ -1453,7 +1473,7 @@ const Payments = () => {
                                             <div className="">
                                                 <div className="text-sm">Payment Mode <label className="text-red-500">*</label></div>
                                                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
-                                                    <option  hidden>Select Payment Mode</option>
+                                                    <option hidden>Select Payment Mode</option>
                                                     {paymentMode.map(item => (
                                                         <option key={item[0]} value={item[0]}>
                                                             {item[1]}
@@ -1491,14 +1511,14 @@ const Payments = () => {
                                                 <div className="text-[9px] text-[#CD0000] absolute">{formErrors.month}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-sm">TDS </div>
+                                                <div className="text-sm">TDS <label className="text-red-500">*</label></div>
                                                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="tds" value={formValues.tds} onChange={handleChange} />
-                                                
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.tds}</div>
                                             </div>
                                             <div className="">
-                                                <div className="text-sm">Profession Tax </div>
+                                                <div className="text-sm">Profession Tax <label className="text-red-500">*</label></div>
                                                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="professiontax" value={formValues.professiontax} onChange={handleChange} />
-                                                
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.professiontax}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -1513,7 +1533,7 @@ const Payments = () => {
                                 {/* </form> */}
                             </div>
                         </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                 </>
             </Modal>
         </div>

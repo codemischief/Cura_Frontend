@@ -16,7 +16,7 @@ const SaveConfirmationPayments = (props) => {
                     <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                         <div className="h-[40px] flex justify-center items-center">
                             <div className="w-[150px] mt-10 w-full text-center">
-                                <div className="text-[24px]">Save Payment</div>
+                                <div className="text-[24px]">Add Payment</div>
                                 <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
                             </div>
 
@@ -25,13 +25,14 @@ const SaveConfirmationPayments = (props) => {
                             </div>
                         </div>
                         <div className="mt-8 w-full text-center">
-                            <div className="text-[14px]">Payment From User ID : {props.currPayment}</div>
+                            <div className="text-[14px]">Payment by : {props.currPaymentby}</div>
+                            <div className="text-[14px]">Payment to: {props.currPaymentto}</div>
                         </div>
                         <div className="mt-4 w-full text-center">
                             <p className="text-[14px]">Are you sure you want to Add new Payment</p>
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
-                            <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addPayment}>Save</button>
+                            <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addPayment}>Add</button>
                             <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={() => {close()}}>Cancel</button>
                         </div>
                     </div>
