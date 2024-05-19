@@ -10,29 +10,30 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 
 import { useDispatch } from "react-redux";
 import {
-  downloadReceiptDataXls,
-  getOrderReceiptData,
+  downloadInvoiceDataXls,
+  getOrderInvoiceData,
   setCountPerPage,
+  setInitialState,
   setPageNumber,
   setSorting,
   setStatus,
-} from "../../../Redux/slice/reporting/OrderReceiptSlice";
+} from "../../../Redux/slice/reporting/OrderInvoiceSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 
-const OrderReceiptList = () => {
+const OrderInvoiceList = () => {
   const dispatch = useDispatch();
   const {
-    orderReceiptData,
+    orderInvoiceData,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.orderReceipt);
+  } = useSelector((state) => state.orderInvoice);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -74,19 +75,20 @@ const OrderReceiptList = () => {
         rows: [
           "id",
           "type",
-          "recddate",
-          "fy",
+          "invoicedate",
           "monthyear",
-          "amount",
-          "entityname",
-          "paymentmode",
+          "fy",
+          "invoiceamount",
+          "mode",
           "clientid",
           "clientname",
+          "vendorname",
           "orderid",
           "orderdescription",
           "serviceid",
           "service",
-          "lobname"
+          "lobname",
+          "entityname"
         ],
         sort_by: ["id"],
 
@@ -95,7 +97,7 @@ const OrderReceiptList = () => {
         pg_no: +pageNo,
         pg_size: +countPerPage,
       };
-      dispatch(getOrderReceiptData(obj));
+      dispatch(getOrderInvoiceData(obj));
     }
   };
 
@@ -127,19 +129,20 @@ const OrderReceiptList = () => {
         rows: [
           "id",
           "type",
-          "recddate",
-          "fy",
+          "invoicedate",
           "monthyear",
-          "amount",
-          "entityname",
-          "paymentmode",
+          "fy",
+          "invoiceamount",
+          "mode",
           "clientid",
           "clientname",
+          "vendorname",
           "orderid",
           "orderdescription",
           "serviceid",
           "service",
-          "lobname"
+          "lobname",
+          "entityname"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
@@ -149,7 +152,7 @@ const OrderReceiptList = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getOrderReceiptData(obj));
+      dispatch(getOrderInvoiceData(obj));
     }
   }, [
     filter,
@@ -176,12 +179,12 @@ const OrderReceiptList = () => {
       rows: [
         "type",
         "id",
-        "recddate",
+        "invoicedate",
         "monthyear",
         "fy",
-        "amount",
+        "invoiceamount",
         "entityname",
-        "paymentmode",
+        "mode",
         "clientid",
         "clientname",
         "vendorname",
@@ -199,47 +202,21 @@ const OrderReceiptList = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadReceiptDataXls(obj)).then((response) => {
+    dispatch(downloadInvoiceDataXls(obj)).then((response) => {
       const tableData = response.data;
       const worksheet = XLSX.utils.json_to_sheet(tableData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "orderReceipt.xlsx");
+      XLSX.writeFile(workbook, "orderInvoice.xlsx");
       dispatch(setStatus("success"));
     });
   };
 
   const handleShow = () => {
     if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "recddate",
-          "fy",
-          "monthyear",
-          "amount",
-          "entityname",
-          "paymentmode",
-          "clientid",
-          "clientname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname"
-        ],
-        sort_by: ["id"],
-        order: "desc",
-        filters: [],
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
-      };
-      dispatch(getOrderReceiptData(obj));
+
+      dispatch(setInitialState())
+
       setShowTable(true);
     } else {
       // setError((prev) => ({
@@ -255,8 +232,8 @@ const OrderReceiptList = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Receipt List"}
-            path={["Reports", "Lists", "Order Receipt List"]}
+            heading={"Order Invoice List"}
+            path={["Reports", "Lists", "Order Invoice List"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -329,7 +306,7 @@ const OrderReceiptList = () => {
 
         <SimpleTable
           columns={columns}
-          data={orderReceiptData}
+          data={orderInvoiceData}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
@@ -340,17 +317,10 @@ const OrderReceiptList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          
         />
       </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
-        />
-      )}
     </Stack>
   );
 };
 
-export default OrderReceiptList;
+export default OrderInvoiceList;

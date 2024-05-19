@@ -57,6 +57,7 @@ import ClientLLAgreement from "./Screens/Manage/ManageClientProperty/ClientLLAgr
 import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
+import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
 
 const App = () => {
   const ROLES = {
@@ -172,6 +173,7 @@ const App = () => {
           <Route path="admin/temp" element={<Temp />} />
           <Route path="/orderPaymentList" element={<OrderPaymentList />} />
           <Route path="/orderReceiptList" element={<OrderReceiptList />} />
+          <Route path="/orderInvoiceList" element={<OrderInvoiceList />} />
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
