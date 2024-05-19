@@ -48,9 +48,8 @@ export const updatedOrderInvoiceData = (data, year, month) => {
   console.log(data)
   return data.map((billing, index) => ({
     ...billing,
-    data: billing.data ? billing.date : "--",
+    invoicedate: billing.invoicedate ? formatDate(billing.invoicedate) : "--",
     invoiceamount: billing.invoiceamount ? floorDecimal(billing.invoiceamount) : "---",
-    
   }));
 };
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
