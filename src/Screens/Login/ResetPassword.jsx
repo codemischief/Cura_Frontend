@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "../../assets/logo.jpg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
+import { APIService } from "../../services/API";
 
 const ResetPassword = () => {
   const [openEyeIconPass, setOpenEyeIcon] = useState(false);
@@ -11,53 +12,58 @@ const ResetPassword = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
+  const url = window.location.href;
+  const token = url.match(/reset\/(.+)/)[1];
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleBlur = async (e) => {
-    const { name, value } = e.target;
-    try {
-      await Yup.reach(validationSchema, name).validate(value);
-      setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
-    } catch (err) {
-      setErrors((prevErrors) => ({ ...prevErrors, [name]: err.message }));
-    }
-  };
+  // const handleBlur = async (e) => {
+  //   const { name, value } = e.target;
+  //   try {
+  //     await Yup.reach(validationSchema, name).validate(value);
+  //     setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
+  //   } catch (err) {
+  //     setErrors((prevErrors) => ({ ...prevErrors, [name]: err.message }));
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await validationSchema.validate(form, { abortEarly: false });
-      setErrors({});
-      console.log("Form data", form);
+      // await validationSchema.validate(form, { abortEarly: false });
+      // setErrors({});
+     
+      const response = await APIService.changePassword({"password":password},token);
+
       // Handle form submission (e.g., send data to the server)
     } catch (err) {
-      const validationErrors = {};
-      err.inner.forEach((error) => {
-        validationErrors[error.path] = error.message;
-      });
-      setErrors(validationErrors);
+      // const validationErrors = {};
+      // err.inner.forEach((error) => {
+      //   validationErrors[error.path] = error.message;
+      // });
+      // setErrors(validationErrors);
     }
   };
 
-  const validationSchema = Yup.object().shape({
-    password: Yup.string()
-      .required("Password is required")
-      .test(
-        "password-validation",
-        "Password must be at least 8 characters, include one uppercase letter, and one special character",
-        function (value) {
-          const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-          return passwordRegex.test(value);
-        }
-      ),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password is required"),
-  });
+  // const validationSchema = Yup.object().shape({
+  //   password: Yup.string()
+  //     .required("Password is required")
+  //     .test(
+  //       "password-validation",
+  //       "Password must be at least 8 characters, include one uppercase letter, and one special character",
+  //       function (value) {
+  //         const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  //         return passwordRegex.test(value);
+  //       }
+  //     ),
+  //   confirmPassword: Yup.string()
+  //     .oneOf([Yup.ref("password"), null], "Passwords must match")
+  //     .required("Confirm Password is required"),
+  // });
 
   return (
     <div className="flex w-screen h-screen py-[20px] justify-center bg-[#F5F5F5]">
@@ -84,7 +90,7 @@ const ResetPassword = () => {
                     type={openEyeIconPass ? "text" : "password"}
                     value={form.password}
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     autoComplete="off"
                   />
                   {openEyeIconPass ? (
@@ -111,17 +117,21 @@ const ResetPassword = () => {
             </div>
             <div className="space-y-[12px]">
               <div className="space-y-[2px]">
-                <div className="text-[#505050] text-[18px]">Confirm Password</div>
+                <div className="text-[#505050] text-[18px]">
+                  Confirm Password
+                </div>
                 <div className="m-[0px] p-[0px] relative">
                   <input
                     className={`border-[1px] w-[400px] h-[48px] text-[#505050] px-3 text-[12px] ${
-                      errors.confirmPassword ? "border-[#FF0000]" : "border-[#C6C6C6]"
+                      errors.confirmPassword
+                        ? "border-[#FF0000]"
+                        : "border-[#C6C6C6]"
                     }`}
                     name="confirmPassword"
                     type={confirmPasswordEye ? "text" : "password"}
                     value={form.confirmPassword}
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     autoComplete="off"
                   />
                   {confirmPasswordEye ? (
@@ -149,7 +159,7 @@ const ResetPassword = () => {
             <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>
 
             {/* error message */}
-            {(errors?.password ||  errors.confirmPassword) && (
+            {(errors?.password || errors.confirmPassword) && (
               <div
                 id="inputError"
                 className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px]"

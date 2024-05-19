@@ -3,6 +3,7 @@ import Logo from "../../assets/logo.jpg";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
 import { APIService } from "../../services/API";
+import { Navigate } from "react-router-dom";
 
 const ConfirmPassword = () => {
   const [userName, setUserName] = useState(null);
@@ -13,34 +14,31 @@ const ConfirmPassword = () => {
     setUserName(e.target.value);
   };
 
- 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  if (userName) {
-    try {
-      const response = await APIService.resetPassword({ "username": userName });
-      
-      if (!response.ok) {
-        // Handle HTTP errors
-        const errorResponse = await response.json();
-        throw new Error(errorResponse.detail || 'An error occurred');
+    e.preventDefault();
+
+    if (userName) {
+      try {
+        const response = await APIService.resetPassword({ username: userName });
+
+        if (!response.ok) {
+          // Handle HTTP errors
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.detail || "An error occurred");
+        }
+        const res = await response.json();
+        console.log(res);
+      } catch (err) {
+        // Handle network or parsing errors
+        console.error("Error:", err);
+        setError(err.message || "An unexpected error occurred");
       }
-      
-      const res = await response.json();
-      console.log(res);
-    } catch (err) {
-      // Handle network or parsing errors
-      console.error('Error:', err);
-      setError(err.message || 'An unexpected error occurred');
     }
-  }
-};
+  };
 
-
-  useEffect(()=>{
-   console.log(error,"error");
-  },[error])
+  useEffect(() => {
+    console.log(error, "error");
+  }, [error]);
 
   return (
     <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
@@ -78,7 +76,10 @@ const ConfirmPassword = () => {
                   Resetting your password is easy, enter your username below.
                 </div>
               </div>
-              <form className="space-y-[100px]" onSubmit={handleSubmit}>
+              <form
+                className="space-y-[100px] py-[20px]"
+                onSubmit={handleSubmit}
+              >
                 <div className="space-y-[12px]">
                   <div className="space-y-[2px]">
                     <div className="text-[#505050] text-[18px] ">
@@ -94,24 +95,18 @@ const ConfirmPassword = () => {
                         autoComplete="off"
                       />
                     </div>
-
-                    {/* <div className="text-[12px] text-[#CD0000] ">
-                  {errors?.password}
-                </div> */}
                   </div>
                 </div>
-
                 <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>
-
-                {error && (
-                  <div
-                    id="inputError"
-                    className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] "
-                  >
-                    {error}
-                  </div>
-                )}
                 <div className="flex flex-col items-center justify-center gap-[10px]">
+                  {error && (
+                    <div
+                      id="inputError"
+                      className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] "
+                    >
+                      {error}
+                    </div>
+                  )}
                   <button
                     className={`w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer ${
                       userName ? "bg-[#004DD7] cursor-pointer" : "bg-[#787878]"

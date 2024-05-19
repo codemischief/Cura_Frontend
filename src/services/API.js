@@ -16,6 +16,15 @@ const METHOD_POST = (data) => ({
   }
 });
 
+const METHOD_POST_WITH_TOKEN =(data,token) => ({
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify(data)
+});
+
 
 
 const getCountries = async (data) => {
@@ -582,12 +591,19 @@ const resetPassword = async (data) => {
   return response;
 }
 
+const changePassword = async (data,token) => {
+  
+  const response = await fetch(`${env_URL_SERVER}reset`, METHOD_POST_WITH_TOKEN(data,token));
+  return response;
+}
+
+
 
 export const APIService = {
   getCountries, getNewBuilderInfo, editCountry, addCountries, getState, getCities, addNewBuilder, editBuilderInfo, deleteBuilderInfo, deleteCountries,
   getStatesAdmin, getCitiesAdmin, getLob, addLob, editLob, getBankStatement, editBankStatement, deleteBankStatement, getVendorAdmin, deleteLob, getEmployees, addEmployee,
   getLocality, addBankStatement, addLocality, deleteLocality, getModesAdmin, getEntityAdmin, getHowReceivedAdmin, getClientAdmin, addClientReceipt, getPayment, getProjectInfo, editLocality, getUsers, getRoles, deleteEmployee, getPaymentFor, getPaymentMode, addPayment, getProspects, addProspects, editProspects, deleteProspects, editEmployee, getItembyId, editPayment, deletePayment, getItemByAttr, getProjectsByBuilderId, getClientInfo, getClientProperty, getClientTypeAdmin, getTenantOfPropertyAdmin, getRelationAdmin, addClientInfo, deleteClientInfo, getClientInfoByClientId, editCLientInfo, getBuildersAndProjectsList, getPropertyStatusAdmin, getLevelOfFurnishingAdmin, getPropertyType, addClientProperty, getClientAdminPaginated, getClientPropertyById, editClientProperty, deleteClientProperty, getClientReceipt, getPmaAgreement, deleteClientReceipt, editClientReceipt, deletePmaAgreement, addPmaAgreement, getLLAgreement, getClientPropertyByClientId, getOrdersByClientId, editClientPMAAgreement, addLLAgreement, deleteLLAgreement, editClientLLAgreement, addProject, deleteProject, getOrder, addOrder, getOrderStatusAdmin, getClientPropertyAdmin, getServiceAdmin, getTallyLedgerAdmin, deleteOrders, getOrderDataById,
-  resetPassword,
+  resetPassword,changePassword,
   getOrderReceipt, addOrderReceipt, getClientInvoice, deleteOrderReceipt, addClientInvoice, deleteClientInvoice, getOrderStatusHistory, editOrder, editOrdersReceipt, editOrdersInvoice, addOrderStatusChange, getVendors, addVendors, getBuildersAdmin, getProjectTypeAdmin, getProjectLegalStatusAdmin, deleteVendors, getVendorsInvoice, addVendorsInvoice, getProjectById, editProject, deleteVendorsInvoice, editVendorInvoice,getVendorCategoryAdmin,getVendorPayment,addVendorPayment,editVendorPayment,deleteVendorPayment, editVendors , addLLTenant, addCities, deleteCities , editCities, getBuilderContactsById , getUser , addUser , editUser , deleteUser, getOrderPending , getService , addService , editService , deleteService
 };
 
