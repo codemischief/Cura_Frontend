@@ -39,8 +39,6 @@ const Login = () => {
     }
     
   }
-
-
   const navigate = useNavigate();
 
   // Testing User Login info

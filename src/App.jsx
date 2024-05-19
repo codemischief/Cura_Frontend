@@ -57,6 +57,9 @@ import ClientLLAgreement from "./Screens/Manage/ManageClientProperty/ClientLLAgr
 import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
+import CustomTable from "./Components/common/table/TableSecondVariant";
+import ResetPassword from "./Screens/Login/ResetPassword";
+import ConfirmPassword from "./Screens/Login/ConfirmPassword";
 
 const App = () => {
   const ROLES = {
@@ -79,10 +82,7 @@ const App = () => {
           <Route path="/admin/manageuser" element={<ManageUser />} />
           <Route path="/admin/manageemployees" element={<ManageEmployees />} />
           <Route path="/admin/managebuilder" element={<ManageBuilder />} />
-          <Route
-            path="/admin/manageprojectinfo"
-            element={<ManageProjectInfo />}
-          />
+          <Route path="/admin/manageprojectinfo" element={<ManageProjectInfo />}/>
           <Route path="/admin/manageOrder" element={<ManageOrder />} />
           <Route path="/admin/manageuser" element={<ManageUser />} />
           <Route path="/admin/country" element={<Country />} />
@@ -103,10 +103,7 @@ const App = () => {
           <Route path="/research/friends" element={<Friends />} />
           <Route path="/reasearch/agent" element={<Agent />} />
           <Route path="/reasearch/employer" element={<Employer />} />
-          <Route
-            path="/reasearch/governmentdepartment"
-            element={<GovernmentDepartment />}
-          />
+          <Route path="/reasearch/governmentdepartment" element={<GovernmentDepartment />}/>
           <Route
             path="/manage/bankstatement"
             element={<ManageBankStatement />}
@@ -172,6 +169,10 @@ const App = () => {
           <Route path="admin/temp" element={<Temp />} />
           <Route path="/orderPaymentList" element={<OrderPaymentList />} />
           <Route path="/orderReceiptList" element={<OrderReceiptList />} />
+          <Route path="/table"  element={<CustomTable />} />
+          <Route path="/resetPassword" element={<ResetPassword/>}/>
+          <Route path="/resetPassword/:token" element={<ConfirmPassword />}/>
+
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
