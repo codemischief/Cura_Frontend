@@ -27,6 +27,7 @@ import SaveConfirmationLob from './Modals/SaveConfirmationLob';
 import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
+import ActiveFilter from "../../assets/active_filter.png"
 const LOB = () => {
     const menuRef = useRef();
     const [existingLOB, setExistingLOB] = useState([]);
@@ -583,11 +584,10 @@ const LOB = () => {
                                     setLobFilterInput,
                                     'contains',
                                     'name')}
-                                
                                 />
-                                <button className='px-1 py-2 w-[30%]' onClick={toggleLobFilter}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
-                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} />}
+                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType}/>}
                         </div>
                     </div>
                     <div className='w-1/6 px-3 py-2.5'>
@@ -599,10 +599,10 @@ const LOB = () => {
                                 'equalTo',
                                 'id')}
                             />
-                            <button className='px-1 py-2 w-[30%]' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                            {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                         </div>
-                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' />}
-                        <div className='w-1/2 0 p-4'>
+                        {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' filterType={filterMapState.id.filterType} />}
+                        <div className='w-1/2 p-4'>
 
                         </div>
                     </div>

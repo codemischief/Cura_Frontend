@@ -27,6 +27,7 @@ import SucessfullModal from "../../Components/modals/SucessfullModal";
 import DeleteCityModal from "./Modals/DeleteCityModal";
 import CancelModel from "../../Components/modals/CancelModel";
 import EditCityModal from "./Modals/EditCityModal";
+import ActiveFilter from "../../assets/active_filter.png"
 const City = () => {
     const menuRef = useRef();
     // we have the module here
@@ -715,7 +716,7 @@ const City = () => {
                 </div>
 
                 <div className="w-full h-12 flex justify-between">
-                    <div className="w-3/4 flex">
+                    <div className="w-3/4 flex items-center">
                         <div className="w-[10%] p-4">{/* <p>Sr. </p> */}</div>
                         <div className="w-[20%]  p-4">
                             <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -728,14 +729,7 @@ const City = () => {
                                         'contains',
                                         'country')}
                                 />
-                                <button
-                                    className="w-[25%] px-1 py-2"
-                                    onClick={() => {
-                                        setCountryFilter((prev) => !prev);
-                                    }}
-                                >
-                                    <img src={Filter} className="h-3 w-3" />
-                                </button>
+                                {filterMapState.country.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
                             {countryFilter && (
                                 <CharacterFilter
@@ -744,6 +738,7 @@ const City = () => {
                                     handleFilter={newHandleFilter}
                                     filterColumn="country"
                                     menuRef={menuRef}
+                                    filterType={filterMapState.country.filterType}
                                 />
                             )}
                         </div>
@@ -758,14 +753,7 @@ const City = () => {
                                         'contains',
                                         'state')}
                                 />
-                                <button
-                                    className="w-[30%] px-1 py-2"
-                                    onClick={() => {
-                                        setStateFilter((prev) => !prev);
-                                    }}
-                                >
-                                    <img src={Filter} className="h-3 w-3" />
-                                </button>
+                                {filterMapState.state.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
                             {stateFilter && (
                                 <CharacterFilter
@@ -774,6 +762,7 @@ const City = () => {
                                     handleFilter={newHandleFilter}
                                     filterColumn="state"
                                     menuRef={menuRef}
+                                    filterType={filterMapState.state.filterType}
                                 />
                             )}
                         </div>
@@ -788,14 +777,7 @@ const City = () => {
                                         'contains',
                                         'city')}
                                 />
-                                <button
-                                    className="w-[30%] px-1 py-2"
-                                    onClick={() => {
-                                        setCityFilter((prev) => !prev);
-                                    }}
-                                >
-                                    <img src={Filter} className="h-3 w-3" />
-                                </button>
+                                {filterMapState.city.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
                             {cityFilter && (
                                 <CharacterFilter
@@ -804,11 +786,12 @@ const City = () => {
                                     handleFilter={newHandleFilter}
                                     filterColumn="city"
                                     menuRef={menuRef}
+                                    filterType={filterMapState.city.filterType}
                                 />
                             )}
                         </div>
                     </div>
-                    <div className="w-1/6  flex">
+                    <div className="w-1/6  flex items-center">
                         <div className="w-1/2  p-4">
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input
@@ -820,14 +803,7 @@ const City = () => {
                                         'equalTo',
                                         'id')}
                                 />
-                                <button
-                                    className="w-[35%] px-1 py-2"
-                                    onClick={() => {
-                                        setIdFilter((prev) => !prev);
-                                    }}
-                                >
-                                    <img src={Filter} className="h-3 w-3" />
-                                </button>
+                                {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
                             {idFilter && (
                                 <NumericFilter
@@ -836,6 +812,7 @@ const City = () => {
                                     setInputVariable={setIdFilterInput}
                                     handleFilter={newHandleFilter}
                                     menuRef={menuRef}
+                                    filterType={filterMapState.id.filterType}
                                 />
                             )}
                         </div>

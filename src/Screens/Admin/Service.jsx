@@ -26,6 +26,7 @@ import CharacterFilter from "../../Components/Filters/CharacterFilter"
 import NumericFilter from '../../Components/Filters/NumericFilter';
 import EditService from './Modals/EditService';
 import Draggable from 'react-draggable';
+import ActiveFilter from "../../assets/active_filter.png"
 
 const Service = () => {
 

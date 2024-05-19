@@ -28,6 +28,7 @@ import Filter from "../../assets/filter.png"
 import SaveConfirmationCountry from './Modals/SaveConfirmationCountry';
 import CancelModel from './../../Components/modals/CancelModel';
 import Draggable from 'react-draggable';
+import ActiveFilter from "../../assets/active_filter.png"
 const Country = () => {
   // we have the module here
   const menuRef = useRef()
@@ -687,13 +688,10 @@ const Country = () => {
                     setCountryFilterInput,
                     'contains',
                     'name')}
-
-
-
                 />
-                <button className='px-1 py-2 w-[25%]' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                {filterMapState.name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
               </div>
-              {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} />}
+              {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType} />}
             </div>
 
           </div>
@@ -707,9 +705,9 @@ const Country = () => {
                   'id')}
 
               />
-              <button className='px-1 py-2 w-[25%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+              {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
             </div>
-            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
             <div className='w-1/2 p-4'>
 
             </div>
