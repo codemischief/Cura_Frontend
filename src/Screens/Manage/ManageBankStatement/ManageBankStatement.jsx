@@ -160,7 +160,7 @@ const ManageBankStatement = () => {
             setShowFailure(false)
         }, 4000);
     }
-
+    const [amountData,setAmountData] = useState(0);
     const fetchBankStatement = async () => {
         setPageLoading(true);
         setPageLoading(true);
@@ -188,8 +188,14 @@ const ManageBankStatement = () => {
         }
         const response = await APIService.getBankStatement(data);
         const temp = await response.json();
+         
         const t = temp.total_count;
-        const result = temp.data;
+        setAmountData(temp.total_amount)
+        const curr = [...modeFooter]
+        curr[5].modeamount = temp.total_amount
+        setModeFooter(curr)
+         const result = temp.data;
+        // setAmountData(result.total_amount)
         setTotalItems(t);
         setPageLoading(false);
         setExistingStatement(result);
@@ -971,35 +977,35 @@ const ManageBankStatement = () => {
     const [modeFooter,setModeFooter] = useState([
          {
             modename : "Z-ADSK-BOM",
-            modeamount : 43.00
+            modeamount : 0.00
          },
          {
             modename : "Z-ADSK-AXIS",
-            modeamount : 234.00
+            modeamount : 0.00
          },
          {
             modename : "Z-PRIME-ADSK",
-            modeamount : 43.00
+            modeamount : 0.00
          },
          {
             modename : "Z-PRIME-HDFC",
-            modeamount : 143.00
+            modeamount : 0.00
          },
          {
             modename : "Z-DAP-BOM",
-            modeamount : 143.00
+            modeamount : 0.00
          },
          {
             modename : "DAP-ICICI-42",
-            modeamount : 1423.00
+            modeamount : 0.00
          },
          {
             modename : "DAP-ICICI-53",
-            modeamount : 1423.00
+            modeamount : 0.00
          },
          {
             modename : "DAP-ICICI-65-S",
-            modeamount : 1423.00
+            modeamount : 0.00
          }
     ])
     return (
@@ -1279,8 +1285,8 @@ const ManageBankStatement = () => {
                                 <div className='w-[10%]  p-4 '>
                                     
                                 </div>
-                                <div className='w-[10%]  p-4 border-[1px] border-gray-300'>
-                                    Total : 12345
+                                <div className='w-[10%]  p-1 border-[1px] border-gray-300 flex items-center justify-center'>
+                                    Total : {amountData}
                                 </div>
                                 <div className='w-[30%]  p-4 '>
                                     

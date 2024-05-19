@@ -236,9 +236,9 @@ const Navbar = () => {
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/admin/country">Country</Link>
                 </p>
-                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
+                {/* <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/admin/state">State</Link>
-                </p>
+                </p> */}
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/admin/city">City</Link>
                 </p>

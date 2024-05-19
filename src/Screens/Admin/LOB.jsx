@@ -426,6 +426,7 @@ const LOB = () => {
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
+        setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
         setLobFilter(false);
@@ -585,6 +586,7 @@ const LOB = () => {
                                     'contains',
                                     'name')}
                                 />
+                                {console.log(filterMapState.name.filterType)}
                                 {filterMapState.name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
                             {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType}/>}

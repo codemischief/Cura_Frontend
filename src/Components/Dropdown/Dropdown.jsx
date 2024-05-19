@@ -58,7 +58,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
     <div className="relative flex flex-col" ref={ref}>
       {/* <label className="text-[#313135]">{"Xyx"}</label> */}
       <button onClick={() => {setShow((prev) => !prev)}}>
-        <div className="w-56 h-5  border-[1px] border-[#C6C6C6] flex items-center justify-between">
+        <div className="w-[230px] h-5 rounded-sm  border-[1px] border-[#C6C6C6] flex items-center justify-between">
         
                   <p className="text-[10px] text-start pl-[15px]">{text} </p>
                   <div className="mr-[10px]">

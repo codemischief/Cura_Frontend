@@ -5,6 +5,7 @@ import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
 import refreshIcon from "../../assets/refresh.png";
 import downloadIcon from "../../assets/download.png";
+import Backdrop from '@mui/material/Backdrop';
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
@@ -13,7 +14,7 @@ import Trash from "../../assets/trash.png";
 import Add from "./../../assets/add.png";
 import { Modal, CircularProgress, LinearProgress, Pagination } from "@mui/material";
 import * as XLSX from 'xlsx';
-import FileSaver from 'file-saver';
+import FileSaver, { saveAs } from 'file-saver';
 import { APIService } from '../../services/API';
 import Filter from "../../assets/filter.png"
 import Pdf from "../../assets/pdf.png";
@@ -400,16 +401,30 @@ const Locality = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key": searchQuery
+            "search_key": searchQuery,
+            // "downloadtype" : "excel"
         };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
         const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "LocalityData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+        console.log(temp)
+        if(temp.result == 'success') {
+            // then we open the download prompt
+            // we make a further call
+            const d = {
+                "user_id" : 1234,
+                "filename" : temp.excelfilename
+            }
+            console.log(d)
+            const downloadCall = await APIService.download(d)
+            saveAs(downloadCall)
+            console.log(downloadCall)
+        }
+        // const worksheet = XLSX.utils.json_to_sheet(result);
+        // const workbook = XLSX.utils.book_new();
+        // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        // XLSX.writeFile(workbook, "LocalityData.xlsx");
+        // FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const [lobName, setLobName] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
@@ -846,6 +861,9 @@ const Locality = () => {
                     {/* main table */}
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {pageLoading && <LinearProgress />}
+                        {!pageLoading && existingLocalities && existingLocalities.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingLocalities.map((item, index) => {
                             return <div className='w-full h-10  flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className='w-[85%] flex items-center'>

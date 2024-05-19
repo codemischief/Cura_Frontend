@@ -1496,9 +1496,9 @@ const ManageVendorPayment = () => {
                                                     styles={{
                                                         control: (provided, state) => ({
                                                             ...provided,
-                                                            minHeight: 23,
-                                                            lineHeight: '0.8',
-                                                            height: 4,
+                                                            minHeight: 10,
+                                                            lineHeight: '1.3',
+                                                            height: '20',
                                                             width: 230,
                                                             fontSize: 10,
                                                             // padding: '1px'
@@ -1511,7 +1511,7 @@ const ManageVendorPayment = () => {
                                                         // }),
                                                         dropdownIndicator: (provided, state) => ({
                                                             ...provided,
-                                                            padding: '1px', // adjust padding for the dropdown indicator
+                                                            // padding: '1px', // adjust padding for the dropdown indicator
                                                         }),
                                                         options: (provided, state) => ({
                                                             ...provided,
