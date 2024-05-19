@@ -170,8 +170,8 @@ const App = () => {
           <Route path="/orderPaymentList" element={<OrderPaymentList />} />
           <Route path="/orderReceiptList" element={<OrderReceiptList />} />
           <Route path="/table"  element={<CustomTable />} />
-          <Route path="/resetPassword" element={<ResetPassword/>}/>
-          <Route path="/resetPassword/:token" element={<ConfirmPassword />}/>
+          <Route path="/resetPassword/:token" element={<ResetPassword/>}/>
+          <Route path="/resetPassword/" element={<ConfirmPassword />}/>
 
           {/* </Route>  */}
 
