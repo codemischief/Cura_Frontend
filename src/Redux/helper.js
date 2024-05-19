@@ -1,3 +1,4 @@
+import { formatDate } from "../utils/formatDate";
 export const getPmaBillingPayload = (obj) => {
   return { ...obj, user_id: obj.userId ?? 1234 };
 };
@@ -29,6 +30,7 @@ export const updatedResponsePmaData = (data, year, month) => {
   }));
 };
 export const updatedOrderPaymentData = (data, year, month) => {
+  
   return data.map((billing, index) => ({
     ...billing,
     data: billing.data ? billing.date : "--",
@@ -43,10 +45,12 @@ export const updatedOrderReceiptData = (data, year, month) => {
   }));
 };
 export const updatedOrderInvoiceData = (data, year, month) => {
+  console.log(data)
   return data.map((billing, index) => ({
     ...billing,
     data: billing.data ? billing.date : "--",
     invoiceamount: billing.invoiceamount ? floorDecimal(billing.invoiceamount) : "---",
+    
   }));
 };
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
