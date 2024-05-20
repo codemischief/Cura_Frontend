@@ -396,7 +396,12 @@ const Service = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType": type
+            "downloadType": type,
+            "colmap" : {
+                "lob" : "LOB Name",
+                "service" : "Service",
+                "id" : "ID"
+            }
         };
         const response = await APIService.getService(data)
         const temp = await response.json();

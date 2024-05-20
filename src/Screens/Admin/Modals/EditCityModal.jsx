@@ -3,6 +3,7 @@ import { Modal, useScrollTrigger } from '@mui/material';
 import { useState , useEffect} from 'react';
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API';
+import Draggable from 'react-draggable';
 const EditCityModal = ({handleClose,initialCountry,initialData,openSuccess}) => {
     console.log(initialData)
     // const [allCountry,setAllCountry] = useState(initialCountry) 
@@ -87,9 +88,11 @@ const EditCityModal = ({handleClose,initialCountry,initialData,openSuccess}) => 
     className="flex justify-center items-center"
     >
         <>
-            {/* <Draggable> */}
+            <Draggable handle="div.move">
         <div className="flex justify-center ">
             <div className="w-[800px]  h-auto bg-white rounded-lg relative">
+                <div className='move cursor-move'>
+
                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                     <div className="">
                         <div className="text-base"> Edit City</div>
@@ -99,6 +102,7 @@ const EditCityModal = ({handleClose,initialCountry,initialData,openSuccess}) => 
                             <img className="w-5 h-5 " src={Cross} alt="cross" />
                         </button>
                     </div>
+                </div>
                 </div>
                 <div className="h-auto w-full mt-4 mb-20 ">
                     <div className="flex gap-12 justify-center items-center">
@@ -170,7 +174,7 @@ const EditCityModal = ({handleClose,initialCountry,initialData,openSuccess}) => 
                 </div>
             </div>
         </div>
-            {/* </Draggable> */}
+            </Draggable>
             </>
     </Modal>
   )

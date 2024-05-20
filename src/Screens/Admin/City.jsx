@@ -302,6 +302,7 @@ const City = () => {
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
         setBackDropLoading(true)
+        setPageLoading(true)
         const data = {
             user_id: 1234,
             rows: ["country","state","city","id"],
@@ -311,7 +312,13 @@ const City = () => {
             pg_no: 0,
             pg_size: 0,
             search_key: searchInput,
-            "downloadType" : type
+            downloadType : type,
+            colmap : {
+                "country" : "Country",
+                "state" : "State",
+                "city" : "City",
+                "id" : "ID"
+            }
         };
         const response = await APIService.getCitiesAdmin(data)
         const temp = await response.json();
@@ -349,6 +356,7 @@ const City = () => {
             
             setTimeout(() => {
                 setBackDropLoading(false)
+                setPageLoading(false)
             },1000) 
         }
     }
@@ -675,10 +683,10 @@ const City = () => {
               }
       }
     return (
-        <div className="h-screen">
+        <div className="h-screen font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={backDropLoading}
+                open={pageLoading}
                 onClick={() => {}}
             >
 
@@ -901,7 +909,10 @@ const City = () => {
                     </div>
 
                     <div className="h-[calc(100vh_-_17rem)] w-full  overflow-auto">
-                        {pageLoading && <LinearProgress />}
+                        {/* {pageLoading && <LinearProgress />} */}
+                        {!pageLoading && existingCities && existingCities.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading &&
                             existingCities.map((item, index) => {
                                 return (
@@ -1016,9 +1027,11 @@ const City = () => {
             className="flex justify-center items-center"
             >
                 <>
-                    {/* <Draggable> */}
+                    <Draggable handle="div.move">
                 <div className="flex justify-center ">
                     <div className="w-[800px]  h-auto bg-white rounded-lg relative">
+                        <div className="move cursor-move">
+
                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                             <div className="">
                                 <div className="text-base"> New City</div>
@@ -1028,6 +1041,7 @@ const City = () => {
                                     <img className="w-5 h-5 " src={Cross} alt="cross" />
                                 </button>
                             </div>
+                         </div>
                         </div>
                         <div className="h-auto w-full mt-4 mb-20 ">
                             <div className="flex gap-12 justify-center items-center">
@@ -1110,7 +1124,7 @@ const City = () => {
                         </div>
                     </div>
                 </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                     </>
             </Modal>
         </div>

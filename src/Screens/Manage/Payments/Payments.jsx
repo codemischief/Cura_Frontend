@@ -749,7 +749,17 @@ const Payments = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType" : type
+            "downloadType" : type,
+            "colmap" : {
+                "paymentto" : "Payment To",
+                "paymentby" : "Payment By",
+                "amount" : "Amount",
+                "paidon" : "Paid On",
+                "paymentmode" : "Payment Mode",
+                "paymentfor" : "Payment For",
+                "entity" : "Entity",
+                "id" : "ID"
+            }
         };
         const response = await APIService.getPayment(data)
         const temp = await response.json();

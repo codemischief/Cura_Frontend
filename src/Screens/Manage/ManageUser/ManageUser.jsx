@@ -646,7 +646,13 @@ const ManageUser = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType": type
+            "downloadType": type,
+            "colmap" : {
+                "fullname" : "Name",
+                "username" : "Username",
+                "role_name" : "Role",
+                "id" : "ID"
+            }
         };
         const response = await APIService.getUser(data)
         const temp = await response.json();

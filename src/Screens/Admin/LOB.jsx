@@ -250,7 +250,7 @@ const LOB = () => {
             "downloadType" : type,
             "colmap" : {
                 "name" : "LOB Name",
-                "id" : "Id"
+                "id" : "ID"
             }
         };
         const response = await APIService.getLob(data)

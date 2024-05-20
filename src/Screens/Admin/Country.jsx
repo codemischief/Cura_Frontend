@@ -130,24 +130,16 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
 
-    const temp = (await response.json());
-    console.log(pageNumber)
-    console.log(temp);
-    const result = temp.data;
-    const t = temp.total_count;
-
-    setTotalItems(t);
-    console.log(t);
-    console.log(result);
-
-    // setCountryValues(result);
-    setCountryValues(result.data.map(x => ({
-      sl: x[0],
-      country_name: x[1]
-    })))
+    setTotalItems(res.total_count);
     setPageLoading(false);
+ 
+    setCountryValues(res.data.map(x => ({
+      sl: x.id,
+      country_name: x.name
+    })))
 
   }
 
@@ -168,22 +160,16 @@ const Country = () => {
       "pg_size": Number(quantity),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
-    const temp = (await response.json());
-    // console.log(pageNumber)
-    console.log(temp);
-    const result = temp.data;
-    const t = temp.total_count;
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
 
-    setTotalItems(t);
-    console.log(t);
-    console.log(result);
-
-    setCountryValues(result.data.map(x => ({
-      sl: x[0],
-      country_name: x[1]
-    })))
+    setTotalItems(res.total_count);
     setPageLoading(false);
+ 
+    setCountryValues(res.data.map(x => ({
+      sl: x.id,
+      country_name: x.name
+    })))
   }
   const fetchCountryData = async () => {
     setPageLoading(true);
@@ -224,19 +210,15 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
-    const temp = (await response.json()).data;
-    const result = temp.data;
-    const t = temp.total_count;
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
 
-    setTotalItems(t);
-    console.log(t);
-    console.log(result);
+    setTotalItems(res.total_count);
     setPageLoading(false);
-    // setCountryValues(result);
-    setCountryValues(result.map(x => ({
-      sl: x[0],
-      country_name: x[1]
+ 
+    setCountryValues(res.data.map(x => ({
+      sl: x.id,
+      country_name: x.name
     })))
 
   }
@@ -350,14 +332,15 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(number)
     };
-    const response = await APIService.getCountries(data)
-    const result = (await response.json()).data;
-    const t = result.total_count;
-    setTotalItems(t);
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
+
+    setTotalItems(res.total_count);
     setPageLoading(false);
-    setCountryValues(result.map(x => ({
-      sl: x[0],
-      country_name: x[1]
+ 
+    setCountryValues(res.dat.map(x => ({
+      sl: x.id,
+      country_name: x.name
     })))
   }
 
@@ -381,18 +364,16 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
-    const response = await APIService.getCountries(data)
-    const temp = await response.json();
-    const result = temp.data;
-    const t = temp.total_count;
-    setTotalItems(t);
-    console.log(result);
-    // setCountryValues(result.data)
-    setCountryValues(result.data.map(x => ({
-      sl: x[0],
-      country_name: x[1]
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
+
+    setTotalItems(res.total_count);
+    setPageLoading(false);
+ 
+    setCountryValues(res.dat.map(x => ({
+      sl: x.id,
+      country_name: x.name
     })))
-    setPageLoading(false)
 
   }
 
@@ -411,17 +392,16 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": searchQuery
     };
-    const response = await APIService.getCountries(data)
-    const temp = await response.json()
-    const result = temp.data;
-    const t = temp.total_count;
-    setTotalItems(t);
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
+
+    setTotalItems(res.total_count);
     setPageLoading(false);
-    setCountryValues(result.data.map(x => ({
-      sl: x[0],
-      country_name: x[1]
+ 
+    setCountryValues(res.dat.map(x => ({
+      sl: x.id,
+      country_name: x.name
     })))
-    setPageLoading(false)
 
   }
   const [countryFilter, setCountryFilter] = useState(false);
@@ -450,18 +430,16 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": ""
     };
-    const response = await APIService.getCountries(data)
-    const temp = await response.json();
-    const result = temp.data;
-    const t = temp.total_count;
-    setTotalItems(t);
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
 
-    // setPageLoading(false);
-    setCountryValues(result.data.map(x => ({
-      sl: x[0],
-      country_name: x[1]
+    setTotalItems(res.total_count);
+    setPageLoading(false);
+ 
+    setCountryValues(res.dat.map(x => ({
+      sl: x.id,
+      country_name: x.name
     })))
-    setPageLoading(false)
   }
   const [failureMessage, setFailureMessage] = useState("");
 
@@ -481,7 +459,11 @@ const Country = () => {
       "pg_no": 0,
       "pg_size": 0,
       "search_key": searchQuery,
-      "downloadType" : type
+      "downloadType" : type,
+      "colmap" : {
+        "name" : "Country",
+        "id" : "ID"
+      }
     };
     const response = await APIService.getCountries(data)
     const temp = await response.json();
@@ -604,17 +586,16 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response = await APIService.getCountries(data)
-    const temp = (await response.json()).data;
-    const result = temp.data;
-    const t = temp.total_count;
-    console.log(result);
-    setTotalItems(t);
-    setCountryValues(result.map(x => ({
-      sl: x[0],
-      country_name: x[1]
-    })))
+    const response  = await APIService.getCountries(data)
+    const res = await response.json()
+
+    setTotalItems(res.total_count);
     setPageLoading(false);
+ 
+    setCountryValues(res.dat.map(x => ({
+      sl: x.id,
+      country_name: x.name
+    })))
   }
   function handleKeyDown(event) {
     if (event.keyCode === 13) {

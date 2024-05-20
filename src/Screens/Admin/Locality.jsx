@@ -407,7 +407,14 @@ const Locality = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchQuery,
-            "downloadType" : type
+            "downloadType" : type,
+            "colmap" : {
+                "country" : "Country",
+                "state" : "State",
+                "city" : "City",
+                "locality" : "Locality",
+                "id" : "ID"
+            }
         };
         const response = await APIService.getLocality(data)
         const temp = await response.json();

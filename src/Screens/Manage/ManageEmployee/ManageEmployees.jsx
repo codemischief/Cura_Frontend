@@ -662,7 +662,19 @@ const ManageEmployees = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            // "downloadtype" : type
+            "downloadType" : type,
+            "colmap" : {
+                "employeename" : "Employee",
+                "employeeid" : "Employee ID",
+                "phoneno" : "Phone",
+                "email" : "Email",
+                "role" : "Role",
+                "panno" : "PAN No",
+                "dateofjoining" : "Date of Joining",
+                "lastdateofworking" : "Last Date of Working",
+                "status" : "Status"
+
+            }
         };
         const response = await APIService.getEmployees(data)
         const temp = await response.json();
