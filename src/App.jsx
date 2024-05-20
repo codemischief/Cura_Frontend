@@ -58,8 +58,12 @@ import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
 import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
+
+import DeleteById from "./Screens/Admin/DeleteById/DeleteById";
+
 import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
+
 
 const App = () => {
   const ROLES = {
@@ -85,6 +89,10 @@ const App = () => {
           <Route
             path="/admin/manageprojectinfo"
             element={<ManageProjectInfo />}
+          />
+          <Route
+            path="/admin/deleteById"
+            element={<DeleteById />}
           />
           <Route path="/admin/manageOrder" element={<ManageOrder />} />
           <Route path="/admin/manageuser" element={<ManageUser />} />

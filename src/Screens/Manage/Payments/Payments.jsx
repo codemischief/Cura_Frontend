@@ -29,6 +29,7 @@ import CancelModel from './../../../Components/modals/CancelModel';
 import DeletePaymentModal from './DeletePaymentModal';
 import DateFilter from '../../../Components/Filters/DateFilter';
 import Draggable from 'react-draggable';
+import PaymentDropDown from '../../../Components/Dropdown/PaymentDropDown.jsx';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import ActiveFilter from "../../../assets/active_filter.png"
 import {formatDate} from "../../../utils/formatDate.js"
@@ -727,7 +728,8 @@ const Payments = () => {
     }
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
-        setBackDropLoading(true)
+        // setBackDropLoading(true)
+        setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": [
@@ -747,7 +749,7 @@ const Payments = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            // "downloadtype" : type
+            "downloadType" : type
         };
         const response = await APIService.getPayment(data)
         const temp = await response.json();
@@ -773,7 +775,7 @@ const Payments = () => {
             })
             .then(result => {
                 if(type == "excel") {
-                    FileSaver.saveAs(result, 'PaymentData.xlsx');
+                    FileSaver.saveAs(result, 'PaymentData.xls');
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'PaymentData.pdf');
                 }
@@ -784,7 +786,8 @@ const Payments = () => {
             });
             
             setTimeout(() => {
-                setBackDropLoading(false)
+                // setBackDropLoading(false)
+                setPageLoading(false)
             },1000) 
         }
     }
@@ -1040,7 +1043,7 @@ const Payments = () => {
         <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={backDropLoading}
+                open={pageLoading}
                 onClick={() => {}}
             >
 
@@ -1277,7 +1280,7 @@ const Payments = () => {
                         </div>
                     </div>
                     <div className=' w-full h-[calc(100vh_-_17rem)] overflow-auto'>
-                        {pageLoading && <LinearProgress />}
+                        {/* {pageLoading && <LinearProgress />} */}
                         {!pageLoading && existingPayments && existingPayments.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
@@ -1404,9 +1407,11 @@ const Payments = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className=''>
                             <div className="w-[1100px]  h-auto bg-white rounded-lg ">
+                                <div className='move cursor-move'>
+
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-base">New Contractual Payment</div>
@@ -1415,10 +1420,11 @@ const Payments = () => {
                                         <button onClick={handleClose}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
+                                </div>
                                 {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
                                 <div className="h-auto w-full mt-1 ">
                                     <div className="flex gap-12 justify-center">
-                                        <div className=" space-y-3 py-5">
+                                        <div className=" space-y-5 py-5">
                                             <div className="">
                                                 <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
@@ -1439,7 +1445,7 @@ const Payments = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id" />
+                                                <PaymentDropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id" />
                                                 <div className="text-[9px] text-[#CD0000] absolute">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="pt-0.5">
@@ -1467,7 +1473,7 @@ const Payments = () => {
                                                     ))}
                                                 </select> */}
 
-                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
+                                                <PaymentDropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentby}</div>
                                                 {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.PaymentBy}</div> */}
                                             </div>
@@ -1497,7 +1503,7 @@ const Payments = () => {
                                                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                             </div>
                                         </div>
-                                        <div className=" space-y-3 py-5">
+                                        <div className=" space-y-5 py-5">
                                             <div className="">
                                                 <div className="text-sm">Payment Mode <label className="text-red-500">*</label></div>
                                                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >

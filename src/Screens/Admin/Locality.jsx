@@ -433,7 +433,7 @@ const Locality = () => {
             })
             .then(result => {
                 if(type == "excel") {
-                    FileSaver.saveAs(result, 'localityData.xlsx');
+                    FileSaver.saveAs(result, 'localityData.xls');
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'localityData.pdf');
                 }

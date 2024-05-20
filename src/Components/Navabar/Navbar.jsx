@@ -256,7 +256,7 @@ const Navbar = () => {
               </h1>
               <div className="space-y-2 text-[#505050] text-[11px]">
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  Delete by ID
+                 <Link to="/admin/deleteById"> Delete by ID </Link>
                 </p>
               </div>
             </div>

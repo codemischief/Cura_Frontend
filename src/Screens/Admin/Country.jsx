@@ -481,7 +481,7 @@ const Country = () => {
       "pg_no": 0,
       "pg_size": 0,
       "search_key": searchQuery,
-      // "downloadtype" : type
+      "downloadType" : type
     };
     const response = await APIService.getCountries(data)
     const temp = await response.json();
