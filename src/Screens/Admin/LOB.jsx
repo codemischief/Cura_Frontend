@@ -103,14 +103,14 @@ const LOB = () => {
         const tempArray = []
         Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         Number(filterMapState[key].filterValue),
                         filterMapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
@@ -118,7 +118,7 @@ const LOB = () => {
                         filterMapState[key].filterData,
                     ]);
                 }
-                
+
             }
         });
         setFilterState((prev) => tempArray)
@@ -234,8 +234,9 @@ const LOB = () => {
         setLobName("")
         setLobError("");
     }
-    const [backDropLoading,setBackDropLoading] = useState(false)
+    const [backDropLoading, setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
+        setPageLoading(true);
         setBackDropLoading(true)
         const data = {
             "user_id": 1234,
@@ -252,10 +253,10 @@ const LOB = () => {
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if(temp.result == 'success') {
+        if (temp.result == 'success') {
             const d = {
-                "filename" : temp.filename,
-                "user_id" : 1234
+                "filename": temp.filename,
+                "user_id": 1234
             }
             fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -264,27 +265,27 @@ const LOB = () => {
                 },
                 body: JSON.stringify(d) // Convert the object to a JSON string
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'LobData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'LobData.pdf');
-                }
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'LobData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'LobData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             setTimeout(() => {
-                setBackDropLoading(false)
-            },1000) 
+                setPageLoading(false)
+            }, 1000)
         }
     }
     const [lobName, setLobName] = useState("");
@@ -464,19 +465,19 @@ const LOB = () => {
         const tempArray = [];
         // we need to query thru the object
         setLobFilter(false);
-            setIdFilter(false);
+        setIdFilter(false);
         // console.log(filterMapState);
         console.log(filterMapState)
         Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
-                if(mapState[key].filterData == 'Numeric') {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
                         Number(mapState[key].filterValue),
                         mapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
@@ -484,7 +485,7 @@ const LOB = () => {
                         mapState[key].filterData,
                     ]);
                 }
-               
+
             }
         });
         setFilterState(tempArray)
@@ -521,43 +522,43 @@ const LOB = () => {
 
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-      const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
-            if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        fetchData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-                    
-                
-                
-              }
-      }
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
     return (
         <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={backDropLoading}
-                onClick={() => {}}
+                open={pageLoading}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             <Navbar />
@@ -623,28 +624,28 @@ const LOB = () => {
                         </div>
                         <div className='w-[20%] px-3 py-2.5'>
                             <div className="w-[50%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)} 
-                                onKeyDown={(event) => handleEnterToFilter(event,lobFilterInput,
-                                    setLobFilterInput,
-                                    'contains',
-                                    'name')}
+                                <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-xs pl-2 outline-none" value={lobFilterInput} onChange={(e) => setLobFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, lobFilterInput,
+                                        setLobFilterInput,
+                                        'contains',
+                                        'name')}
                                 />
                                 {console.log(filterMapState.name.filterType)}
-                                {filterMapState.name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.name.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setLobFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType}/>}
+                            {lobFilter && <CharacterFilter inputVariable={lobFilterInput} setInputVariable={setLobFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType} />}
                         </div>
                     </div>
                     <div className='w-1/6 px-3 py-2.5'>
                         <div className='w-[45%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                             <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
-                            
-                            onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                setIdFilterInput,
-                                'equalTo',
-                                'id')}
+
+                                onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                    setIdFilterInput,
+                                    'equalTo',
+                                    'id')}
                             />
-                            {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                            {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                         </div>
                         {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' filterType={filterMapState.id.filterType} />}
                         <div className='w-1/2 p-4'>
@@ -676,7 +677,10 @@ const LOB = () => {
                     </div>
 
                     <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
+                        {!pageLoading && existingLOB && existingLOB.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingLOB.map((item, index) => {
                             return <div className='w-full flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-3/4 flex'>
@@ -791,15 +795,17 @@ const LOB = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center'>
                             <div className="w-[778px]  h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[290px] ml-[290px]">
-                                        <div className="text-[16px]">New LOB</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <div className="move cursor-move">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[290px] ml-[290px]">
+                                            <div className="text-[16px]">New LOB</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="space-y-16 mb-3">
@@ -809,7 +815,7 @@ const LOB = () => {
                                                 <div className="">
                                                     <div className="text-[14px] text-[#505050]">LOB Name  <label className="text-red-500">*</label></div>
                                                     <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={lobName} onChange={handleChange} />
-                                                    <div className="text-[12px] text-[#CD0000] ">{lobError}</div>
+                                                    <div className="text-[11px] text-[#CD0000] absolute">{lobError}</div>
                                                 </div>
                                             </div>
                                         </div>

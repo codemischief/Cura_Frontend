@@ -24,12 +24,12 @@ const DeleteLobModal = (props) => {
                 <Draggable>
                     <div className='bg-white rounded-lg'>
                         <div className="w-auto h-auto flex flex-col justify-center items-center ">
-                            <div className="h-[40px] flex justify-center items-center">
+                            <div className="h-[40px] flex justify-center items-center bg-[#EDF3FF] rounded-lg relative">
                                 <div className="ml-56 mr-52">
                                     <div className="text-[16px] font-semibold">Delete</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white cursor-pointer">
-                                    <img onClick={() => { handleClose() }} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                    <button onClick={() => { handleClose() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
                             <div className="mt-2 mr-4 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">

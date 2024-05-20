@@ -7,7 +7,8 @@ import downloadIcon from "../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import Cross from "../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, Select } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Select, CircularProgress } from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import { APIService } from '../../services/API';
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png"
@@ -143,17 +144,17 @@ const Service = () => {
         // we need to query thru the object
         Object.keys(filterMapState).forEach(key => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         Number(filterMapState[key].filterValue),
                         filterMapState[key].filterData,
                     ]);
-                }else { 
+                } else {
                     tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
                 }
-                
+
             }
         })
         setFilterState(tempArray)
@@ -378,7 +379,10 @@ const Service = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
-    const handleExcelDownload = async () => {
+    const [backDropLoading, setBackDropLoading] = useState(false)
+    const handleDownload = async (type) => {
+        setPageLoading(true)
+        setBackDropLoading(true)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -391,16 +395,48 @@ const Service = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key": searchInput
+            "search_key": searchInput,
+            "downloadType": type
         };
-        const response = await APIService.getService(data);
+        const response = await APIService.getService(data)
         const temp = await response.json();
         const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ServiceData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+        console.log(temp)
+        if (temp.result == 'success') {
+            const d = {
+                "filename": temp.filename,
+                "user_id": 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'ServiceData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'ServiceData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            setTimeout(() => {
+                setPageLoading(false)
+                setBackDropLoading(false)
+            }, 1000)
+        }
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -681,8 +717,17 @@ const Service = () => {
     // fetching utility routes end here
     return (
         <div className='h-screen font-medium'>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => { }}
+            >
+
+                <CircularProgress color="inherit" />
+
+            </Backdrop>
             <Navbar />
-            {isEditDialogue && <EditService handleClose={() => setIsEditDialogue(false)} currService={editId} allLOB={allLOB}  showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditService handleClose={() => setIsEditDialogue(false)} currService={editId} allLOB={allLOB} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Service created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Service deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
@@ -751,7 +796,7 @@ const Service = () => {
                                             'contains',
                                             'lob')}
                                     />
-                                    {filterMapState.lob.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setLobNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setLobNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.lob.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setLobNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setLobNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
                                 {lobNameFilter && <CharacterFilter inputVariable={lobNameFilterInput} setInputVariable={setLobNameFilterInput} handleFilter={newHandleFilter} filterColumn='lob' menuRef={menuRef} filterType={filterMapState.lob.filterType} />}
                             </div>
@@ -765,7 +810,7 @@ const Service = () => {
                                             'contains',
                                             'service')}
                                     />
-                                    {filterMapState.service.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.service.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
                                 {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} filterColumn='service' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.service.filterType} />}
                             </div>
@@ -781,7 +826,7 @@ const Service = () => {
                                             'id')}
 
                                     />
-                                    {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
                                 {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
@@ -832,10 +877,10 @@ const Service = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingService && existingService.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                                        <h1 className='ml-10'>No Records To Show</h1>
-                            </div>}
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingService.map((item, index) => {
                             return <div className='w-full py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[70%] flex items-center">
@@ -919,14 +964,13 @@ const Service = () => {
                     </div>
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
-
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
@@ -953,17 +997,19 @@ const Service = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center '>
                             <div className="w-[700px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                    <div className="mr-[210px] ml-[210px]">
-                                        <div className="text-[16px]">New Service</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={() => { handleClose() }}>
-                                            <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
-                                        </button>
+                                <div className="move cursor-move">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                        <div className="mr-[210px] ml-[210px]">
+                                            <div className="text-[16px]">New Service</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={() => { handleClose() }}>
+                                                <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -993,12 +1039,12 @@ const Service = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.lob}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Service Name <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="serviceName" value={formValues.serviceName} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.serviceName}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.serviceName}</div>
                                             </div>
                                         </div>
                                     </div>
