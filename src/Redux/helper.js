@@ -52,4 +52,12 @@ export const updatedOrderInvoiceData = (data, year, month) => {
     invoiceamount: billing.invoiceamount ? floorDecimal(billing.invoiceamount) : "---",
   }));
 };
+export const updatedClientReceiptData = (data, year, month) => {
+  return data.map((billing, index) => ({
+    ...billing,
+    data: billing.data ? billing.date : "--",
+    amount: billing.amount ? floorDecimal(billing.amount) : "---",
+    recddate: billing.recddate ? formatDate(billing.recddate) : "--",
+  }));
+};
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
