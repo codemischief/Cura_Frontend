@@ -5,6 +5,7 @@ import { APIService } from '../../../services/API';
 import { Modal, CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import Draggable from 'react-draggable';
+import PaymentDropDown from '../../../Components/Dropdown/PaymentDropDown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 // import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/material";
 const EditPayments = (props) => {
@@ -338,9 +339,11 @@ const EditPayments = (props) => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle="div.move">
                         <div className=''>
                             <div className="w-[1100px]  h-auto bg-white rounded-lg">
+                                <div className='move cursor-move'>
+
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">Edit Contractual Payments </div>
@@ -349,11 +352,12 @@ const EditPayments = (props) => {
                                         <img onClick={() => { close() }} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                                     </div>
                                 </div>
+                                </div>
                                 {pageLoading && <div className='flex justify-center items-center mt-9 space-x-7 mb-6'><CircularProgress /><h1>Fetching Payment Data</h1></div>}
                                 {/* <form onSubmit={handleSubmit} className='space-y-2'> */}
                                 {!pageLoading && <div className="h-auto w-full mt-[5px] ">
                                     <div className="flex gap-[48px] justify-center">
-                                        <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                        <div className=" space-y-5 py-[20px] px-[10px]">
                                             <div className="">
                                                 <div className="text-[13px] text-[#787878] mb-0.5">Cura Office </div>
                                                 <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
@@ -374,7 +378,7 @@ const EditPayments = (props) => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                                <DropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id" />
+                                                <PaymentDropDown options={allUsername} initialValue="Select Payment To" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentto" value={formValues.paymentto} idName="id" />
                                                 <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentto}</div>
                                             </div>
                                             <div className="pt-0.5">
@@ -395,7 +399,7 @@ const EditPayments = (props) => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                                <DropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
+                                                <PaymentDropDown options={allUsername} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
                                                 <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentby}</div>
                                             </div>
                                             <div className="">
@@ -424,7 +428,7 @@ const EditPayments = (props) => {
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="description" value={formValues.description} onChange={handleChange} />
                                             </div>
                                         </div>
-                                        <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                        <div className=" space-y-5 py-[20px] px-[10px]">
                                             <div className="">
                                                 <div className="text-[13px]">Payment Mode <label className="text-red-500">*</label></div>
                                                 <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="paymentmode" value={formValues.paymentmode} onChange={handleChange} >
