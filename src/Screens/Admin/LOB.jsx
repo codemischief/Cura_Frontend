@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -31,6 +31,7 @@ import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 const LOB = () => {
     const menuRef = useRef();
+    const navigate = useNavigate()
     const [existingLOB, setExistingLOB] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
@@ -580,7 +581,7 @@ const LOB = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
