@@ -30,6 +30,7 @@ import CharacterFilter from "../../../Components/Filters/CharacterFilter"
 import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
+import UsernameDropDown from '../../../Components/Dropdown/UsernameDropDown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
 import ActiveFilter from "../../../assets/active_filter.png"
@@ -1527,14 +1528,17 @@ const ManageEmployees = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    {/* <Draggable> */}
+                    <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-base">Add New Employee</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+                        <div className='move cursor-move'>
+
+                            <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-base">Add New Employee</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                    <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
                         </div>
 
@@ -1574,7 +1578,7 @@ const ManageEmployees = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <DropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
+                                        <UsernameDropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
                                         <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.userName}</div>
                                     </div>
                                     <div className="">
@@ -1814,7 +1818,7 @@ const ManageEmployees = () => {
                         </div>
 
                     </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                 </div>
             </Modal>
         </div>
