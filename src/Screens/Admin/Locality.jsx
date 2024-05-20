@@ -413,34 +413,11 @@ const Locality = () => {
         const result = temp.data;
         console.log(temp)
         if(temp.result == 'success') {
-            // then we open the download prompt
-            // we make a further call
-            // fetch(url, { method: "post", mode: "no-cors", referrerPolicy: "no-referrer" })
-            // .then((res) => res.blob())
-            // .then((res) => {
-            // const aElement = document.createElement("a");
-            // aElement.setAttribute("download", fileName);
-            // const href = URL.createObjectURL(res);
-            // aElement.href = href;
-            // aElement.setAttribute("target", "_blank");
-            // aElement.click();
-            // URL.revokeObjectURL(href);
-            // });
-            const parsedUrl = new URL(temp.fileurl);
-
-            // Extract the pathname
-            const pathname = parsedUrl.pathname;
-            // Split the pathname by '/' and get the last element
-            const segments = pathname.split('/');
-            const filename = segments[segments.length - 1];
-
-            console.log(filename); 
-
             const d = {
-                "filename" : filename,
+                "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${filename}`, {
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
@@ -462,34 +439,12 @@ const Locality = () => {
             .catch(error => {
                 console.error('Error:', error);
             });
-            // let response = await fetch(`http://20.197.13.140:8000/download/${filename}`, {
-            //     method: 'POST',
-            //     headers: {
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(d)
-            //   });
+            
             setTimeout(() => {
                 setBackDropLoading(false)
 
-            },1000)
-            console.log(response)
-            // console.log(d)
-            // const downloadCall = await APIService.download(d)
-            // console.log(downloadCall)
-            // APIService.download(d).then((res) => {
-            //     FileSaver.saveAs(res.blob(),"demo.xlsx")
-            // })
-            // console.log(downloadCall)
-            // FileSaver.saveAs(new Blob(downloadCall), "demo.xlsx");
-            // // saveAs(downloadCall.blob())
-            // console.log(downloadCall)
+            },1000) 
         }
-        // const worksheet = XLSX.utils.json_to_sheet(result);
-        // const workbook = XLSX.utils.book_new();
-        // XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        // XLSX.writeFile(workbook, "LocalityData.xlsx");
-        // FileSaver.saveAs(workbook, "demo.xlsx");
     }
     const [lobName, setLobName] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
