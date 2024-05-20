@@ -15,7 +15,13 @@ const METHOD_POST = (data) => ({
     'Content-Type': 'application/json',
   }
 });
-
+const DOWNLOAD_POST = (data) => ({
+  method: 'POST',
+  body: JSON.stringify(data),
+  headers: {
+    'Content-Type': 'application/octet-stream',
+  }
+});
 
 
 const getCountries = async (data) => {
@@ -588,7 +594,7 @@ const getLLTenant = async (data) => {
   return response;
 }
 const download = async (data) => {
-  const response = await fetch(`${env_URL_SERVER}download/${data.filename}`, METHOD_POST(data));
+  const response = await fetch(`${env_URL_SERVER}download/${data.filename}`, DOWNLOAD_POST(data));
   console.log(response)
   return response;
 }
