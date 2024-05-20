@@ -6,7 +6,7 @@ import { Modal, Pagination, LinearProgress, CircularProgress } from "@mui/materi
 import Draggable from 'react-draggable';
 import Checkbox from '@mui/material/Checkbox';
 import DropDown from '../../../Components/Dropdown/Dropdown';
-
+import UsernameDropDown from '../../../Components/Dropdown/UsernameDropDown';
 const EditManageEmployee = (props) => {
     console.log(props.item);
     const [allCountry, setAllCountry] = useState([]);
@@ -418,18 +418,20 @@ const EditManageEmployee = (props) => {
             >
 
                 <div className='flex justify-center'>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className='move cursor-move'>
 
-                            <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF] justify-center flex items-center rounded-lg relative">
                                 <div className="mr-[360px] ml-[360px]">
                                     <div className="text-[16px]">Edit Employee</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                     <button onClick={() => {close()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
 
+                            </div>
                             {editPageLoading && <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress /><h1>Fetching Employee Data</h1></div>}
                             {!editPageLoading && <div className="h-auto w-full mt-[5px]">
                                 <div className="flex gap-[48px] justify-center ">
@@ -457,7 +459,7 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 })}
                                             </select> */}
-                                            <DropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
+                                            <UsernameDropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
                                             <div className="text-[9.5px] text-[#CD0000] ">{formErrors.username}</div>
                                         </div>
                                         <div className="">

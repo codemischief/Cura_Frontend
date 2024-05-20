@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {DownOutlined} from "@ant-design/icons"
-const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,idName}) => {
+const UsernameDropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr,rightAttr ,toSelect, handleChange,formValueName,idName}) => {
   const ref = useRef();
   const [show, setShow] = useState(false);
   const [text,setText] = useState(initialValue)
@@ -58,6 +58,7 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
     <div className="relative flex flex-col" ref={ref}>
       {/* <label className="text-[#313135]">{"Xyx"}</label> */}
       <button onClick={() => {setShow((prev) => !prev)}}>
+        {/* <input/> */}
         <div className="w-[230px] h-5 rounded-sm  border-[1px] border-[#C6C6C6] flex items-center justify-between">
         
                   <p className="text-[10px] text-start pl-[15px]">{text} </p>
@@ -101,8 +102,8 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
                     className="flex justify-between text-[12px] h-[37px] bg-[#D9D9D9] px-[8px] py-[8px]"
                     // onClick={() => {}}
                   >
-                    <p >{leftLabel}</p>
-                    <p >{rightLabel}</p>
+                    <p className="w-[35%]">{leftLabel}</p>
+                    <p className="w-[65%]">{rightLabel}</p>
                   </div>     
           <div className="flex flex-col overflow-y-auto" >
             {options &&
@@ -113,8 +114,8 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
                     className={`flex justify-between text-[10px] cursor-pointer px-[8px] hover:bg-blue-400 ${item[idName] == value ? "bg-blue-400 " : "" }`}
                     onClick={() => onSelect(item)}
                   >
-                    <p className="2-[30%]">{item[leftAttr]}</p>
-                      <div className="w-[70%] bg-red-flex items-start">
+                      <p className="w-[35%]">{item[leftAttr]}</p>
+                      <div className="w-[65%] bg-red-flex items-start">
                          <p className="text-start">{item[rightAttr]}</p>
                       </div>
                   </div>
@@ -128,4 +129,4 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
   );
 };
 
-export default UsernameDrop;
+export default UsernameDropDown;
