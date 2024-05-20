@@ -136,10 +136,7 @@ const Country = () => {
     setTotalItems(res.total_count);
     setPageLoading(false);
  
-    setCountryValues(res.data.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
 
   }
 
@@ -166,10 +163,7 @@ const Country = () => {
     setTotalItems(res.total_count);
     setPageLoading(false);
  
-    setCountryValues(res.data.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
   }
   const fetchCountryData = async () => {
     setPageLoading(true);
@@ -215,17 +209,13 @@ const Country = () => {
 
     setTotalItems(res.total_count);
     setPageLoading(false);
- 
-    setCountryValues(res.data.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
 
   }
 
   const addCountry = async () => {
 
-    const data = { "user_id": userId || 1234, "country_name": formValues.countryName };
+    const data = { "user_id": userId || 1234, "name": formValues.countryName };
     const response = await APIService.addCountries(data);
     const res = await response.json();
     console.log(res)
@@ -251,11 +241,11 @@ const Country = () => {
 
   const deleteCountry = async (item) => {
     setShowDelete(true);
-    setCurrentCountry(item.country_name);
+    setCurrentCountry(item.name);
   }
 
   const editCountry = async (item) => {
-    setCurrentCountry(item.country_name);
+    setCurrentCountry(item.name);
     setShowEdit(true);
 
     // console.log(currentCountry);
@@ -336,12 +326,10 @@ const Country = () => {
     const res = await response.json()
 
     setTotalItems(res.total_count);
-    setPageLoading(false);
+    
  
-    setCountryValues(res.dat.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
+    setPageLoading(false);
   }
 
   const handleRefresh = () => {
@@ -370,10 +358,7 @@ const Country = () => {
     setTotalItems(res.total_count);
     setPageLoading(false);
  
-    setCountryValues(res.dat.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
 
   }
 
@@ -398,10 +383,7 @@ const Country = () => {
     setTotalItems(res.total_count);
     setPageLoading(false);
  
-    setCountryValues(res.dat.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
 
   }
   const [countryFilter, setCountryFilter] = useState(false);
@@ -436,10 +418,7 @@ const Country = () => {
     setTotalItems(res.total_count);
     setPageLoading(false);
  
-    setCountryValues(res.dat.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    setCountryValues(res.data)
   }
   const [failureMessage, setFailureMessage] = useState("");
 
@@ -524,8 +503,8 @@ const Country = () => {
     }
 
     if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
-
-
+    console.log('existing')
+    console.log(existing)
     fetchFiltered(existing);
   }
 
@@ -546,7 +525,10 @@ const Country = () => {
   const [filterMapState, setFilterMapState] = useState(filterMapping);
 
   const fetchFiltered = async (mapState) => {
+    
+    console.log('this is a test')
     setFilterMapState(mapState)
+    console.log('hi')
     const tempArray = [];
     // we need to query thru the object
     setCountryFilter(false)
@@ -588,14 +570,12 @@ const Country = () => {
     };
     const response  = await APIService.getCountries(data)
     const res = await response.json()
-
+    console.log(res)
     setTotalItems(res.total_count);
-    setPageLoading(false);
+    setCountryValues([])
  
-    setCountryValues(res.dat.map(x => ({
-      sl: x.id,
-      country_name: x.name
-    })))
+    // setCountryValues(res.data)
+    setPageLoading(false);
   }
   function handleKeyDown(event) {
     if (event.keyCode === 13) {
@@ -611,6 +591,8 @@ const Country = () => {
       // const temp = {...filterMapState};
       // temp[columnName].type = "".
       // setFilterMapState(temp)
+      
+      alert('here')
       if (inputVariable == "") {
         const temp = { ...filterMapState }
         temp[columnName].filterType = ""
@@ -754,19 +736,19 @@ const Country = () => {
             {!pageLoading && existingCountries && existingCountries.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
               <h1 className='ml-10'>No Records To Show</h1>
             </div>}
-            {!pageLoading && existingCountries.map((item, index) => {
+            {!pageLoading && existingCountries && existingCountries.map((item, index) => {
               return <div className='w-full h-10 flex justify-between items-center border-gray-400 border-b-[1px] text-xs'>
                 <div className='w-[80%] flex items-center'>
                   <div className='w-[5%] px-3'>
                     <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                   </div>
                   <div className='w-[95%]  px-3 '>
-                    <p>{item.country_name}</p>
+                    <p>{item.name}</p>
                   </div>
                 </div>
                 <div className='w-[20%] flex items-center'>
                   <div className='w-1/2  px-3 ml-1'>
-                    <p>{item.sl}</p>
+                    <p>{item.id}</p>
                   </div>
                   <div className='w-1/2 px-3 flex items-center gap-5'>
                     <button onClick={() => editCountry(item)} > <img className='w-5 h-5' src={Edit} alt="edit" /> </button>
