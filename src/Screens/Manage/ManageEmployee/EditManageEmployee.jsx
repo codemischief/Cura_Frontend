@@ -17,7 +17,7 @@ const EditManageEmployee = (props) => {
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
     const [allLOB, setAllLOB] = useState([]);
-    const [pageLoading, setPageLoading] = useState(false);
+    const [editPageLoading, setEditPageLoading] = useState(false);
     const [currentstate, setCurrentstate] = useState('')
     const [currentcity, setCurrentcity] = useState("");
     const [currentCountry, setCurrentCountry] = useState("");
@@ -108,7 +108,7 @@ const EditManageEmployee = (props) => {
         }
     }
     const fetchEmployeeData = async () => {
-        setPageLoading(true);
+        setEditPageLoading(true);
         const data = {
             "user_id": 1234,
             "table_name": "employee",
@@ -149,7 +149,8 @@ const EditManageEmployee = (props) => {
         })
         await fetchStateData(result.data.country);
         await fetchCityData(result.data.state);
-        setPageLoading(false);
+        setEditPageLoading(false);
+        props.setPageLoading(false)
         console.log(result);
     }
     useEffect(() => {
@@ -429,19 +430,19 @@ const EditManageEmployee = (props) => {
                                 </div>
                             </div>
 
-                            {pageLoading && <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress /><h1>Fetching Employee Data</h1></div>}
-                            {!pageLoading && <div className="h-auto w-full mt-[5px]">
+                            {editPageLoading && <div className='flex justify-center items-center mt-9 space-x-7'><CircularProgress /><h1>Fetching Employee Data</h1></div>}
+                            {!editPageLoading && <div className="h-auto w-full mt-[5px]">
                                 <div className="flex gap-[48px] justify-center ">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className=" space-y-5 py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[13px]">Employee Name <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="employeename" value={formValues.employeename} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.employeename}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.employeename}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Pan No <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="panno" value={formValues.panno} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.panno}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.panno}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Username <label className="text-red-500">*</label></div>
@@ -457,33 +458,33 @@ const EditManageEmployee = (props) => {
                                                 })}
                                             </select> */}
                                             <DropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.username}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.username}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Date of joining <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="dateofjoining" value={formValues.dateofjoining} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.dateofjoining}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.dateofjoining}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Designation <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.designation}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email" value={formValues.email} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.email}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Address Line 1 </div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="addressline1" value={formValues.addressline1} onChange={handleChange} />
                                         </div>
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                    <div className=" space-y-5 py-[20px] px-[10px]">
                                         <div className="">
                                             <div className="text-[13px]">Employee ID <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="employeeid" value={formValues.employeeid} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeid}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.employeeid}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">LOB </div>
@@ -503,7 +504,7 @@ const EditManageEmployee = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">Date of birth <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.dob}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Last Date of Working</div>
@@ -545,7 +546,7 @@ const EditManageEmployee = (props) => {
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="addressline2" value={formValues.addressline2} onChange={handleChange} />
                                         </div>
                                     </div>
-                                    <div className=" space-y-[12px] py-[20px] px-[10px] ">
+                                    <div className=" space-y-5 py-[20px] px-[10px] ">
                                         <div className="">
                                             <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
                                             <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -581,7 +582,7 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.country}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">State <label className="text-red-500">*</label></div>
@@ -614,7 +615,7 @@ const EditManageEmployee = (props) => {
                                                     // }
                                                 })}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.state}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">City <label className="text-red-500">*</label></div>
@@ -644,12 +645,12 @@ const EditManageEmployee = (props) => {
                                                     return <option value={item.id}>{item.city}</option>
                                                 })}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.city}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.suburb}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Zip Code</div>
@@ -669,7 +670,7 @@ const EditManageEmployee = (props) => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.entityid}</div>
+                                            <div className="text-[9.5px] text-[#CD0000] ">{formErrors.entityid}</div>
                                         </div>
                                     </div>
                                 </div>

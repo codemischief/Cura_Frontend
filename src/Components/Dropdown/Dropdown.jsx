@@ -113,8 +113,10 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
                     className={`flex justify-between text-[10px] cursor-pointer px-[8px] hover:bg-blue-400 ${item[idName] == value ? "bg-blue-400 " : "" }`}
                     onClick={() => onSelect(item)}
                   >
-                    <p className="max-w-[50%]">{item[leftAttr]}</p>
-                    <p className="max-w-[50%]" >{item[rightAttr]}</p>
+                    <p className="2-[30%]">{item[leftAttr]}</p>
+                      <div className="w-[70%] bg-red-flex items-start">
+                         <p className="text-start">{item[rightAttr]}</p>
+                      </div>
                   </div>
                 );
               })}

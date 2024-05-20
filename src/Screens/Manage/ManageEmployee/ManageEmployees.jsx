@@ -317,6 +317,7 @@ const ManageEmployees = () => {
     }, []);
 
     const handleOpenEdit = (oldItem) => {
+        // setPageLoading(true)
         console.log('called');
         setIsEditDialogue(true);
         setCurrItem(oldItem)
@@ -649,7 +650,8 @@ const ManageEmployees = () => {
     }
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
-        setBackDropLoading(true)
+        // setBackDropLoading(true)
+        setPageLoading(true)
         const data = {
             "user_id": 1234,
             "rows": ["employeename", "employeeid", "phoneno", "email", "role", "panno", "dateofjoining", "lastdateofworking", "status", "id",],
@@ -697,8 +699,8 @@ const ManageEmployees = () => {
             });
             
             setTimeout(() => {
-                setBackDropLoading(false)
-
+                // setBackDropLoading(false)
+                setPageLoading(false)
             },1000) 
         }
     }
@@ -1077,7 +1079,7 @@ const ManageEmployees = () => {
         <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={backDropLoading}
+                open={pageLoading}
                 onClick={() => {}}
             >
 
@@ -1366,7 +1368,7 @@ const ManageEmployees = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {/* {pageLoading && <div className=''><LinearProgress /></div>} */}
                         {!pageLoading && existingEmployees && existingEmployees.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
@@ -1538,16 +1540,16 @@ const ManageEmployees = () => {
 
                         <div className="h-auto w-full mt-1 ">
                             <div className="flex gap-12 justify-center">
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-5 py-5">
                                     <div className="">
                                         <div className="text-sm">Employee Name <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeName" value={formValues.employeeName} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeName}</div>
+                                        <div className=" height-[10px] w-full text-[9.5px] text-[#CD0000] absolute absolute">{formErrors.employeeName}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">PAN No. <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="panNo" value={formValues.panNo} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.panNo}</div>
+                                        <div className="height-[10px] w-full height-[8px] w-full text-[9.5px] text-[#CD0000] absolute absolute">{formErrors.panNo}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm mb-1">Username <label className="text-red-500">*</label></div>
@@ -1573,33 +1575,33 @@ const ManageEmployees = () => {
                                             ))}
                                         </select> */}
                                         <DropDown options={allUsername} initialValue="Select Username" leftLabel="User ID" rightLabel="Username" leftAttr="id" rightAttr="name" toSelect="name" handleChange={handleChange} formValueName="userName" value={formValues.userName} idName="id"/>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.userName}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Date of joining <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="doj" value={formValues.doj} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.doj}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.doj}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Designation <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="designation" value={formValues.designation} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.designation}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.designation}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Email <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="email" name="email" value={formValues.email} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.email}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Address Line 1</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-5 py-5">
                                     <div className="">
                                         <div className="text-sm">Employee ID <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="employeeId" value={formValues.employeeId} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.employeeId}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.employeeId}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">LOB </div>
@@ -1629,7 +1631,7 @@ const ManageEmployees = () => {
                                     <div className="">
                                         <div className="text-sm">Date of birth <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="dob" value={formValues.dob} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.dob}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.dob}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Last Date of Working</div>
@@ -1658,19 +1660,19 @@ const ManageEmployees = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.role}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Phone Number <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phNo" value={formValues.phNo} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.phNo}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.phNo}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Address Line 2</div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-5 py-5">
                                     <div className="">
                                         <div className="text-sm">Country <label className="text-red-500">*</label></div>
                                         <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
@@ -1706,7 +1708,7 @@ const ManageEmployees = () => {
                                                 // }
                                             })}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.country}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">State <label className="text-red-500">*</label></div>
@@ -1734,7 +1736,7 @@ const ManageEmployees = () => {
 
                                             })}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.state}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">City <label className="text-red-500">*</label></div>
@@ -1760,12 +1762,12 @@ const ManageEmployees = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.city}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Suburb <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.suburb}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Zip Code</div>
