@@ -24,7 +24,7 @@ const EditLobModal = (props) => {
         props.showSuccess();
     }
 
-    const handleClose = () =>{
+    const handleClose = () => {
         props.handleClose();
         props.showCancel();
     }
@@ -38,15 +38,17 @@ const EditLobModal = (props) => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center'>
                             <div className="w-[778px]  h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[290px] ml-[290px]">
-                                        <div className="text-[16px]">Edit Lob</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={() => {handleClose()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <div className="move cursor-move">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[290px] ml-[290px]">
+                                            <div className="text-[16px]">Edit Lob</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={() => { handleClose() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="space-y-16 mb-3">
@@ -56,14 +58,14 @@ const EditLobModal = (props) => {
                                                 <div className="">
                                                     <div className="text-[14px] text-[#505050]">LOB Name<label className="text-red-500">*</label></div>
                                                     <input className="w-[217px] h-[22px] border-[1px] border-[#C6C6C6] rounded-sm py-1 px-2 text-[12px] text-[#505050]" type="text" name="empName" value={editModalInput} onChange={(e) => setEditModalInput(e.target.value)} />
-                                                    <div className="text-[12px] text-[#CD0000] ">{errorMessage}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute ">{errorMessage}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className=" flex justify-center items-center gap-[10px]">
                                         <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit}>Save</button>
-                                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {handleClose()}}>Cancel</button>
+                                        <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { handleClose() }}>Cancel</button>
                                     </div>
                                 </div>
                             </div>
