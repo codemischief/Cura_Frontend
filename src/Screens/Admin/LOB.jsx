@@ -247,7 +247,7 @@ const LOB = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchQuery,
-            // "downloadtype" : type
+            "downloadType" : type
         };
         const response = await APIService.getLob(data)
         const temp = await response.json();
@@ -273,7 +273,7 @@ const LOB = () => {
                 })
                 .then(result => {
                     if (type == "excel") {
-                        FileSaver.saveAs(result, 'LobData.xlsx');
+                        FileSaver.saveAs(result, 'LobData.xls');
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'LobData.pdf');
                     }

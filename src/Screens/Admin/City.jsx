@@ -311,7 +311,7 @@ const City = () => {
             pg_no: 0,
             pg_size: 0,
             search_key: searchInput,
-            // "downloadtype" : type
+            "downloadType" : type
         };
         const response = await APIService.getCitiesAdmin(data)
         const temp = await response.json();
@@ -337,7 +337,7 @@ const City = () => {
             })
             .then(result => {
                 if(type == "excel") {
-                    FileSaver.saveAs(result, 'CityData.xlsx');
+                    FileSaver.saveAs(result, 'CityData.xls');
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'CityData.pdf');
                 }
