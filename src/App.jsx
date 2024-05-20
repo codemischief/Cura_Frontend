@@ -58,6 +58,7 @@ import PmaBilling from "./Screens/Manage/pma";
 import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
 import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
+import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 
 const App = () => {
   const ROLES = {
@@ -174,6 +175,7 @@ const App = () => {
           <Route path="/orderPaymentList" element={<OrderPaymentList />} />
           <Route path="/orderReceiptList" element={<OrderReceiptList />} />
           <Route path="/orderInvoiceList" element={<OrderInvoiceList />} />
+          <Route path="/clientReceiptList" element={<ClientReceiptList />} />
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
