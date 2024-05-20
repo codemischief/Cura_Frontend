@@ -5,8 +5,9 @@ import { APIService } from '../../../services/API'
 import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
 import bcrypt from 'bcryptjs';
+import EyeHide from "./../../../assets/eyeHide.png";
 
-const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel }) => {
+const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSuccess, showCancel , openFailureModal , setErrorMessage }) => {
     const [pass , setPass] = useState("");
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -201,14 +202,6 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         if (!validate()) {
             return;
         }
-
-        if(!formValues.password){
-            formValues.password = pass;
-            console.log(formValues.password);
-        } else{
-            formValues.password = btoa(formValues.password)
-            console.log(formValues.password);
-        }
  
         let arr = (formValues.nameOfTheUser).split(" ");
         let firstName = arr[0];
@@ -225,7 +218,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             "id" : currUser,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
-            "password": formValues.password,
+            "password": formValues.password ? btoa(formValues.password) : pass ,
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
@@ -251,9 +244,11 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         if (res.result == 'success') {
             //  we need to open edit Modal
             showSuccess()
+        }else {
+            handleClose()
+            openFailureModal();
+            setErrorMessage(res.message)
         }
-        console.log("working")
-
     }
 
     const close = () => {
@@ -263,6 +258,8 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
 
     const [type1, setType1] = useState("password");
     const [type2, setType2] = useState("password");
+    const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
+    const [openEyeIconCon, setOpenEyeIconCon] = useState(true);
 
     // password visibility
     const passwordToggle = () => {
@@ -271,6 +268,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         } else {
             setType1("password");
         }
+        setOpenEyeIconPass((prev) => { return !prev });
     };
 
     const confirmPasswordToggle = () => {
@@ -279,6 +277,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
         } else {
             setType2("password");
         }
+        setOpenEyeIconCon((prev) => { return !prev });
     };
 
     // end utility routes here
@@ -293,8 +292,6 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                     <div className='flex justify-center '>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className='move cursor-move'>
-
-                            
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">Edit User</div>
@@ -312,25 +309,37 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                         <div className="">
                                             <div className="text-[13px]">Name of the User <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="nameOfTheUser" value={formValues.nameOfTheUser} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.nameOfTheUser}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.nameOfTheUser}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Create Username <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="userName" value={formValues.userName} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.userName}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Create Password </div>
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
-                                                <span className="w-4 h-4 absolute right-1 top-2">
-                                                    <img
-                                                        className='cursor-pointer'
-                                                        onClick={passwordToggle}
-                                                        src={eyeIcon}
-                                                        alt="eye-icon"
-                                                    />
-                                                </span>
+                                                {openEyeIconPass &&
+                                                        <span className="w-4 h-4 absolute right-1 top-2">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={passwordToggle}
+                                                                src={eyeIcon}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
+                                                    {!openEyeIconPass &&
+                                                        <span className="w-4 h-4 absolute right-1 top-1.5">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={passwordToggle}
+                                                                src={EyeHide}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
                                             </div>
                                             
                                         </div>
@@ -357,12 +366,12 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.lob}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email 1 <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.email1}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Work Phone</div>
@@ -371,7 +380,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                         <div className="">
                                             <div className="text-[13px]">Address Line 1 <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.addressLine1}</div>
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -382,22 +391,34 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                         <div className="">
                                             <div className="text-[13px]">Effective Date <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="effectiveDate" value={formValues.effectiveDate} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.effectiveDate}</div>
+                                            <div className="text-[8px] text-[#CD0000] absolute">{formErrors.effectiveDate}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Confirm Password </div>
                                             <div className="m-0 p-0 relative">
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
-                                                <span className="w-4 h-4 absolute right-1 top-2">
-                                                    <img
-                                                        className='cursor-pointer'
-                                                        onClick={confirmPasswordToggle}
-                                                        src={eyeIcon}
-                                                        alt="eye-icon"
-                                                    />
-                                                </span>
+                                                {openEyeIconCon &&
+                                                        <span className="w-4 h-4 absolute right-1 top-2">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={confirmPasswordToggle}
+                                                                src={eyeIcon}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
+                                                    {!openEyeIconCon &&
+                                                        <span className="w-4 h-4 absolute right-1 top-1.5">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={confirmPasswordToggle}
+                                                                src={EyeHide}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
                                             </div>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.confirmPassword}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.confirmPassword}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Assign Role <label className="text-red-500">*</label></div>
@@ -422,7 +443,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.role}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Email 2</div>
@@ -431,7 +452,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                         <div className="">
                                             <div className="text-[13px]">Home Phone <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="homePhone" value={formValues.homePhone} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.homePhone}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.homePhone}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Address Line 2</div>
@@ -455,17 +476,17 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.city}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.suburb}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Zip Code <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.zipCode}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute">{formErrors.zipCode}</div>
                                         </div>
                                     </div>
                                 </div>

@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, Select , CircularProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Select, CircularProgress } from "@mui/material";
 import Backdrop from '@mui/material/Backdrop';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
@@ -18,6 +18,7 @@ import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
 import Filter from "../../../assets/filter.png"
 import Add from "../../../assets/add.png";
+import EyeHide from "./../../../assets/eyeHide.png";
 import EditClientInvoice from './EditUser';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import CancelModel from './../../../Components/modals/CancelModel';
@@ -372,6 +373,8 @@ const ManageUser = () => {
                 lastName += arr[i];
             }
         }
+        setIsUserDialogue(false);
+
 
         const data = {
             "user_id": 1234,
@@ -404,7 +407,6 @@ const ManageUser = () => {
 
         setOpenAddConfirmation(false);
         console.log(result)
-        setIsUserDialogue(false);
         if (result.result == "success") {
             setFormValues(initialValues);
             openAddSuccess();
@@ -529,14 +531,14 @@ const ManageUser = () => {
                 return { ...existing, confirmPassword: "Enter Confirm Password" }
             })
             res = false;
-        } else if(formValues.password && formValues.confirmPassword && formValues.password!==formValues.confirmPassword){
+        } else if (formValues.password && formValues.confirmPassword && formValues.password !== formValues.confirmPassword) {
             console.log("ayoo")
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "Password does not match" }
             })
             res = false;
         }
-         else {
+        else {
             console.log("good");
             setFormErrors((existing) => {
                 return { ...existing, confirmPassword: "" }
@@ -625,7 +627,7 @@ const ManageUser = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
-    const [backDropLoading,setBackDropLoading] = useState(false)
+    const [backDropLoading, setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
         setPageLoading(true)
         setBackDropLoading(true)
@@ -644,16 +646,16 @@ const ManageUser = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType" : type
+            "downloadType": type
         };
         const response = await APIService.getUser(data)
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if(temp.result == 'success') {
+        if (temp.result == 'success') {
             const d = {
-                "filename" : temp.filename,
-                "user_id" : 1234
+                "filename": temp.filename,
+                "user_id": 1234
             }
             fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -662,28 +664,28 @@ const ManageUser = () => {
                 },
                 body: JSON.stringify(d) // Convert the object to a JSON string
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'UserData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'UserData.pdf');
-                }
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'UserData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'UserData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             setTimeout(() => {
                 setPageLoading(false)
                 setBackDropLoading(false)
-            },1000) 
+            }, 1000)
         }
     }
     const handleSearch = async () => {
@@ -1004,7 +1006,7 @@ const ManageUser = () => {
         setInputVariable,
         type,
         columnName) => {
-            console.log(inputVariable)
+        console.log(inputVariable)
         if (event.keyCode === 13) {
             // if its empty then we remove that 
             // const temp = {...filterMapState};
@@ -1030,6 +1032,8 @@ const ManageUser = () => {
     }
     const [type1, setType1] = useState("password");
     const [type2, setType2] = useState("password");
+    const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
+    const [openEyeIconCon, setOpenEyeIconCon] = useState(true);
 
     // password visibility
     const passwordToggle = () => {
@@ -1038,6 +1042,7 @@ const ManageUser = () => {
         } else {
             setType1("password");
         }
+        setOpenEyeIconPass((prev) => { return !prev });
     };
 
     const confirmPasswordToggle = () => {
@@ -1046,6 +1051,7 @@ const ManageUser = () => {
         } else {
             setType2("password");
         }
+        setOpenEyeIconCon((prev) => { return !prev });
     };
     // fetching utility routes end here
     return (
@@ -1053,14 +1059,14 @@ const ManageUser = () => {
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             <Navbar />
-            {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currUser={editId} allCity={allCity} allLOB={allLOB} allRoles={allRoles} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
+            {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currUser={editId} allCity={allCity} allLOB={allLOB} allRoles={allRoles} showSuccess={openEditSuccess} showCancel={openCancelModal} openFailureModal={openFailureModal} setErrorMessage={setErrorMessage} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New User created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="User deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
@@ -1128,9 +1134,9 @@ const ManageUser = () => {
                                             'contains',
                                             'fullname')}
                                     />
-                                    {filterMapState.fullname.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.fullname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {nameFilter && <CharacterFilter inputVariable={nameFilterInput} setInputVariable={setNameFilterInput} handleFilter={newHandleFilter} filterColumn='fullname' menuRef={menuRef}  filterType={filterMapState.fullname.filterType} />}
+                                {nameFilter && <CharacterFilter inputVariable={nameFilterInput} setInputVariable={setNameFilterInput} handleFilter={newHandleFilter} filterColumn='fullname' menuRef={menuRef} filterType={filterMapState.fullname.filterType} />}
                             </div>
 
                             <div className='w-[30%]  px-3 py-2.5 mx-[-2px]'>
@@ -1143,9 +1149,9 @@ const ManageUser = () => {
                                             'username')}
 
                                     />
-                                    {filterMapState.username.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setUsernameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setUsernameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.username.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setUsernameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setUsernameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {usernameFilter && <CharacterFilter inputVariable={usernameFilterInput} setInputVariable={setUsernameFilterInput} filterColumn='username' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.username.filterType} />}
+                                {usernameFilter && <CharacterFilter inputVariable={usernameFilterInput} setInputVariable={setUsernameFilterInput} filterColumn='username' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.username.filterType} />}
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5 '>
@@ -1160,9 +1166,9 @@ const ManageUser = () => {
 
 
                                     />
-                                    {filterMapState.role_name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.role_name.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {roleFilter && <CharacterFilter inputVariable={roleFilterInput} setInputVariable={setRoleFilterInput} filterColumn='role_name' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.role_name.filterType} />}
+                                {roleFilter && <CharacterFilter inputVariable={roleFilterInput} setInputVariable={setRoleFilterInput} filterColumn='role_name' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.role_name.filterType} />}
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5'>
@@ -1175,9 +1181,9 @@ const ManageUser = () => {
                                             'status')}
 
                                     />
-                                    {filterMapState.status.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.status.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
@@ -1189,9 +1195,9 @@ const ManageUser = () => {
                                             'equalTo',
                                             'id')}
                                     />
-                                    {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.id.filterType} />}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
                             <div className='w-[35%]  flex'>
@@ -1252,8 +1258,8 @@ const ManageUser = () => {
                         {/* we map our items here */}
                         {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingUsers && existingUsers.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                                        <h1 className='ml-10'>No Records To Show</h1>
-                            </div>}
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingUsers.map((item, index) => {
                             return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[70%] flex items-center">
@@ -1404,27 +1410,39 @@ const ManageUser = () => {
                                             <div className="">
                                                 <div className="text-[13px]">Name of the User <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="nameOfTheUser" value={formValues.nameOfTheUser} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.nameOfTheUser}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.nameOfTheUser}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Create Username <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="userName" value={formValues.userName} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.userName}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.userName}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Create Password <label className="text-red-500">*</label></div>
                                                 <div className="m-0 p-0 relative">
                                                     <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type1} name="password" value={formValues.password} onChange={handleChange} />
-                                                    <span className="w-4 h-4 absolute right-1 top-2">
-                                                        <img
-                                                            className='cursor-pointer'
-                                                            onClick={passwordToggle}
-                                                            src={eyeIcon}
-                                                            alt="eye-icon"
-                                                        />
-                                                    </span>
+                                                    {openEyeIconPass &&
+                                                        <span className="w-4 h-4 absolute right-1 top-2">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={passwordToggle}
+                                                                src={eyeIcon}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
+                                                    {!openEyeIconPass &&
+                                                        <span className="w-4 h-4 absolute right-1 top-1.5">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={passwordToggle}
+                                                                src={EyeHide}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
                                                 </div>
-                                                <div className="text-[10px] text-[#CD0000]">{formErrors.password}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.password}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">LOB <label className="text-red-500">*</label></div>
@@ -1449,12 +1467,12 @@ const ManageUser = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.lob}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.lob}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Email 1 <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="email1" value={formValues.email1} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.email1}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.email1}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Work Phone</div>
@@ -1463,7 +1481,7 @@ const ManageUser = () => {
                                             <div className="">
                                                 <div className="text-[13px]">Address Line 1 <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.addressLine1}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.addressLine1}</div>
                                             </div>
                                         </div>
                                         <div className=" space-y-[12px] py-[20px] px-[10px]">
@@ -1474,22 +1492,34 @@ const ManageUser = () => {
                                             <div className="">
                                                 <div className="text-[13px]">Effective Date <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="effectiveDate" value={formValues.effectiveDate} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.effectiveDate}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.effectiveDate}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Confirm Password <label className="text-red-500">*</label></div>
                                                 <div className="m-0 p-0 relative">
                                                     <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type={type2} name="confirmPassword" value={formValues.confirmPassword} onChange={handleChange} />
-                                                    <span className="w-4 h-4 absolute right-1 top-2">
-                                                        <img
-                                                            className='cursor-pointer'
-                                                            onClick={confirmPasswordToggle}
-                                                            src={eyeIcon}
-                                                            alt="eye-icon"
-                                                        />
-                                                    </span>
+                                                    {openEyeIconCon &&
+                                                        <span className="w-4 h-4 absolute right-1 top-2">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={confirmPasswordToggle}
+                                                                src={eyeIcon}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
+                                                    {!openEyeIconCon &&
+                                                        <span className="w-4 h-4 absolute right-1 top-1.5">
+                                                            <img
+                                                                className='cursor-pointer'
+                                                                onClick={confirmPasswordToggle}
+                                                                src={EyeHide}
+                                                                alt="eye-icon"
+                                                            />
+                                                        </span>
+                                                    }
                                                 </div>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.confirmPassword}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.confirmPassword}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Assign Role <label className="text-red-500">*</label></div>
@@ -1514,7 +1544,7 @@ const ManageUser = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.role}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.role}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Email 2</div>
@@ -1523,7 +1553,7 @@ const ManageUser = () => {
                                             <div className="">
                                                 <div className="text-[13px]">Home Phone <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="homePhone" value={formValues.homePhone} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.homePhone}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.homePhone}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Address Line 2</div>
@@ -1547,17 +1577,17 @@ const ManageUser = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.city}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.suburb}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.suburb}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Zip Code <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="zipCode" value={formValues.zipCode} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.zipCode}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.zipCode}</div>
                                             </div>
                                         </div>
                                     </div>
