@@ -247,7 +247,11 @@ const LOB = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchQuery,
-            "downloadType" : type
+            "downloadType" : type,
+            "colmap" : {
+                "name" : "LOB Name",
+                "id" : "Id"
+            }
         };
         const response = await APIService.getLob(data)
         const temp = await response.json();
