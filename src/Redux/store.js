@@ -3,16 +3,19 @@ import { configureStore } from "@reduxjs/toolkit";
 import pmaReducer from "./slice/pmaSlice";
 import orderPaymentReducer from "./slice/reporting/OrderPaymentSlice";
 import OrderReceiptReducer from "./slice/reporting/OrderReceiptSlice";
-import OrderInvoiceSlice from "./slice/reporting/OrderInvoiceSlice";
-import ClientReceiptSlice from "./slice/reporting/ClientReceiptSlice";
+import OrderInvoiceReducer from "./slice/reporting/OrderInvoiceSlice";
+import ClientReceiptReducer from "./slice/reporting/ClientReceiptSlice";
+import VendorInvoiceReducer from "./slice/reporting/VendorInvoiceSlice";
 
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
     orderPayment: orderPaymentReducer,
     orderReceipt: OrderReceiptReducer,
-    orderInvoice: OrderInvoiceSlice,
-    clientReceipt: ClientReceiptSlice,
+    orderInvoice: OrderInvoiceReducer,
+    clientReceipt: ClientReceiptReducer,
+    vendorInvoice: VendorInvoiceReducer,
+
   },
   // Add the RTK Query API middleware
 });

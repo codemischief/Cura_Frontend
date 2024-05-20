@@ -59,6 +59,7 @@ import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
 import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
 import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
+import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
 
 const App = () => {
   const ROLES = {
@@ -176,6 +177,7 @@ const App = () => {
           <Route path="/orderReceiptList" element={<OrderReceiptList />} />
           <Route path="/orderInvoiceList" element={<OrderInvoiceList />} />
           <Route path="/clientReceiptList" element={<ClientReceiptList />} />
+          <Route path="/vendorInvoiceList" element={<VendorInvoiceList />} />
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

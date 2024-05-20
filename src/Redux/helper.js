@@ -60,4 +60,12 @@ export const updatedClientReceiptData = (data, year, month) => {
     recddate: billing.recddate ? formatDate(billing.recddate) : "--",
   }));
 };
+export const updatedVendorInvoiceData = (data, year, month) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    invoicedate: billing.invoicedate ? formatDate(billing.invoicedate) : "--",
+    invoiceamount: billing.invoiceamount ? floorDecimal(billing.invoiceamount) : "---",
+  }));
+};
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

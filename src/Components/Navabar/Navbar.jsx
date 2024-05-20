@@ -531,9 +531,11 @@ const Navbar = () => {
                     Order Invoice List
                   </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Vendor Payment List
-                </p>
+                <Link to={"/vendorInvoiceList"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Vendor Payment List
+                  </p>
+                </Link>
                 <Link to={"/clientReceiptList"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     Client Receipt List
