@@ -289,20 +289,23 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             className='flex justify-center items-center'
         >
             <>
-                <Draggable>
+                <Draggable handle="div.move">
                     <div className='flex justify-center '>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                <div className="mr-[410px] ml-[410px]">
-                                    <div className="text-[16px]">Edit User</div>
-                                </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                    <button onClick={() => { close() }}>
-                                        <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
-                                    </button>
+                            <div className='move cursor-move'>
+
+                            
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">Edit User</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={() => { close() }}>
+                                            <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-
                             <div className="h-auto w-full">
                                 <div className="flex gap-[48px] justify-center items-center">
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">

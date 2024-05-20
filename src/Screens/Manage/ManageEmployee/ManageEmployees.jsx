@@ -185,7 +185,7 @@ const ManageEmployees = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
+        // console.log('ugm')
         const tempArray = [];
         // we need to query thru the object
         console.log(filterMapState);
@@ -977,7 +977,19 @@ const ManageEmployees = () => {
                     }
                 }
             } else {
-                return;
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: ""
+                    }
+                }
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
+                // return;
             }
 
         } else {
@@ -1062,7 +1074,7 @@ const ManageEmployees = () => {
         }
     }
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={backDropLoading}

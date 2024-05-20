@@ -31,7 +31,7 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import Draggable from 'react-draggable';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import ActiveFilter from "../../../assets/active_filter.png"
-
+import {formatDate} from "../../../utils/formatDate.js"
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -1037,7 +1037,7 @@ const Payments = () => {
         }
     }
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={backDropLoading}
@@ -1297,7 +1297,7 @@ const Payments = () => {
                                         <p>{item.amount.toFixed(2)}</p>
                                     </div>
                                     <div className='w-[10%] h-[50%] px-4  '>
-                                        <p>{item.paidon}</p>
+                                        <p>{formatDate(item.paidon)}</p>
                                     </div>
                                     <div className='w-[14%] h-[50%] px-4  ml-[2px]'>
                                         <p>{item.paymentmode}</p>

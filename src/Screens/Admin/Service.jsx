@@ -680,7 +680,7 @@ const Service = () => {
     }
     // fetching utility routes end here
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
             {isEditDialogue && <EditService handleClose={() => setIsEditDialogue(false)} currService={editId} allLOB={allLOB}  showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Service created succesfully" />}

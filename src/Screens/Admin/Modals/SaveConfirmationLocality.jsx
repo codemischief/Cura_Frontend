@@ -7,7 +7,6 @@ const SaveConfirmationLocality = (props) => {
         props.handleClose();
         props.setDefault();
         props.showCancel();
-       
     }
     return (
         <Modal open={true} >

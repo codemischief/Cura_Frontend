@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -39,6 +39,7 @@ import ActiveFilter from "../../../assets/active_filter.png"
 const ManageUser = () => {
 
     const menuRef = useRef();
+    const navigate = useNavigate();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingUsers, setExistingUser] = useState([]);
@@ -220,6 +221,8 @@ const ManageUser = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
+        setBackDropLoading(true)
+        setPageLoading(true);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
@@ -233,11 +236,11 @@ const ManageUser = () => {
         setFilterState(tempArray)
         setCurrentPage((prev) => 1)
         // we need to query thru the object
-        setPageLoading(true);
+        // setPageLoading(true);
         const data = {
             "user_id": 1234,
             "rows": ["*"],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -251,6 +254,7 @@ const ManageUser = () => {
         const t = temp.total_count;
         setTotalItems(t);
         setExistingUser(result);
+        setBackDropLoading(false)
         setPageLoading(false);
     }
     const fetchPageData = async (pageNumber) => {
@@ -623,6 +627,7 @@ const ManageUser = () => {
     }
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
+        setPageLoading(true)
         setBackDropLoading(true)
         const data = {
             "user_id": 1234,
@@ -639,7 +644,7 @@ const ManageUser = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            // "downloadtype" : type
+            "downloadType" : type
         };
         const response = await APIService.getUser(data)
         const temp = await response.json();
@@ -676,6 +681,7 @@ const ManageUser = () => {
             });
             
             setTimeout(() => {
+                setPageLoading(false)
                 setBackDropLoading(false)
             },1000) 
         }
@@ -858,10 +864,12 @@ const ManageUser = () => {
         setPageLoading(false);
     }
     const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+
+        console.log(columnName)
+        console.log(inputVariable)
         console.log(columnName)
         console.log('hey')
         console.log(filterMapState);
-
         if (columnName == 'status') {
             var existing = filterMapState;
             if (type == 'noFilter') {
@@ -894,7 +902,19 @@ const ManageUser = () => {
                     }
                 }
             } else {
-                return;
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterValue: ''
+                    }
+                }
+                console.log(type)
+                existing = {
+                    ...existing, [columnName]: {
+                        ...existing[columnName],
+                        filterType: type == 'noFilter' ? "" : type
+                    }
+                }
             }
 
         }
@@ -984,14 +1004,17 @@ const ManageUser = () => {
         setInputVariable,
         type,
         columnName) => {
+            console.log(inputVariable)
         if (event.keyCode === 13) {
             // if its empty then we remove that 
             // const temp = {...filterMapState};
             // temp[columnName].type = "".
             // setFilterMapState(temp)
             if (inputVariable == "") {
+                console.log('here')
                 const temp = { ...filterMapState }
                 temp[columnName].filterType = ""
+                // temp[key].filterValue
                 setFilterMapState(temp)
                 fetchData()
             } else {
@@ -1026,10 +1049,10 @@ const ManageUser = () => {
     };
     // fetching utility routes end here
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={backDropLoading}
+                open={pageLoading}
                 onClick={() => {}}
             >
 
@@ -1050,7 +1073,7 @@ const ManageUser = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -1154,7 +1177,7 @@ const ManageUser = () => {
                                     />
                                     {filterMapState.status.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.status.filterType} />}
+                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
@@ -1227,7 +1250,7 @@ const ManageUser = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingUsers && existingUsers.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
@@ -1360,20 +1383,21 @@ const ManageUser = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center '>
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">Add New User</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={() => { handleClose() }}>
-                                            <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
-                                        </button>
+                                <div className='move cursor-move'>
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">Add New User</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={() => { handleClose() }}>
+                                                <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-
                                 <div className="h-auto w-full">
                                     <div className="flex gap-[48px] justify-center items-center">
                                         <div className=" space-y-[12px] py-[20px] px-[10px]">

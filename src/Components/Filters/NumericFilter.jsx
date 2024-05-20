@@ -3,6 +3,7 @@ import React from 'react'
 const NumericFilter = ({ inputVariable, setInputVariable, handleFilter, columnName, menuRef , filterType }) => {
         return (
                 <div className='h-[325px] w-[150px] mt-3 bg-white shadow-xl font-thin font-sans absolute flex-col rounded-md space-y-0 text-sm z-40' ref={menuRef}>
+                        {console.log(inputVariable,columnName)}
                         <button onClick={() => handleFilter(inputVariable, setInputVariable, 'noFilter', columnName)} className='w-[150px] p-1'>
                                 <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
                                         <h1 >No Filter</h1>

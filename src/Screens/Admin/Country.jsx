@@ -507,7 +507,7 @@ const Country = () => {
         })
         .then(result => {
           if (type == "excel") {
-            FileSaver.saveAs(result, 'CountryData.xlsx');
+            FileSaver.saveAs(result, 'CountryData.xls');
           } else if (type == "pdf") {
             FileSaver.saveAs(result, 'CountryData.pdf');
           }
@@ -647,7 +647,7 @@ const Country = () => {
     }
   }
   return (
-    <div className='h-screen w-full'>
+    <div className='h-screen w-full font-medium'>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={backDropLoading}
