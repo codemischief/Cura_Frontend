@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -31,6 +31,7 @@ import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 const Locality = () => {
     const menuRef = useRef();
+    const navigate = useNavigate()
     const [existingLocalities, setExistingLocalities] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
@@ -395,7 +396,7 @@ const Locality = () => {
         setFormErrors({});
     }
     const [backDropLoading,setBackDropLoading] = useState(false)
-    const handleExcelDownload = async () => {
+    const handleDownload = async (type) => {
         setBackDropLoading(true)
         const data = {
             "user_id": 1234,
@@ -406,7 +407,7 @@ const Locality = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchQuery,
-            // "downloadtype" : "excel"
+            // "downloadtype" : type
         };
         const response = await APIService.getLocality(data)
         const temp = await response.json();
@@ -428,12 +429,15 @@ const Locality = () => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
-                console.log(response)
-                // FileSaver.saveAs(response.blob())
                 return response.blob();
             })
             .then(result => {
-                FileSaver.saveAs(result, 'localityData.xlsx');
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'localityData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'localityData.pdf');
+                }
+               
                 console.log('Success:', result);
             })
             .catch(error => {
@@ -729,7 +733,7 @@ const Locality = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <Link to="/dashboard"><img className='h-5 w-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='h-5 w-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -880,8 +884,10 @@ const Locality = () => {
                             </div>
                         </div>
                         <div className='w-[15%] flex'>
-                            <div className='w-1/2  p-4'>
-                                <p>ID<button onClick={() => handleSort("id")}><span className="font-extrabold">↑↓</span></button> </p>
+                            <div className='w-1/2  p-4 '>
+                                <p>ID<button onClick={() => handleSort("id")}>   
+                                    <span className="font-extrabold ml-1">↑↓</span></button> 
+                                 </p>
                             </div>
                             <div className='w-1/2 0 p-4'>
                                 <p>Edit</p>
@@ -969,14 +975,13 @@ const Locality = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
