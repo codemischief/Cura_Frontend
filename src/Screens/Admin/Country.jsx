@@ -487,20 +487,20 @@ const Country = () => {
     console.log(columnName)
     console.log('hey')
     console.log(filterMapState);
-
-    var existing = filterMapState;
-    existing = {
-      ...existing, [columnName]: {
-        ...existing[columnName],
-        filterType: type == 'noFilter' ? "" : type
-      }
-    }
-    existing = {
-      ...existing, [columnName]: {
-        ...existing[columnName],
-        filterValue: type == 'noFilter' ? "" : inputVariable
-      }
-    }
+    // console.log(inputVariable)
+    var existing = {...filterMapState};
+    // existing = {
+    //   ...existing, [columnName]: {
+    //     ...existing[columnName],
+    //     filterType: type == 'noFilter' ? "" : type
+    //   }
+    // }
+    // existing = {
+    //   ...existing, [columnName]: {
+    //     ...existing[columnName],
+    //     filterValue: type == 'noFilter' ? "" : inputVariable
+    //   }
+    // }
 
     if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
     console.log('existing')
@@ -527,14 +527,16 @@ const Country = () => {
   const fetchFiltered = async (mapState) => {
     
     console.log('this is a test')
+    // setCountryValues([])
     setFilterMapState(mapState)
-    console.log('hi')
+    // console.log('hi')
     const tempArray = [];
-    // we need to query thru the object
+    // // we need to query thru the object
     setCountryFilter(false)
     setIdFilter(false)
-    // console.log(filterMapState);
-    console.log(filterMapState)
+    // // console.log(filterMapState);
+    // // console.log(mapState)
+    // console.log(filterMapState)
     Object.keys(mapState).forEach(key => {
       if (mapState[key].filterType != "") {
         if (mapState[key].filterData == 'Numeric') {
@@ -572,9 +574,9 @@ const Country = () => {
     const res = await response.json()
     console.log(res)
     setTotalItems(res.total_count);
-    setCountryValues([])
+    // setCountryValues([])
  
-    // setCountryValues(res.data)
+    setCountryValues(res.data)
     setPageLoading(false);
   }
   function handleKeyDown(event) {
