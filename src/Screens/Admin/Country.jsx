@@ -9,6 +9,7 @@ import Cross from "../../assets/cross.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../Components/Navabar/Navbar";
 import { Modal, CircularProgress, Pagination, LinearProgress } from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import Edit from '../../assets/edit.png';
 import Trash from "../../assets/trash.png";
 import Add from "./../../assets/add.png";
@@ -468,7 +469,9 @@ const Country = () => {
     setDownloadModal(true);
   }
 
-  const handleExcelDownload = async () => {
+  const [backDropLoading, setBackDropLoading] = useState(false)
+  const handleDownload = async (type) => {
+    setBackDropLoading(true)
     const data = {
       "user_id": 1234,
       "rows": ["name", "id"],
@@ -477,28 +480,48 @@ const Country = () => {
       "order": flag ? "asc" : "desc",
       "pg_no": 0,
       "pg_size": 0,
-      "search_key": searchQuery
+      "search_key": searchQuery,
+      // "downloadtype" : type
     };
     const response = await APIService.getCountries(data)
-    const temp = (await response.json()).data;
+    const temp = await response.json();
     const result = temp.data;
-
-
-
-    const t = []
-    for (var i = 0; i < result.length; i++) {
-      t.push({
-        "country_name": result[i][1],
-        "country_id": result[i][0]
+    console.log(temp)
+    if (temp.result == 'success') {
+      const d = {
+        "filename": temp.filename,
+        "user_id": 1234
+      }
+      fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+        method: 'POST', // or the appropriate HTTP method
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(d) // Convert the object to a JSON string
       })
-    }
-    const worksheet = XLSX.utils.json_to_sheet(t);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    XLSX.writeFile(workbook, "CountryData.xlsx");
-    FileSaver.saveAs(workbook, "demo.xlsx");
-  }
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.blob();
+        })
+        .then(result => {
+          if (type == "excel") {
+            FileSaver.saveAs(result, 'CountryData.xlsx');
+          } else if (type == "pdf") {
+            FileSaver.saveAs(result, 'CountryData.pdf');
+          }
+          console.log('Success:', result);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
 
+      setTimeout(() => {
+        setBackDropLoading(false)
+      }, 1000)
+    }
+  }
   const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
     console.log(columnName)
     console.log('hey')
@@ -625,6 +648,15 @@ const Country = () => {
   }
   return (
     <div className='h-screen w-full'>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backDropLoading}
+        onClick={() => { }}
+      >
+
+        <CircularProgress color="inherit" />
+
+      </Backdrop>
       <Navbar />
       {showSucess && <SucessfullModal isOpen={showSucess} message="New Country Added Successfully" />}
       {showCancel && <CancelModel isOpen={showCancel} message="Process cancelled, no new Country added." />}
@@ -689,7 +721,7 @@ const Country = () => {
                     'contains',
                     'name')}
                 />
-                {filterMapState.name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                {filterMapState.name.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
               </div>
               {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='name' menuRef={menuRef} filterType={filterMapState.name.filterType} />}
             </div>
@@ -705,7 +737,7 @@ const Country = () => {
                   'id')}
 
               />
-              {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+              {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
             </div>
             {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
             <div className='w-1/2 p-4'>
@@ -813,14 +845,13 @@ const Country = () => {
 
             <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-            <button>
+            <button onClick={() => handleDownload("pdf")}>
               <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
                 <p>Download as pdf</p>
                 <img src={Pdf} />
               </div>
             </button>
-            <button onClick={handleExcelDownload}>
+            <button onClick={() => handleDownload("excel")}>
               <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                 <p>Download as Excel</p>
                 <img src={Excel} />

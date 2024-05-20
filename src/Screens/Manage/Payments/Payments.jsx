@@ -12,7 +12,8 @@ import Trash from "../../../assets/trash.png";
 import Cross from "../../../assets/cross.png";
 import Add from "../../../assets/add.png";
 import Filter from "../../../assets/filter.png"
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress , CircularProgress } from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import { APIService } from '../../../services/API';
@@ -597,14 +598,6 @@ const Payments = () => {
     const handleCloseDelete = () => {
         setIsDeleteDialogue(false);
     }
-    const handleDownload = () => {
-        // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingPayments);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "PaymentsData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
     const handleRefresh = async () => {
         await fetchData();
 
@@ -732,7 +725,9 @@ const Payments = () => {
         setTotalItems(result.total_count);
         setPageLoading(false);
     }
-    const handleExcelDownload = async () => {
+    const [backDropLoading,setBackDropLoading] = useState(false)
+    const handleDownload = async (type) => {
+        setBackDropLoading(true)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -751,19 +746,47 @@ const Payments = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key": searchInput
+            "search_key": searchInput,
+            // "downloadtype" : type
         };
         const response = await APIService.getPayment(data)
         const temp = await response.json();
         const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "PaymentData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
-    const handleFilter = () => {
-
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'PaymentData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'PaymentData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                setBackDropLoading(false)
+            },1000) 
+        }
     }
     const [paymentToFilter, setPaymentToFilter] = useState(false);
     const [paymentToFilterInput, setPaymentToFilterInput] = useState("");
@@ -1015,6 +1038,15 @@ const Payments = () => {
     }
     return (
         <div className='h-screen'>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={backDropLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             <Navbar />
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Contractual Payment Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Changes Saved Successfully" />}
@@ -1322,7 +1354,6 @@ const Payments = () => {
                                 // console.log(e.target.value);
                                 fetchQuantityData(e.target.value)
                             }}
-
                         >
                             <option>
                                 15
@@ -1341,14 +1372,13 @@ const Payments = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />

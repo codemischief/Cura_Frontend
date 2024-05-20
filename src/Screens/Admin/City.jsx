@@ -14,7 +14,8 @@ import Add from "./../../assets/add.png";
 import Pdf from "../../assets/pdf.png";
 import Excel from "../../assets/excel.png";
 import Filter from "../../assets/filter.png";
-import { LinearProgress, Modal, Pagination, useScrollTrigger } from "@mui/material";
+import { LinearProgress, Modal, Pagination, CircularProgress } from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import * as XLSX from "xlsx";
 import FileSaver from "file-saver";
 import { APIService } from "../../services/API";
@@ -208,14 +209,6 @@ const City = () => {
         setIsCityDialogue(false);
         openCancel()
     };
-    const handleDownload = () => {
-        // we handle the download here
-        const worksheet = XLSX.utils.json_to_sheet(existingCities);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "CityData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    };
     const handleRefresh = () => {
         fetchCityData();
     };
@@ -306,7 +299,9 @@ const City = () => {
         setDownloadModal(true);
     };
 
-    const handleExcelDownload = async () => {
+    const [backDropLoading,setBackDropLoading] = useState(false)
+    const handleDownload = async (type) => {
+        setBackDropLoading(true)
         const data = {
             user_id: 1234,
             rows: ["country","state","city","id"],
@@ -315,18 +310,48 @@ const City = () => {
             order: flag ? "asc" : "desc",
             pg_no: 0,
             pg_size: 0,
-            search_key : searchInput
+            search_key: searchInput,
+            // "downloadtype" : type
         };
-        const response = await APIService.getCitiesAdmin(data);
-        const res = await response.json();
-        const result = res.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "CityData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    };
-
+        const response = await APIService.getCitiesAdmin(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'CityData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'CityData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                setBackDropLoading(false)
+            },1000) 
+        }
+    }
     const filterMapping = {
         country: {
             filterType: "",
@@ -651,6 +676,15 @@ const City = () => {
       }
     return (
         <div className="h-screen">
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={backDropLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             <Navbar />
             {showAddConfirmation && <SaveConfirmationCity currentCity={currentCity} showCancel={openCancel} initials={initials} handleClose={() => setShowAddConfirmation(false)} addCity={addCity} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New City added successfully"/>}
@@ -944,18 +978,18 @@ const City = () => {
                             <button onClick={() => setDownloadModal(false)}>
                                 <img src={Cross} className="absolute top-1 right-1 w-4 h-4" />
                             </button>
-                            <button>
-                                <div className="flex space-x-2 justify-center items-center ml-3 mt-3">
-                                    <p>Download as pdf</p>
-                                    <img src={Pdf} />
-                                </div>
-                            </button>
-                            <button onClick={handleExcelDownload}>
-                                <div className="flex space-x-2 justify-center items-center mt-5 ml-3">
-                                    <p>Download as Excel</p>
-                                    <img src={Excel} />
-                                </div>
-                            </button>
+                            <button onClick={() => handleDownload("pdf")}>
+                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+                                <p>Download as pdf</p>
+                                <img src={Pdf} />
+                            </div>
+                        </button>
+                        <button onClick={() => handleDownload("excel")}>
+                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                <p>Download as Excel</p>
+                                <img src={Excel} />
+                            </div>
+                        </button>
                         </div>
                     )}
 
