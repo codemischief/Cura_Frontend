@@ -36,6 +36,15 @@ export default function connectionDataColumn(onQuery) {
       
     },
     {
+      filterComponent: NumberFilterField,
+      cellStyle: { minWidth: "20px", maxWidth: "34px" },
+      title: "ID",
+      field: "id",
+      filterDisabled: false,
+      sorting: true,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
+    },
+    {
       filterComponent: DateFilterField,
 
       title: "Payment Date",
