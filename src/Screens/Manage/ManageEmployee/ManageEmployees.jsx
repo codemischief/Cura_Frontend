@@ -92,10 +92,7 @@ const ManageEmployees = () => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         console.log(id);
@@ -1712,7 +1709,7 @@ const ManageEmployees = () => {
                                         >
 
                                             {allCountry && allCountry.map(item => {
-                                                return <option value={item[0]}> {item[1]}</option>
+                                                return <option value={item.id}> {item.name}</option>
                                                 // if (item[0] == 5) {
                                                 //     return <option value={item[0]} selected>
                                                 //         {item[1]}
@@ -1741,7 +1738,7 @@ const ManageEmployees = () => {
                                                 setFormValues(existing)
                                             }}
                                         >
-                                            <option value="" > Select A State</option>
+                                            <option value="" hidden> Select A State</option>
                                             {allState && allState.map(item => {
 
 

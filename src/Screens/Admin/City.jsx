@@ -166,13 +166,14 @@ const City = () => {
     useEffect(() => {
         fetchCityData()
         fetchCountryData()
-
+        
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setCountryFilter(false);
                 setStateFilter(false);
                 setCityFilter(false);
                 setIdFilter(false);
+                setDownloadModal(false)
             }
         };
 
@@ -301,6 +302,7 @@ const City = () => {
 
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
+        setDownloadModal(false)
         setBackDropLoading(true)
         setPageLoading(true)
         const data = {
@@ -344,7 +346,7 @@ const City = () => {
             })
             .then(result => {
                 if(type == "excel") {
-                    FileSaver.saveAs(result, 'CityData.xls');
+                    FileSaver.saveAs(result, 'CityData.xlsx');
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'CityData.pdf');
                 }
@@ -985,7 +987,7 @@ const City = () => {
                         </p>
                     </div>
                     {downloadModal && (
-                        <div className="h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5">
+                        <div className="h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5" ref={menuRef}>
                             <button onClick={() => setDownloadModal(false)}>
                                 <img src={Cross} className="absolute top-1 right-1 w-4 h-4" />
                             </button>

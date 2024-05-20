@@ -26,9 +26,7 @@ const EditManageEmployee = (props) => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
     }
     const fetchStateData = async (id) => {
         // console.log(id);
@@ -579,8 +577,8 @@ const EditManageEmployee = (props) => {
                                             >
                                                 <option value="none" hidden={true}>Select a Country</option>
                                                 {allCountry && allCountry.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
+                                                    <option value={item.id} >
+                                                        {item.name}
                                                     </option>
                                                 ))}
                                             </select>

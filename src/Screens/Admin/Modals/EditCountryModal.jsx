@@ -39,17 +39,21 @@ const EditCountryModal = (props) => {
             className='flex justify-center items-center'
         >
             <>
-                <Draggable>
+                <Draggable handle='div.move'>
                     <div className='flex justify-center '>
+                        
                         <div className="w-[778px]  h-[250px] bg-white rounded-lg">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className='move cursor-move'>
+
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                                 <div className="mr-[270px] ml-[270px]">
                                     <div className="text-[20px]">Edit Country</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                     <button onClick={() => {  handleClose() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
+                           </div>
                             <div className='mb-3 space-y-16'>
                                 <div className="h-auto w-full mt-2 ">
                                     <div className="flex gap-[48px] justify-center items-center">

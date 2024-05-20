@@ -277,7 +277,7 @@ const LOB = () => {
                 })
                 .then(result => {
                     if (type == "excel") {
-                        FileSaver.saveAs(result, 'LobData.xls');
+                        FileSaver.saveAs(result, 'LobData.xlsx');
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'LobData.pdf');
                     }

@@ -259,6 +259,7 @@ const Country = () => {
       if (!menuRef.current.contains(e.target)) {
         setCountryFilter(false)
         setIdFilter(false)
+        setDownloadModal(false)
       }
     }
 
@@ -428,7 +429,9 @@ const Country = () => {
 
   const [backDropLoading, setBackDropLoading] = useState(false)
   const handleDownload = async (type) => {
+    setDownloadModal(false)
     setBackDropLoading(true)
+    setPageLoading(true)
     const data = {
       "user_id": 1234,
       "rows": ["name", "id"],
@@ -468,7 +471,7 @@ const Country = () => {
         })
         .then(result => {
           if (type == "excel") {
-            FileSaver.saveAs(result, 'CountryData.xls');
+            FileSaver.saveAs(result, 'CountryData.xlsx');
           } else if (type == "pdf") {
             FileSaver.saveAs(result, 'CountryData.pdf');
           }
@@ -480,6 +483,7 @@ const Country = () => {
 
       setTimeout(() => {
         setBackDropLoading(false)
+        setPageLoading(false)
       }, 1000)
     }
   }
@@ -489,18 +493,18 @@ const Country = () => {
     console.log(filterMapState);
     // console.log(inputVariable)
     var existing = {...filterMapState};
-    // existing = {
-    //   ...existing, [columnName]: {
-    //     ...existing[columnName],
-    //     filterType: type == 'noFilter' ? "" : type
-    //   }
-    // }
-    // existing = {
-    //   ...existing, [columnName]: {
-    //     ...existing[columnName],
-    //     filterValue: type == 'noFilter' ? "" : inputVariable
-    //   }
-    // }
+    existing = {
+      ...existing, [columnName]: {
+        ...existing[columnName],
+        filterType: type == 'noFilter' ? "" : type
+      }
+    }
+    existing = {
+      ...existing, [columnName]: {
+        ...existing[columnName],
+        filterValue: type == 'noFilter' ? "" : inputVariable
+      }
+    }
 
     if (type == 'noFilter' || type == 'isNull' || type == "isNotNull") setInputVariable("");
     console.log('existing')
@@ -594,7 +598,7 @@ const Country = () => {
       // temp[columnName].type = "".
       // setFilterMapState(temp)
       
-      alert('here')
+      // alert('here')
       if (inputVariable == "") {
         const temp = { ...filterMapState }
         temp[columnName].filterType = ""
@@ -615,7 +619,7 @@ const Country = () => {
     <div className='h-screen w-full font-medium'>
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={backDropLoading}
+        open={pageLoading}
         onClick={() => { }}
       >
 
@@ -732,9 +736,7 @@ const Country = () => {
           <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
 
 
-            {pageLoading && <div className=''>
-              <LinearProgress />
-            </div>}
+            
             {!pageLoading && existingCountries && existingCountries.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
               <h1 className='ml-10'>No Records To Show</h1>
             </div>}
@@ -806,7 +808,7 @@ const Country = () => {
           <div className="flex text-sm">
             <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
           </div>
-          {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5'>
+          {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5' ref={menuRef}>
 
             <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
@@ -842,17 +844,21 @@ const Country = () => {
         className='flex justify-center items-center'
       >
         <>
-          <Draggable>
+          <Draggable handle='div.move'>
             <div className='flex justify-center '>
               <div className="w-[778px]  h-auto bg-white rounded-lg ">
-                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                <div className='move cursor-move'>
+
+                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                   <div className="mr-[270px] ml-[270px]">
                     <div className="text-[20px]">New Country</div>
                   </div>
-                  <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                  <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                     <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                   </div>
                 </div>
+                </div>
+
                 <form onSubmit={handleSubmit} className='mb-3 space-y-16'>
                   <div className="h-auto w-full mt-2  ">
                     <div className="flex gap-[48px] justify-center items-center">

@@ -427,7 +427,7 @@ const Service = () => {
                 })
                 .then(result => {
                     if (type == "excel") {
-                        FileSaver.saveAs(result, 'ServiceData.xls');
+                        FileSaver.saveAs(result, 'ServiceData.xlsx');
                     } else if (type == "pdf") {
                         FileSaver.saveAs(result, 'ServiceData.pdf');
                     }

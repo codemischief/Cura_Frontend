@@ -119,11 +119,12 @@ const Locality = () => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
+        // console.log(result.data);
 
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
+        // if (Array.isArray(result.data)) {
+        //     setAllCountry(result.data);
+        // }
     }
     const fetchStateData = async (id) => {
         console.log(id);
@@ -397,6 +398,7 @@ const Locality = () => {
     }
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
+        setPageLoading(true)
         setBackDropLoading(true)
         const data = {
             "user_id": 1234,
@@ -440,7 +442,7 @@ const Locality = () => {
             })
             .then(result => {
                 if(type == "excel") {
-                    FileSaver.saveAs(result, 'localityData.xls');
+                    FileSaver.saveAs(result, 'localityData.xlsx');
                 }else if(type == "pdf") {
                     FileSaver.saveAs(result, 'localityData.pdf');
                 }
@@ -453,7 +455,7 @@ const Locality = () => {
             
             setTimeout(() => {
                 setBackDropLoading(false)
-
+                setPageLoading(false)
             },1000) 
         }
     }
@@ -717,7 +719,7 @@ const Locality = () => {
         <div className='h-screen font-medium'>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={backDropLoading}
+                open={pageLoading}
                 onClick={() => {}}
             >
 
@@ -904,7 +906,7 @@ const Locality = () => {
 
                     {/* main table */}
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
-                        {pageLoading && <LinearProgress />}
+                        {/* {pageLoading && <LinearProgress />} */}
                         {!pageLoading && existingLocalities && existingLocalities.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
@@ -1055,7 +1057,9 @@ const Locality = () => {
                                                     >
                                                         {/* <option value="none" hidden={true}>Select a Country</option> */}
                                                         {allCountry && allCountry.map(item => {
-                                                            return <option value={item[0]}> {item[1]}</option>
+                                                            return <option value={item.id}>
+                                                                 {item.name}
+                                                                </option>
                                                             // if (item[1] == 5) {
                                                             //     return <option value={item[0]} selected>
                                                             //         {item[1]}
@@ -1085,7 +1089,7 @@ const Locality = () => {
                                                             setFormValues(existing)
                                                         }}
                                                     >
-                                                        <option value="" > Select A State</option>
+                                                        <option value="" hidden> Select A State</option>
                                                         {allState && allState.map(item => {
                                                             return <option value={item[0]} >
                                                                 {item[0]}
