@@ -7,10 +7,13 @@ import Draggable from 'react-draggable'
 const EditLocalityModal = (props) => {
     // const [showSuccess,setShowSuccess] = useState(false);
     const [inputField, setInputField] = useState(props.item.locality);
-
+    const [formErrors,setFormErrors] = useState("");
     const handleUpdate = async () => {
         if (inputField == "") {
+            setFormErrors("Enter Locality Name")
             return;
+        }else {
+            setFormErrors("")
         }
         const data = {
             "user_id": 1234,
@@ -33,42 +36,46 @@ const EditLocalityModal = (props) => {
                 fullWidth={true}
                 maxWidth={'md'} >
                 <>
-                    <Draggable>
-                        <div className='flex justify-center mt-[150px]'>
+                    <Draggable handle='div.move'>
+                        <div className='flex justify-center mt-[175px]'>
                             <div className="w-[700px]  h-auto bg-white rounded-lg mb-3">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[200px] ml-[200px]">
-                                        <div className="text-[16px]">Update Locality Name</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={() => {handleClose()}}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                                    </div>
+                                <div className='move cursor-move'>
+                                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
+                                            <div className="mr-[200px] ml-[200px]">
+                                                <div className="text-[16px]">Update Locality Name</div>
+                                            </div>
+                                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                                <button  onClick={() => {handleClose()}}>
+                                                    <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                                </button>
+                                            </div>
+                                        </div>
                                 </div>
-
                                 <div className="h-auto w-full mt-[5px] ">
                                     <div className="flex gap-[48px] justify-center items-center">
                                         <div className=" space-y-[12px] py-[20px] px-[10px]">
                                             <div className="mb-4">
                                                 <div className="text-[14px]">Country Name<label className="text-red-500">*</label></div>
-                                                <div className="w-[230px] hy-[10px]  rounded-sm px-2 py-[2px] text-[14px]">
+                                                <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px] bg-[#F5F5F5]">
                                                     {props.item.country}
                                                 </div>
                                             </div>
                                             <div className="mb-4">
                                                 <div className="text-[14px]">State Name<label className="text-red-500">*</label></div>
-                                                <div className="w-[230px] hy-[10px]  rounded-sm px-2 py-[2px] text-[14px]">
+                                                <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px] bg-[#F5F5F5]">
                                                     {props.item.state}
                                                 </div>
                                             </div>
                                             <div className="mb-4">
                                                 <div className="text-[14px]">City Name<label className="text-red-500">*</label></div>
-                                                <div className="w-[230px] hy-[10px]  rounded-sm px-2 py-[2px] text-[14px]">
+                                                <div className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px] bg-[#F5F5F5]">
                                                     {props.item.city}
                                                 </div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={inputField} onChange={(e) => setInputField(e.target.value)} />
+                                                <div className="text-[9px] text-[#CD0000] ">{formErrors}</div>
                                             </div>
 
                                         </div>

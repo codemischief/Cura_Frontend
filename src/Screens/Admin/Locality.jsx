@@ -390,9 +390,13 @@ const Locality = () => {
     }
     const initials = () => {
         setFormValues(initialValues);
+        fetchStateData(5)
+        fetchCityData("Maharashtra")
         setFormErrors({});
     }
+    const [backDropLoading,setBackDropLoading] = useState(false)
     const handleExcelDownload = async () => {
+        setBackDropLoading(true)
         const data = {
             "user_id": 1234,
             "rows": ["country", "state", "city", "locality", "id"],
@@ -431,13 +435,48 @@ const Locality = () => {
             const filename = segments[segments.length - 1];
 
             console.log(filename); 
+
             const d = {
                 "filename" : filename,
                 "user_id" : 1234
             }
-            console.log(d)
-            const downloadCall = await APIService.download(d)
-            console.log(downloadCall)
+            fetch(`http://20.197.13.140:8000/download/${filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                console.log(response)
+                // FileSaver.saveAs(response.blob())
+                return response.blob();
+            })
+            .then(result => {
+                FileSaver.saveAs(result, 'localityData.xlsx');
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            // let response = await fetch(`http://20.197.13.140:8000/download/${filename}`, {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(d)
+            //   });
+            setTimeout(() => {
+                setBackDropLoading(false)
+
+            },1000)
+            console.log(response)
+            // console.log(d)
+            // const downloadCall = await APIService.download(d)
+            // console.log(downloadCall)
             // APIService.download(d).then((res) => {
             //     FileSaver.saveAs(res.blob(),"demo.xlsx")
             // })
@@ -709,8 +748,18 @@ const Locality = () => {
         }
     }
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={backDropLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             <Navbar />
+
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} showCancel={openCancelModal} />}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Locality added successfully" />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Locality added." />}
@@ -745,6 +794,7 @@ const Locality = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDownCapture={handleKeyDown}
                             />
+                            
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
                                 <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
@@ -997,9 +1047,10 @@ const Locality = () => {
                 className='flex justify-center items-center rounded-lg'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle="div.move" >
                         <div className='flex justify-center bg-white rounded-lg'>
                             <div className=" w-[700px] h-auto bg-white rounded-lg ">
+                                <div className='move cursor-move'>
                                 <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                     <div className="mr-[250px] ml-[250px]">
                                         <div className="text-[16px]">Add New Locality</div>
@@ -1007,6 +1058,8 @@ const Locality = () => {
                                     <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                                         <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
+                                {/* </lol> */}
+                                </div>
                                 </div>
                                 <div className="space-y-10 mb-3">
                                     <div className="h-auto w-full py-4 ">
