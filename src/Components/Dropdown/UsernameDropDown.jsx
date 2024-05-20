@@ -128,4 +128,4 @@ const DropDown = ({ initialValue,value, options, leftLabel, rightLabel ,leftAttr
   );
 };
 
-export default DropDown;
+export default UsernameDrop;
