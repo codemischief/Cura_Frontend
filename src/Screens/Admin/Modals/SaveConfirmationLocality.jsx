@@ -16,7 +16,7 @@ const SaveConfirmationLocality = (props) => {
                     <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
                         <div className="h-[40px] flex justify-center items-center">
                             <div className="w-[150px] mt-10 w-full text-center">
-                                <div className="text-[24px]">Save Locality</div>
+                                <div className="text-[24px]">Add Locality</div>
                                 <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
                             </div>
 
