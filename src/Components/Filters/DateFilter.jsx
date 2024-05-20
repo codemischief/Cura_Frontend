@@ -21,7 +21,7 @@ const DateFilter = ({ inputVariable, setInputVariable, handleFilter, columnName,
                     }
 
                 }} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
+                <div className={`${filterType == "equalTo" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >EqualTo</h1>
                 </div>
             </button>
@@ -34,7 +34,7 @@ const DateFilter = ({ inputVariable, setInputVariable, handleFilter, columnName,
                     }
 
                 }} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
+                <div className={`${filterType == "notEqualTo" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >NotEqualTo</h1>
                 </div>
             </button>
@@ -45,8 +45,7 @@ const DateFilter = ({ inputVariable, setInputVariable, handleFilter, columnName,
                     handleFilter(inputVariable, setInputVariable, 'noFilter', columnName)
                 }
             }} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
-
+                <div className={`${filterType == "greaterThan" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >GreaterThan</h1>
                 </div>
             </button>
@@ -57,7 +56,7 @@ const DateFilter = ({ inputVariable, setInputVariable, handleFilter, columnName,
                     handleFilter(inputVariable, setInputVariable, 'noFilter', columnName)
                 }
             }} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start '>
+                <div className={`${filterType == "lessThan" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >LessThan</h1>
                 </div>
             </button>
@@ -68,7 +67,7 @@ const DateFilter = ({ inputVariable, setInputVariable, handleFilter, columnName,
                     handleFilter(inputVariable, setInputVariable, 'noFilter', columnName)
                 }
             }} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
+                <div className={`${filterType == "greaterThanOrEqualTo" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >GreaterThanOrEqualTo</h1>
                 </div>
             </button>
@@ -79,17 +78,17 @@ const DateFilter = ({ inputVariable, setInputVariable, handleFilter, columnName,
                     handleFilter(inputVariable, setInputVariable, 'noFilter', columnName)
                 }
             }} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
+                <div className={`${filterType == "lessThanOrEqualTo" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >LessThanOrEqualTo</h1>
                 </div>
             </button>
             <button onClick={() => handleFilter(inputVariable, setInputVariable, 'isNull', columnName)} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
+                <div className={`${filterType == "isNull" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >isNull</h1>
                 </div>
             </button>
             <button onClick={() => handleFilter(inputVariable, setInputVariable, 'isNotNull', columnName, inputVariable, setInputVariable)} className='w-[150px] p-1'>
-                <div className='hover:bg-[#dae7ff] p-1 rounded-sm cursor-pointer text-start'>
+                <div className={`${filterType == "isNotNull" ? "bg-[#dae7ff]" : "hover:bg-[#dae7ff]"} p-1 rounded-sm cursor-pointer text-start`}>
                     <h1 >isNotNull</h1>
                 </div>
             </button>

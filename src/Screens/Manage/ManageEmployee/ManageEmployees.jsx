@@ -30,6 +30,8 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import DropDown from '../../../Components/Dropdown/Dropdown';
+import { formatDate } from "../../../utils/formatDate";
+import ActiveFilter from "../../../assets/active_filter.png"
 
 const ManageEmployees = () => {
 
@@ -1089,28 +1091,27 @@ const ManageEmployees = () => {
 
                 {/* filter component */}
                 <div className='h-12 w-full bg-white'>
-                    <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[90%] flex">
+                    <div className='w-full h-12 bg-white flex justify-between items-center'>
+                        <div className="w-[90%] flex items-center">
                             <div className='w-[3%] flex'>
-                                <div className='p-3'>
+                                <div className='px-3'>
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[10%]  p-3'>
+                            <div className='w-[10%]  px-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeNameInput} onChange={(e) => setEmployeeNameInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, employeeNameInput,
                                             setEmployeeNameInput,
                                             'contains',
                                             'employeename')}
                                     />
-                                    <button className='w-[32%] px-1 py-2' onClick={() => { setEmployeeNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.employeename.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setEmployeeNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setEmployeeNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {employeeNameFilter && <CharacterFilter inputVariable={employeeNameInput} setInputVariable={setEmployeeNameInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef} />}
-
+                                {employeeNameFilter && <CharacterFilter inputVariable={employeeNameInput} setInputVariable={setEmployeeNameInput} handleFilter={newHandleFilter} filterColumn='employeename' menuRef={menuRef} filterType={filterMapState.employeename.filterType} />}
                             </div>
 
-                            <div className='w-[11%]  p-3'>
+                            <div className='w-[11%]  px-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={employeeIdInput} onChange={(e) => setEmployeeIdInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, employeeIdInput,
@@ -1118,38 +1119,37 @@ const ManageEmployees = () => {
                                             'contains',
                                             'employeeid')}
                                     />
-                                    <button className='W-[30%] px-1 py-2' onClick={() => { setEmployeeIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.employeeid.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setEmployeeIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setEmployeeIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {employeeIdFilter && <CharacterFilter inputVariable={employeeIdInput} setInputVariable={setEmployeeIdInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {employeeIdFilter && <CharacterFilter inputVariable={employeeIdInput} setInputVariable={setEmployeeIdInput} filterColumn='employeeid' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.employeeid.filterType} />}
                             </div>
-
-                            <div className='w-[10%]  p-3'>
+                            <div className='w-[10%]  px-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[62%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={phoneFilterInput} onChange={(e) => setPhoneFilterInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, phoneFilterInput,
                                             setPhoneFilterInput,
                                             'contains',
                                             'phoneno')}
                                     />
-                                    <button className='w-[38%] px-1 py-2' onClick={() => { setPhoneFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.phoneno.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setPhoneFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setPhoneFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter} />}
+                                {phoneFilter && <CharacterFilter inputVariable={phoneFilterInput} setInputVariable={setPhoneFilterInput} filterColumn="phoneno" menuRef={menuRef} handleFilter={newHandleFilter} filterType={filterMapState.phoneno.filterType} />}
                             </div>
 
-                            <div className='w-[10%] p-3'>
+                            <div className='w-[10%] px-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[66%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)}
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={emailInput} onChange={(e) => setEmailInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, emailInput,
                                             setEmailInput,
                                             'contains',
                                             'email')}
                                     />
-                                    <button className='w-[34%] px-1 py-2' onClick={() => { setEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.email.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setEmailFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setEmailFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {emailFilter && <CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput} filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter} />}
+                                {emailFilter && <CharacterFilter inputVariable={emailInput} setInputVariable={setEmailInput} filterColumn='email' menuRef={menuRef} handleFilter={newHandleFilter} filterType={filterMapState.email.filterType} />}
                             </div>
 
-                            <div className='w-[9%]  p-3'>
+                            <div className='w-[9%]  px-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={roleInput} onChange={(e) => setRoleInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, roleInput,
@@ -1157,12 +1157,12 @@ const ManageEmployees = () => {
                                             'contains',
                                             'role')}
                                     />
-                                    <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setRoleFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.role.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {roleFilter && <CharacterFilter inputVariable={roleInput} setInputVariable={setRoleInput} filterColumn='role' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.role.filterType} />}
                             </div>
 
-                            <div className='w-[10%] p-3'>
+                            <div className='w-[10%] px-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={pannoInput} onChange={(e) => setPannoInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, pannoInput,
@@ -1170,62 +1170,54 @@ const ManageEmployees = () => {
                                             'contains',
                                             'panno')}
                                     />
-                                    <button className='w-[30%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setPannoFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.panno.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setPannoFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setPannoFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button> }
                                 </div>
-                                {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} />}
+                                {pannoFilter && <CharacterFilter inputVariable={pannoInput} setInputVariable={setPannoInput} menuRef={menuRef} filterColumn='panno' handleFilter={newHandleFilter} filterType={filterMapState.panno.filterType} />}
                             </div>
 
-                            <div className='w-[12%] p-3'>
+                            <div className='w-[12%] px-3'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type="date" value={dateOfJoiningInput} onChange={(e) => setDateOfJoiningInput(e.target.value)}
-
                                         onKeyDown={(event) => handleEnterToFilter(event, dateOfJoiningInput,
-                                            setDateOfJoiningInput
-                                            ,
+                                            setDateOfJoiningInput,
                                             'equalTo',
                                             'dateofjoining')}
                                     />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => { setDateOfJoiningFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.dateofjoining.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setDateOfJoiningFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setDateOfJoiningFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setDateOfJoiningInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {dateOfJoiningFilter && <DateFilter inputVariable={dateOfJoiningInput} setInputVariable={setDateOfJoiningInput} columnName='dateofjoining' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.dateofjoining.filterType} />}
                             </div>
 
-                            <div className='w-[15%]  p-3 '>
+                            <div className='w-[15%]  px-3 ml-[-2px]'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[80%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='date' value={ldowInput} onChange={(e) => setLdowInput(e.target.value)}
                                         onKeyDown={(event) => handleEnterToFilter(event, ldowInput,
-                                            setLdowInput
-                                            ,
+                                            setLdowInput,
                                             'equalTo',
                                             'lastdateofworking')}
-
                                     />
-                                    <button className='w-[20%] px-1 py-2' onClick={() => { setLdowFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.lastdateofworking.filterType == "" ?  <button className='w-[20%] px-1 py-2' onClick={() => setLdowFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[20%] px-1 py-2' onClick={() => setLdowFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef} />}
+                                {ldowFilter && <DateFilter inputVariable={ldowInput} setInputVariable={setLdowInput} handleFilter={newHandleFilter} columnName='lastdateofworking' menuRef={menuRef} filterType={filterMapState.lastdateofworking.filterType} />}
                             </div>
-                            <div className='w-[10%]  p-3 '>
+                            <div className='w-[10%]  px-3 ml-[-1px]'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" type='text' value={statusInput} onChange={(e) => setStatusInput(e.target.value)}
-
-
                                         onKeyDown={(event) => handleEnterToFilter(event, statusInput,
                                             setStatusInput
                                             ,
                                             'equalTo',
                                             'status')}
-
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.status.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {statusFilter && <NumericFilter inputVariable={statusInput} setInputVariable={setStatusInput} columnName='status' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
-                        <div className="w-[10%] flex">
-                            <div className='w-[65%] p-3'>
+                        <div className="w-[10%] flex items-center">
+                            <div className='w-[65%] px-3 ml-[-1px]'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idInput} onChange={(e) => setIdInput(e.target.value)}
-
                                         onKeyDown={(event) => handleEnterToFilter(event, idInput,
                                             setIdInput
                                             ,
@@ -1233,9 +1225,9 @@ const ManageEmployees = () => {
                                             'id')}
 
                                     />
-                                    <button className='px-1 py-2 w-[35%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.id.filterType == "" ?  <button className='w-[35%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[35%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idInput} setInputVariable={setIdInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
                             <div className='w-[35%]  flex'>
@@ -1249,7 +1241,7 @@ const ManageEmployees = () => {
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-xs'>
                     <div className='w-full h-12 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[90%] flex">
+                        <div className="w-[90%] flex items-center">
                             <div className='w-[3%] flex'>
                                 <div className='p-3'>
                                     <p>Sr.</p>
@@ -1301,7 +1293,7 @@ const ManageEmployees = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[10%] flex">
+                        <div className="w-[10%] flex items-center">
                             <div className='w-1/2  flex'>
                                 <div className='p-3'>
                                     <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
@@ -1363,12 +1355,12 @@ const ManageEmployees = () => {
                                     </div>
                                     <div className='w-[12%]  flex overflow-hidden'>
                                         <div className='p-3 ml-1'>
-                                            <p>{item.dateofjoining ? item.dateofjoining.split('T')[0] : ""}</p>
+                                            <p>{item.dateofjoining ? formatDate(item.dateofjoining.split('T')[0]) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[15%]  flex  overflow-hidden'>
                                         <div className='p-3 ml-1'>
-                                            <p>{item.lastdateofworking ? item.lastdateofworking.split('T')[0] : ""}</p>
+                                            <p>{item.lastdateofworking ? formatDate(item.lastdateofworking.split('T')[0]) : ""}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex overflow-hidden'>

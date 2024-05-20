@@ -33,6 +33,7 @@ import EditUser from './EditUser';
 import Draggable from 'react-draggable';
 import eyeIcon from "../../../assets/eye.jpg";
 import bcrypt from 'bcryptjs';
+import ActiveFilter from "../../../assets/active_filter.png"
 
 const ManageUser = () => {
 
@@ -1057,16 +1058,14 @@ const ManageUser = () => {
                             <div className='w-[24%]  px-3 py-2.5'>
                                 <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={nameFilterInput} onChange={(e) => setNameFilterInput(e.target.value)}
-
                                         onKeyDown={(event) => handleEnterToFilter(event, nameFilterInput,
                                             setNameFilterInput,
                                             'contains',
                                             'fullname')}
-
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.fullname.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {nameFilter && <CharacterFilter inputVariable={nameFilterInput} setInputVariable={setNameFilterInput} handleFilter={newHandleFilter} filterColumn='fullname' menuRef={menuRef} />}
+                                {nameFilter && <CharacterFilter inputVariable={nameFilterInput} setInputVariable={setNameFilterInput} handleFilter={newHandleFilter} filterColumn='fullname' menuRef={menuRef}  filterType={filterMapState.fullname.filterType} />}
                             </div>
 
                             <div className='w-[30%]  px-3 py-2.5 mx-[-2px]'>
@@ -1079,9 +1078,9 @@ const ManageUser = () => {
                                             'username')}
 
                                     />
-                                    <button className='W-[25%] px-1 py-2' onClick={() => { setUsernameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.username.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setUsernameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setUsernameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {usernameFilter && <CharacterFilter inputVariable={usernameFilterInput} setInputVariable={setUsernameFilterInput} filterColumn='username' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {usernameFilter && <CharacterFilter inputVariable={usernameFilterInput} setInputVariable={setUsernameFilterInput} filterColumn='username' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.username.filterType} />}
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5 '>
@@ -1096,9 +1095,9 @@ const ManageUser = () => {
 
 
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setRoleFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.role_name.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setRoleFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {roleFilter && <CharacterFilter inputVariable={roleFilterInput} setInputVariable={setRoleFilterInput} filterColumn='role_name' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {roleFilter && <CharacterFilter inputVariable={roleFilterInput} setInputVariable={setRoleFilterInput} filterColumn='role_name' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.role_name.filterType} />}
                             </div>
 
                             <div className='w-[20%]  px-3 py-2.5'>
@@ -1111,25 +1110,23 @@ const ManageUser = () => {
                                             'status')}
 
                                     />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.status.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} filterColumn='status' handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.status.filterType} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
                             <div className='w-[75%] px-3 py-2.5 mx-[-3px]'>
                                 <div className="w-[30%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
-
                                         onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
                                             setIdFilterInput,
                                             'equalTo',
                                             'id')}
-
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef}  filterType={filterMapState.id.filterType} />}
                             </div>
 
                             <div className='w-[35%]  flex'>

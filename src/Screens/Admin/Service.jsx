@@ -750,11 +750,10 @@ const Service = () => {
                                             setLobNameFilterInput,
                                             'contains',
                                             'lob')}
-
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setLobNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.lob.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setLobNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setLobNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {lobNameFilter && <CharacterFilter inputVariable={lobNameFilterInput} setInputVariable={setLobNameFilterInput} handleFilter={newHandleFilter} filterColumn='lob' menuRef={menuRef} />}
+                                {lobNameFilter && <CharacterFilter inputVariable={lobNameFilterInput} setInputVariable={setLobNameFilterInput} handleFilter={newHandleFilter} filterColumn='lob' menuRef={menuRef} filterType={filterMapState.lob.filterType} />}
                             </div>
 
                             <div className='w-[47%]  px-3 py-2.5 mx-[-2px]'>
@@ -765,11 +764,10 @@ const Service = () => {
                                             setServiceFilterInput,
                                             'contains',
                                             'service')}
-
                                     />
-                                    <button className='W-[25%] px-1 py-2' onClick={() => { setServiceFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.service.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} filterColumn='service' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} filterColumn='service' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.service.filterType} />}
                             </div>
                         </div>
                         <div className="w-[30%] flex">
@@ -783,9 +781,9 @@ const Service = () => {
                                             'id')}
 
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
 
                             <div className='w-[35%]  flex'>
