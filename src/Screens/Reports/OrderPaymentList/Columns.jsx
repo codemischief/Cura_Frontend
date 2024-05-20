@@ -108,23 +108,27 @@ export default function connectionDataColumn(onQuery) {
       filterComponent: TextFilterField,
      
     },
-    // {
-    //   title: "Vendor Name",
-    //   field: "vendorname",
-    //   sorting: true,
-    //   cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "200px"},
-    //   type: "numeric",
-    //   filterComponent: NumberFilterField,
-     
-    //   sorting: true,
-    // },
+    {
+      title: "Vendor Name",
+      field: "vendorname",
+      sorting: true,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "200px"},
+      filterComponent: TextFilterField,
+      sorting: true,
+    },
     {
       title: "Order Id",
       field: "orderid",
       sorting: true,
       cellStyle: { ...cellStyleCommon, justifyContent: "center",minWidth: "150px" },
-      type: "numeric",
       filterComponent: NumberFilterField,
+    },
+    {
+      title: "Order Description",
+      field: "orderdescription",
+      sorting: true,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center",minWidth: "150px" },
+      filterComponent: TextFilterField,
     },
     {
       title: "Service Id",

@@ -105,8 +105,8 @@ export default function connectionDataColumn(onQuery) {
     {
       title: "Vendor Name",
       field: "vendorname",
-      sorting: false,
-      // filterComponent: TextFilterField,
+      sorting: true,
+      filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
