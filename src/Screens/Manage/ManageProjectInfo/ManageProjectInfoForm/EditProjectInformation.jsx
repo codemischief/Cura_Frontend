@@ -177,6 +177,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                                 const temp = existing.project_info;
                                 temp.state = ""
                                 temp.city = null;
+                                temp.country = e.target.value
                                 existing.project_info = temp;
                                 setFormValues(existing)
                                 // fetchStateData(res);
