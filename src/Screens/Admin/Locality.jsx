@@ -398,6 +398,7 @@ const Locality = () => {
     }
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
+        setDownloadModal(false)
         setPageLoading(true)
         setBackDropLoading(true)
         const data = {
