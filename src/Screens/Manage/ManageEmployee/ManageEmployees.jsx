@@ -673,7 +673,7 @@ const ManageEmployees = () => {
                 "dateofjoining": "Date of Joining",
                 "lastdateofworking": "Last Date of Working",
                 "status": "Status"
-
+                "id" : "ID"
             }
         };
         const response = await APIService.getEmployees(data)
