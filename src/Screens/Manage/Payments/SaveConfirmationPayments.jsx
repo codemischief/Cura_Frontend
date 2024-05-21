@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Modal } from "@mui/material"
 // import Cross from "../../../assets/cross.png"
 import Cross from "../../../assets/cross.png"
 import Draggable from 'react-draggable'
+import { usernameByUserId } from '../../../utils/UsernameByUserId'
 const SaveConfirmationPayments = (props) => {
     const close = () =>{
         props.handleClose();
         props.showCancel();
         props.setDefault();
-    }
+    } 
+    useEffect(() => {
+        
+    })
     return (
         <Modal open={true} >
             <>
@@ -25,11 +29,11 @@ const SaveConfirmationPayments = (props) => {
                             </div>
                         </div>
                         <div className="mt-8 w-full text-center">
-                            <div className="text-[14px]">Payment by : {props.currPaymentby}</div>
-                            <div className="text-[14px]">Payment to: {props.currPaymentto}</div>
+                            <div className="text-[14px]">Payment to : {props.currPaymentto}</div>
+                            <div className="text-[14px]">Payment by: {props.currPaymentby} </div>
                         </div>
                         <div className="mt-4 w-full text-center">
-                            <p className="text-[14px]">Are you sure you want to Add new Payment</p>
+                            <p className="text-[14px]">Are you sure you want to Add new Payment ?</p>
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
                             <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={props.addPayment}>Add</button>

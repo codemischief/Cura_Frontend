@@ -305,6 +305,7 @@ const ManageEmployees = () => {
                 setLdowFilter(false)
                 setStatusFilter(false)
                 setIdFilter(false);
+                setDownloadModal(false)
             }
         }
 
@@ -649,6 +650,7 @@ const ManageEmployees = () => {
     const [backDropLoading,setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
         // setBackDropLoading(true)
+        setDownloadModal(false)
         setPageLoading(true)
         const data = {
             "user_id": 1234,
@@ -1501,7 +1503,7 @@ const ManageEmployees = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5' ref={menuRef}>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button onClick={() => handleDownload("pdf")}>

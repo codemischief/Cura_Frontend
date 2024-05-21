@@ -33,6 +33,7 @@ import PaymentDropDown from '../../../Components/Dropdown/PaymentDropDown.jsx';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import ActiveFilter from "../../../assets/active_filter.png"
 import {formatDate} from "../../../utils/formatDate.js"
+import { usernameByUserId } from '../../../utils/UsernameByUserId.js';
 const Payments = () => {
     const menuRef = useRef();
     const [totalItems, setTotalItems] = useState(0);
@@ -66,11 +67,7 @@ const Payments = () => {
         const response = await APIService.getUsers(data)
         const result = (await response.json());
 
-        // console.log(result.data);
-        //    console.log('hey')
-        // setFormValues((existing) => {
-        //     return { ...existing, paymentto: result.data[0].id, paymentby: result.data[0].id }
-        // })
+        
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -316,13 +313,38 @@ const Payments = () => {
         professiontax: null,
         deduction: null
     };
-    const handleAddPayment = () => {
+    const [name1,setName1] = useState("")
+    const [name2,setName2] = useState("")
+    const handleAddPayment = async () => {
         console.log(formValues)
+        
+            allUsername.map((item) => {
+                if(item.id == formValues.paymentto) {
+                    console.log('here')
+                    setName1((prev) => item.name)
+                }
+            })
+        
+       
+            allUsername.map((item) => {
+                if(item.id == formValues.paymentby) {
+                    console.log('here')
+                    setName2((prev) => item.name)
+                }
+            })
+        
+        console.log(name1)
+        console.log(name2)
+
         if (!validate()) {
             return;
         }
+        setPageLoading(true)
         setIsPaymentsDialogue(false)
-        setOpenAddConfirmation(true)
+        setTimeout(() => {
+           setPageLoading(false)
+           setOpenAddConfirmation(true)
+        },1000)
     }
     const addPayment = async () => {
 
@@ -1067,7 +1089,7 @@ const Payments = () => {
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Contractual Payment Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Changes Saved Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="SuccessFully Deleted Payment" />}
-            {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPaymentby={formValues.paymentby} currPaymentto={formValues.paymentto} addPayment={addPayment} showCancel={openAddCancelModal} setDefault={initials} />}
+            {openAddConfirmation && <SaveConfirmationPayments handleClose={() => setOpenAddConfirmation(false)} currPaymentby={name2} currPaymentto={name1} addPayment={addPayment} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {deleteConfirmationModal && <DeletePaymentModal handleClose={() => setDeleteConfirmationModal(false)} item={currPaymentId} handleDelete={deletePayments} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, No Contractual payment created" />}
