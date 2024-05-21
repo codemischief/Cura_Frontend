@@ -1666,6 +1666,9 @@ const ManageClientProperty = () => {
 
                     </div>
                     {/* <h1>{existingClientProperty.length}</h1> */}
+                    {pageLoading && <div className=''>
+                            <LinearProgress />
+                        </div>}
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
                             return <div className='w-full h-11 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import DropDown from "../../../../Components/Dropdown/Dropdown";
-const EditProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,clientNameOption,formErrors}) => {
+const EditProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, clientNameOption, formErrors }) => {
   // console.log(levelOfFurnishing)
   console.log(clientNameOption);
   console.log(formValues)
@@ -14,104 +14,106 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
   const [society, setSociety] = useState([]);
   const [status, setStatus] = useState([]);
   const [electricity, setElectricity] = useState([]);
-  const [existingSociety,setExistingSociety] = useState(initialSociety);
-  const [clientName,setClientName] = useState(clientData);
+  const [existingSociety, setExistingSociety] = useState(initialSociety);
+  const [clientName, setClientName] = useState(clientData);
   const dueDate = [];
-  for(var i =1;i<=31;i++) {
+  for (var i = 1; i <= 31; i++) {
     dueDate.push({
-      id : i - 1,
-      date : i
+      id: i - 1,
+      date: i
     })
   }
 
   const handleChange = (e) => {
-    const {name,value} = e.target;
-     setFormValues({...formValues,client_property : {
-         ...formValues.client_property,
-         [name] : value
-     }})
-   }
-   const [selectedOption,setSelectedOption] = useState(clientNameOption);
-   const [query,setQuery] = useState('')
-   const handleClientNameChange = (e) => {
-    
-       console.log('hey')
-       console.log(e)
-       const existing = {...formValues}
-       const temp = {...existing.client_property}
-       temp.tenantof = e.value
-       existing.client_property = temp;
-       setFormValues(existing)
-       setSelectedOption(e)
-   }
-   const loadOptions = async (e) => {
-      console.log(e)
-      if(e.length < 3) return ;
-      const data = {
-        "user_id" : 1234,
-        "pg_no" : 0,
-        "pg_size" : 0,
-        "search_key" : e
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues, client_property: {
+        ...formValues.client_property,
+        [name]: value
       }
-      const response = await APIService.getClientAdminPaginated(data)
-      const res = await response.json()
-      const results = res.data.map(e => {
-        return {
-          label : e[1],
-          value : e[0]
-        }
-      })
-      if(results === 'No Result Found') {
-        return []
+    })
+  }
+  const [selectedOption, setSelectedOption] = useState(clientNameOption);
+  const [query, setQuery] = useState('')
+  const handleClientNameChange = (e) => {
+
+    console.log('hey')
+    console.log(e)
+    const existing = { ...formValues }
+    const temp = { ...existing.client_property }
+    temp.tenantof = e.value
+    existing.client_property = temp;
+    setFormValues(existing)
+    setSelectedOption(e)
+  }
+  const loadOptions = async (e) => {
+    console.log(e)
+    if (e.length < 3) return;
+    const data = {
+      "user_id": 1234,
+      "pg_no": 0,
+      "pg_size": 0,
+      "search_key": e
+    }
+    const response = await APIService.getClientAdminPaginated(data)
+    const res = await response.json()
+    const results = res.data.map(e => {
+      return {
+        label: e[1],
+        value: e[0]
       }
-      return results
-   }
+    })
+    if (results === 'No Result Found') {
+      return []
+    }
+    return results
+  }
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3">
         <div className=" space-y-2 ">
           <div className="">
             <div className="text-[13px]">
-                Client Name <label className="text-red-500">*</label>
+              Client Name <label className="text-red-500">*</label>
             </div>
             <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
+              onChange={handleClientNameChange}
+              value={selectedOption}
+              loadOptions={loadOptions}
+              cacheOptions
+              defaultOptions
+              onInputChange={(value) => setQuery(value)}
 
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width : 230,
-                                                    fontSize: 10,
-                                                    // padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
-                                                }),
-                                                menu: (provided, state) => ({
-                                                    ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
-                                                  }),
-                                            }}
-                                        />
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  minHeight: 23,
+                  lineHeight: '0.8',
+                  height: 4,
+                  width: 230,
+                  fontSize: 10,
+                  // padding: '1px'
+                }),
+                // indicatorSeparator: (provided, state) => ({
+                //   ...provided,
+                //   lineHeight : '0.5',
+                //   height : 2,
+                //   fontSize : 12 // hide the indicator separator
+                // }),
+                dropdownIndicator: (provided, state) => ({
+                  ...provided,
+                  padding: '1px', // adjust padding for the dropdown indicator
+                }),
+                options: (provided, state) => ({
+                  ...provided,
+                  fontSize: 10// adjust padding for the dropdown indicator
+                }),
+                menu: (provided, state) => ({
+                  ...provided,
+                  width: 230, // Adjust the width of the dropdown menu
+                }),
+              }}
+            />
             {/* <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
@@ -204,12 +206,12 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
 
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
         </div>
         <div className="space-y-2">
           <div className="">
@@ -270,52 +272,52 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
           </div>
           <div className="space-y-2">
-          <div className="">
-            <div className="text-[13px]">Gas Connection Details </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="gasconnectiondetails"
-              value={formValues.client_property.gasconnectiondetails}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div>
-          <div className="">
-            <div className="text-[13px]">
-              Number Of Parking
+            <div className="">
+              <div className="text-[13px]">Gas Connection Details </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="gasconnectiondetails"
+                value={formValues.client_property.gasconnectiondetails}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
             </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="numberofparkings"
-              value={formValues.client_property.numberofparkings}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="">
+              <div className="text-[13px]">
+                Number Of Parking
+              </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="numberofparkings"
+                value={formValues.client_property.numberofparkings}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            </div>
+            <div className="">
+              <div className="text-[13px]">Electricity Billing Unit </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="electricitybillingunit"
+                value={formValues.client_property.electricitybillingunit}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            </div>
+
           </div>
-          <div className="">
-            <div className="text-[13px]">Electricity Billing Unit </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="electricitybillingunit"
-              value={formValues.client_property.electricitybillingunit}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div>
-          
-        </div>
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
         </div>
         <div className="space-y-2">
-           <div className="">
+          <div className="">
             <div className="text-[13px]">
               Property type <label className="text-red-500">*</label>
             </div>
@@ -370,7 +372,7 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
-          
+
           <div className="">
             <div className="text-[13px]">Layout Details (Sch A)</div>
             <input
@@ -393,10 +395,10 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
-          
+
         </div>
         <div className="space-y-2">
-        <div className="">
+          <div className="">
             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
@@ -434,12 +436,12 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
               onChange={handleChange}
             >
               <option>Select Date </option>
-               {dueDate &&
+              {dueDate &&
                 dueDate.map((item) => (
                   <option key={item.id} value={item.date}>
                     {item.date}
                   </option>
-                ))} 
+                ))}
             </select>
             <div className="text-[10px] text-[#CD0000] ">{formErrors.electricitybillingduedate}</div>
           </div>
@@ -465,40 +467,40 @@ const EditProjectInformation = ({clientData,initialSociety,initialStates,initial
               value={formValues.client_property.internalfurnitureandfittings}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div> 
+          </div>
 
-          
+
         </div>
       </div>
       <div className="mt-2 flex justify-center items-center gap-2">
         <div className="flex justify-center items-center text-[13px] font-semibold"><input
-                        type="checkbox"
-                        checked={formValues.client_property.propertyownedbyclientonly}
-                        className='mr-3 h-4 w-4'
-                        onClick={(e) => {
-                            // console.log(e.target.checked)
-                            const existing = {...formValues};
-                            const temp = {...existing.client_property};
-                            temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly
-                            existing.client_property = temp;
-                            setFormValues(existing) 
-                            // existing.status = !existing.status;
-                            // setFormValues(existing)
+          type="checkbox"
+          checked={formValues.client_property.propertyownedbyclientonly}
+          className='mr-3 h-4 w-4'
+          onClick={(e) => {
+            // console.log(e.target.checked)
+            const existing = { ...formValues };
+            const temp = { ...existing.client_property };
+            temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly
+            existing.client_property = temp;
+            setFormValues(existing)
+            // existing.status = !existing.status;
+            // setFormValues(existing)
           }}
         />
           Property Owned By Client Only</div>
         <div className="flex justify-center items-center text-[13px] font-semibold">
-        <input
-                          type="checkbox"
-                          checked={formValues.client_property.indexiicollected}
-                          className='mr-3 h-4 w-4'
-                          onClick={(e) => {
-                              
-                              const existing = {...formValues};
-                              const temp = {...existing.client_property};
-                              temp.indexiicollected = !temp.indexiicollected
-                              existing.client_property = temp;
-                              setFormValues(existing) 
+          <input
+            type="checkbox"
+            checked={formValues.client_property.indexiicollected}
+            className='mr-3 h-4 w-4'
+            onClick={(e) => {
+
+              const existing = { ...formValues };
+              const temp = { ...existing.client_property };
+              temp.indexiicollected = !temp.indexiicollected
+              existing.client_property = temp;
+              setFormValues(existing)
             }}
           />
           Index II Collected </div>

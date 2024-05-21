@@ -1,32 +1,32 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Checkbox from '@mui/material/Checkbox';
 import AsyncSelect from "react-select/async"
 import { APIService } from "../../../../services/API";
 import DropDown from "../../../../Components/Dropdown/Dropdown"
-const ProjectInformation = ({clientData,initialSociety,initialStates,initialCities,formValues,setFormValues,propertyType,levelOfFurnishing,propertyStatus,formErrors,setCurrClientName,clientname,clientid}) => {
+const ProjectInformation = ({ clientData, initialSociety, initialStates, initialCities, formValues, setFormValues, propertyType, levelOfFurnishing, propertyStatus, formErrors, setCurrClientName, clientname, clientid }) => {
   // console.log(levelOfFurnishing)
   // const [propertyType, setPropertyType] = useState([]);
   // const [levelOfFurnishing, setLevelOfFurnishing] = useState([]);
   useEffect(() => {
-     const temp = {...formValues}
-     const ex = temp.client_property
-     ex.clientid = clientid 
-     temp.client_property = ex
-     setFormValues(temp)
-     fetchClientData();
-  },[])
+    const temp = { ...formValues }
+    const ex = temp.client_property
+    ex.clientid = clientid
+    temp.client_property = ex
+    setFormValues(temp)
+    fetchClientData();
+  }, [])
   const [state, setState] = useState(initialStates);
   const [city, setCity] = useState(initialCities);
   const [society, setSociety] = useState([]);
   const [status, setStatus] = useState([]);
   const [electricity, setElectricity] = useState([]);
-  const [existingSociety,setExistingSociety] = useState(initialSociety);
-  const [clientName,setClientName] = useState(clientData);
+  const [existingSociety, setExistingSociety] = useState(initialSociety);
+  const [clientName, setClientName] = useState(clientData);
   const dueDate = [];
-  for(var i =1;i<=31;i++) {
+  for (var i = 1; i <= 31; i++) {
     dueDate.push({
-      id : i - 1,
-      date : i
+      id: i - 1,
+      date: i
     })
   }
   // const options = [
@@ -34,133 +34,135 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
   //   { value: 'strawberry', label: 'Strawberry' },
   //   { value: 'vanilla', label: 'Vanilla' }
   // ]
-  const [options,setOptions] = useState([]);
+  const [options, setOptions] = useState([]);
   const fetchClientData = async () => {
-     const data = {
-      "user_id" : 1234
-     }
-     const response = await APIService.getClientAdmin(data)
-     const res = await response.json();
-     console.log(res.data)
+    const data = {
+      "user_id": 1234
+    }
+    const response = await APIService.getClientAdmin(data)
+    const res = await response.json();
+    console.log(res.data)
     //  res.data.map((item) => {
     //      value : item[0],
     //      label : item[1]
     //  })
-     setOptions(res.data.map(x => ({
+    setOptions(res.data.map(x => ({
       value: x[0],
       label: x[1]
     })))
   }
   const handleChange = (e) => {
-    const {name,value} = e.target;
-     setFormValues({...formValues,client_property : {
-         ...formValues.client_property,
-         [name] : value
-     }})
-   }
-   const [selectedOption,setSelectedOption] = useState({
-    label : clientname,
-    value : clientid
-   });
-   const [query,setQuery] = useState('')
-   const handleClientNameChange = (e) => {
-       console.log('hey')
-       console.log(e)
-      //  setFormValues({...formValues,client_property : {
-      //   ...formValues.client_property,
-      //   clientid : e.value
-      //  }})
-       const existing = {...formValues}
-       const temp = {...existing.client_property}
-       temp.clientid = e.value
-       setCurrClientName(e.label)
-       existing.client_property = temp;
-       setFormValues(existing)
-       console.log(formValues)
-       setSelectedOption(e)
-   }
-   const loadOptions = async (e) => {
-      console.log(e)
-      if(e.length < 3) return ;
-      const data = {
-        "user_id" : 1234,
-        "pg_no" : 0,
-        "pg_size" : 0,
-        "search_key" : e
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues, client_property: {
+        ...formValues.client_property,
+        [name]: value
       }
-      const response = await APIService.getClientAdminPaginated(data)
-      const res = await response.json()
-      const results = res.data.map(e => {
-        return {
-          label : e[1],
-          value : e[0]
-        }
-      })
-      if(results === 'No Result Found') {
-        return []
+    })
+  }
+  const [selectedOption, setSelectedOption] = useState({
+    label: clientname,
+    value: clientid
+  });
+  const [query, setQuery] = useState('')
+  const handleClientNameChange = (e) => {
+    console.log('hey')
+    console.log(e)
+    //  setFormValues({...formValues,client_property : {
+    //   ...formValues.client_property,
+    //   clientid : e.value
+    //  }})
+    const existing = { ...formValues }
+    const temp = { ...existing.client_property }
+    temp.clientid = e.value
+    setCurrClientName(e.label)
+    existing.client_property = temp;
+    setFormValues(existing)
+    console.log(formValues)
+    setSelectedOption(e)
+  }
+  const loadOptions = async (e) => {
+    console.log(e)
+    if (e.length < 3) return;
+    const data = {
+      "user_id": 1234,
+      "pg_no": 0,
+      "pg_size": 0,
+      "search_key": e
+    }
+    const response = await APIService.getClientAdminPaginated(data)
+    const res = await response.json()
+    const results = res.data.map(e => {
+      return {
+        label: e[1],
+        value: e[0]
       }
-      return results
-   }
-   const handleInputChange = (value) => {
-      console.log(value)
-   }
-   const fetchCityData = async (id) => {
+    })
+    if (results === 'No Result Found') {
+      return []
+    }
+    return results
+  }
+  const handleInputChange = (value) => {
+    console.log(value)
+  }
+  const fetchCityData = async (id) => {
     const data = { "user_id": 1234, "state_name": id };
     const response = await APIService.getCities(data);
     const result = (await response.json()).data;
     console.log(result);
     if (Array.isArray(result)) {
-        // setAllCity(result)
-        setCity(result)
-        
+      // setAllCity(result)
+      setCity(result)
+
     }
-}
+  }
   return (
     <div className="h-auto w-full">
       <div className="flex gap-10 justify-center mt-3">
         <div className=" space-y-2 ">
           <div className="">
             <div className="text-[13px]">
-                Client Name <label className="text-red-500">*</label>
+              Client Name <label className="text-red-500">*</label>
             </div>
             <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
+              onChange={handleClientNameChange}
+              value={selectedOption}
+              loadOptions={loadOptions}
+              cacheOptions
+              defaultOptions
+              onInputChange={(value) => setQuery(value)}
 
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width : 230,
-                                                    fontSize: 10,
-                                                    // padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
-                                                }),
-                                                menu: (provided, state) => ({
-                                                    ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
-                                                  }),
-                                            }}
-                                        />
+              styles={{
+                control: (provided, state) => ({
+                  ...provided,
+                  minHeight: 23,
+                  lineHeight: '0.8',
+                  height: 4,
+                  width: 230,
+                  fontSize: 10,
+                  // padding: '1px'
+                }),
+                // indicatorSeparator: (provided, state) => ({
+                //   ...provided,
+                //   lineHeight : '0.5',
+                //   height : 2,
+                //   fontSize : 12 // hide the indicator separator
+                // }),
+                dropdownIndicator: (provided, state) => ({
+                  ...provided,
+                  padding: '1px', // adjust padding for the dropdown indicator
+                }),
+                options: (provided, state) => ({
+                  ...provided,
+                  fontSize: 10// adjust padding for the dropdown indicator
+                }),
+                menu: (provided, state) => ({
+                  ...provided,
+                  width: 230, // Adjust the width of the dropdown menu
+                }),
+              }}
+            />
             {/* <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
               name="clientid"
@@ -208,10 +210,10 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               onChange={(e) => {
                 handleChange(e)
                 fetchCityData(e.target.value)
-                const temp = {...formValues}
+                const temp = { ...formValues }
                 const ex = temp.client_property
-                ex.city = null 
-                temp.client_property = ex 
+                ex.city = null
+                temp.client_property = ex
                 setFormValues(temp)
               }}
             >
@@ -261,12 +263,12 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
 
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
         </div>
         <div className="space-y-2">
           <div className="">
@@ -293,7 +295,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             </select> */}
             {/* {"Hey"}
             {formValues.client_property.projectid} */}
-            <DropDown options={existingSociety} initialValue="Select Project" leftLabel="Builder Name" rightLabel="Project" leftAttr="buildername" rightAttr="projectname" toSelect="projectname" handleChange={handleChange} formValueName="projectid" value={formValues.client_property.projectid} idName="projectid"/>
+            <DropDown options={existingSociety} initialValue="Select Project" leftLabel="Builder Name" rightLabel="Project" leftAttr="buildername" rightAttr="projectname" toSelect="projectname" handleChange={handleChange} formValueName="projectid" value={formValues.client_property.projectid} idName="projectid" />
             <div className="text-[10px] text-[#CD0000] ">{formErrors.projectid}</div>
           </div>
           <div className="">
@@ -328,52 +330,52 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
           </div>
           <div className="space-y-2">
-          <div className="">
-            <div className="text-[13px]">Gas Connection Details </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="gasconnectiondetails"
-              value={formValues.client_property.gasconnectiondetails}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div>
-          <div className="">
-            <div className="text-[13px]">
-              Number Of Parkings
+            <div className="">
+              <div className="text-[13px]">Gas Connection Details </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="gasconnectiondetails"
+                value={formValues.client_property.gasconnectiondetails}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
             </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="numberofparkings"
-              value={formValues.client_property.numberofparkings}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            <div className="">
+              <div className="text-[13px]">
+                Number Of Parkings
+              </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="numberofparkings"
+                value={formValues.client_property.numberofparkings}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            </div>
+            <div className="">
+              <div className="text-[13px]">Electricity Billing Unit </div>
+              <input
+                className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
+                type="text"
+                name="electricitybillingunit"
+                value={formValues.client_property.electricitybillingunit}
+                onChange={handleChange}
+              />
+              {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
+            </div>
+
           </div>
-          <div className="">
-            <div className="text-[13px]">Electricity Billing Unit </div>
-            <input
-              className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm"
-              type="text"
-              name="electricitybillingunit"
-              value={formValues.client_property.electricitybillingunit}
-              onChange={handleChange}
-            />
-            {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div>
-          
-        </div>
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
         </div>
         <div className="space-y-2">
-           <div className="">
+          <div className="">
             <div className="text-[13px]">
               Property type <label className="text-red-500">*</label>
             </div>
@@ -428,7 +430,7 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
-          
+
           <div className="">
             <div className="text-[13px]">Layout Details (Sch A)</div>
             <input
@@ -451,10 +453,10 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
           </div>
-          
+
         </div>
         <div className="space-y-2">
-        <div className="">
+          <div className="">
             <div className="text-[13px]">Status <label className="text-red-500">*</label></div>
             <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"
@@ -492,12 +494,12 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               onChange={handleChange}
             >
               <option>Select Date </option>
-               {dueDate &&
+              {dueDate &&
                 dueDate.map((item) => (
                   <option key={item.id} value={item.date}>
                     {item.date}
                   </option>
-                ))} 
+                ))}
             </select>
             <div className="text-[10px] text-[#CD0000] ">{formErrors.electricitybillingduedate}</div>
           </div>
@@ -523,40 +525,40 @@ const ProjectInformation = ({clientData,initialSociety,initialStates,initialCiti
               value={formValues.client_property.internalfurnitureandfittings}
             />
             {/* <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div> */}
-          </div> 
+          </div>
 
-          
+
         </div>
       </div>
       <div className="mt-2 flex justify-center items-center gap-2">
         <div className="flex justify-center items-center text-[13px] font-semibold"><input
-                        type="checkbox"
-                        checked={formValues.client_property.propertyownedbyclientonly}
-                        className='mr-3 h-4 w-4'
-                        onClick={(e) => {
-                            // console.log(e.target.checked)
-                            const existing = {...formValues};
-                            const temp = {...existing.client_property};
-                            temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly
-                            existing.client_property = temp;
-                            setFormValues(existing) 
-                            // existing.status = !existing.status;
-                            // setFormValues(existing)
+          type="checkbox"
+          checked={formValues.client_property.propertyownedbyclientonly}
+          className='mr-3 h-4 w-4'
+          onClick={(e) => {
+            // console.log(e.target.checked)
+            const existing = { ...formValues };
+            const temp = { ...existing.client_property };
+            temp.propertyownedbyclientonly = !temp.propertyownedbyclientonly
+            existing.client_property = temp;
+            setFormValues(existing)
+            // existing.status = !existing.status;
+            // setFormValues(existing)
           }}
         />
           Property Owned By Client Only</div>
         <div className="flex justify-center items-center text-[13px] font-semibold">
           <input
-                          type="checkbox"
-                          checked={formValues.client_property.indexiicollected}
-                          className='mr-3 h-4 w-4'
-                          onClick={(e) => {
-                              
-                              const existing = {...formValues};
-                              const temp = {...existing.client_property};
-                              temp.indexiicollected = !temp.indexiicollected
-                              existing.client_property = temp;
-                              setFormValues(existing) 
+            type="checkbox"
+            checked={formValues.client_property.indexiicollected}
+            className='mr-3 h-4 w-4'
+            onClick={(e) => {
+
+              const existing = { ...formValues };
+              const temp = { ...existing.client_property };
+              temp.indexiicollected = !temp.indexiicollected
+              existing.client_property = temp;
+              setFormValues(existing)
             }}
           />
           Index II Collected </div>

@@ -1222,7 +1222,7 @@ const ManageBankStatement = () => {
                                     <div className='w-[5%] px-3 py-4 overflow-x-auto'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages} </p>
                                     </div>
-                                    <div className='w-[10%]  p-4'>
+                                    <div className='w-[10%]  p-4 ml-1'>
                                         <p>{item.mode}</p>
                                         {/* {mode && mode.map(ele => (
                                             (item.modeofpayment === ele[0]) ?
@@ -1257,10 +1257,10 @@ const ManageBankStatement = () => {
                                     </div>
                                 </div>
                                 <div className='w-[15%] flex'>
-                                    <div className='w-1/2  p-4'>
+                                    <div className='w-1/2  p-4 ml-1'>
                                         <p>{item.id}</p>
                                     </div>
-                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                    <div className='w-1/2 p-4 flex justify-between items-center'>
                                         <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editStatement(item, vendorList, howReceived, mode)} />
                                         <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteStatement(item.id)} />
                                     </div>
