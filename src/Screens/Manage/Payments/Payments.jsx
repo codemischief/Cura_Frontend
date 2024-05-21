@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link , useNavigate } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -36,6 +36,7 @@ import {formatDate} from "../../../utils/formatDate.js"
 import { usernameByUserId } from '../../../utils/UsernameByUserId.js';
 const Payments = () => {
     const menuRef = useRef();
+    const navigate = useNavigate();
     const [totalItems, setTotalItems] = useState(0);
     const [currentPages, setCurrentPages] = useState(15);
     const [currentPage, setCurrentPage] = useState(1);
@@ -1098,7 +1099,7 @@ const Payments = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                            <img className='h-5 w-5' src={backLink} />
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
                         <div className='flex-col'>
                             <h1 className='text-lg'>Manage Contractual Payments</h1>

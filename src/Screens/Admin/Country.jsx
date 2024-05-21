@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import backLink from "../../assets/back.png";
 import searchIcon from "../../assets/searchIcon.png";
 import nextIcon from "../../assets/next.png";
@@ -32,7 +32,8 @@ import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
 const Country = () => {
   // we have the module here
-  const menuRef = useRef()
+  const menuRef = useRef();
+  const navigate = useNavigate();
   const [existingCountries, setCountryValues] = useState([]);
   //   const [isSubmit, setIsSubmit] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -130,12 +131,12 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
     setPageLoading(false);
- 
+
     setCountryValues(res.data)
 
   }
@@ -157,12 +158,12 @@ const Country = () => {
       "pg_size": Number(quantity),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
     setPageLoading(false);
- 
+
     setCountryValues(res.data)
   }
   const fetchCountryData = async () => {
@@ -204,7 +205,7 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
@@ -323,12 +324,12 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(number)
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
-    
- 
+
+
     setCountryValues(res.data)
     setPageLoading(false);
   }
@@ -353,12 +354,12 @@ const Country = () => {
       "pg_no": Number(currentPage),
       "pg_size": Number(currentPages)
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
     setPageLoading(false);
- 
+
     setCountryValues(res.data)
 
   }
@@ -378,12 +379,12 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": searchQuery
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
     setPageLoading(false);
- 
+
     setCountryValues(res.data)
 
   }
@@ -413,12 +414,12 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": ""
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
 
     setTotalItems(res.total_count);
     setPageLoading(false);
- 
+
     setCountryValues(res.data)
   }
   const [failureMessage, setFailureMessage] = useState("");
@@ -441,10 +442,10 @@ const Country = () => {
       "pg_no": 0,
       "pg_size": 0,
       "search_key": searchQuery,
-      "downloadType" : type,
-      "colmap" : {
-        "name" : "Country",
-        "id" : "ID"
+      "downloadType": type,
+      "colmap": {
+        "name": "Country",
+        "id": "ID"
       }
     };
     const response = await APIService.getCountries(data)
@@ -492,7 +493,7 @@ const Country = () => {
     console.log('hey')
     console.log(filterMapState);
     // console.log(inputVariable)
-    var existing = {...filterMapState};
+    var existing = { ...filterMapState };
     existing = {
       ...existing, [columnName]: {
         ...existing[columnName],
@@ -529,7 +530,7 @@ const Country = () => {
   const [filterMapState, setFilterMapState] = useState(filterMapping);
 
   const fetchFiltered = async (mapState) => {
-    
+
     console.log('this is a test')
     // setCountryValues([])
     setFilterMapState(mapState)
@@ -574,12 +575,12 @@ const Country = () => {
       "pg_size": Number(currentPages),
       "search_key": isSearchOn ? searchQuery : ""
     };
-    const response  = await APIService.getCountries(data)
+    const response = await APIService.getCountries(data)
     const res = await response.json()
     console.log(res)
     setTotalItems(res.total_count);
     // setCountryValues([])
- 
+
     setCountryValues(res.data)
     setPageLoading(false);
   }
@@ -597,7 +598,7 @@ const Country = () => {
       // const temp = {...filterMapState};
       // temp[columnName].type = "".
       // setFilterMapState(temp)
-      
+
       // alert('here')
       if (inputVariable == "") {
         const temp = { ...filterMapState }
@@ -640,7 +641,7 @@ const Country = () => {
         <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
           <div className='flex items-center space-x-3'>
             <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-              <Link to="/dashboard"><img className="w-5 h-5" src={backLink} /></Link>
+              <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
             </div>
             <div className='flex-col'>
               <h1 className='text-[18px]'>Country</h1>
@@ -736,7 +737,7 @@ const Country = () => {
           <div className='h-[calc(100vh_-_17rem)] w-full overflow-auto'>
 
 
-            
+
             {!pageLoading && existingCountries && existingCountries.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
               <h1 className='ml-10'>No Records To Show</h1>
             </div>}
@@ -849,14 +850,14 @@ const Country = () => {
               <div className="w-[778px]  h-auto bg-white rounded-lg ">
                 <div className='move cursor-move'>
 
-                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
-                  <div className="mr-[270px] ml-[270px]">
-                    <div className="text-[20px]">New Country</div>
+                  <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
+                    <div className="mr-[270px] ml-[270px]">
+                      <div className="text-[20px]">New Country</div>
+                    </div>
+                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                      <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                    </div>
                   </div>
-                  <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
-                    <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
-                  </div>
-                </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className='mb-3 space-y-16'>
