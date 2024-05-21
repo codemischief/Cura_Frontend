@@ -14,6 +14,7 @@ const EditManageBuilder = (props) => {
     const [showSucess, setShowSucess] = useState(false);
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [currCountry, setCurrCountry] = useState(-1);
     console.log(props.currBuilder)
     const openSuccessModal = () => {
         // set the state for true for some time
@@ -78,14 +79,11 @@ const EditManageBuilder = (props) => {
     ]
     const fetchCountryData = async () => {
         setPageLoading(true);
+        // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
     }
     const [allState,setAllState] = useState([])
     const [allCountry,setAllCountry] = useState([])
@@ -276,48 +274,93 @@ const EditManageBuilder = (props) => {
                                         </div>
                                     </div>
                                     <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"  name="country" value={formValues.country} onChange={(e) => {
-                                                handleChange(e)
-                                                setFormValues({ ...formValues, state: null });
-                                                setFormValues({ ...formValues, city: null });
-                                                setAllState([])
-                                                fetchStateData(e.target.value)
-                                                setAllCity([])
-                                            }} >
-                                                {allCountry && allCountry.map(item => (
-                                                    <option key={item[0]} value={item[0]}>
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.country}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="state" value={formValues.state} onChange={handleChange} >
-                                            <option  hidden>Select A State</option>
-                                                {allState && allState.map(item => (
-                                                    <option value={item}>
-                                                        {item}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.state}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">City <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="city" value={formValues.city} onChange={handleChange} >
-                                                <option  hidden>Select A City</option>
-                                                {allCity && allCity.map(item => (
-                                                    <option key={item.id} value={item.id}>
-                                                        {item.city}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.city}</div>
-                                        </div>
+                                    <div className="">
+                                                <div className="text-sm">Country <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="country"
+                                                    value={formValues.country}
+                                                    defaultValue="Select Country"
+                                                    onChange={e => {
+                                                        setCurrCountry(e.target.value);
+                                                        fetchStateData(e.target.value);
+                                                        setAllCity([]);
+                                                        const existing = { ...formValues }
+                                                        existing.state = ""
+                                                        existing.city = null;
+                                                        setFormValues(existing)
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, country: e.target.value }
+                                                            return newData;
+                                                        })
+                                                        // fetchStateData(res);
+                                                    }}
+                                                >
+
+                                                    {allCountry && allCountry.map(item => {
+                                                        return <option value={item.id}> {item.name}</option>
+                                                        // if (item[0] == 5) {
+                                                        //     return <option value={item[0]} selected>
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // } else {
+                                                        //     return <option value={item[0]} >
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // }
+                                                    })}
+                                                </select>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.country}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">State <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="state"
+                                                    value={formValues.state}
+                                                    defaultValue="Select State"
+                                                    onChange={e => {
+                                                        fetchCityData(e.target.value);
+                                                        const existing = { ...formValues }
+                                                        existing.state = e.target.value
+                                                        existing.city = null
+                                                        console.log(existing)
+                                                        setFormValues(existing)
+                                                    }}
+                                                >
+                                                    <option value="" hidden> Select A State</option>
+                                                    {allState && allState.map(item => {
+                                                        return <option value={item[0]} >
+                                                            {item[0]}
+                                                        </option>
+                                                    })}
+                                                </select>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.state}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">City <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="city"
+                                                    value={formValues.city}
+                                                    defaultValue="Select City"
+                                                    onChange={e => {
+                                                        // fetchCityData(e.target.value);
+                                                        console.log(e.target.value);
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, city: e.target.value }
+                                                            return newData;
+                                                        })
+
+                                                    }}
+                                                >
+                                                    {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                    <option value="none" hidden> Select A City</option>
+                                                    {allCity && allCity.map(item => (
+                                                        <option value={item.id} >
+                                                            {item.city}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.city}</div>
+                                            </div>
                                         <div className="">
                                             <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />

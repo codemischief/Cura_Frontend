@@ -1135,7 +1135,7 @@ const ManageProjectInfo = () => {
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
                         {!pageLoading && existingProjectInfo.map((item, index) => {
-                            return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1' key={item.id}>
+                            return <div className='w-full min-h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1' key={item.id}>
                                 <div className="w-[88%] flex items-center ">
                                     <div className='w-[3%] flex overflow-x-hidden'>
                                         <div className='px-3 '>
@@ -1190,14 +1190,14 @@ const ManageProjectInfo = () => {
                                     </div>
                                 </div>
                                 <div className="w-[12%] flex items-center">
-                                    <div className='w-1/2  flex overflow-hidden items-center'>
+                                    <div className='w-1/2  flex overflow-hidden items-center pl-1.5'>
                                         <div className='px-3 '>
                                             <p>{item.id}</p>
                                         </div>
                                     </div>
                                     <div className='w-1/2 flex overflow-hidden items-center px-3 justify-around '>
-                                        <button onClick={() => handleEdit(item.id)}><img className=' w-5 h-5' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' w-5 h-5' src={Trash} alt="trash" /></button>
+                                        <button onClick={() => handleEdit(item.id)}><img className=' w-4 h-4' src={Edit} alt="edit" /></button>
+                                        <button onClick={() => handleDelete(item.id)}><img className=' w-4 h-4' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 

@@ -854,7 +854,6 @@ const ManageBuilder = () => {
                             </div>
                             {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} filterType={filterMapState.suburb.filterType} />}
                         </div>
-
                         <div className='w-[10%]  p-4'>
                             {/* <p>Contact</p> */}
                         </div>
@@ -868,7 +867,7 @@ const ManageBuilder = () => {
                                 <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
                                     onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
                                         setIdFilterInput,
-                                        'contains',
+                                        'equalTo',
                                         'id')}
                                 />
                                 {filterMapState.id.filterType == "" ? <button className='w-[33%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[33%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}

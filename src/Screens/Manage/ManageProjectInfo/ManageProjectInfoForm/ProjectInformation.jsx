@@ -1,36 +1,25 @@
 import React from "react";
 import Checkbox from "@mui/material/Checkbox";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import { APIService } from '../../../../services/API';
-const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNameData,formErrors}) => {
-   
-    const selectedProjectType =[1,2,3,4];
-    const selectedBuilderName = [1,2,3,4];
+const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builderNameData, formErrors }) => {
+
+    const selectedProjectType = [1, 2, 3, 4];
+    const selectedBuilderName = [1, 2, 3, 4];
 
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
+    const [currCountry, setCurrCountry] = useState(-1);
 
     const fetchCountryData = async () => {
+        // setPageLoading(true);
         // const data = { "user_id":  1234 };
-        const data = {
-            user_id: 1234,
-            rows: ["id", "name"],
-            filters: [],
-            sort_by: [],
-            order: "asc",
-            pg_no: 0,
-            pg_size: 0,
-        };
-        const response = await APIService.getCountries(data);
+        const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
+        const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
-        console.log(result.data);
-    };
+        setAllCountry(result)
+    }
     const fetchStateData = async (id) => {
         console.log(id);
         const data = { user_id: 1234, country_id: id };
@@ -112,11 +101,13 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
         return errors;
     };
     const handleProjectInfoChange = (e) => {
-        const {name,value} = e.target;
-        setFormValues({...formValues,project_info : {
-            ...formValues.project_info,
-            [name] : value
-        }})
+        const { name, value } = e.target;
+        setFormValues({
+            ...formValues, project_info: {
+                ...formValues.project_info,
+                [name]: value
+            }
+        })
     }
     const handleDialogClose = () => { };
     return (
@@ -169,6 +160,89 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                         <div className="text-[10px] text-[#CD0000] ">{formErrors.addressline1}</div>
                     </div>
                     <div className="">
+                        <div className="text-sm">Country <label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                            name="country"
+                            value={formValues.project_info.country}
+                            defaultValue="Select Country"
+                            onChange={e => {
+                                setCurrCountry(e.target.value);
+                                fetchStateData(e.target.value);
+                                setAllCity([]);
+                                const existing = { ...formValues }
+                                const temp = existing.project_info;
+                                temp.state = ""
+                                temp.city = null;
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                                // fetchStateData(res);
+                            }}
+                        >
+
+                            {allCountry && allCountry.map(item => {
+                                return <option value={item.id}> {item.name}</option>
+                                // if (item[0] == 5) {
+                                //     return <option value={item[0]} selected>
+                                //         {item[1]}
+                                //     </option>
+                                // } else {
+                                //     return <option value={item[0]} >
+                                //         {item[1]}
+                                //     </option>
+                                // }
+                            })}
+                        </select>
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.country}</div>
+                    </div>
+                    <div className="">
+                        <div className="text-sm">State <label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                            name="state"
+                            value={formValues.project_info.state}
+                            defaultValue="Select State"
+                            onChange={(e) => {
+                                const existing = { ...formValues };
+                                const temp = existing.project_info;
+                                temp.state = e.target.value
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                                fetchCityData(e.target.value);
+                            }}
+                        >
+                            <option value="" hidden> Select A State</option>
+                            {allState && allState.map(item => {
+                                return <option value={item[0]} >
+                                    {item[0]}
+                                </option>
+                            })}
+                        </select>
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.state}</div>
+                    </div>
+                    <div className="">
+                        <div className="text-sm">City <label className="text-red-500">*</label></div>
+                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                            name="city"
+                            value={formValues.project_info.city}
+                            defaultValue="Select City"
+                            onChange={e => {
+                                const existing = { ...formValues };
+                                const temp = existing.project_info;
+                                temp.city = e.target.value
+                                existing.project_info = temp;
+                                setFormValues(existing)
+                            }}
+                        >
+                            {/* <option value="none" hidden={true}>Select a City</option> */}
+                            <option value="none" hidden> Select A City</option>
+                            {allCity && allCity.map(item => (
+                                <option value={item.id} >
+                                    {item.city}
+                                </option>
+                            ))}
+                        </select>
+                        <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.city}</div>
+                    </div>
+                    {/* <div className="">
                         <div className="text-[13px]">
                             Country Name<label className="text-red-500">*</label>
                         </div>
@@ -178,14 +252,14 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                             value={formValues.project_info.country}
                             defaultValue="Select Country"
                             onChange={(e) => {
-                                const existing = {...formValues};
+                                const existing = { ...formValues };
                                 const temp = existing.project_info;
-                                temp.country = e.target.value 
-                                temp.state = null 
-                                temp.city = null 
+                                temp.country = e.target.value
+                                temp.state = null
+                                temp.city = null
                                 existing.project_info = temp;
                                 setFormValues(existing)
-                               
+
                                 setAllState([])
                                 setAllCity([])
                                 fetchStateData(e.target.value)
@@ -211,7 +285,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                             value={formValues.project_info.state}
                             defaultValue="Select State"
                             onChange={(e) => {
-                                const existing = {...formValues};
+                                const existing = { ...formValues };
                                 const temp = existing.project_info;
                                 temp.state = e.target.value
                                 existing.project_info = temp;
@@ -235,9 +309,9 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                             value={formValues.project_info.city}
                             defaultValue="Select City"
                             onChange={e => {
-                                const existing = {...formValues};
+                                const existing = { ...formValues };
                                 const temp = existing.project_info;
-                                temp.city = e.target.value 
+                                temp.city = e.target.value
                                 existing.project_info = temp;
                                 setFormValues(existing)
                             }}
@@ -250,7 +324,7 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
                             ))}
                         </select>
 
-                    </div>
+                    </div> */}
                     <div className="">
                         <div className="text-[13px]">
                             Suburb<label className="text-red-500">*</label>
@@ -351,53 +425,53 @@ const ProjectInformation = ({formValues,setFormValues,projectTypeData,builderNam
             </div>
             <div className="flex justify-center items-center space-x-2 mt-2">
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
-                        <input
-                            type="checkbox"
-                            checked={formValues.project_info.tenantworkingbachelorsallowed}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = {...formValues};
-                                const temp = {...existing.project_info};
-                                temp.tenantworkingbachelorsallowed = !temp.tenantworkingbachelorsallowed
-                                existing.project_info = temp;
-                                setFormValues(existing)
-                            }}
-                        />
+                    <input
+                        type="checkbox"
+                        checked={formValues.project_info.tenantworkingbachelorsallowed}
+                        className='mr-3 h-4 w-4'
+                        onClick={(e) => {
+                            // console.log(e.target.checked)
+                            const existing = { ...formValues };
+                            const temp = { ...existing.project_info };
+                            temp.tenantworkingbachelorsallowed = !temp.tenantworkingbachelorsallowed
+                            existing.project_info = temp;
+                            setFormValues(existing)
+                        }}
+                    />
                     Tenet woking bachlors allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
-                <input
-                            type="checkbox"
-                            checked={formValues.project_info.tenantstudentsallowed}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = {...formValues};
-                                const temp = {...existing.project_info};
-                                temp.tenantstudentsallowed = !temp.tenantstudentsallowed
-                                existing.project_info = temp;
-                                setFormValues(existing)
-                            }}
-                        />
+                    <input
+                        type="checkbox"
+                        checked={formValues.project_info.tenantstudentsallowed}
+                        className='mr-3 h-4 w-4'
+                        onClick={(e) => {
+                            // console.log(e.target.checked)
+                            const existing = { ...formValues };
+                            const temp = { ...existing.project_info };
+                            temp.tenantstudentsallowed = !temp.tenantstudentsallowed
+                            existing.project_info = temp;
+                            setFormValues(existing)
+                        }}
+                    />
 
 
                     Tenet student allowed
                 </div>
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
-                <input
-                            type="checkbox"
-                            checked={formValues.project_info.tenantforeignersallowed}
-                            className='mr-3 h-4 w-4'
-                            onClick={(e) => {
-                                // console.log(e.target.checked)
-                                const existing = {...formValues};
-                                const temp = {...existing.project_info};
-                                temp.tenantforeignersallowed = !temp.tenantforeignersallowed
-                                existing.project_info = temp;
-                                setFormValues(existing)
-                            }}
-                        />
+                    <input
+                        type="checkbox"
+                        checked={formValues.project_info.tenantforeignersallowed}
+                        className='mr-3 h-4 w-4'
+                        onClick={(e) => {
+                            // console.log(e.target.checked)
+                            const existing = { ...formValues };
+                            const temp = { ...existing.project_info };
+                            temp.tenantforeignersallowed = !temp.tenantforeignersallowed
+                            existing.project_info = temp;
+                            setFormValues(existing)
+                        }}
+                    />
 
                     Tenet Foreigners allowed
                 </div>
