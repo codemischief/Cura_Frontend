@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { Backdrop, CircularProgress } from "@mui/material"
 import Navbar from "../../../Components/Navabar/Navbar"
 import backLink from "../../../assets/back.png"
+import { Link } from "react-router-dom"
 const DeleteById = () => {
     const navigate = useNavigate(-1)
     const [pageLoading,setPageLoading] = useState(false)
@@ -36,42 +37,58 @@ const DeleteById = () => {
                 </div>
 
             <div class="grid grid-cols-3 grid-rows-4 gap-[18px] w-full h-60 ">
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  <Link to="deleteclient" state={{ pagename: "Delete Client" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deleteorder" state={{ pagename: "Delete Order" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deleteclientinvoice" state={{ pagename: "Delete Client Invoice" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client Invoice</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deleteordereceipt" state={{ pagename: "Delete Order Receipt" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order Receipt</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deleteorderpayment" state={{ pagename: "Delete Order Payment" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order Payment</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deleteordertask" state={{ pagename: "Delete Order Task" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Order Task</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deleteclientreceipt" state={{ pagename: "Delete Client Receipt" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Client Receipt</p>
                   </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
+                  </Link>
+                  <Link to="deletevendorinvoice" state={{ pagename: "Delete Vendor Invoice" }}><div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Vendor Invoice</p>
                   </div>
+                  </Link>
+                  <Link to="deletevendor" state={{ pagename: "Delete Vendor " }}>
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Vendor</p>
                   </div>
+                  </Link>
+                  <Link to="deleteuser" state={{ pagename: "Delete User" }}>
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete User</p>
                   </div>
+                  </Link>
+                  <Link to="deleteemployee" state={{ pagename: "Delete Employee" }}>
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Employee</p>
                   </div>
+                  </Link>
+                  <Link to="deletebankstatement" state={{ pagename: "Delete Bank Statement" }}>
                   <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
                            <p>Delete Bank Statement</p>
                   </div>
+                  </Link>
 
                 </div>
 

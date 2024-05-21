@@ -1,10 +1,13 @@
 import React from "react"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate ,useLocation } from "react-router-dom"
 import { Backdrop, CircularProgress } from "@mui/material"
+import { Add } from "@mui/icons-material"
 import Navbar from "../../../Components/Navabar/Navbar"
 import backLink from "../../../assets/back.png"
 const DeletePage = () => {
+    let { state } = useLocation();
+    console.log(state)
     const navigate = useNavigate(-1)
     const [pageLoading,setPageLoading] = useState(false)
     return (
@@ -29,52 +32,28 @@ const DeletePage = () => {
 
                         <div className='flex-col'>
                             <h1 className='text-[18px]'>Delete By ID</h1>
-                            <p className='text-[14px]'>Admin &gt; Delete By ID</p>
+                            <p className='text-[14px]'>Admin &gt; Delete By ID &gt; {state.pagename}</p>
                         </div>
                     </div>
                     
                 </div>
 
-            <div class="grid grid-cols-3 grid-rows-4 gap-[18px] w-full h-60 ">
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Client</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Order</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Client Invoice</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Order Receipt</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Order Payment</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Order Task</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Client Receipt</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Vendor Invoice</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Vendor</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete User</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Employee</p>
-                  </div>
-                  <div className="w-full h-full bg-[#F0F6FF] rounded-lg shadow-md hover:bg-[#DAE7FF] cursor-pointer flex items-center justify-center">
-                           <p>Delete Bank Statement</p>
-                  </div>
-
-                </div>
-
+                <h1 className="mb-5">{state.pagename}</h1>
+                 <div className="w-full h-40 bg-[#F5F5F5] rounded-lg p-10 flex items-center ">
+                    <div className="flex space-x-4">
+                        <select className="w-48 rounded-md"><option>Select </option></select>
+                        <button
+                            className={`bg-[#004DD7] text-white text-sm font-semibold leading-[135%] h-[36px] w-[170px] rounded-lg flex gap-4 justify-center items-center`}
+                            onClick={() => {}}
+                            >
+                            <div className="flex items-center justify-center gap-4">Delete</div>
+                              {/* <Add sx={{ height: "18px", width: "18px" }} /> */}
+                            </button>
+                    </div>
+                    
+                 </div>
+            
+               
             </div>
 
         </div>
