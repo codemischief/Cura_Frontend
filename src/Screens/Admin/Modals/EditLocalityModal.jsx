@@ -34,10 +34,11 @@ const EditLocalityModal = (props) => {
         <>
             <Modal open={true}
                 fullWidth={true}
-                maxWidth={'md'} >
+                maxWidth={'md'} 
+                className='flex justify-center items-center'>
                 <>
                     <Draggable handle='div.move'>
-                        <div className='flex justify-center mt-[175px]'>
+                        <div className='flex justify-center items-center'>
                             <div className="w-[700px]  h-auto bg-white rounded-lg mb-3">
                                 <div className='move cursor-move'>
                                         <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
@@ -75,7 +76,7 @@ const EditLocalityModal = (props) => {
                                             <div className="">
                                                 <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 py-[2px] text-[11px]" type="text" name="empName" value={inputField} onChange={(e) => setInputField(e.target.value)} />
-                                                <div className="text-[9px] text-[#CD0000] ">{formErrors}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors}</div>
                                             </div>
 
                                         </div>

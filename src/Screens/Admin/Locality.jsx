@@ -1071,7 +1071,7 @@ const Locality = () => {
                                                             // }
                                                         })}
                                                     </select>
-                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.country}</div>
+                                                    <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.country}</div>
                                                 </div>
                                                 <div className="mb-4">
                                                     <div className="text-[14px]">Select State <label className="text-red-500">*</label></div>
@@ -1097,7 +1097,7 @@ const Locality = () => {
                                                         })}
 
                                                     </select>
-                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.state}</div>
+                                                    <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.state}</div>
                                                 </div>
                                                 <div className="mb-4">
                                                     <div className="text-[14px]">Select City<label className="text-red-500">*</label></div>
@@ -1123,7 +1123,7 @@ const Locality = () => {
 
                                                         ))}
                                                     </select>
-                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.city}</div>
+                                                    <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.city}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Locality Name<label className="text-red-500">*</label></div>
@@ -1133,7 +1133,7 @@ const Locality = () => {
                                                             return newData;
                                                         })
                                                     }} />
-                                                    <div className="text-[11px] text-[#CD0000] ">{formErrors.locality}</div>
+                                                    <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.locality}</div>
                                                 </div>
                                             </div>
                                         </div>

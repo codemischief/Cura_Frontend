@@ -24,10 +24,10 @@ const DeleteLocalityModal = (props) => {
                 <>
                 <Draggable handle="div.move">
             <div className='bg-white rounded-lg'>
-                <div className="w-auto h-auto flex flex-col justify-center items-center ">
+                <div className="w-auto h-auto flex flex-col justify-center items-center rounded-lg">
                     <div className="move cursor-move">
 
-                    <div className="h-[40px] bg-[#EDF3FF] flex justify-center items-center relative">
+                    <div className="h-[40px] bg-[#EDF3FF] flex justify-center items-center relative rounded-t-lg">
                         <div className="ml-56 mr-52">
                             <div className="text-[16px]">Delete</div>
                         </div>
