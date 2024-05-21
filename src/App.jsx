@@ -63,6 +63,7 @@ import DeleteById from "./Screens/Admin/DeleteById/DeleteById";
 
 import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
+import DeletePage from "./Screens/Admin/DeleteById/DeletePage";
 
 
 const App = () => {
@@ -93,6 +94,10 @@ const App = () => {
           <Route
             path="/admin/deleteById"
             element={<DeleteById />}
+          />
+          <Route
+            path="/admin/deleteById/:pagename"
+            element={<DeletePage />}
           />
           <Route path="/admin/manageOrder" element={<ManageOrder />} />
           <Route path="/admin/manageuser" element={<ManageUser />} />
