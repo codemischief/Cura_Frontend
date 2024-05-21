@@ -1,44 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Logo from "../../assets/logo.jpg";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import * as Yup from "yup";
 import { APIService } from "../../services/API";
-import { Navigate } from "react-router-dom";
 
 const ConfirmPassword = () => {
-  const [userName, setUserName] = useState(null);
-  const [onSubmit, setOnsubmit] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [onSubmit, setSubmit] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setUserName(e.target.value);
+    if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (userName) {
       try {
         const response = await APIService.resetPassword({ username: userName });
-
-        if (!response.ok) {
-          // Handle HTTP errors
-          const errorResponse = await response.json();
-          throw new Error(errorResponse.detail || "An error occurred");
+        if (response.status === 200) {
+          setUserEmail(response?.data?.data);
+          setSubmit(true);
         }
-        const res = await response.json();
-        console.log(res);
       } catch (err) {
-        // Handle network or parsing errors
-        console.error("Error:", err);
         setError(err.message || "An unexpected error occurred");
       }
     }
   };
-
-  useEffect(() => {
-    console.log(error, "error");
-  }, [error]);
 
   return (
     <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
@@ -56,8 +44,8 @@ const ConfirmPassword = () => {
               </div>
               <div className="text-center text-[18px] mb-[50px]">
                 A link to reset password has been sent to{" "}
-                <span className="font-bold">shreyas2002sutar@gmail.com.</span>{" "}
-                The link is valid only for 24 hrs.
+                <span className="font-bold">{userEmail}</span> The link is valid
+                only for 24 hrs.
               </div>
               ,
               <div className="flex flex-col items-center justify-center gap-[10px]">
