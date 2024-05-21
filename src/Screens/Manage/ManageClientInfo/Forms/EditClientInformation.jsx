@@ -250,24 +250,31 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                         <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
                         <select className="text-[11px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="country" onChange={
                             (e) => {
-                                setFormValues({
-                                    ...formValues, client_info: {
-                                        ...formValues.client_info,
-                                        country: e.target.value
-                                    }
-                                })
-                                setFormValues({
-                                    ...formValues, client_info: {
-                                        ...formValues.client_info,
-                                        state: null
-                                    }
-                                })
-                                setFormValues({
-                                    ...formValues, client_info: {
-                                        ...formValues.client_info,
-                                        city: null
-                                    }
-                                })
+                                const temp = {...formValues}
+                                const exis = temp.client_info
+                                exis.country = e.target.value
+                                exis.state = null 
+                                exis.city = null
+                                temp.client_info = exis 
+                                setFormValues(temp)
+                                // setFormValues({
+                                //     ...formValues, client_info: {
+                                //         ...formValues.client_info,
+                                //         country: e.target.value
+                                //     }
+                                // })
+                                // setFormValues({
+                                //     ...formValues, client_info: {
+                                //         ...formValues.client_info,
+                                //         state: null
+                                //     }
+                                // })
+                                // setFormValues({
+                                //     ...formValues, client_info: {
+                                //         ...formValues.client_info,
+                                //         city: null
+                                //     }
+                                // })
                                 setAllState([])
                                 fetchStateData(e.target.value)
                                 setAllCity([]);
@@ -275,15 +282,15 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                         }
                             value={formValues.client_info.country}
                         >
-                            <option value={null}>Select Country</option>
+                            <option value={null} > Select Country</option>
                             {allCountry && allCountry.map(item => {
-                                if (item[0] == formValues.client_info.country) {
-                                    return <option key={item[0]} value={item[0]} selected>
-                                        {item[1]}
+                                if (item.id == formValues.client_info.country) {
+                                    return <option key={item.id} value={item.id} selected>
+                                        {item.name}
                                     </option>
                                 } else {
-                                    return <option key={item[0]} value={item[0]} >
-                                        {item[1]}
+                                    return <option key={item.id} value={item.id} >
+                                        {item.name}
                                     </option>
                                 }
 
