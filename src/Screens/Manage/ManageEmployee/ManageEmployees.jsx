@@ -672,7 +672,7 @@ const ManageEmployees = () => {
                 "panno": "PAN No",
                 "dateofjoining": "Date of Joining",
                 "lastdateofworking": "Last Date of Working",
-                "status": "Status"
+                "status": "Status",
                 "id" : "ID"
             }
         };
