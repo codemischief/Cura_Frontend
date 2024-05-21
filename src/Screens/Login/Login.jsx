@@ -134,7 +134,7 @@ const Login = () => {
         src={Logo}
         alt="company Logo"
       />
-      <div className="w-3/5  h-[540px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
+      <div className="w-3/5  h-[580px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         <div className="w-[400px] h-[300px] mt-[35px]">
           <div className="text-center text-[21px] mb-[35px]">Login Panel </div>
           <form className="space-y-[15px]" onSubmit={handleSubmit}>
@@ -225,7 +225,7 @@ const Login = () => {
             </div>
 
             {/* to create a space  */}
-            <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div>
+            {/* <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div> */}
 
             {/* error message  */}
             {isError && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
