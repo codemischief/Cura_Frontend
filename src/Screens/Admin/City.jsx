@@ -73,10 +73,12 @@ const City = () => {
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        // console.log(result.data);
+
+        setAllCountry(result)
+        // if (Array.isArray(result.data)) {
+        //     setAllCountry(result.data);
+        // }
     }
     const fetchStateData = async (id) => {
         console.log(id);
@@ -96,14 +98,14 @@ const City = () => {
         // console.log(filterMapState);
         Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
-                if(filterMapState[key].filterData == 'Numeric') {
+                if (filterMapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
                         Number(filterMapState[key].filterValue),
                         filterMapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([
                         key,
                         filterMapState[key].filterType,
@@ -111,7 +113,7 @@ const City = () => {
                         filterMapState[key].filterData,
                     ]);
                 }
-                
+
             }
         });
         setFilterState((prev) => tempArray)
@@ -152,7 +154,7 @@ const City = () => {
             order: flag ? "asc" : "desc",
             pg_no: 1,
             pg_size: Number(quantity),
-            search_key : searchInput
+            search_key: searchInput
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
@@ -166,7 +168,7 @@ const City = () => {
     useEffect(() => {
         fetchCityData()
         fetchCountryData()
-        
+
         const handler = (e) => {
             if (menuRef.current == null || !menuRef.current.contains(e.target)) {
                 setCountryFilter(false);
@@ -184,8 +186,8 @@ const City = () => {
     }, []);
     //Validation of the form
     const initialValues = {
-        country : 5,
-        state : null,
+        country: 5,
+        state: null,
         cityName: null,
     };
     const [formValues, setFormValues] = useState(initialValues);
@@ -224,7 +226,7 @@ const City = () => {
             order: flag ? "asc" : "desc",
             pg_no: Number(page),
             pg_size: Number(currentPages),
-            search_key : searchInput
+            search_key: searchInput
         };
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
@@ -241,7 +243,7 @@ const City = () => {
     };
     const enterSearch = (e) => {
         e.preventDefault();
-        
+
         console.log('hey')
         handleSearch()
     }
@@ -300,36 +302,36 @@ const City = () => {
         setDownloadModal(true);
     };
 
-    const [backDropLoading,setBackDropLoading] = useState(false)
+    const [backDropLoading, setBackDropLoading] = useState(false)
     const handleDownload = async (type) => {
         setDownloadModal(false)
         setBackDropLoading(true)
         setPageLoading(true)
         const data = {
             user_id: 1234,
-            rows: ["country","state","city","id"],
+            rows: ["country", "state", "city", "id"],
             filters: filterState,
             sort_by: [sortField],
             order: flag ? "asc" : "desc",
             pg_no: 0,
             pg_size: 0,
             search_key: searchInput,
-            downloadType : type,
-            colmap : {
-                "country" : "Country",
-                "state" : "State",
-                "city" : "City",
-                "id" : "ID"
+            downloadType: type,
+            colmap: {
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "id": "ID"
             }
         };
         const response = await APIService.getCitiesAdmin(data)
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)
-        if(temp.result == 'success') {
+        if (temp.result == 'success') {
             const d = {
-                "filename" : temp.filename,
-                "user_id" : 1234
+                "filename": temp.filename,
+                "user_id": 1234
             }
             fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -338,28 +340,28 @@ const City = () => {
                 },
                 body: JSON.stringify(d) // Convert the object to a JSON string
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'CityData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'CityData.pdf');
-                }
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'CityData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'CityData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             setTimeout(() => {
                 setBackDropLoading(false)
                 setPageLoading(false)
-            },1000) 
+            }, 1000)
         }
     }
     const filterMapping = {
@@ -397,28 +399,28 @@ const City = () => {
     const [cityFilterInput, setCityFilterInput] = useState("");
     const [idFilter, setIdFilter] = useState(false);
     const [idFilterInput, setIdFilterInput] = useState("");
-   
-    const [filterState,setFilterState] = useState([])
+
+    const [filterState, setFilterState] = useState([])
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState);
         const tempArray = [];
         setCountryFilter(false);
-                setStateFilter(false);
-                setCityFilter(false);
-                setIdFilter(false);
+        setStateFilter(false);
+        setCityFilter(false);
+        setIdFilter(false);
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState);
         Object.keys(mapState).forEach((key) => {
             if (mapState[key].filterType != "") {
-                if(mapState[key].filterData == 'Numeric') {
+                if (mapState[key].filterData == 'Numeric') {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
                         Number(mapState[key].filterValue),
                         mapState[key].filterData,
                     ]);
-                }else {
+                } else {
                     tempArray.push([
                         key,
                         mapState[key].filterType,
@@ -426,7 +428,7 @@ const City = () => {
                         mapState[key].filterData,
                     ]);
                 }
-               
+
             }
         });
         setFilterState((prev) => tempArray)
@@ -475,7 +477,7 @@ const City = () => {
         };
 
         if (type == "noFilter" || type == "isNull" || type == "isNotNull") setInputVariable("");
-        
+
         fetchFiltered(existing);
     };
     const handleSort = async (field) => {
@@ -492,9 +494,9 @@ const City = () => {
             order: !flag ? "asc" : "desc",
             pg_no: Number(currentPage),
             pg_size: Number(currentPages),
-            search_key: searchInput ,
+            search_key: searchInput,
         };
-        
+
         const response = await APIService.getCitiesAdmin(data);
         const res = await response.json();
         const result = res.data;
@@ -507,7 +509,7 @@ const City = () => {
 
     const validate = () => {
         var res = true;
-       
+
         if (!formValues.country || formValues.country == "") {
             setFormErrors((existing) => {
                 return { ...existing, country: "Select Country" }
@@ -543,59 +545,59 @@ const City = () => {
     }
     const handleAddCity = () => {
 
-      
 
-        
-        if(!validate()) {
-            return ;
+
+
+        if (!validate()) {
+            return;
         }
         setErrorMessage((prev) => "Proccess Cancelled, Changes Not Saved")
         setButtonLoading(true)
-         setIsCityDialogue(false)
-         setCurrentCity(formValues.cityName)
-         setShowAddConfirmation(true)
-         setButtonLoading(false)
+        setIsCityDialogue(false)
+        setCurrentCity(formValues.cityName)
+        setShowAddConfirmation(true)
+        setButtonLoading(false)
     }
     const addCity = async () => {
         const data = {
-            "user_id":1234,
-            "city":formValues.cityName,
-            "state":formValues.state,
-            "countryid":formValues.country
+            "user_id": 1234,
+            "city": formValues.cityName,
+            "state": formValues.state,
+            "countryid": formValues.country
         }
         const response = await APIService.addCities(data)
         const res = await response.json()
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             setShowAddConfirmation(false)
             setFormValues(initialValues)
             setFormErrors({})
             openAddSuccess()
-        }else {
-           // we need to open error prompt here
-           
+        } else {
+            // we need to open error prompt here
+
         }
-    }  
-    const [currentCityName,setCurrentCityName] = useState("")
+    }
+    const [currentCityName, setCurrentCityName] = useState("")
     const handleDeleteCity = (item) => {
-    setErrorMessage((prev) => "Proccess Cancelled,Changes Not Saved")
-       setCurrentCity(item.id)
-       setCurrentCityName(item.city)
-       setShowDeleteModal(true)
+        setErrorMessage((prev) => "Proccess Cancelled,Changes Not Saved")
+        setCurrentCity(item.id)
+        setCurrentCityName(item.city)
+        setShowDeleteModal(true)
     }
     const deleteCity = async (id) => {
-       const data = {
-        "user_id":1234,
-        "id":id
-       }
-       const response = await APIService.deleteCities(data)
-       const res = await response.json()
-       if(res.result === 'success') {
-          // delete success
-          setShowDeleteModal(false)
-          openDeleteSuccess()
-       }else {
-        // get Failure
-       }
+        const data = {
+            "user_id": 1234,
+            "id": id
+        }
+        const response = await APIService.deleteCities(data)
+        const res = await response.json()
+        if (res.result === 'success') {
+            // delete success
+            setShowDeleteModal(false)
+            openDeleteSuccess()
+        } else {
+            // get Failure
+        }
     }
     const handleEdit = (item) => {
         // setCurrentCity(id)
@@ -606,13 +608,13 @@ const City = () => {
     const editCities = () => {
 
     }
-    const [showAddConfirmation,setShowAddConfirmation] = useState(false)
-    const [showAddSuccess,setShowAddSuccess] = useState(false)
-    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
-    const [showEditSuccess,setShowEditSuccess] = useState(false)
-    const [currentCity,setCurrentCity] = useState("")
+    const [showAddConfirmation, setShowAddConfirmation] = useState(false)
+    const [showAddSuccess, setShowAddSuccess] = useState(false)
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false)
+    const [showEditSuccess, setShowEditSuccess] = useState(false)
+    const [currentCity, setCurrentCity] = useState("")
 
-    const [showDeleteModal,setShowDeleteModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
     const openAddSuccess = () => {
         setShowAddSuccess(true);
@@ -647,61 +649,61 @@ const City = () => {
         setFormErrors({})
         setFormValues(initialValues)
     }
-    
-    const [showCancelModal,setShowCancelModal] = useState(false)
 
-    const [errorMessage,setErrorMessage] = useState("Process Cancelled, No New City Added")
-    const [showEditModal,setShowEditModal] = useState(false)
-    const [currentCityData,setCurrentCityData] = useState({})
-    const [buttonLoading,setButtonLoading] = useState(false)
+    const [showCancelModal, setShowCancelModal] = useState(false)
+
+    const [errorMessage, setErrorMessage] = useState("Process Cancelled, No New City Added")
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [currentCityData, setCurrentCityData] = useState({})
+    const [buttonLoading, setButtonLoading] = useState(false)
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-      const handleEnterToFilter = (event,inputVariable,
+    const handleEnterToFilter = (event, inputVariable,
         setInputVariable,
         type,
         columnName) => {
-            if (event.keyCode === 13) {
-                    // if its empty then we remove that 
-                    // const temp = {...filterMapState};
-                    // temp[columnName].type = "".
-                    // setFilterMapState(temp)
-                    if(inputVariable == "") {
-                        const temp = {...filterMapState}
-                        temp[columnName].filterType = ""
-                        setFilterMapState(temp)
-                        fetchCityData()
-                    }else {
-                        newHandleFilter(inputVariable,
-                            setInputVariable,
-                            type,
-                            columnName)
-                    }
-                    
-                
-                
-              }
-      }
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchCityData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+
+
+
+        }
+    }
     return (
         <div className="h-screen font-medium">
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
             <Navbar />
             {showAddConfirmation && <SaveConfirmationCity currentCity={currentCity} showCancel={openCancel} initials={initials} handleClose={() => setShowAddConfirmation(false)} addCity={addCity} />}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New City added successfully"/>}
-            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="City Deleted Successully"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
-            {showDeleteModal && <DeleteCityModal handleDelete={deleteCity} handleClose={() => { openCancel(); setShowDeleteModal(false);}} showCancel={openCancel} id={currentCity} currentCityName={currentCityName} />}
-             {showEditModal  && <EditCityModal handleClose={() => {setShowEditModal(false);  openCancel()}} initialCountry={allCountry} initialData={currentCityData} openSuccess={openEditSuccess}/>}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New City added successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="City Deleted Successully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
+            {showDeleteModal && <DeleteCityModal handleDelete={deleteCity} handleClose={() => { openCancel(); setShowDeleteModal(false); }} showCancel={openCancel} id={currentCity} currentCityName={currentCityName} />}
+            {showEditModal && <EditCityModal handleClose={() => { setShowEditModal(false); openCancel() }} initialCountry={allCountry} initialData={currentCityData} openSuccess={openEditSuccess} />}
             {showCancelModal && <CancelModel isOpen={showCancelModal} message={errorMessage} />}
 
             <div className="h-[calc(100vh_-_7rem)] w-full px-10">
@@ -736,13 +738,13 @@ const City = () => {
                                 <img src={Cross} className="w-5 h-5 mx-2" />
                             </button>
                             <div className="h-9 w-10 bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                              
+
                                 <button onClick={handleSearch} >
                                     <img className="h-6" src={searchIcon} alt="search-icon" />
                                 </button>
                             </div>
                         </div>
-                                {/* </form> */}
+                        {/* </form> */}
 
                         <div>
                             {/* button */}
@@ -759,7 +761,7 @@ const City = () => {
                     </div>
                 </div>
 
-                <div className="w-full h-12 flex justify-between">
+                <div className="w-full h-12 flex justify-between items-center">
                     <div className="w-3/4 flex items-center">
                         <div className="w-[10%] p-4">{/* <p>Sr. </p> */}</div>
                         <div className="w-[20%]  p-4">
@@ -768,12 +770,12 @@ const City = () => {
                                     className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={countryFilterInput}
                                     onChange={(e) => setCountryFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event,countryFilterInput,
+                                    onKeyDown={(event) => handleEnterToFilter(event, countryFilterInput,
                                         setCountryFilterInput,
                                         'contains',
                                         'country')}
                                 />
-                                {filterMapState.country.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.country.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {countryFilter && (
                                 <CharacterFilter
@@ -786,18 +788,18 @@ const City = () => {
                                 />
                             )}
                         </div>
-                        <div className="w-[20%]  p-4">
+                        <div className="w-[20%]  p-4 ml-[-1px]">
                             <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input
                                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={stateFilterInput}
                                     onChange={(e) => setStateFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event,stateFilterInput,
+                                    onKeyDown={(event) => handleEnterToFilter(event, stateFilterInput,
                                         setStateFilterInput,
                                         'contains',
                                         'state')}
                                 />
-                                {filterMapState.state.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.state.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {stateFilter && (
                                 <CharacterFilter
@@ -810,18 +812,18 @@ const City = () => {
                                 />
                             )}
                         </div>
-                        <div className="w-[25%]  p-4">
+                        <div className="w-[25%]  p-4 ml-[-1px]">
                             <div className="w-[55%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input
                                     className="w-[70%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={cityFilterInput}
                                     onChange={(e) => setCityFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event,cityFilterInput,
+                                    onKeyDown={(event) => handleEnterToFilter(event, cityFilterInput,
                                         setCityFilterInput,
                                         'contains',
                                         'city')}
                                 />
-                                {filterMapState.city.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.city.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {cityFilter && (
                                 <CharacterFilter
@@ -836,18 +838,18 @@ const City = () => {
                         </div>
                     </div>
                     <div className="w-1/6  flex items-center">
-                        <div className="w-1/2  p-4">
+                        <div className="w-1/2  p-4 ml-[-1px]">
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input
                                     className="w-[65%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none"
                                     value={idFilterInput}
                                     onChange={(e) => setIdFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                    onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
                                         setIdFilterInput,
                                         'equalTo',
                                         'id')}
                                 />
-                                {filterMapState.id.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
                             {idFilter && (
                                 <NumericFilter
@@ -865,8 +867,8 @@ const City = () => {
                 </div>
 
                 <div className="h-[calc(100vh_-_14rem)] w-full text-[12px]">
-                    <div className="w-full h-12 bg-[#F0F6FF] flex justify-between">
-                        <div className="w-3/4 flex">
+                    <div className="w-full h-12 bg-[#F0F6FF] flex justify-between items-center">
+                        <div className="w-3/4 flex items-center">
                             <div className="w-[10%] p-4">
                                 <p>Sr. </p>
                             </div>
@@ -895,7 +897,7 @@ const City = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="w-1/6  flex">
+                        <div className="w-1/6  flex items-center">
                             <div className="w-1/2  p-4">
                                 <p>
                                     ID{" "}
@@ -919,25 +921,25 @@ const City = () => {
                             existingCities.map((item, index) => {
                                 return (
                                     <div className="w-full h-12  flex justify-between border-gray-400 border-b-[1px]">
-                                        <div className="w-3/4 flex">
+                                        <div className="w-3/4 flex items-center">
                                             <div className="w-[10%] p-4">
                                                 <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                             </div>
                                             <div className="w-[20%]  p-4">
                                                 <p>{item.country}</p>
                                             </div>
-                                            <div className="w-[20%]  p-4">
+                                            <div className="w-[20%]  p-4 ml-0.5">
                                                 <p>{item.state}</p>
                                             </div>
                                             <div className="w-[25%]  p-4">
                                                 <p>{item.city}</p>
                                             </div>
                                         </div>
-                                        <div className="w-1/6  flex">
-                                            <div className="w-1/2  p-4">
+                                        <div className="w-1/6  flex items-center">
+                                            <div className="w-1/2  p-4 ml-1">
                                                 <p>{item.id}</p>
                                             </div>
-                                            <div className="w-1/2 0 p-4 flex justify-between items-center">
+                                            <div className="w-1/2 0 p-4 flex justify-between items-center ml-1">
                                                 <button onClick={() => handleEdit(item)}><img className="w-5 h-5" src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDeleteCity(item)}><img className="w-5 h-5" src={Trash} alt="trash" /></button>
                                             </div>
@@ -992,17 +994,17 @@ const City = () => {
                                 <img src={Cross} className="absolute top-1 right-1 w-4 h-4" />
                             </button>
                             <button onClick={() => handleDownload("pdf")}>
-                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-                                <p>Download as pdf</p>
-                                <img src={Pdf} />
-                            </div>
-                        </button>
-                        <button onClick={() => handleDownload("excel")}>
-                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
-                                <p>Download as Excel</p>
-                                <img src={Excel} />
-                            </div>
-                        </button>
+                                <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+                                    <p>Download as pdf</p>
+                                    <img src={Pdf} />
+                                </div>
+                            </button>
+                            <button onClick={() => handleDownload("excel")}>
+                                <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                    <p>Download as Excel</p>
+                                    <img src={Excel} />
+                                </div>
+                            </button>
                         </div>
                     )}
 
@@ -1023,111 +1025,112 @@ const City = () => {
                 </div>
             </div>
 
-            <Modal open={isCityDialogue} 
-            fullWidth={true} 
-            maxWidth={"md"}
-            className="flex justify-center items-center"
+            <Modal open={isCityDialogue}
+                fullWidth={true}
+                maxWidth={"md"}
+                className="flex justify-center items-center"
             >
                 <>
                     <Draggable handle="div.move">
-                <div className="flex justify-center ">
-                    <div className="w-[800px]  h-auto bg-white rounded-lg relative">
-                        <div className="move cursor-move">
+                        <div className="flex justify-center ">
+                            <div className="w-[800px]  h-auto bg-white rounded-lg relative">
+                                <div className="move cursor-move">
 
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="">
-                                <div className="text-base"> New City</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7  bg-white absolute right-3">
-                                <button onClick={handleClose}>
-                                    <img className="w-5 h-5 " src={Cross} alt="cross" />
-                                </button>
-                            </div>
-                         </div>
-                        </div>
-                        <div className="h-auto w-full mt-4 mb-20 ">
-                            <div className="flex gap-12 justify-center items-center">
-                                <div className=" space-y-5 py-5">
-                                <div className="">
-                                        <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
-                                        <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            name="country"
-                                            value={formValues.country}
-                                            defaultValue="Select Country"
-                                            onChange={e => {
-                                                setCurrCountry(e.target.value);
-                                                                                           
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, country: e.target.value }
-                                                    return newData;
-                                                })
-                                                // fetchStateData(res);
-                                            }}
-                                        >
-
-                                            {allCountry && allCountry.map(item => {
-                                                return <option value={item[0]}> {item[1]}</option>
-                                                // if (item[0] == 5) {
-                                                //     return <option value={item[0]} selected>
-                                                //         {item[1]}
-                                                //     </option>
-                                                // } else {
-                                                //     return <option value={item[0]} >
-                                                //         {item[1]}
-                                                //     </option>
-                                                // }
-                                            })}
-                                        </select>
-                                        {/* <div className="h-[25px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute ">{formErrors.country}</div> */}
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">State Name <label className="text-red-500">*</label></div>
-                                        <input
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            type="text"
-                                            name="state"
-                                            value={formValues.state}
-                                            onChange={handleChange}
-                                        />
-                                        
-                                        <div className="h-[25px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute">{formErrors.state}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm">
-                                           Enter City Name<label className="text-red-500">*</label>
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="">
+                                            <div className="text-base"> New City</div>
                                         </div>
-                                        <input
-                                            className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                            type="text"
-                                            name="cityName"
-                                            value={formValues.cityName}
-                                            onChange={handleChange}
-                                        />
-                                        <div className="h-[100px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute">{formErrors.cityName}</div>
+                                        <div className="flex justify-center items-center rounded-full w-7 h-7  bg-white absolute right-3">
+                                            <button onClick={handleClose}>
+                                                <img className="w-5 h-5 " src={Cross} alt="cross" />
+                                            </button>
+                                        </div>
                                     </div>
+                                </div>
+                                <div className="h-auto w-full mt-4 mb-20 ">
+                                    <div className="flex gap-12 justify-center items-center">
+                                        <div className=" space-y-5 py-5">
+                                            <div className="">
+                                                <div className="text-sm">Country Name <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="country"
+                                                    value={formValues.country}
+                                                    defaultValue="Select Country"
+                                                    onChange={e => {
+                                                        setCurrCountry(e.target.value);
+
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, country: e.target.value }
+                                                            return newData;
+                                                        })
+                                                        // fetchStateData(res);
+                                                    }}
+                                                >
+                                                    {allCountry && allCountry.map(item => {
+                                                        return <option value={item.id}>
+                                                            {item.name}
+                                                        </option>
+                                                        // if (item[1] == 5) {
+                                                        //     return <option value={item[0]} selected>
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // } else {
+                                                        //     return <option value={item[0]}>
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // }
+                                                    })}
+                                                </select>
+                                                {/* <div className="h-[25px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute ">{formErrors.country}</div> */}
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">State Name <label className="text-red-500">*</label></div>
+                                                <input
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    type="text"
+                                                    name="state"
+                                                    value={formValues.state}
+                                                    onChange={handleChange}
+                                                />
+
+                                                <div className="h-[25px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute">{formErrors.state}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">
+                                                    Enter City Name<label className="text-red-500">*</label>
+                                                </div>
+                                                <input
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    type="text"
+                                                    name="cityName"
+                                                    value={formValues.cityName}
+                                                    onChange={handleChange}
+                                                />
+                                                <div className="h-[100px] w-56 text-[9px] mt-[3px] text-[#CD0000] absolute">{formErrors.cityName}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="my-2 flex justify-center items-center gap-[10px]">
+                                    <button
+                                        className={`w-[100px] h-[35px] ${buttonLoading ? "#505050" : "bg-[#004DD7]"}  text-white rounded-md`}
+                                        // type="submit"
+                                        onClick={handleAddCity}
+                                    >
+                                        Add
+                                    </button>
+                                    <button
+                                        className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
+                                        onClick={handleClose}
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
-                        <div className="my-2 flex justify-center items-center gap-[10px]">
-                            <button
-                                className={`w-[100px] h-[35px] ${buttonLoading ? "#505050"  : "bg-[#004DD7]"}  text-white rounded-md`}
-                                // type="submit"
-                                onClick={handleAddCity}
-                            >
-                                Add
-                            </button>
-                            <button
-                                className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                                onClick={handleClose}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
                     </Draggable>
-                    </>
+                </>
             </Modal>
         </div>
     );
