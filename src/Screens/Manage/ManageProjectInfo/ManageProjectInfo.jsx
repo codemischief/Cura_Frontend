@@ -417,35 +417,75 @@ const ManageProjectInfo = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
-    const handleExcelDownload = async () => {
+    const handleDownload = async (type) => {
+        // setBackDropLoading(true)
+        setDownloadModal(false)
+        setPageLoading(true)
         const data = {
             "user_id": 1234,
-            "rows": 
-            [
-                "projectname",
-                "buildername",
-                "suburb",
-                "otherdetails",
-                "mailgroup1",
-                "mailgroup2",
-                "rules",
-                "id"
+            "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed"
             ],
-            "filters": stateArray,
+            "filters": [],
             "sort_by": [sortField],
-            "order": flag  ? "asc" : "desc",
+            "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key" : searchInput
+            "search_key": searchInput,
+            "downloadType": type,
+            "colmap": {
+                "projectname": "Project Name",
+                "buildername" : "Builder Name",
+                "suburb" : "Suburb",
+                "otherdetails" : "Other Details/Issues",
+                "mailgroup1" : "Mailgroup",
+                "mailgroup2" : "Subscribed Mail",
+                "rules" : "Rules",
+                "tenantstudentsallowed" : "Tenant Students Allowed",
+                "tenantworkingbachelorsallowed" : "Tenant Bachelors Allowed",
+                "tenantforeignersallowed" : "Tenant Foreigners Allowed",
+                "id" : "ID"
+            }
         };
         const response = await APIService.getProjectInfo(data)
         const temp = await response.json();
         const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "ProjectData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+        console.log(temp)
+        if (temp.result == 'success') {
+            const d = {
+                "filename": temp.filename,
+                "user_id": 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'ProjectData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'ProjectData.pdf');
+                    }
+
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            }, 1000)
+        }
     }
     const handleSort = async (field) => {
         setPageLoading(true);

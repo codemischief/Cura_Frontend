@@ -456,11 +456,11 @@ const ManageBuilder = () => {
             "search_key": searchInput,
             "downloadType": type,
             "colmap": {
-                "buildername": "Builder Name ",
+                "buildername": "Builder Name",
                 "country": "Country",
                 "city": "City",
                 "suburb": "Suburb",
-                "ID": "id"
+                "id": "ID"
             }
         };
         const response = await APIService.getNewBuilderInfo(data)
@@ -657,9 +657,9 @@ const ManageBuilder = () => {
 
         fetchFiltered(existing);
     }
-
+    
     const [flag, setFlag] = useState(false)
-
+    
     const handleSort = async (field) => {
         setPageLoading(true);
         const tempArray = [];
