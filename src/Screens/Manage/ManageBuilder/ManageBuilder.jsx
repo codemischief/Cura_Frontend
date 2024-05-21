@@ -1,6 +1,7 @@
 import { CircularProgress, Modal, Pagination } from "@mui/material";
+import Backdrop from '@mui/material/Backdrop';
 import React, { useEffect, useState, useRef } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
@@ -9,6 +10,8 @@ import Cross from "../../../assets/cross.png";
 import downloadIcon from "../../../assets/download.png";
 import Edit from "../../../assets/edit.png";
 import Add from "./../../../assets/add.png";
+import Pdf from "../../../assets/pdf.png";
+import Excel from "../../../assets/excel.png"
 import nextIcon from "../../../assets/next.png";
 import refreshIcon from "../../../assets/refresh.png";
 import searchIcon from "../../../assets/searchIcon.png";
@@ -25,9 +28,12 @@ import SaveConfirmationBuilder from "./SaveConfirmationBuilder";
 import CancelModel from './../../../Components/modals/CancelModel';
 import { ScreenSearchDesktopTwoTone } from "@mui/icons-material";
 import Draggable from "react-draggable";
+import ActiveFilter from "../../../assets/active_filter.png"
 const ManageBuilder = () => {
     // we have the module here
-    const menuRef = useRef()
+    const menuRef = useRef();
+    const navigate = useNavigate();
+
     const [existingBuilders, setExistingBuilders] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [showSucess, setShowSucess] = useState(false);
@@ -38,7 +44,7 @@ const ManageBuilder = () => {
     const [currentBuilderId, setCurrentBuilderId] = useState();
     const [deleted, setDeleted] = useState(false);
     const [allCountry, setAllCountry] = useState([]);
-    const [selectedCountry, setselectedCountry] = useState("");
+    const [currCountry, setCurrCountry] = useState(-1);
     const [allState, setAllState] = useState([]);
     const [selectedState, setSelectedState] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
@@ -76,15 +82,37 @@ const ManageBuilder = () => {
 
     const fetchBuilderData = async () => {
         setPageLoading(true);
+        const tempArray = [];
+        Object.keys(filterMapState).forEach((key) => {
+            if (filterMapState[key].filterType != "") {
+                if (filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                } else {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }
+
+            }
+        });
+        setFilterState((prev) => tempArray)
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -107,7 +135,7 @@ const ManageBuilder = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(page),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -131,7 +159,7 @@ const ManageBuilder = () => {
             "order": "desc",
             "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -146,14 +174,11 @@ const ManageBuilder = () => {
 
     const fetchCountryData = async () => {
         setPageLoading(true);
+        // const data = { "user_id":  1234 };
         const data = { "user_id": 1234, "rows": ["id", "name"], "filters": [], "sort_by": [], "order": "asc", "pg_no": 0, "pg_size": 0 };
         const response = await APIService.getCountries(data)
         const result = (await response.json()).data;
-        console.log(result.data);
-
-        if (Array.isArray(result.data)) {
-            setAllCountry(result.data);
-        }
+        setAllCountry(result)
     }
 
     const fetchStateData = async (e) => {
@@ -168,7 +193,7 @@ const ManageBuilder = () => {
     }
 
     const fetchCityData = async (d) => {
-        const data = { "user_id": 1234,"state_name": d };
+        const data = { "user_id": 1234, "state_name": d };
         const response = await APIService.getCities(data);
         const result = (await response.json()).data;
         if (Array.isArray(result)) {
@@ -188,7 +213,7 @@ const ManageBuilder = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -214,7 +239,7 @@ const ManageBuilder = () => {
             "order": "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key" : ""
+            "search_key": ""
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -232,12 +257,12 @@ const ManageBuilder = () => {
         setCurrentBuilderId(item);
         setDeleted(true);
     }
-    const [errorMessage,setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const handleAddBuilder = async () => {
         console.log('hey')
         setCurrentBuilder(formValues.builderName)
         setIsManageBuidlerDialogue(false)
-        
+
         setAddConfirmation(true);
 
     }
@@ -248,7 +273,7 @@ const ManageBuilder = () => {
             "phone1": formValues.phone1,
             "phone2": formValues.phone2,
             "email1": formValues.email1,
-            "email2" : formValues.email2,
+            "email2": formValues.email2,
             "addressline1": formValues.address1,
             "addressline2": formValues.address2,
             "suburb": formValues.suburb,
@@ -327,25 +352,25 @@ const ManageBuilder = () => {
         setFormErrors(validate(formValues)); // validate form and set error message
         console.log(formErrors)
         if (!formValues.builderName || formValues.builderName == "") {
-            return 
+            return
         }
         if (!formValues.phone1 || formValues.phone1 == "") {
-            return 
+            return
         }
         if (!formValues.address1 || formValues.address1 == "") {
-            return 
+            return
         }
         if (!formValues.country || formValues.country == "") {
-            return 
+            return
         }
         if (!formValues.state || formValues.state == "") {
-            return 
+            return
         }
         if (!formValues.city || formValues.city == "") {
-            return 
+            return
         }
         if (!formValues.suburb || formValues.suburb == "") {
-            return 
+            return
         }
 
 
@@ -380,7 +405,7 @@ const ManageBuilder = () => {
             errors.city = "Select City";
         }
         if (!formValues.suburb || formValues.suburb == "") {
-            errors.suburb = "Select suburb"; 
+            errors.suburb = "Select suburb";
         }
         return errors;
     };
@@ -413,12 +438,71 @@ const ManageBuilder = () => {
     const handleRefresh = async () => {
         await fetchBuilderData();
     }
-    const handleDownload = () => {
-        const worksheet = XLSX.utils.json_to_sheet(existingBuilders);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "BuilderData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+    const openDownload = () => {
+        setDownloadModal(true);
+    }
+    const handleDownload = async (type) => {
+        // setBackDropLoading(true)
+        setDownloadModal(false)
+        setPageLoading(true)
+        const data = {
+            "user_id": 1234,
+            "rows": ["buildername", "country", "city", "suburb", "id",],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput,
+            "downloadType": type,
+            "colmap": {
+                "buildername": "Builder Name ",
+                "country": "Country",
+                "city": "City",
+                "suburb": "Suburb",
+                "ID": "id"
+            }
+        };
+        const response = await APIService.getNewBuilderInfo(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if (temp.result == 'success') {
+            const d = {
+                "filename": temp.filename,
+                "user_id": 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'BuilderData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'BuilderData.pdf');
+                    }
+
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            }, 1000)
+        }
     }
     const handlePageChange = (event, value) => {
         setCurrentPage(value)
@@ -464,58 +548,76 @@ const ManageBuilder = () => {
     const [suburbFilterInput, setSuburbFilterInput] = useState("")
     const [idFilter, setIdFilter] = useState(false)
     const [idFilterInput, setIdFilterInput] = useState("")
-    const [addConfirmation,setAddConfirmation] = useState(false);
+    const [addConfirmation, setAddConfirmation] = useState(false);
 
     const filterMapping = {
-        buildername : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        buildername: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        country : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        country: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        city : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        city: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        suburb : {
-            filterType : "",
-            filterValue : "",
-            filterData : "String",
-            filterInput : ""
+        suburb: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
         },
-        id : {
-            filterType : "",
-            filterValue : null,
-            filterData : "Numeric",
-            filterInput : ""
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
 
-    const [filterMapState,setFilterMapState] = useState(filterMapping);
+    const [filterMapState, setFilterMapState] = useState(filterMapping);
     const [filterState, setFilterState] = useState([]);
-    const fetchFiltered = async  (mapState) => {
+    const fetchFiltered = async (mapState) => {
         setPageLoading(true);
+        setBuilderFilter(false);
+        setCountryFilter(false);
+        setCityFilter(false);
+        setSuburbFilter(false);
+        setIdFilter(false);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
-        Object.keys(mapState).forEach(key=> {
-            if(mapState[key].filterType != "") {
-                tempArray.push([key,mapState[key].filterType,mapState[key].filterValue,mapState[key].filterData]);
+        Object.keys(mapState).forEach(key => {
+            if (mapState[key].filterType != "") {
+                if (mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                } else {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        mapState[key].filterValue,
+                        mapState[key].filterData,
+                    ]);
+                }
+
             }
         })
-        setFilterState(tempArray);
-        setCurrentPage(1);
-        console.log('this is getting called')
-        console.log(tempArray)
+        setFilterState(tempArray)
+        setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
             "rows": ["id", "buildername", "phone1", "phone2", "email1", "email2", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "website", "comments", "dated", "createdby", "isdeleted"],
@@ -524,7 +626,7 @@ const ManageBuilder = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         };
         const response = await APIService.getNewBuilderInfo(data)
         const res = await response.json()
@@ -536,24 +638,28 @@ const ManageBuilder = () => {
         // console.log(result);
         setExistingBuilders(result);
     }
-    const newHandleFilter = async (inputVariable,setInputVariable,type,columnName) => {
-        
-            var existing = filterMapState;
-            existing = {...existing,[columnName] : {
+    const newHandleFilter = async (inputVariable, setInputVariable, type, columnName) => {
+
+        var existing = filterMapState;
+        existing = {
+            ...existing, [columnName]: {
                 ...existing[columnName],
-                 filterType : type == 'noFilter' ? "" : type
-            }}
-            existing = {...existing, [columnName] : {
+                filterType: type == 'noFilter' ? "" : type
+            }
+        }
+        existing = {
+            ...existing, [columnName]: {
                 ...existing[columnName],
-                 filterValue : type == 'noFilter' ? "" : inputVariable
-            }}
-            if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
-        
+                filterValue: type == 'noFilter' ? "" : inputVariable
+            }
+        }
+        if (type == 'noFilter' || type == 'isNull' || type == 'isNotNull') setInputVariable("");
+
         fetchFiltered(existing);
     }
 
     const [flag, setFlag] = useState(false)
-    
+
     const handleSort = async (field) => {
         setPageLoading(true);
         const tempArray = [];
@@ -563,9 +669,9 @@ const ManageBuilder = () => {
             return !prev
         })
         console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key=> {
-            if(filterMapState[key].filterType != "") {
-                tempArray.push([key,filterMapState[key].filterType,filterMapState[key].filterValue,filterMapState[key].filterData]);
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
             }
         })
         const data = {
@@ -590,7 +696,7 @@ const ManageBuilder = () => {
 
     }
 
-    const [showEditSuccess,setShowEditSuccess] = useState(false)
+    const [showEditSuccess, setShowEditSuccess] = useState(false)
     const openEditSuccess = () => {
         setIsEditDialogue(false);
         setShowEditSuccess(true);
@@ -600,51 +706,58 @@ const ManageBuilder = () => {
     }
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
-      setInputVariable,
-      type,
-      columnName) => {
-          if (event.keyCode === 13) {
-                  // if its empty then we remove that 
-                  // const temp = {...filterMapState};
-                  // temp[columnName].type = "".
-                  // setFilterMapState(temp)
-                  if(inputVariable == "") {
-                      const temp = {...filterMapState}
-                      temp[columnName].filterType = ""
-                      setFilterMapState(temp)
-                      fetchData()
-                  }else {
-                      newHandleFilter(inputVariable,
-                          setInputVariable,
-                          type,
-                          columnName)
-                  }
-                  
-              
-              
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchBuilderData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
             }
+
+
+
+        }
     }
     return (
-        <div className="h-screen">
+        <div className="h-screen font-medium">
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => { }}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Builder Deleted Successfully" />}
             <FailureModal isOpen={showFailure} message={errorMessage} />
-            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} showSuccess = {openDeleteSuccess} showCancel={openCancelModal} />
-            {addConfirmation && <SaveConfirmationBuilder handleClose={() => setAddConfirmation(false)} addBuilder={addNewBuilder} currentBuilder={currentBuilder} showCancel={openAddCancelModal} setDefault={initials}/>}
+            <Delete isOpen={showDelete} currentBuilder={currentBuilderId} closeDialog={setShowDelete} fetchData={fetchBuilderData} showSuccess={openDeleteSuccess} showCancel={openCancelModal} />
+            {addConfirmation && <SaveConfirmationBuilder handleClose={() => setAddConfirmation(false)} addBuilder={addNewBuilder} currentBuilder={currentBuilder} showCancel={openAddCancelModal} setDefault={initials} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new builder created." />}
-           {showEditSuccess &&  <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesfully "/>}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesfully " />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full px-10'>
 
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                            <Link to="/admin/managebuilder"><img className='w-5 h-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
                         <div className='flex-col'>
                             <h1 className="text-[18px]">Manage Builder</h1>
@@ -664,7 +777,7 @@ const ManageBuilder = () => {
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className='w-5 h-5 mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
-                            <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
+                                <button onClick={handleSearch}><img className="h-[26px] " src={searchIcon} alt="search-icon" /></button>
                             </div>
                         </div>
 
@@ -682,51 +795,64 @@ const ManageBuilder = () => {
 
                 </div>
 
-                <div className='h-12 w-full flex text-xs'>
-                    <div className="w-[85%] h-full flex">
+                <div className='h-12 w-full flex text-xs items-center'>
+                    <div className="w-[85%] h-full flex items-center">
                         <div className='w-[5%] p-3'>
                             {/* <p>Sr. </p> */}
                         </div>
                         <div className='w-[25%]  px-3 py-2.5'>
                             <div className='w-[46%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[77%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }} 
-                                
-                                onKeyDown={(event) => handleEnterToFilter(event,builderFilterInput,
-                                    setBuilderFilterInput,
-                                    'contains',
-                                    'buildername')}
-                                
+                                <input className="w-[77%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={builderFilterInput} onChange={(e) => { setBuilderFilterInput(e.target.value) }}
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, builderFilterInput,
+                                        setBuilderFilterInput,
+                                        'contains',
+                                        'buildername')}
+
                                 />
-                                <button className='w-[23%] px-1 py-2' onClick={() => { setBuilderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.buildername.filterType == "" ? <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[22%] px-1 py-2' onClick={() => setBuilderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} />}
+                            {builderFilter && <CharacterFilter inputVariable={builderFilterInput} setInputVariable={setBuilderFilterInput} handleFilter={newHandleFilter} filterColumn='buildername' menuRef={menuRef} filterType={filterMapState.buildername.filterType} />}
                         </div>
                         <div className='w-[15%]  px-3 py-2.5'>
                             <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }} 
-                                
-                                onKeyDown={(event) => handleEnterToFilter(event,builderFilterInput,
-                                    setBuilderFilterInput,
-                                    'contains',
-                                    'buildername')}
+                                <input className="w-[72%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={countryFilterInput} onChange={(e) => { setCountryFilterInput(e.target.value) }}
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, countryFilterInput,
+                                        setCountryFilterInput,
+                                        'contains',
+                                        'country')}
+
                                 />
-                                <button className='px-1 py-2 w-[25%]' onClick={() => { setCountryFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+
+                                {filterMapState.country.filterType == "" ? <button className='w-[28%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[28%] px-1 py-2' onClick={() => setCountryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+
                             </div>
-                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
+                            {countryFilter && <CharacterFilter inputVariable={countryFilterInput} setInputVariable={setCountryFilterInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} filterType={filterMapState.country.filterType} />}
                         </div>
                         <div className='w-[15%]  px-3 py-2.5'>
                             <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none " value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }} />
-                                <button className='px-1 py-2 w-[25%]' onClick={() => { setCityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none " value={cityFilterInput} onChange={(e) => { setCityFilterInput(e.target.value) }}
+                                    onKeyDown={(event) => handleEnterToFilter(event, cityFilterInput,
+                                        setCityFilterInput,
+                                        'contains',
+                                        'city')}
+                                />
+                                {filterMapState.city.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
+                            {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} filterType={filterMapState.city.filterType} />}
                         </div>
                         <div className='w-[15%]  px-3 py-2.5'>
                             <div className='w-[66%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }} />
-                                <button className='px-1 py-2 w-[25%]' onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={suburbFilterInput} onChange={(e) => { setSuburbFilterInput(e.target.value) }}
+                                    onKeyDown={(event) => handleEnterToFilter(event, suburbFilterInput,
+                                        setSuburbFilterInput,
+                                        'contains',
+                                        'suburb')}
+                                />
+                                {filterMapState.suburb.filterType == "" ? <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} />}
+                            {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} filterType={filterMapState.suburb.filterType} />}
                         </div>
 
                         <div className='w-[10%]  p-4'>
@@ -736,15 +862,20 @@ const ManageBuilder = () => {
                             {/* <p>Projects</p> */}
                         </div>
                     </div>
-                    <div className="w-[15%] flex">
+                    <div className="w-[15%] flex items-center">
                         <div className='w-1/2  px-3 py-2.5'>
                             <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
-                                <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }} />
-                                <button className='px-1 py-2 w-[33%]' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                <input className="w-[67%] bg-[#EBEBEB] rounded-[5px] pl-2 outline-none" value={idFilterInput} onChange={(e) => { setIdFilterInput(e.target.value) }}
+                                    onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                        setIdFilterInput,
+                                        'contains',
+                                        'id')}
+                                />
+                                {filterMapState.id.filterType == "" ? <button className='w-[33%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[33%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' />}
+                            {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} columnName='id' filterType={filterMapState.id.filterType} />}
                         </div>
-                        
+
                         <div className='w-1/2 p-4'>
                             {/* <p>Edit</p> */}
                         </div>
@@ -754,8 +885,8 @@ const ManageBuilder = () => {
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
 
-                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
-                        <div className='w-[85%] flex'>
+                    <div className='w-full h-12 bg-[#F0F6FF] flex justify-between items-center'>
+                        <div className='w-[85%] flex items-center'>
                             <div className='w-[5%] p-4'>
                                 <p>Sr. </p>
                             </div>
@@ -778,7 +909,7 @@ const ManageBuilder = () => {
                                 {/* <p>Projects</p> */}
                             </div>
                         </div>
-                        <div className='w-[15%] flex'>
+                        <div className='w-[15%] flex items-center'>
                             <div className='w-1/2  p-4'>
                                 <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
@@ -791,19 +922,22 @@ const ManageBuilder = () => {
 
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
-                        {pageLoading && <div className='ml-11 mt-9'>
+                        {/* {pageLoading && <div className='ml-11 mt-9'>
                             <CircularProgress />
+                        </div>} */}
+                        {!pageLoading && existingBuilders && existingBuilders.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
                         {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {
-                            return <div className='w-full h-10  flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className='w-[85%] flex'>
+                            return <div className='w-full h-10  flex justify-between items-center border-gray-400 border-b-[1px]'>
+                                <div className='w-[85%] flex items-center'>
                                     <div className='w-[5%] p-4'>
                                         <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                     </div>
-                                    <div className='w-[25%]  p-4'>
+                                    <div className='w-[25%]  p-4 ml-0.5'>
                                         <p>{item.buildername}</p>
                                     </div>
-                                    <div className='w-[15%]  p-4'>
+                                    <div className='w-[15%]  p-4 ml-0.5'>
                                         <p>{item.country}</p>
                                     </div>
                                     <div className='w-[15%]  p-4'>
@@ -813,17 +947,17 @@ const ManageBuilder = () => {
                                         <p>{item.suburb}</p>
                                     </div>
                                     <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                            <Link to={`contacts/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Contacts</p></Link>
+                                        <Link to={`contacts/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Contacts</p></Link>
                                     </div>
                                     <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
                                         <Link to={`projects/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Projects</p></Link>
                                     </div>
                                 </div>
-                                <div className='w-[15%] flex'>
-                                    <div className='w-1/2  p-4'>
+                                <div className='w-[15%] flex items-center'>
+                                    <div className='w-1/2  p-4 ml-1'>
                                         <p>{item.id}</p>
                                     </div>
-                                    <div className='w-1/2 0 p-4 flex justify-between items-center'>
+                                    <div className='w-1/2 0 p-4 flex justify-between items-center ml-0.5'>
                                         <img className='w-5 h-5 cursor-pointer' src={Edit} alt="edit" onClick={() => editBuilder(item)} />
                                         <img className='w-5 h-5 cursor-pointer' src={Trash} alt="trash" onClick={() => deleteBuilder(item.id)} />
                                     </div>
@@ -831,11 +965,9 @@ const ManageBuilder = () => {
                             </div>
                         })}
                         {/* we get all the existing builders here */}
-                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity} showCancel={openCancelModal} showSuccess={openEditSuccess}/>}
+                        {isEditDialogue && <EditManageBuilder openDialog={isEditDialogue} setOpenDialog={setIsEditDialogue} builder={currentBuilder} fetchData={fetchBuilderData} currBuilder={currentBuilder} initialCountries={allCountry} initialStates={allState} initialCities={allCity} showCancel={openCancelModal} showSuccess={openEditSuccess} />}
                         {showDelete && <Delete openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} currentBuilder={currentBuilder} fetchData={fetchBuilderData} />}
                     </div>
-
-
                 </div>
 
 
@@ -880,15 +1012,22 @@ const ManageBuilder = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[130px] w-[200px] bg-red-800 absolute bottom-12 right-24 flex-col items-center  justify-center space-y-6 p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center  justify-center p-5' ref={menuRef}>
 
-                        <div className='flex'>
-                            <p>Download as pdf</p>
-                            {/* <img src=''/> */}
-                        </div>
-                        <div>
-                            <p>Download as Excel</p>
-                        </div>
+                        <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
+
+                        <button onClick={() => handleDownload("pdf")}>
+                            <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
+                                <p>Download as pdf</p>
+                                <img src={Pdf} />
+                            </div>
+                        </button>
+                        <button onClick={() => handleDownload("excel")}>
+                            <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
+                                <p>Download as Excel</p>
+                                <img src={Excel} />
+                            </div>
+                        </button>
                     </div>}
 
                     <div className='border-solid border-black border-[0.5px] rounded-md w-28 h-10 flex items-center justify-center space-x-1 p-2' >
@@ -898,7 +1037,7 @@ const ManageBuilder = () => {
                     </div>
                     <div className='border-solid border-black border-[1px] w-28 rounded-md h-10 flex items-center justify-center space-x-1 p-2'>
                         {/* download */}
-                        <button onClick={handleDownload}><p>Download</p></button>
+                        <button onClick={openDownload}><p>Download</p></button>
                         <img src={downloadIcon} className="h-2/3" />
                     </div>
                 </div>
@@ -908,189 +1047,179 @@ const ManageBuilder = () => {
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
-                 >
+            >
                 <div className='flex justify-center'>
-                    {/* <Draggable> */}
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]"> New Builder</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
-                            </div>
-                        </div>
-                        <form onSubmit={handleSubmit}>
-                            <div className="h-auto w-full mt-[5px] ">
-                                <div className="flex gap-[48px] justify-center items-center">
-                                    <div className=" space-y-[12px] py-[20px] px-[10px]">
-                                        <div className="">
-                                            <div className="text-[13px]">Builder Name<label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
-                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.builderName}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Phone 1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
-                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.phone1}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[14px]">Phone 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Email 1</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
-                                            
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Email 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
-                                            {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Address 1 <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
-                                            <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.address1}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Address Line 2</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
-                                            {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
-                                        </div>
+                    <Draggable handle='div.move'>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="move cursor-move">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]"> New Builder</div>
                                     </div>
-                                    <div className=" space-y-[12px]  px-[10px]">
-                                        <div className="">
-                                            <div className="text-[13px]">Country <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                                name="country"
-                                                value={formValues.country}
-                                                defaultValue="Select Country"
-                                                onChange={e => {
-                                                    setselectedCountry(e.target.value);
-                                                    setAllCity([])
-
-                                                    
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, country: e.target.value }
-                                                        return newData;
-                                                    })
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, state: null }
-                                                        return newData;
-                                                    })
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, city: null }
-                                                        return newData;
-                                                    })
-                                                    setAllState([])
-                                                    fetchStateData(e.target.value);
-                                                    // fetchStateData(res);
-                                                }}
-                                            >
-                                                {allCountry && allCountry.map(item => {
-                                                    if(item[0] == formValues.country) {
-                                                        return <option value={item[0]} selected>
-                                                           {item[1]}
-                                                        </option>
-                                                    }else {
-                                                        return <option value={item[0]}>
-                                                        {item[1]}
-                                                    </option>
-                                                    }
-                                                    
-})}
-                                            </select>
-                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.country}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">State <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                                                name="state"
-                                                value={formValues.state}
-                                                defaultValue="Select State"
-                                                onChange={e => {
-                                                    setSelectedState(e.target.value);
-                                                    
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, state: e.target.value }
-                                                        return newData;
-                                                    })
-                                                    setFormValues((existing) => {
-                                                        const newData = { ...existing, city: null }
-                                                        return newData;
-                                                    })
-                                                    setAllCity([])
-                                                    fetchCityData(e.target.value)
-                                                    // fetchCityData(selectedState);
-                                                }} >
-                                                <option  hidden>Select A State</option>
-                                                {allState && allState.map(item => {
-                                                    if(item[0] == formValues.state) {
-                                                       return <option value={item[0]} selected>
-                                                          {item[0]}
-                                                       </option>
-                                                    }else {
-                                                        return <option value={item[0]} >
-                                                        {item[0]}
-                                                     </option>
-                                                    }
-                                                })}
-                                            </select>
-                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.state}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">City <label className="text-red-500">*</label></div>
-                                            {console.log(formValues.city)}
-                                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.city} onChange={(e) => {
-                                                setFormValues((existing) => {
-                                                    const newData = { ...existing, city: e.target.value };
-                                                    return newData;
-                                                })
-                                            }}>
-                                                <option  hidden > Select A city</option>
-                                                {allCity && allCity.map((item) => {
-                                                    return <option value={item.id}>
-                                                        {item.city}
-                                                    </option>
-
-                                                })}
-                                            </select>
-
-                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.city}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-                                            <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.suburb}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">ZIP Code</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Website</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="website" value={formValues.website} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Comment</div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
-                                        </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
                                     </div>
                                 </div>
                             </div>
+                            <form onSubmit={handleSubmit}>
+                                <div className="h-auto w-full mt-[5px] ">
+                                    <div className="flex gap-[48px] justify-center items-center">
+                                        <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                            <div className="">
+                                                <div className="text-[13px]">Builder Name<label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="builderName" value={formValues.builderName} onChange={handleChange} />
+                                                <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.builderName}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Phone 1 <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone1" value={formValues.phone1} onChange={handleChange} />
+                                                <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.phone1}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[14px]">Phone 2</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="phone2" value={formValues.phone2} onChange={handleChange} />
+                                                {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.phNo}</div> */}
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Email 1</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email1" value={formValues.email1} onChange={handleChange} />
 
-                            <div className=" my-2 flex justify-center items-center gap-[10px]">
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Email 2</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="email" name="email2" value={formValues.email2} onChange={handleChange} />
+                                                {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div> */}
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Address 1 <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address1" value={formValues.address1} onChange={handleChange} />
+                                                <div className="h-[12px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.address1}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Address Line 2</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="address2" value={formValues.address2} onChange={handleChange} />
+                                                {/* <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="add"  /> */}
+                                            </div>
+                                        </div>
+                                        <div className=" space-y-[12px]  px-[10px]">
+                                            <div className="">
+                                                <div className="text-sm">Country <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="country"
+                                                    value={formValues.country}
+                                                    defaultValue="Select Country"
+                                                    onChange={e => {
+                                                        setCurrCountry(e.target.value);
+                                                        fetchStateData(e.target.value);
+                                                        setAllCity([]);
+                                                        const existing = { ...formValues }
+                                                        existing.state = ""
+                                                        existing.city = null;
+                                                        setFormValues(existing)
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, country: e.target.value }
+                                                            return newData;
+                                                        })
+                                                        // fetchStateData(res);
+                                                    }}
+                                                >
 
-                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
-                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
-                               
-                            </div>
-                        </form>
-                    </div>
-                    {/* </Draggable> */}
+                                                    {allCountry && allCountry.map(item => {
+                                                        return <option value={item.id}> {item.name}</option>
+                                                        // if (item[0] == 5) {
+                                                        //     return <option value={item[0]} selected>
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // } else {
+                                                        //     return <option value={item[0]} >
+                                                        //         {item[1]}
+                                                        //     </option>
+                                                        // }
+                                                    })}
+                                                </select>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.country}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">State <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="state"
+                                                    value={formValues.state}
+                                                    defaultValue="Select State"
+                                                    onChange={e => {
+                                                        fetchCityData(e.target.value);
+                                                        const existing = { ...formValues }
+                                                        existing.state = e.target.value
+                                                        existing.city = null
+                                                        console.log(existing)
+                                                        setFormValues(existing)
+                                                    }}
+                                                >
+                                                    <option value="" hidden> Select A State</option>
+                                                    {allState && allState.map(item => {
+                                                        return <option value={item[0]} >
+                                                            {item[0]}
+                                                        </option>
+                                                    })}
+                                                </select>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.state}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">City <label className="text-red-500">*</label></div>
+                                                <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                    name="city"
+                                                    value={formValues.city}
+                                                    defaultValue="Select City"
+                                                    onChange={e => {
+                                                        // fetchCityData(e.target.value);
+                                                        console.log(e.target.value);
+                                                        setFormValues((existing) => {
+                                                            const newData = { ...existing, city: e.target.value }
+                                                            return newData;
+                                                        })
+
+                                                    }}
+                                                >
+                                                    {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                    <option value="none" hidden> Select A City</option>
+                                                    {allCity && allCity.map(item => (
+                                                        <option value={item.id} >
+                                                            {item.city}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="height-[10px] w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.city}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Suburb <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+                                                <div className="h-[10px] w-[230px] text-[9px] text-[#CD0000] absolute">{formErrors.suburb}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">ZIP Code</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="zip" value={formValues.zip} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Website</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="website" value={formValues.website} onChange={handleChange} />
+
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Comment</div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="comment" value={formValues.comment} onChange={handleChange} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className=" my-2 flex justify-center items-center gap-[10px]">
+
+                                    <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Add</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </Draggable>
                 </div>
             </Modal>
 
