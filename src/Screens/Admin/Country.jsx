@@ -215,7 +215,7 @@ const Country = () => {
 
   const addCountry = async () => {
 
-    const data = { "user_id": userId || 1234, "name": formValues.countryName };
+    const data = { "user_id": userId || 1234, "country_name": formValues.countryName };
     const response = await APIService.addCountries(data);
     const res = await response.json();
     console.log(res)
