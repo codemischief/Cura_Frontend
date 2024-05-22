@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link , useNavigate} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress , Backdrop, CircularProgress} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -30,11 +30,14 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import Draggable from 'react-draggable';
+import ActiveFilter from "../../../assets/active_filter.png"
 // import DropDown from '../../../Components/Dropdown/Dropdown';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import { formatDate } from '../../../utils/formatDate';
 const ManageClientInvoice = () => {
 
     const menuRef = useRef();
+    const navigate = useNavigate(-1)
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingClientInvoice, setExistingClientInvoice] = useState([]);
@@ -321,6 +324,7 @@ const ManageClientInvoice = () => {
                 setEntityFilter(false)
                 setCreatedByFilter(false)
                 setIdFilter(false)
+                setDownloadModal(false)
             }
         }
 
@@ -502,6 +506,78 @@ const ManageClientInvoice = () => {
     }
     const closeDownload = () => {
         setDownloadModal(false);
+    }
+    const handleDownload = async (type) => {
+        // setBackDropLoading(true)
+        setDownloadModal(false)
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "clientname",
+                "quotedescription",
+                "invoiceamount",
+                "invoicedate",
+                "entityname",
+                "createdbyname",
+                "id",
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "downloadType" : type,
+            "search_key": searchInput,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "quotedescription" : "Invoice Description",
+                "invoiceamount" : "Invoice Amount",
+                "invoicedate" : "Invoice Date",
+                "entityname" : "Entity",
+                "createdbyname" : "Created By",
+                "id" : "ID",
+            }
+        };
+        const response = await APIService.getClientInvoice(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'ClientInvoiceData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'ClientInvoiceData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            },1000) 
+        }
     }
     const handleExcelDownload = async () => {
         const tempArray = [];
@@ -896,8 +972,17 @@ const ManageClientInvoice = () => {
 
     const [orderText, setOrderText] = useState("Select Order")
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {isEditDialogue && <EditClientInvoice isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} invoiceId={invoiceId} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Invoice Deleted Successfully" />}
@@ -911,7 +996,7 @@ const ManageClientInvoice = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -973,9 +1058,9 @@ const ManageClientInvoice = () => {
                                         setClientNameFilterInput,
                                         'contains',
                                         'clientname')} />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                       {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
                             </div>
 
                             <div className='w-[26%]  p-3 '>
@@ -986,9 +1071,10 @@ const ManageClientInvoice = () => {
                                         'contains',
                                         'quotedescription')}
                                      />
-                                    <button className='W-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                     {filterMapState.quotedescription.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} filterColumn='quotedescription' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.quotedescription.filterType} />}
                             </div>
 
                             {/* <div className='w-[13%]  p-3'>
@@ -1025,9 +1111,10 @@ const ManageClientInvoice = () => {
                                         'equalTo',
                                         'invoiceamount')}
                                     />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setInvoiceAmountFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.invoiceamount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setInvoiceAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setInvoiceAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                   
                                 </div>
-                                {invoiceAmountFilter && <NumericFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} columnName='invoiceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {invoiceAmountFilter && <NumericFilter inputVariable={invoiceAmountFilterInput} setInputVariable={setInvoiceAmountFilterInput} columnName='invoiceamount' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.invoiceamount.filterType} />}
                             </div>
 
                             <div className='w-[13%] p-3'>
@@ -1038,9 +1125,10 @@ const ManageClientInvoice = () => {
                                         'equalTo',
                                         'invoicedate')}
                                     />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setInvoiceDateFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.invoicedate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setInvoiceDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setInvoiceDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} />}
+                                {invoiceDateFilter && <DateFilter inputVariable={invoiceDateFilterInput} setInputVariable={setInvoiceDateFilterInput} handleFilter={newHandleFilter} columnName='invoicedate' menuRef={menuRef} filterType={filterMapState.invoicedate.filterType}/>}
                             </div>
 
                             <div className='w-[10%] p-3'>
@@ -1051,9 +1139,10 @@ const ManageClientInvoice = () => {
                                         'contains',
                                         'entityname')}
                                     />
-                                    <button className='px-1 py-2 w-[35%]' onClick={() => { setEntityFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.entityname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setEntityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setEntityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} filterColumn='entityname' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {entityFilter && <CharacterFilter inputVariable={entityFilterInput} setInputVariable={setEntityFilterInput} filterColumn='entityname' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.entityname.filterType}/>}
                             </div>
 
                             <div className='w-[12%]  p-3 '>
@@ -1064,23 +1153,25 @@ const ManageClientInvoice = () => {
                                         'contains',
                                         'createdbyname')}
                                      />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}> <img src={Filter} className='h-3 w-3' /></button>
+                                     {filterMapState.createdbyname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} filterColumn='createdbyname' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} filterColumn='createdbyname' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.createdbyname.filterType}/>}
                             </div>
                         </div>
                         <div className="w-[10%] flex">
                             <div className='w-[65%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(Number(e.target.value))}
+                                    <input className="w-[55%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
                                         setIdFilterInput,
                                         'equalTo',
                                         'id')}
                                      />
-                                    <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                     {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
 
                             <div className='w-[35%]  flex'>
@@ -1159,7 +1250,7 @@ const ManageClientInvoice = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingClientInvoice && existingClientInvoice.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
@@ -1198,7 +1289,7 @@ const ManageClientInvoice = () => {
                                     </div>
                                     <div className='w-[13%]  flex pl-1'>
                                         <div className='p-3'>
-                                            <p>{item.invoicedate}</p>
+                                            <p>{formatDate(item.invoicedate)}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex pl-1'>
@@ -1273,17 +1364,17 @@ const ManageClientInvoice = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5' ref={menuRef}>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />

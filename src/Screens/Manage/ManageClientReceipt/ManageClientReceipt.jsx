@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Backdrop,CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -31,6 +31,8 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable';
+import ActiveFilter from "../../../assets/active_filter.png"
+import { formatDate } from '../../../utils/formatDate';
 const ManageClientReceipt = () => {
     const initialRows = [
         "id",
@@ -324,6 +326,7 @@ const ManageClientReceipt = () => {
                 setReceivedByFilter(false);
                 setTDSFilter(false);
                 setIdFilter(false);
+                setDownloadModal(false)
             }
         }
 
@@ -489,6 +492,82 @@ const ManageClientReceipt = () => {
     }
     const closeDownload = () => {
         setDownloadModal(false);
+    }
+    const handleDownload = async (type) => {
+          setPageLoading(true)
+          setDownloadModal(false)
+          const data = {
+            "user_id": 1234,
+            "rows":
+                [
+                    "clientname",
+                    "amount",
+                    "serviceamount",
+                    "reimbursementamount",
+                    "recddate",
+                    "paymentmodename",
+                    "receivedbyname",
+                    "tds",
+                    "id"
+                ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "downloadType" : type,
+            "search_key": searchInput,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "amount" : "Amount",
+                "serviceamount" : "Service Amount",
+                "reimbursementamount" : "Reimbursement Amount",
+                "recddate" : "Received Date",
+                "paymentmodename" : "Receipt Mode",
+                "receivedbyname" : "Received By",
+                "tds" : "TDS",
+                "id" : "ID",
+            }
+        };
+        const response = await APIService.getClientReceipt(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'ClientReceiptData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'ClientReceiptData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            },1000) 
+        }
     }
     const handleExcelDownload = async () => {
         const data = {
@@ -1098,8 +1177,17 @@ const ManageClientReceipt = () => {
        setOrderData(temp)
     }
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {isEditDialogue && <EditClientReceipt isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} currClientReceipt={currClientReceipt} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Receipt Created Successfully" />}
@@ -1180,9 +1268,10 @@ const ManageClientReceipt = () => {
                                     'contains',
                                     'clientname')}
                                 />
-                                <button className='px-1 py-2 w-[22%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
+                                {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                               
                             </div>
-                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
                         </div>
 
                         <div className='w-[10%] px-3 py-2.5'>
@@ -1194,9 +1283,10 @@ const ManageClientReceipt = () => {
                                     'equalTo',
                                     'amount')}
                                 />
-                                <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setAmountFilter((prev) => !prev) }} /></button>
+                                {filterMapState.amount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                               
                             </div>
-                            {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} columnName='amount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} columnName='amount' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.amount.filterType}/>}
                         </div>
 
                         <div className='w-[13%] px-3 py-2.5'>
@@ -1209,9 +1299,10 @@ const ManageClientReceipt = () => {
                                     'serviceamount')}
                                 
                                 />
-                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setServiceAmountFilter((prev) => !prev) }} /></button>
+                                {filterMapState.serviceamount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setServiceAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setServiceAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {serviceAmountFilter && <NumericFilter inputVariable={serviceAmountFilterInput} setInputVariable={setServiceAmountFilterInput} columnName='serviceamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {serviceAmountFilter && <NumericFilter inputVariable={serviceAmountFilterInput} setInputVariable={setServiceAmountFilterInput} columnName='serviceamount' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.serviceamount.filterType}/>}
                         </div>
 
                         <div className='w-[12%] px-3 py-2.5'>
@@ -1224,9 +1315,10 @@ const ManageClientReceipt = () => {
                                     'reimbursementamount')}
                                 
                                 />
-                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReimbusmentAmountFilter((prev) => !prev) }} /></button>
+                                {filterMapState.reimbursementamount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReimbusmentAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReimbusmentAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {reimbusmentAmountFilter && <NumericFilter inputVariable={reimbusmentAmountFilterInput} setInputVariable={setReimbusmentAmountFilterInput} columnName='reimbursementamount' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {reimbusmentAmountFilter && <NumericFilter inputVariable={reimbusmentAmountFilterInput} setInputVariable={setReimbusmentAmountFilterInput} columnName='reimbursementamount' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.reimbursementamount.filterType} />}
                         </div>
 
                         <div className='w-[12%] px-3 py-2.5'>
@@ -1238,9 +1330,10 @@ const ManageClientReceipt = () => {
                                     'equalTo',
                                     'recddate')}
                                 />
-                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedDateFilter((prev) => !prev) }} /></button>
+                                {filterMapState.recddate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} />}
+                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} filterType={filterMapState.recddate.filterType} />}
                         </div>
 
                         <div className='w-[13%] px-3 py-2.5'>
@@ -1253,9 +1346,10 @@ const ManageClientReceipt = () => {
                                     'contains',
                                     'paymentmodename')}
                                 />
-                                <button className='px-1 py-2 w-[23%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedModeFilter((prev) => !prev) }} /></button>
+                                 {filterMapState.paymentmodename.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedModeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} />}
+                            {receivedModeFilter && <CharacterFilter inputVariable={receivedModeFilterInput} setInputVariable={setReceivedModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} filterType={filterMapState.paymentmodename.filterType}/>}
                         </div>
 
                         <div className='w-[11%] px-3 py-2.5'>
@@ -1267,9 +1361,9 @@ const ManageClientReceipt = () => {
                                     'contains',
                                     'receivedbyname')}
                                 />
-                                <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setReceivedByFilter((prev) => !prev) }} /></button>
+                                {filterMapState.receivedbyname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
-                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} />}
+                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} filterType={filterMapState.receivedbyname.filterType}/>}
                         </div>
 
                         <div className='w-[7%] px-3 py-2.5'>
@@ -1280,11 +1374,11 @@ const ManageClientReceipt = () => {
                                     setTDSFilterInput,
                                     'equalTo',
                                     'tds')}
-                                
                                 />
-                                <button className='px-1 py-2 w-[45%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTDSFilter((prev) => !prev) }} /></button>
+                                {filterMapState.tds.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTDSFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTDSFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {TDSFilter && <NumericFilter inputVariable={TDSFilterInput} setInputVariable={setTDSFilterInput} columnName='tds' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {TDSFilter && <NumericFilter inputVariable={TDSFilterInput} setInputVariable={setTDSFilterInput} columnName='tds' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.tds.filterType}/>}
                         </div>
 
                     </div>
@@ -1297,11 +1391,10 @@ const ManageClientReceipt = () => {
                                     setIdFilterInput,
                                     'equalTo',
                                     'id')}
-                                
                                 />
-                                <button className='px-1 py-2 w-[40%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
-                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                         </div>
 
                         <div className='w-1/2  flex'>
@@ -1393,7 +1486,7 @@ const ManageClientReceipt = () => {
 
 
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingClientReceipt && existingClientReceipt.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
@@ -1427,7 +1520,7 @@ const ManageClientReceipt = () => {
                                     </div>
                                     <div className='w-[12%]  flex'>
                                         <div className='px-3 ml-1'>
-                                            <p>{item.recddate}</p>
+                                            <p>{formatDate(item.recddate)}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex'>
@@ -1521,17 +1614,17 @@ const ManageClientReceipt = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5' ref={menuRef}>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />

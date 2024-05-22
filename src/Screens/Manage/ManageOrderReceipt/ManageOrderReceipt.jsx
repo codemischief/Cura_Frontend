@@ -3,12 +3,12 @@ import { Outlet, Link } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
-import refreshIcon from "../../../assets/refresh.png";
-import downloadIcon from "../../../assets/download.png";
+import refreshIcon from "../../../assets/refresh.png"; 
+import downloadIcon from "../../../assets/download.png"; 
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration, CircularProgress , Backdrop } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -34,6 +34,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditOrderReceipt from './EditOrderReceipt';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import { formatDate } from '../../../utils/formatDate';
 const ManageOrderReceipt = () => {
 
     const menuRef = useRef();
@@ -1120,8 +1121,17 @@ const ManageOrderReceipt = () => {
             }
     }
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {showEditModal && <EditOrderReceipt handleClose={() => { setShowEditModal(false) }} receiptId={currOrderReceipt} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} showCancel={openCancelModal}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="Successfully Added Order Receipt" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Order Receipt Deleted Successfully" />}
@@ -1418,7 +1428,7 @@ const ManageOrderReceipt = () => {
 
 
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingOrderReceipt && existingOrderReceipt.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
@@ -1454,7 +1464,7 @@ const ManageOrderReceipt = () => {
                                     </div>
                                     <div className='w-[10%]  flex'>
                                         <div className='px-3 py-5'>
-                                            <p>{item.recddate}</p>
+                                            <p>{formatDate(item.recddate)}</p>
                                         </div>
                                     </div>
                                     <div className='w-[10%]  flex'>
