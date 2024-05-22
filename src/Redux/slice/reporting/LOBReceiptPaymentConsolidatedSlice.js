@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   lobReceiptPaymentConsolidatedData: [],
+  totalAmount : {},
   status: "",
   filter: {},
   countPerPage: 15,
@@ -28,6 +29,7 @@ export const pmaSlice = createSlice({
       const { data, year, month } = payload;
       state.lobReceiptPaymentConsolidatedData = updatedLobReceiptPaymentConsolidatedData(data.data, year, month);
       state.totalCount = payload.data.total_count;
+      state.totalAmount = payload.data.total;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;
