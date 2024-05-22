@@ -110,7 +110,7 @@ import {
                 No records to display{" "}
               </tr>
             )}
-            <tr className="sticky bottom-0 z-100 bg-[#F0F6FF]">
+            {data.length > 0 && <tr className="sticky bottom-0 z-100 bg-[#F0F6FF]">
             {columns.map((column, colIndex) => (
                     <td
                       key={colIndex}
@@ -127,7 +127,7 @@ import {
                       }
                     </td>
                   ))}
-            </tr>
+            </tr>}
             </>
           </tbody>
           
