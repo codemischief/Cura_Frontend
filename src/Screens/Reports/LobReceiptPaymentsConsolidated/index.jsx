@@ -205,7 +205,7 @@ const LobReceiptPayments = () => {
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"LOB-Receipts-Payments"}
-            path={["Reports", "Lists", "LOB-Receipts-Payments"]}
+            path={["Reports", "Lists", "LOB-Receipts-Payments-Consolidated"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
