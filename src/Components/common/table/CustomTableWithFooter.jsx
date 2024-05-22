@@ -122,7 +122,9 @@ import {
                       }}
                       className="py-3 text-center"
                     >
-                      
+                      {
+                        helper(colIndex,totalData)
+                      }
                     </td>
                   ))}
             </tr>
@@ -130,7 +132,7 @@ import {
           </tbody>
           
         </table>
-       
+       {console.log(totalData)}
       </div>,
       
     
@@ -172,4 +174,14 @@ import {
     downloadExcel: PropTypes.func,
     height: PropTypes.string,
   };
-  
+  const helper = (index,obj) => {
+     if(index == 2) {
+         return obj.totalreceipt
+     }else if(index == 3) {
+         return obj.totalpayment
+     }else if(index == 4) {
+      return obj.total_diff
+     }else {
+      return ""
+     }
+  }
