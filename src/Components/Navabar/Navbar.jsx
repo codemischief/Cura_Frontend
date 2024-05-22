@@ -256,7 +256,7 @@ const Navbar = () => {
               </h1>
               <div className="space-y-2 text-[#505050] text-[11px]">
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                 <Link to="/admin/deleteById"> Delete by ID </Link>
+                  <Link to="/admin/deleteById"> Delete by ID </Link>
                 </p>
               </div>
             </div>
@@ -551,9 +551,11 @@ const Navbar = () => {
                 Monthly Margin
               </h1>
               <div className="text-[11px] text-[#505050] space-y-[2px]">
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  LOB-Receipts-Payments
-                </p>
+                <Link to={"/lobReceiptPayments"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    LOB-Receipts-Payments
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Entity-Receipt-Payments
                 </p>
