@@ -618,6 +618,79 @@ const ManageOrderReceipt = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
+    const handleDownload = async (type) => {
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "clientname",
+                "briefdescription",
+                "clientproperty",
+                "amount",
+                "recddate",
+                "paymentmodename",
+                "receivedbyname",
+                "createdbyname",
+                "id",
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput,
+            "downloadType" : type,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "briefdescription" : "Order Description",
+                "clientproperty" : "Property",
+                "amount" : "Amount",
+                "recddate" : "Received Date",
+                "paymentmodename" : "Receipt Mode",
+                "receivedbyname" : "Received By",
+                "createdbyname" : "Created By",
+                "id" : "ID"
+            }
+        };
+        const response = await APIService.getOrderReceipt(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'OrderReceiptData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'OrderReceiptData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                setPageLoading(false)
+            },1000) 
+        }
+    }
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
@@ -1246,9 +1319,9 @@ const ManageOrderReceipt = () => {
                                     'clientproperty')}
                                 
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.clientproperty.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                             </div>
-                            {propertyFilter && <CharacterFilter inputVariable={propertyFilterInput} setInputVariable={setPropertyFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
+                            {propertyFilter && <CharacterFilter inputVariable={propertyFilterInput} setInputVariable={setPropertyFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} filterType={filterMapState.clientproperty.filterType} />}
                         </div>
 
                         <div className='w-[8%] px-3 py-2 '>
@@ -1261,9 +1334,10 @@ const ManageOrderReceipt = () => {
                                     'amount')}
                                 
                                 />
-                                <button className='w-[35%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.amount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[35%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {amountFilter && <NumericFilter columnName='amount' inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {amountFilter && <NumericFilter columnName='amount' inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.amount.filterType}/>}
                         </div>
                         <div className='w-[10%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1275,9 +1349,10 @@ const ManageOrderReceipt = () => {
                                     'recddate')}
                                 
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setReceivedDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.recddate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} />}
+                            {receivedDateFilter && <DateFilter inputVariable={receivedDateFilterInput} setInputVariable={setReceivedDateFilterInput} handleFilter={newHandleFilter} columnName='recddate' menuRef={menuRef} filterType={filterMapState.recddate.filterType}/>}
                         </div>
                         <div className='w-[10%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1290,9 +1365,10 @@ const ManageOrderReceipt = () => {
                                 
                                 
                                 />
-                                <button className='w-[30%] px-1 py-2' onClick={() => { setReceiptModeFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                 {filterMapState.paymentmodename.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReceiptModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReceiptModeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {receiptModeFilter && <CharacterFilter inputVariable={receiptModeFilterInput} setInputVariable={setReceiptModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} />}
+                            {receiptModeFilter && <CharacterFilter inputVariable={receiptModeFilterInput} setInputVariable={setReceiptModeFilterInput} handleFilter={newHandleFilter} filterColumn='paymentmodename' menuRef={menuRef} filterType={filterMapState.paymentmodename.filterType}/>}
                         </div>
                         <div className='w-[12%] px-3 py-2 '>
                             <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1305,9 +1381,10 @@ const ManageOrderReceipt = () => {
                                 
                                 
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setReceivedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.receivedbyname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setReceivedByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                               
                             </div>
-                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} />}
+                            {receivedByFilter && <CharacterFilter inputVariable={receivedByFilterInput} setInputVariable={setReceivedByFilterInput} handleFilter={newHandleFilter} filterColumn='receivedbyname' menuRef={menuRef} filterType={filterMapState.receivedbyname.filterType}/>}
                         </div>
                         <div className='w-[12%] px-3 py-2  '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1320,9 +1397,10 @@ const ManageOrderReceipt = () => {
                                 
                                 
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.createdbyname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
+                            {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} filterType={filterMapState.createdbyname.filterType}/>}
                         </div>
                     </div>
                     <div className="w-[10%] flex">
@@ -1338,9 +1416,10 @@ const ManageOrderReceipt = () => {
                                 
                                 
                                 />
-                                <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                         </div>
                         <div className='w-[35%]  flex'>
                             <div className='px-3 py-5'>

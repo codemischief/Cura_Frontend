@@ -173,19 +173,28 @@ const LobReceiptPayments = () => {
       rows:["lobname","service","orderreceiptamount","paymentamount","diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
+      downloadType : "excel",
+      colmap : {
+        "lobname" : "LOB Name",
+        "service" : "Service",
+        "orderreceiptamount" : "Receipt Amount",
+        "paymentamount" : "Payment Amount",
+        "diff" : "Difference"
+      },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadLobReceiptPaymentsDataXls(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-      dispatch(setStatus("success"));
-    });
+    dispatch(downloadLobReceiptPaymentsDataXls(obj))
+    // .then((response) => {
+    //   const tableData = response.data;
+    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
+    //   const workbook = XLSX.utils.book_new();
+    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
+    //   dispatch(setStatus("success"));
+    // });
   };
 
   const handleShow = () => {

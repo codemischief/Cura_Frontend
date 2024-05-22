@@ -166,6 +166,13 @@ const LobReceiptPayments = () => {
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       lobName : lob,
+      downloadType : "excel",
+      colmap : {
+        "lobname" : "LOB Name",
+        "total_orderreceiptamount" : "Receipt Amount",
+        "total_paymentamount" : "Payment Amount",
+        "total_diff" : "Difference"
+      },
       rows:["lobname","total_orderreceiptamount","total_paymentamount","total_diff",],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -174,14 +181,7 @@ const LobReceiptPayments = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadLobReceiptPaymentConsolidatedDataXls(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "LobReceiptPaymentConsolidated.xlsx");
-      dispatch(setStatus("success"));
-    });
+    dispatch(downloadLobReceiptPaymentConsolidatedDataXls(obj))
   };
 
   const handleShow = () => {
