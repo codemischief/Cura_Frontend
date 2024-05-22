@@ -72,7 +72,7 @@ export const updatedLobReceiptPaymentsData = (data, year, month) => {
   console.log(data)
   return data.map((billing, index) => ({
     ...billing,
-    orderreceiptamount: billing.orderreceiptamount ? formatDate(billing.orderreceiptamount) : "--",
+    orderreceiptamount: billing.orderreceiptamount ? floorDecimal(billing.orderreceiptamount) : "--",
     paymentamount: billing.paymentamount ? floorDecimal(billing.paymentamount) : "---",
     diff: billing.diff ? floorDecimal(billing.diff) : "---",
   }));
@@ -81,7 +81,7 @@ export const updatedEntityReceiptPaymentsData = (data, year, month) => {
   console.log(data)
   return data.map((billing, index) => ({
     ...billing,
-    orderreceiptamount: billing.orderreceiptamount ? formatDate(billing.orderreceiptamount) : "--",
+    orderreceiptamount: billing.orderreceiptamount ? floorDecimal(billing.orderreceiptamount) : "--",
     paymentamount: billing.paymentamount ? floorDecimal(billing.paymentamount) : "---",
     diff: billing.diff ? floorDecimal(billing.diff) : "---",
   }));
@@ -90,7 +90,7 @@ export const updatedLobReceiptPaymentConsolidatedData = (data, year, month) => {
   console.log(data)
   return data.map((billing, index) => ({
     ...billing,
-    total_orderreceiptamount: billing.total_orderreceiptamount ? formatDate(billing.total_orderreceiptamount) : "--",
+    total_orderreceiptamount: billing.total_orderreceiptamount ? floorDecimal(billing.total_orderreceiptamount) : "--",
     total_paymentamount: billing.total_paymentamount ? floorDecimal(billing.total_paymentamount) : "---",
     total_diff: billing.total_diff ? floorDecimal(billing.total_diff) : "---",
   }));
