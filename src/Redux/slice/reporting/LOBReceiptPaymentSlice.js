@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   lobReceiptPaymentsData: [],
+  totalAmount : {},
   status: "",
   filter: {},
   countPerPage: 15,
@@ -27,7 +28,10 @@ export const pmaSlice = createSlice({
     setLobReceiptPaymentsData: (state, { payload }) => {
       const { data, year, month } = payload;
       state.lobReceiptPaymentsData = updatedLobReceiptPaymentsData(data.data, year, month);
+      console.log(payload.data)
+      console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
+      state.totalAmount = payload.data.total;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;
@@ -82,7 +86,7 @@ export const getLobReceiptPaymentsData =
         `${env_URL_SERVER}reportMonthlyMarginLOBReceiptPayments`,
         payloadObj
       );
-
+        
       dispatch(setLobReceiptPaymentsData({ data: response.data, year, month }));
       dispatch(setStatus("success"));
     } catch (err) {

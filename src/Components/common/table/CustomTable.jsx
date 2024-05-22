@@ -111,6 +111,7 @@ const SimpleTable = ({
           )}
         </tbody>
       </table>
+
     </div>,
     <PaginationComponent
       pageNo={pageNo}

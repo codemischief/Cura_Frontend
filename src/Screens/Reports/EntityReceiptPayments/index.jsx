@@ -244,7 +244,7 @@ const LobReceiptPayments = () => {
               >
                 <option value="none" hidden>Select Entity</option>
                 {allEntities && allEntities.map(item => (
-                  <option value={item[0]} >
+                  <option value={item[1]} >
                     {item[1]}
                   </option>
                 ))}

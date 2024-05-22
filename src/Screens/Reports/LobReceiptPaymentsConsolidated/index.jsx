@@ -126,6 +126,7 @@ const LobReceiptPayments = () => {
         user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
+        lobname : lob,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -246,7 +247,7 @@ const LobReceiptPayments = () => {
               >
                 <option value="none" hidden>Lob Name</option>
                 {allLOB && allLOB.map(item => (
-                  <option value={item.id} >
+                  <option value={item.name} >
                     {item.name}
                   </option>
                 ))}

@@ -4,7 +4,8 @@ import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-import SimpleTable from "../../../Components/common/table/CustomTable";
+// import SimpleTable from "../../../Components/common/table/CustomTable";
+import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
@@ -28,12 +29,15 @@ const LobReceiptPayments = () => {
   const {
     lobReceiptPaymentsData,
     status,
+    totalAmount,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
   } = useSelector((state) => state.lobReceiptPayments);
+  console.log(totalAmount)
+  console.log(lobReceiptPaymentsData)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -251,7 +255,7 @@ const LobReceiptPayments = () => {
               >
                 <option value="none" hidden>Lob Name</option>
                 {allLOB && allLOB.map(item => (
-                  <option value={item.id} >
+                  <option value={item.name} >
                     {item.name}
                   </option>
                 ))}
@@ -295,9 +299,10 @@ const LobReceiptPayments = () => {
           </Stack>
         </Stack>
 
-        <SimpleTable
+        <SimpleTableWithFooter
           columns={columns}
           data={lobReceiptPaymentsData}
+          totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
@@ -308,7 +313,7 @@ const LobReceiptPayments = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-
+          
         />
       </div>
       {toast && (
