@@ -175,11 +175,11 @@ import {
     height: PropTypes.string,
   };
   const helper = (index,obj) => {
-     if(index == 2) {
+     if(index == 3) {
          return obj.totalreceipt
-     }else if(index == 3) {
-         return obj.totalpayment
      }else if(index == 4) {
+         return obj.totalpayment
+     }else if(index == 5) {
       return obj.total_diff
      }else {
       return ""
