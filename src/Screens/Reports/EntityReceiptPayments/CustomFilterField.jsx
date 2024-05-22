@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setLobReceiptPaymentsFilters, setPageNumber } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
+import { setEntityReceiptPaymentsFilters, setPageNumber } from "../../../Redux/slice/reporting/EntityReceiptPaymentSlice";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.lobReceiptPayments);
+  const { filter } = useSelector((state) => state.entityReceiptPayments);
 
   const handleFilterChange = (filters) => {
-    dispatch(setLobReceiptPaymentsFilters({...filters}));
+    dispatch(setEntityReceiptPaymentsFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 

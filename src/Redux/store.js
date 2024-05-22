@@ -7,6 +7,7 @@ import OrderInvoiceReducer from "./slice/reporting/OrderInvoiceSlice";
 import ClientReceiptReducer from "./slice/reporting/ClientReceiptSlice";
 import VendorInvoiceReducer from "./slice/reporting/VendorInvoiceSlice";
 import LOBReceiptPaymentSlice from "./slice/reporting/LOBReceiptPaymentSlice";
+import EntityReceiptPaymentSlice from "./slice/reporting/EntityReceiptPaymentSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     clientReceipt: ClientReceiptReducer,
     vendorInvoice: VendorInvoiceReducer,
     lobReceiptPayments : LOBReceiptPaymentSlice,
+    entityReceiptPayments : EntityReceiptPaymentSlice,
   },
   // Add the RTK Query API middleware
 });
