@@ -122,7 +122,7 @@ import {
                       }}
                       className="py-3 text-center"
                     >
-                      temp
+                      
                     </td>
                   ))}
             </tr>
