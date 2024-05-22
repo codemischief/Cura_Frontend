@@ -86,4 +86,13 @@ export const updatedEntityReceiptPaymentsData = (data, year, month) => {
     diff: billing.diff ? floorDecimal(billing.diff) : "---",
   }));
 };
+export const updatedLobReceiptPaymentConsolidatedData = (data, year, month) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    total_orderreceiptamount: billing.total_orderreceiptamount ? formatDate(billing.total_orderreceiptamount) : "--",
+    total_paymentamount: billing.total_paymentamount ? floorDecimal(billing.total_paymentamount) : "---",
+    total_diff: billing.total_diff ? floorDecimal(billing.total_diff) : "---",
+  }));
+};
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

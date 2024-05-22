@@ -6,8 +6,9 @@ import OrderReceiptReducer from "./slice/reporting/OrderReceiptSlice";
 import OrderInvoiceReducer from "./slice/reporting/OrderInvoiceSlice";
 import ClientReceiptReducer from "./slice/reporting/ClientReceiptSlice";
 import VendorInvoiceReducer from "./slice/reporting/VendorInvoiceSlice";
-import LOBReceiptPaymentSlice from "./slice/reporting/LOBReceiptPaymentSlice";
-import EntityReceiptPaymentSlice from "./slice/reporting/EntityReceiptPaymentSlice";
+import LOBReceiptPaymentReducer from "./slice/reporting/LOBReceiptPaymentSlice";
+import EntityReceiptPaymentReducer from "./slice/reporting/EntityReceiptPaymentSlice";
+import LOBReceiptPaymentConsolidatedReducer from "./slice/reporting/LOBReceiptPaymentConsolidatedSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,8 +18,9 @@ export const store = configureStore({
     orderInvoice: OrderInvoiceReducer,
     clientReceipt: ClientReceiptReducer,
     vendorInvoice: VendorInvoiceReducer,
-    lobReceiptPayments : LOBReceiptPaymentSlice,
-    entityReceiptPayments : EntityReceiptPaymentSlice,
+    lobReceiptPayments : LOBReceiptPaymentReducer,
+    entityReceiptPayments : EntityReceiptPaymentReducer,
+    lobReceiptPaymentConsolidated:LOBReceiptPaymentConsolidatedReducer,
   },
   // Add the RTK Query API middleware
 });

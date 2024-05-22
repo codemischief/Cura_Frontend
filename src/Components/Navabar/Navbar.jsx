@@ -557,16 +557,18 @@ const Navbar = () => {
                   </p>
                 </Link>
                 <Link to={"/entityReceiptPayments"}>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Entity-Receipt-Payments
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Entity-Receipt-Payments
+                  </p>
                 </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Client Statement-CI,CR and OR(All Entities)
                 </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  LOB-Receipts-Payments Consolidated
-                </p>
+                <Link to={"/lobReceiptPaymentsConsolidated"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    LOB-Receipts-Payments Consolidated
+                  </p>
+                </Link>
               </div>
             </div>
           </div>

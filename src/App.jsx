@@ -59,7 +59,8 @@ import OrderPaymentList from "./Screens/Reports/OrderPaymentList";
 import OrderReceiptList from "./Screens/Reports/OrderReceiptList";
 import OrderInvoiceList from "./Screens/Reports/OrderInvoiceList";
 import LobReceiptPayments from "./Screens/Reports/LobReceiptPayments";
-import EntityReceiptPayments from "./Screens/Reports/EntityReceiptPayments"
+import EntityReceiptPayments from "./Screens/Reports/EntityReceiptPayments";
+import LobReceiptPaymentsConsolidated from "./Screens/Reports/LobReceiptPaymentsConsolidated";
 
 
 import DeleteById from "./Screens/Admin/DeleteById/DeleteById";
@@ -196,6 +197,8 @@ const App = () => {
           <Route path="/vendorInvoiceList" element={<VendorInvoiceList />} />
           <Route path="/lobReceiptPayments" element={<LobReceiptPayments />} />
           <Route path="/entityReceiptPayments" element={<EntityReceiptPayments />} />
+          <Route path="/lobReceiptPaymentsConsolidated" element={<LobReceiptPaymentsConsolidated />} />
+
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
