@@ -8,6 +8,7 @@ import {
 const initialState = {
   entityReceiptPaymentsData: [],
   status: "",
+  totalAmount : {},
   filter: {},
   countPerPage: 15,
   pageNo: 1,
@@ -28,6 +29,7 @@ export const pmaSlice = createSlice({
       const { data, year, month } = payload;
       state.entityReceiptPaymentsData = updatedEntityReceiptPaymentsData(data.data, year, month);
       state.totalCount = payload.data.total_count;
+      state.totalAmount = payload.data.total;
     },
     setStatus: (state, { payload }) => {
       state.status = payload;

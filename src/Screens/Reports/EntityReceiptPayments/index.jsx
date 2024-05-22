@@ -4,8 +4,8 @@ import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
+import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
@@ -29,6 +29,7 @@ const LobReceiptPayments = () => {
     entityReceiptPaymentsData,
     status,
     totalCount,
+    totalAmount,
     sorting,
     countPerPage,
     pageNo,
@@ -85,6 +86,7 @@ const LobReceiptPayments = () => {
         user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
+        entityName: entity,
         rows: ["lobname","date","monthyear","entityid","entityname","orderreceiptamount","paymentamount","diff"],
         sort_by: ["id"],
 
@@ -122,6 +124,7 @@ const LobReceiptPayments = () => {
         user_id: 1234,
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
+        entityName: entity,
         rows: ["lobname","date","monthyear","entityid","entityname","orderreceiptamount","paymentamount","diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
@@ -159,6 +162,7 @@ const LobReceiptPayments = () => {
       user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
+      entityName: entity,
       rows: ["lobname","orderreceiptamount","paymentamount","diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -288,9 +292,10 @@ const LobReceiptPayments = () => {
           </Stack>
         </Stack>
 
-        <SimpleTable
+        <SimpleTableWithFooter
           columns={columns}
           data={entityReceiptPaymentsData}
+          totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
