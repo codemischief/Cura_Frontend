@@ -166,6 +166,7 @@ const LobReceiptPayments = () => {
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       lobName : lob,
+      rows:["lobname","total_orderreceiptamount","total_paymentamount","total_diff",],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
