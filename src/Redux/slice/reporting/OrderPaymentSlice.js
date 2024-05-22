@@ -113,13 +113,22 @@ export const downloadPaymentDataXls =
 
 export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
   try {
-    const response = await axios.post(`${env_URL_SERVER}download/${filename}`, {
-      filename: filename,
-      user_id: userId,
+    const response = await axios.post(
+      `${env_URL_SERVER}download/${filename}`,
+      {
+        filename: filename,
+        user_id: userId,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-
-    console.log("updatedResponse",);
-    FileSaver.saveAs(response.blob(), "CityData.xlsx");
-  } catch (error) {}
+    FileSaver.saveAs(blob, `${filename}xlsx`);
+  } catch (error) {
+    console.log("error", error);
+  }
 };
 export default pmaSlice.reducer;
