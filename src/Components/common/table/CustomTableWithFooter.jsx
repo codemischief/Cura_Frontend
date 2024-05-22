@@ -14,6 +14,7 @@ import {
     totalData,
     pageNo,
     countPerPage,
+    pageName,
     totalCount,
     handlePageChange,
     handlePageCountChange,
@@ -123,7 +124,8 @@ import {
                       className="py-3 text-center"
                     > 
                       {
-                        helper(colIndex,totalData)
+                        
+                        helper(colIndex,totalData,pageName)
                       }
                     </td>
                   ))}
@@ -174,7 +176,7 @@ import {
     downloadExcel: PropTypes.func,
     height: PropTypes.string,
   };
-  const helper = (index,obj) => {
+  const helper = (index,obj,pageName) => {
      if(index == 3) {
          return ` Total: ${obj.totalreceipt}`
      }else if(index == 4) {
@@ -185,3 +187,28 @@ import {
       return ""
      }
   }
+  const helper2 = (index,obj,pageName) => {
+    if(pageName == "lobreceiptpayments") {
+      if(index == 3) {
+        return ` Total: ${obj.totalreceipt}`
+      }else if(index == 4) {
+          return `Total: ${obj.totalpayment}`
+      }else if(index == 5) {
+      return `Total: ${obj.total_diff}`
+      }else {
+      return ""
+      }
+        
+    }else {
+      if(index == 2) {
+        return ` Total: ${obj.totalreceipt}`
+      }else if(index == 3) {
+          return `Total: ${obj.totalpayment}`
+      }else if(index == 4) {
+      return `Total: ${obj.total_diff}`
+      }else {
+      return ""
+      }
+    }
+    
+  } 
