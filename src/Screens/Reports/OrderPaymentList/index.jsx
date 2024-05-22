@@ -120,6 +120,7 @@ const OrderPaymentList = () => {
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
+
   useEffect(() => {
     if (startDate && endDate) {
       let obj = {
@@ -172,13 +173,51 @@ const OrderPaymentList = () => {
   };
 
   const downloadExcel = async () => {
+    // let obj = {
+    //   user_id: 1234,
+    //   startdate: startDate ?? "2021-01-01",
+    //   enddate: endDate ?? "2022-01-01",
+    //   rows: [
+    //     "type",
+    //     "id",
+    //     "paymentdate",
+    //     "monthyear",
+    //     "fy",
+    //     "amount",
+    //     "entityname",
+    //     "mode_of_payment",
+    //     "clientid",
+    //     "clientname",
+    //     "vendorname",
+    //     "orderid",
+    //     "orderdescription",
+    //     "serviceid",
+    //     "service",
+    //     "lobname",
+    //   ],
+    //   sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+
+    //   filters: formatedFilterData(filter),
+    //   search_key: search,
+    //   pg_no: 0,
+    //   pg_size: 0,
+    //   order: sorting.sort_order ? sorting.sort_order : undefined,
+    // };
+    // dispatch(downloadPaymentDataXls(obj)).then((response) => {
+    //   const tableData = response.data;
+    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
+    //   const workbook = XLSX.utils.book_new();
+    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //   XLSX.writeFile(workbook, "orderPayment.xlsx");
+    //   dispatch(setStatus("success"));
+    // });
     let obj = {
       user_id: 1234,
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       rows: [
-        "type",
         "id",
+        "type",
         "paymentdate",
         "monthyear",
         "fy",
@@ -195,27 +234,19 @@ const OrderPaymentList = () => {
         "lobname",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-
+      downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPaymentDataXls(obj)).then((response) => {
-      const tableData = response.data;
-      const worksheet = XLSX.utils.json_to_sheet(tableData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "orderPayment.xlsx");
-      dispatch(setStatus("success"));
-    });
+    dispatch(downloadPaymentDataXls(obj));
   };
 
   const handleShow = () => {
     if (startDate && endDate) {
-
-      dispatch(setInitialState())
+      dispatch(setInitialState());
 
       setShowTable(true);
     } else {
