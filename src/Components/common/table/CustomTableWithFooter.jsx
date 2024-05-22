@@ -177,15 +177,28 @@ import {
     height: PropTypes.string,
   };
   const helper = (index,obj,pageName) => {
-     if(index == 3) {
-         return ` Total: ${obj.totalreceipt}`
-     }else if(index == 4) {
-         return `Total: ${obj.totalpayment}`
-     }else if(index == 5) {
+    if(pageName == "lobreceiptpayments") {
+      if(index == 3) {
+        return ` Total: ${obj.totalreceipt}`
+      }else if(index == 4) {
+          return `Total: ${obj.totalpayment}`
+      }else if(index == 5) {
       return `Total: ${obj.total_diff}`
-     }else {
+      }else {
       return ""
-     }
+      }
+        
+    }else {
+      if(index == 2) {
+        return ` Total: ${obj.totalreceipt}`
+      }else if(index == 3) {
+          return `Total: ${obj.totalpayment}`
+      }else if(index == 4) {
+      return `Total: ${obj.total_diff}`
+      }else {
+      return ""
+      }
+    }
   }
   const helper2 = (index,obj,pageName) => {
     if(pageName == "lobreceiptpayments") {
