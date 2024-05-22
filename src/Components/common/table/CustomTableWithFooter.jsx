@@ -110,18 +110,18 @@ import {
                 No records to display{" "}
               </tr>
             )}
-            <tr className="sticky bottom-0 z-100 bg-white">
+            <tr className="sticky bottom-0 z-100 bg-[#F0F6FF]">
             {columns.map((column, colIndex) => (
                     <td
                       key={colIndex}
                       colSpan={1}
                       style={{
                         ...column.cellStyle,
-                        paddingTop: "4px",
-                        paddingBottom: "4px",
+                        paddingTop: "10px",
+                        paddingBottom: "10px",
                       }}
                       className="py-3 text-center"
-                    >
+                    > 
                       {
                         helper(colIndex,totalData)
                       }
@@ -176,11 +176,11 @@ import {
   };
   const helper = (index,obj) => {
      if(index == 3) {
-         return obj.totalreceipt
+         return ` Total: ${obj.totalreceipt}`
      }else if(index == 4) {
-         return obj.totalpayment
+         return `Total: ${obj.totalpayment}`
      }else if(index == 5) {
-      return obj.total_diff
+      return `Total: ${obj.total_diff}`
      }else {
       return ""
      }
