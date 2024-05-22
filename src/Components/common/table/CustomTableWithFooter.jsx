@@ -80,7 +80,7 @@ import {
                 </td>
               </tr>
             )}
-  
+            <>
             {data.length > 0 ? (
               data?.map((rowData, rowIndex) => (
                 <tr
@@ -110,27 +110,30 @@ import {
                 No records to display{" "}
               </tr>
             )}
-            
+            <tr className="sticky bottom-0 z-100 bg-white">
+            {columns.map((column, colIndex) => (
+                    <td
+                      key={colIndex}
+                      colSpan={1}
+                      style={{
+                        ...column.cellStyle,
+                        paddingTop: "4px",
+                        paddingBottom: "4px",
+                      }}
+                      className="py-3 text-center"
+                    >
+                      temp
+                    </td>
+                  ))}
+            </tr>
+            </>
           </tbody>
           
         </table>
        
       </div>,
       
-      <div className="w-full h-12 bg-blue-400">
-        <h1>
-           {totalData.totalreceipt}
-
-        </h1>
-        <h1>
-
-           {totalData.totalpayment}
-        </h1>
-        <h1>
-
-        {totalData.total_diff}
-        </h1>
-      </div>,
+    
 
       <PaginationComponent
         pageNo={pageNo}
