@@ -29,6 +29,7 @@ import CharacterFilter from '../../Components/Filters/CharacterFilter';
 import NumericFilter from '../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../assets/active_filter.png"
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Locality = () => {
     const menuRef = useRef();
     const navigate = useNavigate()
@@ -428,7 +429,7 @@ const Locality = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'

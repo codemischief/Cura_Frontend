@@ -691,36 +691,6 @@ const ManageOrderReceipt = () => {
             },1000) 
         }
     }
-    const handleExcelDownload = async () => {
-        const data = {
-            "user_id": 1234,
-            "rows": [
-                "clientname",
-                "briefdescription",
-                "clientproperty",
-                "amount",
-                "recddate",
-                "paymentmodename",
-                "receivedbyname",
-                "createdbyname",
-                "id",
-            ],
-            "filters": filterState,
-            "sort_by": [sortField],
-            "order": flag ? "asc" : "desc",
-            "pg_no": 0,
-            "pg_size": 0,
-            "search_key" : searchInput
-        };
-        const response = await APIService.getOrderReceipt(data);
-        const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "OrderReceiptData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
-    }
     const handleSearch = async () => {
         // console.log("clicked")
         setPageLoading(true);
@@ -1635,14 +1605,14 @@ const ManageOrderReceipt = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
