@@ -34,6 +34,7 @@ import DropDown from '../../../Components/Dropdown/Dropdown';
 import ActiveFilter from "../../../assets/active_filter.png"
 import {formatDate} from "../../../utils/formatDate.js"
 import { usernameByUserId } from '../../../utils/UsernameByUserId.js';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const Payments = () => {
     const menuRef = useRef();
     const navigate = useNavigate();
@@ -796,7 +797,7 @@ const Payments = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
