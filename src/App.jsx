@@ -95,10 +95,11 @@ import PrivateLayout from "./layout/Privatelayout";
 // import { UserProvider } from "./context/useAuth";
 import AuthGuard from "./context/AuthGuard";
 import { ToastContainer } from "react-toastify";
-import { AuthProvider } from "./context/JwtContext";
+import useAuth, { AuthProvider } from "./context/JwtContext";
 
 const App = () => {
-  console.log("hello");
+  const { isInitialized } = useAuth();
+  console.log("hello", isInitialized);
   const ROLES = {
     Registered: "3",
     Public: "2",
@@ -109,11 +110,12 @@ const App = () => {
     <div className="app">
       {/* <RouterProvider router={router}/> */}
 
-      <Routes>
-        <Route path="/" element={<Outlet />}>
-          <Route path="" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<Userscreen />} />
+      {isInitialized ? (
+        <Routes>
+          <Route path="/" element={<Outlet />}>
+            <Route path="" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/user" element={<Userscreen />} />
 
           {/* <Route element={<RequireAuth />}> */}
           <Route
@@ -309,9 +311,12 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/*" element={<NotFound />} />
-        </Route>
-      </Routes>
+            <Route path="/*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      ) : (
+        <p>Loading....</p>
+      )}
     </div>
   );
 };

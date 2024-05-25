@@ -26,7 +26,7 @@ const handleTokenExpired = (exp) => {
   expiredTimer = window.setTimeout(() => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
-  }, 1000);
+  }, 100000);
 };
 
 const setSession = (user, accessToken) => {

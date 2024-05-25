@@ -12,7 +12,14 @@ import { toast } from "react-toastify";
 import useAuth from "../../context/JwtContext";
 
 const Login = () => {
-  const { login, isAuthenticated } = useAuth();
+  const { login } = useAuth();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    companyKey: "",
+  });
+
   // console.log("isAuthenticated", isAuthenticated);
   const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
   const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
@@ -128,7 +135,6 @@ const Login = () => {
     return errors;
   };
 
-  useEffect(() => {}, [formErrors]);
   return (
     <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
       <img

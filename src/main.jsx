@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "./Redux/store.js";
 import { AuthProvider } from "./context/JwtContext.jsx";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
