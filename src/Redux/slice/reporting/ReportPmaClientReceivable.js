@@ -3,11 +3,11 @@ import axios from "axios";
 import FileSaver from "file-saver";
 import {
   env_URL_SERVER,
-  pmaBillingTrendView,
+  pmaClientReceivable,
 } from "../../helper";
 
 const initialState = {
-  pmaBillingTrendView: [],
+  pmaClientReceivable: [],
   totalAmount : {},
   status: "",
   filter: {},
@@ -23,12 +23,12 @@ const initialState = {
 };
 
 export const pmaSlice = createSlice({
-  name: "pmaBillingTrendView",
+  name: "pmaClientReceivable",
   initialState,
   reducers: {
-    setPmaBillingTrendView: (state, { payload }) => {
+    setPmaClientReceivables: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.pmaBillingTrendView = pmaBillingTrendView(data.data, year, month);
+      state.pmaClientReceivable = pmaClientReceivable(data.data, year, month);
       console.log(payload.data)
       console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
@@ -57,7 +57,7 @@ export const pmaSlice = createSlice({
         sort_order: "",
       };
     },
-    setPmaBillingTrendViewFilters: (state, { payload }) => {
+    setPmaClientReceivableFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -69,38 +69,38 @@ export const pmaSlice = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setPmaBillingTrendView,
+   setPmaClientReceivables,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setPmaBillingTrendViewFilters,
+  setPmaClientReceivableFilters,
   setInitialState,
   setSorting,
 } = pmaSlice.actions;
 
-export const getPmaBillingTrendViewData =
+export const getPmaClientReceivable =
   (payloadObj, year, month) => async (dispatch) => {
     console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportPMABillingTrendView`,
+        `${env_URL_SERVER}reportPMAClientReceivable`,
         payloadObj
       );
-      console.log(response)  
-      dispatch(setPmaBillingTrendView({ data: response.data, year, month }));
+        
+      dispatch(setPmaClientReceivables({ data: response.data, year, month }));
       dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
     }
   };
 
-export const downloadPmaBillingTrendView =
+export const downloadPmaClientReceivables =
   (payloadObj, year, month) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportPMABillingTrendView`,
+        `${env_URL_SERVER}reportPMAClientReceivable`,
         payloadObj
       );
       if ((response.data.filename, payloadObj.user_id)) {
@@ -131,7 +131,7 @@ export const downloadPmaBillingTrendView =
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, "PmaBillingTrendView.xlsx");
+      FileSaver.saveAs(blob, "reportPMAClientReceivable.xlsx");
     } catch (error) {
       console.log("error", error);
     }

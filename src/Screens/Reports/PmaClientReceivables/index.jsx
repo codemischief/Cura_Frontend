@@ -11,32 +11,23 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 // import {
-//   downloadLobReceiptPaymentsDataXls,
-//   getLobReceiptPaymentsData,
-//   setCountPerPage,
-//   setInitialState,
-//   setPageNumber,
-//   setSorting,
-//   setStatus,
-// } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
-// import {
-//     downloadPmaBillingTrendView,
-//     getPmaClientReport,
+//     downloadPmaClientReceivable,
+//     getPmaClientReceivable,
 //     setCountPerPage,
 //     setInitialState,
 //     setPageNumber,
 //     setSorting,
 //     setStatus
-// } from "../../../Redux/slice/reporting/pmaBillingTrendView"
+// } from "../../../Redux/slice/reporting/pmaInvoiceList"
 import {
-    downloadPmaClientReport,
-    getPmaClientReport,
+    downloadPmaClientReceivables,
+    getPmaClientReceivable,
     setCountPerPage,
     setInitialState,
     setPageNumber,
     setSorting,
     setStatus
-} from "../../../Redux/slice/reporting/pmaClientReport"
+} from "../../../Redux/slice/reporting/ReportPmaClientReceivable"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
@@ -44,7 +35,8 @@ import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 
-const PmaClientReport = () => {
+
+const PmaClientReceivable = () => {
   const dispatch = useDispatch();
 //   const {
 //     pmaBillingTrendView,
@@ -56,8 +48,18 @@ const PmaClientReport = () => {
 //     pageNo,
 //     filter,
 //   } = useSelector((state) => state.pmaBillingTrendView);
+//   const {
+//     pmaClientReport,
+//     status,
+//     totalAmount,
+//     totalCount,
+//     sorting,
+//     countPerPage,
+//     pageNo,
+//     filter
+//   } = useSelector((state) => state.pmaClientReport)
   const {
-    pmaClientReport,
+    pmaClientReceivable,
     status,
     totalAmount,
     totalCount,
@@ -65,7 +67,7 @@ const PmaClientReport = () => {
     countPerPage,
     pageNo,
     filter
-  } = useSelector((state) => state.pmaClientReport)
+  } = useSelector((state) => state.pmaClientReceivable)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -110,7 +112,7 @@ const PmaClientReport = () => {
         pg_no: +pageNo,
         pg_size: +countPerPage,
       };
-      dispatch(getPmaClientReport(obj));
+      dispatch(getPmaClientReceivable(obj));
     
   };
 
@@ -145,7 +147,7 @@ const PmaClientReport = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getPmaClientReport(obj));
+      dispatch(getPmaClientReceivable(obj));
     
   }, [
     filter,
@@ -172,30 +174,32 @@ const PmaClientReport = () => {
     let obj = {
       user_id: 1234,
       rows:[
-        "clientid",
-            "fullname",
-            "email1",
-            "email2",
-            "email"
+        "clientname" ,
+      "orderdescription",
+      "baseamount",
+      "tax",
+      "entityname",
+      "invoiceamount",
+      "invoicedate",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType : "excel",
       colmap : {
-        
-            "clientid": "Client ID",
-            "fullname": "Client Name",
-            "email1": "Email1",
-            "email2": "Email2",
-            "email": "Client Portal Online Mail ID's"
-      
+        "clientname": "Client Name",
+      "orderdescription": "Order Descriptions",
+      "baseamount": "Base Amount",
+      "tax": "Tax",
+      "entityname": "Entity Name",
+      "invoiceamount": "Invoice Amount",
+      "invoicedate": "Invoice Date",
       },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPmaBillingTrendView(obj))
+    dispatch(downloadPmaClientReceivables(obj))
     // .then((response) => {
     //   const tableData = response.data;
     //   const worksheet = XLSX.utils.json_to_sheet(tableData);
@@ -231,8 +235,8 @@ const PmaClientReport = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"PMA Billing Trend List"}
-            path={["Reports", "PMA", "PMA Billing Trend List"]}
+            heading={"Cura PMA Client Receivables"}
+            path={["Reports", "PMA", "Cura PMA Client Receivables"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -262,9 +266,10 @@ const PmaClientReport = () => {
           
         </Stack> */}
  
-        <SimpleTable
+        <SimpleTableWithFooter
+         pageName="pmaClientReceivables"
           columns={columns}
-          data={pmaClientReport}
+          data={pmaClientReceivable}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
@@ -288,4 +293,4 @@ const PmaClientReport = () => {
   );
 };
 
-export default PmaClientReport;
+export default PmaClientReceivable;

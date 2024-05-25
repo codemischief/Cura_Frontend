@@ -110,6 +110,13 @@ export const pmaClientReport = (data,year,month) => {
 export const pmaInvoiceList = (data,year,month) => {
   console.log(data)
   return data.map((billing, index) => ({
+    ...billing,
+    invoicedate : formatDate(billing.invoicedate)
+  }));
+}
+export const pmaClientReceivable = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
     ...billing
   }));
 }

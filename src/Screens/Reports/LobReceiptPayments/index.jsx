@@ -96,7 +96,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
-        rows:["lobname","service","orderreceiptamount","paymentamount","recddate","diff"],
+        rows:["lobname","service","orderreceiptamount","paymentamount","date","diff"],
         sort_by: ["id"],
         filters: formatedFilterData(filter),
         search_key: search,
@@ -133,7 +133,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         lobName: lob,
-        rows:["lobname","service","orderreceiptamount","paymentamount","recddate","diff"],
+        rows:["lobname","service","orderreceiptamount","paymentamount","date","diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -217,8 +217,8 @@ const LobReceiptPayments = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"LOB-Receipts-Payments"}
-            path={["Reports", "Lists", "LOB-Receipts-Payments"]}
+            heading={"LOB-Service-Receipts-Payments"}
+            path={["Reports", "Lists", "LOB-Service-Receipts-Payments"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
