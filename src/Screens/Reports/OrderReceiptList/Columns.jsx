@@ -110,7 +110,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
-      title: "Order Id",
+      title: "Order ID",
       field: "orderid",
       sorting: true,
       type: "numeric",
@@ -126,7 +126,7 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "150px" },
     },
     {
-      title: "Service Id",
+      title: "Service ID",
       field: "serviceid",
       type: "numeric",
       sorting: true,

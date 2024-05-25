@@ -126,7 +126,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
     },
     {
-      title: "Order Id",
+      title: "Order ID",
       field: "orderid",
       sorting: true,
       cellStyle: { ...cellStyleCommon, justifyContent: "center",minWidth: "150px" },
@@ -140,7 +140,7 @@ export default function connectionDataColumn(onQuery) {
       filterComponent: TextFilterField,
     },
     {
-      title: "Service Id",
+      title: "Service ID",
       field: "serviceid",
       type: "numeric",
       sorting: true,

@@ -101,12 +101,36 @@ export const downloadReceiptDataXls =
         payloadObj
       );
 
-      return response.data;
+      if ((response.data.filename, payloadObj.user_id)) {
+        await dispatch(
+          downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+        );
+      }
+      dispatch(setStatus("success"));
       // dispatch(setOrderPaymentData({ data: response.data, year, month }));
       // dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
     }
   };
-
+  export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${env_URL_SERVER}download/${filename}`,
+        {
+          filename: filename,
+          user_id: userId,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      FileSaver.saveAs(blob, "OrderReceiptList.xlsx");
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 export default pmaSlice.reducer;

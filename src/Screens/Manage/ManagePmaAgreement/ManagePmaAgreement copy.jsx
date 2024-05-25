@@ -33,6 +33,7 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import { formatDate } from '../../../utils/formatDate';
 const ManagePmaArgreement = () => {
     const dataRows = [
         "id",
@@ -1016,7 +1017,7 @@ const ManagePmaArgreement = () => {
     const [propertyText , setPropertyText] = useState("Select Client Property");
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
@@ -1378,25 +1379,25 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[9.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.startdate ? item.startdate.split('T')[0] : ""}</p>
+                                            <p>{item.startdate }</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.enddate ? item.enddate.split('T')[0] : ""}</p>
+                                            <p>{item.enddate}</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.poastartdate ? item.poastartdate.split('T')[0] : ""}</p>
+                                            <p>{item.poastartdate}</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.poaenddate ? item.poaenddate.split('T')[0] : ""}</p>
+                                            <p>{item.poaenddate}</p>
 
                                         </div>
 

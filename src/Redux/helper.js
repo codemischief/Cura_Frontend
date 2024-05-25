@@ -30,11 +30,12 @@ export const updatedResponsePmaData = (data, year, month) => {
   }));
 };
 export const updatedOrderPaymentData = (data, year, month) => {
-  
+  console.log(data)
   return data.map((billing, index) => ({
     ...billing,
     data: billing.data ? billing.date : "",
     amount: billing.amount ? floorDecimal(billing.amount) : "",
+    paymentdate : billing.paymentdate  ? formatDate(billing.paymentdate) : ""
   }));
 };
 export const updatedOrderReceiptData = (data, year, month) => {
@@ -42,6 +43,7 @@ export const updatedOrderReceiptData = (data, year, month) => {
     ...billing,
     data: billing.data ? billing.date : "",
     amount: billing.amount ? floorDecimal(billing.amount) : "",
+    recddate : billing.recddate ? formatDate(billing.recddate) : ""
   }));
 };
 export const updatedOrderInvoiceData = (data, year, month) => {
