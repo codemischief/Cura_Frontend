@@ -1,12 +1,12 @@
 import { useLocation,Navigate,Outlet } from "react-router";
-import useAuth from "./useAuth";
+// import useAuth from "./useAuth";
 import { APIService } from "../services/API";
 import { authService } from "../services/authServices";
 // import Dashboard from "../Components/Dashboard/Dashboard";
 
 
 const RequireAuth = () =>{
-    const {auth} = useAuth();
+    // const {auth} = useAuth();
 
     const location = useLocation();
     // return (auth?.roles?.find(role => allowedRoles.includes(role))) ? <Outlet/> :<Navigate to="" />

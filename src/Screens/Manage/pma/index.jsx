@@ -171,7 +171,7 @@ const PmaBilling = () => {
 
   return (
     <Stack gap="1rem">
-      <Navbar />
+      {/* <Navbar /> */}
       <Stack direction={"column"} paddingX={"14px"}>
         <HeaderBreadcum
           heading={"Manage PMA Billing"}

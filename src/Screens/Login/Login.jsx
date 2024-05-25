@@ -3,19 +3,22 @@ import Logo from "../../assets/logo.jpg";
 import eyeIcon from "../../assets/eye.jpg";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import bcrypt from 'bcryptjs'
-import useAuth from "../../context/useAuth";
+import bcrypt from "bcryptjs";
+// import useAuth from "../../context/useAuth";
 import { useLocation } from "react-router-dom";
 import { authService } from "../../services/authServices";
 import EyeHide from "./../../assets/eyeHide.png";
-
+import { toast } from "react-toastify";
+import useAuth from "../../context/useAuth";
 
 const Login = () => {
-
+  const { login, isAuthenticated } = useAuth();
+  console.log("isAuthenticated", isAuthenticated);
   const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
   const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
-  const [buttonLoading,setButtonLoading] = useState(false);
-  const { setAuth } = useAuth();
+  const [buttonLoading, setButtonLoading] = useState(false);
+  // const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const mockPostResponse = async () => {
@@ -25,23 +28,22 @@ const Login = () => {
     // var password = bcrypt.hashSync(formValues.password, salt);
     const password = formValues.password;
     const company_key = formValues.comkey;
-    
-    const response = await authService.login({ username, password, company_key });
+
+    // const response = await authService.login({ username, password, company_key });
+    await login(username, password, company_key);
+    navigate("/dashboard")
+    toast.success("login success");
     setButtonLoading(false);
-    if (response.result == "success" && response.role_id == "1") {
-      navigate("/dashboard")
-    } else if (response.result == "success" && response.role_id == "2") {
-      navigate("/user")
-    }
-    else if (response.result == "error") {
-      setIsError(true)
-      setErrorMessage(response.message);
-    }
-    
-  }
+    // if (response.result == "success" && response.role_id == "1") {
+    //   navigate("/dashboard");
+    // } else if (response.result == "success" && response.role_id == "2") {
+    //   navigate("/user");
+    // } else if (response.result == "error") {
+    //   setIsError(true);
+    //   setErrorMessage(response.message);
+    // }
+  };
 
-
-  const navigate = useNavigate();
 
   // Testing User Login info
   const database = [
@@ -68,7 +70,6 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-
   // handle changes in input form
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +83,9 @@ const Login = () => {
     } else {
       setType1("password");
     }
-    setOpenEyeIconPass((prev) => { return !prev });
+    setOpenEyeIconPass((prev) => {
+      return !prev;
+    });
   };
 
   const comkeyToggle = () => {
@@ -91,13 +94,15 @@ const Login = () => {
     } else {
       setType2("password");
     }
-    setOpenEyeIconCom((prev) => { return !prev });
+    setOpenEyeIconCom((prev) => {
+      return !prev;
+    });
   };
 
   const show = () => {
     const element = document.getElementById("inputError");
     element.style.display = "block";
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -105,8 +110,6 @@ const Login = () => {
     setIsSubmit(true);
     mockPostResponse();
     setFormErrors(validate(formValues));
-
-
   };
 
   // validate form and to throw Error message
@@ -124,9 +127,7 @@ const Login = () => {
     return errors;
   };
 
-  useEffect(() => {
-
-  }, [formErrors]);
+  useEffect(() => {}, [formErrors]);
   return (
     <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
       <img
@@ -149,7 +150,9 @@ const Login = () => {
                   onChange={handleChange}
                   autoComplete="off"
                 />
-                <div className="text-[12px] text-[#CD0000] ">{formErrors.username}</div>
+                <div className="text-[12px] text-[#CD0000] ">
+                  {formErrors.username}
+                </div>
               </div>
               <div className="space-y-[2px]">
                 <div className="text-[#505050] text-[18px] ">Password</div>
@@ -162,30 +165,31 @@ const Login = () => {
                     onChange={handleChange}
                     autoComplete="off"
                   />
-                  {openEyeIconPass &&
+                  {openEyeIconPass && (
                     <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
                       <img
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         onClick={passwordToggle}
                         src={eyeIcon}
                         alt="eye-icon"
                       />
                     </span>
-                  }
-                  {!openEyeIconPass &&
+                  )}
+                  {!openEyeIconPass && (
                     <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[4px]">
                       <img
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         onClick={passwordToggle}
                         src={EyeHide}
                         alt="eye-icon"
                       />
                     </span>
-                  }
-
+                  )}
                 </div>
 
-                <div className="text-[12px] text-[#CD0000] ">{formErrors.password}</div>
+                <div className="text-[12px] text-[#CD0000] ">
+                  {formErrors.password}
+                </div>
               </div>
               <div className="space-y-[2px]">
                 <div className="text-[#505050] text-[18px]">Company Key</div>
@@ -198,29 +202,31 @@ const Login = () => {
                     onChange={handleChange}
                     autoComplete="off"
                   />
-                  {openEyeIconCom &&
+                  {openEyeIconCom && (
                     <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
                       <img
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         onClick={comkeyToggle}
                         src={eyeIcon}
                         alt="eye-icon"
                       />
                     </span>
-                  }
-                  {!openEyeIconCom &&
+                  )}
+                  {!openEyeIconCom && (
                     <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[4px]">
                       <img
-                        className='cursor-pointer'
+                        className="cursor-pointer"
                         onClick={comkeyToggle}
                         src={EyeHide}
                         alt="eye-icon"
                       />
                     </span>
-                  }
+                  )}
                 </div>
 
-                <div className="text-[12px] text-[#CD0000] ">{formErrors.comkey}</div>
+                <div className="text-[12px] text-[#CD0000] ">
+                  {formErrors.comkey}
+                </div>
               </div>
             </div>
 
@@ -228,16 +234,33 @@ const Login = () => {
             {/* <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div> */}
 
             {/* error message  */}
-            {isError && <div id="inputError" className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] ">
-              {errorMessage}
-            </div>}
+            {isError && (
+              <div
+                id="inputError"
+                className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] "
+              >
+                {errorMessage}
+              </div>
+            )}
 
             {/* forgot section */}
             <div className="flex flex-col items-center justify-center gap-[10px]">
-              <Link className="text-[#004DD7] text-[18px] cursor-pointer" to="/">Forgot Password</Link>
-              <button className={`${buttonLoading ? " bg-gray-600 cursor-not-allowed": "bg-[#004DD7]"} w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer`}>Login</button>
+              <Link
+                className="text-[#004DD7] text-[18px] cursor-pointer"
+                to="/"
+              >
+                Forgot Password
+              </Link>
+              <button
+                className={`${
+                  buttonLoading
+                    ? " bg-gray-600 cursor-not-allowed"
+                    : "bg-[#004DD7]"
+                } w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer`}
+              >
+                Login
+              </button>
             </div>
-
           </form>
         </div>
       </div>
