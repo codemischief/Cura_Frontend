@@ -164,10 +164,27 @@ const PmaInvoiceList = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:["*"],
+      rows:[
+        "clientname" ,
+      "orderdescription",
+      "baseamount",
+      "tax",
+      "entityname",
+      "invoiceamount",
+      "invoicedate",
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType : "excel",
+      colmap : {
+        "clientname": "Client Name",
+      "orderdescription": "Order Descriptions",
+      "baseamount": "Base Amount",
+      "tax": "Tax",
+      "entityname": "Entity Name",
+      "invoiceamount": "Invoice Amount",
+      "invoicedate": "Invoice Date",
+      },
       search_key: search,
       pg_no: 0,
       pg_size: 0,

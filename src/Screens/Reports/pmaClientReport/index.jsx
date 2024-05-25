@@ -171,10 +171,25 @@ const PmaClientReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:["*"],
+      rows:[
+        "clientid",
+            "fullname",
+            "email1",
+            "email2",
+            "email"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType : "excel",
+      colmap : {
+        
+            "clientid": "Client ID",
+            "fullname": "Client Name",
+            "email1": "Email1",
+            "email2": "Email2",
+            "email": "Client Portal Online Mail ID's"
+      
+      },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
