@@ -19,12 +19,12 @@ const SimpleTable = ({
   handleRefresh,
   handleSortingChange,
   downloadExcel,
-  height = "calc(100vh - 19rem)",
+  height = "calc(100vh - 18rem)",
 }) => {
   return [
     <div
       className={`w-full text-[12px] h-[${height}] overflow-x-auto `}
-      style={{ height: "calc(100vh - 18rem" }}
+      style={{ height: `${height}` }}
     >
       <table className="table-auto ">
         <thead className="h-[115px] sticky top-0 z-100 bg-white">

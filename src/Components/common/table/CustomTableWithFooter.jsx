@@ -24,9 +24,10 @@ import {
     height = "calc(100vh - 19rem)",
   }) => {
     return [
+      
       <div
         className={`w-full text-[12px] h-[${height}] overflow-x-auto `}
-        style={{ height: "calc(100vh - 19rem" }}
+        style={{ height: `${height}` }}
       >
         <table className="table-auto w-full">
           <thead className="h-[115px] sticky top-0 z-100 bg-white">
@@ -82,6 +83,7 @@ import {
               </tr>
             )}
             <>
+            {/* {console.log(data)} */}
             {data.length > 0 ? (
               data?.map((rowData, rowIndex) => (
                 <tr
@@ -188,7 +190,35 @@ import {
       return ""
       }
         
-    }else {
+    }else if(pageName == "pmaBillingTrendView" ) {
+      if(index == 1) {
+
+      }else if(index == 2) {
+           return `Total: ${obj.jan_sum}`
+      }else if(index == 3) {
+        return `Total: ${obj.feb_sum}`
+      }else if(index == 4) {
+        return `Total: ${obj.mar_sum}`
+      }else if(index == 5) {
+        return `Total: ${obj.apr_sum}`
+      }else if(index == 6) {
+        return `Total: ${obj.may_sum}`
+      }else if(index == 7) {
+        return `Total: ${obj.jun_sum}`
+      }else if(index == 8) {
+        return `Total: ${obj.jul_sum}`
+      }else if(index == 9) {
+        return `Total: ${obj.aug_sum}`
+      }else if(index == 10) {
+        return `Total: ${obj.sep_sum}`
+      }else if(index == 11) {
+        return `Total: ${obj.oct_sum}`
+      }else if(index == 12) {
+        return `Total: ${obj.nov_sum}`
+      }else if(index == 13) {
+        return `Total: ${obj.dec_sum}`
+      }
+  }else {
       if(index == 2) {
         return ` Total: ${obj.totalreceipt}`
       }else if(index == 3) {
@@ -212,6 +242,18 @@ import {
       return ""
       }
         
+    }else if(pageName == "pmaBillingTrendView" ) {
+        if(index == 1) {
+
+        }else if(index == 2) {
+             return `Total: ${obj.jan_sum}`
+        }else if(index == 3) {
+
+        }else if(index == 4) {
+
+        }else if(index == 5) {
+
+        }
     }else {
       if(index == 2) {
         return ` Total: ${obj.totalreceipt}`

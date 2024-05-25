@@ -620,15 +620,24 @@ const Navbar = () => {
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   CURA PMA Client Receivables
                 </p>
+                <Link to="/pmaInvoiceList">
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   PMA Invoice List
                 </p>
+
+                </Link>
+                <Link to="/pmaBillingTrendView">
+
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   PMA Billing Trend Report
                 </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Client Portal Report
-                </p>
+                </Link>
+                <Link to="/pmaClientReport">
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Client Portal Report
+                  </p>
+
+                </Link>
               </div>
             </div>
           </div>

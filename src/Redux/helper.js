@@ -95,4 +95,22 @@ export const updatedLobReceiptPaymentConsolidatedData = (data, year, month) => {
     total_diff: billing.total_diff ? floorDecimal(billing.total_diff) : "",
   }));
 };
+export const pmaBillingTrendView = (data,year,month) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing
+  }));
+}
+export const pmaClientReport = (data,year,month) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing
+  }));
+}
+export const pmaInvoiceList = (data,year,month) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
