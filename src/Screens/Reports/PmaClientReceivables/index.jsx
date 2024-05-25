@@ -11,43 +11,63 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 // import {
-//   downloadLobReceiptPaymentsDataXls,
-//   getLobReceiptPaymentsData,
-//   setCountPerPage,
-//   setInitialState,
-//   setPageNumber,
-//   setSorting,
-//   setStatus,
-// } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
+//     downloadPmaClientReceivable,
+//     getPmaClientReceivable,
+//     setCountPerPage,
+//     setInitialState,
+//     setPageNumber,
+//     setSorting,
+//     setStatus
+// } from "../../../Redux/slice/reporting/pmaInvoiceList"
 import {
-    downloadPmaBillingTrendView,
-    getPmaBillingTrendViewData,
+    downloadPmaClientReceivables,
+    getPmaClientReceivable,
     setCountPerPage,
     setInitialState,
     setPageNumber,
     setSorting,
     setStatus
-} from "../../../Redux/slice/reporting/pmaBillingTrendView"
+} from "../../../Redux/slice/reporting/ReportPmaClientReceivable"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
+import SimpleTable from "../../../Components/common/table/CustomTable";
 
-const PmaBillingTrendView = () => {
+
+const PmaClientReceivable = () => {
   const dispatch = useDispatch();
+//   const {
+//     pmaBillingTrendView,
+//     status,
+//     totalAmount,
+//     totalCount,
+//     sorting,
+//     countPerPage,
+//     pageNo,
+//     filter,
+//   } = useSelector((state) => state.pmaBillingTrendView);
+//   const {
+//     pmaClientReport,
+//     status,
+//     totalAmount,
+//     totalCount,
+//     sorting,
+//     countPerPage,
+//     pageNo,
+//     filter
+//   } = useSelector((state) => state.pmaClientReport)
   const {
-    pmaBillingTrendView,
+    pmaClientReceivable,
     status,
     totalAmount,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
-    filter,
-  } = useSelector((state) => state.pmaBillingTrendView);
-  
+    filter
+  } = useSelector((state) => state.pmaClientReceivable)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -83,22 +103,8 @@ const PmaBillingTrendView = () => {
   };
 
   const handleRefresh = () => {
-    if (startDate) {
-      // {
-      //   "user_id":1234,
-      //   "fy":"2021",
-      //   "rows":["*"],
-      //   "filters":[],
-      //   "pg_no":1,
-      //   "pg_size":15,
-      //   "sort_by":[],
-      //   "order":"asc",
-      //   "search_key":""
-      // }
-      const startYear = startDate.getFullYear()
       let obj = {
         user_id: 1234,
-        fy: String(startYear),
         rows:["*"],
         sort_by: ["id"],
         filters: formatedFilterData(filter),
@@ -106,8 +112,8 @@ const PmaBillingTrendView = () => {
         pg_no: +pageNo,
         pg_size: +countPerPage,
       };
-      dispatch(getPmaBillingTrendViewData(obj));
-    }
+      dispatch(getPmaClientReceivable(obj));
+    
   };
 
   const handleSearch = () => {
@@ -130,11 +136,9 @@ const PmaBillingTrendView = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    if (startDate) {
-      const startYear = startDate.getFullYear()
+    
       let obj = {
         user_id: 1234,
-        fy: String(startYear),
         rows:["*"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -143,8 +147,8 @@ const PmaBillingTrendView = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getPmaBillingTrendViewData(obj));
-    }
+      dispatch(getPmaClientReceivable(obj));
+    
   }, [
     filter,
     countPerPage,
@@ -167,49 +171,35 @@ const PmaBillingTrendView = () => {
   };
 
   const downloadExcel = async () => {
-    const startYear = startDate.getFullYear()
     let obj = {
-      
       user_id: 1234,
-      fy: String(startYear),
-      rows:["clientname",
-      "jan",
-      "feb",
-      "mar",
-      "apr",
-      "may",
-      "jun",
-      "jul",
-      "aug",
-      "sep",
-      "oct",
-      "nov",
-      "dec"],
+      rows:[
+        "clientname" ,
+      "orderdescription",
+      "baseamount",
+      "tax",
+      "entityname",
+      "invoiceamount",
+      "invoicedate",
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType : "excel",
       colmap : {
         "clientname": "Client Name",
-      "jan": "Jan",
-      "feb": "Feb",
-      "mar": "Mar",
-      "apr": "Apr",
-      "may": "May",
-      "jun": "Jun",
-      "jul": "Jul",
-      "aug": "Aug",
-      "sep": "Sep",
-      "oct": "Oct",
-      "nov": "Nov",
-      "dec": "Dec"
-
+      "orderdescription": "Order Descriptions",
+      "baseamount": "Base Amount",
+      "tax": "Tax",
+      "entityname": "Entity Name",
+      "invoiceamount": "Invoice Amount",
+      "invoicedate": "Invoice Date",
       },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPmaBillingTrendView(obj))
+    dispatch(downloadPmaClientReceivables(obj))
     // .then((response) => {
     //   const tableData = response.data;
     //   const worksheet = XLSX.utils.json_to_sheet(tableData);
@@ -245,8 +235,8 @@ const PmaBillingTrendView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"PMA Billing Trend List"}
-            path={["Reports", "PMA", "PMA Billing Trend List"]}
+            heading={"Cura PMA Client Receivables"}
+            path={["Reports", "PMA", "Cura PMA Client Receivables"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -266,77 +256,20 @@ const PmaBillingTrendView = () => {
           </div>
         </div>
 
-        <Stack
+        {/* <Stack
           marginTop={"8px"}
           justifyContent={"space-between"}
           direction={"row"}
           alignItems={"center"}
           height={"3.875rem"}
         >
-          <Stack
-            direction={"row"}
-            marginLeft={"30px"}
-            justifyContent={"space-around"}
-            alignItems={"center"}
-            gap={"24px"}
-          >
-          <Stack
-            direction={"column"}
-          > 
-                 <Typography>Select Year</Typography>
-          <DatePicker
-            className="border-[#F5F5F5] border-[0.8px] rounded-md shadow-md bg-[#F5F5F5] p-2 text-[12px]"
-            value={startDate}
-            placeholderText="Select Year"
-            // selectedDates={sea}
-            onChange={(e) => {
-              console.log(e)
-              setStartDate(e)
-            }}
-      selected={startDate}
-      renderYearContent={renderYearContent}
-      showYearPicker
-      dateFormat="yyyy"
-    />
-          </Stack>
-         
           
-            
-         {/* <input className="border-black border-2" type="number" value={startDate} onChange={(e) => setStartDate(e.target.value)}/> */}
-          
-            <Button
-              variant="outlined"
-              //   onClick={handleShow}
-              sx={{
-                height: "36px",
-                textTransform: "none",
-                color: "#004DD7",
-                borderRadius: "8px",
-                width: "133px",
-                fontSize: "14px",
-                border: "1px solid #004DD7",
-                fontWeight: "600px",
-                lineHeight: "18.9px",
-                marginTop: "12px",
-                "&:hover": {
-                  //you want this to be the same as the backgroundColor above
-                  backgroundColor: "#004DD7",
-                  color: "#fff",
-                },
-              }}
-              onClick={handleShow}
-              disabled={!(startDate)}
-            >
-              Show
-            </Button>
-          </Stack>
-        </Stack>
-        {console.log(pmaBillingTrendView)}
+        </Stack> */}
+ 
         <SimpleTableWithFooter
-          pageName={'pmaBillingTrendView'}
+         pageName="pmaClientReceivables"
           columns={columns}
-          data={pmaBillingTrendView}
-          totalData={totalAmount}
+          data={pmaClientReceivable}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
@@ -347,8 +280,7 @@ const PmaBillingTrendView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 16rem)"
-          
+          height="calc(100vh - 12rem)"
         />
       </div>
       {toast && (
@@ -361,4 +293,4 @@ const PmaBillingTrendView = () => {
   );
 };
 
-export default PmaBillingTrendView;
+export default PmaClientReceivable;

@@ -72,6 +72,7 @@ import PmaBillingTrendView from "./Screens/Reports/reportPmaBillingTrendView";
 // import PmaClientReport from "./Redux/slice/reporting/pmaClientReport";
 import PmaClientReport from "./Screens/Reports/pmaClientReport";
 import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
+import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
 
 const App = () => {
   const ROLES = {
@@ -204,6 +205,7 @@ const App = () => {
           <Route path="/pmaBillingTrendView" element={<PmaBillingTrendView/>}/>
           <Route path="/pmaClientReport" element={<PmaClientReport/>} />
           <Route path="/pmaInvoiceList" element={<PmaInvoiceList/>} />
+          <Route path="/pmaClientReceivable" element={<PmaClientReceivable/>}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

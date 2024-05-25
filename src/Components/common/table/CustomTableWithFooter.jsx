@@ -218,7 +218,7 @@ import {
       }else if(index == 13) {
         return `Total: ${obj.dec_sum}`
       }
-  }else {
+  }else if(pageName == "lobreceiptpaymentconsolidated") {
       if(index == 2) {
         return ` Total: ${obj.totalreceipt}`
       }else if(index == 3) {
@@ -228,6 +228,9 @@ import {
       }else {
       return ""
       }
+    }else if(pageName == "pmaClientReceivables") {
+      console.log('here')
+      return ""
     }
   }
   const helper2 = (index,obj,pageName) => {
