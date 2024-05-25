@@ -9,7 +9,10 @@ import VendorInvoiceReducer from "./slice/reporting/VendorInvoiceSlice";
 import LOBReceiptPaymentReducer from "./slice/reporting/LOBReceiptPaymentSlice";
 import EntityReceiptPaymentReducer from "./slice/reporting/EntityReceiptPaymentSlice";
 import LOBReceiptPaymentConsolidatedReducer from "./slice/reporting/LOBReceiptPaymentConsolidatedSlice";
-
+// import { pmaBillingTrendView } from "./helper";
+import pmaBillingTrendView from "./slice/reporting/pmaBillingTrendView";
+import pmaClientReport from "./slice/reporting/pmaClientReport";
+import pmaInvoiceList from "./slice/reporting/pmaInvoiceList";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -20,7 +23,10 @@ export const store = configureStore({
     vendorInvoice: VendorInvoiceReducer,
     lobReceiptPayments : LOBReceiptPaymentReducer,
     entityReceiptPayments : EntityReceiptPaymentReducer,
-    lobReceiptPaymentConsolidated:LOBReceiptPaymentConsolidatedReducer,
+    lobReceiptPaymentConsolidated : LOBReceiptPaymentConsolidatedReducer,
+    pmaBillingTrendView : pmaBillingTrendView,
+    pmaClientReport : pmaClientReport,
+    pmaInvoiceList : pmaInvoiceList
   },
   // Add the RTK Query API middleware
 });

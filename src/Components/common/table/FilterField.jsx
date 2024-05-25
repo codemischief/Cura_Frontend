@@ -57,11 +57,11 @@ export const FilterField = (props) => {
 
   const handleResetFilter = () => {
     setSearch("");
-    // if (filter.hasOwnProperty(columnfield)) {
-    //   const prevFilters = { ...filter };
-    //   delete prevFilters[columnfield];
-    //   onFilterChange(prevFilters);
-    // }
+    if (filter.hasOwnProperty(columnfield)) {
+      const prevFilters = { ...filter };
+      delete prevFilters[columnfield];
+      onFilterChange(prevFilters);
+    }
   };
 
   const handleEnterKeyPress = (e) => {

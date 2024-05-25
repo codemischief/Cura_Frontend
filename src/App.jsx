@@ -68,7 +68,10 @@ import DeleteById from "./Screens/Admin/DeleteById/DeleteById";
 import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
 import DeletePage from "./Screens/Admin/DeleteById/DeletePage";
-
+import PmaBillingTrendView from "./Screens/Reports/reportPmaBillingTrendView";
+// import PmaClientReport from "./Redux/slice/reporting/pmaClientReport";
+import PmaClientReport from "./Screens/Reports/pmaClientReport";
+import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
 
 const App = () => {
   const ROLES = {
@@ -198,7 +201,9 @@ const App = () => {
           <Route path="/lobReceiptPayments" element={<LobReceiptPayments />} />
           <Route path="/entityReceiptPayments" element={<EntityReceiptPayments />} />
           <Route path="/lobReceiptPaymentsConsolidated" element={<LobReceiptPaymentsConsolidated />} />
-
+          <Route path="/pmaBillingTrendView" element={<PmaBillingTrendView/>}/>
+          <Route path="/pmaClientReport" element={<PmaClientReport/>} />
+          <Route path="/pmaInvoiceList" element={<PmaInvoiceList/>} />
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

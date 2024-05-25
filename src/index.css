@@ -32,6 +32,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+.react-datepicker {
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px;     /* Border radius */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: light shadow for better visibility */
+  }
 /* input::selection {
     background-color: transparent;
     padding-right: 20px;
