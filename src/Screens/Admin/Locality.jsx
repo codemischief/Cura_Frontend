@@ -331,7 +331,7 @@ const Locality = () => {
         const res = await response.json();
         setAddConfirmation(false)
 
-        // console.log(res);
+        
 
 
         if (res.result == "success") {
