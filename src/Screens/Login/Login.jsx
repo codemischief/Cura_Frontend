@@ -9,11 +9,11 @@ import { useLocation } from "react-router-dom";
 import { authService } from "../../services/authServices";
 import EyeHide from "./../../assets/eyeHide.png";
 import { toast } from "react-toastify";
-import useAuth from "../../context/useAuth";
+import useAuth from "../../context/JwtContext";
 
 const Login = () => {
   const { login, isAuthenticated } = useAuth();
-  console.log("isAuthenticated", isAuthenticated);
+  // console.log("isAuthenticated", isAuthenticated);
   const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
   const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -30,10 +30,12 @@ const Login = () => {
     const company_key = formValues.comkey;
 
     // const response = await authService.login({ username, password, company_key });
-    await login(username, password, company_key);
-    navigate("/dashboard")
-    toast.success("login success");
-    setButtonLoading(false);
+    if (username && password && company_key) {
+      await login(username, password, company_key);
+      navigate("/dashboard");
+      toast.success("login success");
+      setButtonLoading(false);
+    }
     // if (response.result == "success" && response.role_id == "1") {
     //   navigate("/dashboard");
     // } else if (response.result == "success" && response.role_id == "2") {
@@ -43,7 +45,6 @@ const Login = () => {
     //   setErrorMessage(response.message);
     // }
   };
-
 
   // Testing User Login info
   const database = [

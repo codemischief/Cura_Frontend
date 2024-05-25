@@ -6,8 +6,8 @@
 // import axios from "axios";
 // import { authService } from "../services/authServices";
 
-import { useContext } from "react";
-import { AuthContext } from "./JwtContext";
+// import { useContext } from "react";
+// import { AuthContext } from "./JwtContext";
 
 // const UserContext = createContext({});
 
@@ -93,12 +93,4 @@ import { AuthContext } from "./JwtContext";
 
 // export const useAuth = () => React.useContext(UserContext);
 
-const useAuth = () => {
-  const context = useContext(AuthContext);
 
-  if (!context) throw new Error("Auth context must be use inside AuthProvider");
-
-  return context;
-};
-
-export default useAuth;

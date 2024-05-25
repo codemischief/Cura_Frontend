@@ -7,14 +7,11 @@ import { jwtDecode } from "jwt-decode";
 // ----------------------------------------------------------------------
 
 const isValidToken = (accessToken) => {
-  console.log('accessToken', accessToken)
   if (!accessToken) {
     return false;
   }
   const decoded = jwtDecode(accessToken);
-  console.log('decoded', decoded)
   const currentTime = Date.now() / 1000;
-  console.log(' decoded.exp > currentTime',  decoded.exp > currentTime)
 
   return decoded.exp > currentTime;
 };
@@ -24,15 +21,16 @@ const handleTokenExpired = (exp) => {
 
   window.clearTimeout(expiredTimer);
   const currentTime = Date.now();
-  const timeLeft = exp * 5000 - currentTime;
-  // console.log('timeLeft' , timeLeft);
+  const timeLeft = exp * 1000 - currentTime;
+  console.log("timeLeft", timeLeft);
   expiredTimer = window.setTimeout(() => {
-    // console.log("expired");
-    // You can do what ever you want here, like show a notification
-  }, timeLeft);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+  }, 1000);
 };
 
 const setSession = (user, accessToken) => {
+  console.log("accessTokenTyyy", accessToken);
   if (accessToken) {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("user", JSON.stringify(user));
@@ -42,8 +40,9 @@ const setSession = (user, accessToken) => {
     console.log("exp", exp);
     handleTokenExpired(exp);
   } else {
-    // localStorage.removeItem("accessToken");
-    // localStorage.removeItem("user");
+    console.log("clearing,");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
     delete axios.defaults.headers.common.Authorization;
   }
 };

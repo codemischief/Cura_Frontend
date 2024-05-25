@@ -1,4 +1,10 @@
-import { createContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 // utils
 import { isValidToken, setSession } from "../utils/jwt";
 import { env_URL_SERVER } from "../Redux/helper";
@@ -54,48 +60,62 @@ const JWTReducer = (state, action) => {
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
-  const [state, dispatch] = useReducer(JWTReducer, initialState);
+  // const [state, dispatch] = useReducer(JWTReducer, initialState);
+  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem("accessToken");
-        const user = window.localStorage.getItem("user");
-
+        const accessToken = localStorage.getItem("accessToken");
+        const user = localStorage.getItem("user");
+        // console.log("accessToken", accessToken);
         // if (accessToken && isValidToken(accessToken)) {
         if (accessToken) {
-          setSession(accessToken);
+          setSession(JSON.parse(user), accessToken);
 
           //   const response = await axios.get("/api/account/my-account");
           //   const { user } = response.data;
 
-          dispatch({
-            type: Types.Initial,
-            payload: {
-              isAuthenticated: true,
-              user: JSON.parse(user),
-            },
-          });
+          // dispatch({
+          //   type: Types.Initial,
+          //   payload: {
+          //     isAuthenticated: true,
+          //     user: JSON.parse(user),
+          //   },
+          // });
+          setToken(accessToken);
+          setUser(JSON.parse(user));
+          setIsReady(true);
           console.log("authSideEffect");
         } else {
-          dispatch({
-            type: Types.Initial,
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-          console.log("authSideEffect-2");
+          console.log("isReadyEtsst");
+          setToken(null);
+          setUser(null);
+          setIsReady(false);
+          
+          // dispatch({
+          //   type: Types.Initial,
+          //   payload: {
+          //     isAuthenticated: false,
+          //     user: null,
+          //   },
+          // });
+          // console.log("authSideEffect-2");
         }
       } catch (err) {
-        console.error(err);
-        dispatch({
-          type: Types.Initial,
-          payload: {
-            isAuthenticated: false,
-            user: null,
-          },
-        });
+        console.log("err", err);
+        // dispatch({
+        //   type: Types.Initial,
+        //   payload: {
+        //     isAuthenticated: false,
+        //     user: null,
+        //   },
+        // });
+        setToken(null);
+        setUser(null);
+        setIsReady(false);
       }
     };
 
@@ -118,6 +138,7 @@ function AuthProvider({ children }) {
   //     });
   //   };
   const login = async (username, password, company_key) => {
+    console.log("loginTest");
     try {
       const response = await axios.post(
         `${env_URL_SERVER}validateCredentials`,
@@ -134,12 +155,14 @@ function AuthProvider({ children }) {
         roleId: role_id,
       };
       setSession(userObj, token);
-      dispatch({
-        type: Types.Login,
-        payload: {
-          user: userObj,
-        },
-      });
+      // dispatch({
+      //   type: Types.Login,
+      //   payload: {
+      //     user: userObj,
+      //   },
+      // });
+      setToken(token);
+      setUser(userObj);
     } catch (error) {
       console.log("error", error);
       toast.warning("Server error occured");
@@ -165,28 +188,11 @@ function AuthProvider({ children }) {
     //   })
     //   .catch((e) => toast.warning("Server error occured"));
   };
-
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post("/api/account/register", {
-      email,
-      password,
-      firstName,
-      lastName,
-    });
-    const { accessToken, user } = response.data;
-
-    window.localStorage.setItem("accessToken", accessToken);
-    dispatch({
-      type: Types.Register,
-      payload: {
-        user,
-      },
-    });
-  };
+  console.log(user, token, "Creds");
 
   const logout = async () => {
     setSession(null);
-    dispatch({ type: Types.Logout });
+    // dispatch({ type: Types.Logout });
   };
 
   const resetPassword = (email) => console.log(email);
@@ -196,18 +202,30 @@ function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        ...state,
+        // ...state,
+        token,
+        user,
         method: "jwt",
         login,
         logout,
-        register,
+        // register,
         resetPassword,
         updateProfile,
       }}
     >
-      {children}
+      {isReady ? children : null}
     </AuthContext.Provider>
   );
 }
 
 export { AuthContext, AuthProvider };
+
+const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) throw new Error("Auth context must be use inside AuthProvider");
+
+  return context;
+};
+
+export default useAuth;

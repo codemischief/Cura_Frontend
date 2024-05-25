@@ -96,10 +96,9 @@ import PrivateLayout from "./layout/Privatelayout";
 import AuthGuard from "./context/AuthGuard";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./context/JwtContext";
-import useAuth from "./context/useAuth";
 
 const App = () => {
-  const { isAuthenticated } = useAuth();
+  console.log("hello");
   const ROLES = {
     Registered: "3",
     Public: "2",
@@ -109,6 +108,7 @@ const App = () => {
   return (
     <div className="app">
       {/* <RouterProvider router={router}/> */}
+
       <Routes>
         <Route path="/" element={<Outlet />}>
           <Route path="" element={<Login />} />
