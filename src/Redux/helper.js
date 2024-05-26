@@ -113,7 +113,10 @@ export const pmaInvoiceList = (data,year,month) => {
   console.log(data)
   return data.map((billing, index) => ({
     ...billing,
-    invoicedate : formatDate(billing.invoicedate)
+    invoicedate : formatDate(billing.invoicedate),
+    baseamount : billing.baseamount ? floorDecimal(billing.baseamount) : "",
+    tax : billing.tax ? floorDecimal(billing.tax) : "",
+    invoiceamount : billing.invoiceamount ? floorDecimal(billing.invoiceamount) : ""
   }));
 }
 export const pmaClientReceivable = (data) => {

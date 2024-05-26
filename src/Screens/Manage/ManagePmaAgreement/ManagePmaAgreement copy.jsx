@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration , Backdrop , CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -34,6 +34,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
+import ActiveFilter from "../../../assets/active_filter.png"
 const ManagePmaArgreement = () => {
     const dataRows = [
         "id",
@@ -109,7 +110,8 @@ const ManagePmaArgreement = () => {
     const [poaEndFilterInput, setPoaEndFilterInput] = useState("");
     const [poaHolderFilter, setPoaHolderFilter] = useState(false);
     const [poaHolderFilterInput, setPoaHolderFilterInput] = useState("");
-
+    const [idFilter,setIdFilter] = useState(false)
+    const [idFilterInput,setIdFilterInput] = useState("")
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -850,6 +852,12 @@ const ManagePmaArgreement = () => {
             filterData: "String",
             filterInput: ""
         },
+        id : {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
@@ -1019,6 +1027,15 @@ const ManagePmaArgreement = () => {
     return (
         <div className='h-screen font-medium'>
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showEditModal && <EditPmaAgreement handleClose={() => { setShowEditModal(false) }} currPma={currPma} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New PMA Agreement created successfully" />}
@@ -1097,9 +1114,10 @@ const ManagePmaArgreement = () => {
                                         'contains',
                                         'clientname')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                 {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                
                             </div>
-                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType} />}
                         </div>
                         <div className='w-[14.8%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1109,9 +1127,10 @@ const ManagePmaArgreement = () => {
                                         'contains',
                                         'propertydescription')}
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.propertydescription.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[25%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
+                            {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} filterType={filterMapState.propertydescription.filterType} />}
                         </div>
                         <div className='w-[9.8%]  px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1121,9 +1140,10 @@ const ManagePmaArgreement = () => {
                                         'contains',
                                         'orderdescription')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.orderdescription.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='orderdescription' menuRef={menuRef} />}
+                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='orderdescription' menuRef={menuRef} filterType={filterMapState.orderdescription.filterType} />}
 
                         </div>
                         <div className='w-[8.8%] px-3 py-2 '>
@@ -1134,9 +1154,10 @@ const ManagePmaArgreement = () => {
                                         'contains',
                                         'propertystatusname')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.propertystatusname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPropertyStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
+                            {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} filterType={filterMapState.propertystatusname.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1146,9 +1167,10 @@ const ManagePmaArgreement = () => {
                                         'contains',
                                         'description')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.description.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
+                            {descriptionFilter && <CharacterFilter inputVariable={descriptionFilterInput} setInputVariable={setDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} filterType={filterMapState.description.filterType}/>}
                         </div>
                         <div className='w-[7.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1158,9 +1180,10 @@ const ManagePmaArgreement = () => {
                                         'equalTo',
                                         'active')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.active.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='active' menuRef={menuRef} />}
+                            {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} handleFilter={newHandleFilter} columnName='active' menuRef={menuRef} filterType={filterMapState.active.filterType}/>}
                         </div>
                         <div className='w-[9.8%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1170,9 +1193,10 @@ const ManagePmaArgreement = () => {
                                         'equalTo',
                                         'startdate')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.startdate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPmaStartFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPmaStartFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPmaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} />}
+                            {pmaStartFilter && <DateFilter inputVariable={pmaStartFilterInput} setInputVariable={setPmaStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} filterType={filterMapState.startdate.filterType} />}
                         </div>
                         <div className='w-[8.8%] px-3 py-2  '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1182,22 +1206,13 @@ const ManagePmaArgreement = () => {
                                         'equalTo',
                                         'enddate')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.enddate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPmaEndFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPmaEndFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPmaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef} />}
+                            {pmaEndFilter && <DateFilter inputVariable={pmaEndFilterInput} setInputVariable={setPmaEndFilterInput} handleFilter={newHandleFilter} columnName='enddate' menuRef={menuRef} filterType={filterMapState.enddate.filterType} />}
                         </div>
-                        <div className='w-[8.8%] px-3 py-2 '>
-                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaStartFilterInput} onChange={(e) => setPoaStartFilterInput(e.target.value)} type='date'
-                                    onKeyDown={(event) => handleEnterToFilter(event, poaStartFilterInput,
-                                        setPoaStartFilterInput,
-                                        'equalTo',
-                                        'poastartdate')}
-                                />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaStartFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
-                            </div>
-                            {poaStartFilter && <DateFilter inputVariable={poaStartFilterInput} setInputVariable={setPoaStartFilterInput} handleFilter={newHandleFilter} columnName='poastartdate' menuRef={menuRef} />}
-                        </div>
+                        
+                        
                         <div className='w-[8.8%] px-3 py-2'>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaEndFilterInput} onChange={(e) => setPoaEndFilterInput(e.target.value)} type='date'
@@ -1206,9 +1221,23 @@ const ManagePmaArgreement = () => {
                                         'equalTo',
                                         'poaenddate')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.poaenddate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPoaEndFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPoaEndFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPoaEndFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef} />}
+                            {poaEndFilter && <DateFilter inputVariable={poaEndFilterInput} setInputVariable={setPoaEndFilterInput} handleFilter={newHandleFilter} columnName='poaenddate' menuRef={menuRef} filterType={filterMapState.poaenddate.filterType}/>}
+                        </div>
+                        <div className='w-[8.8%] px-3 py-2 '>
+                            <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, poaHolderFilterInput,
+                                        setPoaHolderFilterInput,
+                                        'contains',
+                                        'poaholder')}
+                                />
+                                {filterMapState.poaholder.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPoaHolderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPoaHolderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
+                            </div>
+                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} filterType={filterMapState.poaholder.filterType}/>}
                         </div>
                     </div>
                     <div className="w-[10%] flex">
@@ -1218,12 +1247,13 @@ const ManagePmaArgreement = () => {
                                 <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)}
                                     onKeyDown={(event) => handleEnterToFilter(event, poaHolderFilterInput,
                                         setPoaHolderFilterInput,
-                                        'contains',
-                                        'poaholder')}
+                                        'equalTo',
+                                        'id')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.poaholder.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPoaHolderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPoaHolderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} filterColumn='poaholder' menuRef={menuRef} />}
+                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.poaholder.filterType}/>}
                         </div>
                         <div className='w-[35%]  flex'>
                             <div className='px-3 py-5'>
@@ -1291,13 +1321,7 @@ const ManagePmaArgreement = () => {
                                 </div>
                                 <button onClick={() => handleSort('enddate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                            <div className='w-[8.8%]  flex'>
-                                <div className='p-3'>
-                                    <p>POA</p>
-                                    <p>Start Date</p>
-                                </div>
-                                <button onClick={() => handleSort('poastartdate')}><span className="font-extrabold">↑↓</span></button>
-                            </div>
+                            
                             <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>POA</p>
@@ -1305,14 +1329,22 @@ const ManagePmaArgreement = () => {
                                 </div>
                                 <button onClick={() => handleSort('poaenddate')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                        </div>
-                        <div className="w-[10%] flex">
-                            <div className='w-[65%]  flex'>
+                            <div className='w-[8.8%]  flex'>
                                 <div className='p-3'>
                                     <p>POA</p>
                                     <p>Holder</p>
                                 </div>
                                 <button onClick={() => handleSort('poaholder')}><span className="font-extrabold">↑↓</span></button>
+                            </div>
+                        </div>
+                        <div className="w-[10%] flex">
+                            <div className='w-[65%]  flex'>
+                                <div className='p-3 flex items-center justify-center'>
+                                    {/* <p>POA</p>
+                                    <p>Holder</p> */}
+                                    <p>ID</p>
+                                <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button>
+                                </div>
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-5'>
@@ -1331,7 +1363,7 @@ const ManagePmaArgreement = () => {
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {/* {pageLoading && <div className=''><LinearProgress /></div>} */}
                         {!pageLoading && existingPmaAgreement && existingPmaAgreement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
@@ -1379,26 +1411,26 @@ const ManagePmaArgreement = () => {
                                     </div>
                                     <div className='w-[9.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.startdate }</p>
+                                            <p>{formatDate(item.startdate) }</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.enddate}</p>
+                                            <p>{formatDate(item.enddate)}</p>
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.poastartdate}</p>
+                                            <p>{formatDate(item.poaenddate)}</p>
+
                                         </div>
 
                                     </div>
                                     <div className='w-[8.8%]  flex pl-1'>
                                         <div className='px-3'>
-                                            <p>{item.poaenddate}</p>
-
+                                            <p>{item.poaholder}</p>
                                         </div>
 
                                     </div>
@@ -1406,7 +1438,8 @@ const ManagePmaArgreement = () => {
                                 <div className="w-[10%] flex items-center">
                                     <div className='w-[65%]  flex pl-2'>
                                         <div className='px-3'>
-                                            <p>{item.poaholder}</p>
+                                            {/* <p>{item.poaholder}</p> */}
+                                            <p>{item.id}</p>
                                         </div>
                                         {/* <div className="font-extrabold py-5">↑↓</div> */}
                                     </div>

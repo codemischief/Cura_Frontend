@@ -268,15 +268,23 @@ const Navbar = () => {
                 Margin Report
               </h1>
               <div className="space-y-2 text-[#505050] text-[11px]">
+                <Link to="/lobReceiptPayments">
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   LOB- Receipts - Payments
                 </p>
-                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  Entity-Receipts-Payments
-                </p>
-                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  LOB - Receipts-Payments-Consolidated
-                </p>
+
+                </Link>
+                <Link to="/entityReceiptPayments">
+                  <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
+                    Entity-Receipts-Payments
+                  </p>
+                </Link>
+                <Link to="/lobReceiptPaymentsConsolidated">
+                  <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
+                    LOB - Receipts-Payments-Consolidated
+                  </p>
+                </Link>
+                
               </div>
             </div>
           </div>
@@ -465,9 +473,7 @@ const Navbar = () => {
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/manage/pmaBilling">PMA Billing</Link>
                 </p>
-                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  Email PMA Statement
-                </p>
+                
               </div>
             </div>
           </div>
@@ -551,7 +557,7 @@ const Navbar = () => {
                 Monthly Margin
               </h1>
               <div className="text-[11px] text-[#505050] space-y-[2px]">
-                <Link to={"/lobReceiptPayments"}>
+                {/* <Link to={"/lobReceiptPayments"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     LOB-Receipts-Payments
                   </p>
@@ -560,15 +566,15 @@ const Navbar = () => {
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     Entity-Receipt-Payments
                   </p>
-                </Link>
+                </Link> */}
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Client Statement-CI,CR and OR(All Entities)
                 </p>
-                <Link to={"/lobReceiptPaymentsConsolidated"}>
+                {/* <Link to={"/lobReceiptPaymentsConsolidated"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     LOB-Receipts-Payments Consolidated
                   </p>
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>
