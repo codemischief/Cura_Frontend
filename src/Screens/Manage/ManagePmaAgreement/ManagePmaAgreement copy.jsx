@@ -35,6 +35,7 @@ import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png"
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManagePmaArgreement = () => {
     const dataRows = [
         "id",
@@ -438,6 +439,7 @@ const ManagePmaArgreement = () => {
                 setPoaEndFilter(false);
                 setPoaHolderFilter(false);
                 setIdFilter(false);
+                setDownloadModal(false)
             }
         }
 
@@ -660,7 +662,8 @@ const ManagePmaArgreement = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`${env_URL_SERVER}/download/${temp.filename}`, {
+            console.log(`${env_URL_SERVER}download/${temp.filename}`)
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
@@ -843,6 +846,8 @@ const ManagePmaArgreement = () => {
         //  }})
         const existing = { ...formValues }
         existing.client = e.value
+        existing.order = null
+        setOrderText("Select Order")
         getOrdersByClientId(e.value)
         getClientPropertyByClientId(e.value)
         setFormValues(existing)
@@ -1024,6 +1029,19 @@ const ManagePmaArgreement = () => {
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
         const tempArray = [];
+        setClientNameFilter(false);
+                setPropertyDescriptionFilter(false);
+                setOrderDescriptionFilter(false);
+                setPropertyStatusFilter(false);
+                setStatusFilter(false);
+                setDescriptionFilter(false);
+                setPmaStartFilter(false);
+                setPmaEndFilter(false);
+                setPoaStartFilter(false);
+                setPoaEndFilter(false);
+                setPoaHolderFilter(false);
+                setIdFilter(false);
+                setDownloadModal(false)
         // we need to query thru the object
         // console.log(filterMapState);
         console.log(filterMapState)
@@ -1596,7 +1614,7 @@ const ManagePmaArgreement = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5' ref={menuRef}>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
                         <button onClick={() => handleDownload("pdf")}>
@@ -1633,15 +1651,18 @@ const ManagePmaArgreement = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center'>
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">New PMA Agreement</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <div className='move cursor-move'>
+    
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">New PMA Agreement</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
                                 </div>
 

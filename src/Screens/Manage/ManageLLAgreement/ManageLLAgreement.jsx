@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, duration } from "@mui/material";
+import { Modal, Pagination, LinearProgress, duration , Backdrop , CircularProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png"
@@ -31,6 +31,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import EditManageLLAgreement from './EditManageLLAgreement';
 import Draggable from "react-draggable"
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
+import { formatDate } from '../../../utils/formatDate';
 const ManageLLAgreement = () => {
     // const initialRows = [
     //     "id",
@@ -1179,8 +1180,17 @@ const ManageLLAgreement = () => {
     const [propertyText , setPropertyText] = useState("Select Client Property");
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {isEditDialogue && <EditManageLLAgreement handleClose={() => setIsEditDialogue(false)} currItem={currItem} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New L&L Agreement Created Successfully" />}
@@ -1407,7 +1417,7 @@ const ManageLLAgreement = () => {
 
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingLLAgreement && existingLLAgreement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
@@ -1444,12 +1454,12 @@ const ManageLLAgreement = () => {
                                     </div>
                                     <div className='w-[15%]  flex pl-1'>
                                         <div className='px-3'>
-                                            {item.startdate}
+                                            {formatDate(item.startdate)}
                                         </div>
                                     </div>
                                     <div className='w-[15%]  flex pl-1'>
                                         <div className='px-3'>
-                                            {item.actualenddate}
+                                            {formatDate(item.actualenddate)}
                                         </div>
                                     </div>
                                 </div>
