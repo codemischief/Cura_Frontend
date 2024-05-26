@@ -42,7 +42,8 @@ import { useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
-import SimpleTable from "../../../Components/common/table/CustomTable";
+// import SimpleTable from "../../../Components/common/table/CustomTable";
+import CLientPortalTable from "../../../Components/common/table/ClientPortalTable";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
@@ -262,7 +263,7 @@ const PmaClientReport = () => {
           
         </Stack> */}
  
-        <SimpleTable
+        <CLientPortalTable
           columns={columns}
           data={pmaClientReport}
           pageNo={pageNo}
