@@ -106,7 +106,7 @@ const PmaClientReceivable = () => {
       let obj = {
         user_id: 1234,
         rows:["*"],
-        sort_by: ["id"],
+        sort_by: [],
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
@@ -175,24 +175,14 @@ const PmaClientReceivable = () => {
       user_id: 1234,
       rows:[
         "clientname" ,
-      "orderdescription",
-      "baseamount",
-      "tax",
-      "entityname",
-      "invoiceamount",
-      "invoicedate",
+      "amount"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType : "excel",
       colmap : {
-        "clientname": "Client Name",
-      "orderdescription": "Order Descriptions",
-      "baseamount": "Base Amount",
-      "tax": "Tax",
-      "entityname": "Entity Name",
-      "invoiceamount": "Invoice Amount",
-      "invoicedate": "Invoice Date",
+       "clientname" : "Client Name",
+       "amount" : "Amount"
       },
       search_key: search,
       pg_no: 0,
@@ -270,6 +260,7 @@ const PmaClientReceivable = () => {
          pageName="pmaClientReceivables"
           columns={columns}
           data={pmaClientReceivable}
+          totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}

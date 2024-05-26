@@ -86,7 +86,8 @@ const OrderReceiptList = () => {
           "orderdescription",
           "serviceid",
           "service",
-          "lobname"
+          "lobname",
+          "vendorname"
         ],
         sort_by: ["id"],
 
@@ -139,7 +140,8 @@ const OrderReceiptList = () => {
           "orderdescription",
           "serviceid",
           "service",
-          "lobname"
+          "lobname",
+          "vendorname"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
@@ -190,6 +192,7 @@ const OrderReceiptList = () => {
         "serviceid",
         "service",
         "lobname",
+        // "vendorname"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType : "excel",

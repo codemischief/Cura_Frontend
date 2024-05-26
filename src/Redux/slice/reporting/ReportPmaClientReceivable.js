@@ -109,9 +109,7 @@ export const downloadPmaClientReceivables =
         );
       }
       dispatch(setStatus("success"));
-      // return response.data;
-      // dispatch(setOrderPaymentData({ data: response.data, year, month }));
-      // dispatch(setStatus("success"));
+
     } catch (err) {
       dispatch(setStatus("error"));
     }

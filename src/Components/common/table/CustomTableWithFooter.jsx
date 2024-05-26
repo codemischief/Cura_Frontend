@@ -229,8 +229,10 @@ import {
       return ""
       }
     }else if(pageName == "pmaClientReceivables") {
-      console.log('here')
-      return ""
+      // console.log(obj)
+      if(index == 2) {
+        return `Total: ${obj.total_amount}`
+      }
     }
   }
   const helper2 = (index,obj,pageName) => {
