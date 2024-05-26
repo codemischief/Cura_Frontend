@@ -160,6 +160,7 @@ function MenuDesktopItem({
           transform: isOpen === title ? "translateY(0)" : "translateY(-4px)",
           transition: "opacity 0.2s ease, transform 0.2s ease",
           minHeight: "205px",
+          zIndex:"9"
         }}
       >
         <div className="grid grid-cols-5 w-full gap-x-[18px]" ref={paperRef}>
@@ -306,9 +307,7 @@ export default function MenuDesktop({ isOffset, isHome }) {
   const handleClose = () => {
     setOpen(null);
   };
-  useEffect(() => {
-    console.log("open", open);
-  }, [open]);
+
   return (
     <Stack direction="row" justifyContent={"center"} alignItems={"center"}>
       {navMenuConfig?.map((link) => (

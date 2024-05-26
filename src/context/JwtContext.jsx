@@ -71,6 +71,7 @@ function AuthProvider({ children }) {
             payload: {
               isAuthenticated: true,
               user: JSON.parse(user),
+              
             },
           });
         } else {

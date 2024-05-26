@@ -18,10 +18,8 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [type1, setType1] = useState("password");
-  const [type2, setType2] = useState("password");
-  const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
-  const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
+  const [openEyeIconPass, setOpenEyeIconPass] = useState(false);
+  const [openEyeIconCom, setOpenEyeIconCom] = useState(false);
   const [apiError, setApiError] = useState("");
 
   const formik = useFormik({
@@ -48,12 +46,10 @@ const Login = () => {
   });
 
   const passwordToggle = () => {
-    setType1(type1 === "password" ? "text" : "password");
     setOpenEyeIconPass(!openEyeIconPass);
   };
 
   const comkeyToggle = () => {
-    setType2(type2 === "password" ? "text" : "password");
     setOpenEyeIconCom(!openEyeIconCom);
   };
 
@@ -103,14 +99,14 @@ const Login = () => {
                     <input
                       className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
                       name="password"
-                      type={type1}
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      type={openEyeIconPass ? "text" : "password"}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       autoComplete="off"
                     />
                     <span
-                      className="w-5 h-5 absolute right-2.5 bottom-0.5 cursor-pointer"
+                      className="w-5 h-5 absolute right-2.5 bottom-[6px] cursor-pointer"
                       onClick={passwordToggle}
                     >
                       <img
@@ -131,14 +127,14 @@ const Login = () => {
                     <input
                       className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
                       name="companyKey"
-                      type={type2}
-                      value={values.companyKey}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+                      type={openEyeIconCom ? "text" : "password"}
+                      value={formik.values.companyKey}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       autoComplete="off"
                     />
                     <span
-                      className="w-5 h-5 absolute right-2.5 bottom-0.5 cursor-pointer"
+                      className="w-5 h-5 absolute right-2.5 bottom-[6px] cursor-pointer"
                       onClick={comkeyToggle}
                     >
                       <img
@@ -169,7 +165,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-50 h-9 text-white text-lg rounded-lg cursor-pointer ${
+                  className={`w-[200px] h-9 text-white text-lg rounded-lg cursor-pointer ${
                     isSubmitting
                       ? "bg-gray-600 cursor-not-allowed"
                       : "bg-blue-700"

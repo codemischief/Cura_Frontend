@@ -22,11 +22,10 @@ const handleTokenExpired = (exp) => {
   window.clearTimeout(expiredTimer);
   const currentTime = Date.now();
   const timeLeft = exp * 1000 - currentTime;
-  console.log("timeLeft", timeLeft);
   expiredTimer = window.setTimeout(() => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
-  }, 100000);
+  }, timeLeft);
 };
 
 const setSession = (user, accessToken) => {

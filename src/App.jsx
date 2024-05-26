@@ -35,8 +35,6 @@ import ManageVendorInvoice from "./Screens/Manage/ManageVendorInvoice/ManageVend
 import ManageVendorPayment from "./Screens/Manage/ManageVendorPayment/ManageVendorPayment";
 
 import {
-  createBrowserRouter,
-  RouterProvider,
   Route,
   Routes,
   Outlet,

@@ -22,6 +22,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import Draggable from 'react-draggable';
+import EditForm from './EditForm';
 const Prospect = () => {
     const menuRef = useRef();
     // we have the module here
@@ -81,24 +82,25 @@ const Prospect = () => {
     }
     useEffect(() => {
         fetchData();
-        fetchCountryData();
-        fetchStateData(5);
-        fetchCityData('Maharashtra')
-        const handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setPersonFilter(false);
-                setCityFilter(false);
-                setSuburbFilter(false);
-                setPropertyLocationFilter(false);
-                setPossibleServicesFilter(false)
-            }
-        }
+        // fetchCountryData();
+        // fetchStateData(5);
+        // fetchCityData('Maharashtra')
+        // const handler = (e) => {
+        //     if (!menuRef.current.contains(e.target)) {
+        //         setPersonFilter(false);
+        //         setCityFilter(false);
+        //         setSuburbFilter(false);
+        //         setPropertyLocationFilter(false);
+        //         setPossibleServicesFilter(false)
+        //     }
+        // }
 
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        };
+        // document.addEventListener("mousedown", handler);
+        // return () => {
+        //     document.removeEventListener("mousedown", handler);
+        // };
     }, []);
+
     const fetchData = async () => {
         setPageLoading(true);
         const data = {
@@ -211,7 +213,8 @@ const Prospect = () => {
 
     const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
     const handleOpen = () => {
-        setIsProspectDialogue(true);
+        // setIsProspectDialogue(true);
+        setIsEditDialogue(true)
     };
     const handleClose = () => {
         setIsProspectDialogue(false);
@@ -341,11 +344,11 @@ const Prospect = () => {
     return (
        <div className='h-screen'>
           <Navbar/>
-            {isEditDialogue && <EditProspect isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem}
-                fetchData={fetchData} openPrompt={openEditSuccess}/>}
-            {isDeleteDialogue && <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} item={currItem} handleDelete={deleteProspects}/>}
-            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Prospect Created Successfully"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesffuly"/>}
+            {isEditDialogue && <EditForm isOpen={isEditDialogue} handleClose={() => {setIsEditDialogue(false),setCurrItem({})}} item={currItem}
+                fetchData={fetchData} openPrompt={openEditSuccess} openAddSuccess={openAddSuccess}/>}
+            {isDeleteDialogue && <DeleteProspect openDialog={isDeleteDialogue} setOpenDialog={setIsDeleteDialogue} item={currItem} handleDelete={deleteProspects} />}
+            {/* {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Prospect Created Successfully"/>} */}
+            {/* {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved succesffuly"/>} */}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Prospect Deleted Succesffuly!"/>}
 
 
@@ -755,7 +758,7 @@ const Prospect = () => {
 
 
 
-                    <Modal open={isProspectDialogue}
+                    {/* <Modal open={isProspectDialogue}
                 fullWidth={true}
                 maxWidth={'md'}
                 className='flex justify-center items-center'
@@ -772,7 +775,7 @@ const Prospect = () => {
                                 <button onClick={handleClose}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-                        {/* <form > */}
+                
                         <div className="h-auto w-full mt-[5px] ">
                             <div className="flex gap-[48px] justify-center">
                                 <div className=" space-y-[10px] py-[20px] px-[10px]">
@@ -896,12 +899,12 @@ const Prospect = () => {
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={addProspect}>Add</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
                         </div>
-                        {/* </form> */}
+                       
                     </div>
                 </div>
                     </Draggable>
                     </>
-            </Modal>
+            </Modal> */}
        </div>
     )
 }

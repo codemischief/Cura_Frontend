@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
 const DeleteProspect = (props) => {
-    console.log(props);
   const handleDialogClose = () => {
     props.setOpenDialog(false);
 };
