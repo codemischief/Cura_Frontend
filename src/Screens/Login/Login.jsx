@@ -1,274 +1,175 @@
-import React from "react";
+import React, { useState } from "react";
+import * as Yup from "yup";
+import { Form, FormikProvider, useFormik } from "formik";
+import { useNavigate, Link } from "react-router-dom";
 import Logo from "../../assets/logo.jpg";
 import eyeIcon from "../../assets/eye.jpg";
-import { useState, useEffect, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import bcrypt from "bcryptjs";
-// import useAuth from "../../context/useAuth";
-import { useLocation } from "react-router-dom";
-import { authService } from "../../services/authServices";
 import EyeHide from "./../../assets/eyeHide.png";
 import { toast } from "react-toastify";
 import useAuth from "../../context/JwtContext";
 
+const validationSchema = Yup.object().shape({
+  username: Yup.string().required("Username is required"),
+  password: Yup.string().required("Password is required"),
+  companyKey: Yup.string().required("Company Key is required"),
+});
+
 const Login = () => {
+  const navigate = useNavigate();
   const { login } = useAuth();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    companyKey: "",
-  });
-
-  // console.log("isAuthenticated", isAuthenticated);
-  const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
-  const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
-  const [buttonLoading, setButtonLoading] = useState(false);
-  // const { setAuth } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const mockPostResponse = async () => {
-    setButtonLoading(true);
-    const username = formValues.username;
-    // var salt = bcrypt.genSaltSync(12);
-    // var password = bcrypt.hashSync(formValues.password, salt);
-    const password = formValues.password;
-    const company_key = formValues.comkey;
-
-    // const response = await authService.login({ username, password, company_key });
-    if (username && password && company_key) {
-      await login(username, password, company_key);
-      navigate("/dashboard");
-      toast.success("login success");
-      setButtonLoading(false);
-    }
-    // if (response.result == "success" && response.role_id == "1") {
-    //   navigate("/dashboard");
-    // } else if (response.result == "success" && response.role_id == "2") {
-    //   navigate("/user");
-    // } else if (response.result == "error") {
-    //   setIsError(true);
-    //   setErrorMessage(response.message);
-    // }
-  };
-
-  // Testing User Login info
-  const database = [
-    {
-      username: "user1",
-      password: "pass1",
-    },
-    {
-      username: "user2",
-      password: "pass2",
-    },
-  ];
-
-  const initialValues = {
-    username: "",
-    password: "",
-    comkey: "",
-  };
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const [isSubmit, setIsSubmit] = useState(false);
   const [type1, setType1] = useState("password");
   const [type2, setType2] = useState("password");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
+  const [openEyeIconCom, setOpenEyeIconCom] = useState(true);
+  const [apiError, setApiError] = useState("");
 
-  // handle changes in input form
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      companyKey: "",
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      setSubmitting(true);
+      setApiError("");
 
-  // password visibility
+      try {
+        // await login(values.username, values.password, values.companyKey);
+        // toast.success("Login success");
+        // navigate("/dashboard");
+      } catch (error) {
+        setApiError("Failed to login. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+
   const passwordToggle = () => {
-    if (type1 === "password") {
-      setType1("text");
-    } else {
-      setType1("password");
-    }
-    setOpenEyeIconPass((prev) => {
-      return !prev;
-    });
+    setType1(type1 === "password" ? "text" : "password");
+    setOpenEyeIconPass(!openEyeIconPass);
   };
 
   const comkeyToggle = () => {
-    if (type2 === "password") {
-      setType2("text");
-    } else {
-      setType2("password");
-    }
-    setOpenEyeIconCom((prev) => {
-      return !prev;
-    });
+    setType2(type2 === "password" ? "text" : "password");
+    setOpenEyeIconCom(!openEyeIconCom);
   };
-
-  const show = () => {
-    const element = document.getElementById("inputError");
-    element.style.display = "block";
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // validate form and set error message
-    setIsSubmit(true);
-    mockPostResponse();
-    setFormErrors(validate(formValues));
-  };
-
-  // validate form and to throw Error message
-  const validate = (values) => {
-    const errors = {};
-    if (!values.username) {
-      errors.username = "username is required!";
-    }
-    if (!values.password) {
-      errors.password = "password is required!";
-    }
-    if (!values.comkey) {
-      errors.comkey = "company key is required!";
-    }
-    return errors;
-  };
-
+  console.log("formik.errors", formik.errors, formik.values);
   return (
-    <div className="flex w-screen h-screen  py-[20px] justify-center bg-[#F5F5F5]">
+    <div className="flex w-screen h-screen py-20 justify-center bg-[#F5F5F5]">
       <img
-        className="w-[140px] h-[64px]  absolute left-5 "
+        className="w-36 h-16 absolute left-5"
         src={Logo}
         alt="company Logo"
       />
-      <div className="w-3/5  h-[580px] bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
-        <div className="w-[400px] h-[300px] mt-[35px]">
-          <div className="text-center text-[21px] mb-[35px]">Login Panel </div>
-          <form className="space-y-[15px]" onSubmit={handleSubmit}>
-            <div className="space-y-[12px]">
-              <div className="space-y-[2px]">
-                <div className="text-[#505050] text-[18px]">Username</div>
-                <input
-                  className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050] px-3 text-[12px]"
-                  type="text"
-                  name="username"
-                  value={formValues.username}
-                  onChange={handleChange}
-                  autoComplete="off"
-                />
-                <div className="text-[12px] text-[#CD0000] ">
-                  {formErrors.username}
-                </div>
-              </div>
-              <div className="space-y-[2px]">
-                <div className="text-[#505050] text-[18px] ">Password</div>
-                <div className="m-[0px] p-[0px] relative">
+      <div className="w-3/5 h-144 bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
+        <div className="w-96 h-75 mt-9">
+          <div className="text-center text-2xl mb-9">Login Panel</div>
+          <FormikProvider value={formik.values}>
+            <Form className="space-y-4" onSubmit={formik.handleSubmit}>
+              <div className="space-y-3">
+                <div className="space-y-0.5">
+                  <div className="text-gray-700 text-lg">Username</div>
                   <input
-                    className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050] px-3 text-[12px]"
-                    name="password"
-                    type={type1}
-                    value={formValues.password}
-                    onChange={handleChange}
+                    className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
+                    type="text"
+                    name="username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     autoComplete="off"
                   />
-                  {openEyeIconPass && (
-                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
-                      <img
-                        className="cursor-pointer"
-                        onClick={passwordToggle}
-                        src={eyeIcon}
-                        alt="eye-icon"
-                      />
-                    </span>
-                  )}
-                  {!openEyeIconPass && (
-                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[4px]">
-                      <img
-                        className="cursor-pointer"
-                        onClick={passwordToggle}
-                        src={EyeHide}
-                        alt="eye-icon"
-                      />
-                    </span>
+                  {formik.touched.username && formik.errors.username && (
+                    <div className="text-red-600 text-xs">
+                      {formik.errors.username}
+                    </div>
                   )}
                 </div>
-
-                <div className="text-[12px] text-[#CD0000] ">
-                  {formErrors.password}
+                <div className="space-y-0.5">
+                  <div className="text-gray-700 text-lg">Password</div>
+                  <div className="relative">
+                    <input
+                      className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
+                      name="password"
+                      type={type1}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      autoComplete="off"
+                    />
+                    <span
+                      className="w-5 h-5 absolute right-2.5 bottom-0.5 cursor-pointer"
+                      onClick={passwordToggle}
+                    >
+                      <img
+                        src={openEyeIconPass ? eyeIcon : EyeHide}
+                        alt="eye-icon"
+                      />
+                    </span>
+                  </div>
+                  {formik.touched.password && formik.errors.password && (
+                    <div className="text-red-600 text-xs">
+                      {formik.errors.password}
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-0.5">
+                  <div className="text-gray-700 text-lg">Company Key</div>
+                  <div className="relative">
+                    <input
+                      className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
+                      name="companyKey"
+                      type={type2}
+                      value={formik.values.companyKey}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      autoComplete="off"
+                    />
+                    <span
+                      className="w-5 h-5 absolute right-2.5 bottom-0.5 cursor-pointer"
+                      onClick={comkeyToggle}
+                    >
+                      <img
+                        src={openEyeIconCom ? eyeIcon : EyeHide}
+                        alt="eye-icon"
+                      />
+                    </span>
+                  </div>
+                  {formik.touched.companyKey && formik.errors.companyKey && (
+                    <div className="text-red-600 text-xs">
+                      {formik.errors.companyKey}
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="space-y-[2px]">
-                <div className="text-[#505050] text-[18px]">Company Key</div>
-                <div className="m-[0px] p-[0px] relative">
-                  <input
-                    className="border-[1px] border-[#C6C6C6] w-[400px] h-[30px] text-[#505050] px-3 text-[12px]"
-                    name="comkey"
-                    type={type2}
-                    value={formValues.comkey}
-                    onChange={handleChange}
-                    autoComplete="off"
-                  />
-                  {openEyeIconCom && (
-                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[3px]">
-                      <img
-                        className="cursor-pointer"
-                        onClick={comkeyToggle}
-                        src={eyeIcon}
-                        alt="eye-icon"
-                      />
-                    </span>
-                  )}
-                  {!openEyeIconCom && (
-                    <span className="w-[20px] h-[20px] absolute right-[10px] bottom-[4px]">
-                      <img
-                        className="cursor-pointer"
-                        onClick={comkeyToggle}
-                        src={EyeHide}
-                        alt="eye-icon"
-                      />
-                    </span>
-                  )}
+              {apiError && (
+                <div className="w-full bg-red-100 rounded-lg border border-red-600 flex justify-center items-center px-11 py-5 text-xs text-red-600">
+                  {apiError}
                 </div>
-
-                <div className="text-[12px] text-[#CD0000] ">
-                  {formErrors.comkey}
-                </div>
+              )}
+              <div className="flex flex-col items-center justify-center gap-2.5">
+                <Link
+                  className="text-blue-700 text-lg cursor-pointer"
+                  to="/forgot-password"
+                >
+                  Forgot Password
+                </Link>
+                <button
+                  type="submit"
+                  disabled={formik.isSubmitting}
+                  className={`w-50 h-9 text-white text-lg rounded-lg cursor-pointer ${
+                    formik.isSubmitting
+                      ? "bg-gray-600 cursor-not-allowed"
+                      : "bg-blue-700"
+                  }`}
+                >
+                  {formik.isSubmitting ? "Loading..." : "Login"}
+                </button>
               </div>
-            </div>
-
-            {/* to create a space  */}
-            {/* <div className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] invisible"></div> */}
-
-            {/* error message  */}
-            {isError && (
-              <div
-                id="inputError"
-                className="w-[400px] h-[74px] bg-[#FFEAEA] rounded-[15px] border-[1px] border-[#CD0000] flex justify-center items-center px-[45px] py-[20px] text-[12px] "
-              >
-                {errorMessage}
-              </div>
-            )}
-
-            {/* forgot section */}
-            <div className="flex flex-col items-center justify-center gap-[10px]">
-              <Link
-                className="text-[#004DD7] text-[18px] cursor-pointer"
-                to="/"
-              >
-                Forgot Password
-              </Link>
-              <button
-                className={`${
-                  buttonLoading
-                    ? " bg-gray-600 cursor-not-allowed"
-                    : "bg-[#004DD7]"
-                } w-[200px] h-[35px] text-white text-[18px] rounded-lg cursor-pointer`}
-              >
-                Login
-              </button>
-            </div>
-          </form>
+            </Form>
+          </FormikProvider>
         </div>
       </div>
     </div>
