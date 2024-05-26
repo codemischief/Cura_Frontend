@@ -264,6 +264,7 @@ const LobReceiptPayments = () => {
                 }}
               >
                 <option value="none" hidden>Lob Name</option>
+                <option value="all">All</option>
                 {allLOB && allLOB.map(item => (
                   <option value={item.name} >
                     {item.name}
