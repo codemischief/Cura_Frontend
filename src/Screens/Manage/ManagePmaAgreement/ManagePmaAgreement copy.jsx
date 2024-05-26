@@ -437,6 +437,7 @@ const ManagePmaArgreement = () => {
                 setPoaStartFilter(false);
                 setPoaEndFilter(false);
                 setPoaHolderFilter(false);
+                setIdFilter(false);
             }
         }
 
@@ -1244,16 +1245,16 @@ const ManagePmaArgreement = () => {
 
                         <div className='w-[65%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={poaHolderFilterInput} onChange={(e) => setPoaHolderFilterInput(e.target.value)}
-                                    onKeyDown={(event) => handleEnterToFilter(event, poaHolderFilterInput,
-                                        setPoaHolderFilterInput,
+                                <input className="w-[68%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                        setIdFilterInput,
                                         'equalTo',
                                         'id')}
                                 />
-                                {filterMapState.poaholder.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPoaHolderFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPoaHolderFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                 {/* <button className='w-[32%] px-1 py-2' onClick={() => { setPoaHolderFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                             </div>
-                            {poaHolderFilter && <CharacterFilter inputVariable={poaHolderFilterInput} setInputVariable={setPoaHolderFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.poaholder.filterType}/>}
+                            {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                         </div>
                         <div className='w-[35%]  flex'>
                             <div className='px-3 py-5'>
