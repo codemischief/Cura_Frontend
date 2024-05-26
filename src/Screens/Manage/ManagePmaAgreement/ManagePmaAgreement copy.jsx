@@ -597,6 +597,100 @@ const ManagePmaArgreement = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
+    const handleDownload = async (type) => {
+        // setDownloadModal(false)
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "clientname" ,
+                "propertydescription" ,
+                "orderdescription",
+                "propertystatusname" ,
+                "description" ,
+                "status" ,
+                "startdate" ,
+                "enddate" ,
+                "poaenddate" ,
+                "poaholder" ,
+                "id" ,
+                // "propertystatus" 
+                // "clientpropertyid",
+                // "actualenddate",
+                // "active",
+                // "scancopy",
+                // "reasonforearlyterminationifapplicable",
+                // "dated",
+                // "createdby",
+                // "isdeleted",
+                // "rented",
+                // "fixed",
+                // "rentedtax",
+                // "fixedtax",
+                // "orderid",
+                // "poastartdate",
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput,
+            "downloadType" : type,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "propertydescription" : "Property Description",
+                "orderdescription" : "Property Description",
+                "propertystatusname" : "Property Status",
+                "description" : "Description",
+                "status" : "Status",
+                "startdate" : "PMA Start Date",
+                "enddate" : "PMA End Date",
+                "poaenddate" : "POA End Date",
+                "poaholder" : "POA Holder",
+                "id" : "ID",
+            }
+        };
+        const response = await APIService.getPmaAgreement(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`${env_URL_SERVER}/download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'PmaAgreementData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'PmaAgreementData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            },1000) 
+        }
+    }
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
@@ -1505,14 +1599,14 @@ const ManagePmaArgreement = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />

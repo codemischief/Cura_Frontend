@@ -222,9 +222,9 @@ import {
       }
   }else if(pageName == "lobreceiptpaymentconsolidated") {
       if(index == 2) {
-        return ` Total: ${obj.totalreceipt}`
+        return ` Total: ${obj.total_orderreceiptamount}`
       }else if(index == 3) {
-          return `Total: ${obj.totalpayment}`
+          return `Total: ${obj.total_paymentamount}`
       }else if(index == 4) {
       return `Total: ${obj.total_diff}`
       }else {
