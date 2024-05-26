@@ -195,7 +195,7 @@ const PmaClientReport = () => {
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPmaBillingTrendView(obj))
+    dispatch(downloadPmaClientReport(obj))
     // .then((response) => {
     //   const tableData = response.data;
     //   const worksheet = XLSX.utils.json_to_sheet(tableData);
@@ -231,8 +231,8 @@ const PmaClientReport = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"PMA Billing Trend List"}
-            path={["Reports", "PMA", "PMA Billing Trend List"]}
+            heading={"PMA Client Portal Report"}
+            path={["Reports", "PMA", "PMA Client Portal Report"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (

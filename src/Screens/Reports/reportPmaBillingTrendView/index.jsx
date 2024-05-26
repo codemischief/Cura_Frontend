@@ -100,7 +100,7 @@ const PmaBillingTrendView = () => {
         user_id: 1234,
         fy: String(startYear),
         rows:["*"],
-        sort_by: ["id"],
+        sort_by: [],
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
