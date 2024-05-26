@@ -97,7 +97,7 @@ const PmaInvoiceList = () => {
       let obj = {
         user_id: 1234,
         rows:["*"],
-        sort_by: ["id"],
+        sort_by: [],
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
