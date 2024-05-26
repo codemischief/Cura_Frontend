@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setPmaClientReportFilters, setPageNumber } from "../../../Redux/slice/reporting/pmaClientReport";
+import { setPmaInvoiceListFilters, setPageNumber } from "../../../Redux/slice/reporting/pmaInvoiceList";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
@@ -8,7 +8,7 @@ export function CustomFilterField(props) {
   const { filter } = useSelector((state) => state.pmaInvoiceList);
 
   const handleFilterChange = (filters) => {
-    dispatch(setPmaClientReportFilters({...filters}));
+    dispatch(setPmaInvoiceListFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 
