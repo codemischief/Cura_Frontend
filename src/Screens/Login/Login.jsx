@@ -7,6 +7,7 @@ import eyeIcon from "../../assets/eye.jpg";
 import EyeHide from "./../../assets/eyeHide.png";
 import { toast } from "react-toastify";
 import useAuth from "../../context/JwtContext";
+import { CircularProgress } from "@mui/material";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -17,7 +18,6 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-
   const [type1, setType1] = useState("password");
   const [type2, setType2] = useState("password");
   const [openEyeIconPass, setOpenEyeIconPass] = useState(true);
@@ -34,12 +34,12 @@ const Login = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       setApiError("");
-
       try {
-        // await login(values.username, values.password, values.companyKey);
-        // toast.success("Login success");
-        // navigate("/dashboard");
+        await login(values.username, values.password, values.companyKey);
+        toast.success("Login success");
+        navigate("/dashboard");
       } catch (error) {
+        toast.error("Login Failed");
         setApiError("Failed to login. Please try again.");
       } finally {
         setSubmitting(false);
@@ -56,7 +56,17 @@ const Login = () => {
     setType2(type2 === "password" ? "text" : "password");
     setOpenEyeIconCom(!openEyeIconCom);
   };
-  console.log("formik.errors", formik.errors, formik.values);
+
+  const {
+    errors,
+    values,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  } = formik;
+
   return (
     <div className="flex w-screen h-screen py-20 justify-center bg-[#F5F5F5]">
       <img
@@ -67,8 +77,8 @@ const Login = () => {
       <div className="w-3/5 h-144 bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
         <div className="w-96 h-75 mt-9">
           <div className="text-center text-2xl mb-9">Login Panel</div>
-          <FormikProvider value={formik.values}>
-            <Form className="space-y-4" onSubmit={formik.handleSubmit}>
+          <FormikProvider value={values}>
+            <Form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-3">
                 <div className="space-y-0.5">
                   <div className="text-gray-700 text-lg">Username</div>
@@ -76,14 +86,14 @@ const Login = () => {
                     className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
                     type="text"
                     name="username"
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    value={values.username}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     autoComplete="off"
                   />
-                  {formik.touched.username && formik.errors.username && (
+                  {touched.username && errors.username && (
                     <div className="text-red-600 text-xs">
-                      {formik.errors.username}
+                      {errors.username}
                     </div>
                   )}
                 </div>
@@ -94,9 +104,9 @@ const Login = () => {
                       className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
                       name="password"
                       type={type1}
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                       autoComplete="off"
                     />
                     <span
@@ -109,9 +119,9 @@ const Login = () => {
                       />
                     </span>
                   </div>
-                  {formik.touched.password && formik.errors.password && (
+                  {touched.password && errors.password && (
                     <div className="text-red-600 text-xs">
-                      {formik.errors.password}
+                      {errors.password}
                     </div>
                   )}
                 </div>
@@ -122,9 +132,9 @@ const Login = () => {
                       className="border border-gray-300 w-full h-8 text-gray-700 px-3 text-sm"
                       name="companyKey"
                       type={type2}
-                      value={formik.values.companyKey}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
+                      value={values.companyKey}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                       autoComplete="off"
                     />
                     <span
@@ -137,9 +147,9 @@ const Login = () => {
                       />
                     </span>
                   </div>
-                  {formik.touched.companyKey && formik.errors.companyKey && (
+                  {touched.companyKey && errors.companyKey && (
                     <div className="text-red-600 text-xs">
-                      {formik.errors.companyKey}
+                      {errors.companyKey}
                     </div>
                   )}
                 </div>
@@ -158,14 +168,14 @@ const Login = () => {
                 </Link>
                 <button
                   type="submit"
-                  disabled={formik.isSubmitting}
+                  disabled={isSubmitting}
                   className={`w-50 h-9 text-white text-lg rounded-lg cursor-pointer ${
-                    formik.isSubmitting
+                    isSubmitting
                       ? "bg-gray-600 cursor-not-allowed"
                       : "bg-blue-700"
                   }`}
                 >
-                  {formik.isSubmitting ? "Loading..." : "Login"}
+                  {isSubmitting ? <CircularProgress /> : "Login"}
                 </button>
               </div>
             </Form>

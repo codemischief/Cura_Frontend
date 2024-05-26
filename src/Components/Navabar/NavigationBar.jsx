@@ -4,6 +4,7 @@ import { Button, Stack } from "@mui/material";
 import { PowerSettingsNew } from "@mui/icons-material";
 import MenuDesktop from "./DeskTopMenu";
 import MainLogo from "../Svg/logo";
+import useAuth from "../../context/JwtContext";
 const buttonStyle = {
   color: "white",
   height: "26px",
@@ -26,6 +27,7 @@ const buttonStyle = {
   },
 };
 const Navbar = () => {
+  const { logout } = useAuth();
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   return (
@@ -41,6 +43,7 @@ const Navbar = () => {
         <Button sx={{ ...buttonStyle, width: "142px" }}>Dashboard</Button>
         <Button sx={buttonStyle}>Change Password</Button>
         <Button
+          onClick={logout}
           sx={{ ...buttonStyle, width: "142px" }}
           startIcon={<PowerSettingsNew />}
         >

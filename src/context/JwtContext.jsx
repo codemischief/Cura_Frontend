@@ -5,6 +5,7 @@ import { env_URL_SERVER } from "../Redux/helper";
 import { toast } from "react-toastify";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,7 @@ const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(JWTReducer, initialState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initialize = async () => {
@@ -97,7 +99,6 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (username, password, company_key) => {
-    console.log("loginTest");
     try {
       const response = await axios.post(
         `${env_URL_SERVER}validateCredentials`,
@@ -122,13 +123,15 @@ function AuthProvider({ children }) {
         });
       }
     } catch (error) {
-      console.log("error", error);
-      toast.error("Server error occured");
+      throw new Error(
+        "Failed to login. Please check your credentials and try again."
+      );
     }
   };
 
   const logout = async () => {
     setSession(null);
+    navigate("/login");
   };
 
   const resetPassword = (email) => console.log(email);
