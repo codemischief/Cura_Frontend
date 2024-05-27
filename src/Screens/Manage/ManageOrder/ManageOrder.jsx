@@ -235,6 +235,9 @@ const ManageOrder = () => {
                 setStartDateFilter(false);
                 setCompletionDateFilter(false);
                 setOrderDateFilter(false);
+                setAgingFilter(false);
+                setCreatedByFilter(false);
+                setIdFilter(false);
             }
         }
 
@@ -652,6 +655,12 @@ const ManageOrder = () => {
     const [completionDateFilterInput, setCompletionDateFilterInput] = useState("");
     const [orderDateFilter, setOrderDateFilter] = useState(false);
     const [orderDateFilterInput, setOrderDateFilterInput] = useState("");
+    const [agingFilter, setAgingFilter] = useState(false);
+    const [agingFilterInput, setAgingFilterInput] = useState("");
+    const [createdByFilter, setCreatedByFilter] = useState(false);
+    const [createdByFilterInput, setCreatedByFilterInput] = useState("");
+    const [idFilter, setIdFilter] = useState(false);
+    const [idFilterInput, setIdFilterInput] = useState("");
 
     const filterMapping = {
         clientname: {
@@ -706,6 +715,24 @@ const ManageOrder = () => {
             filterType: "",
             filterValue: null,
             filterData: "Date",
+            filterInput: ""
+        },
+        ageing: {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        },
+        createdbyname: {
+            filterType: "",
+            filterValue: "",
+            filterData: "String",
+            filterInput: ""
+        },
+        id: {
+            filterType: "",
+            filterValue: null,
+            filterData: "Numeric",
             filterInput: ""
         },
 
@@ -1128,31 +1155,31 @@ const ManageOrder = () => {
                             </div>
                             <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} type='date' />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setCompletionDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                
+                                {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[100px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} type='date' />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                
+                                {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[80px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setAgingFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                
+                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                
+                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef}/>}
                             </div>
                             <div className='w-[70px]  px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1185,10 +1212,10 @@ const ManageOrder = () => {
 
                             <div className='w-[110px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
+                                    <button className='w-[28%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                
+                                {idFilter && <CharacterFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} filterColumn='id' menuRef={menuRef}/>}
                             </div>
                         </div>
                         {/* pending space here */}
