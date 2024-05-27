@@ -89,8 +89,7 @@ const OrderReceiptList = () => {
           "lobname",
           "vendorname"
         ],
-        sort_by: ["id"],
-
+        sort_by: [],
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
