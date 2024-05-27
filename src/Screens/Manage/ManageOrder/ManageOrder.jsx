@@ -1189,7 +1189,7 @@ const ManageOrder = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setAgingFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef} />}
+                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setAgingFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef} />}
                             </div>
                             <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
