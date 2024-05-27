@@ -1385,7 +1385,7 @@ const ManageClientProperty = () => {
               }
       }
     return (
-        <div className="h-screen">
+        <div className="h-screen font-medium">
             <Navbar />
             {addConfirmation && <SaveConfirmationClientProperty handleClose={() => showAddConfirmation(false)} currClientName={currClientName} addClientProperty={addClientProperty} showCancel={openAddCancelModal} setDefault={initials} />}
             {isEditDialogue && <EditClientProperty isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} clientId={currItem} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
@@ -1718,12 +1718,14 @@ const ManageClientProperty = () => {
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-1 text-[11px] text-blue-500'>
-                                            <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id , clientid : item.clientid , clientname : item.client , description : item.description, project : item.project}}>PMA Agreement</Link>
+                                        <Link to="/manage/managepmaagreement" state={{ clientPropertyId: item.id }}>PMA Agreement </Link>
+                                            {/* <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id , clientid : item.clientid , clientname : item.client , description : item.description, project : item.project}}>PMA Agreement</Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='pl-1 text-[11px] text-blue-500'>
-                                            <Link to={`llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link>
+                                        <Link to="/manage/managellagreement" state={{ clientPropertyId: item.id }}>L&L Agreement</Link>
+                                            {/* <Link to={`llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link> */}
                                         </div>
                                     </div>
                                 </div>
