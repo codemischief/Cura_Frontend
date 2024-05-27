@@ -8,10 +8,12 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress, Select } from "@mui/material";
+import { Modal, Pagination, LinearProgress, Select, CircularProgress } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
+import Backdrop from '@mui/material/Backdrop';
 import Pdf from "../../../assets/pdf.png";
+import ActiveFilter from "../../../assets/active_filter.png";
 import Excel from "../../../assets/excel.png"
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png"
@@ -31,6 +33,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import AsyncSelect from "react-select/async"
 import EditVendor from './EditVendor';
 import Draggable from 'react-draggable';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
 
@@ -47,7 +50,7 @@ const ManageVendor = () => {
     const [allCountry, setAllCountry] = useState([]);
     const [allState, setAllState] = useState([]);
     const [allCity, setAllCity] = useState([]);
-    const [allCategory,setAllCategory] = useState([]);
+    const [allCategory, setAllCategory] = useState([]);
     const [allUsername, setAllUsername] = useState([]);
     const [allRoles, setAllRoles] = useState([]);
     const [allEntities, setAllEntites] = useState([]);
@@ -185,15 +188,27 @@ const ManageVendor = () => {
     const [sortField, setSortField] = useState("id")
     const [flag, setFlag] = useState(false)
     const fetchData = async () => {
-        console.log('ugm')
         const tempArray = [];
         // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
+        Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                if (filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                } else {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }
             }
-        })
+        });
         setFilterState((prev) => tempArray)
         setPageLoading(true);
         const data = {
@@ -249,14 +264,6 @@ const ManageVendor = () => {
     }
     const fetchPageData = async (pageNumber) => {
         setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
         setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
@@ -312,14 +319,6 @@ const ManageVendor = () => {
     }
     const fetchQuantityData = async (quantity) => {
         setPageLoading(true);
-        const tempArray = [];
-        // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
         setCurrentPage((prev) => 1)
         console.log(searchInput);
         const data = {
@@ -363,7 +362,7 @@ const ManageVendor = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key": searchInput 
+            "search_key": searchInput
         };
         const response = await APIService.getVendors(data);
         const temp = await response.json();
@@ -430,39 +429,6 @@ const ManageVendor = () => {
 
     }
     const addVendor = async () => {
-        // console.log('clicked')
-        // console.log(formValues)
-        // setPageLoading(true);
-        // const data = {
-
-        //     "user_id": 1234,
-        //     "vendorname": formValues.vendorName,
-        //     "addressline1": formValues.addressLine1,
-        //     "addressline2": formValues.addressLine2,
-        //     "suburb": formValues.suburb,
-        //     "city": 847,
-        //     "state": "Maharashtra",
-        //     "country": 5,
-        //     "type": formValues.typeOfOrganization,
-        //     "details": formValues.details,
-        //     "category": formValues.category,
-        //     "phone1": formValues.phone,
-        //     "email": formValues.email,
-        //     "ownerinfo": formValues.ownerDetails,
-        //     "panno": formValues.pan,
-        //     "tanno": formValues.tan,
-        //     "gstservicetaxno": formValues.gstin,
-        //     "tdssection": formValues.tdsSection,
-        //     "bankname": formValues.bankName,
-        //     "bankbranch": formValues.bankBranch,
-        //     "bankcity": formValues.bankBranchCity,
-        //     "bankacctholdername": formValues.accountHolderName,
-        //     "bankacctno": formValues.accountNumber,
-        //     "bankifsccode": formValues.ifscCode,
-        //     "bankaccttype": formValues.accountType,
-        //     "companydeductee": formValues.companydeductee,
-        //     "tallyledgerid": formValues.tallyLedger
-        // }
         const data = {
             "user_id": 1234,
             "vendorname": formValues.vendorName,
@@ -493,9 +459,7 @@ const ManageVendor = () => {
             "tallyledgerid": Number(formValues.tallyLedger)
         }
         const response = await APIService.addVendors(data);
-
         const result = (await response.json())
-
         setOpenAddConfirmation(false);
         console.log(result)
         setIsVendorDialogue(false);
@@ -597,7 +561,7 @@ const ManageVendor = () => {
     }
     const [currVendorId, setCurrVendorId] = useState("");
     const [currVendorName, setCurrVendorName] = useState("");
-    const handleDelete = (id , name) => {
+    const handleDelete = (id, name) => {
         setCurrVendorId(id);
         setCurrVendorName(name);
         showDeleteConfirmation(true);
@@ -626,16 +590,9 @@ const ManageVendor = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
-    const handleExcelDownload = async () => {
-        const tempArray = [];
-        // we need to query thru the object
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
-        console.log(tempArray)
+    const handleDownload = async (type) => {
+        setDownloadModal(false)
+        setPageLoading(true)
         const data = {
             "user_id": 1234,
             "rows": [
@@ -651,16 +608,52 @@ const ManageVendor = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key": searchInput
+            "search_key": searchInput,
+            "downloadType": type,
+            "colmap": {
+                "vendorname": "Vendor Name",
+                "tdssection": "TDS Section",
+                "tallyledger": "TallyLedger",
+                "category": "Category",
+                "city": "City",
+                "id": "ID"
+            }
         };
         const response = await APIService.getVendors(data);
         const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "VendorData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+        if (temp.result == 'success') {
+            const d = {
+                "filename": temp.filename,
+                "user_id": 1234
+            }
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'VendorData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'VendorData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            setTimeout(() => {
+                setPageLoading(false)
+            }, 1000)
+        }
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -877,14 +870,27 @@ const ManageVendor = () => {
         setIdFilter(false)
         // we need to query thru the object
         // console.log(filterMapState);
-        console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
-                tempArray.push([key, mapState[key].filterType, mapState[key].filterValue, mapState[key].filterData]);
+                if (mapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        Number(mapState[key].filterValue),
+                        mapState[key].filterData,
+                    ]);
+                } else {
+                    tempArray.push([
+                        key,
+                        mapState[key].filterType,
+                        mapState[key].filterValue,
+                        mapState[key].filterData,
+                    ]);
+                }
+
             }
         })
         setCurrentPage(() => 1)
-
         setFilterState(tempArray)
         setPageLoading(true);
         const data = {
@@ -965,15 +971,8 @@ const ManageVendor = () => {
     }
     const handleSort = async (field) => {
         setPageLoading(true);
-        const tempArray = [];
         // we need to query thru the object
         setSortField(field)
-        console.log(filterMapState);
-        Object.keys(filterMapState).forEach(key => {
-            if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
-            }
-        })
         setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
@@ -1060,39 +1059,44 @@ const ManageVendor = () => {
 
     function handleKeyDown(event) {
         if (event.keyCode === 13) {
-          handleSearch()
+            handleSearch()
         }
     }
-    const handleEnterToFilter = (event,inputVariable,
-      setInputVariable,
-      type,
-      columnName) => {
-          if (event.keyCode === 13) {
-                  // if its empty then we remove that 
-                  // const temp = {...filterMapState};
-                  // temp[columnName].type = "".
-                  // setFilterMapState(temp)
-                  if(inputVariable == "") {
-                      const temp = {...filterMapState}
-                      temp[columnName].filterType = ""
-                      setFilterMapState(temp)
-                      fetchData()
-                  }else {
-                      newHandleFilter(inputVariable,
-                          setInputVariable,
-                          type,
-                          columnName)
-                  }
-                  
-              
-              
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
             }
+        }
     }
     // fetching utility routes end here
     return (
-        <div className='h-screen'>
+        <div className='h-screen w-full font-medium'>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => { }}
+            >
+                <CircularProgress color="inherit" />
+
+            </Backdrop>
             <Navbar />
-            {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal}/>}
+            {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor deleted succesfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes saved successfully" />}
@@ -1154,97 +1158,94 @@ const ManageVendor = () => {
                             </div>
                             <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,vendorNameFilterInput,
-                                        setVendorNameFilterInput,
-                                        'contains',
-                                        'vendorname')}
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={vendorNameFilterInput} onChange={(e) => setVendorNameFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, vendorNameFilterInput,
+                                            setVendorNameFilterInput,
+                                            'contains',
+                                            'vendorname')}
+
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.vendorname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setVendorNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setVendorNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
+                                {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} filterType={filterMapState.vendorname.filterType} />}
                             </div>
 
                             <div className='w-[19%]  px-3 py-2.5 mx-[-2px]'>
                                 <div className="w-[65%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,tdsSectionFilterInput,
-                                        setTdsSectionFilterInput,
-                                        'contains',
-                                        'tdssection')}
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tdsSectionFilterInput} onChange={(e) => setTdsSectionFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, tdsSectionFilterInput,
+                                            setTdsSectionFilterInput,
+                                            'contains',
+                                            'tdssection')}
+
                                     />
-                                    <button className='W-[25%] px-1 py-2' onClick={() => { setTdsSectionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.tdssection.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setTdsSectionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setTdsSectionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {tdsSectionFilter && <CharacterFilter inputVariable={tdsSectionFilterInput} setInputVariable={setTdsSectionFilterInput} filterColumn='tdssection' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.tdssection.filterType} />}
                             </div>
 
                             <div className='w-[19%]  px-3 py-2.5 '>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)} 
-                                    
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,tallyLedgerFilterInput,
-                                        setTallyLedgerFilterInput,
-                                        'contains',
-                                        'tallyledger')}
-                                    
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={tallyLedgerFilterInput} onChange={(e) => setTallyLedgerFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, tallyLedgerFilterInput,
+                                            setTallyLedgerFilterInput,
+                                            'contains',
+                                            'tallyledger')}
+
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setTallyLedgerFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.tallyledger.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setTallyLedgerFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setTallyLedgerFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {tallyLedgerFilter && <CharacterFilter inputVariable={tallyLedgerFilterInput} setInputVariable={setTallyLedgerFilterInput} filterColumn='tallyledger' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {tallyLedgerFilter && <CharacterFilter inputVariable={tallyLedgerFilterInput} setInputVariable={setTallyLedgerFilterInput} filterColumn='tallyledger' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.tallyledger.filterType} />}
                             </div>
 
                             <div className='w-[19%]  px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,categoryFilterInput,
-                                        setCategoryFilterInput,
-                                        'contains',
-                                        'category')}
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={categoryFilterInput} onChange={(e) => setCategoryFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, categoryFilterInput,
+                                            setCategoryFilterInput,
+                                            'contains',
+                                            'category')}
 
                                     />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCategoryFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.category.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCategoryFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCategoryFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {categoryFilter && <CharacterFilter inputVariable={categoryFilterInput} setInputVariable={setCategoryFilterInput} filterColumn='category' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {categoryFilter && <CharacterFilter inputVariable={categoryFilterInput} setInputVariable={setCategoryFilterInput} filterColumn='category' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.category.filterType} />}
                             </div>
 
                             <div className='w-[19%] px-3 py-2.5'>
                                 <div className="w-[70%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,cityFilterInput,
-                                        setCityFilterInput,
-                                        'contains',
-                                        'city')}
-                                    
+                                    <input className="w-[75%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={cityFilterInput} onChange={(e) => setCityFilterInput(e.target.value)}
+
+                                        onKeyDown={(event) => handleEnterToFilter(event, cityFilterInput,
+                                            setCityFilterInput,
+                                            'contains',
+                                            'city')}
+
                                     />
-                                    <button className='w-[25%] px-1 py-2'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.city.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCityFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                                 </div>
-                                {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} filterColumn='city' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {cityFilter && <CharacterFilter inputVariable={cityFilterInput} setInputVariable={setCityFilterInput} filterColumn='city' handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.city.filterType} />}
                             </div>
                         </div>
                         <div className="w-[25%] flex">
                             <div className='w-[75%] px-3 py-2.5 mx-[-3px]'>
                                 <div className="w-[40%] flex items-center bg-[#EBEBEB] rounded-[5px]">
-                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
-                                    
-                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
-                                        setIdFilterInput,
-                                        'equalTo',
-                                        'id')}
-                                    
-                                    />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
-                                </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
-                            </div>
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
 
+                                        onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                            setIdFilterInput,
+                                            'equalTo',
+                                            'id')}
+
+                                    />
+                                    {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                </div>
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
+                            </div>
                             <div className='w-[35%]  flex'>
                                 <div className='p-3'>
 
@@ -1262,7 +1263,7 @@ const ManageVendor = () => {
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[19%]  flex'>
+                            <div className='w-[19%]  flex '>
                                 <div className='px-3 py-3.5'>
                                     <p>Vendor Name <button onClick={() => handleSort('vendorname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1306,7 +1307,10 @@ const ManageVendor = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
+                        {!pageLoading && existingVendors && existingVendors.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingVendors.map((item, index) => {
                             return <div className='w-full h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[75%] flex items-center">
@@ -1315,27 +1319,27 @@ const ManageVendor = () => {
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%] flex'>
+                                    <div className='w-[19%] flex pl-0.5'>
                                         <div className='px-3 overflow-x-hidden'>
                                             <p>{item.vendorname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex'>
-                                        <div className='px-3 overflow-x-hidden'>
+                                    <div className='w-[19%]  flex ml-0.5'>
+                                        <div className='px-3 overflow-x-hidden '>
                                             <p>{item.tdssection}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex ml-[2px]'>
+                                    <div className='w-[19%]  flex ml-0.5'>
                                         <div className='px-3 overflow-x-hidden'>
                                             <p>{item.tallyledger}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex ml-[2px]'>
+                                    <div className='w-[19%]  flex pl-0.5'>
                                         <div className='px-3 overflow-x-hidden'>
                                             <p>{item.category}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[19%]  flex ml-[2px]'>
+                                    <div className='w-[19%]  flex pl-1'>
                                         <div className='px-3 overflow-x-hidden'>
                                             <p>{item.city}</p>
                                         </div>
@@ -1343,7 +1347,7 @@ const ManageVendor = () => {
 
                                 </div>
                                 <div className="w-[25%] flex items-center ">
-                                    <div className='w-[65%]  flex ml-[2px]'>
+                                    <div className='w-[65%]  flex ml-1'>
                                         <div className='px-3 py-2 overflow-x-hidden'>
                                             <p>{item.id}</p>
                                         </div>
@@ -1352,7 +1356,7 @@ const ManageVendor = () => {
                                         <div className=' py-5 flex ml-4'>
                                             <div className='flex space-x-3'>
                                                 <button onClick={() => { handleEdit(item.id) }}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
-                                                <button onClick={() => handleDelete(item.id , item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
+                                                <button onClick={() => handleDelete(item.id, item.vendorname)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
                                             </div>
                                         </div>
                                     </div>
@@ -1407,14 +1411,13 @@ const ManageVendor = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
@@ -1441,213 +1444,215 @@ const ManageVendor = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    {/* <Draggable> */}
-                <div className='flex justify-center'>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-base">Add New Vendor </div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB]">
-                                <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
-                            </div>
-                        </div>
-
-                        <div className="h-auto w-full mt-1 ">
-                            <div className="flex gap-12 justify-center">
-                                <div className="">
-                                    <div className=" space-y-1 py-1">
-                                        <div className="font-semibold text-sm text-[#282828]">Basic Information</div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Vendor Name <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="vendorName" value={formValues.vendorName} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorName}</div>
+                    <Draggable handle='div.move'>
+                        <div className='flex justify-center'>
+                            <div className="w-[1050px] h-auto bg-white rounded-lg">
+                                <div className="move cursor-move">
+                                    <div className="h-10  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-base">Add New Vendor </div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Address Line 1</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Suburb</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.phone}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Owner Details </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-1 py-1 mt-2">
-                                        <div className="font-semibold text-sm text-[#282828]">Accounting Information</div>
-                                        <div className="">
-                                            <div className="text-[13px] text-[#505050]">Type Of Organization </div>
-                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] outline-none" name="typeOfOrganization"
-                                                value={formValues.typeOfOrganization}
-                                                onChange={
-                                                    handleChange
-                                                }>
-                                                <option value="" hidden>Select Type Of Organization</option>
-                                                {typeOfOrganization && typeOfOrganization.map(item => (
-                                                    <option key={item.id} value={item.type}>
-                                                        {item.type}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[#505050] text-sm">PAN </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="pan" value={formValues.pan} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">GSTIN</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gstin" value={formValues.gstin} onChange={handleChange} />
-
+                                        <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB]">
+                                            <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="">
-                                    <div className=" space-y-1 py-1 mt-6">
+
+                                <div className="h-auto w-full mt-1 ">
+                                    <div className="flex gap-12 justify-center">
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">Category <label className="text-red-500">*</label></div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="category"
-                                                value={formValues.category}
-                                                defaultValue="Select Category"
-                                                onChange={handleChange}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a City</option> */}
-                                                <option value="none" hidden> Select Category</option>
-                                                {allCategory && allCategory.map(item => (
-                                                    <option key={item.id} value={item.id} >
-                                                        {item.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.category}</div>
+                                            <div className=" space-y-2 py-1">
+                                                <div className="font-semibold text-sm text-[#282828]">Basic Information</div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Vendor Name <label className="text-red-500">*</label></div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="vendorName" value={formValues.vendorName} onChange={handleChange} />
+                                                    <div className="text-[9px] text-[#CD0000] absolute">{formErrors.vendorName}</div>
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Address Line 1</div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="addressLine1" value={formValues.addressLine1} onChange={handleChange} />
+
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Suburb</div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="suburb" value={formValues.suburb} onChange={handleChange} />
+
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Phone <label className="text-red-500">*</label></div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="phone" value={formValues.phone} onChange={handleChange} />
+                                                    <div className="text-[9px] text-[#CD0000] absolute">{formErrors.phone}</div>
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Owner Details </div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
+                                                </div>
+                                            </div>
+                                            <div className=" space-y-2 py-1 mt-2">
+                                                <div className="font-semibold text-sm text-[#282828]">Accounting Information</div>
+                                                <div className="">
+                                                    <div className="text-[13px] text-[#505050]">Type Of Organization </div>
+                                                    <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] outline-none" name="typeOfOrganization"
+                                                        value={formValues.typeOfOrganization}
+                                                        onChange={
+                                                            handleChange
+                                                        }>
+                                                        <option value="" hidden>Select Type Of Organization</option>
+                                                        {typeOfOrganization && typeOfOrganization.map(item => (
+                                                            <option key={item.id} value={item.type}>
+                                                                {item.type}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-[#505050] text-sm">PAN </div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="pan" value={formValues.pan} onChange={handleChange} />
+
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">GSTIN</div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="gstin" value={formValues.gstin} onChange={handleChange} />
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="">
-                                            <div className="text-sm text-[#505050]">Address Line 2</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                            <div className=" space-y-2 py-1 mt-6">
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Category <label className="text-red-500">*</label></div>
+                                                    <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                        name="category"
+                                                        value={formValues.category}
+                                                        defaultValue="Select Category"
+                                                        onChange={handleChange}
+                                                    >
+                                                        {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                        <option value="none" hidden> Select Category</option>
+                                                        {allCategory && allCategory.map(item => (
+                                                            <option key={item.id} value={item.id} >
+                                                                {item.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    <div className="text-[9px] text-[#CD0000] absolute">{formErrors.category}</div>
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Address Line 2</div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="addressLine2" value={formValues.addressLine2} onChange={handleChange} />
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">City</div>
+                                                    <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                        name="city"
+                                                        value={formValues.city}
+                                                        defaultValue="Select City"
+                                                        onChange={handleChange}
+                                                    >
+                                                        {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                        <option value="none" hidden> Select A City</option>
+                                                        {allCity && allCity.map(item => (
+                                                            <option value={item.id} >
+                                                                {item.city}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                    {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Email <label className="text-red-500">*</label></div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="email" value={formValues.email} onChange={handleChange} />
+                                                    <div className="text-[9px] text-[#CD0000] absolute">{formErrors.email}</div>
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm">Details </div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="details" value={formValues.details} onChange={handleChange} />
+                                                </div>
+                                            </div>
+                                            <div className=" space-y-2 py-1 mt-8">
+
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">Tally Ledger </div>
+                                                    <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
+                                                        name="tallyLedger"
+                                                        value={formValues.tallyLedger}
+                                                        defaultValue="Select Tally Ledger"
+                                                        onChange={handleChange}
+                                                    >
+                                                        {/* <option value="none" hidden={true}>Select a City</option> */}
+                                                        <option value="none" hidden> Select Tally Ledger</option>
+                                                        {tallyLedgerData && tallyLedgerData.map(item => (
+                                                            <option value={item[0]} >
+                                                                {item[1]}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+
+
+
+                                                    {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} /> */}
+
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">TAN</div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tan" value={formValues.tan} onChange={handleChange} />
+
+                                                </div>
+                                                <div className="">
+                                                    <div className="text-sm text-[#505050]">TDS Section</div>
+                                                    <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tdsSection" value={formValues.tdsSection} onChange={handleChange} />
+
+                                                </div>
+
+                                            </div>
                                         </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">City</div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="city"
-                                                value={formValues.city}
-                                                defaultValue="Select City"
-                                                onChange={handleChange}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a City</option> */}
-                                                <option value="none" hidden> Select A City</option>
-                                                {allCity && allCity.map(item => (
-                                                    <option value={item.id} >
-                                                        {item.city}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="city" value={formValues.city} onChange={handleChange} /> */}
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Email <label className="text-red-500">*</label></div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="email" value={formValues.email} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.email}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Details </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="details" value={formValues.details} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-1 py-1 mt-8">
+                                        <div className=" space-y-1 py-1">
+                                            <div className="font-semibold text-sm text-[#282828]">Vendor's Bank Details </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050]">Account Holder Name </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountHolderName" value={formValues.accountHolderName} onChange={handleChange} />
 
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">Tally Ledger </div>
-                                            <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
-                                                name="tallyLedger"
-                                                value={formValues.tallyLedger}
-                                                defaultValue="Select Tally Ledger"
-                                                onChange={handleChange}
-                                            >
-                                                {/* <option value="none" hidden={true}>Select a City</option> */}
-                                                <option value="none" hidden> Select Tally Ledger</option>
-                                                {tallyLedgerData && tallyLedgerData.map(item => (
-                                                    <option value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050]">Account Number</div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountNumber" value={formValues.accountNumber} onChange={handleChange} />
 
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050]">Account Type</div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountType" value={formValues.accountType} onChange={handleChange} />
 
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050]">Bank Name </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankName" value={formValues.bankName} onChange={handleChange} />
 
-                                            {/* <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tallyLedger" value={formValues.tallyLedger} onChange={handleChange} /> */}
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">TAN</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tan" value={formValues.tan} onChange={handleChange} />
-
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#505050]">TDS Section</div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="tdsSection" value={formValues.tdsSection} onChange={handleChange} />
-
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050]">Bank Branch </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranch" value={formValues.bankBranch} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050] ">IFSC Code </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ifscCode" value={formValues.ifscCode} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#505050]">Bank Branch City </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranchCity" value={formValues.bankBranchCity} onChange={handleChange} />
+                                            </div>
                                         </div>
 
                                     </div>
                                 </div>
-                                <div className=" space-y-1 py-1">
-                                    <div className="font-semibold text-sm text-[#282828]">Vendor's Bank Details </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Account Holder Name </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountHolderName" value={formValues.accountHolderName} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Account Number</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountNumber" value={formValues.accountNumber} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Account Type</div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="accountType" value={formValues.accountType} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Bank Name </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankName" value={formValues.bankName} onChange={handleChange} />
-
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Bank Branch </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranch" value={formValues.bankBranch} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050] ">IFSC Code </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ifscCode" value={formValues.ifscCode} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-sm text-[#505050]">Bank Branch City </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="bankBranchCity" value={formValues.bankBranchCity} onChange={handleChange} />
-                                    </div>
+                                <div className="my-3 flex justify-center items-center gap-3">
+                                    <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
+                                    <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
                                 </div>
 
                             </div>
                         </div>
-                        <div className="my-3 flex justify-center items-center gap-3">
-                            <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleAddVendor} >Add</button>
-                            <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={handleClose}>Cancel</button>
-                        </div>
-
-                    </div>
-                </div>
-                    {/* </Draggable> */}
-                    </>
+                    </Draggable>
+                </>
             </Modal>
         </div>
     )
