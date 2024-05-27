@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal , CircularProgress} from '@mui/material'
+import { Modal, CircularProgress } from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async"
@@ -68,8 +68,8 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
         temp.label = res.data.clientname
         setSelectedOption(temp)
         setTimeout(() => {
-           setPageLoading(false);
-        },1000)
+            setPageLoading(false);
+        }, 1000)
         // setPageLoading(false)
     }
     useEffect(() => {
@@ -207,7 +207,7 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
     }
 
 
-    const [pageLoading,setPageLoading] = useState(false)
+    const [pageLoading, setPageLoading] = useState(false)
     return (
         <Modal open={true}
             fullWidth={true}
@@ -215,122 +215,125 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
             className='flex justify-center items-center'
         >
             <div className='flex justify-center'>
-                {/* <Draggable> */}
+                <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Vendor Invoice</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={() => (close())}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                        <div className="move cursor-move">
+
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit Vendor Invoice</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={() => (close())}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
                         </div>
                         {pageLoading && <div className='flex items-center justify-center space-x-4 my-3'>
-                                <h1>Fetching Data</h1>
-                                <CircularProgress/>
-                            </div>
-                            }
-                        {!pageLoading && 
-                        <div className="h-auto w-full mt-[5px]">
-                            <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
-                                    </div>
-                                    <div className="pt-0.5">
-                                        <div className="text-[13px]">Vendor</div>
-                                        <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                            <option value={null}> Select Vendor</option>
-                                            {vendorData.map(item => (
-                                                <option key={item[0]} value={item[0]}>
-                                                    {item[1]}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Invoice Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Estimate Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Vat 5% </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
-                                    </div>
-
-                                </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px] mb-0.5">
-                                            Client <label className="text-red-500">*</label>
+                            <h1>Fetching Data</h1>
+                            <CircularProgress />
+                        </div>
+                        }
+                        {!pageLoading &&
+                            <div className="h-auto w-full mt-[5px]">
+                                <div className="flex gap-[48px] justify-center ">
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-sm text-[#787878] mb-0.5">Cura Office </div>
+                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                         </div>
-                                        <AsyncSelect
-                                            onChange={handleClientNameChange}
-                                            value={selectedOption}
-                                            loadOptions={loadOptions}
-                                            cacheOptions
-                                            defaultOptions
-                                            onInputChange={(value) => setQuery(value)}
-
-                                            styles={{
-                                                control: (provided, state) => ({
-                                                    ...provided,
-                                                    minHeight: 23,
-                                                    lineHeight: '0.8',
-                                                    height: 4,
-                                                    width: 230,
-                                                    fontSize: 10,
-                                                    // padding: '1px'
-                                                }),
-                                                // indicatorSeparator: (provided, state) => ({
-                                                //   ...provided,
-                                                //   lineHeight : '0.5',
-                                                //   height : 2,
-                                                //   fontSize : 12 // hide the indicator separator
-                                                // }),
-                                                dropdownIndicator: (provided, state) => ({
-                                                    ...provided,
-                                                    padding: '1px', // adjust padding for the dropdown indicator
-                                                }),
-                                                options: (provided, state) => ({
-                                                    ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
-                                                }),
-                                                menu: (provided, state) => ({
-                                                    ...provided,
-                                                    width: 230, // Adjust the width of the dropdown menu
-                                                }),
-                                            }}
-                                        />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Invoice Number </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">GST/ST </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">Estimate Amount </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px]">VAT 12.5% </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
-                                    </div>
-                                </div>
-                                <div className=" space-y-3 py-5">
-                                    <div className="">
-                                        <div className="text-[13px]">
-                                            Order <label className="text-red-500">*</label>
+                                        <div className="pt-0.5">
+                                            <div className="text-[13px]">Vendor</div>
+                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendor" value={formValues.vendor} onChange={handleChange} >
+                                                <option value={null}> Select Vendor</option>
+                                                {vendorData.map(item => (
+                                                    <option key={item[0]} value={item[0]}>
+                                                        {item[1]}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
-                                        {/* <select
+                                        <div className="">
+                                            <div className="text-[13px]">Invoice Amount </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceAmount" value={formValues.invoiceAmount} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Estimate Date </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="estimateDate" value={formValues.estimateDate} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Vat 5% </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat5" value={formValues.vat5} onChange={handleChange} />
+                                        </div>
+
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">
+                                                Client <label className="text-red-500">*</label>
+                                            </div>
+                                            <AsyncSelect
+                                                onChange={handleClientNameChange}
+                                                value={selectedOption}
+                                                loadOptions={loadOptions}
+                                                cacheOptions
+                                                defaultOptions
+                                                onInputChange={(value) => setQuery(value)}
+
+                                                styles={{
+                                                    control: (provided, state) => ({
+                                                        ...provided,
+                                                        minHeight: 23,
+                                                        lineHeight: '0.8',
+                                                        height: 4,
+                                                        width: 230,
+                                                        fontSize: 10,
+                                                        // padding: '1px'
+                                                    }),
+                                                    // indicatorSeparator: (provided, state) => ({
+                                                    //   ...provided,
+                                                    //   lineHeight : '0.5',
+                                                    //   height : 2,
+                                                    //   fontSize : 12 // hide the indicator separator
+                                                    // }),
+                                                    dropdownIndicator: (provided, state) => ({
+                                                        ...provided,
+                                                        padding: '1px', // adjust padding for the dropdown indicator
+                                                    }),
+                                                    options: (provided, state) => ({
+                                                        ...provided,
+                                                        fontSize: 10// adjust padding for the dropdown indicator
+                                                    }),
+                                                    menu: (provided, state) => ({
+                                                        ...provided,
+                                                        width: 230, // Adjust the width of the dropdown menu
+                                                    }),
+                                                }}
+                                            />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.client}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Invoice Number </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="invoiceNumber" value={formValues.invoiceNumber} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">GST/ST </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="gst" value={formValues.gst} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">Estimate Amount </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="estimateAmount" value={formValues.estimateAmount} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px]">VAT 12.5% </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="vat12" value={formValues.vat12} onChange={handleChange} />
+                                        </div>
+                                    </div>
+                                    <div className=" space-y-3 py-5">
+                                        <div className="">
+                                            <div className="text-[13px]">
+                                                Order <label className="text-red-500">*</label>
+                                            </div>
+                                            {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="order"
                                             value={formValues.order}
@@ -343,30 +346,30 @@ const EditVendorInvoice = ({ handleClose, currInvoice, showSuccess, vendorData, 
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px] pt-[-2px]">Invoice Date </div>
-                                        <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
-                                    </div>
-                                    <div className="">
-                                        <div className="text-[13px] mb-0.5">Notes </div>
-                                        <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                            <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px] pt-[-2px]">Invoice Date </div>
+                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">Invoice/Estimate Description </div>
+                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="invoicedescription" value={formValues.invoicedescription} onChange={handleChange} />
+                                        </div>
+                                        <div className="">
+                                            <div className="text-[13px] mb-0.5">Notes </div>
+                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="notes" value={formValues.notes} onChange={handleChange} />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>}
+                            </div>}
                         <div className="my-3 flex justify-center items-center gap-[10px]">
                             <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                             <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => (close())}>Cancel</button>
                         </div>
                     </div>
-                {/* </Draggable> */}
+                </Draggable>
             </div>
         </Modal>
     )
