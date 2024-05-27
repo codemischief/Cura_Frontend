@@ -28,7 +28,7 @@ import {
       >
         <table className="table-auto min-w-full">
           <thead className="h-[115px] sticky top-0 z-100 bg-white">
-            <tr className="h-[56px]">
+            <tr className="h-[56px] ">
               {columns.map((column, index) => (
                 <th key={index} style={{ ...column.cellStyle }}>
                   {column.filterComponent && [
@@ -41,7 +41,7 @@ import {
                 </th>
               ))}
             </tr>
-            <tr className="bg-[#F0F6FF] h-[56px] ">
+            <tr className="bg-[#F0F6FF] h-[56px] text-left ">
               {columns.map((column, index) => (
                 <th key={index} style={{ ...column.cellStyle}}>
                   {column.title}
@@ -96,7 +96,7 @@ import {
                         paddingBottom: "4px",
                         
                       }}
-                      className="py-3 text-center"
+                      className="py-3 text-left"
                     >
                       {column.render
                         ? column.render((pageNo - 1) * countPerPage + rowIndex)

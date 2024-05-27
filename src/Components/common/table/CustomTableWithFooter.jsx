@@ -44,7 +44,7 @@ import {
                 </th>
               ))}
             </tr>
-            <tr className="bg-[#F0F6FF] h-[56px] ">
+            <tr className="bg-[#F0F6FF] h-[56px] text-left">
               {columns.map((column, index) => (
                 <th key={index} style={{ ...column.cellStyle }}>
                   {column.title}
@@ -99,7 +99,7 @@ import {
                         paddingTop: "4px",
                         paddingBottom: "4px",
                       }}
-                      className="py-3 text-center "
+                      className="py-3 text-left "
                     >
                       {column.render
                         ? <div className=" flex justify-center items-center">
