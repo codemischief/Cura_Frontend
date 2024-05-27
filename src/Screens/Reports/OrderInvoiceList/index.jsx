@@ -90,8 +90,8 @@ const OrderInvoiceList = () => {
           "lobname",
           "entityname"
         ],
-        sort_by: ["id"],
-
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
@@ -194,8 +194,26 @@ const OrderInvoiceList = () => {
         "service",
         "lobname",
       ],
+      downloadType : "excel",
+      colmap : {
+        "type" : "Type",
+        "id" : "ID",
+        "invoicedate" : "Invoice Date",
+        "monthyear" : "Month Year",
+        "fy" : "Fiscal year",
+        "invoiceamount" : "Amount",
+        "entityname" : "Entity",
+        "mode" : "Mode",
+        "clientid" : "Client ID",
+        "clientname" : "Client Name",
+        "vendorname" : "Vendor Name",
+        "orderid" : "Order ID",
+        "orderdescription" : "Order Description",
+        "serviceid" : "Service ID",
+        "service" : "Service",
+        "lobname" : "LOB Name"
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
