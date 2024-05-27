@@ -44,7 +44,7 @@ export default function connectionDataColumn(onQuery) {
         field: "invoicedate",
         sorting: true,
         // cellStyle: { minWidth: "20px", },
-        filterComponent: TextFilterField,
+        filterComponent: DateFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
       },
       {
@@ -52,7 +52,7 @@ export default function connectionDataColumn(onQuery) {
         field: "baseamount",
         sorting: true,
         // cellStyle: { minWidth: "20px", },
-        filterComponent: TextFilterField,
+        filterComponent: NumberFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
       },
       {
@@ -76,7 +76,7 @@ export default function connectionDataColumn(onQuery) {
         field: "entityname",
         sorting: true,
         // cellStyle: { minWidth: "20px", },
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
       },
       
