@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress , Backdrop , CircularProgress} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../services/API';
 import Pdf from "../../../assets/pdf.png";
@@ -921,6 +921,15 @@ const ManageProjectInfo = () => {
     return (
         <div className="h-screen">
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Project Created Successfully" />}
@@ -1178,7 +1187,7 @@ const ManageProjectInfo = () => {
 
                     <div className='w-full h-[calc(100vh_-_17rem)] overflow-auto'>
                         {/* we map our items here */}
-                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {/* {pageLoading && <div className=''><LinearProgress /></div>} */}
                         {!pageLoading && existingProjectInfo && existingProjectInfo.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
