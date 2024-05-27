@@ -1,11 +1,12 @@
-import { LinearProgress, Modal, Pagination } from "@mui/material";
+import { LinearProgress, Modal, Pagination, CircularProgress } from "@mui/material";
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from "react-router-dom";
 import AsyncSelect from "react-select/async";
 import Navbar from "../../../Components/Navabar/Navbar";
 import FailureModal from '../../../Components/modals/FailureModal';
 import SucessfullModal from '../../../Components/modals/SucessfullModal';
 import CancelModel from './../../../Components/modals/CancelModel';
+import Backdrop from '@mui/material/Backdrop';
+import ActiveFilter from "../../../assets/active_filter.png";
 import Add from "../../../assets/add.png";
 import backLink from "../../../assets/back.png";
 import Cross from "../../../assets/cross.png";
@@ -33,9 +34,10 @@ import Draggable from "react-draggable";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
 import { formatDate } from "../../../utils/formatDate";
-import { useNavigate , useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageVendorPayment = () => {
-    
+
     const menuRef = useRef();
     const { state } = useLocation()
     const navigate = useNavigate();
@@ -216,13 +218,13 @@ const ManageVendorPayment = () => {
         const res = await response.json()
         const tempArray = []
         const len = res.data.length
-        for(var i=0;i<len;i++) {
-            if(res.data[i][1][0] == 'Z') {
+        for (var i = 0; i < len; i++) {
+            if (res.data[i][1][0] == 'Z') {
 
-            }else {
+            } else {
                 tempArray.push(res.data[i])
             }
-            
+
         }
         setModesData(tempArray)
         // setModesData(res.data && res.data.map((item) => {
@@ -269,12 +271,25 @@ const ManageVendorPayment = () => {
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
-        console.log(filterMapState)
-        Object.keys(filterMapState).forEach(key => {
+        Object.keys(filterMapState).forEach((key) => {
             if (filterMapState[key].filterType != "") {
-                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+                if (filterMapState[key].filterData == 'Numeric') {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        Number(filterMapState[key].filterValue),
+                        filterMapState[key].filterData,
+                    ]);
+                } else {
+                    tempArray.push([
+                        key,
+                        filterMapState[key].filterType,
+                        filterMapState[key].filterValue,
+                        filterMapState[key].filterData,
+                    ]);
+                }
             }
-        })
+        });
         // setCurrentPage((prev) => 1)
         setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
@@ -403,9 +418,9 @@ const ManageVendorPayment = () => {
         SetIsVendorPaymentDialogue(false);
         if (res.result == "success") {
             setFormValues(initialValues);
-            const temp1 = {...selectedOption}
+            const temp1 = { ...selectedOption }
             temp1.label = "Select Client"
-            temp1.value = null 
+            temp1.value = null
             setSelectedOption(temp1)
             setOrderText("Select Order")
             const temp2 = {
@@ -416,6 +431,18 @@ const ManageVendorPayment = () => {
             setOrderData(temp2);
             openAddSuccess();
         } else {
+            setFormValues(initialValues);
+            const temp1 = { ...selectedOption }
+            temp1.label = "Select Client"
+            temp1.value = null
+            setSelectedOption(temp1)
+            setOrderText("Select Order")
+            const temp2 = {
+                ...orderData
+            }
+            temp2.orderdate = null
+            temp2.orderstatus = null
+            setOrderData(temp2);
             openFailureModal();
             setErrorMessage(res.message)
         }
@@ -617,12 +644,12 @@ const ManageVendorPayment = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
-    const handleExcelDownload = async () => {
+    const handleDownload = async (type) => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
                 "vendorname",
+                "clientname",
                 "propertydescription",
                 "briefdescription",
                 "amount",
@@ -630,7 +657,21 @@ const ManageVendorPayment = () => {
                 "modeofpayment",
                 "paymentbyname",
                 "createdbyname",
+                "id",
             ],
+            "downloadType": type,
+            "colmap": {
+                "vendorname": "Vendor Name",
+                "clientname": "Client Name",
+                "propertydescription": "Property",
+                "briefdescription": "Order Description",
+                "amount": "Amount",
+                "paymentdate": "Payment Date",
+                "modeofpayment": "Mode Of Payment",
+                "paymentbyname": "Payment By",
+                "createdbyname": "Created By",
+                "id": "ID"
+            },
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -640,12 +681,39 @@ const ManageVendorPayment = () => {
         };
         const response = await APIService.getVendorPayment(data);
         const temp = await response.json();
-        const result = temp.data;
-        const worksheet = XLSX.utils.json_to_sheet(result);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "VendorPaymentData.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+        if (temp.result == 'success') {
+            const d = {
+                "filename": temp.filename,
+                "user_id": 1234
+            }
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'VendorPaymentData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'VendorPaymentData.pdf');
+                    }
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            setTimeout(() => {
+                setPageLoading(false)
+            }, 1000)
+        }
     }
     const handleSearch = async () => {
         // console.log("clicked")
@@ -876,7 +944,7 @@ const ManageVendorPayment = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        orderid : {
+        orderid: {
             filterType: state ? "equalTo" : "",
             filterValue: state?.orderid,
             filterData: "Numeric",
@@ -911,6 +979,16 @@ const ManageVendorPayment = () => {
     }
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
+        setVendorNameFilter(false);
+        setClientNameFilter(false);
+        setOrderDescriptionFilter(false);
+        setPropertyDescriptionFilter(false);
+        setAmountFilter(false);
+        setPaymentDateFilter(false);
+        setCreatedByFilter(false);
+        setModeOfPaymentFilter(false);
+        setPaymentByFilter(false);
+        setIdFilter(false);
         setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
@@ -1009,26 +1087,34 @@ const ManageVendorPayment = () => {
 
         }
     }
-    const [orderData,setOrderData] = useState({
-        orderdate : "",
-        orderstatus : ""
+    const [orderData, setOrderData] = useState({
+        orderdate: "",
+        orderstatus: ""
     })
     const getOrderData = async (id) => {
         const data = {
-            "user_id" : 1234,
-            "orderid" : id
+            "user_id": 1234,
+            "orderid": id
         }
         const response = await APIService.getOrderPending(data)
         const res = await response.json()
-        const temp = {...orderData}
-        temp.orderdate = res.data.orderdate 
-        temp.orderstatus = res.data.orderstatus 
+        const temp = { ...orderData }
+        temp.orderdate = res.data.orderdate
+        temp.orderstatus = res.data.orderstatus
         setOrderData(temp)
     }
-    
+
 
     return (
-        <div className='h-screen font-medium'>
+        <div className='h-screen w-full font-medium'>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => { }}
+            >
+                <CircularProgress color="inherit" />
+
+            </Backdrop>
             <Navbar />
             {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />} */}
@@ -1106,9 +1192,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'vendorname')}
                                 />
-                                <button className='w-[30%] px-1 py-2' onClick={() => { setVendorNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.vendorname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setVendorNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setVendorNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} />}
+                            {vendorNameFilter && <CharacterFilter inputVariable={vendorNameFilterInput} setInputVariable={setVendorNameFilterInput} handleFilter={newHandleFilter} filterColumn='vendorname' menuRef={menuRef} filterType={filterMapState.vendorname.filterType} />}
                         </div>
                         <div className='w-[11%]  px-3 py-2 '>
                             <div className="w-[85%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1118,9 +1204,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'clientname')}
                                 />
-                                <button className='w-[30%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.clientname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                            {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType} />}
                         </div>
                         <div className='w-[12%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1130,9 +1216,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'propertydescription')}
                                 />
-                                <button className='w-[35%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.propertydescription.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {propertyDescriptionFilter && <CharacterFilter filterColumn='propertydescription' inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {propertyDescriptionFilter && <CharacterFilter filterColumn='propertydescription' inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.propertydescription.filterType} />}
                         </div>
                         <div className='w-[15%] px-3 py-2 '>
                             <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-md ml-1">
@@ -1142,9 +1228,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'briefdescription')}
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.briefdescription.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
+                            {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} filterType={filterMapState.briefdescription.filterType} />}
                         </div>
                         <div className='w-[9%] px-3 py-2 '>
                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1154,9 +1240,9 @@ const ManageVendorPayment = () => {
                                         'equalTo',
                                         'amount')}
                                 />
-                                <button className='w-[32%] px-1 py-2' onClick={() => { setAmountFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.amount.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
+                            {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} filterType={filterMapState.amount.filterType} />}
                         </div>
                         <div className='w-[11%] px-3 py-2'>
                             <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1166,9 +1252,9 @@ const ManageVendorPayment = () => {
                                         'equalTo',
                                         'paymentdate')}
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setPaymentDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.paymentdate.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setPaymentDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setPaymentDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {paymentDateFilter && <DateFilter inputVariable={paymentDateFilterInput} setInputVariable={setPaymentDateFilterInput} handleFilter={newHandleFilter} columnName='paymentdate' menuRef={menuRef} />}
+                            {paymentDateFilter && <DateFilter inputVariable={paymentDateFilterInput} setInputVariable={setPaymentDateFilterInput} handleFilter={newHandleFilter} columnName='paymentdate' menuRef={menuRef} filterType={filterMapState.paymentdate.filterType} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1178,9 +1264,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'modeofpayment')}
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setModeOfPaymentFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.modeofpayment.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setModeOfPaymentFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setModeOfPaymentFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {modeOfPaymentFilter && <CharacterFilter inputVariable={modeOfPaymentFilterInput} setInputVariable={setModeOfPaymentFilterInput} handleFilter={newHandleFilter} filterColumn='modeofpayment' menuRef={menuRef} />}
+                            {modeOfPaymentFilter && <CharacterFilter inputVariable={modeOfPaymentFilterInput} setInputVariable={setModeOfPaymentFilterInput} handleFilter={newHandleFilter} filterColumn='modeofpayment' menuRef={menuRef} filterType={filterMapState.modeofpayment.filterType} />}
                         </div>
                         <div className='w-[11%] px-3 py-2'>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1190,9 +1276,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'paymentbyname')}
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setPaymentByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.paymentbyname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setPaymentByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {paymentByFilter && <CharacterFilter filterColumn='paymentbyname' inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {paymentByFilter && <CharacterFilter filterColumn='paymentbyname' inputVariable={paymentByFilterInput} setInputVariable={setPaymentByFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.paymentbyname.filterType} />}
                         </div>
                         <div className='w-[11%] px-3 py-2 '>
                             <div className="w-[70] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1202,9 +1288,9 @@ const ManageVendorPayment = () => {
                                         'contains',
                                         'createdbyname')}
                                 />
-                                <button className='w-[25%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                {filterMapState.createdbyname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
+                            {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} filterType={filterMapState.createdbyname.filterType} />}
                         </div>
 
                     </div>
@@ -1218,9 +1304,9 @@ const ManageVendorPayment = () => {
                                         'equalTo',
                                         'id')}
                                 />
-                                <button className='px-1 py-2 w-[45%] '><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                {filterMapState.id.filterType == "" ? <button className='w-[45%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[45%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
                             </div>
-                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                            {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                         </div>
                         <div className='w-[35%]  flex'>
                             <div className='px-3 py-5'>
@@ -1313,10 +1399,10 @@ const ManageVendorPayment = () => {
 
 
                         {/* we map our items here */}
-                        {pageLoading && <div className=''><LinearProgress /></div>}
+                        {/* {pageLoading && <div className=''><LinearProgress /></div>} */}
                         {!pageLoading && existingVendorPayment && existingVendorPayment.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                                        <h1 className='ml-10'>No Records To Show</h1>
-                            </div>}
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingVendorPayment.map((item, index) => {
                             return <div className='w-full h-auto py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[90%] flex items-center">
@@ -1440,14 +1526,13 @@ const ManageVendorPayment = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload("pdf")}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
-
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload("excel")}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
@@ -1474,15 +1559,17 @@ const ManageVendorPayment = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center'>
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">New Vendor Payment</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <div className="move cursor-move">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">New Vendor Payment</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1535,7 +1622,7 @@ const ManageVendorPayment = () => {
                                                         }),
                                                     }}
                                                 />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.client}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm">
@@ -1554,12 +1641,12 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.mode}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.amount}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">GST/ST </div>
@@ -1596,8 +1683,8 @@ const ManageVendorPayment = () => {
                                                     handleChange(e)
                                                     getOrderData(e.target.value)
                                                 }} formValueName="orderid" value={formValues.orderid} />
-                                                
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
+
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.orderid}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
@@ -1609,7 +1696,7 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.vendorid}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">TDS Deduction </div>
@@ -1618,7 +1705,7 @@ const ManageVendorPayment = () => {
                                             <div className="">
                                                 <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
                                                 <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentdate}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm mb-1">Payment By <label className="text-red-500">*</label></div>
@@ -1630,16 +1717,16 @@ const ManageVendorPayment = () => {
                                                     ))}
                                                 </select> */}
                                                 {/* <OrderDropDown options={user} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} /> */}
-                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
-                                                <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentby}</div>
+                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentby}</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Date </div>
-                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderdate}  readOnly/>
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderdate} readOnly />
                                             </div>
                                             <div className="">
                                                 <div className="text-sm text-[#787878]">Order Status </div>
-                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderstatus} readOnly/>
+                                                <input className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={orderData.orderstatus} readOnly />
                                             </div>
                                         </div>
                                     </div>

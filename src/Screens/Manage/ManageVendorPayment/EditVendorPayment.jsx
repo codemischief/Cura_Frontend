@@ -29,14 +29,14 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
-    const [modesData,setModesData] = useState([])
+    const [modesData, setModesData] = useState([])
     const fetchModesData = async () => {
         const data = {
             "user_id": 1234
         }
         const response = await APIService.getModesAdmin(data)
         const res = await response.json()
-        
+
         setModesData(res.data)
         console.log(modesData)
         console.log(res)
@@ -45,7 +45,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
     // const [modesData,setModesData] = useState([])
     const [orders, setOrders] = useState([])
     // const [vendorData,setVendorData] = useState([])
-    const [pageLoading,setPageLoading] = useState(false)
+    const [pageLoading, setPageLoading] = useState(false)
     // const [usersData,setUsersData] = useState([])
     const fetchInitialData = async () => {
         setPageLoading(true)
@@ -66,7 +66,7 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         existing.paymentdate = res.data.paymentdate
         existing.orderid = res.data.orderid
         getOrdersData(res.data.orderid)
-        
+
         existing.vendorid = res.data.vendorid
         existing.mode = res.data.mode
         existing.description = res.data.description
@@ -81,8 +81,8 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
         // existing.officeid = res.data.
         setFormValues(existing)
         setTimeout(() => {
-           setPageLoading(false)
-        },1000)
+            setPageLoading(false)
+        }, 1000)
     }
     const getOrdersByClientId = async (id) => {
         // console.log('hello')
@@ -277,36 +277,38 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
             className='flex justify-center items-center'
         >
             <>
-                {/* <Draggable> */}
+                <Draggable handle='div.move'>
                     <div className='flex justify-center'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                <div className="mr-[410px] ml-[410px]">
-                                    <div className="text-[16px]">Edit Vendor Payment</div>
-                                </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                    <button onClick={() => { close() }}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                            <div className="move cursor-move">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">Edit Vendor Payment</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <button onClick={() => { close() }}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                    </div>
                                 </div>
                             </div>
                             {pageLoading && <div className='flex space-x-2 items-center justify-center py-4'>
-                                   <CircularProgress/>
-                                   <h1>Fetching Data</h1>
-                                </div> 
-                                 }
-                            {!pageLoading  && 
-                            <div className="h-auto w-full mt-[5px]">
-                                <div className="flex gap-[48px] justify-center ">
-                                    <div className=" space-y-3 py-5">
-                                        <div className="">
-                                            <div className="text-sm text-[#787878] mb-1">Cura Office </div>
-                                            <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px] text-[#787878]">
-                                                Client 
+                                <CircularProgress />
+                                <h1>Fetching Data</h1>
+                            </div>
+                            }
+                            {!pageLoading &&
+                                <div className="h-auto w-full mt-[5px]">
+                                    <div className="flex gap-[48px] justify-center ">
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-sm text-[#787878] mb-1">Cura Office </div>
+                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
-                                            {/* <AsyncSelect
+                                            <div className="">
+                                                <div className="text-[13px] text-[#787878]">
+                                                    Client
+                                                </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={selectedOption.label} onChange={handleChange} readOnly />
+                                                {/* <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
                                             loadOptions={loadOptions}
@@ -339,65 +341,66 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                 })
                                             }}
                                         /> */}
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">
-                                                Mode <label className="text-red-500">*</label>
+                                                <div className="text-[9px] text-[#CD0000] absolute">{formErrors.client}</div>
                                             </div>
-                                            <select
-                                                className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
-                                                name="mode"
-                                                value={formValues.mode}
-                                                onChange={handleChange}
-                                            >
-                                                {modesData.map((item) => {
-                                                    if(item[0] == formValues.mode && item[1][0] == 'Z') {
-                                                        return <option key={item[0]} value={item[0]} selected hidden>
+                                            <div className="">
+                                                <div className="text-sm">
+                                                    Mode <label className="text-red-500">*</label>
+                                                </div>
+                                                <select
+                                                    className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"
+                                                    name="mode"
+                                                    value={formValues.mode}
+                                                    onChange={handleChange}
+                                                >
+                                                    {modesData.map((item) => {
+                                                        if (item[0] == formValues.mode && item[1][0] == 'Z') {
+                                                            return <option key={item[0]} value={item[0]} selected hidden>
                                                                 {item[1]}
                                                             </option>
-                                                    }else if(item[0] == formValues.mode) {
-                                                        <option key={item[0]} value={item[0]} selected >
+                                                        } else if (item[0] == formValues.mode) {
+                                                            <option key={item[0]} value={item[0]} selected >
                                                                 {item[1]}
                                                             </option>
-                                                    }else if( item[1][0] == 'Z'){
-                                                    return <option key={item[0]} value={item[0]} hidden>
-                                                        {item[1]}
-                                                    </option>}
-                                                    else {
-                                                        return <option key={item[0]} value={item[0]} >
-                                                        {item[1]}
-                                                    </option>
-                                                    }
-})}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.mode}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">GST/ST </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Description </div>
-                                            <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="description" value={formValues.description} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className=" space-y-3 py-5">
-                                        <div className="">
-                                            <div className="text-sm text-[#787878]">Payment ID </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={currPayment} readOnly />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px] text-[#787878]">
-                                                Order 
+                                                        } else if (item[1][0] == 'Z') {
+                                                            return <option key={item[0]} value={item[0]} hidden>
+                                                                {item[1]}
+                                                            </option>
+                                                        }
+                                                        else {
+                                                            return <option key={item[0]} value={item[0]} >
+                                                                {item[1]}
+                                                            </option>
+                                                        }
+                                                    })}
+                                                </select>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.mode}</div>
                                             </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly />
-                                            {/* <select
+                                            <div className="">
+                                                <div className="text-[13px]">Amount Paid <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="amount" value={formValues.amount} onChange={handleChange} />
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.amount}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">GST/ST </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="servicetaxamount" value={formValues.servicetaxamount} onChange={handleChange} />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Description </div>
+                                                <textarea className="w-[230px] h-[80px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px] resize-none" type="text" name="description" value={formValues.description} onChange={handleChange} />
+                                            </div>
+                                        </div>
+                                        <div className=" space-y-3 py-5">
+                                            <div className="">
+                                                <div className="text-sm text-[#787878]">Payment ID </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={currPayment} readOnly />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px] text-[#787878]">
+                                                    Order
+                                                </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.ordername} readOnly />
+                                                {/* <select
                                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                                             name="orderid"
                                             value={formValues.orderid}
@@ -409,61 +412,61 @@ const EditVendorPayment = ({ handleClose, currPayment, vendorData, usersData, sh
                                                     {item.ordername}
                                                 </option>
                                             ))}
-                                        </select> */}
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.orderid}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
-                                            <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
-                                                <option value={null}> Select Vendor</option>
-                                                {vendorData.map(item => (
-                                                    <option key={item[0]} value={item[0]}>
-                                                        {item[1]}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.vendorid}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-[13px]">TDS Deduction </div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
-                                        </div>
+                                        </select> 
+                                                <div className="text-[9px] text-[#CD0000] ">{formErrors.orderid}</div> */}
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">Vendor <label className="text-red-500">*</label></div>
+                                                <select className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="vendorid" value={formValues.vendorid} onChange={handleChange} >
+                                                    <option value={null}> Select Vendor</option>
+                                                    {vendorData.map(item => (
+                                                        <option key={item[0]} value={item[0]}>
+                                                            {item[1]}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.vendorid}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-[13px]">TDS Deduction </div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="tds" value={formValues.tds} onChange={handleChange} />
+                                            </div>
 
-                                        <div className="">
-                                            <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
-                                            <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.paymentdate}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
-                                            {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
+                                            <div className="">
+                                                <div className="text-[13px]">Payment Date <label className="text-red-500">*</label></div>
+                                                <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="paymentdate" value={formValues.paymentdate} onChange={handleChange} />
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentdate}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm">Payment By <label className="text-red-500">*</label></div>
+                                                {/* <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="paymentby" value={formValues.paymentby} onChange={handleChange} >
                                             {usersData.map(item => (
                                                 <option key={item.id} value={item.id}>
                                                     {item.name}
                                                 </option>
                                             ))}
                                         </select> */}
-                                            <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id"/>
-                                            <div className="text-[12px] text-[#CD0000] ">{formErrors.paymentBy}</div>
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#787878]">Order Date </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderdate} readOnly />
-                                        </div>
-                                        <div className="">
-                                            <div className="text-sm text-[#787878]">Order Status </div>
-                                            <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderstatus} readOnly />
+                                                <DropDown options={usersData} initialValue="Select Payment By" leftLabel="Name" rightLabel={"Username"} leftAttr="name" rightAttr="username" toSelect="name" handleChange={handleChange} formValueName="paymentby" value={formValues.paymentby} idName="id" />
+                                                <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.paymentBy}</div>
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#787878]">Order Date </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderdate} readOnly />
+                                            </div>
+                                            <div className="">
+                                                <div className="text-sm text-[#787878]">Order Status </div>
+                                                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={tempFormValues.orderstatus} readOnly />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>}
+                                </div>}
                             <div className="my-3 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleEdit} >Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => { close() }}>Cancel</button>
                             </div>
                         </div>
                     </div>
-                {/* </Draggable> */}
+                </Draggable>
             </>
         </Modal>
     )
