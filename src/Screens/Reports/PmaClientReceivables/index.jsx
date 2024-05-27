@@ -106,7 +106,8 @@ const PmaClientReceivable = () => {
       let obj = {
         user_id: 1234,
         rows:["*"],
-        sort_by: [],
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
