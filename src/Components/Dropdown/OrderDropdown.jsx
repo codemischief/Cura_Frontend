@@ -94,11 +94,11 @@ const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, right
         <>
          
         <div
-          className="absolute top-[22px] flex justify-start flex-col  w-full bg-white group
-        shadow-[0px_0px_20px_0px_rgba(3,27,89,0.20)]  rounded-md z-10  max-h-40"
+          className="absolute top-[22px] flex justify-start flex-col   bg-white group
+        shadow-[0px_0px_20px_0px_rgba(3,27,89,0.20)]  rounded-md z-10  max-h-40 w-[230px]"
         >
            <div
-                    className="flex justify-between text-[12px] h-[37px] bg-[#D9D9D9] px-[8px] py-[8px]"
+                    className="flex justify-between text-[12px] h-[37px] bg-[#D9D9D9] px-[8px] py-[8px] "
                     // onClick={() => {}}
                   >
                     <p >{leftLabel}</p>
