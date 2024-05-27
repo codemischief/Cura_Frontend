@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useLocation , useNavigate} from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -14,7 +14,7 @@ import Excel from "../../../assets/excel.png"
 import Filter from "../../../assets/filter.png"
 import { Modal } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
-import { CircularProgress, Pagination, LinearProgress , Backdrop } from "@mui/material";
+import { CircularProgress, Pagination, LinearProgress, Backdrop } from "@mui/material";
 import { APIService } from '../../../services/API';
 import Edit from "../../../assets/edit.png"
 import Trash from "../../../assets/trash.png";
@@ -45,8 +45,8 @@ const ManageOrder = () => {
     const [downloadModal, setDownloadModal] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [isSearchOn, setIsSearchOn] = useState(false);
-    const [stateArray,setStateArray] = useState([]);
-    const [sortField,setSortField] = useState("id");
+    const [stateArray, setStateArray] = useState([]);
+    const [sortField, setSortField] = useState("id");
     const handlePageChange = (event, value) => {
 
         setCurrentPage(value)
@@ -107,7 +107,7 @@ const ManageOrder = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
             ;
         const response = await APIService.getOrder(data);
@@ -161,7 +161,7 @@ const ManageOrder = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": Number(pageNumber),
             "pg_size": Number(currentPages),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
         const response = await APIService.getOrder(data);
         const temp = await response.json();
@@ -214,7 +214,7 @@ const ManageOrder = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
             "pg_size": Number(quantity),
-            "search_key" : searchInput
+            "search_key": searchInput
         }
             ;
         const response = await APIService.getOrder(data);
@@ -258,32 +258,32 @@ const ManageOrder = () => {
         };
     }, []);
     const initialValues = {
-        "order_info":{
-          "clientid":null,
-          "briefdescription":null,
-          "orderdate":null,
-          "earlieststartdate":null,
-          "expectedcompletiondate":null,
-          "actualcompletiondate":null,
-          "owner":null,
-          "comments":null,
-          "additionalcomments":null,
-          "status":null,
-          "service":null,
-          "clientpropertyid":null,
-          "vendorid":null,
-          "assignedtooffice":1,
-          "entityid":1,
-          "tallyledgerid":null,
-          "clientname" : "Select Client",
+        "order_info": {
+            "clientid": null,
+            "briefdescription": null,
+            "orderdate": null,
+            "earlieststartdate": null,
+            "expectedcompletiondate": null,
+            "actualcompletiondate": null,
+            "owner": null,
+            "comments": null,
+            "additionalcomments": null,
+            "status": null,
+            "service": null,
+            "clientpropertyid": null,
+            "vendorid": null,
+            "assignedtooffice": 1,
+            "entityid": 1,
+            "tallyledgerid": null,
+            "clientname": "Select Client",
         },
-        "order_photos":[
+        "order_photos": [
 
         ],
-        "order_status_change":[{
-          "orderid":435231,
-          "statusid":1,
-          "timestamp":"2024-01-01 10:00:00"
+        "order_status_change": [{
+            "orderid": 435231,
+            "statusid": 1,
+            "timestamp": "2024-01-01 10:00:00"
         }]
     }
     const [formErrors, setFormErrors] = useState({});
@@ -332,7 +332,7 @@ const ManageOrder = () => {
             }))
         }
 
-        if (formValues.order_info.clientid === "" || formValues.order_info.clientid === null ) {
+        if (formValues.order_info.clientid === "" || formValues.order_info.clientid === null) {
             res = false
             setFormErrors((existing) => ({
                 ...existing,
@@ -363,8 +363,8 @@ const ManageOrder = () => {
 
         return res;
     }
-    const [formValues,setFormValues] = useState(initialValues)
-    const [currOrderName,setCurrOrderName] = useState(-1);
+    const [formValues, setFormValues] = useState(initialValues)
+    const [currOrderName, setCurrOrderName] = useState(-1);
     const handleAddOrder = () => {
         console.log(formErrors);
         if (!validate()) {
@@ -373,53 +373,53 @@ const ManageOrder = () => {
         }
         setIsStateDialogue(false)
         setShowAddConfirmation(true)
-        
+
     }
-     const addOrder = async  () => {
+    const addOrder = async () => {
         console.log(formValues)
-       const data = {
-          "user_id" : 1234,
-          "order_info" : {
-            "clientid": Number(formValues.order_info.clientid),
-            "briefdescription":formValues.order_info.briefdescription,
-            "orderdate":formValues.order_info.orderdate,
-            "earlieststartdate":formValues.order_info.earlieststartdate,
-            "expectedcompletiondate":formValues.order_info.expectedcompletiondate,
-            "actualcompletiondate":formValues.order_info.actualcompletiondate,
-            "owner":Number(formValues.order_info.owner),
-            "comments":formValues.order_info.comments,
-            "additionalcomments":formValues.order_info.additionalcomments,
-            "status":Number(formValues.order_info.status),
-            "service":Number(formValues.order_info.service),
-            "clientpropertyid": Number(formValues.order_info.clientpropertyid),
-            "vendorid": Number(formValues.order_info.vendorid),
-            "assignedtooffice":1,
-            "entityid":1,
-            "tallyledgerid": Number(formValues.order_info.tallyledgerid)
-          },
-          "order_photos" : formValues.order_photos
-       }
-       const d = {
-        "user_id" : 1234,
-        "orderid" : currOrderId,
-        "statusid" : Number(formValues.order_info.status)
-    }
+        const data = {
+            "user_id": 1234,
+            "order_info": {
+                "clientid": Number(formValues.order_info.clientid),
+                "briefdescription": formValues.order_info.briefdescription,
+                "orderdate": formValues.order_info.orderdate,
+                "earlieststartdate": formValues.order_info.earlieststartdate,
+                "expectedcompletiondate": formValues.order_info.expectedcompletiondate,
+                "actualcompletiondate": formValues.order_info.actualcompletiondate,
+                "owner": Number(formValues.order_info.owner),
+                "comments": formValues.order_info.comments,
+                "additionalcomments": formValues.order_info.additionalcomments,
+                "status": Number(formValues.order_info.status),
+                "service": Number(formValues.order_info.service),
+                "clientpropertyid": Number(formValues.order_info.clientpropertyid),
+                "vendorid": Number(formValues.order_info.vendorid),
+                "assignedtooffice": 1,
+                "entityid": 1,
+                "tallyledgerid": Number(formValues.order_info.tallyledgerid)
+            },
+            "order_photos": formValues.order_photos
+        }
+        const d = {
+            "user_id": 1234,
+            "orderid": currOrderId,
+            "statusid": Number(formValues.order_info.status)
+        }
         const statusresponse = await APIService.addOrderStatusChange(d);
         const statusres = await statusresponse.json();
         console.log(res)
-       const response = await APIService.addOrder(data);
-       const res = await response.json();
-       if(res.result == 'success') {
-         // we need to open add success
-         setShowAddConfirmation(false);
-         setFormValues(initialValues);
-         openAddSuccess();
-       }else {
-        // we need to open failure modal
- 
-       }
-       // we get the success prompt
-       
+        const response = await APIService.addOrder(data);
+        const res = await response.json();
+        if (res.result == 'success') {
+            // we need to open add success
+            setShowAddConfirmation(false);
+            setFormValues(initialValues);
+            openAddSuccess();
+        } else {
+            // we need to open failure modal
+
+        }
+        // we get the success prompt
+
     }
     const handleEdit = (id) => {
         // we need to open the edit modal
@@ -428,7 +428,7 @@ const ManageOrder = () => {
         setShowEditModal(true)
         // setShowEditModal(true);
     }
-    const [currOrderId,setCurrOrderId] = useState(-1)
+    const [currOrderId, setCurrOrderId] = useState(-1)
     const handleDelete = (id) => {
         // setCurrPma(id);
         setCurrOrderId(id)
@@ -436,19 +436,19 @@ const ManageOrder = () => {
     }
     const deleteOrder = async (id) => {
         const data = {
-            "user_id" : 1234,
-            "order_id" : id
+            "user_id": 1234,
+            "order_id": id
         }
         const response = await APIService.deleteOrders(data)
         const res = await response.json()
-        if(res.result == 'success') {
+        if (res.result == 'success') {
             // we need to open delete success
             setShowDeleteModal(false)
             openDeleteSuccess();
         }
     }
 
-    const [backDropLoading,setBackDropLoading] = useState(false)
+    const [backDropLoading, setBackDropLoading] = useState(false)
     const handleDownload = async () => {
         setBackDropLoading(true);
         console.log('ugm')
@@ -492,16 +492,16 @@ const ManageOrder = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType" : "excel"
+            "downloadType": "excel"
         }
             ;
         const response = await APIService.getOrder(data);
         const temp = await response.json();
         const result = temp.data;
-        if(temp.result == "success") {
+        if (temp.result == "success") {
             const d = {
-                "filename" : temp.filename,
-                "user_id" : 1234
+                "filename": temp.filename,
+                "user_id": 1234
             }
             fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
@@ -510,28 +510,28 @@ const ManageOrder = () => {
                 },
                 body: JSON.stringify(d) // Convert the object to a JSON string
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
-            })
-            .then(result => {
-                if(type == "excel") {
-                    FileSaver.saveAs(result, 'OrderData.xlsx');
-                }else if(type == "pdf") {
-                    FileSaver.saveAs(result, 'localityData.pdf');
-                }
-               
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'OrderData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'localityData.pdf');
+                    }
+
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
             setTimeout(() => {
                 setBackDropLoading(false)
-            },1000) 
+            }, 1000)
         }
     }
 
@@ -746,7 +746,7 @@ const ManageOrder = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        clientid : {
+        clientid: {
             filterType: state ? "equalTo" : "",
             filterValue: state?.clientid,
             filterData: "Numeric",
@@ -901,7 +901,7 @@ const ManageOrder = () => {
             "pg_size": Number(currentPages),
             "search_key": isSearchOn ? searchInput : ""
         };
-        
+
         const response = await APIService.getOrder(data);
         const temp = await response.json();
         const result = temp.data;
@@ -938,10 +938,10 @@ const ManageOrder = () => {
     };
     const handleClose = () => {
         setFormValues(initialValues)
-        
+
         setIsStateDialogue(false);
     }
-    const [showAddSuccess,setShowAddSuccess] = useState(false);
+    const [showAddSuccess, setShowAddSuccess] = useState(false);
     const openAddSuccess = () => {
         setShowAddSuccess(true);
         setTimeout(function () {
@@ -949,7 +949,7 @@ const ManageOrder = () => {
             fetchData();
         }, 2000)
     }
-    const [showDeleteSuccess,setShowDeleteSuccess] = useState(false)
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false)
     const openDeleteSuccess = () => {
         setShowDeleteSuccess(true);
         setTimeout(function () {
@@ -957,8 +957,8 @@ const ManageOrder = () => {
             fetchData();
         }, 2000)
     }
-    const [showAddConfirmation,setShowAddConfirmation] = useState(false);
- 
+    const [showAddConfirmation, setShowAddConfirmation] = useState(false);
+
 
 
 
@@ -966,51 +966,51 @@ const ManageOrder = () => {
 
 
     // fetching all utility data
-    const [usersData,setUsersData] = useState([])
+    const [usersData, setUsersData] = useState([])
     const fetchUsersData = async () => {
         const data = {
-            "user_id" : 1234
+            "user_id": 1234
         }
-        const response =  await APIService.getUsers(data)
+        const response = await APIService.getUsers(data)
         const res = await response.json()
         setUsersData(res.data);
     }
 
-    const [orderStatusData,setOrderStatusData] = useState([])
+    const [orderStatusData, setOrderStatusData] = useState([])
     const fetchOrderStatusData = async () => {
-        const data = {"user_id" : 1234}
+        const data = { "user_id": 1234 }
         const response = await APIService.getOrderStatusAdmin(data)
         const res = await response.json()
         console.log(res)
         setOrderStatusData(res.data)
     }
-    const [clientPropertyData,setClientPropertyData] = useState([])
+    const [clientPropertyData, setClientPropertyData] = useState([])
     const fetchClientPropertyData = async () => {
-        const data = {"user_id" : 1234}
+        const data = { "user_id": 1234 }
         const response = await APIService.getClientPropertyAdmin(data)
         const res = await response.json()
         console.log(res)
         setClientPropertyData(res.data)
     }
-    const [serviceData,setServiceData] = useState([])
+    const [serviceData, setServiceData] = useState([])
     const fetchServiceData = async () => {
-        const data = {"user_id" : 1234}
+        const data = { "user_id": 1234 }
         const response = await APIService.getServiceAdmin(data)
         const res = await response.json()
         console.log(res)
         setServiceData(res.data)
     }
-    const [vendorData,setVendorData] = useState([])
+    const [vendorData, setVendorData] = useState([])
     const fetchVendorData = async () => {
-        const data = {"user_id" : 1234}
+        const data = { "user_id": 1234 }
         const response = await APIService.getVendorAdmin(data)
         const res = await response.json()
         console.log(res)
         setVendorData(res.data)
     }
-    const [tallyLedgerData,setTallyLedgerData] = useState([])
+    const [tallyLedgerData, setTallyLedgerData] = useState([])
     const fetchTallyLedgerData = async () => {
-        const data = {"user_id" : 1234}
+        const data = { "user_id": 1234 }
         const response = await APIService.getTallyLedgerAdmin(data)
         const res = await response.json()
         console.log(res)
@@ -1028,9 +1028,9 @@ const ManageOrder = () => {
 
 
     // finish all utiltiy data
-    const [showDeleteModal,setShowDeleteModal] = useState(false)
-    const [showEditModal,setShowEditModal] = useState(false);
-    const [showEditSuccess,setShowEditSuccess] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showEditSuccess, setShowEditSuccess] = useState(false);
     const openEditSuccess = () => {
         setShowEditModal(false)
         setShowEditSuccess(true);
@@ -1045,25 +1045,25 @@ const ManageOrder = () => {
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
-            {showAddSuccess && <SucessfullModal  isOpen={showAddSuccess} message="New Order Created Successfully"/>}
-            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully"/>}
-            {showDeleteSuccess && <SucessfullModal  isOpen={showDeleteSuccess} message=" Order Deleted Successfully"/>}
+            {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Order Created Successfully" />}
+            {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
+            {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message=" Order Deleted Successfully" />}
             {showAddConfirmation && <SaveConfirmationOrder handleClose={() => setShowAddConfirmation(false)} addOrder={addOrder} />}
             {showDeleteModal && <DeleteOrder handleClose={() => setShowDeleteModal(false)} handleDelete={deleteOrder} item={currOrderId} />}
-            {showEditModal && <EditOrderModal currOrderId={currOrderId} handleClose={() => setShowEditModal(false)} showSuccess={openEditSuccess}/>}
+            {showEditModal && <EditOrderModal currOrderId={currOrderId} handleClose={() => setShowEditModal(false)} showSuccess={openEditSuccess} />}
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={backDropLoading}
-                onClick={() => {}}
+                onClick={() => { }}
             >
 
-               <CircularProgress color="inherit"/>
+                <CircularProgress color="inherit" />
 
             </Backdrop>
 
@@ -1112,13 +1112,13 @@ const ManageOrder = () => {
                 </div>
 
                 {/* from here we need to divide the page into two parts */}
-                
+
                 <div className='h-[calc(100vh_-_11rem)] w-full text-[12px] flex mb-60'>
-                   {/* this has everything */}
+                    {/* this has everything */}
                     <div className='w-full h-full  overflow-x-auto overflow-y-hidden grid  grid-flow-row ordergrid relative'>
                         <div className='w-full h-12 bg-white grid grid-flow-col auto-cols-max '>
                             <div className='w-[40px] '>
-                                 
+
                             </div>
                             <div className='w-[165px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1126,7 +1126,7 @@ const ManageOrder = () => {
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
-                                
+
                             </div>
                             <div className='w-[150px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1143,14 +1143,14 @@ const ManageOrder = () => {
                                 {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
                             </div>
                             <div className='w-[215px]  px-4 py-2.5'>
-                               <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
                             </div>
                             <div className='w-[125px] px-4  py-2.5'>
-                             <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
+                                <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceFilterInput} onChange={(e) => setServiceFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setServiceFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
@@ -1168,63 +1168,62 @@ const ManageOrder = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={startDateFilterInput} onChange={(e) => setStartDateFilterInput(e.target.value)} type='date' />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setStartDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef}/>}
+                                {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef} />}
                             </div>
                             <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} type='date' />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setCompletionDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef}/>}
+                                {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef} />}
                             </div>
                             <div className='w-[100px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} type='date' />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef}/>}
+                                {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef} />}
                             </div>
                             <div className='w-[80px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setAgingFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef}/>}
+                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef} />}
                             </div>
                             <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef}/>}
+                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
                             </div>
                             <div className='w-[70px]  px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div> */}
-                                
+
                             </div>
                             <div className='w-[70px] px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div> */}
-                                
+
                             </div>
                             <div className='w-[70px] px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div> */}
-                                
+
                             </div>
                             <div className='w-[70px] px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div> */}
-                                
                             </div>
 
                             <div className='w-[110px] px-4  py-2.5'>
@@ -1232,150 +1231,150 @@ const ManageOrder = () => {
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
                                     <button className='w-[28%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
                                 </div>
-                                {idFilter && <CharacterFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} filterColumn='id' menuRef={menuRef}/>}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
                             </div>
                         </div>
                         {/* pending space here */}
                         <div className='h-12 w-full bg-[#F0F6FF] flex'>
                             <div className='w-[40px] p-4'>
-                                 <p>Sr. </p> 
+                                <p>Sr. </p>
                             </div>
                             <div className='w-[165px] p-4'>
-                                 <p> Client Name</p> 
+                                <p> Client Name <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[150px] p-4'>
-                                 <p> Assigned To</p> 
+                                <p> Assigned To <button onClick={() => handleSort('ownername')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[175px] p-4'>
-                                 <p> Order Description</p> 
+                                <p> Order Description <button onClick={() => handleSort('briefdescription')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[215px] p-4'>
-                                 <p> Proper Description</p> 
+                                <p> Proper Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[125px] p-4'>
-                                 <p> Service</p> 
+                                <p> Service <button onClick={() => handleSort('servicename')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[130px] p-4'>
-                                 <p> Order Status</p> 
+                                <p> Order Status <button onClick={() => handleSort('orderstatus')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[120px] p-4'>
-                                 <p> Start Date</p> 
+                                <p> Start Date <button onClick={() => handleSort('earlieststartdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[130px] p-4'>
-                                 <p> Completion Date</p> 
+                                <p> Completion Date <button onClick={() => handleSort('expectedcompletiondate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[100px] p-4'>
-                                 <p>Order Date</p> 
+                                <p>Order Date <button onClick={() => handleSort('orderdate')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[80px] p-4'>
-                                 <p>Ageing</p> 
+                                <p>Ageing <button onClick={() => handleSort('ageing')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[120px] p-4'>
-                                 <p>Created By</p> 
+                                <p>Created By <button onClick={() => handleSort('createdbyname')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[70px] p-4'>
-                               {/* <p>Temp</p> */}
+                                {/* <p>Temp</p> */}
                             </div>
                             <div className='w-[70px] p-4'>
-                               {/* <p>Temp</p> */}
+                                {/* <p>Temp</p> */}
                             </div>
                             <div className='w-[70px] p-4'>
-                               {/* <p>Temp</p> */}
+                                {/* <p>Temp</p> */}
                             </div>
                             <div className='w-[70px] p-4'>
-                               {/* <p>Temp</p> */}
+                                {/* <p>Temp</p> */}
                             </div>
                             <div className='w-[110px] p-4'>
-                               <p>ID</p>
+                                <p>ID <button onClick={() => handleSort('id')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[110px] p-4'>
-                               <p>Edit</p>
+                                <p>Edit</p>
                             </div>
                         </div>
                         <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto '>
-                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
-                        {!pageLoading && existingOrder.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
-                            <h1 className='ml-10'>No Records To Show</h1>
-                        </div>}
-                        {!pageLoading && existingOrder.map((item, index) => {
-                            return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
-                                <div className='w-full flex'>
-                                <div className='w-[40px] p-4'>
-                                        <p>{index + 1 + (currentPage - 1) * currentPages}</p> 
-                                    </div>
-                                    <div className='w-[165px] p-4'>
-                                        <p> {item.clientname}</p> 
-                                    </div>
-                                    <div className='w-[150px] p-4'>
-                                        <p>{item.ownername}</p> 
-                                    </div>
-                                    <div className='w-[175px] p-4'>
-                                        <p> {item.briefdescription}</p> 
-                                    </div>
-                                    <div className='w-[215px] p-4'>
-                                        <p> {item.clientproperty}</p> 
-                                    </div>
-                                    <div className='w-[125px] p-4'>
-                                        <p> {item.servicename}</p> 
-                                    </div>
-                                    <div className='w-[130px] p-4'>
-                                        <p> {item.orderstatus}</p> 
-                                    </div>
-                                    <div className='w-[120px] p-4'>
-                                        <p> {item.earlieststartdate}</p> 
-                                    </div>
-                                    <div className='w-[130px] p-4'>
-                                        <p>{item.expectedcompletiondate}</p> 
-                                    </div>
-                                    <div className='w-[100px] p-4'>
-                                        <p>{item.orderdate}</p> 
-                                    </div>
-                                    <div className='w-[80px] p-4'>
-                                        <p>{item.ageing}</p> 
-                                    </div>
-                                    <div className='w-[120px] p-4'>
-                                        <p>{item.createdbyname}</p> 
-                                    </div>
-                                    <Link to="/manage/managevendorpayment" state={{ orderid : item.id }}>
-
-                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                        <p>Payments</p>
+                            {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
+                            {!pageLoading && existingOrder.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                                <h1 className='ml-10'>No Records To Show</h1>
+                            </div>}
+                            {!pageLoading && existingOrder.map((item, index) => {
+                                return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                                    <div className='w-full flex'>
+                                        <div className='w-[40px] p-4'>
+                                            <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
-
-                                    </Link>
-                                    <Link  to="/manage/manageorderreceipt" state={{ orderid : item.id }}>
-                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                        <p>Receipts</p>
+                                        <div className='w-[165px] p-4'>
+                                            <p> {item.clientname}</p>
                                         </div>
-                                    </Link>
-                                    <Link to="/manage/manageclientinvoice" state={{orderid : item.id}}>
-                                    
+                                        <div className='w-[150px] p-4'>
+                                            <p>{item.ownername}</p>
+                                        </div>
+                                        <div className='w-[175px] p-4'>
+                                            <p> {item.briefdescription}</p>
+                                        </div>
+                                        <div className='w-[215px] p-4'>
+                                            <p> {item.clientproperty}</p>
+                                        </div>
+                                        <div className='w-[125px] p-4'>
+                                            <p> {item.servicename}</p>
+                                        </div>
+                                        <div className='w-[130px] p-4'>
+                                            <p> {item.orderstatus}</p>
+                                        </div>
+                                        <div className='w-[120px] p-4'>
+                                            <p> {item.earlieststartdate}</p>
+                                        </div>
+                                        <div className='w-[130px] p-4'>
+                                            <p>{item.expectedcompletiondate}</p>
+                                        </div>
+                                        <div className='w-[100px] p-4'>
+                                            <p>{item.orderdate}</p>
+                                        </div>
+                                        <div className='w-[80px] p-4'>
+                                            <p>{item.ageing}</p>
+                                        </div>
+                                        <div className='w-[120px] p-4'>
+                                            <p>{item.createdbyname}</p>
+                                        </div>
+                                        <Link to="/manage/managevendorpayment" state={{ orderid: item.id }}>
+
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                              <p>Invoices</p>
+                                                <p>Payments</p>
                                             </div>
-                                    </Link>
-                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                    <p>Show All</p>
-                                    </div>
-                                    <div className='w-[110px] p-4'>
-                                       <p>{item.id}</p>
-                                    </div>
-                                    <div className='w-[110px] p-4'>
-                                          <div className='flex space-x-3'>
-                                                <button  onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
+
+                                        </Link>
+                                        <Link to="/manage/manageorderreceipt" state={{ orderid: item.id }}>
+                                            <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                                <p>Receipts</p>
+                                            </div>
+                                        </Link>
+                                        <Link to="/manage/manageclientinvoice" state={{ orderid: item.id }}>
+
+                                            <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                                <p>Invoices</p>
+                                            </div>
+                                        </Link>
+                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                            <p>Show All</p>
+                                        </div>
+                                        <div className='w-[110px] p-4'>
+                                            <p>{item.id}</p>
+                                        </div>
+                                        <div className='w-[110px] p-4'>
+                                            <div className='flex space-x-3'>
+                                                <button onClick={() => handleEdit(item.id)}> <img className='w-4 h-4 cursor-pointer' src={Edit} alt="edit" /></button>
                                                 <button onClick={() => handleDelete(item.id)}><img className='w-4 h-4 cursor-pointer' src={Trash} alt="trash" /></button>
                                             </div>
+                                        </div>
                                     </div>
-                                </div>
-                                
 
-                            </div>
-                        })}
+
+                                </div>
+                            })}
                         </div>
-                   </div>
-                   
+                    </div>
+
                 </div>
-                
+
 
 
 
@@ -1457,34 +1456,34 @@ const ManageOrder = () => {
             >
                 <div className='flex justify-center'>
                     <Draggable>
-                    <div className="w-[1050px] h-auto bg-white  rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">New Order</div>
+                        <div className="w-[1050px] h-auto bg-white  rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">New Order</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                            <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
+                                <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
+                                    <div>Order Information</div>
+                                </div>
+                                <div className={` ${selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
+                                    <div>Photos</div>
+                                </div>
+                                <div className={`${selectedDialog == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
+                                    <div>Order Status history</div>
+                                </div>
+                            </div>
+                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} />}
+                            {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
+                            {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
+                            <div className="my-[10px] flex justify-center items-center gap-[10px]">
+                                <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddOrder} >Add</button>
+                                <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose} >Cancel</button>
                             </div>
                         </div>
-                        <div className="mt-1 flex bg-[#DAE7FF] justify-center space-x-4 items-center h-9">
-                            <div className={`${selectedDialog == 1 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectFirst}>
-                                <div>Order Information</div>
-                            </div>
-                            <div className={` ${ selectedDialog == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"} px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectSecond}>
-                                <div>Photos</div>
-                            </div>
-                            <div className={`${selectedDialog == 3 ? "bg-blue-200" :"bg-[#EBEBEB]" } px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-60 cursor-pointer`} onClick={selectThird}>
-                                <div>Order Status history</div>
-                            </div>
-                        </div>
-                        {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} />}
-                        {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
-                        {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
-                        <div className="my-[10px] flex justify-center items-center gap-[10px]">
-                            <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddOrder} >Add</button>
-                            <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleClose} >Cancel</button>
-                        </div>
-                    </div>
                     </Draggable>
                 </div>
             </Modal>
