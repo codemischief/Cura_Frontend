@@ -31,6 +31,7 @@ import SaveConfirmationOrder from './SaveConfirmationOrder';
 import DeleteOrder from './DeleteOrderModal';
 import EditOrderModal from './EditOrderModal';
 import Draggable from 'react-draggable';
+import { formatDate } from '../../../utils/formatDate';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -1321,13 +1322,13 @@ const ManageOrder = () => {
                                             <p> {item.orderstatus}</p>
                                         </div>
                                         <div className='w-[120px] p-4'>
-                                            <p> {item.earlieststartdate}</p>
+                                            <p>{formatDate(item.earlieststartdate)}</p>
                                         </div>
                                         <div className='w-[130px] p-4'>
-                                            <p>{item.expectedcompletiondate}</p>
+                                            <p>{formatDate(item.expectedcompletiondate)}</p>
                                         </div>
                                         <div className='w-[100px] p-4'>
-                                            <p>{item.orderdate}</p>
+                                            <p>{formatDate(item.orderdate)}</p>
                                         </div>
                                         <div className='w-[80px] p-4'>
                                             <p>{item.ageing}</p>
