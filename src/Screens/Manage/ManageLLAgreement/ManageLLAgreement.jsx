@@ -32,6 +32,8 @@ import EditManageLLAgreement from './EditManageLLAgreement';
 import Draggable from "react-draggable"
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
+import ActiveFilter from "../../../assets/active_filter.png"
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
     // const initialRows = [
     //     "id",
@@ -87,7 +89,8 @@ const ManageLLAgreement = () => {
     const [startFilterInput, setStartFilterInput] = useState("");
     const [endFilter, setEndFilter] = useState(false);
     const [endFilterInput, setEndFilterInput] = useState("");
-
+    const [idFilter,setIdFilter] = useState(false)
+    const [idFilterInput,setIdFilterInput] = useState("")
     const [openAddConfirmation, setOpenAddConfirmation] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isFailureModal, setIsFailureModal] = useState(false)
@@ -327,7 +330,7 @@ const ManageLLAgreement = () => {
         const data = {
             "user_id": 1234,
             "rows": dataRows,
-            "filters": filterState,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 1,
@@ -406,6 +409,8 @@ const ManageLLAgreement = () => {
                 setStatusFilter(false);
                 setStartFilter(false);
                 setEndFilter(false);
+                setDownloadModal(false)
+                setIdFilter(false)
             }
         }
 
@@ -810,6 +815,77 @@ const ManageLLAgreement = () => {
     const closeDownload = () => {
         setDownloadModal(false);
     }
+    const handleDownload = async (type) => {
+        setDownloadModal(false)
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "clientname" ,
+                "propertydescription" ,
+                "propertystatusname",
+                "active",
+                "startdate" ,
+                "actualenddate" ,
+                "id",
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput,
+            "downloadType" : type,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "propertydescription" : "Property Description",
+                "propertystatusname" : "Property Status",
+                "active" : "Status",
+                "startdate" : "Start Date",
+                "actualenddate" : "End Date",
+                "id" : "ID",
+            }
+        };
+        const response = await APIService.getLLAgreement(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'LLAgreementData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'LLAgreementData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            },1000) 
+        }
+    }
     const handleExcelDownload = async () => {
         const data = {
             "user_id": 1234,
@@ -999,6 +1075,12 @@ const ManageLLAgreement = () => {
             filterData: "Date",
             filterInput: ""
         },
+        id : {
+            filterType: "",
+            filterValue: "",
+            filterData: "Numeric",
+            filterInput: ""
+        }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
 
@@ -1063,6 +1145,13 @@ const ManageLLAgreement = () => {
     }
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
+        setClientNameFilter(false);
+        setPropertyDescriptionFilter(false);
+        setPropertyStatusFilter(false);
+        setStatusFilter(false);
+        setStartFilter(false);
+        setEndFilter(false);
+        setIdFilter(false)
         setFilterMapState(mapState)
         const tempArray = [];
         // we need to query thru the object
@@ -1111,6 +1200,12 @@ const ManageLLAgreement = () => {
         })
         setSelectedOptions(temp)
     }
+    const handleDeleteAtIndex = (index) => {
+        const temp = [...selectedOptions];
+
+        temp.splice(index, 1);
+        setSelectedOptions(temp)
+    }
     const handleAddTenant = async () => {
         // we need the id here as well
         // in this we need to firstly delete the elements of the current id
@@ -1139,6 +1234,7 @@ const ManageLLAgreement = () => {
             const res = await response.json()
             console.log(res)
             setTenantDetails(false)
+            openAddTenantConfirmation()
         }else {
 
         } 
@@ -1178,7 +1274,13 @@ const ManageLLAgreement = () => {
 
     const [orderText, setOrderText] = useState("Select Order");
     const [propertyText , setPropertyText] = useState("Select Client Property");
-
+    const [addTenantConfirmationSuccess,setAddTenantAddConfirmationSuccess] = useState(false)
+    const openAddTenantConfirmation = () => {
+        setAddTenantAddConfirmationSuccess(true);
+        setTimeout(function () {
+            setAddTenantAddConfirmationSuccess(false)
+        }, 2000)
+    }
     return (
         <div className='h-screen font-medium'>
             <Navbar />
@@ -1196,6 +1298,7 @@ const ManageLLAgreement = () => {
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New L&L Agreement Created Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="L&L Agreement Deleted Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
+            {addTenantConfirmationSuccess && <SucessfullModal isOpen={addTenantConfirmationSuccess} message="Tenants Added Successfully" />}
             {openAddConfirmation && <SaveConfirmationLLAgreement handleClose={() => setOpenAddConfirmation(false)} addLLAgreement={addLLAgreement} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {deleteConfirmation && <DeleteLLAgreement handleClose={() => showDeleteConfirmation(false)} handleDelete={deleteLLAgreement} item={currLL} showCancel={openCancelModal} />}
@@ -1254,7 +1357,7 @@ const ManageLLAgreement = () => {
                 {/* filter component */}
                 <div className='h-12 w-full bg-white'>
                     <div className='w-full h-12 bg-white flex justify-between'>
-                        <div className="w-[83%] flex">
+                        <div className="w-[78%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='p-3'>
                                     {/* <p>Sr.</p> */}
@@ -1268,9 +1371,10 @@ const ManageLLAgreement = () => {
                                         'contains',
                                         'clientname')}
                                          />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
+                                          {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} type={filterMapState.clientname.filterType}/>}
                             </div>
 
                             <div className='w-[19%]  px-3 py-2.5'>
@@ -1281,9 +1385,10 @@ const ManageLLAgreement = () => {
                                         'contains',
                                         'propertydescription')}
                                          />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
+                                         {filterMapState.propertydescription.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} />}
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='propertydescription' menuRef={menuRef} type={filterMapState.propertydescription.filterType}/>}
                             </div>
 
                             <div className='w-[15%]  px-3 py-2.5'>
@@ -1294,9 +1399,10 @@ const ManageLLAgreement = () => {
                                         'contains',
                                         'propertystatusname')}
                                         />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
+                                        {filterMapState.propertystatusname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} />}
+                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='propertystatusname' menuRef={menuRef} type={filterMapState.propertystatusname.filterType}/>}
                             </div>
 
                             <div className='w-[15%]  px-3 py-2.5'>
@@ -1307,9 +1413,10 @@ const ManageLLAgreement = () => {
                                         'equalTo',
                                         'active')}
                                          />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setStatusFilter((prev) => !prev) }} /></button>
+                                         {filterMapState.active.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='active' handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {statusFilter && <NumericFilter inputVariable={statusFilterInput} setInputVariable={setStatusFilterInput} columnName='active' handleFilter={newHandleFilter} menuRef={menuRef} type={filterMapState.active.filterType}/>}
                             </div>
 
                             <div className='w-[15%]  px-3 py-2.5'>
@@ -1320,12 +1427,13 @@ const ManageLLAgreement = () => {
                                         'equalTo',
                                         'startdate')}
                                          />
-                                    <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setStartFilter((prev) => !prev) }} /></button>
+                                         {filterMapState.startdate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setStartFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setStartFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setStartFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {startFilter && <DateFilter inputVariable={startFilterInput} setInputVariable={setStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} />}
+                                {startFilter && <DateFilter inputVariable={startFilterInput} setInputVariable={setStartFilterInput} handleFilter={newHandleFilter} columnName='startdate' menuRef={menuRef} type={filterMapState.startdate.filterType}/>}
                             </div>
 
-                            <div className='w-[15%]  px-3 py-2.5'>
+                            <div className='w-[10%]  px-3 py-2.5'>
                                 <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" type="date" value={endFilterInput} onChange={(e) => setEndFilterInput(e.target.value)} 
                                     onKeyDown={(event) => handleEnterToFilter(event,endFilterInput,
@@ -1333,29 +1441,43 @@ const ManageLLAgreement = () => {
                                         'equalTo',
                                         'actualenddate')}
                                         />
-                                    <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setEndFilter((prev) => !prev) }} /></button>
+                                        {filterMapState.actualenddate.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setEndFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setEndFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={DateIcon} className='h-3 w-3' onClick={() => { setEndFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {endFilter && <DateFilter inputVariable={endFilterInput} setInputVariable={setEndFilterInput} handleFilter={newHandleFilter} columnName='actualenddate' menuRef={menuRef} />}
+                                {endFilter && <DateFilter inputVariable={endFilterInput} setInputVariable={setEndFilterInput} handleFilter={newHandleFilter} columnName='actualenddate' menuRef={menuRef} type={filterMapState.actualenddate.filterType}/>}
                             </div>
 
                         </div>
-                        <div className="w-[17%] flex">
-                            <div className='w-1/2  flex p-3'>
+                        <div className="w-[23%] flex">
+                            <div className='w-[35%]'>
 
                             </div>
-
-                            <div className='w-1/2  flex'>
+                            <div className='w-[45%]   p-3 '>
+                              <div className="w-[60%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
+                                    <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)}
+                                    onKeyDown={(event) => handleEnterToFilter(event,idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                         />
+                                         {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
+                                </div>
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} columnName='id' handleFilter={newHandleFilter} menuRef={menuRef} type={filterMapState.id.filterType}/>}
+                            </div>
+                            
+                            {/* <div className='w-1/2  flex'>
                                 <div className='p-3'>
 
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
 
                 <div className='h-[calc(100vh_-_14rem)] w-full text-[12px]'>
                     <div className='w-full h-16 bg-[#F0F6FF] flex justify-between border-gray-400 border-b-[1px]'>
-                        <div className="w-[83%] flex">
+                        <div className="w-[78%] flex">
                             <div className='w-[3%] flex'>
                                 <div className='px-3 py-5'>
                                     <p>Sr.</p>
@@ -1388,17 +1510,20 @@ const ManageLLAgreement = () => {
                                     <p>Start date <button onClick={() => handleSort('startdate')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[15%]  flex'>
+                            <div className='w-[10%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>End date <button onClick={() => handleSort('clientname')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[17%] flex">
-                            <div className='w-[65%]  flex'>
+                        <div className="w-[23%] flex">
+                            <div className='w-[30%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Tenant</p>
                                 </div>
+                            </div>
+                            <div className='w-[35%] flex items-center pl-12'>
+                                  ID
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='px-3 py-5'>
@@ -1423,7 +1548,7 @@ const ManageLLAgreement = () => {
                         </div>}
                         {!pageLoading && existingLLAgreement.map((item, index) => {
                             return <div className='w-full bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1'>
-                                <div className="w-[83%] flex items-center">
+                                <div className="w-[78%] flex items-center">
                                     <div className='w-[3%] flex'>
                                         <div className='px-3'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -1457,20 +1582,23 @@ const ManageLLAgreement = () => {
                                             {formatDate(item.startdate)}
                                         </div>
                                     </div>
-                                    <div className='w-[15%]  flex pl-1'>
+                                    <div className='w-[10%]  flex pl-1'>
                                         <div className='px-3'>
                                             {formatDate(item.actualenddate)}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-[17%] flex">
-                                    <div className='w-[65%]  flex pl-1'>
+                                <div className="w-[23%] flex">
+                                    <div className='w-[30%]  flex'>
                                         <button onClick={() => handleOpenTenantDetails(item.id)} >
-                                            <div className='px-3 text-blue-400 cursor-pointer'>
+                                            <div className=' text-blue-400 cursor-pointer'>
                                                 Tenant Details
                                             </div>
                                         </button>
 
+                                    </div>
+                                    <div className='w-[35%] flex items-center justify-center pl-2'>
+                                        {item.id}
                                     </div>
                                     <div className='w-[35%]  flex overflow-hidden items-center space-x-4 ml-3'>
                                         <button onClick={() => handleOpenEdit(item)}><img className=' h-4 w-4 ml-3' src={Edit} alt="edit" /></button>
@@ -1532,17 +1660,17 @@ const ManageLLAgreement = () => {
                     <div className="flex text-sm">
                         <p className="mr-11 text-gray-700">{totalItems} Items in {Math.ceil(totalItems / currentPages)} Pages</p>
                     </div>
-                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
+                    {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5' ref={menuRef}>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload('pdf')}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload('excel')}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
@@ -1569,17 +1697,20 @@ const ManageLLAgreement = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                         <div className='flex justify-center'>
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">New L&L Agreement</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <div className='move cursor-move'>
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">New L&L Agreement</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
                                 </div>
+                                
 
                                 <div className="h-auto w-full mt-[5px]">
                                     <div className="flex gap-[48px] justify-center ">
@@ -1772,17 +1903,24 @@ const ManageLLAgreement = () => {
                 className='flex justify-center items-center'
             >
                 <>
-                    <Draggable>
+                    <Draggable handle='div.tenantmove'>
                         <div className='flex justify-center'>
                             <div className="w-[700px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                                    <div className="mr-[250px] ml-[250px]">
-                                        <div className="text-[16px]">Tenant Details</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <button onClick={handleCloseTenantDetails}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <div className='tenantmove cursor-move'>
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                        <div className="mr-[250px] ml-[250px]">
+                                            <div className="text-[16px]">Tenant Details</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                            <button onClick={() => {
+                                                openCancelModal()
+                                                handleCloseTenantDetails()
+                                                
+                                            }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                        </div>
                                     </div>
                                 </div>
+                                
 
                                 <div className="h-auto w-full mt-[5px]">
                                     <div className="flex gap-[48px] justify-center ">
@@ -1794,6 +1932,8 @@ const ManageLLAgreement = () => {
                                                         <div className="text-[13px]">
                                                             Tenant {index + 1}
                                                         </div>
+                                                        <div className='flex space-x-2'>
+                                                        
                                                         <AsyncSelect
                                                             onChange={(e) => handleTenantClientNameChange(e, index)}
                                                             value={selectedOptions[index]}
@@ -1801,7 +1941,7 @@ const ManageLLAgreement = () => {
                                                             cacheOptions
                                                             defaultOptions
                                                             onInputChange={(value) => setQuery(value)}
-
+                                                            
                                                             styles={{
                                                                 control: (provided, state) => ({
                                                                     ...provided,
@@ -1809,7 +1949,9 @@ const ManageLLAgreement = () => {
                                                                     lineHeight: '1.3',
                                                                     height: 2,
                                                                     fontSize: 12,
-                                                                    padding: '1px'
+                                                                    padding: '1px',
+                                                                    float : 'left',
+                                                                    width : "300px"
                                                                 }),
                                                                 // indicatorSeparator: (provided, state) => ({
                                                                 //   ...provided,
@@ -1826,8 +1968,13 @@ const ManageLLAgreement = () => {
                                                                     fontSize: 12 // adjust padding for the dropdown indicator
                                                                 })
                                                             }}
-                                                        />
-
+                                                            />
+                                                            <button onClick={() => handleDeleteAtIndex(index)}>
+                                                                <div className='bg-[#F5F5F5] rounded-lg w-6 h-6 flex items-center justify-center'>
+                                                                    <img src={Cross} className='w-4 h-4'/>
+                                                                </div>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 })}
                                                 {/* <div className="text-[13px]">
@@ -1882,7 +2029,10 @@ const ManageLLAgreement = () => {
 
                                 <div className="my-3 flex justify-center items-center gap-[10px]">
                                     <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' onClick={handleAddTenant} >Add</button>
-                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseTenantDetails}>Cancel</button>
+                                    <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {
+                                        openCancelModal()
+                                        handleCloseTenantDetails()
+                                    }}>Cancel</button>
                                 </div>
                             </div>
                         </div>

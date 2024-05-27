@@ -429,7 +429,7 @@ const Locality = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`${env_URL_SERVER}/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
