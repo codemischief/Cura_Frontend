@@ -125,7 +125,7 @@ import {
                         paddingTop: "10px",
                         paddingBottom: "10px",
                       }}
-                      className="py-3 text-center"
+                      className="py-3 text-left"
                     > 
                       {
                         
