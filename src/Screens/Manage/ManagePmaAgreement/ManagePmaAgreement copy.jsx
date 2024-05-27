@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link , useLocation , useNavigate} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -37,6 +37,9 @@ import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png"
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManagePmaArgreement = () => {
+    const {state} = useLocation();
+    const navigate = useNavigate()
+    console.log(state)
     const dataRows = [
         "id",
         "clientpropertyid",
@@ -957,6 +960,12 @@ const ManagePmaArgreement = () => {
             filterValue: "",
             filterData: "Numeric",
             filterInput: ""
+        },
+        clientpropertyid : {
+            filterType: state ? "equalTo" : "",
+            filterValue: state?.clientPropertyId,
+            filterData: "Numeric",
+            filterInput: state?.clientPropertyId
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -1164,7 +1173,7 @@ const ManagePmaArgreement = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
