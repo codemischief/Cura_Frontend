@@ -36,7 +36,7 @@ import EditVendorInvoice from './EditVendorInvoice';
 import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
-
+import { formatDate } from '../../../utils/formatDate';
 const ManageVendorInvoice = () => {
 
     const menuRef = useRef();
@@ -1481,7 +1481,8 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[10%]  flex pl-0.5'>
                                         <div className='px-3 '>
-                                            <p>{item.invoicedate}</p>
+                                            <p>{formatDate(item.invoicedate)}</p>
+                                            {/* <p>{item.invoicedate}</p> */}
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex pl-1'>
@@ -1501,7 +1502,7 @@ const ManageVendorInvoice = () => {
                                     </div>
                                     <div className='w-[10%]  flex pl-1'>
                                         <div className='px-3 '>
-                                            <p>{item.estimatedate}</p>
+                                            <p>{formatDate(item.estimatedate)}</p>
                                         </div>
                                     </div>
                                 </div>

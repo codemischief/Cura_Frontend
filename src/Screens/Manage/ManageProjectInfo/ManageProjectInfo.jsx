@@ -32,6 +32,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 import Draggable from 'react-draggable';
+
 const ManageProjectInfo = () => {
     
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
@@ -427,7 +428,7 @@ const ManageProjectInfo = () => {
             "user_id": 1234,
             "rows": ["projectname","buildername","suburb","otherdetails","mailgroup1","mailgroup2","rules","tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed"
             ],
-            "filters": [],
+            "filters": stateArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
@@ -919,7 +920,7 @@ const ManageProjectInfo = () => {
               }
       }
     return (
-        <div className="h-screen">
+        <div className="h-screen font-medium">
             <Navbar />
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -1307,14 +1308,14 @@ const ManageProjectInfo = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload('pdf')}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload('excel')}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />

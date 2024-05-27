@@ -8,7 +8,7 @@ import downloadIcon from "../../../assets/download.png";
 import { useState, useEffect, useRef } from 'react';
 import Navbar from "../../../Components/Navabar/Navbar";
 import Cross from "../../../assets/cross.png";
-import { Modal, Pagination, LinearProgress } from "@mui/material";
+import { Modal, Pagination, LinearProgress , Backdrop , CircularProgress } from "@mui/material";
 import { APIService } from '../../../services/API';
 import ClientInformation from "./Forms/ClientInformation"
 import ClientPortal from "./Forms/ClientPortal";
@@ -33,6 +33,47 @@ import FileSaver from 'file-saver';
 import Draggable from 'react-draggable';
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
+    const dataRows = [
+        "clientname",
+        "clienttypename",
+        "tenantofname",
+        "tenantofpropertyname",
+        "country",
+        "mobilephone",
+        "email2",
+        "email1",
+        "employername",
+        "id",
+                "firstname",
+                "middlename",
+                "lastname",
+                "salutation",
+                "clienttype",
+                "addressline1",
+                "addressline2",
+                "suburb",
+                "city",
+                "state",
+                "zip",
+                "homephone",
+                "workphone",
+                "comments",
+                "photo",
+                "onlineaccreated",
+                "localcontact1name",
+                "localcontact1address",
+                "localcontact1details",
+                "localcontact2name",
+                "localcontact2address",
+                "localcontact2details",
+                "includeinmailinglist",
+                "dated",
+                "createdby",
+                "isdeleted",
+                "entityid",
+                "tenantof",
+                "tenantofproperty",
+    ]
     // const history = useHistory()
     const navigate = useNavigate();
     const menuRef = useRef();
@@ -1341,8 +1382,17 @@ const ManageClientInfo = () => {
     }
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             {showEditModal && <EditClientInfoModal handleClose={() => setShowEditModal(false)} currClient={currClient} openEditSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Client Deleted Successfully" />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Client Created Successfully" />}
@@ -1600,7 +1650,7 @@ const ManageClientInfo = () => {
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
 
 
-                        {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>}
+                        {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
                         {!pageLoading && existingClientInfo && existingClientInfo.map((item, index) => {
                             return <div className='w-full h-12 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className="w-[85%] flex">
@@ -1624,45 +1674,45 @@ const ManageClientInfo = () => {
                                             <p>{item.tenantofname} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex'>
+                                    <div className='w-[8%]  flex '>
                                         <div className='p-3'>
                                             <p>{item.tenantofpropertyname}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex '>
+                                    <div className='w-[8%]  flex items-center '>
                                         <div className='p-3 ml-2'>
                                             <p>{item.country}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[6%]  flex overflow-hidden'>
+                                    <div className='w-[6%]  flex overflow-hidden items-center'>
                                         <div className='p-3 ml-1'>
                                             <p>{item.city}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex overflow-hidden'>
+                                    <div className='w-[10%]  flex overflow-hidden items-center'>
                                         <div className='p-3'>
                                             <p>{item.mobilephone}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[11%]  flex'>
+                                    <div className='w-[11%]  flex items-center '>
                                         <div className='p-3 overflow-hidden '>
                                             <p>{item.email1 || item.email2}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9%]  flex ml-2'>
+                                    <div className='w-[9%]  flex ml-2 items-center justify-center'>
                                         <div className='p-3'>
                                             <p>{item.employername}</p>
                                         </div>
                                     </div>
                                     <div className='w-[7%]  flex'>
-                                        <div className='p-3 text-[11px] text-blue-500'>
+                                        <div className='p-3 text-[11px] text-blue-500 font-semibold'>
                                         {/* /manage/manageclientinfo/properties/:clientname */}
                                         <Link to={`/manage/manageclientinfo/properties/${item.clientname}`} state={{ clientid: item.id}}><p>Properties</p></Link> 
                                             {/* <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[6%]  flex'>
-                                        <div className='p-3 text-[11px] text-blue-500'>
+                                        <div className='p-3 text-[11px] text-blue-500 font-semibold'>
                                         {/* /manage/manageclientinfo/orders/:clientname */}
                                             <Link to={`/manage/manageclientinfo/orders/${item.clientname}`} state={{clientid : item.id}}>Orders</Link>
                                         </div>

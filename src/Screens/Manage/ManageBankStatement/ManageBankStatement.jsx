@@ -1,4 +1,4 @@
-import { CircularProgress, Modal, Pagination , LinearProgress} from "@mui/material";
+import { CircularProgress, Modal, Pagination , LinearProgress, Backdrop} from "@mui/material";
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from "react-router-dom";
 import Navbar from "../../../Components/Navabar/Navbar";
@@ -28,10 +28,20 @@ import DateFilter from '../../../Components/Filters/DateFilter';
 import NumericFilter from '../../../Components/Filters/NumericFilter';
 import Draggable from "react-draggable";
 import DropDown from "../../../Components/Dropdown/Dropdown";
+import { formatDate } from "../../../utils/formatDate";
 // import DayJS from 'react-dayjs';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageBankStatement = () => {
     // we have the module here
-    
+    const dataRows = [
+        "mode",
+        "date",
+        "crdr",
+        "amount",
+        "particulars",
+        "clientname",
+        "id"
+    ]
     const menuRef = useRef();
     const [existingStatement, setExistingStatement] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
@@ -178,7 +188,7 @@ const ManageBankStatement = () => {
         setCurrentPages((prev) => 15)
         const data = {
             "user_id": userId || 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -268,7 +278,7 @@ const ManageBankStatement = () => {
         setCurrentPage((prev) => pageNumber);
         const data = {
             "user_id": 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -290,7 +300,7 @@ const ManageBankStatement = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -314,7 +324,7 @@ const ManageBankStatement = () => {
         })
         const data = {
             "user_id": userId || 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -578,12 +588,69 @@ const ManageBankStatement = () => {
     const handleRefresh = async () => {
         await fetchBankStatement();
     }
-    const handleDownload = () => {
-        const worksheet = XLSX.utils.json_to_sheet(existingStatement);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "BankStatement.xlsx");
-        FileSaver.saveAs(workbook, "demo.xlsx");
+    const handleDownload = async (type) => {
+        setDownloadModal(false)
+        setPageLoading(true)
+        const data = {
+            "user_id": 1234,
+            "rows": dataRows,
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput,
+            "downloadType": type,
+            "colmap" : {
+                "mode" : "Mode",
+                "date" : "Date",
+                "crdr"  : "Type",
+                "amount" : "Amount",
+                "particulars" : "Particulars", 
+                "clientname" : "Client Name", 
+                "id" : "ID"
+            }
+        };
+        const response = await APIService.getProjectInfo(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if (temp.result == 'success') {
+            const d = {
+                "filename": temp.filename,
+                "user_id": 1234
+            }
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(result => {
+                    if (type == "excel") {
+                        FileSaver.saveAs(result, 'BankStatementData.xlsx');
+                    } else if (type == "pdf") {
+                        FileSaver.saveAs(result, 'BankStatementData.pdf');
+                    }
+
+                    console.log('Success:', result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            }, 1000)
+        }
     }
     const [flag, setFlag] = useState(false);
     const handleSearch = async () => {
@@ -591,7 +658,7 @@ const ManageBankStatement = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": userId || 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -615,7 +682,7 @@ const ManageBankStatement = () => {
         setCurrentPage(1);
         const data = {
             "user_id": userId || 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -737,7 +804,7 @@ const ManageBankStatement = () => {
         console.log(tempArray)
         const data = {
             "user_id": 1234,
-            "rows": ["*"],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -1009,8 +1076,17 @@ const ManageBankStatement = () => {
          }
     ])
     return (
-        <div className="h-screen">
+        <div className="h-screen font-medium">
             <Navbar />
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={pageLoading}
+                onClick={() => {}}
+            >
+
+               <CircularProgress color="inherit"/>
+
+            </Backdrop>
             <SucessfullModal isOpen={showSucess} message={successMessage} />
             <FailureModal isOpen={showFailure} message="Error! cannot create Bank Statement" />
             <Delete isOpen={showDelete} currentStatement={currentStatementId} closeDialog={setShowDelete} fetchData={fetchBankStatement} showCancel={openCancelModal} />
@@ -1210,9 +1286,7 @@ const ManageBankStatement = () => {
 
 
                     <div className='w-full h-[calc(100vh_-_20rem)] overflow-auto'>
-                        {pageLoading && <div className='ml-11 mt-9'>
-                            <LinearProgress />
-                        </div>}
+                        
                         {!pageLoading && existingStatement && existingStatement.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
@@ -1230,7 +1304,8 @@ const ManageBankStatement = () => {
                                     </div>
                                     <div className='w-[10%]  p-4'>
                                         {/* <p>{item.date}</p> */}
-                                        {item.date}
+                                        {formatDate(item.date)}
+                                        {/* {item.date} */}
                                         {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                     </div>
                                     <div className='w-[10%]  p-4'>
@@ -1351,14 +1426,14 @@ const ManageBankStatement = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload('pdf')}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload('excel')}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />
