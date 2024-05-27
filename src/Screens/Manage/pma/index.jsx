@@ -4,7 +4,12 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling } from "../../../Redux/slice/pmaSlice";
+import {
+  addNewInvoices,
+  getPmaBilling,
+  resetPmaBillingData,
+  setInitialState,
+} from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
@@ -61,6 +66,10 @@ const PmaBilling = () => {
       }
     });
   }
+  useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetPmaBillingData());
+  }, []);
 
   useEffect(() => {
     if (selectedMonth && selectedYear) {
