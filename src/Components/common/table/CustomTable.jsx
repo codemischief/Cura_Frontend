@@ -41,7 +41,7 @@ const SimpleTable = ({
               </th>
             ))}
           </tr>
-          <tr className="bg-[#F0F6FF] h-[56px] ">
+          <tr className="bg-[#F0F6FF] h-[56px] text-left ">
             {columns.map((column, index) => (
               <th key={index} style={{ ...column.cellStyle }}>
                 {column.title}
@@ -94,6 +94,7 @@ const SimpleTable = ({
                       ...column.cellStyle,
                       paddingTop: "4px",
                       paddingBottom: "4px",
+                      textAlign : "left"
                     }}
                     className="py-3 text-center "
                   >
