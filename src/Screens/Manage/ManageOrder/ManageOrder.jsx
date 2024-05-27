@@ -1281,9 +1281,13 @@ const ManageOrder = () => {
                                     <div className='w-[120px] p-4'>
                                         <p>{item.createdbyname}</p> 
                                     </div>
+                                    <Link to="/manage/managevendorpayment" state={{ orderid : item.id }}>
+
                                     <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                     <p>Payments</p>
                                     </div>
+
+                                    </Link>
                                     <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                     <p>Receipts</p>
                                     </div>

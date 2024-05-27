@@ -32,9 +32,15 @@ import EditVendorPayment from "./EditVendorPayment";
 import Draggable from "react-draggable";
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import DropDown from '../../../Components/Dropdown/Dropdown';
+import { formatDate } from "../../../utils/formatDate";
+import { useNavigate , useLocation} from "react-router-dom";
 const ManageVendorPayment = () => {
-
+    
     const menuRef = useRef();
+    const { state } = useLocation()
+    const navigate = useNavigate();
+    console.log(state)
+    console.log(state?.orderid)
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -270,7 +276,7 @@ const ManageVendorPayment = () => {
             }
         })
         // setCurrentPage((prev) => 1)
-        setFilterState(tempArray)
+        setFilterState((prev) => tempArray)
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
@@ -869,6 +875,12 @@ const ManageVendorPayment = () => {
             filterValue: null,
             filterData: "Numeric",
             filterInput: ""
+        },
+        orderid : {
+            filterType: state ? "equalTo" : "",
+            filterValue: state?.orderid,
+            filterData: "Numeric",
+            filterInput: ""
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -1016,7 +1028,7 @@ const ManageVendorPayment = () => {
     
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen font-medium'>
             <Navbar />
             {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />} */}
@@ -1033,7 +1045,7 @@ const ManageVendorPayment = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <Link to="/dashboard"><img className='w-5 h-5' src={backLink} /></Link>
+                            <button onClick={() => navigate(-1)}><img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -1340,7 +1352,7 @@ const ManageVendorPayment = () => {
                                     </div>
                                     <div className='w-[12%]  flex pl-1'>
                                         <div className='px-3 '>
-                                            <p>{item.paymentdate}</p>
+                                            <p>{formatDate(item.paymentdate)}</p>
                                         </div>
                                     </div>
                                     <div className='w-[11%]  flex pl-1'>
