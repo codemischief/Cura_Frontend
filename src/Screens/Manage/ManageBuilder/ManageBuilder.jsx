@@ -949,7 +949,8 @@ const ManageBuilder = () => {
                                         <Link to={`contacts/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Contacts</p></Link>
                                     </div>
                                     <div className='w-[10%]  p-4 text-blue-500 cursor-pointer'>
-                                        <Link to="/admin/manageprojectinfo" state={{builderid : item.id}}>
+                                    {/* admin/managebuilder/projects/:buildername */}
+                                        <Link to={`/admin/managebuilder/projects/${item.buildername}`} state={{builderid : item.id}}>
                                             Projects
                                         </Link>
                                         {/* <Link to={`projects/${item.buildername.split(` `).join(`-`).toLowerCase()}`} state={{ builderid: item.id }}><p>Projects</p></Link> */}

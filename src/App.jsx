@@ -173,24 +173,46 @@ const App = () => {
             element={<ManageVendorPayment />}
           />
           <Route
+            
+            path="/admin/managebuilder/projects/:buildername"
+            element={<ManageProjectInfo />}
+          />
+          {/* <Route
             path="admin/managebuilder/projects/:buildername"
             element={<ManageBuilderProject />}
-          />
+          /> */}
           <Route
             path="admin/managebuilder/contacts/:buildername"
             element={<ManageBuilderContact />}
           />
+
           <Route
             path="/manage/manageclientinfo/properties/:clientname"
-            element={<ManageClientPropertyByClientName />}
+            element={<ManageClientProperty />}
           />
           <Route
-            path="/manage/manageclientproperty/pmaagreement/:clientname"
-            element={<ClientPmaArgreement />}
+            path="/manage/manageclientinfo/orders/:clientname"
+            element={<ManageOrder />}
           />
           <Route
-            path="/manage/manageclientproperty/llagreement/:clientname"
-            element={<ClientLLAgreement />}
+            path="/manage/manageclientproperty/pmaagreement/:propertyid"
+            element={<ManagePmaArgreement />}
+          />
+          <Route
+            path="/manage/manageclientproperty/llagreement/:propertyid"
+            element={<ManageLLAgreement />}
+          />
+          <Route
+            path="/manage/managevendorpayment/:orderid"
+            element={<ManageVendorPayment />}
+          />
+          <Route
+            path="/manage/manageorderreceipt/:orderid"
+            element={<ManageOrderReceipt />}
+          />
+          <Route
+            path="/manage/manageclientinvoice/:orderid"
+            element={<ManageClientInvoice />}
           />
           <Route path="/manage/pmaBilling" element={<PmaBilling />} />
           <Route path="admin/temp" element={<Temp />} />

@@ -1656,13 +1656,15 @@ const ManageClientInfo = () => {
                                     </div>
                                     <div className='w-[7%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500'>
-                                        <Link to="/manage/manageclientproperty" state={{ clientid: item.id}}><p>Properties</p></Link> 
+                                        {/* /manage/manageclientinfo/properties/:clientname */}
+                                        <Link to={`/manage/manageclientinfo/properties/${item.clientname}`} state={{ clientid: item.id}}><p>Properties</p></Link> 
                                             {/* <Link to={`properties/${item.clientname.split(` `).join(`-`).toLowerCase()}`} state={{ clientid: item.id , clientname : item.clientname}}><p>Properties</p></Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[6%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500'>
-                                            <Link to="/admin/manageOrder" state={{clientid : item.id}}>Orders</Link>
+                                        {/* /manage/manageclientinfo/orders/:clientname */}
+                                            <Link to={`/manage/manageclientinfo/orders/${item.clientname}`} state={{clientid : item.id}}>Orders</Link>
                                         </div>
                                     </div>
                                 </div>
