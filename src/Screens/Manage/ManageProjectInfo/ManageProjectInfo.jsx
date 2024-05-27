@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link , useLocation, useNavigate} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -33,11 +33,13 @@ import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 import Draggable from 'react-draggable';
 const ManageProjectInfo = () => {
+    
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
     // we have the module here
 
     const menuRef = useRef();
-
+    const navigate = useNavigate()
+    const {state} = useLocation()
     const [pageLoading, setPageLoading] = useState(false);
     const [existingProjectInfo, setExistingProjectInfo] = useState([]);
     const [currentPages, setCurrentPages] = useState(15);
@@ -750,6 +752,12 @@ const ManageProjectInfo = () => {
             filterData: "Numeric",
             filterInput: ""
         },
+        builderid : {
+            filterType: state ? "equalTo" : "",
+            filterValue: state?.builderid,
+            filterData: "Numeric",
+            filterInput: state?.builderid
+        }
 
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -927,7 +935,7 @@ const ManageProjectInfo = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                            <img className='w-5 h-5 ' src={backLink} />
+                           <button onClick={() => navigate(-1)}><img className='w-5 h-5 ' src={backLink} /></button> 
                         </div>
 
                         <div className='flex-col'>

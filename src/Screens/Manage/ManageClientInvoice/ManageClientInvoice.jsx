@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link , useNavigate} from "react-router-dom";
+import { Outlet, Link , useNavigate, useLocation} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -38,6 +38,7 @@ const ManageClientInvoice = () => {
 
     const menuRef = useRef();
     const navigate = useNavigate(-1)
+    const {state} = useLocation()
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingClientInvoice, setExistingClientInvoice] = useState([]);
@@ -803,6 +804,12 @@ const ManageClientInvoice = () => {
             filterValue: null,
             filterData: "Numeric",
             filterInput: ""
+        },
+        orderid : {
+            filterType: state ? "equalTo" : "" ,
+            filterValue: state?.orderid,
+            filterData: "Numeric",
+            filterInput: state?.orderid
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);

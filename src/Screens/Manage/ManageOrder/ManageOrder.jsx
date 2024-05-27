@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link , useLocation , useNavigate} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -34,7 +34,8 @@ import Draggable from 'react-draggable';
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
-
+    const navigate = useNavigate()
+    const { state } = useLocation()
     const [existingOrder, setExistingOrder] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [currentPages, setCurrentPages] = useState(15);
@@ -56,6 +57,16 @@ const ManageOrder = () => {
 
     const fetchData = async () => {
         console.log('ugm')
+        const tempArray = [];
+        // we need to query thru the object
+        // console.log(filterMapState);
+        // console.log(filterMapState)
+        Object.keys(filterMapState).forEach(key => {
+            if (filterMapState[key].filterType != "") {
+                tempArray.push([key, filterMapState[key].filterType, filterMapState[key].filterValue, filterMapState[key].filterData]);
+            }
+        })
+        setStateArray(tempArray)
         setPageLoading(true);
         const data = {
             "user_id": 1234,
@@ -91,7 +102,7 @@ const ManageOrder = () => {
                 "ageing",
                 "createdbyname"
             ],
-            "filters": stateArray,
+            "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
             "pg_no": Number(currentPage),
@@ -735,6 +746,12 @@ const ManageOrder = () => {
             filterData: "Numeric",
             filterInput: ""
         },
+        clientid : {
+            filterType: state ? "equalTo" : "",
+            filterValue: state?.clientid,
+            filterData: "Numeric",
+            filterInput: state?.clientid
+        }
 
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -1054,7 +1071,7 @@ const ManageOrder = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2 '>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center'>
-                            <img className='h-5 w-5' src={backLink} />
+                            <button onClick={() => navigate(-1)}><img className='h-5 w-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>
@@ -1277,7 +1294,9 @@ const ManageOrder = () => {
                         </div>
                         <div className='h-[calc(100vh_-_14rem)] w-full overflow-auto '>
                         {/* {pageLoading && <div className='ml-5 mt-5'><LinearProgress /></div>} */}
-                        {!pageLoading && existingOrder.length == 0 && <h1 className='ml-10 text-lg mt-3'>No Records Found</h1>}
+                        {!pageLoading && existingOrder.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                         {!pageLoading && existingOrder.map((item, index) => {
                             return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
                                 <div className='w-full flex'>
@@ -1319,17 +1338,22 @@ const ManageOrder = () => {
                                     </div>
                                     <Link to="/manage/managevendorpayment" state={{ orderid : item.id }}>
 
-                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                    <p>Payments</p>
-                                    </div>
+                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                        <p>Payments</p>
+                                        </div>
 
                                     </Link>
-                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                    <p>Receipts</p>
-                                    </div>
-                                    <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
-                                    <p>Invoices</p>
-                                    </div>
+                                    <Link  to="/manage/manageorderreceipt" state={{ orderid : item.id }}>
+                                        <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                        <p>Receipts</p>
+                                        </div>
+                                    </Link>
+                                    <Link to="/manage/manageclientinvoice" state={{orderid : item.id}}>
+                                    
+                                            <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
+                                              <p>Invoices</p>
+                                            </div>
+                                    </Link>
                                     <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                     <p>Show All</p>
                                     </div>

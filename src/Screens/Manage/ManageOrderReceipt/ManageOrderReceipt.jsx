@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link , useLocation, useNavigate } from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -39,6 +39,8 @@ import ActiveFilter from "../../../assets/active_filter.png"
 const ManageOrderReceipt = () => {
 
     const menuRef = useRef();
+    const {state} = useLocation();
+    const navigate = useNavigate();
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -961,6 +963,12 @@ const ManageOrderReceipt = () => {
             filterValue : null,
             filterData : "Numeric",
             filterInput : ""
+        },
+        orderid : {
+            filterType : state ? "equalTo" : "",
+            filterValue : state?.orderid,
+            filterData : "Numeric",
+            filterInput : state?.orderid
         }
     }
     const [filterMapState, setFilterMapState] = useState(filterMapping);
@@ -1190,7 +1198,7 @@ const ManageOrderReceipt = () => {
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>
                     <div className='flex items-center space-x-3'>
                         <div className='rounded-2xl  bg-[#EBEBEB] h-8 w-8 flex justify-center items-center '>
-                            <img className='w-5 h-5' src={backLink} />
+                           <button onClick={() => navigate(-1)}> <img className='w-5 h-5' src={backLink} /></button>
                         </div>
 
                         <div className='flex-col'>

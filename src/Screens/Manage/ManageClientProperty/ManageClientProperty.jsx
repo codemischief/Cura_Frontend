@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link ,useNavigate } from "react-router-dom";
+import { Outlet, Link ,useNavigate , useLocation} from "react-router-dom";
 import backLink from "../../../assets/back.png";
 import searchIcon from "../../../assets/searchIcon.png";
 import nextIcon from "../../../assets/next.png";
@@ -34,6 +34,7 @@ import DeleteClientProperty from './DeleteClientProperty';
 import Draggable from 'react-draggable';
 const ManageClientProperty = () => {
     const menuRef = useRef();
+    const { state } = useLocation()
     // we have the module here
     const navigate = useNavigate()
     const [pageLoading, setPageLoading] = useState(false);
@@ -1173,6 +1174,12 @@ const ManageClientProperty = () => {
             filterValue: null,
             filterData: "Numeric",
             filterInput: ""
+        },
+        clientid: {
+            filterType: state ? "equalTo" : "",
+            filterValue: state?.clientid,
+            filterData: "Numeric",
+            filterInput: state?.clientid
         }
     }
 
