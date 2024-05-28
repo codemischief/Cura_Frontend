@@ -192,7 +192,7 @@ const PmaInvoiceList = () => {
       downloadType: "excel",
       colmap: {
         "clientname": "Client Name",
-        "orderdescription": "Order Descriptions",
+        "orderdescription": "Order Description",
         "invoicedate": "Invoice Date",
         "baseamount": "Base Amount",
         "tax": "Tax",

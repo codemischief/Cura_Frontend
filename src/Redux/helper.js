@@ -35,7 +35,7 @@ export const updatedOrderPaymentData = (data, year, month) => {
     ...billing,
     data: billing.data ? billing.date : "",
     amount: billing.amount ? floorDecimal(billing.amount) : "0.00",
-    paymentdate : billing.paymentdate  ? formatDate(billing.paymentdate) : "0.00"
+    paymentdate : billing.paymentdate  ? formatDate(billing.paymentdate) : ""
   }));
 };
 export const updatedOrderReceiptData = (data, year, month) => {
@@ -113,7 +113,7 @@ export const pmaInvoiceList = (data,year,month) => {
   console.log(data)
   return data.map((billing, index) => ({
     ...billing,
-    invoicedate : formatDate(billing.invoicedate),
+    invoicedate : billing.invoicedate? formatDate(billing.invoicedate): "",
     baseamount : billing.baseamount ? floorDecimal(billing.baseamount) : "0.00",
     tax : billing.tax ? floorDecimal(billing.tax) : "0.00",
     invoiceamount : billing.invoiceamount ? floorDecimal(billing.invoiceamount) : "0.00"

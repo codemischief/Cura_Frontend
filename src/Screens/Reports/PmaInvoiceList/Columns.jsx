@@ -32,7 +32,7 @@ export default function connectionDataColumn(onQuery) {
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%" },
     },
     {
-      title: "Order Descriptions",
+      title: "Order Description",
       field: "orderdescription",
       sorting: true,
       // cellStyle: { minWidth: "20px", },

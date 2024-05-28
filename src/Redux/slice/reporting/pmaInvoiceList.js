@@ -131,7 +131,7 @@ export const downloadPmaInvoiceList =
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, "reportPmaInvoiceList.xlsx");
+      FileSaver.saveAs(blob, "ReportPmaInvoiceList.xlsx");
     } catch (error) {
       console.log("error", error);
     }
