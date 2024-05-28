@@ -32,6 +32,8 @@ import DeleteOrder from './DeleteOrderModal';
 import EditOrderModal from './EditOrderModal';
 import Draggable from 'react-draggable';
 import { formatDate } from '../../../utils/formatDate';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import ActiveFilter from "../../../assets/active_filter.png"
 const ManageOrder = () => {
     // we have the module here
     const menuRef = useRef();
@@ -450,42 +452,42 @@ const ManageOrder = () => {
     }
 
     const [backDropLoading, setBackDropLoading] = useState(false)
-    const handleDownload = async () => {
+    const handleDownload = async (type) => {
         setBackDropLoading(true);
         console.log('ugm')
         const data = {
             "user_id": 1234,
             "rows": [
-                "id",
-                "clientid",
                 "clientname",
-                "orderdate",
+                "ownername",
+                "briefdescription",
+                "clientproperty",
+                "servicename",
+                "orderstatus",
                 "earlieststartdate",
                 "expectedcompletiondate",
-                "actualcompletiondate",
-                "owner",
-                "ownername",
-                "comments",
-                "status",
-                "orderstatus",
-                "briefdescription",
-                "additionalcomments",
-                "service",
-                "servicename",
-                "clientpropertyid",
-                "clientproperty",
-                "vendorid",
-                "vendorname",
-                "assignedtooffice",
-                "officename",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "entityid",
-                "entity",
-                "tallyledgerid",
+                "orderdate",
                 "ageing",
-                "createdbyname"
+                "createdbyname",
+                "id",
+                // "clientid",
+                // "actualcompletiondate",
+                // "owner",
+                // "comments",
+                // "status",
+                // "additionalcomments",
+                // "service",
+                // "clientpropertyid",
+                // "vendorid",
+                // "vendorname",
+                // "assignedtooffice",
+                // "officename",
+                // "dated",
+                // "createdby",
+                // "isdeleted",
+                // "entityid",
+                // "entity",
+                // "tallyledgerid",
             ],
             "filters": stateArray,
             "sort_by": [sortField],
@@ -493,9 +495,23 @@ const ManageOrder = () => {
             "pg_no": 0,
             "pg_size": 0,
             "search_key": searchInput,
-            "downloadType": "excel"
+            "downloadType": type,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "ownername" : "Assigned To",
+                "briefdescription" : "Order Description",
+                "clientproperty" : "Property Description",
+                "servicename" : "Service",
+                "orderstatus" : "Order Status",
+                "earlieststartdate" : "Start Date",
+                "expectedcompletiondate" : "Completion Date",
+                "orderdate" : "Order Date",
+                "ageing" : "Ageing",
+                "createdbyname" : "Created By",
+                "id" : "ID",
+            }
         }
-            ;
+            
         const response = await APIService.getOrder(data);
         const temp = await response.json();
         const result = temp.data;
@@ -504,7 +520,7 @@ const ManageOrder = () => {
                 "filename": temp.filename,
                 "user_id": 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
@@ -521,7 +537,7 @@ const ManageOrder = () => {
                     if (type == "excel") {
                         FileSaver.saveAs(result, 'OrderData.xlsx');
                     } else if (type == "pdf") {
-                        FileSaver.saveAs(result, 'localityData.pdf');
+                        FileSaver.saveAs(result, 'OrderData.pdf');
                     }
 
                     console.log('Success:', result);
@@ -1040,6 +1056,36 @@ const ManageOrder = () => {
             fetchData();
         }, 2000)
     }
+
+
+    function handleKeyDown(event) {
+        if (event.keyCode === 13) {
+            handleSearch()
+        }
+    }
+    const handleEnterToFilter = (event, inputVariable,
+        setInputVariable,
+        type,
+        columnName) => {
+        if (event.keyCode === 13) {
+            // if its empty then we remove that 
+            // const temp = {...filterMapState};
+            // temp[columnName].type = "".
+            // setFilterMapState(temp)
+            if (inputVariable == "") {
+                const temp = { ...filterMapState }
+                temp[columnName].filterType = ""
+                setFilterMapState(temp)
+                fetchData()
+            } else {
+                newHandleFilter(inputVariable,
+                    setInputVariable,
+                    type,
+                    columnName)
+            }
+        }
+    }
+
     return (
         <div className="h-screen font-medium">
             <Navbar />
@@ -1091,6 +1137,7 @@ const ManageOrder = () => {
                                 onChange={(e) => {
                                     setSearchInput(e.target.value);
                                 }}
+                                onKeyDownCapture={handleKeyDown}
                             />
                             <button onClick={handleCloseSearch}><img src={Cross} className=' w-[20px] h-[20px] mx-2' /></button>
                             <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
@@ -1123,81 +1170,174 @@ const ManageOrder = () => {
                             </div>
                             <div className='w-[165px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} 
+
+                                    onKeyDown={(event) => handleEnterToFilter(event, clientNameFilterInput,
+                                        setClientNameFilterInput,
+                                        'contains',
+                                        'clientname')}
+                                    
+                                    />
+                                     {filterMapState.clientname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setClientNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
 
                             </div>
                             <div className='w-[150px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={assignedToFilterInput} onChange={(e) => setAssignedToFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setAssignedToFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={assignedToFilterInput} onChange={(e) => setAssignedToFilterInput(e.target.value)} 
+                                    
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, assignedToFilterInput,
+                                        setAssignedToFilterInput,
+                                        'contains',
+                                        'ownername')}
+                                    
+                                    
+                                    />
+
+                                    {filterMapState.ownername.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setAssignedToFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setAssignedToFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setAssignedToFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {assignedToFilter && <CharacterFilter inputVariable={assignedToFilterInput} setInputVariable={setAssignedToFilterInput} handleFilter={newHandleFilter} filterColumn='ownername' menuRef={menuRef} />}
+                                {assignedToFilter && <CharacterFilter inputVariable={assignedToFilterInput} setInputVariable={setAssignedToFilterInput} handleFilter={newHandleFilter} filterColumn='ownername' menuRef={menuRef} filterType={filterMapState.ownername.filterType}/>}
                             </div>
                             <div className='w-[175px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDescriptionFilterInput} onChange={(e) => setOrderDescriptionFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, orderDescriptionFilterInput,
+                                        setOrderDescriptionFilterInput,
+                                        'contains',
+                                        'briefdescription')}
+                                    
+                                    />
+                                    {filterMapState.briefdescription.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setOrderDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} />}
+                                {orderDescriptionFilter && <CharacterFilter inputVariable={orderDescriptionFilterInput} setInputVariable={setOrderDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='briefdescription' menuRef={menuRef} filterType={filterMapState.briefdescription.filterType}/>}
                             </div>
                             <div className='w-[215px]  px-4 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
+                                    onKeyDown={(event) => handleEnterToFilter(event, propertyDescriptionFilterInput,
+                                        setPropertyDescriptionFilterInput,
+                                        'contains',
+                                        'clientproperty')}
+                                    
+                                    />
+                                     {filterMapState.clientproperty.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} />}
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} filterType={filterMapState.clientproperty.filterType}/>}
                             </div>
                             <div className='w-[125px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceFilterInput} onChange={(e) => setServiceFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setServiceFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceFilterInput} onChange={(e) => setServiceFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, serviceFilterInput,
+                                        setServiceFilterInput,
+                                        'contains',
+                                        'servicename')}
+                                    
+                                    />
+                                    {filterMapState.servicename.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setServiceFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setServiceFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} handleFilter={newHandleFilter} filterColumn='servicename' menuRef={menuRef} />}
+                                {serviceFilter && <CharacterFilter inputVariable={serviceFilterInput} setInputVariable={setServiceFilterInput} handleFilter={newHandleFilter} filterColumn='servicename' menuRef={menuRef} filterType={filterMapState.servicename.filterType} />}
                             </div>
                             <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderStatusFilterInput} onChange={(e) => setOrderStatusFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderStatusFilterInput} onChange={(e) => setOrderStatusFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, orderStatusFilterInput,
+                                        setOrderStatusFilterInput,
+                                        'contains',
+                                        'orderstatus')}
+                                    
+                                    />
+                                     {filterMapState.orderstatus.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setOrderStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setOrderStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setOrderStatusFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {orderStatusFilter && <CharacterFilter inputVariable={orderStatusFilterInput} setInputVariable={setOrderStatusFilterInput} handleFilter={newHandleFilter} filterColumn='orderstatus' menuRef={menuRef} />}
+                                {orderStatusFilter && <CharacterFilter inputVariable={orderStatusFilterInput} setInputVariable={setOrderStatusFilterInput} handleFilter={newHandleFilter} filterColumn='orderstatus' menuRef={menuRef} filterType={filterMapState.orderstatus.filterType}/>}
                             </div>
                             <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={startDateFilterInput} onChange={(e) => setStartDateFilterInput(e.target.value)} type='date' />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setStartDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={startDateFilterInput} onChange={(e) => setStartDateFilterInput(e.target.value)} type='date' 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, startDateFilterInput,
+                                        setStartDateFilterInput,
+                                        'equalTo',
+                                        'earlieststartdate')}
+                                    
+                                    />
+                                    {filterMapState.earlieststartdate.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setStartDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setStartDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setStartDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef} />}
+                                {startDateFilter && <DateFilter inputVariable={startDateFilterInput} setInputVariable={setStartDateFilterInput} handleFilter={newHandleFilter} columnName='earlieststartdate' menuRef={menuRef} filterType={filterMapState.earlieststartdate.filterType} />}
                             </div>
                             <div className='w-[130px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} type='date' />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setCompletionDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={completionDateFilterInput} onChange={(e) => setCompletionDateFilterInput(e.target.value)} type='date' 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, completionDateFilterInput,
+                                        setCompletionDateFilterInput,
+                                        'equalTo',
+                                        'expectedcompletiondate')}
+                                    
+                                    />
+                                    {filterMapState.expectedcompletiondate.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCompletionDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCompletionDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setCompletionDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef} />}
+                                {completionDateFilter && <DateFilter inputVariable={completionDateFilterInput} setInputVariable={setCompletionDateFilterInput} handleFilter={newHandleFilter} columnName='expectedcompletiondate' menuRef={menuRef} filterType={filterMapState.expectedcompletiondate.filterType} />}
                             </div>
                             <div className='w-[100px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} type='date' />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={orderDateFilterInput} onChange={(e) => setOrderDateFilterInput(e.target.value)} type='date' 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, orderDateFilterInput,
+                                        setOrderDateFilterInput,
+                                        'equalTo',
+                                        'orderdate')}
+                                    
+                                    />
+                                    {filterMapState.orderdate.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setOrderDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setOrderDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setOrderDateFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef} />}
+                                {orderDateFilter && <DateFilter inputVariable={orderDateFilterInput} setInputVariable={setOrderDateFilterInput} handleFilter={newHandleFilter} columnName='orderdate' menuRef={menuRef} filterType={filterMapState.orderdate.filterType}/>}
                             </div>
                             <div className='w-[80px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setAgingFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={agingFilterInput} onChange={(e) => setAgingFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, agingFilterInput,
+                                        setAgingFilterInput,
+                                        'equalTo',
+                                        'ageing')}
+                                    
+                                    
+                                    />
+                                    {filterMapState.ageing.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setAgingFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setAgingFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setAgingFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setAgingFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef} />}
+                                {agingFilter && <NumericFilter inputVariable={agingFilterInput} setInputVariable={setAgingFilterInput} handleFilter={newHandleFilter} columnName='ageing' menuRef={menuRef} type={filterMapState.ageing.filterType}/>}
                             </div>
                             <div className='w-[120px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={createdByFilterInput} onChange={(e) => setCreatedByFilterInput(e.target.value)} 
+                                    
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, createdByFilterInput,
+                                        setCreatedByFilterInput,
+                                        'contains',
+                                        'createdbyname')}
+
+                                    />
+                                    {filterMapState.createdbyname.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setCreatedByFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setCreatedByFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} />}
+                                {createdByFilter && <CharacterFilter inputVariable={createdByFilterInput} setInputVariable={setCreatedByFilterInput} handleFilter={newHandleFilter} filterColumn='createdbyname' menuRef={menuRef} filterType={filterMapState.createdbyname.filterType}/>}
                             </div>
                             <div className='w-[70px]  px-4  py-2.5'>
                                 {/* <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
@@ -1229,10 +1369,18 @@ const ManageOrder = () => {
 
                             <div className='w-[110px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
-                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} />
-                                    <button className='w-[28%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={idFilterInput} onChange={(e) => setIdFilterInput(e.target.value)} 
+                                    
+                                    onKeyDown={(event) => handleEnterToFilter(event, idFilterInput,
+                                        setIdFilterInput,
+                                        'equalTo',
+                                        'id')}
+                                    
+                                    />
+                                    {filterMapState.id.filterType == "" ? <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> : <button className='w-[30%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>}
+                                    {/* <button className='w-[28%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
                         </div>
                         {/* pending space here */}
