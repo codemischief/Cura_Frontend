@@ -359,7 +359,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData,formErrors}) 
             </div>
           </div>
           <div className="flex space-x-4">
-            <div className="space-y-2">
+            <div className="space-y-4">
               <div className="">
                 <div className="text-[13px]">Project Legal Status <label className="text-red-500">*</label></div>
                 <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" name="project_legal_status" value={formValues.project_info.project_legal_status} onChange={handleProjectInfoChange} >
@@ -370,7 +370,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData,formErrors}) 
                     </option>
                   ))}
                 </select>
-                <div className="text-[10px] text-[#CD0000] ">{formErrors.project_legal_status}</div>
+                <div className="w-full text-[9.5px] text-[#CD0000] absolute ">{formErrors.project_legal_status}</div>
               </div>
               <div className="">
                 <div className="text-[13px]">Completion Year</div>
@@ -399,7 +399,7 @@ const ProjectDetails = ({formValues,setFormValues,projectLegalData,formErrors}) 
             </div>
           </div>
           <div className="flex space-x-4">
-            <div className="space-y-2">
+            <div className="space-y-4">
               <div className="">
                 <div className="text-[13px]">Rules</div>
                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="test" name="rules" value={formValues.project_info.rules} onChange={handleProjectInfoChange} />

@@ -253,7 +253,33 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
                 return { ...existing, builderid: "" }
             })
         }
-        
+        if (formValues.project_info.state == null || formValues.project_info.state == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, state: "Select State " }
+            })
+
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, state: "" }
+            })
+        }
+
+
+        if (formValues.project_info.city == null || formValues.project_info.city == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, city: "Select City"}
+            })
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, city: "" }
+            })
+        }
         return res
     }
     const helper1 = (insertBankDetails,updateBankDetails) => {
@@ -433,14 +459,16 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
             >
                 <>
                     <div className='flex justify-center'>
-                        <Draggable>
+                        <Draggable handle='div.move'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                <div className="mr-[410px] ml-[410px]">
-                                    <div className="text-[16px]">Edit project</div>
-                                </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
-                                    <button onClick={() => {close()}}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                            <div className='move cursor-move'>
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">Edit project</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2 absolute right-2">
+                                        <button onClick={() => {close()}}><img className="w-[20px] h-[20px]  " src={Cross} alt="cross" /></button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">

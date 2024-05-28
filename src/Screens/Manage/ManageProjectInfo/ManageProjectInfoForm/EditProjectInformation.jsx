@@ -117,7 +117,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
     return (
         <>
             <div className="flex items-center justify-evenly mt-5 ">
-                <div className="space-y-2">
+                <div className="space-y-4">
                     <div className="">
                         <div className="text-[13px]">
                             Project Name <label className="text-red-500">*</label>
@@ -129,7 +129,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             value={formValues.project_info.projectname}
                             onChange={handleProjectInfoChange}
                         />
-                        <div className="text-[10px] text-[#CD0000] ">{formErrors.projectname}</div>
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">{formErrors.projectname}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">
@@ -148,7 +148,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                                 </option>
                             ))}
                         </select>
-                        <div className="text-[10px] text-[#CD0000] ">{formErrors.project_type}</div>
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">{formErrors.project_type}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">
@@ -161,7 +161,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             value={formValues.project_info.addressline1}
                             onChange={handleProjectInfoChange}
                         />
-                        <div className="text-[10px] text-[#CD0000] ">{formErrors.addressline1}</div>
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">{formErrors.addressline1}</div>
                     </div>
                     <div className="">
                         <div className="text-sm">Country <label className="text-red-500">*</label></div>
@@ -258,12 +258,12 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                             value={formValues.project_info.suburb}
                             onChange={handleProjectInfoChange}
                         />
-                        <div className="text-[10px] text-[#CD0000] ">
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">
                             {formErrors.suburb}
                         </div>
                     </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-4">
                     <div className="">
                         <div className="text-[13px]">
                             Builder Name <label className="text-red-500">*</label>
@@ -281,7 +281,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                                 </option>
                             ))}
                         </select>
-                        <div className="text-[10px] text-[#CD0000] ">{formErrors.builderid}</div>
+                        <div className="w-full text-[9.5px] text-[#CD0000] absolute  ">{formErrors.builderid}</div>
                     </div>
                     <div className="">
                         <div className="text-[13px]">Mailing Group</div>

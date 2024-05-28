@@ -33,6 +33,7 @@ import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 import Draggable from 'react-draggable';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import ActiveFilter from "../../../assets/active_filter.png"
 const ManageProjectInfo = () => {
     
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
@@ -299,6 +300,35 @@ const ManageProjectInfo = () => {
         } else {
             setFormErrors((existing) => {
                 return { ...existing, builderid: "" }
+            })
+        }
+
+
+        if (formValues.project_info.state == null || formValues.project_info.state == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, state: "Select State " }
+            })
+
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, state: "" }
+            })
+        }
+
+
+        if (formValues.project_info.city == null || formValues.project_info.city == "") {
+            // we need to set the formErrors
+            setFormErrors((existing) => {
+                return { ...existing, city: "Select City"}
+            })
+            res.status = false
+            res.page = 1
+        } else {
+            setFormErrors((existing) => {
+                return { ...existing, city: "" }
             })
         }
       
@@ -1001,9 +1031,10 @@ const ManageProjectInfo = () => {
                                         'contains',
                                         'projectname')}
                                     />
-                                    <button className='w-[30%] px-1 py-2' onClick={() => { setProjectNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.projectname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setProjectNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setProjectNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2' onClick={() => { setProjectNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} filterColumn="projectname" menuRef={menuRef} />}
+                                {projectNameFilter && <CharacterFilter inputVariable={projectNameFilterInput} setInputVariable={setProjectNameFilterInput} handleFilter={newHandleFilter} filterColumn="projectname" menuRef={menuRef} filterType={filterMapState.projectname.filterType} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1017,9 +1048,10 @@ const ManageProjectInfo = () => {
                                     
                                     
                                     />
-                                    <button className='w-[30%] px-1 py-2' onClick={() => { setBuilderNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.buildername.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setBuilderNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setBuilderNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2' onClick={() => { setBuilderNameFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} />}
+                                {builderNameFilter && <CharacterFilter inputVariable={builderNameFilterInput} setInputVariable={setBuilderNameFilterInput} handleFilter={newHandleFilter} filterColumn="buildername" menuRef={menuRef} filterType={filterMapState.buildername.filterType}/>}
                             </div>
                             <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1031,9 +1063,10 @@ const ManageProjectInfo = () => {
                                         'suburb')}
                                     
                                     />
-                                    <button className='w-[30%] px-1 py-2'  onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.suburb.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setSuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2'  onClick={() => { setSuburbFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} />}
+                                {suburbFilter && <CharacterFilter inputVariable={suburbFilterInput} setInputVariable={setSuburbFilterInput} handleFilter={newHandleFilter} filterColumn="suburb" menuRef={menuRef} filterType={filterMapState.suburb.filterType}/>}
                             </div>
                             <div className='w-[15%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1045,9 +1078,10 @@ const ManageProjectInfo = () => {
                                         'otherdetails')}
                                     
                                     />
-                                    <button className='w-[25%] px-1 py-2' onClick={() => { setOtherDetailsFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.otherdetails.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setOtherDetailsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setOtherDetailsFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[25%] px-1 py-2' onClick={() => { setOtherDetailsFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} filterColumn="otherdetails" menuRef={menuRef} />}
+                                {otherDetailsFilter && <CharacterFilter inputVariable={otherDetailsFilterInput} setInputVariable={setOtherDetailsFilterInput} handleFilter={newHandleFilter} filterColumn="otherdetails" menuRef={menuRef} filterType={filterMapState.otherdetails.filterType} />}
                             </div>
                             <div className='w-[12%] px-3 py-2.5 ml-[-1px]'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1059,9 +1093,10 @@ const ManageProjectInfo = () => {
                                         'mailgroup1')}
                                     
                                     />
-                                    <button className='w-[30%] px-1 py-2' onClick={() => { setMailGroupFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.mailgroup1.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setMailGroupFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setMailGroupFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2' onClick={() => { setMailGroupFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} />}
+                                {mailGroupFilter && <CharacterFilter inputVariable={mailGroupFilterInput} setInputVariable={setMailGroupFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup1" menuRef={menuRef} filterType={filterMapState.mailgroup1.filterType}/>}
                             </div>
                             <div className='w-[14%] px-3 py-2.5 '>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1073,9 +1108,10 @@ const ManageProjectInfo = () => {
                                         'mailgroup2')}
                                     
                                     />
-                                    <button className='w-[30%] px-1 py-2' onClick={() => { setSubscribedEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                     {filterMapState.mailgroup2.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setSubscribedEmailFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setSubscribedEmailFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2' onClick={() => { setSubscribedEmailFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup2" menuRef={menuRef} />}
+                                {subscribedEmailFilter && <CharacterFilter inputVariable={subscribedEmailFilterInput} setInputVariable={setSubscribedEmailFilterInput} handleFilter={newHandleFilter} filterColumn="mailgroup2" menuRef={menuRef} filterType={filterMapState.mailgroup2.filterType} />}
                             </div>
                             <div className='w-[10%] px-3 py-2.5 ml-[-2px]'>
                                 <div className="w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1087,9 +1123,10 @@ const ManageProjectInfo = () => {
                                         'rules')}
                                     
                                     />
-                                    <button className='w-[30%] px-1 py-2'onClick={() => { setRulesFilter((prev) => !prev) }} ><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.rules.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setRulesFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setRulesFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2'onClick={() => { setRulesFilter((prev) => !prev) }} ><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} />}
+                                {rulesFilter && <CharacterFilter inputVariable={rulesFilterInput} setInputVariable={setRulesFilterInput} handleFilter={newHandleFilter} filterColumn="rules" menuRef={menuRef} filterType={filterMapState.rules.filterType}/>}
                             </div>
                             {/* <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[80%] flex items-center bg-[#EBEBEB] rounded-[5px] ">
@@ -1108,9 +1145,10 @@ const ManageProjectInfo = () => {
                                         'equalTo',
                                         'id')}
                                     />
-                                    <button className='w-[30%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='w-[30%] px-1 py-2' onClick={() => { setIdFilter((prev) => !prev) }}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} />}
+                                {idFilter && <NumericFilter columnName='id' inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} menuRef={menuRef} filterType={filterMapState.id.filterType} />}
                             </div>
                             <div className='w-[35%]  flex'>
                                 <div className='p-3'>
@@ -1343,14 +1381,16 @@ const ManageProjectInfo = () => {
             >
                 <>
                     <div className='flex justify-center'>
-                        <Draggable>
+                        <Draggable handle='div.move'>
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                <div className="mr-[410px] ml-[410px]">
-                                    <div className="text-[16px]">New project</div>
-                                </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2">
-                                    <button onClick={handleClose}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                            <div className='move cursor-move'>
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                    <div className="mr-[410px] ml-[410px]">
+                                        <div className="text-[16px]">New project</div>
+                                    </div>
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white mr-2 absolute right-2">
+                                        <button onClick={handleClose}><img className="w-[20px] h-[20px] " src={Cross} alt="cross" /></button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="mt-1 flex bg-[#DAE7FF] justify-evenly items-center h-9">
