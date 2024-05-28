@@ -1,12 +1,14 @@
-import { CircularProgress, Modal } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { CircularProgress, Modal, Typography } from "@mui/material";
+import React, { useEffect, useState, useTransition } from "react";
 import Draggable from "react-draggable";
 import Cross from "../../../assets/cross.png";
-import { Link } from "react-router-dom";
 import { APIService } from "../../../services/API";
 import { Form, Formik, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import ConfirmationModal from "../../../Components/common/ConfirmationModal";
+import { useDispatch } from "react-redux";
+import { addProspectData } from "../../../Redux/slice/research/prospectSlice";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -18,13 +20,16 @@ const validationSchema = Yup.object().shape({
   possibleservices: Yup.string().required("posiible services is required"),
 });
 
-const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
+const ProspectForm = ({ isOpen, handleClose, editData }) => {
+  const dispatch = useDispatch();
+  // const [isPending, startTransition] = useTransition();
   const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
-  const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
+  const [openConfirmation, setOpenConfimation] = useState(false);
+  // const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
 
   const fetchCountryData = async () => {
     setLoading(true);
@@ -70,26 +75,29 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
     setCityData(result.data);
   };
 
-  useEffect(() => {
-    if (isProspectDialogue) {
-      setTimeout(() => {
-        setIsProspectDialogue(false);
-        handleClose();
-        fetchData();
-      }, 3000);
-    }
-  }, [isProspectDialogue]);
+  // useEffect(() => {
+  //   if (isProspectDialogue) {
+  //     setTimeout(() => {
+  //       setIsProspectDialogue(false);
+  //       // handleClose();
+  //     }, 3000);
+  //   }
+  // }, [isProspectDialogue]);
 
   const formik = useFormik({
     initialValues: {
-      countryId: item?.country ? item.country : 5,
-      state: item?.state ? item.state : "Maharashtra",
-      city: item?.city ? item.city : "Pune",
-      personname: item?.personname ? item.personname : "",
-      possibleservices: item?.possibleservices ? item.possibleservices : "",
-      propertylocation: item?.propertylocation ? item.propertylocation : "",
-      suburb: item?.suburb ? item.suburb : "",
-      id: item?.id ? item.id : undefined,
+      countryId: editData?.country ? editData.country : 5,
+      state: editData?.state ? editData.state : "Maharashtra",
+      city: editData?.city ? editData.city : "Pune",
+      personname: editData?.personname ? editData.personname : "",
+      possibleservices: editData?.possibleservices
+        ? editData.possibleservices
+        : "",
+      propertylocation: editData?.propertylocation
+        ? editData.propertylocation
+        : "",
+      suburb: editData?.suburb ? editData.suburb : "",
+      id: editData?.id ? editData.id : undefined,
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -109,27 +117,56 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
         createdby: 1234,
         isdeleted: false,
       };
-      if (item?.id) {
-        try {
-          const response = await APIService.editProspects(data);
-        } catch (e) {
-          setApiError("something went wrong");
-        } finally {
-          setIsProspectDialogue(true);
-          setSubmitting(false);
-        }
-      } else {
-        try {
-          const response = await APIService.addProspects(data);
-        } catch (e) {
-          setApiError("something went wrong");
-        } finally {
-          setIsProspectDialogue(true);
-          setSubmitting(false);
-        }
-      }
+      setOpenConfimation(true);
+      // if (editData?.id) {
+      //   try {
+      //     const response = await APIService.editProspects(data);
+      //   } catch (e) {
+      //     setApiError("something went wrong");
+      //   } finally {
+      //     setIsProspectDialogue(true);
+      //     setSubmitting(false);
+      //   }
+      // } else {
+      //   try {
+      //     const response = await APIService.addProspects(data);
+      //   } catch (e) {
+      //     setApiError("something went wrong");
+      //   } finally {
+      //     setIsProspectDialogue(true);
+      //     setSubmitting(false);
+      //   }
+      // }
     },
   });
+
+  const handleConfirm = async () => {
+    try {
+      const data = {
+        user_id: 1234,
+        personname: values.personname,
+        suburb: values.suburb,
+        city: values.city,
+        state: values.state,
+        phoneno: values.phoneNumber,
+        email: values.email,
+        country: Number(values.countryId),
+        propertylocation: values.propertylocation,
+        possibleservices: values.possibleservices,
+        dated: "2024-01-01 00:00:00",
+        createdby: 1234,
+        isdeleted: false,
+      };
+      // await APIService.editProspects(data);
+      dispatch(addProspectData(data));
+      // handleClose();
+    } catch (error) {
+      setApiError("something went wrong");
+    } finally {
+      // setIsProspectDialogue(true);
+      formik.setSubmitting(false);
+    }
+  };
 
   const {
     errors,
@@ -156,16 +193,20 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
     fetchCity(e.target.value);
   };
 
-  return isProspectDialogue ? (
-    <SucessfullModal
-      isOpen={isProspectDialogue}
-      message={
-        item.id
-          ? "Changes saved succesffuly"
-          : "New Prospect Created Successfully"
-      }
-    />
-  ) : (
+  console.log("loading", loading);
+  // console.log("isProspectDialogue", isProspectDialogue);
+
+  // return isProspectDialogue ? (
+  //   <SucessfullModal
+  //     isOpen={isProspectDialogue}
+  //     message={
+  //       editData.id
+  //         ? "Changes saved succesffuly"
+  //         : "New Prospect Created Successfully"
+  //     }
+  //   />
+  // ) : (
+  <>
     <Modal
       open={isOpen}
       fullWidth={true}
@@ -181,7 +222,7 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
                   <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                     <div className="mr-[300px] ml-[300px]">
                       <div className="text-[16px]">
-                        {item.id ? "Edit Prospect" : "New Prospect"}
+                        {editData.id ? "Edit Prospect" : "New Prospect"}
                       </div>
                     </div>
                     <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
@@ -234,8 +275,10 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
                             </option>
 
                             {countryData.length > 0 &&
-                              countryData?.map((item) => (
-                                <option value={item.id}>{item.name}</option>
+                              countryData?.map((editData) => (
+                                <option value={editData.id} key={editData.id}>
+                                  {editData.name}
+                                </option>
                               ))}
                           </select>
                           <div className="text-[10px] text-[#CD0000] ">
@@ -261,9 +304,11 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
                           >
                             <option value="">select state</option>
                             {stateData.length > 0 &&
-                              stateData.map((item) => {
+                              stateData.map((editData) => {
                                 return (
-                                  <option value={item[0]}>{item[0]}</option>
+                                  <option value={editData[0]}>
+                                    {editData[0]}
+                                  </option>
                                 );
                               })}
                           </select>
@@ -291,10 +336,10 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
                           >
                             <option value="">select country</option>
                             {cityData.length > 0 &&
-                              cityData.map((item) => {
+                              cityData.map((editData) => {
                                 return (
-                                  <option value={item.city} selected>
-                                    {item.city}
+                                  <option value={editData.city} selected>
+                                    {editData.city}
                                   </option>
                                 );
                               })}
@@ -413,7 +458,7 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
                     </button>
                     <button
                       className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                      onClick={cancelProspect}
+                      //   onClick={handleClose}
                     >
                       Cancel
                     </button>
@@ -426,7 +471,37 @@ const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
         </Draggable>
       </>
     </Modal>
-  );
+    {openConfirmation && (
+      <ConfirmationModal
+        open={openConfirmation}
+        loading={false}
+        btnTitle="Save"
+        onClose={() => {
+          setOpenConfimation(false);
+        }}
+        onSubmit={handleConfirm}
+        title="Add Client"
+        description={
+          <div>
+            <p className="">Client: {values.personname}</p>
+            <Typography
+              sx={{
+                fontFamily: "Open Sans",
+                fontSize: "14px",
+                fontStyle: "normal",
+                fontWeight: 400,
+                lineHeight: "150%" /* 21px */,
+                color: "#282828",
+              }}
+            >
+              Are you sure you want to add this client?
+            </Typography>
+          </div>
+        }
+      />
+    )}
+  </>;
+  // );
 };
 
-export default EditForm;
+export default ProspectForm;

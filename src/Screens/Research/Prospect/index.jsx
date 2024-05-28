@@ -22,11 +22,13 @@ import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import { getPropect, setCountPerPage, setPageNumber } from "../../../Redux/slice/Research/ProspectSlice";
 import { PlusCircleFilled } from "@ant-design/icons";
+import ProspectForm from "./ProspectForm";
 
 const PropectusPage = () => {
   const dispatch = useDispatch();
   const {
     PropectusData,
+    formSubmissionStatus,
     status,
     totalCount,
     sorting,
@@ -42,6 +44,9 @@ const PropectusPage = () => {
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const [openForm, setOpenForm] = useState(false);
+  const [openSubmissionPrompt, SetOpenSubmissionPrompt] = useState(false);
+  const [editData, setEditData] = useState({});
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -148,7 +153,7 @@ const PropectusPage = () => {
       accessor === sorting.sort_by && sorting.sort_order === "asc"
         ? "desc"
         : "asc";
-    dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
+    // dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
   };
 
   const downloadExcel = async () => {
@@ -222,6 +227,23 @@ const PropectusPage = () => {
     };
     dispatch(downloadPaymentDataXls(obj));
   };
+  const handleFormOpen = () => {
+    setOpenForm(true);
+  };
+  const handleFormClose = () => {
+    if (Object.keys(editData).length > 0) {
+      SetOpenSubmissionPrompt(true);
+    }
+    setOpenForm(false);
+  };
+  useEffect(() => {
+    if (formSubmissionStatus === "success") {
+      handleFormClose();
+      setTimeout(() => {
+        SetOpenSubmissionPrompt(false);
+      }, 3000);
+    }
+  }, [formSubmissionStatus]);
 
   return (
     <Stack gap="1rem">
@@ -286,10 +308,22 @@ const PropectusPage = () => {
           downloadExcel={downloadExcel}
         />
       </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Invoice Added Successfully"
+      {openForm && (
+        <ProspectForm
+          isOpen={openForm}
+          handleClose={handleFormClose}
+          editData={{}}
+        />
+      )}
+      {openSubmissionPrompt && (
+        <AlertSubmissionModal
+          isOpen={openSubmissionPrompt}
+          variant={editData?.id ? "warning" : "success"}
+          message={
+            editData?.id
+              ? "Changes saved succesffuly"
+              : "New Prospect Created Successfully"
+          }
         />
       )}
     </Stack>

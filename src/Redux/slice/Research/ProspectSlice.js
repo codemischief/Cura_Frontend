@@ -5,6 +5,7 @@ import { env_URL_SERVER, updatedResponsePmaData } from "../../helper"
 
 const initialState = {
   PropectusData: [],
+  formSubmissionStatus: "",
   status: "",
   filter: {},
   countPerPage: 15,
@@ -56,6 +57,9 @@ export const prospect = createSlice({
     setSorting: (state, { payload }) => {
       state.sorting = payload;
     },
+    setFormSubmissionStatus: (state, { payload }) => {
+      state.formSubmissionStatus = payload;
+    },
   },
 });
 
@@ -69,6 +73,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
+  setFormSubmissionStatus
 } = prospect.actions;
 
 export const getPropect = (payloadObj, year, month) => async (dispatch) => {
@@ -86,6 +91,20 @@ export const getPropect = (payloadObj, year, month) => async (dispatch) => {
   }
 };
 
+export const addProspectData = (payload) => async (dispatch) => {
+  try {
+    dispatch(setFormSubmissionStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}addResearchProspect`,
+      payload
+    );
+    dispatch(setFormSubmissionStatus("success"));
+    // return response.data;
+  } catch (error) {
+    dispatch(setFormSubmissionStatus("error"));
+    throw new Error("Some error occured in fetching countries data");
+  }
+};
 
 export const handleRefresh = (payload) => async (dispatch) => {
   
