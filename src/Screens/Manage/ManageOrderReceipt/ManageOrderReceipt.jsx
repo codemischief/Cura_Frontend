@@ -36,6 +36,7 @@ import Draggable from 'react-draggable';
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 import ActiveFilter from "../../../assets/active_filter.png"
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageOrderReceipt = () => {
 
     const menuRef = useRef();
@@ -663,7 +664,7 @@ const ManageOrderReceipt = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

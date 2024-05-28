@@ -33,6 +33,7 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import Draggable from 'react-draggable';
 import ActiveFilter from "../../../assets/active_filter.png"
 import { formatDate } from '../../../utils/formatDate';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
     const initialRows = [
         "id",
@@ -538,7 +539,7 @@ const ManageClientReceipt = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
@@ -793,7 +794,8 @@ const ManageClientReceipt = () => {
             "reimbursementamount": formValues.reimbursementAmount,
             "entityid": 1,
             "howreceivedid": Number(formValues.howReceived),
-            "officeid": 2
+            "officeid": 2,
+            "banktransactionid" : null
         }
         const response = await APIService.addClientReceipt(data)
         const res = await response.json()
