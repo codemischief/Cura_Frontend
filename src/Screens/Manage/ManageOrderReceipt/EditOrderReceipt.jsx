@@ -18,7 +18,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         orderdate: null,
         orderstatus: null,
         pendingAmount: null,
-        ordername : null
+        ordername: null
     }
     const [formValues, setFormValues] = useState(initialValues)
     const [formErrors, setFormErrors] = useState({})
@@ -157,10 +157,10 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         setSelectedOption(temp)
         setPageLoading(false)
     }
-    const [orderData,setOrderData] = useState({
-        pendingamount : null,
-        orderdate : null,
-        orderstatus : null
+    const [orderData, setOrderData] = useState({
+        pendingamount: null,
+        orderdate: null,
+        orderstatus: null
     })
     useEffect(() => {
 
@@ -257,17 +257,17 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         handleClose();
         showCancel();
     }
-    const getOrderData = async  (id) => {
-        const data = {"user_id":1234,"orderid": Number(id)}
+    const getOrderData = async (id) => {
+        const data = { "user_id": 1234, "orderid": Number(id) }
         const response = await APIService.getOrderPending(data)
         const res = await response.json()
         console.log(res)
-        const temp = {...orderData}
-        temp.pendingamount = res.data.pending 
+        const temp = { ...orderData }
+        temp.pendingamount = res.data.pending
         temp.orderdate = res.data.orderdate
         temp.orderstatus = res.data.orderstatus
         setOrderData(temp)
-     }
+    }
     return (
         <Modal open={true}
             fullWidth={true}
@@ -276,14 +276,18 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
         >
 
             <div className='flex justify-center'>
-                <Draggable>
+                <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Order Receipt</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={() => { close() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                        <div className="move cursor-move">
+
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit Order Receipt</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <button onClick={() => { close() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
                         </div>
                         {!pageLoading &&
@@ -316,7 +320,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.receiptMode}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">
@@ -335,7 +339,7 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.receivedBy}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">TDS </div>
@@ -369,17 +373,17 @@ const EditOrderReceipt = ({ handleClose, receiptId, showSuccess, modesData, user
                                                     </option>
                                                 ))}
                                             </select> */}
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.order}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
                                             <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.receivedDate}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                            <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.amountReceived}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm text-[#787878]">Pending Amount </div>
