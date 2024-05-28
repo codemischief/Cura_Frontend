@@ -22,7 +22,6 @@ import * as XLSX from "xlsx";
 import FileSaver from "file-saver";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import Draggable from "react-draggable";
-import EditForm from "./EditForm";
 import CancelModel from "../../../Components/modals/CancelModel";
 const Prospect = () => {
   const menuRef = useRef();
@@ -156,7 +155,6 @@ const Prospect = () => {
       country: Number(formValues.country),
       propertylocation: formValues.propertyLocation,
       possibleservices: formValues.possibleServices,
-      dated: "2024-01-01 00:00:00",
       createdby: 1234,
       isdeleted: false,
     };
@@ -199,10 +197,12 @@ const Prospect = () => {
 
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
+  
   const validate = () => {
     var res = true;
     if (!formValues.personName) {

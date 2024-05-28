@@ -5,10 +5,9 @@ import Cross from "../../../assets/cross.png";
 import { APIService } from "../../../services/API";
 import { Form, Formik, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import { useDispatch } from "react-redux";
-import { addProspectData } from "../../../Redux/slice/research/prospectSlice";
+import { addProspectData } from "../../../Redux/slice/Research/ProspectSlice";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -20,7 +19,7 @@ const validationSchema = Yup.object().shape({
   possibleservices: Yup.string().required("posiible services is required"),
 });
 
-const ProspectForm = ({ isOpen, handleClose, editData }) => {
+const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   // const [isPending, startTransition] = useTransition();
   const [countryData, setCountryData] = useState([]);
@@ -30,6 +29,8 @@ const ProspectForm = ({ isOpen, handleClose, editData }) => {
   const [apiError, setApiError] = useState("");
   const [openConfirmation, setOpenConfimation] = useState(false);
   // const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
+
+  console.log(isOpen, "isOpen");
 
   const fetchCountryData = async () => {
     setLoading(true);
@@ -113,7 +114,7 @@ const ProspectForm = ({ isOpen, handleClose, editData }) => {
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,
-        dated: "2024-01-01 00:00:00",
+
         createdby: 1234,
         isdeleted: false,
       };
@@ -153,21 +154,27 @@ const ProspectForm = ({ isOpen, handleClose, editData }) => {
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,
-        dated: "2024-01-01 00:00:00",
         createdby: 1234,
         isdeleted: false,
       };
-      // await APIService.editProspects(data);
-      dispatch(addProspectData(data));
-      // handleClose();
+  
+      if (editData?.id) {
+        // Handle the case where editData has an id if necessary
+      } else {
+        dispatch(addProspectData(data));
+        // handleClose();
+      }
     } catch (error) {
-      setApiError("something went wrong");
+      if (error.response && error.response.data && error.response.data.message) {
+        setApiError(error.response.data.message);
+      } else {
+        setApiError("An unexpected error occurred.");
+      }
     } finally {
-      // setIsProspectDialogue(true);
       formik.setSubmitting(false);
     }
   };
-
+  
   const {
     errors,
     values,
@@ -206,301 +213,306 @@ const ProspectForm = ({ isOpen, handleClose, editData }) => {
   //     }
   //   />
   // ) : (
-  <>
-    <Modal
-      open={isOpen}
-      fullWidth={true}
-      maxWidth={"md"}
-      className="flex justify-center items-center"
-    >
-      <>
-        <Draggable>
-          <div className="flex justify-center items-center">
-            <FormikProvider value={values}>
-              <Form className="space-y-4" onSubmit={handleSubmit}>
-                <div className="w-[778px] h-auto bg-white rounded-lg">
-                  <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                    <div className="mr-[300px] ml-[300px]">
-                      <div className="text-[16px]">
-                        {editData.id ? "Edit Prospect" : "New Prospect"}
+  return (
+    <>
+      <Modal
+        open={isOpen}
+        fullWidth={true}
+        maxWidth={"md"}
+        className="flex justify-center items-center"
+      >
+        <>
+          <Draggable>
+            <div className="flex justify-center items-center">
+              <FormikProvider value={values}>
+                <Form className="space-y-4" onSubmit={handleSubmit}>
+                  <div className="w-[778px] h-auto bg-white rounded-lg">
+                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                      <div className="mr-[300px] ml-[300px]">
+                        <div className="text-[16px]">
+                          {editData.id ? "Edit Prospect" : "New Prospect"}
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                        <img
+                          onClick={handleClose}
+                          className="w-[20px] h-[20px] cursor-pointer"
+                          src={Cross}
+                          alt="cross"
+                        />
                       </div>
                     </div>
-                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                      <img
+                    <div className="h-auto w-full mt-[5px] ">
+                      <div className="flex gap-[48px] justify-center items-center">
+                        <div className=" space-y-[10px] py-[20px] px-[10px]">
+                          <div className="">
+                            <div className="text-[13px]">
+                              Person name{" "}
+                              <label className="text-red-500">*</label>
+                            </div>
+                            <input
+                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              type="text"
+                              name="personname"
+                              value={formik.values.personname}
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {touched.personname && errors.personname && (
+                                <div className="text-red-600 text-xs">
+                                  {errors.personname}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">
+                              Country Name
+                              <label className="text-red-500">*</label>
+                            </div>
+                            <select
+                              className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
+                              onChange={handleCountrySelect}
+                            >
+                              <option value="none" hidden={true}>
+                                Select a Country
+                              </option>
+
+                              {countryData.length > 0 &&
+                                countryData?.map((editData) => (
+                                  <option value={editData.id} key={editData.id}>
+                                    {editData.name}
+                                  </option>
+                                ))}
+                            </select>
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {/* {formErrors.country} */}
+                              {errors.countryId && (
+                                <div className="text-red-600 text-xs">
+                                  {errors.countryId}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">
+                              State Name
+                              <label className="text-red-500">*</label>
+                            </div>
+                            <select
+                              className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              name="state"
+                              value={formik.values.state}
+                              defaultValue="Select State"
+                              onChange={handleState}
+                            >
+                              <option value="">select state</option>
+                              {stateData.length > 0 &&
+                                stateData.map((editData) => {
+                                  return (
+                                    <option value={editData[0]}>
+                                      {editData[0]}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {/* {formErrors.state} */}
+                              {errors.state && (
+                                <div className="text-red-600 text-xs">
+                                  {errors.state}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">
+                              City Name{" "}
+                              <label className="text-red-500">*</label>
+                            </div>
+
+                            <select
+                              className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              name="city"
+                              value={formik.values.city}
+                              defaultValue="Select State"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            >
+                              <option value="">select country</option>
+                              {cityData.length > 0 &&
+                                cityData.map((editData) => {
+                                  return (
+                                    <option value={editData.city} selected>
+                                      {editData.city}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {/* {formErrors.city} */}
+                              {errors.city && (
+                                <div className="text-red-600 text-xs">
+                                  {errors.city}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">
+                              Suburb <label className="text-red-500">*</label>
+                            </div>
+                            <input
+                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              type="text"
+                              name="suburb"
+                              value={formik.values.suburb}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {/* {formErrors.suburb} */}
+                              {touched.suburb && errors.suburb && (
+                                <div className="text-red-600 text-xs">
+                                  {errors.suburb}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">
+                              Property Location{" "}
+                              <label className="text-red-500">*</label>
+                            </div>
+                            <input
+                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              type="text"
+                              name="propertylocation"
+                              value={formik.values.propertylocation}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {touched.propertylocation &&
+                                errors.propertylocation && (
+                                  <div className="text-red-600 text-xs">
+                                    {errors.propertylocation}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">
+                              Possible Services{" "}
+                              <label className="text-red-500">*</label>
+                            </div>
+                            <input
+                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              type="text"
+                              name="possibleservices"
+                              value={formik.values.possibleservices}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                            <div className="text-[10px] text-[#CD0000] ">
+                              {/* {formErrors.possibleServices} */}
+                              {touched.possibleservices &&
+                                errors.possibleservices && (
+                                  <div className="text-red-600 text-xs">
+                                    {errors.possibleservices}
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className=" space-y-[10px] py-[20px] px-[10px]">
+                          <div className="">
+                            <div className="text-[13px]">Email </div>
+                            <input
+                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              type="email"
+                              name="email"
+                              value={formik.values.email}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            <div className="text-[13px]">Phone Number </div>
+                            <input
+                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              type="text"
+                              name="phoneNumber"
+                              value={formik.values.phoneNumber}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="my-5 flex justify-center items-center gap-[10px] h-[84px]">
+                      <button
+                        className="w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md"
+                        //   onClick={handleEdit}
+                        disabled={isSubmitting}
+                        type="submit"
+                      >
+                        {isSubmitting ? <CircularProgress /> : "Save"}
+                      </button>
+                      <button
+                        className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
                         onClick={handleClose}
-                        className="w-[20px] h-[20px] cursor-pointer"
-                        src={Cross}
-                        alt="cross"
-                      />
+                        //   onClick={handleClose}
+                      >
+                        Cancel
+                      </button>
                     </div>
+                    {/* </form> */}
                   </div>
-                  <div className="h-auto w-full mt-[5px] ">
-                    <div className="flex gap-[48px] justify-center items-center">
-                      <div className=" space-y-[10px] py-[20px] px-[10px]">
-                        <div className="">
-                          <div className="text-[13px]">
-                            Person name{" "}
-                            <label className="text-red-500">*</label>
-                          </div>
-                          <input
-                            className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            type="text"
-                            name="personname"
-                            value={formik.values.personname}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                          />
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {touched.personname && errors.personname && (
-                              <div className="text-red-600 text-xs">
-                                {errors.personname}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">
-                            Country Name
-                            <label className="text-red-500">*</label>
-                          </div>
-                          <select
-                            className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            name="countryId"
-                            value={formik.values.countryId}
-                            defaultValue="Select Country"
-                            onChange={handleCountrySelect}
-                          >
-                            <option value="none" hidden={true}>
-                              Select a Country
-                            </option>
-
-                            {countryData.length > 0 &&
-                              countryData?.map((editData) => (
-                                <option value={editData.id} key={editData.id}>
-                                  {editData.name}
-                                </option>
-                              ))}
-                          </select>
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {/* {formErrors.country} */}
-                            {errors.countryId && (
-                              <div className="text-red-600 text-xs">
-                                {errors.countryId}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">
-                            State Name
-                            <label className="text-red-500">*</label>
-                          </div>
-                          <select
-                            className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            name="state"
-                            value={formik.values.state}
-                            defaultValue="Select State"
-                            onChange={handleState}
-                          >
-                            <option value="">select state</option>
-                            {stateData.length > 0 &&
-                              stateData.map((editData) => {
-                                return (
-                                  <option value={editData[0]}>
-                                    {editData[0]}
-                                  </option>
-                                );
-                              })}
-                          </select>
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {/* {formErrors.state} */}
-                            {errors.state && (
-                              <div className="text-red-600 text-xs">
-                                {errors.state}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">
-                            City Name <label className="text-red-500">*</label>
-                          </div>
-
-                          <select
-                            className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            name="city"
-                            value={formik.values.city}
-                            defaultValue="Select State"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          >
-                            <option value="">select country</option>
-                            {cityData.length > 0 &&
-                              cityData.map((editData) => {
-                                return (
-                                  <option value={editData.city} selected>
-                                    {editData.city}
-                                  </option>
-                                );
-                              })}
-                          </select>
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {/* {formErrors.city} */}
-                            {errors.city && (
-                              <div className="text-red-600 text-xs">
-                                {errors.city}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">
-                            Suburb <label className="text-red-500">*</label>
-                          </div>
-                          <input
-                            className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            type="text"
-                            name="suburb"
-                            value={formik.values.suburb}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {/* {formErrors.suburb} */}
-                            {touched.suburb && errors.suburb && (
-                              <div className="text-red-600 text-xs">
-                                {errors.suburb}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">
-                            Property Location{" "}
-                            <label className="text-red-500">*</label>
-                          </div>
-                          <input
-                            className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            type="text"
-                            name="propertylocation"
-                            value={formik.values.propertylocation}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {touched.propertylocation &&
-                              errors.propertylocation && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.propertylocation}
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">
-                            Possible Services{" "}
-                            <label className="text-red-500">*</label>
-                          </div>
-                          <input
-                            className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            type="text"
-                            name="possibleservices"
-                            value={formik.values.possibleservices}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                          <div className="text-[10px] text-[#CD0000] ">
-                            {/* {formErrors.possibleServices} */}
-                            {touched.possibleservices &&
-                              errors.possibleservices && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.possibleservices}
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className=" space-y-[10px] py-[20px] px-[10px]">
-                        <div className="">
-                          <div className="text-[13px]">Email </div>
-                          <input
-                            className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            type="email"
-                            name="email"
-                            value={formik.values.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                        </div>
-                        <div className="">
-                          <div className="text-[13px]">Phone Number </div>
-                          <input
-                            className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                            type="text"
-                            name="phoneNumber"
-                            value={formik.values.phoneNumber}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="my-5 flex justify-center items-center gap-[10px] h-[84px]">
-                    <button
-                      className="w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md"
-                      //   onClick={handleEdit}
-                      disabled={isSubmitting}
-                      type="submit"
-                    >
-                      {isSubmitting ? <CircularProgress /> : "Save"}
-                    </button>
-                    <button
-                      className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                      //   onClick={handleClose}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  {/* </form> */}
-                </div>
-              </Form>
-            </FormikProvider>
-          </div>
-        </Draggable>
-      </>
-    </Modal>
-    {openConfirmation && (
-      <ConfirmationModal
-        open={openConfirmation}
-        loading={false}
-        btnTitle="Save"
-        onClose={() => {
-          setOpenConfimation(false);
-        }}
-        onSubmit={handleConfirm}
-        title="Add Client"
-        description={
-          <div>
-            <p className="">Client: {values.personname}</p>
-            <Typography
-              sx={{
-                fontFamily: "Open Sans",
-                fontSize: "14px",
-                fontStyle: "normal",
-                fontWeight: 400,
-                lineHeight: "150%" /* 21px */,
-                color: "#282828",
-              }}
-            >
-              Are you sure you want to add this client?
-            </Typography>
-          </div>
-        }
-      />
-    )}
-  </>;
+                </Form>
+              </FormikProvider>
+            </div>
+          </Draggable>
+        </>
+      </Modal>
+      {openConfirmation && (
+        <ConfirmationModal
+          open={openConfirmation}
+          loading={false}
+          btnTitle="Save"
+          onClose={() => {
+            setOpenConfimation(false);
+          }}
+          errors={apiError}
+          onSubmit={handleConfirm}
+          title="Add Client"
+          description={
+            <div>
+              <p className="">Client: {values.personname}</p>
+              <Typography
+                sx={{
+                  fontFamily: "Open Sans",
+                  fontSize: "14px",
+                  fontStyle: "normal",
+                  fontWeight: 400,
+                  lineHeight: "150%" /* 21px */,
+                  color: "#282828",
+                }}
+              >
+                Are you sure you want to add this client?
+              </Typography>
+            </div>
+          }
+        />
+      )}
+    </>
+  );
   // );
 };
 

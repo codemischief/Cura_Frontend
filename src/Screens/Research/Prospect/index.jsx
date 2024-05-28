@@ -20,9 +20,16 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import { getPropect, setCountPerPage, setPageNumber } from "../../../Redux/slice/Research/ProspectSlice";
-import { PlusCircleFilled } from "@ant-design/icons";
+import {
+  getPropect,
+  setCountPerPage,
+  setPageNumber,
+} from "../../../Redux/slice/Research/ProspectSlice";
+import { PlusOutlined } from "@ant-design/icons";
 import ProspectForm from "./ProspectForm";
+import AlertModal, {
+  alertVariant,
+} from "../../../Components/modals/AlertModal";
 
 const PropectusPage = () => {
   const dispatch = useDispatch();
@@ -45,13 +52,13 @@ const PropectusPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
-  const [openSubmissionPrompt, SetOpenSubmissionPrompt] = useState(false);
+  const [openSubmissionPrompt, SetOpenSubmissionPrompt] = useState(null);
+  const [propmtType, setPromptType] = useState("");
   const [editData, setEditData] = useState({});
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
-
 
   const handlePageChange = (value) => {
     dispatch(setPageNumber(value));
@@ -132,7 +139,7 @@ const PropectusPage = () => {
       ],
       filters: [],
       sort_by: [],
-      order: "desc",
+      order: "",
       pg_no: 0,
       pg_size: +pageNo,
       search_key: searchInput,
@@ -227,28 +234,44 @@ const PropectusPage = () => {
     };
     dispatch(downloadPaymentDataXls(obj));
   };
+
   const handleFormOpen = () => {
     setOpenForm(true);
   };
+
   const handleFormClose = () => {
-    if (Object.keys(editData).length > 0) {
-      SetOpenSubmissionPrompt(true);
-    }
+    // if (Object.keys(editData).length > 0) {
+    SetOpenSubmissionPrompt(null);
+    setPromptType(alertVariant.cancel);
+    // }
     setOpenForm(false);
+    setTimeout(() => {
+      SetOpenSubmissionPrompt(null);
+    }, 3000);
   };
+
   useEffect(() => {
     if (formSubmissionStatus === "success") {
       handleFormClose();
-      setTimeout(() => {
-        SetOpenSubmissionPrompt(false);
-      }, 3000);
     }
   }, [formSubmissionStatus]);
 
+  const openSucess = (message) =>{
+    SetOpenSubmissionPrompt(message)
+    setPromptType(alertVariant.success)
+
+  }
+
   return (
     <Stack gap="1rem">
-      {/* <Navbar />
-       */}
+      {openForm && (
+        <ProspectForm
+          isOpen={openForm}
+          handleClose={handleFormClose}
+          editData={{}}
+          openSucess={openSucess}
+        />
+      )}
       <div className="flex flex-col px-4">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
@@ -266,14 +289,11 @@ const PropectusPage = () => {
             <button
               className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
               // onClick={handleOpen}
+              onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
                 Add New Prospect
-                <img
-                  className="h-[18px] w-[18px]"
-                  src={PlusCircleFilled}
-                  alt="add"
-                />
+                <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
           </div>
@@ -308,22 +328,12 @@ const PropectusPage = () => {
           downloadExcel={downloadExcel}
         />
       </div>
-      {openForm && (
-        <ProspectForm
-          isOpen={openForm}
-          handleClose={handleFormClose}
-          editData={{}}
-        />
-      )}
+
       {openSubmissionPrompt && (
-        <AlertSubmissionModal
-          isOpen={openSubmissionPrompt}
-          variant={editData?.id ? "warning" : "success"}
-          message={
-            editData?.id
-              ? "Changes saved succesffuly"
-              : "New Prospect Created Successfully"
-          }
+        <AlertModal
+          isOpen={openSubmissionPrompt ? true : false}
+          variant={propmtType}
+          message={openSubmissionPrompt}
         />
       )}
     </Stack>

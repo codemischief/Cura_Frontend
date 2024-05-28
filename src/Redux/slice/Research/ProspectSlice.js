@@ -1,7 +1,6 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { env_URL_SERVER, updatedResponsePmaData } from "../../helper"
+import { env_URL_SERVER, updatedResponsePmaData } from "../../helper";
 
 const initialState = {
   PropectusData: [],
@@ -73,7 +72,7 @@ export const {
   setFilters,
   setInitialState,
   setSorting,
-  setFormSubmissionStatus
+  setFormSubmissionStatus,
 } = prospect.actions;
 
 export const getPropect = (payloadObj, year, month) => async (dispatch) => {
@@ -92,21 +91,20 @@ export const getPropect = (payloadObj, year, month) => async (dispatch) => {
 };
 
 export const addProspectData = (payload) => async (dispatch) => {
-  try {
-    dispatch(setFormSubmissionStatus("loading"));
-    const response = await axios.post(
-      `${env_URL_SERVER}addResearchProspect`,
-      payload
-    );
-    dispatch(setFormSubmissionStatus("success"));
-    // return response.data;
-  } catch (error) {
-    dispatch(setFormSubmissionStatus("error"));
-    throw new Error("Some error occured in fetching countries data");
-  }
+  
+    try {
+      dispatch(setFormSubmissionStatus("loading"));
+      const response = await axios.post(
+        `${env_URL_SERVER}addResearchProspect`,
+        payload
+      );
+      dispatch(setFormSubmissionStatus("success"));
+      return response;
+    } catch (error) {
+      dispatch(setFormSubmissionStatus("error"));
+      throw error;
+    }
 };
 
-export const handleRefresh = (payload) => async (dispatch) => {
-  
-};
+export const handleRefresh = (payload) => async (dispatch) => {};
 export default prospect.reducer;
