@@ -11,13 +11,13 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import {
-    downloadPmaInvoiceList,
-    getPmaInvoiceList,
-    setCountPerPage,
-    setInitialState,
-    setPageNumber,
-    setSorting,
-    setStatus
+  downloadPmaInvoiceList,
+  getPmaInvoiceList,
+  setCountPerPage,
+  setInitialState,
+  setPageNumber,
+  setSorting,
+  setStatus
 } from "../../../Redux/slice/reporting/pmaInvoiceList"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -29,26 +29,26 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 
 const PmaInvoiceList = () => {
   const dispatch = useDispatch();
-//   const {
-//     pmaBillingTrendView,
-//     status,
-//     totalAmount,
-//     totalCount,
-//     sorting,
-//     countPerPage,
-//     pageNo,
-//     filter,
-//   } = useSelector((state) => state.pmaBillingTrendView);
-//   const {
-//     pmaClientReport,
-//     status,
-//     totalAmount,
-//     totalCount,
-//     sorting,
-//     countPerPage,
-//     pageNo,
-//     filter
-//   } = useSelector((state) => state.pmaClientReport)
+  //   const {
+  //     pmaBillingTrendView,
+  //     status,
+  //     totalAmount,
+  //     totalCount,
+  //     sorting,
+  //     countPerPage,
+  //     pageNo,
+  //     filter,
+  //   } = useSelector((state) => state.pmaBillingTrendView);
+  //   const {
+  //     pmaClientReport,
+  //     status,
+  //     totalAmount,
+  //     totalCount,
+  //     sorting,
+  //     countPerPage,
+  //     pageNo,
+  //     filter
+  //   } = useSelector((state) => state.pmaClientReport)
   const {
     pmaInvoiceList,
     status,
@@ -94,18 +94,24 @@ const PmaInvoiceList = () => {
   };
 
   const handleRefresh = () => {
-      let obj = {
-        user_id: 1234,
-        rows:["*"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      dispatch(getPmaInvoiceList(obj));
-    
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname" ,
+      "orderdescription",
+      "invoicedate",
+      "baseamount",
+      "tax",
+      "invoiceamount",
+      "entityname",],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+    };
+    dispatch(getPmaInvoiceList(obj));
+
   };
 
   const handleSearch = () => {
@@ -128,19 +134,26 @@ const PmaInvoiceList = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    
-      let obj = {
-        user_id: 1234,
-        rows:["*"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getPmaInvoiceList(obj));
-    
+
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "clientname",
+        "orderdescription",
+        "invoicedate",
+        "baseamount",
+        "tax",
+        "invoiceamount",
+        "entityname",],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getPmaInvoiceList(obj));
+
   }, [
     filter,
     countPerPage,
@@ -151,7 +164,7 @@ const PmaInvoiceList = () => {
   ]);
 
   useEffect(() => {
-    
+
   }, []);
 
   const handleSortingChange = (accessor) => {
@@ -165,26 +178,26 @@ const PmaInvoiceList = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:[
-      "clientname" ,
-      "orderdescription",
-      "invoicedate",
-      "baseamount",
-      "tax",
-      "invoiceamount",
-      "entityname",
+      rows: [
+        "clientname",
+        "orderdescription",
+        "invoicedate",
+        "baseamount",
+        "tax",
+        "invoiceamount",
+        "entityname",
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
-      downloadType : "excel",
-      colmap : {
-      "clientname": "Client Name",
-      "orderdescription": "Order Descriptions",
-      "invoicedate": "Invoice Date",
-      "baseamount": "Base Amount",
-      "tax": "Tax",
-      "invoiceamount": "Invoice Amount",
-      "entityname": "Entity Name",
+      downloadType: "excel",
+      colmap: {
+        "clientname": "Client Name",
+        "orderdescription": "Order Descriptions",
+        "invoicedate": "Invoice Date",
+        "baseamount": "Base Amount",
+        "tax": "Tax",
+        "invoiceamount": "Invoice Amount",
+        "entityname": "Entity Name",
       },
       search_key: search,
       pg_no: 0,
@@ -204,7 +217,7 @@ const PmaInvoiceList = () => {
 
   const handleShow = () => {
     if (startDate) {
-      
+
       dispatch(setInitialState())
 
       setShowTable(true);
@@ -216,10 +229,10 @@ const PmaInvoiceList = () => {
       // }));
     }
   };
-  
+
   const renderYearContent = (year) => {
-      const tooltipText = `Tooltip for year: ${year}`;
-      return <span title={tooltipText}>{year}</span>;
+    const tooltipText = `Tooltip for year: ${year}`;
+    return <span title={tooltipText}>{year}</span>;
   }
   return (
     <Stack gap="1rem">
@@ -257,7 +270,7 @@ const PmaInvoiceList = () => {
         >
           
         </Stack> */}
- 
+
         <SimpleTable
           columns={columns}
           data={pmaInvoiceList}

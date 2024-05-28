@@ -29,13 +29,13 @@ import { useDispatch } from "react-redux";
 //     setStatus
 // } from "../../../Redux/slice/reporting/pmaBillingTrendView"
 import {
-    downloadPmaClientReport,
-    getPmaClientReport,
-    setCountPerPage,
-    setInitialState,
-    setPageNumber,
-    setSorting,
-    setStatus
+  downloadPmaClientReport,
+  getPmaClientReport,
+  setCountPerPage,
+  setInitialState,
+  setPageNumber,
+  setSorting,
+  setStatus
 } from "../../../Redux/slice/reporting/pmaClientReport"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -47,16 +47,16 @@ import CLientPortalTable from "../../../Components/common/table/ClientPortalTabl
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
-//   const {
-//     pmaBillingTrendView,
-//     status,
-//     totalAmount,
-//     totalCount,
-//     sorting,
-//     countPerPage,
-//     pageNo,
-//     filter,
-//   } = useSelector((state) => state.pmaBillingTrendView);
+  //   const {
+  //     pmaBillingTrendView,
+  //     status,
+  //     totalAmount,
+  //     totalCount,
+  //     sorting,
+  //     countPerPage,
+  //     pageNo,
+  //     filter,
+  //   } = useSelector((state) => state.pmaBillingTrendView);
   const {
     pmaClientReport,
     status,
@@ -102,18 +102,24 @@ const PmaClientReport = () => {
   };
 
   const handleRefresh = () => {
-      let obj = {
-        user_id: 1234,
-        rows:["*"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      dispatch(getPmaClientReport(obj));
-    
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "clientid",
+        "fullname",
+        "email1",
+        "email2",
+        "email"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+    };
+    dispatch(getPmaClientReport(obj));
+
   };
 
   const handleSearch = () => {
@@ -136,19 +142,25 @@ const PmaClientReport = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    
-      let obj = {
-        user_id: 1234,
-        rows:["*"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getPmaClientReport(obj));
-    
+
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "clientid",
+        "fullname",
+        "email1",
+        "email2",
+        "email"
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getPmaClientReport(obj));
+
   }, [
     filter,
     countPerPage,
@@ -159,7 +171,7 @@ const PmaClientReport = () => {
   ]);
 
   useEffect(() => {
-    
+
   }, []);
 
   const handleSortingChange = (accessor) => {
@@ -173,24 +185,24 @@ const PmaClientReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:[
+      rows: [
         "clientid",
-            "fullname",
-            "email1",
-            "email2",
-            "email"
+        "fullname",
+        "email1",
+        "email2",
+        "email"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
-      downloadType : "excel",
-      colmap : {
-        
-            "clientid": "Client ID",
-            "fullname": "Client Name",
-            "email1": "Email1",
-            "email2": "Email2",
-            "email": "Client Portal Online Mail ID's"
-      
+      downloadType: "excel",
+      colmap: {
+
+        "clientid": "Client ID",
+        "fullname": "Client Name",
+        "email1": "Email1",
+        "email2": "Email2",
+        "email": "Client Portal Online Mail ID's"
+
       },
       search_key: search,
       pg_no: 0,
@@ -210,7 +222,7 @@ const PmaClientReport = () => {
 
   const handleShow = () => {
     if (startDate) {
-      
+
       dispatch(setInitialState())
 
       setShowTable(true);
@@ -222,10 +234,10 @@ const PmaClientReport = () => {
       // }));
     }
   };
-  
+
   const renderYearContent = (year) => {
-      const tooltipText = `Tooltip for year: ${year}`;
-      return <span title={tooltipText}>{year}</span>;
+    const tooltipText = `Tooltip for year: ${year}`;
+    return <span title={tooltipText}>{year}</span>;
   }
   return (
     <Stack gap="1rem">
@@ -263,7 +275,7 @@ const PmaClientReport = () => {
         >
           
         </Stack> */}
- 
+
         <CLientPortalTable
           columns={columns}
           data={pmaClientReport}
