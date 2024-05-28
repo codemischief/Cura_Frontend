@@ -94,6 +94,7 @@ import PrivateLayout from "./layout/Privatelayout";
 import AuthGuard from "./context/AuthGuard";
 import { ToastContainer } from "react-toastify";
 import useAuth, { AuthProvider } from "./context/JwtContext";
+import PropectusPage from "./Screens/Research/Prospect";
 
 const App = () => {
   const { isInitialized } = useAuth();

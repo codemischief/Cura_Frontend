@@ -18,12 +18,7 @@ const validationSchema = Yup.object().shape({
   possibleservices: Yup.string().required("posiible services is required"),
 });
 
-const EditForm = ({
-  isOpen,
-  handleClose,
-  item,
-  fetchData,
-}) => {
+const EditForm = ({ isOpen, handleClose, item, fetchData, cancelProspect }) => {
   const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
@@ -80,7 +75,7 @@ const EditForm = ({
       setTimeout(() => {
         setIsProspectDialogue(false);
         handleClose();
-        fetchData()
+        fetchData();
       }, 3000);
     }
   }, [isProspectDialogue]);
@@ -418,7 +413,7 @@ const EditForm = ({
                     </button>
                     <button
                       className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                      //   onClick={handleClose}
+                      onClick={cancelProspect}
                     >
                       Cancel
                     </button>
