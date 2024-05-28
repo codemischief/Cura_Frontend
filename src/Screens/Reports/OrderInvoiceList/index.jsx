@@ -199,7 +199,7 @@ const OrderInvoiceList = () => {
         "type": "Type",
         "id": "ID",
         "invoicedate": "Invoice Date",
-        "monthyear": "Month Year",
+        "monthyear": "Fiscal Month",
         "fy": "Fiscal year",
         "invoiceamount": "Amount",
         "entityname": "Entity",
@@ -225,7 +225,7 @@ const OrderInvoiceList = () => {
       const worksheet = XLSX.utils.json_to_sheet(tableData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "orderInvoice.xlsx");
+      XLSX.writeFile(workbook, "RrderInvoiceList.xlsx");
       dispatch(setStatus("success"));
     });
   };

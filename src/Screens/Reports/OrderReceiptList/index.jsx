@@ -199,7 +199,7 @@ const OrderReceiptList = () => {
         "type": "Type",
         "id": "ID",
         "recddate": "Received Date",
-        "monthyear": "Month Year",
+        "monthyear": "Fiscal Month",
         "fy": "Fiscal year",
         "amount": "Amount",
         "entityname": "Entity",
@@ -224,7 +224,7 @@ const OrderReceiptList = () => {
       const worksheet = XLSX.utils.json_to_sheet(tableData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      XLSX.writeFile(workbook, "orderReceipt.xlsx");
+      XLSX.writeFile(workbook, "OrderPaymentList.xlsx");
       dispatch(setStatus("success"));
     });
   };

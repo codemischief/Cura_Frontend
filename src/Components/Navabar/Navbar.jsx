@@ -269,9 +269,9 @@ const Navbar = () => {
               </h1>
               <div className="space-y-2 text-[#505050] text-[11px]">
                 <Link to="/lobReceiptPayments">
-                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  LOB- Receipts - Payments
-                </p>
+                  <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
+                    LOB- Receipts - Payments
+                  </p>
 
                 </Link>
                 <Link to="/entityReceiptPayments">
@@ -284,7 +284,7 @@ const Navbar = () => {
                     LOB - Receipts-Payments-Consolidated
                   </p>
                 </Link>
-                
+
               </div>
             </div>
           </div>
@@ -473,7 +473,7 @@ const Navbar = () => {
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/manage/pmaBilling">PMA Billing</Link>
                 </p>
-                
+
               </div>
             </div>
           </div>
@@ -539,7 +539,7 @@ const Navbar = () => {
                 </Link>
                 <Link to={"/vendorInvoiceList"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                    Vendor Payment List
+                    Vendor Invoice List
                   </p>
                 </Link>
                 <Link to={"/clientReceiptList"}>
@@ -625,21 +625,21 @@ const Navbar = () => {
                 </p>
                 <Link to="/pmaClientReceivable">
 
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  CURA PMA Client Receivables
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    CURA PMA Client Receivables
+                  </p>
                 </Link>
                 <Link to="/pmaInvoiceList">
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  PMA Invoice List
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    PMA Invoice List
+                  </p>
 
                 </Link>
                 <Link to="/pmaBillingTrendView">
 
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  PMA Billing Trend Report
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    PMA Billing Trend Report
+                  </p>
                 </Link>
                 <Link to="/pmaClientReport">
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
