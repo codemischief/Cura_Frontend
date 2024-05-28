@@ -129,7 +129,7 @@ export const downloadReceiptDataXls =
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, "OrderReceiptList.xlsx");
+      FileSaver.saveAs(blob, "OrderPaymentList.xlsx");
     } catch (error) {
       console.log("error", error);
     }
