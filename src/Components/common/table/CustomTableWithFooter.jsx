@@ -46,13 +46,24 @@ import {
             </tr>
             <tr className="bg-[#F0F6FF] h-[56px] text-left">
               {columns.map((column, index) => (
-                <th key={index} style={{ ...column.cellStyle }}>
-                  {column.title}
+                <th key={index} style={{ ...column.cellStyle } }  >
+                  {/* {column.sorting ? } */}
+                  {/* {column.title}
                   {column.sorting && (
                     <button onClick={() => handleSortingChange(column.field)}>
                       <span className="font-extrabold px-1">↑↓</span>
                     </button>
-                  )}
+                  )} */}
+                  {column.sorting
+                        ? <div className="flex">
+                             <p>{column.title}</p>
+                             <button onClick={() => handleSortingChange(column.field)}>
+                              <span className="font-extrabold px-1">↑↓</span>
+                            </button>
+                        </div> 
+                    : <div className="flex justify-center">
+                       <p >Sr No</p>
+                    </div>}
                 </th>
               ))}
             </tr>
