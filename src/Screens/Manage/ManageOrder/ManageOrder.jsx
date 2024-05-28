@@ -409,7 +409,7 @@ const ManageOrder = () => {
         }
         const statusresponse = await APIService.addOrderStatusChange(d);
         const statusres = await statusresponse.json();
-        console.log(res)
+        // console.log(res)
         const response = await APIService.addOrder(data);
         const res = await response.json();
         if (res.result == 'success') {
