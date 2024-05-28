@@ -532,7 +532,7 @@ const ManageClientInvoice = () => {
             "search_key": searchInput,
             "colmap" : {
                 "clientname" : "Client Name",
-                "quotedescription" : "Invoice Description",
+                "quotedescription" : "Quote/Invoice Description",
                 "invoiceamount" : "Invoice Amount",
                 "invoicedate" : "Invoice Date",
                 "entityname" : "Entity",
@@ -1205,7 +1205,7 @@ const ManageClientInvoice = () => {
                             </div>
                             <div className='w-[26%]  flex'>
                                 <div className='px-3 py-3.5'>
-                                    <p>Order Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
+                                    <p>Quote/Invoice Description <button onClick={() => handleSort('quotedescription')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
                             {/* <div className='w-[13%]  flex'>

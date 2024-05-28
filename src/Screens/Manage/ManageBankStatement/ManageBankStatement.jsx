@@ -593,7 +593,15 @@ const ManageBankStatement = () => {
         setPageLoading(true)
         const data = {
             "user_id": 1234,
-            "rows": dataRows,
+            "rows": [
+                "mode" ,
+                "date",
+                "crdr"  ,
+                "amount" ,
+                "particulars" , 
+                "clientname" , 
+                "id",
+            ],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -611,7 +619,7 @@ const ManageBankStatement = () => {
                 "id" : "ID"
             }
         };
-        const response = await APIService.getProjectInfo(data)
+        const response = await APIService.getBankStatement(data)
         const temp = await response.json();
         const result = temp.data;
         console.log(temp)

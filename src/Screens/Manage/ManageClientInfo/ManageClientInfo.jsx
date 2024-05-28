@@ -31,6 +31,7 @@ import NumericFilter from '../../../Components/Filters/NumericFilter';
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import Draggable from 'react-draggable';
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientInfo = () => {
     // const Navigate = useNavigate()
     const dataRows = [
@@ -686,6 +687,84 @@ const ManageClientInfo = () => {
     }
     const closeDownload = () => {
         setDownloadModal(false);
+    }
+    const handleDownload = async (type) => {
+        // setBackDropLoading(true)
+        setDownloadModal(false)
+        setPageLoading(true);
+        const data = {
+            "user_id": 1234,
+            "rows": [
+                "clientname",
+                "clienttypename",
+                "tenantofname",
+                "tenantofpropertyname",
+                "country",
+                "mobilephone",
+                "email1",
+                "email2",
+                "employername",
+                "id",
+            ],
+            "filters": filterState,
+            "sort_by": [sortField],
+            "order": flag ? "asc" : "desc",
+            "pg_no": 0,
+            "pg_size": 0,
+            "search_key": searchInput,
+            "downloadType" : type,
+            "colmap" : {
+                "clientname" : "Client Name",
+                "clienttypename" : "Client Type",
+                "tenantofname" : "Tenant Of",
+                "tenantofpropertyname" : "Tenant Of Property",
+                "country" : "Country",
+                "mobilephone" : "Phone", 
+                "email1" : "Email1",
+                "email2" : "Email2",
+                "employername" : "Employer Name",
+                "id" : "ID",
+            }
+        };
+        const response = await APIService.getClientInfo(data)
+        const temp = await response.json();
+        const result = temp.data;
+        console.log(temp)
+        if(temp.result == 'success') {
+            const d = {
+                "filename" : temp.filename,
+                "user_id" : 1234
+            }
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
+                method: 'POST', // or the appropriate HTTP method
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(d) // Convert the object to a JSON string
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.blob();
+            })
+            .then(result => {
+                if(type == "excel") {
+                    FileSaver.saveAs(result, 'ClientInfoData.xlsx');
+                }else if(type == "pdf") {
+                    FileSaver.saveAs(result, 'ClientInfoData.pdf');
+                }
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+            setTimeout(() => {
+                // setBackDropLoading(false)
+                setPageLoading(false)
+            },1000) 
+        }
     }
     const handleExcelDownload = async () => {
         const data = {
@@ -1787,14 +1866,14 @@ const ManageClientInfo = () => {
                     {downloadModal && <div className='h-[120px] w-[220px] bg-white shadow-xl rounded-md absolute bottom-12 right-24 flex-col items-center justify-center  p-5'>
                         <button onClick={() => setDownloadModal(false)}><img src={Cross} className='absolute top-1 right-1 w-4 h-4' /></button>
 
-                        <button>
+                        <button onClick={() => handleDownload('pdf')}>
                             <div className='flex space-x-2 justify-center items-center ml-3 mt-3'>
 
                                 <p>Download as pdf</p>
                                 <img src={Pdf} />
                             </div>
                         </button>
-                        <button onClick={handleExcelDownload}>
+                        <button onClick={() => handleDownload('excel')}>
                             <div className='flex space-x-2 justify-center items-center mt-5 ml-3'>
                                 <p>Download as Excel</p>
                                 <img src={Excel} />

@@ -32,7 +32,7 @@ import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
 import SaveConfirmationProjectInfo from './SaveConfirmationProjectInfo';
 import Draggable from 'react-draggable';
-
+const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageProjectInfo = () => {
     
     const dataRows = ["buildername", "builderid", "projectname", "addressline1", "addressline2", "suburb", "city", "state", "country", "zip", "nearestlandmark", "project_type", "mailgroup1", "mailgroup2", "website", "project_legal_status", "rules", "completionyear", "jurisdiction", "taluka", "corporationward", "policechowkey", "policestation", "maintenance_details", "numberoffloors", "numberofbuildings", "approxtotalunits", "tenantstudentsallowed", "tenantworkingbachelorsallowed", "tenantforeignersallowed", "otherdetails", "duespayablemonth", "dated", "createdby", "isdeleted", "id"]
@@ -458,7 +458,7 @@ const ManageProjectInfo = () => {
                 "filename": temp.filename,
                 "user_id": 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+            fetch(`${env_URL_SERVER}download/${temp.filename}`, {
                 method: 'POST', // or the appropriate HTTP method
                 headers: {
                     'Content-Type': 'application/json'
