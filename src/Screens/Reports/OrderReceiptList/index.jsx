@@ -72,22 +72,22 @@ const OrderReceiptList = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
-          "id",
           "type",
+          "id",
           "recddate",
-          "fy",
           "monthyear",
+          "fy",
           "amount",
           "entityname",
           "paymentmode",
           "clientid",
           "clientname",
+          "vendorname",
           "orderid",
           "orderdescription",
           "serviceid",
           "service",
           "lobname",
-          "vendorname"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -126,22 +126,22 @@ const OrderReceiptList = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         rows: [
-          "id",
           "type",
+          "id",
           "recddate",
-          "fy",
           "monthyear",
+          "fy",
           "amount",
           "entityname",
           "paymentmode",
           "clientid",
           "clientname",
+          "vendorname",
           "orderid",
           "orderdescription",
           "serviceid",
           "service",
           "lobname",
-          "vendorname"
         ],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
@@ -192,27 +192,26 @@ const OrderReceiptList = () => {
         "serviceid",
         "service",
         "lobname",
-        // "vendorname"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      downloadType : "excel",
-      colmap : {
-        "type" : "Type",
-        "id" : "ID",
-        "recddate" : "Received Date",
-        "monthyear" : "Month Year",
-        "fy" : "Fiscal year",
-        "amount" : "Amount",
-        "entityname" : "Entity",
-        "paymentmode" : "Mode",
-        "clientid" : "Client ID",
-        "clientname" : "Client Name",
-        "vendorname" : "Vendor Name",
-        "orderid" : "Order ID",
-        "orderdescription" : "Order Description",
-        "serviceid" : "Service ID",
-        "service" : "Service",
-        "lobname" : "LOB Name"
+      downloadType: "excel",
+      colmap: {
+        "type": "Type",
+        "id": "ID",
+        "recddate": "Received Date",
+        "monthyear": "Month Year",
+        "fy": "Fiscal year",
+        "amount": "Amount",
+        "entityname": "Entity",
+        "paymentmode": "Mode",
+        "clientid": "Client ID",
+        "clientname": "Client Name",
+        "vendorname": "Vendor Name",
+        "orderid": "Order ID",
+        "orderdescription": "Order Description",
+        "serviceid": "Service ID",
+        "service": "Service",
+        "lobname": "LOB Name"
       },
       filters: formatedFilterData(filter),
       search_key: search,
@@ -361,7 +360,7 @@ const OrderReceiptList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          
+
         />
       </div>
       {toast && (

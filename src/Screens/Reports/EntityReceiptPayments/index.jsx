@@ -87,7 +87,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
-        rows: ["lobname","date","monthyear","entityid","entityname","orderreceiptamount","paymentamount","diff"],
+        rows: ["lobname","orderreceiptamount","paymentamount","diff"],
         sort_by: ["id"],
 
         filters: formatedFilterData(filter),
@@ -125,7 +125,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
-        rows: ["lobname","date","monthyear","entityid","entityname","orderreceiptamount","paymentamount","diff"],
+        rows: ["lobname","orderreceiptamount","paymentamount","diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
         filters: formatedFilterData(filter),

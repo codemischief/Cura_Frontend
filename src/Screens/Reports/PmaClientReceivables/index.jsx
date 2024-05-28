@@ -20,13 +20,13 @@ import { useDispatch } from "react-redux";
 //     setStatus
 // } from "../../../Redux/slice/reporting/pmaInvoiceList"
 import {
-    downloadPmaClientReceivables,
-    getPmaClientReceivable,
-    setCountPerPage,
-    setInitialState,
-    setPageNumber,
-    setSorting,
-    setStatus
+  downloadPmaClientReceivables,
+  getPmaClientReceivable,
+  setCountPerPage,
+  setInitialState,
+  setPageNumber,
+  setSorting,
+  setStatus
 } from "../../../Redux/slice/reporting/ReportPmaClientReceivable"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -38,26 +38,26 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 
 const PmaClientReceivable = () => {
   const dispatch = useDispatch();
-//   const {
-//     pmaBillingTrendView,
-//     status,
-//     totalAmount,
-//     totalCount,
-//     sorting,
-//     countPerPage,
-//     pageNo,
-//     filter,
-//   } = useSelector((state) => state.pmaBillingTrendView);
-//   const {
-//     pmaClientReport,
-//     status,
-//     totalAmount,
-//     totalCount,
-//     sorting,
-//     countPerPage,
-//     pageNo,
-//     filter
-//   } = useSelector((state) => state.pmaClientReport)
+  //   const {
+  //     pmaBillingTrendView,
+  //     status,
+  //     totalAmount,
+  //     totalCount,
+  //     sorting,
+  //     countPerPage,
+  //     pageNo,
+  //     filter,
+  //   } = useSelector((state) => state.pmaBillingTrendView);
+  //   const {
+  //     pmaClientReport,
+  //     status,
+  //     totalAmount,
+  //     totalCount,
+  //     sorting,
+  //     countPerPage,
+  //     pageNo,
+  //     filter
+  //   } = useSelector((state) => state.pmaClientReport)
   const {
     pmaClientReceivable,
     status,
@@ -103,18 +103,19 @@ const PmaClientReceivable = () => {
   };
 
   const handleRefresh = () => {
-      let obj = {
-        user_id: 1234,
-        rows:["*"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      dispatch(getPmaClientReceivable(obj));
-    
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname" ,
+      "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+    };
+    dispatch(getPmaClientReceivable(obj));
+
   };
 
   const handleSearch = () => {
@@ -137,19 +138,20 @@ const PmaClientReceivable = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    
-      let obj = {
-        user_id: 1234,
-        rows:["*"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getPmaClientReceivable(obj));
-    
+
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname",
+        "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getPmaClientReceivable(obj));
+
   }, [
     filter,
     countPerPage,
@@ -160,7 +162,7 @@ const PmaClientReceivable = () => {
   ]);
 
   useEffect(() => {
-    
+
   }, []);
 
   const handleSortingChange = (accessor) => {
@@ -174,16 +176,16 @@ const PmaClientReceivable = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:[
-        "clientname" ,
-      "amount"
+      rows: [
+        "clientname",
+        "amount"
       ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
-      downloadType : "excel",
-      colmap : {
-       "clientname" : "Client Name",
-       "amount" : "Amount"
+      downloadType: "excel",
+      colmap: {
+        "clientname": "Client Name",
+        "amount": "Amount"
       },
       search_key: search,
       pg_no: 0,
@@ -203,7 +205,7 @@ const PmaClientReceivable = () => {
 
   const handleShow = () => {
     if (startDate) {
-      
+
       dispatch(setInitialState())
 
       setShowTable(true);
@@ -215,10 +217,10 @@ const PmaClientReceivable = () => {
       // }));
     }
   };
-  
+
   const renderYearContent = (year) => {
-      const tooltipText = `Tooltip for year: ${year}`;
-      return <span title={tooltipText}>{year}</span>;
+    const tooltipText = `Tooltip for year: ${year}`;
+    return <span title={tooltipText}>{year}</span>;
   }
   return (
     <Stack gap="1rem">
@@ -256,9 +258,9 @@ const PmaClientReceivable = () => {
         >
           
         </Stack> */}
- 
+
         <SimpleTableWithFooter
-         pageName="pmaClientReceivables"
+          pageName="pmaClientReceivables"
           columns={columns}
           data={pmaClientReceivable}
           totalData={totalAmount}
