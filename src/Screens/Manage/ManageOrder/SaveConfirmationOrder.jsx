@@ -3,7 +3,12 @@ import { Modal } from "@mui/material"
 // import Cross from "../../../assets/cross.png"
 import Cross from "../../../assets/cross.png"
 import Draggable from 'react-draggable'
-const SaveConfirmationOrder = ({ addOrder, handleClose }) => {
+const SaveConfirmationOrder = ({ addOrder, handleClose,showCancel,setDefault }) => {
+    const close = () =>{
+        handleClose();
+        showCancel();
+        setDefault();
+    }
     return (
         <Modal open={true} >
             <>
@@ -16,7 +21,7 @@ const SaveConfirmationOrder = ({ addOrder, handleClose }) => {
                             </div>
 
                             <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleClose}> <img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
+                                <button onClick={()=> {close()}}> <img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
                         <div className="mt-8 w-full text-center">
@@ -27,7 +32,7 @@ const SaveConfirmationOrder = ({ addOrder, handleClose }) => {
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
                             <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addOrder}>Add</button>
-                            <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleClose}>Cancel</button>
+                            <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={()=> {close()}}>Cancel</button>
                         </div>
                     </div>
                 </Draggable>
