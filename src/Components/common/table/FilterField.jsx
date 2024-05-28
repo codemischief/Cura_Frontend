@@ -89,10 +89,10 @@ export const FilterField = (props) => {
   
   return (
     <>
-      <div className="w-full  p-3">
-        <div className="w-[100%] flex items-center bg-[#F5F5F5] rounded-md">
+      <div className="w-full  py-3">
+        <div className="max-w-[150px] flex items-center bg-[#F5F5F5] rounded-md">
           <input
-            className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
+            className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none font-medium"
             type={type}
             disabled={isDisabled}
             value={search}
@@ -111,7 +111,7 @@ export const FilterField = (props) => {
             />
           )}
           <Tooltip title={isDisabled ? "filter disabled" : "Filters"}>
-            <button className="w-[32%] px-1 py-2" onClick={handleClick}>
+            <button className="max-w-[32%] px-1 py-2" onClick={handleClick}>
               <FilterAlt
                 sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
                 color="#C6C6C6"
