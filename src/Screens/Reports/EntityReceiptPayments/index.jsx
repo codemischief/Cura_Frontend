@@ -88,8 +88,8 @@ const LobReceiptPayments = () => {
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
         rows: ["lobname","orderreceiptamount","paymentamount","diff"],
-        sort_by: ["id"],
-
+        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+        order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
         pg_no: +pageNo,
@@ -247,6 +247,7 @@ const LobReceiptPayments = () => {
                 }}
               >
                 <option value="none" hidden>Select Entity</option>
+                <option value="all">All</option>
                 {allEntities && allEntities.map(item => (
                   <option value={item[1]} >
                     {item[1]}

@@ -203,6 +203,17 @@ import {
       return ""
       }
         
+    }else if(pageName == "entityreceiptpayments") {
+      if(index == 2) {
+        return ` Total: ${obj.totalreceipt}`
+      }else if(index == 3) {
+          return `Total: ${obj.totalpayment}`
+      }else if(index == 4) {
+      return `Total: ${obj.total_diff}`
+      }else {
+      return ""
+      }
+        
     }else if(pageName == "pmaBillingTrendView" ) {
       if(index == 1) {
 
