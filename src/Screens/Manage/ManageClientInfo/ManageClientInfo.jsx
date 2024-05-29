@@ -1555,7 +1555,7 @@ const ManageClientInfo = () => {
 
                             </div>
 
-                            <div className='w-[8%] px-3 py-2.5'>
+                            <div className='w-[10%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfTypeNameInput} onChange={(e) => setTenantOfTypeNameInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfTypeNameFilter((prev) => !prev) }} /></button>
@@ -1564,7 +1564,7 @@ const ManageClientInfo = () => {
 
                             </div>
 
-                            <div className='w-[8%] px-3 py-2.5'>
+                            <div className='w-[12%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={tenantOfPropertyInput} onChange={(e) => setTenantOfPropertyInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setTenantOfPropertyFilter((prev) => !prev) }} /></button>
@@ -1582,7 +1582,7 @@ const ManageClientInfo = () => {
                                 {countryFilter && <CharacterFilter inputVariable={countryInput} setInputVariable={setCountryInput} handleFilter={newHandleFilter} filterColumn='country' menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[6%] px-3 py-2.5'>
+                            <div className='w-[8%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[50%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={cityInput} onChange={(e) => setCityInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[50%]'><img src={Filter} className='h-3 w-3' onClick={() => { setCityFilter((prev) => !prev) }} /></button>
@@ -1607,13 +1607,13 @@ const ManageClientInfo = () => {
                                 {email1Filter && <CharacterFilter inputVariable={email1Input} setInputVariable={setEmail1Input} filterColumn='email1' handleFilter={newHandleFilter} menuRef={menuRef} />}
                             </div>
 
-                            <div className='w-[9%] px-3 py-2.5'>
+                            {/* <div className='w-[9%] px-3 py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] text-[11px] pl-2 outline-none" value={employerInput} onChange={(e) => setEmployerInput(e.target.value)} />
                                     <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setEmployerFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {employerFilter && <CharacterFilter inputVariable={employerInput} setInputVariable={setEmployerInput} filterColumn='employername' handleFilter={newHandleFilter} menuRef={menuRef} />}
-                            </div>
+                            </div> */}
 
                         </div>
                         <div className="w-[15%] ">
@@ -1653,12 +1653,12 @@ const ManageClientInfo = () => {
                                     <p>Client Type <button onClick={() => handleSort('clienttypename')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[8%]  flex'>
+                            <div className='w-[10%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Tenant of <button onClick={() => handleSort('tenantofname')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[8%]  flex'>
+                            <div className='w-[12%]  flex'>
                                 <div className='px-3 py-3.5 flex space-x-2'>
                                     <div>
 
@@ -1674,7 +1674,7 @@ const ManageClientInfo = () => {
                                     <p>Country<button onClick={() => handleSort('country')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[6%]  flex'>
+                            <div className='w-[8%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>City<button onClick={() => handleSort('city')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1689,7 +1689,7 @@ const ManageClientInfo = () => {
                                     <p>Email <button onClick={() => handleSort('email1')}> <span className="font-extrabold">↑↓</span></button></p>
                                 </div>
                             </div>
-                            <div className='w-[9%]  flex'>
+                            {/* <div className='w-[9%]  flex'>
                                 <div className='px-3 py-3.5 flex space-x-2'>
                                     <div>
                                         <p>Employer </p>
@@ -1697,7 +1697,7 @@ const ManageClientInfo = () => {
                                     </div>
                                     <button onClick={() => handleSort('employername')}> <span className="font-extrabold">↑↓</span></button>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className='w-[5%]  flex'>
                                 <div className='p-3'>
 
@@ -1748,12 +1748,12 @@ const ManageClientInfo = () => {
                                             <p> {item.clienttypename}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex '>
+                                    <div className='w-[10%]  flex '>
                                         <div className='p-3'>
                                             <p>{item.tenantofname} </p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex '>
+                                    <div className='w-[12%]  flex '>
                                         <div className='p-3'>
                                             <p>{item.tenantofpropertyname}</p>
                                         </div>
@@ -1763,7 +1763,7 @@ const ManageClientInfo = () => {
                                             <p>{item.country}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[6%]  flex overflow-hidden items-center'>
+                                    <div className='w-[8%]  flex overflow-hidden items-center'>
                                         <div className='p-3 ml-1'>
                                             <p>{item.city}</p>
                                         </div>
@@ -1778,11 +1778,11 @@ const ManageClientInfo = () => {
                                             <p>{item.email1 || item.email2}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[9%]  flex ml-2 items-center justify-center'>
+                                    {/* <div className='w-[9%]  flex ml-2 items-center justify-center'>
                                         <div className='p-3'>
                                             <p>{item.employername}</p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className='w-[7%]  flex'>
                                         <div className='p-3 text-[11px] text-blue-500 font-semibold'>
                                         {/* /manage/manageclientinfo/properties/:clientname */}

@@ -1760,6 +1760,9 @@ const ManageClientProperty = () => {
                     {/* {pageLoading && <div className=''>
                             <LinearProgress />
                         </div>} */}
+                        {!pageLoading && existingClientProperty && existingClientProperty.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
                             return <div className='w-full h-11 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
