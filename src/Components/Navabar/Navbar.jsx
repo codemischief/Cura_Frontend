@@ -612,9 +612,11 @@ const Navbar = () => {
                 PMA
               </h1>
               <div className="text-[11px] text-[#505050] space-y-[2px]">
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Active PMA Agreements
-                </p>
+                <Link to={"/activePmaAgreement"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Active PMA Agreements
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   All Project Contacts
                 </p>

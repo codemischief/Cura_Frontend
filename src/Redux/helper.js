@@ -126,4 +126,15 @@ export const pmaClientReceivable = (data) => {
     amount : billing.amount ? floorDecimal(billing.amount) : "0.00"
   }));
 }
+export const activePmaAgreement = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    startdate : billing.startdate? formatDate(billing.startdate): "",
+    enddate : billing.enddate? formatDate(billing.enddate): "",
+    lnlstartdate : billing.lnlstartdate? formatDate(billing.lnlstartdate): "",
+    lnlenddate : billing.lnlenddate? formatDate(billing.lnlenddate): "",
+    poastartdate : billing.poastartdate? formatDate(billing.poastartdate): "",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

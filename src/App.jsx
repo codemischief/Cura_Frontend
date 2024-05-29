@@ -74,6 +74,7 @@ import PmaBillingTrendView from "./Screens/Reports/reportPmaBillingTrendView";
 import PmaClientReport from "./Screens/Reports/pmaClientReport";
 import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
 import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
+import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
 
 const App = () => {
   const ROLES = {
@@ -229,6 +230,7 @@ const App = () => {
           <Route path="/pmaClientReport" element={<PmaClientReport/>} />
           <Route path="/pmaInvoiceList" element={<PmaInvoiceList/>} />
           <Route path="/pmaClientReceivable" element={<PmaClientReceivable/>}/>
+          <Route path="/activePmaAgreement" element={<ActivePmaAgreement/>}/>
           <Route path="/sendClientStatement" element={<SendClientStatement/>}/>
           {/* </Route>  */}
 
