@@ -6,8 +6,9 @@ import {
   NumberFilterField,
   TextFilterField,
 } from "./CustomFilterField";
+import { Create, Delete } from "@mui/icons-material";
 
-export default function connectionDataColumn(onQuery) {
+export default function connectionDataColumn(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
 
   const columns = [
@@ -19,6 +20,8 @@ export default function connectionDataColumn(onQuery) {
         minWidth: "50px",
       },
       sorting: false,
+      field:"srNo",
+
       render: (index) => {
         return (
           <Stack
@@ -112,6 +115,20 @@ export default function connectionDataColumn(onQuery) {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "150px",
+      },
+      render: (rowData) => {
+        return (
+          <div className="flex gap-2 justify-center">
+            <Create
+              sx={{ width: "20px", height: "20px" }}
+              onClick={() => handleEdit(rowData)}
+            />
+            <Delete
+              sx={{ width: "20px", height: "20px" }}
+              onClick={() => handleDelete(rowData)}
+            />
+          </div>
+        );
       },
     },
   ];

@@ -7,10 +7,8 @@ import { Form, Formik, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import { useDispatch } from "react-redux";
-import {
-  addProspectData,
-  editProspectData,
-} from "../../../Redux/slice/Research/ProspectSlice";
+import { addProspectData } from "../../../Redux/slice/Research/ProspectSlice";
+import { useSelector } from "react-redux";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -31,7 +29,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [openConfirmation, setOpenConfimation] = useState(false);
-  // const [isProspectDialogue, setIsProspectDialogue] = React.useState(false);
+  const { formSubmissionStatus } = useSelector((state) => state.prospect);
 
   console.log(isOpen, "isOpen");
 
@@ -58,8 +56,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = (await response.json()).data;
     setCityData(result);
   };
- 
-  console.log(editData,"editData");
 
   useEffect(() => {
     fetchCountryData();
@@ -81,15 +77,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     setCityData(result.data);
   };
 
-  // useEffect(() => {
-  //   if (isProspectDialogue) {
-  //     setTimeout(() => {
-  //       setIsProspectDialogue(false);
-  //       // handleClose();
-  //     }, 3000);
-  //   }
-  // }, [isProspectDialogue]);
-
   const formik = useFormik({
     initialValues: {
       countryId: editData?.country ? editData.country : 5,
@@ -104,14 +91,45 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         : "",
       suburb: editData?.suburb ? editData.suburb : "",
       id: editData?.id ? editData.id : undefined,
-      email1: editData?.email ? editData?.email : "",
-      phoneno: ""
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      setOpenConfimation(true);
+      const data = {
+        user_id: 1234,
+        personname: values.personname,
+        suburb: values.suburb,
+        city: values.city,
+        state: values.state,
+        phoneno: values.phoneNumber,
+        email1: values.email,
+        country: Number(values.countryId),
+        propertylocation: values.propertylocation,
+        possibleservices: values.possibleservices,
 
+        createdby: 1234,
+        isdeleted: false,
+      };
+      setOpenConfimation(true);
+      // if (editData?.id) {
+      //   try {
+      //     const response = await APIService.editProspects(data);
+      //   } catch (e) {
+      //     setApiError("something went wrong");
+      //   } finally {
+      //     setIsProspectDialogue(true);
+      //     setSubmitting(false);
+      //   }
+      // } else {
+      //   try {
+      //     const response = await APIService.addProspects(data);
+      //   } catch (e) {
+      //     setApiError("something went wrong");
+      //   } finally {
+      //     setIsProspectDialogue(true);
+      //     setSubmitting(false);
+      //   }
+      // }
     },
   });
 
@@ -123,30 +141,29 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         suburb: values.suburb,
         city: values.city,
         state: values.state,
+        phoneno: values.phoneNumber,
+        email: values.email,
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,
         createdby: 1234,
         isdeleted: false,
-        email1: values.email1,
-        phoneno: values.phoneno,
-        id:values.id
-
       };
 
       if (editData?.id) {
-        await dispatch(editProspectData(data));
-        handleClose();
-        openSucess("Prospect edited successfully");
+        const response = await APIService.editProspects(data);
       } else {
         await dispatch(addProspectData(data));
-        handleClose();
-        openSucess("New Prospect created successfully");
+        openSucess();
       }
     } catch (error) {
-      console.log(error.response, "error");
-      if (error.response) {
-        setApiError(error.response.data.detail);
+      console.log("error", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setApiError(error.response.data.message);
       } else {
         setApiError("An unexpected error occurred.");
       }
@@ -202,7 +219,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       </div>
                       <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                         <img
-                          onClick={() => handleClose(null)}
+                          onClick={handleClose}
                           className="w-[20px] h-[20px] cursor-pointer"
                           src={Cross}
                           alt="cross"
@@ -426,6 +443,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                     <div className="my-5 flex justify-center items-center gap-[10px] h-[84px]">
                       <button
                         className="w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md"
+                        //   onClick={handleEdit}
                         disabled={isSubmitting}
                         type="submit"
                       >
@@ -433,11 +451,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       </button>
                       <button
                         className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                        onClick={() =>
-                          handleClose(
-                            "Process cancelled, no new Prospect created."
-                          )
-                        }
+                        onClick={handleClose}
                         //   onClick={handleClose}
                       >
                         Cancel
@@ -454,7 +468,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
       {openConfirmation && (
         <ConfirmationModal
           open={openConfirmation}
-          loading={false}
+          loading={formSubmissionStatus === "loading"}
           btnTitle="Save"
           onClose={() => {
             setOpenConfimation(false);

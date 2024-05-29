@@ -94,7 +94,7 @@ export const addProspectData = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}addResearchProspect`,
+      `${env_URL_SERVER}addResearchProspects`,
       payload
     );
     dispatch(setFormSubmissionStatus("success"));

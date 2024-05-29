@@ -86,11 +86,10 @@ const SimpleTable = ({
           {data.length > 0 ? (
             data?.map((rowData, rowIndex) => (
               <tr
-                key={rowIndex}
+                key={rowData.id}
                 className="border-b dark:border-gray-700 h-[56px]"
               >
                 {columns.map((column, colIndex) => (
-                  
                   <td
                     key={colIndex}
                     colSpan={1}
@@ -102,13 +101,11 @@ const SimpleTable = ({
                     }}
                     className="py-3 text-center "
                   >
-                     
                     {column.render
                       ? column.render((pageNo - 1) * countPerPage + rowIndex)
-                      : column.field ==="action" ? <div className="flex gap-2 justify-center" >
-                        <Create sx={{width:"20px",height:"20px"}} onClick={()=>handleEdit(rowData)}/>
-                        <Delete sx={{width:"20px",height:"20px"}}  onClick={()=>handleDelete(rowData)}/>
-                      </div>: rowData[column.field]}
+                      : column.field === "action"
+                      ? render(rowData)
+                      : rowData[column.field]}
                   </td>
                 ))}
               </tr>
@@ -120,7 +117,6 @@ const SimpleTable = ({
           )}
         </tbody>
       </table>
-
     </div>,
     <PaginationComponent
       pageNo={pageNo}

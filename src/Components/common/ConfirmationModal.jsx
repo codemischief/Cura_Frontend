@@ -46,7 +46,7 @@ const ConfirmationModal = ({
               </Stack>
               <div>{description}</div>
             </Stack>
-            {errors && <span className="text-red-500">{errors}</span>}
+            {errors && <span className="text-red-500">*{errors}</span>}
 
             <div className="my-10 flex justify-center items-center gap-[10px]">
               <button

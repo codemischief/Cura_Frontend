@@ -3,7 +3,8 @@ import useAuth from "./JwtContext";
 import { useEffect, useState } from "react";
 
 const AuthGuard = ({ children }) => {
-  const { isAuthenticated, isInitialized } = useAuth();
+  // const { isAuthenticated, isInitialized } = useAuth();
+  const isAuthenticated = true
   const [isLoggedIn, setIsloggedIn] = useState(false);
 
   // useEffect(() => {

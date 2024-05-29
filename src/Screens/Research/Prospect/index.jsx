@@ -36,7 +36,7 @@ const PropectusPage = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.prospect);
-  const columns = useMemo(() => connectionDataColumn(), []);
+
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
@@ -44,8 +44,20 @@ const PropectusPage = () => {
   const [propmtType, setPromptType] = useState("");
   const [editData, setEditData] = useState({});
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
-  const [deleteError,setDeleteError] = useState("")
+  const [deleteError, setDeleteError] = useState("");
 
+  const handleEdit = (data) => {
+    setEditData({ ...data });
+    setOpenForm(true);
+  };
+  const handleDelete = (data) => {
+    setIsDeleteDialogue(data.id);
+  };
+
+  const columns = useMemo(
+    () => connectionDataColumn(handleEdit, handleDelete),
+    []
+  );
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -90,7 +102,7 @@ const PropectusPage = () => {
         pg_no: +pageNo,
         pg_size: +countPerPage,
       };
-      dispatch(getOrderPaymentData(obj));
+      // dispatch(getOrderPaymentData(obj));
     }
   };
 
@@ -196,6 +208,7 @@ const PropectusPage = () => {
     // SetOpenSubmissionPrompt(null);
     // setPromptType(alertVariant.cancel);
     // }
+    // setPromptType(alertVariant.cancel);
     setOpenForm(false);
     // setTimeout(() => {
     //   SetOpenSubmissionPrompt(null);
@@ -218,10 +231,6 @@ const PropectusPage = () => {
     }
   };
 
-  const handleDelete = (data) => {
-    setIsDeleteDialogue(data.id);
-  };
-
   useEffect(() => {
     if (openSubmissionPrompt) {
       setTimeout(() => {
@@ -231,20 +240,16 @@ const PropectusPage = () => {
     }
   }, [openSubmissionPrompt]);
 
-  const openSucess = (message) => {
-    SetOpenSubmissionPrompt(message);
+  const openSucess = () => {
+    SetOpenSubmissionPrompt("New Prospect created successfully");
     setPromptType(alertVariant.success);
-  };
-
-  const openCancel = (message) => {
-    SetOpenSubmissionPrompt(message);
-    setPromptType(alertVariant.cancel);
     setOpenForm(false);
   };
 
-  const handleEdit = (data) => {
-    setEditData({ ...data });
-    setOpenForm(true);
+  const openCancel = () => {
+    SetOpenSubmissionPrompt("Process cancelled, no new Prospect created.");
+    setPromptType(alertVariant.cancel);
+    setOpenForm(false);
   };
 
   return (
@@ -329,7 +334,6 @@ const PropectusPage = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteProspects}
           deleteError={deleteError}
-
         />
       )}
     </Stack>
