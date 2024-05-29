@@ -925,7 +925,11 @@ const ManageBuilder = () => {
                         {/* {pageLoading && <div className='ml-11 mt-9'>
                             <CircularProgress />
                         </div>} */}
-                        {!pageLoading && existingBuilders && existingBuilders.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                        {console.log(pageLoading)}
+                        {console.log(existingBuilders)}
+                        {console.log(existingBuilders)}
+                        {!pageLoading && existingBuilders && existingBuilders.length == 0 &&
+                         <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
                         {!pageLoading && existingBuilders && existingBuilders.map((item, index) => {

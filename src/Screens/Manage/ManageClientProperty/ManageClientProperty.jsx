@@ -33,6 +33,7 @@ import Select from "react-select"
 import DeleteClientProperty from './DeleteClientProperty';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import Draggable from 'react-draggable';
+import ActiveFilter from "../../../assets/active_filter.png"
 const ManageClientProperty = () => {
     const menuRef = useRef();
     const { state } = useLocation()
@@ -1549,7 +1550,7 @@ const ManageClientProperty = () => {
                                     {/* <p>Sr.</p> */}
                                 </div>
                             </div>
-                            <div className='w-[10%]   p-3'>
+                            <div className='w-[12%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[70%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={clientNameFilterInput} onChange={(e) => setClientNameFilterInput(e.target.value)} 
                                      onKeyDown={(event) => handleEnterToFilter(event,clientNameFilterInput,
@@ -1558,9 +1559,10 @@ const ManageClientProperty = () => {
                                         'client')}
                                     
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.client.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setClientNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} />}
+                                {clientNameFilter && <CharacterFilter inputVariable={clientNameFilterInput} setInputVariable={setClientNameFilterInput} handleFilter={newHandleFilter} filterColumn='client' menuRef={menuRef} filterType={filterMapState.client.filterType}/>}
                             </div>
 
                             <div className='w-[9%]   p-3'>
@@ -1573,12 +1575,13 @@ const ManageClientProperty = () => {
                                         'suburb')}
                                     
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.suburb.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertySuburbFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertySuburbFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertySuburbFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} />}
+                                {propertySuburbFilter && <CharacterFilter inputVariable={propertySuburbFilterInput} setInputVariable={setPropertySuburbFilterInput} handleFilter={newHandleFilter} filterColumn='suburb' menuRef={menuRef} filterType={filterMapState.suburb.filterType}/>}
                             </div>
 
-                            <div className='w-[8%]   p-3'>
+                            {/* <div className='w-[8%]   p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[65%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyCityFilterInput} onChange={(e) => setPropertyCityFilterInput(e.target.value)} 
                                     
@@ -1591,7 +1594,7 @@ const ManageClientProperty = () => {
                                     <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyCityFilter((prev) => !prev) }} /></button>
                                 </div>
                                 {propertyCityFilter && <CharacterFilter inputVariable={propertyCityFilterInput} setInputVariable={setPropertyCityFilterInput} handleFilter={newHandleFilter} filterColumn='city' menuRef={menuRef} />}
-                            </div>
+                            </div> */}
 
                             <div className='w-[10%] p-3'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-[5px]">
@@ -1603,9 +1606,10 @@ const ManageClientProperty = () => {
                                         'propertytype')}
                                     
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.propertytype.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyTypeFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} />}
+                                {propertyTypeFilter && <CharacterFilter inputVariable={propertyTypeFilterInput} setInputVariable={setPropertyTypeFilterInput} handleFilter={newHandleFilter} filterColumn='propertytype' menuRef={menuRef} filterType={filterMapState.propertytype.filterType}/>}
                             </div>
 
                             <div className='w-[9%]   p-3'>
@@ -1616,15 +1620,14 @@ const ManageClientProperty = () => {
                                         setPropertyStatusFilterInput,
                                         'contains',
                                         'status')}
-                                    
-                                    
                                     />
-                                    <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.status.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyStatusFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyStatusFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} />}
+                                {propertyStatusFilter && <CharacterFilter inputVariable={propertyStatusFilterInput} setInputVariable={setPropertyStatusFilterInput} handleFilter={newHandleFilter} filterColumn='status' menuRef={menuRef} filterType={filterMapState.status.filterType}/>}
                             </div>
 
-                            <div className='w-[16%]   p-3'>
+                            <div className='w-[18%]   p-3'>
                                 <div className="w-[75%] flex items-center bg-[#EBEBEB] rounded-[5px]">
                                     <input className="w-[75%] bg-[#EBEBEB] rounded-[5px] outline-none pl-2" value={propertyDescriptionFilterInput} onChange={(e) => setPropertyDescriptionFilterInput(e.target.value)} 
                                     
@@ -1633,9 +1636,11 @@ const ManageClientProperty = () => {
                                         'contains',
                                         'description')}
                                     />
-                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button>
+
+                                    {filterMapState.description.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPropertyDescriptionFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPropertyDescriptionFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} />}
+                                {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='description' menuRef={menuRef} filterType={filterMapState.description.filterType}/>}
                             </div>
 
                             <div className='w-[17%]   p-3'>
@@ -1648,9 +1653,10 @@ const ManageClientProperty = () => {
                                         'project')}
                                     
                                     />
-                                    <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPorjectNameFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.project.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setPorjectNameFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setPorjectNameFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[25%]'><img src={Filter} className='h-3 w-3' onClick={() => { setPorjectNameFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} />}
+                                {porjectNameFilter && <CharacterFilter inputVariable={porjectNameFilterInput} setInputVariable={setPorjectNameFilterInput} handleFilter={newHandleFilter} filterColumn='project' menuRef={menuRef} filterType={filterMapState.project.filterType} />}
                             </div>
                         </div>
                         <div className="w-[15%] ">
@@ -1663,9 +1669,10 @@ const ManageClientProperty = () => {
                                         'equalTo',
                                         'id')}
                                     />
-                                    <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button>
+                                    {filterMapState.id.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setIdFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[35%]'><img src={Filter} className='h-3 w-3' onClick={() => { setIdFilter((prev) => !prev) }} /></button> */}
                                 </div>
-                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} />}
+                                {idFilter && <NumericFilter inputVariable={idFilterInput} setInputVariable={setIdFilterInput} handleFilter={newHandleFilter} columnName='id' menuRef={menuRef} filterType={filterMapState.id.filterType}/>}
                             </div>
 
                             <div className='w-1/2  flex'>
@@ -1687,7 +1694,7 @@ const ManageClientProperty = () => {
                                     <p>Sr.</p>
                                 </div>
                             </div>
-                            <div className='w-[10%]  flex overflow-x-auto'>
+                            <div className='w-[12%]  flex overflow-x-auto'>
                                 <div className='p-3 '>
                                     <p>Client </p>
                                     <p>Name</p>
@@ -1701,12 +1708,12 @@ const ManageClientProperty = () => {
                                 </div>
                                 <button onClick={() => handleSort('suburb')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                            <div className='w-[8%]  flex'>
+                            {/* <div className='w-[8%]  flex'>
                                 <div className='p-3'>
                                     <p>Property City </p>
                                 </div>
                                 <button onClick={() => handleSort('city')}><span className="font-extrabold">↑↓</span></button>
-                            </div>
+                            </div> */}
                             <div className='w-[10%]  flex'>
                                 <div className='p-3'>
                                     <p>Property  </p>
@@ -1721,7 +1728,7 @@ const ManageClientProperty = () => {
                                 </div>
                                 <button onClick={() => handleSort('status')}><span className="font-extrabold">↑↓</span></button>
                             </div>
-                            <div className='w-[16%]  flex'>
+                            <div className='w-[18%]  flex'>
                                 <div className='px-3 py-5'>
                                     <p>Property Description <button onClick={() => handleSort('description')}><span className="font-extrabold">↑↓</span></button></p>
                                 </div>
@@ -1760,6 +1767,9 @@ const ManageClientProperty = () => {
                     {/* {pageLoading && <div className=''>
                             <LinearProgress />
                         </div>} */}
+                        {!pageLoading && existingClientProperty && existingClientProperty.length == 0 && <div className='h-10 border-gray-400 border-b-[1px] flex items-center'>
+                            <h1 className='ml-10'>No Records To Show</h1>
+                        </div>}
                     <div className='w-full h-[calc(100vh_-_18rem)] overflow-y-auto overflow-x-hidden'>
                         {!pageLoading && existingClientProperty && existingClientProperty.map((item, index) => {
                             return <div className='w-full h-11 overflow-hidden bg-white flex justify-between border-gray-400 border-b-[1px] text-xs'>
@@ -1769,7 +1779,7 @@ const ManageClientProperty = () => {
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[10%]  flex items-center '>
+                                    <div className='w-[12%]  flex items-center '>
                                         <div className='px-3 '>
                                             <p>{item.client}</p>
                                         </div>
@@ -1780,11 +1790,11 @@ const ManageClientProperty = () => {
                                             <p>{item.suburb}</p>
                                         </div>
                                     </div>
-                                    <div className='w-[8%]  flex items-center'>
+                                    {/* <div className='w-[8%]  flex items-center'>
                                         <div className='px-3'>
                                             <p>{item.city} </p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className='w-[10%]  flex items-center'>
                                         <div className='px-3'>
                                             <p>{item.propertytype}</p>
@@ -1797,7 +1807,7 @@ const ManageClientProperty = () => {
                                         </div>
 
                                     </div>
-                                    <div className='w-[16%]  flex items-center'>
+                                    <div className='w-[18%]  flex items-center'>
                                         <div className='px-3'>
                                             <p>{item.description} </p>
                                         </div>

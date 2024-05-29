@@ -31,6 +31,7 @@ import DropDown from "../../../Components/Dropdown/Dropdown";
 import { formatDate } from "../../../utils/formatDate";
 // import DayJS from 'react-dayjs';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
+import ActiveFilter from "../../../assets/active_filter.png"
 const ManageBankStatement = () => {
     // we have the module here
     const navigate = useNavigate()
@@ -798,9 +799,19 @@ const ManageBankStatement = () => {
     const [filterState, setFilterState] = useState([]);
     const fetchFiltered = async (mapState) => {
         setPageLoading(true);
+        setModeFilter(false);
+        setDateFilter(false);
+        setAmountFilter(false);
+        setClientFilter(false);
+        setTypeFilter(false);
+        setParticularsFilter(false);
+        setCRFilter(false);
+        setIdFilter(false);
+
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);
+        setFilterMapState((prev) => mapState)
         console.log(filterMapState)
         Object.keys(mapState).forEach(key => {
             if (mapState[key].filterType != "") {
@@ -1159,21 +1170,26 @@ const ManageBankStatement = () => {
                                         'contains',
                                         'mode')}
                                     />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                    {console.log(filterMapState)}
+                                    {console.log(filterMapState.mode.filterType)}
+                                    {filterMapState.mode.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setModeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    
                                 </div>
-                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='mode' menuRef={menuRef} />}
+                                {modeFilter && <CharacterFilter inputVariable={modeFilterInput} setInputVariable={setModeFilterInput} handleFilter={newHandleFilter} filterColumn='mode' menuRef={menuRef} filterType={filterMapState.mode.filterType}/>}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
                                     <input className="w-[70%] rounded-[5px] bg-[#EBEBEB] text-[11px] pl-2 outline-none" value={dateFilterInput} onChange={(e) => setDateFilterInput(e.target.value)}
+                                    type="date"
                                     onKeyDown={(event) => handleEnterToFilter(event,dateFilterInput,
                                         setDateFilterInput,
                                         'equalTo',
                                         'date')}
                                      />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                      {filterMapState.date.filterType == "" ?  <button className='w-[30%] px-1 py-2' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[30%] px-1 py-2' onClick={() => setDateFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]' onClick={() => setDateFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {dateFilter && <DateFilter inputVariable={dateFilterInput} setInputVariable={setDateFilterInput} handleFilter={newHandleFilter} columnName='date' menuRef={menuRef} />}
+                                {dateFilter && <DateFilter inputVariable={dateFilterInput} setInputVariable={setDateFilterInput} handleFilter={newHandleFilter} columnName='date' menuRef={menuRef} filterType={filterMapState.date.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1183,9 +1199,10 @@ const ManageBankStatement = () => {
                                         'contains',
                                         'crdr')}
                                     />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                    {filterMapState.crdr.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} />}
+                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} filterType={filterMapState.crdr.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1195,9 +1212,10 @@ const ManageBankStatement = () => {
                                         'equalTo',
                                         'amount')}
                                      />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                     {filterMapState.amount.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setAmountFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]' onClick={() => setAmountFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} />}
+                                {amountFilter && <NumericFilter inputVariable={amountFilterInput} setInputVariable={setAmountFilterInput} handleFilter={newHandleFilter} columnName='amount' menuRef={menuRef} filterType={filterMapState.amount.filterType}/>}
                             </div>
                             <div className='w-[30%] px-4 py-2.5'>
                                 <div className='w-[29%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1207,9 +1225,10 @@ const ManageBankStatement = () => {
                                         'contains',
                                         'particulars')}
                                      />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                     {filterMapState.particulars.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setParticularsFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]' onClick={() => setParticularsFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {particularsFilter && <CharacterFilter inputVariable={particularsFilterInput} setInputVariable={setParticularsFilterInput} handleFilter={newHandleFilter} filterColumn='particulars' menuRef={menuRef} />}
+                                {particularsFilter && <CharacterFilter inputVariable={particularsFilterInput} setInputVariable={setParticularsFilterInput} handleFilter={newHandleFilter} filterColumn='particulars' menuRef={menuRef} filterType={filterMapState.particulars.filterType} />}
                             </div>
                             <div className='w-[20%] px-4 py-2.5'>
                                 <div className='w-[44%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1219,9 +1238,10 @@ const ManageBankStatement = () => {
                                         'contains',
                                         'clientname')}
                                     />
-                                    <button className='px-1 py-2 w-[30%]' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button>
+                                     {filterMapState.clientname.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setClientFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {/* <button className='px-1 py-2 w-[30%]' onClick={() => setClientFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} />}
+                                {clientFilter && <CharacterFilter inputVariable={clientFilterInput} setInputVariable={setClientFilterInput} handleFilter={newHandleFilter} filterColumn='clientname' menuRef={menuRef} filterType={filterMapState.clientname.filterType}/>}
                             </div>
                             <div className='w-[12%] px-4 py-2.5'>
                                 {/* <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>

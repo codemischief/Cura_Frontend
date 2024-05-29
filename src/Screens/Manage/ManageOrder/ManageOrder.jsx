@@ -414,6 +414,13 @@ const ManageOrder = () => {
         const response = await APIService.addOrder(data);
         const res = await response.json();
         if (res.result == 'success') {
+            const d = {
+                "user_id": 1234,
+                "orderid": res.data['inserted data'],
+                "statusid": Number(formValues.order_info.status)
+            }
+            const statusresponse = await APIService.addOrderStatusChange(d);
+            const statusres = await statusresponse.json();
             // we need to open add success
             setShowAddConfirmation(false);
             setFormValues(initialValues);
@@ -801,6 +808,18 @@ const ManageOrder = () => {
 
     const fetchFiltered = async (mapState) => {
         setFilterMapState(mapState)
+        setClientNameFilter(false);
+                setAssignedToFilter(false);
+                setOrderDescriptionFilter(false);
+                setPropertyDescriptionFilter(false);
+                setServiceFilter(false);
+                setOrderStatusFilter(false);
+                setStartDateFilter(false);
+                setCompletionDateFilter(false);
+                setOrderDateFilter(false);
+                setAgingFilter(false);
+                setCreatedByFilter(false);
+                setIdFilter(false);
         const tempArray = [];
         // we need to query thru the object
         // console.log(filterMapState);

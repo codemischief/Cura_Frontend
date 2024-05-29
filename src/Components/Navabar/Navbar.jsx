@@ -172,9 +172,9 @@ const Navbar = () => {
             className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash || isFirstOpen ? "bg-white text-accent-blue" : ""
               }`}
           >
-            <button onClick={handleDashChange}>
+            <Link to="/dashboard">
               <p className=" font-sans text-md">Dashboard</p>
-            </button>
+            </Link>
           </div>
 
           <p className="font-thin font-sans text-md">Change Password</p>
@@ -218,7 +218,7 @@ const Navbar = () => {
               </h1>
               <div className="space-y-2 text-[#505050] text-[11px]">
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  <Link to="/admin/LOB">LOB (Line of business)</Link>
+                  <Link to="/admin/LOB">LOB </Link>
                 </p>
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/admin/service">Services</Link>
@@ -375,17 +375,19 @@ const Navbar = () => {
             </div>
             <div className="ml-5 mt-20 flex-col space-y-4">
               <h1 className="font-semibold text-[18px] text-[#282828] pl-1 hover:underline decoration-sky-500 decoration-4 ">
-                Statement
+                Bank Statement
               </h1>
               <div className="text-[11px] text-[#505050] space-y-1">
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/manage/bankstatement">Bank Statement</Link>
                 </p>
+
                 <Link to={"/sendClientStatement"}>
                   <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                     Send Client Statement
                   </p>
                 </Link>
+
               </div>
             </div>
           </div>
@@ -414,6 +416,9 @@ const Navbar = () => {
                   <Link to="/manage/manageclientreceipt">
                     Manage Client Receipt
                   </Link>{" "}
+                </p>
+                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                  Client Statement-CI,CR and OR(All Entities)
                 </p>
               </div>
             </div>
@@ -467,13 +472,16 @@ const Navbar = () => {
               </h1>
               <div className="text-[11px] text-[#505050] space-y-1">
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  <Link to="/manage/managepmaagreement">PMA Agreement</Link>
+                  <Link to="/manage/managepmaagreement"> Manage PMA Agreement</Link>
                 </p>
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  <Link to="/manage/managellagreement">L&L Agreement</Link>{" "}
+                  <Link to="/manage/managellagreement"> Manage L&L Agreement</Link>{" "}
                 </p>
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
-                  <Link to="/manage/pmaBilling">PMA Billing</Link>
+                  <Link to="/manage/pmaBilling">Manage PMA Billing</Link>
+                </p>
+                <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
+                  Send Client Statement
                 </p>
 
               </div>
