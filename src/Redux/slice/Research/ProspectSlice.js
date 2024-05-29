@@ -114,10 +114,10 @@ export const editProspectData = (payload) => async (dispatch) => {
       payload
     );
     dispatch(setFormSubmissionStatus("success"));
-    return response;
+    // return response;
   } catch (error) {
     dispatch(setFormSubmissionStatus("error"));
-    throw error;
+    // throw error;
   }
 };
 

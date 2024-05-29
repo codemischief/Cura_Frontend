@@ -3,11 +3,14 @@ import React, { useEffect, useState, useTransition } from "react";
 import Draggable from "react-draggable";
 import Cross from "../../../assets/cross.png";
 import { APIService } from "../../../services/API";
-import { Form, Formik, FormikProvider, useFormik } from "formik";
+import { Form, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import { useDispatch } from "react-redux";
-import { addProspectData } from "../../../Redux/slice/Research/ProspectSlice";
+import {
+  addProspectData,
+  editProspectData,
+} from "../../../Redux/slice/Research/ProspectSlice";
 import { useSelector } from "react-redux";
 
 const validationSchema = Yup.object().shape({
@@ -21,6 +24,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
+  console.log("editData", editData);
   const dispatch = useDispatch();
   // const [isPending, startTransition] = useTransition();
   const [countryData, setCountryData] = useState([]);
@@ -111,25 +115,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         isdeleted: false,
       };
       setOpenConfimation(true);
-      // if (editData?.id) {
-      //   try {
-      //     const response = await APIService.editProspects(data);
-      //   } catch (e) {
-      //     setApiError("something went wrong");
-      //   } finally {
-      //     setIsProspectDialogue(true);
-      //     setSubmitting(false);
-      //   }
-      // } else {
-      //   try {
-      //     const response = await APIService.addProspects(data);
-      //   } catch (e) {
-      //     setApiError("something went wrong");
-      //   } finally {
-      //     setIsProspectDialogue(true);
-      //     setSubmitting(false);
-      //   }
-      // }
     },
   });
 
@@ -151,7 +136,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
       };
 
       if (editData?.id) {
-        const response = await APIService.editProspects(data);
+        await dispatch(editProspectData(data));
+        openSucess();
       } else {
         await dispatch(addProspectData(data));
         openSucess();
@@ -447,7 +433,13 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         disabled={isSubmitting}
                         type="submit"
                       >
-                        {isSubmitting ? <CircularProgress /> : "Save"}
+                        {isSubmitting ? (
+                          <CircularProgress />
+                        ) : editData?.id ? (
+                          "Update"
+                        ) : (
+                          "Save"
+                        )}
                       </button>
                       <button
                         className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
@@ -469,7 +461,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle="Save"
+          btnTitle={editData?.id ? "Update" : "Save"}
           onClose={() => {
             setOpenConfimation(false);
           }}

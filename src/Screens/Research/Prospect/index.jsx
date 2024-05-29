@@ -47,6 +47,7 @@ const PropectusPage = () => {
   const [deleteError, setDeleteError] = useState("");
 
   const handleEdit = (data) => {
+    console.log("data", data);
     setEditData({ ...data });
     setOpenForm(true);
   };
@@ -203,18 +204,6 @@ const PropectusPage = () => {
     setEditData({});
   };
 
-  const handleFormClose = () => {
-    // if (Object.keys(editData).length > 0) {
-    // SetOpenSubmissionPrompt(null);
-    // setPromptType(alertVariant.cancel);
-    // }
-    // setPromptType(alertVariant.cancel);
-    setOpenForm(false);
-    // setTimeout(() => {
-    //   SetOpenSubmissionPrompt(null);
-    // }, 5000);
-  };
-
   const deleteProspects = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
@@ -241,13 +230,19 @@ const PropectusPage = () => {
   }, [openSubmissionPrompt]);
 
   const openSucess = () => {
-    SetOpenSubmissionPrompt("New Prospect created successfully");
+    let messageToUpdate = editData?.id
+      ? "New Prospect updated successfully"
+      : "New Prospect created successfully";
+    SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
   };
 
   const openCancel = () => {
-    SetOpenSubmissionPrompt("Process cancelled, no new Prospect created.");
+    let messageToUpdate = editData?.id
+      ? "Process cancelled, no new Prospect updated."
+      : "Process cancelled, no new Prospect created.";
+    SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
   };

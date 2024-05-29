@@ -102,9 +102,9 @@ const SimpleTable = ({
                     className="py-3 text-center "
                   >
                     {column.render
-                      ? column.render((pageNo - 1) * countPerPage + rowIndex)
-                      : column.field === "action"
-                      ? render(rowData)
+                      ? column.field === "action"
+                        ? column?.render(rowData)
+                        : column?.render((pageNo - 1) * countPerPage + rowIndex)
                       : rowData[column.field]}
                   </td>
                 ))}

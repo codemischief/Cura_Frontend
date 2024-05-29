@@ -207,7 +207,7 @@ const addProspects = async (data) => {
   return response;
 }
 const editProspects = async (data) => {
-  const response = await fetch(`${env_URL_SERVER}editResearchProspect`, METHOD_POST(data));
+  const response = await fetch(`${env_URL_SERVER}editResearchProspecta`, METHOD_POST(data));
   return response;
 }
 const deleteProspects = async (data) => {

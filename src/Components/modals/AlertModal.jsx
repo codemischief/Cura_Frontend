@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { CheckCircleOutlined, ReportProblem } from "@mui/icons-material";
 import { Modal } from "@mui/material";
 
 export const alertVariant = {
