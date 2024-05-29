@@ -381,7 +381,13 @@ const Navbar = () => {
                 <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
                   <Link to="/manage/bankstatement">Bank Statement</Link>
                 </p>
-                
+
+                <Link to={"/sendClientStatement"}>
+                  <p className="text-thin text-base hover:bg-[#DAE7FF] w-[80%] rounded-md p-1">
+                    Send Client Statement
+                  </p>
+                </Link>
+
               </div>
             </div>
           </div>
