@@ -172,9 +172,9 @@ const Navbar = () => {
             className={`w-24 h-7 flex items-center justify-center  rounded-sm  font-thin ${isToggledDash || isFirstOpen ? "bg-white text-accent-blue" : ""
               }`}
           >
-            <button onClick={handleDashChange}>
+            <Link to="/dashboard">
               <p className=" font-sans text-md">Dashboard</p>
-            </button>
+            </Link>
           </div>
 
           <p className="font-thin font-sans text-md">Change Password</p>
