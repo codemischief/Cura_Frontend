@@ -370,6 +370,8 @@ const EditClientProperty = (props) => {
               "status": Number(formValues.client_property.status),
               "propertydescription": formValues.client_property.propertydescription,
               "layoutdetails": formValues.client_property.layoutdetails,
+              "clientservicemanager": formValues.client_property.clientservicemanager,
+              "propertymanager": formValues.client_property.propertymanager,
               "email": formValues.client_property.email,
               "website": formValues.client_property.website,
               "initialpossessiondate": formValues.client_property.initialpossessiondate,
