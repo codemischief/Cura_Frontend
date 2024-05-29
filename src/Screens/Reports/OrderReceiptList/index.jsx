@@ -360,7 +360,6 @@ const OrderReceiptList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-
         />
       </div>
       {toast && (

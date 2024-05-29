@@ -4,11 +4,12 @@ import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
 import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcum from "../../../Components/common/HeaderBreadcum";
 import CustomButton from "../../../Components/common/CustomButton";
-import { addNewInvoices, getPmaBilling } from "../../../Redux/slice/pmaSlice";
+import { addNewInvoices, getPmaBilling , setPageNumber , setCountPerPage , setSorting } from "../../../Redux/slice/pmaSlice";
 import connectionDataColumn from "./columns";
 import PmaBillingTable from "./TableSkeleton";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
+import SimpleTable from "../../../Components/common/table/CustomTable";
 
 function getYearsRange() {
   const currentYear = new Date().getFullYear();
@@ -147,6 +148,27 @@ const PmaBilling = () => {
       dispatch(getPmaBilling(obj, selectedYear, selectedMonth, countPerPage));
     }
   };
+
+  const handlePageCountChange = (e) => {
+    dispatch(setCountPerPage(e.target.value));
+    dispatch(setPageNumber(1));
+  };
+  const handlePageChange = (value) => {
+    dispatch(setPageNumber(value));
+  };
+
+  const handleSortingChange = (accessor) => {
+    const sortOrder =
+      accessor === sorting.sort_by && sorting.sort_order === "asc"
+        ? "desc"
+        : "asc";
+    dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
+  };
+
+  const downloadExcel = async () => {
+   
+  };
+
   return (
     <Stack gap="1rem">
       <Navbar />
@@ -243,11 +265,26 @@ const PmaBilling = () => {
         </Stack>
 
         {pmaBillingData && (
-          <PmaBillingTable
+          // <PmaBillingTable
+          //   data={pmaBillingData}
+          //   column={columns}
+          //   loading={status === "loading"}
+          //   onRefresh={handleRefresh}
+          // />
+
+          <SimpleTable
+            columns={columns}
             data={pmaBillingData}
-            column={columns}
-            loading={status === "loading"}
-            onRefresh={handleRefresh}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
           />
         )}
       </Stack>
