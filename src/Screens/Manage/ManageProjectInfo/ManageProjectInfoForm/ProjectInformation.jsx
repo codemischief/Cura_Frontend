@@ -350,12 +350,13 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                         <select
                             className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                             name="builderid"
+                            id="builderselect"
                             value={formValues.project_info.builderid}
                             onChange={handleProjectInfoChange}
                         >
-                            <option value="none">Select Builder Name</option>
+                            <option value="none" >Select Builder Name</option>
                             {builderNameData.map((item) => (
-                                <option key={item.id} value={item.id}>
+                                <option key={item.id} value={item.id} >
                                     {item.buildername}
                                 </option>
                             ))}
@@ -424,7 +425,7 @@ const ProjectInformation = ({ formValues, setFormValues, projectTypeData, builde
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center items-center space-x-2 mt-2">
+            <div className="flex justify-center items-center space-x-2 mt-4">
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                     <input
                         type="checkbox"

@@ -345,7 +345,7 @@ const EditProjectInformation = ({formValues,setFormValues,projectTypeData,builde
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center items-center space-x-2 mt-2">
+            <div className="flex justify-center items-center space-x-2 mt-4">
                 <div className=" flex justify-center items-center font-semibold text-[12px]">
                         <input
                             type="checkbox"

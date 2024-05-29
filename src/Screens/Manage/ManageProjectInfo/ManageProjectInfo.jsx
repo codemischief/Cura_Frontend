@@ -185,9 +185,14 @@ const ManageProjectInfo = () => {
 
     const [formErrors, setFormErrors] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const handleDelete = (id) => {
-        console.log(id)
-        setCurrProject((prev) => id)
+    const [deleteProjectName,setDeleteProjectName] = useState("")
+    const handleDelete = (item) => {
+
+        // console.log(id)
+        console.log(item)
+        setDeleteProjectName(item.projectname)
+
+        setCurrProject((prev) => item.id)
         setShowDeleteModal(true);
     }
     const deleteProject = async (id) => {
@@ -962,7 +967,7 @@ const ManageProjectInfo = () => {
 
             </Backdrop>
             {isEditDialogue && <EditProjectInfo handleClose={() => setIsEditDialogue(false)} currProject={currProject} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
-            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} />}
+            {showDeleteModal && <DeleteProjectInfo handleClose={() => setShowDeleteModal(false)} item={currProject} handleDelete={deleteProject} showCancel={openCancelModal} projectName={deleteProjectName}/>}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Project Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} message="Changes Saved Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Project Deleted Successfully" />}
@@ -1293,7 +1298,7 @@ const ManageProjectInfo = () => {
                                     </div>
                                     <div className='w-1/2 flex overflow-hidden items-center px-3 justify-around '>
                                         <button onClick={() => handleEdit(item.id)}><img className=' w-4 h-4' src={Edit} alt="edit" /></button>
-                                        <button onClick={() => handleDelete(item.id)}><img className=' w-4 h-4' src={Trash} alt="trash" /></button>
+                                        <button onClick={() => handleDelete(item)}><img className=' w-4 h-4' src={Trash} alt="trash" /></button>
                                     </div>
                                 </div>
 
@@ -1398,7 +1403,7 @@ const ManageProjectInfo = () => {
                                     <button onClick={selectFirst}><div>Project Information</div></button>
                                 </div>
                                 <div className={`${selectedDialogue == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
-                                    <button onClick={selectSecond}><div>Project details</div></button>
+                                    <button onClick={selectSecond}><div>Project Details</div></button>
                                 </div>
                                 <div className={`${selectedDialogue == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={selectThird}><div>Bank details</div></button>

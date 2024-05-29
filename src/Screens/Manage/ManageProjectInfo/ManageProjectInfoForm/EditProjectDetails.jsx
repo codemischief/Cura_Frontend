@@ -390,11 +390,11 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
               </div>
               <div className="">
                 <div className="text-[13px]">Number of Buildings</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberofbuildings" value={formValues.project_info.numberofbuildings} onChange={handleProjectInfoChange}/>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="numberofbuildings" value={formValues.project_info.numberofbuildings} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
                 <div className="text-[13px]">Number of Floors</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="numberoffloors" value={formValues.project_info.numberoffloors} onChange={handleProjectInfoChange} />
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="numberoffloors" value={formValues.project_info.numberoffloors} onChange={handleProjectInfoChange} />
               </div>
             </div>
           </div>
@@ -421,8 +421,8 @@ const EditProjectDetails = ({formValues,setFormValues,projectLegalData,formError
                 <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="duespayablemonth" value={formValues.project_info.duespayablemonth} onChange={handleProjectInfoChange}/>
               </div>
               <div className="">
-                <div className="text-[13px]">Approx Total Month</div>
-                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="text" name="approxtotalunits" value={formValues.project_info.approxtotalunits} onChange={handleProjectInfoChange} />
+                <div className="text-[13px]">Approx Total Units</div>
+                <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="number" name="approxtotalunits" value={formValues.project_info.approxtotalunits} onChange={handleProjectInfoChange} />
               </div>
               <div className="">
                 <div className="text-[13px]">Other Details</div>
