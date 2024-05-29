@@ -8,34 +8,27 @@ import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
-// import {
-//   downloadPaymentDataXls,
-//   getOrderPaymentData,
-//   setCountPerPage,
-//   setInitialState,
-//   setPageNumber,
-//   setSorting,
-//   setStatus,
-// } from "../../../Redux/slice/reporting/OrderPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import {
+  deleteProspect,
   getPropect,
   setCountPerPage,
   setPageNumber,
+  setSorting,
 } from "../../../Redux/slice/Research/ProspectSlice";
 import { PlusOutlined } from "@ant-design/icons";
 import ProspectForm from "./ProspectForm";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
+import DeleteProspect from "./DeleteProspect";
 
 const PropectusPage = () => {
   const dispatch = useDispatch();
   const {
     PropectusData,
-    formSubmissionStatus,
     status,
     totalCount,
     sorting,
@@ -43,11 +36,6 @@ const PropectusPage = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.prospect);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const [showTable, setShowTable] = useState(false);
-  const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -55,6 +43,8 @@ const PropectusPage = () => {
   const [openSubmissionPrompt, SetOpenSubmissionPrompt] = useState(null);
   const [propmtType, setPromptType] = useState("");
   const [editData, setEditData] = useState({});
+  const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
+  const [deleteError,setDeleteError] = useState("")
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -116,10 +106,12 @@ const PropectusPage = () => {
       }
     }
   };
+
   const removeSearchValue = () => {
     setSearch("");
     setSearchInput("");
   };
+
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
@@ -137,14 +129,13 @@ const PropectusPage = () => {
         "propertylocation",
         "possibleservices",
       ],
-      filters: [],
-      sort_by: [],
-      order: "",
-      pg_no: 0,
-      pg_size: +pageNo,
+      filters: filter,
+      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
+      order: sorting.sort_order,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
       search_key: searchInput,
     };
-
     dispatch(getPropect(obj));
   }, [
     filter,
@@ -160,52 +151,12 @@ const PropectusPage = () => {
       accessor === sorting.sort_by && sorting.sort_order === "asc"
         ? "desc"
         : "asc";
-    // dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
+    dispatch(setSorting({ sort_by: accessor, sort_order: sortOrder }));
   };
 
   const downloadExcel = async () => {
-    // let obj = {
-    //   user_id: 1234,
-    //   startdate: startDate ?? "2021-01-01",
-    //   enddate: endDate ?? "2022-01-01",
-    //   rows: [
-    //     "type",
-    //     "id",
-    //     "paymentdate",
-    //     "monthyear",
-    //     "fy",
-    //     "amount",
-    //     "entityname",
-    //     "mode_of_payment",
-    //     "clientid",
-    //     "clientname",
-    //     "vendorname",
-    //     "orderid",
-    //     "orderdescription",
-    //     "serviceid",
-    //     "service",
-    //     "lobname",
-    //   ],
-    //   sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-
-    //   filters: formatedFilterData(filter),
-    //   search_key: search,
-    //   pg_no: 0,
-    //   pg_size: 0,
-    //   order: sorting.sort_order ? sorting.sort_order : undefined,
-    // };
-    // dispatch(downloadPaymentDataXls(obj)).then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "orderPayment.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
     let obj = {
       user_id: 1234,
-      startdate: startDate ?? "2021-01-01",
-      enddate: endDate ?? "2022-01-01",
       rows: [
         "id",
         "type",
@@ -228,8 +179,8 @@ const PropectusPage = () => {
       downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: 0,
-      pg_size: 0,
+      pg_no: 1,
+      pg_size: 15,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadPaymentDataXls(obj));
@@ -237,38 +188,72 @@ const PropectusPage = () => {
 
   const handleFormOpen = () => {
     setOpenForm(true);
+    setEditData({});
   };
 
   const handleFormClose = () => {
     // if (Object.keys(editData).length > 0) {
-    SetOpenSubmissionPrompt(null);
-    setPromptType(alertVariant.cancel);
+    // SetOpenSubmissionPrompt(null);
+    // setPromptType(alertVariant.cancel);
     // }
     setOpenForm(false);
-    setTimeout(() => {
-      SetOpenSubmissionPrompt(null);
-    }, 3000);
+    // setTimeout(() => {
+    //   SetOpenSubmissionPrompt(null);
+    // }, 5000);
+  };
+
+  const deleteProspects = async () => {
+    try {
+      const data = { user_id: 1234, id: isDeleteDialogue };
+      await dispatch(deleteProspect(data));
+      setIsDeleteDialogue(null);
+      SetOpenSubmissionPrompt("Prospect Deleted Successfully");
+      setPromptType(alertVariant.success);
+    } catch (error) {
+      if (error.response) {
+        setDeleteError(error.response.data.detail);
+      } else {
+        setDeleteError("An unexpected error occurred.");
+      }
+    }
+  };
+
+  const handleDelete = (data) => {
+    setIsDeleteDialogue(data.id);
   };
 
   useEffect(() => {
-    if (formSubmissionStatus === "success") {
-      handleFormClose();
+    if (openSubmissionPrompt) {
+      setTimeout(() => {
+        setPromptType("");
+        SetOpenSubmissionPrompt(null);
+      }, [2000]);
     }
-  }, [formSubmissionStatus]);
+  }, [openSubmissionPrompt]);
 
-  const openSucess = (message) =>{
-    SetOpenSubmissionPrompt(message)
-    setPromptType(alertVariant.success)
+  const openSucess = (message) => {
+    SetOpenSubmissionPrompt(message);
+    setPromptType(alertVariant.success);
+  };
 
-  }
+  const openCancel = (message) => {
+    SetOpenSubmissionPrompt(message);
+    setPromptType(alertVariant.cancel);
+    setOpenForm(false);
+  };
+
+  const handleEdit = (data) => {
+    setEditData({ ...data });
+    setOpenForm(true);
+  };
 
   return (
     <Stack gap="1rem">
       {openForm && (
         <ProspectForm
           isOpen={openForm}
-          handleClose={handleFormClose}
-          editData={{}}
+          handleClose={openCancel}
+          editData={editData}
           openSucess={openSucess}
         />
       )}
@@ -326,6 +311,8 @@ const PropectusPage = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
         />
       </div>
 
@@ -334,6 +321,15 @@ const PropectusPage = () => {
           isOpen={openSubmissionPrompt ? true : false}
           variant={propmtType}
           message={openSubmissionPrompt}
+        />
+      )}
+      {isDeleteDialogue && (
+        <DeleteProspect
+          openDialog={isDeleteDialogue ? true : false}
+          setOpenDialog={setIsDeleteDialogue}
+          handleDelete={deleteProspects}
+          deleteError={deleteError}
+
         />
       )}
     </Stack>

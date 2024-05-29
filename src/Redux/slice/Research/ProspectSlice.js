@@ -91,19 +91,46 @@ export const getPropect = (payloadObj, year, month) => async (dispatch) => {
 };
 
 export const addProspectData = (payload) => async (dispatch) => {
-  
-    try {
-      dispatch(setFormSubmissionStatus("loading"));
-      const response = await axios.post(
-        `${env_URL_SERVER}addResearchProspect`,
-        payload
-      );
-      dispatch(setFormSubmissionStatus("success"));
-      return response;
-    } catch (error) {
-      dispatch(setFormSubmissionStatus("error"));
-      throw error;
-    }
+  try {
+    dispatch(setFormSubmissionStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}addResearchProspect`,
+      payload
+    );
+    dispatch(setFormSubmissionStatus("success"));
+    return response;
+  } catch (error) {
+    console.log(error);
+    dispatch(setFormSubmissionStatus("error"));
+    throw error;
+  }
+};
+
+export const editProspectData = (payload) => async (dispatch) => {
+  try {
+    dispatch(setFormSubmissionStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}editResearchProspect`,
+      payload
+    );
+    dispatch(setFormSubmissionStatus("success"));
+    return response;
+  } catch (error) {
+    dispatch(setFormSubmissionStatus("error"));
+    throw error;
+  }
+};
+
+export const deleteProspect = (payload) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      `${env_URL_SERVER}deleteResearchProspect`,
+      payload
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const handleRefresh = (payload) => async (dispatch) => {};

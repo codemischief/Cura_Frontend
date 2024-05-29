@@ -7,7 +7,10 @@ import { Form, Formik, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import { useDispatch } from "react-redux";
-import { addProspectData } from "../../../Redux/slice/Research/ProspectSlice";
+import {
+  addProspectData,
+  editProspectData,
+} from "../../../Redux/slice/Research/ProspectSlice";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -55,6 +58,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = (await response.json()).data;
     setCityData(result);
   };
+ 
+  console.log(editData,"editData");
 
   useEffect(() => {
     fetchCountryData();
@@ -99,45 +104,14 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         : "",
       suburb: editData?.suburb ? editData.suburb : "",
       id: editData?.id ? editData.id : undefined,
+      email1: editData?.email ? editData?.email : "",
+      phoneno: ""
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      const data = {
-        user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
-        city: values.city,
-        state: values.state,
-        phoneno: values.phoneNumber,
-        email: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-
-        createdby: 1234,
-        isdeleted: false,
-      };
       setOpenConfimation(true);
-      // if (editData?.id) {
-      //   try {
-      //     const response = await APIService.editProspects(data);
-      //   } catch (e) {
-      //     setApiError("something went wrong");
-      //   } finally {
-      //     setIsProspectDialogue(true);
-      //     setSubmitting(false);
-      //   }
-      // } else {
-      //   try {
-      //     const response = await APIService.addProspects(data);
-      //   } catch (e) {
-      //     setApiError("something went wrong");
-      //   } finally {
-      //     setIsProspectDialogue(true);
-      //     setSubmitting(false);
-      //   }
-      // }
+
     },
   });
 
@@ -149,24 +123,30 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         suburb: values.suburb,
         city: values.city,
         state: values.state,
-        phoneno: values.phoneNumber,
-        email: values.email,
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,
         createdby: 1234,
         isdeleted: false,
+        email1: values.email1,
+        phoneno: values.phoneno,
+        id:values.id
+
       };
-  
+
       if (editData?.id) {
-        // Handle the case where editData has an id if necessary
+        await dispatch(editProspectData(data));
+        handleClose();
+        openSucess("Prospect edited successfully");
       } else {
-        dispatch(addProspectData(data));
-        // handleClose();
+        await dispatch(addProspectData(data));
+        handleClose();
+        openSucess("New Prospect created successfully");
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setApiError(error.response.data.message);
+      console.log(error.response, "error");
+      if (error.response) {
+        setApiError(error.response.data.detail);
       } else {
         setApiError("An unexpected error occurred.");
       }
@@ -174,7 +154,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
       formik.setSubmitting(false);
     }
   };
-  
+
   const {
     errors,
     values,
@@ -200,19 +180,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     fetchCity(e.target.value);
   };
 
-  console.log("loading", loading);
-  // console.log("isProspectDialogue", isProspectDialogue);
-
-  // return isProspectDialogue ? (
-  //   <SucessfullModal
-  //     isOpen={isProspectDialogue}
-  //     message={
-  //       editData.id
-  //         ? "Changes saved succesffuly"
-  //         : "New Prospect Created Successfully"
-  //     }
-  //   />
-  // ) : (
   return (
     <>
       <Modal
@@ -235,7 +202,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       </div>
                       <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
                         <img
-                          onClick={handleClose}
+                          onClick={() => handleClose(null)}
                           className="w-[20px] h-[20px] cursor-pointer"
                           src={Cross}
                           alt="cross"
@@ -459,7 +426,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                     <div className="my-5 flex justify-center items-center gap-[10px] h-[84px]">
                       <button
                         className="w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md"
-                        //   onClick={handleEdit}
                         disabled={isSubmitting}
                         type="submit"
                       >
@@ -467,7 +433,11 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       </button>
                       <button
                         className="w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md"
-                        onClick={handleClose}
+                        onClick={() =>
+                          handleClose(
+                            "Process cancelled, no new Prospect created."
+                          )
+                        }
                         //   onClick={handleClose}
                       >
                         Cancel

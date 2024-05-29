@@ -6,17 +6,14 @@ import { Modal } from "@mui/material";
 import { useState, useEffect } from "react";
 import { APIService } from '../../../services/API';
 import Draggable from 'react-draggable';
-const DeleteProspect = (props) => {
+const DeleteProspect = ({openDialog,setOpenDialog,handleDelete,deleteError}) => {
+
   const handleDialogClose = () => {
-    props.setOpenDialog(false);
+    setOpenDialog(null);
 };
-  const handleDelete = () => {
-    const data = {
-        
-    }
-  }
+
   return (
-    <Modal open={props.openDialog}
+    <Modal open={openDialog}
             fullWidth={true}
             className='flex justify-center items-center rounded-lg'
              >
@@ -35,11 +32,12 @@ const DeleteProspect = (props) => {
                     <div className="ml-48 mt-2 h-20 w-20 flex justify-center items-center rounded-full bg-[#FFEAEA] ">
                         <img className="h-10 w-10" src={DeletePhoto} alt="delete photo" />
                     </div>
+                    <span className='text-red-700 flex justify-center'>{deleteError}</span>
                     <div className="mt-4 w-full text-center">
                         <p>Are you sure you want to delete this prospect</p>
                     </div>
                     <div className="my-5 flex justify-center items-center gap-[10px]">
-                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => props.handleDelete(props.item.id)}>Delete</button>
+                        <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={handleDelete}>Delete</button>
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
                     </div>
                 </div>

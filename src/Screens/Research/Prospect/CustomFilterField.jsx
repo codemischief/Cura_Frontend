@@ -1,14 +1,15 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
 import { useSelector } from "react-redux";
+import { setFilters, setPageNumber } from "../../../Redux/slice/Research/ProspectSlice";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
   const { filter } = useSelector((state) => state.entityReceiptPayments);
 
   const handleFilterChange = (filters) => {
-    // dispatch(setEntityReceiptPaymentsFilters({...filters}));
-    // dispatch(setPageNumber(1))
+    dispatch(setFilters({...filters}))
+    dispatch(setPageNumber(1))
   };
 
   return (
