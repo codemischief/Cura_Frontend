@@ -64,6 +64,7 @@ import LobReceiptPaymentsConsolidated from "./Screens/Reports/LobReceiptPayments
 
 
 import DeleteById from "./Screens/Admin/DeleteById/DeleteById";
+import SendClientStatement from "./Screens/Manage/SendClientStatement";
 
 import ClientReceiptList from "./Screens/Reports/ClientReceiptList";
 import VendorInvoiceList from "./Screens/Reports/VendorInvoiceList";
@@ -228,6 +229,7 @@ const App = () => {
           <Route path="/pmaClientReport" element={<PmaClientReport/>} />
           <Route path="/pmaInvoiceList" element={<PmaInvoiceList/>} />
           <Route path="/pmaClientReceivable" element={<PmaClientReceivable/>}/>
+          <Route path="/sendClientStatement" element={<SendClientStatement/>}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
