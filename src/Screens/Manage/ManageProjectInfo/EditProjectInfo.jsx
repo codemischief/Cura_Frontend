@@ -476,7 +476,7 @@ const EditProjectInfo = ({handleClose,currProject,showSuccess ,showCancel}) => {
                                     <button onClick={() => setSelectedDialogue(1)}><div>Project Information</div></button>
                                 </div>
                                 <div className={`${selectedDialogue == 2 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
-                                    <button onClick={() => setSelectedDialogue(2)}><div>Project details</div></button>
+                                    <button onClick={() => setSelectedDialogue(2)}><div>Project Details</div></button>
                                 </div>
                                 <div className={`${selectedDialogue == 3 ? "bg-blue-200" : "bg-[#EBEBEB]"}  px-4 py-1 rounded-md text-[12px] font-semibold flex justify-center items-center h-7 w-40`}>
                                     <button onClick={() => setSelectedDialogue(3)}><div>Bank details</div></button>

@@ -76,13 +76,13 @@ const fetchCityData = async (id) => {
             } value={formValues.client_poa.poacountry}>
               {/* <option >Select country</option> */}
               {allCountries && allCountries.map(item => {
-                if(item[0] == formValues.client_poa.poacountry) {
-                  return <option key={item[0]} value={item[0]} selected>
-                      {item[1]}
+                if(item.id == formValues.client_poa.poacountry) {
+                  return <option key={item.id} value={item.id} selected>
+                      {item.name}
                   </option>
                   }else {
-                      return <option key={item[0]} value={item[0]} >
-                      {item[1]}
+                      return <option key={item.id} value={item.id} >
+                      {item.name}
                   </option>
                   }
 })}

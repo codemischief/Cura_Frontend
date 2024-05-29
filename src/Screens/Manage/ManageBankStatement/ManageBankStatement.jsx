@@ -247,7 +247,9 @@ const ManageBankStatement = () => {
         fetchBankStatement();
     }
     const addCreditRecipt = async () => {
-
+        if(!validateCR()) {
+            return ;
+        }
         const data = {
             "user_id": userId || 1234,
             "receivedby": Number(formValues.employee),
@@ -490,19 +492,18 @@ const ManageBankStatement = () => {
         }
         if (!formValues.employee) {
             setFormErrors((existing) => {
-                return { ...existing, employee: "Enter Employee" }
+                return { ...existing, employee: "Select Received By" }
             })
             res = false;
         } else {
             setFormErrors((existing) => {
-                return { ...existing, particulars: "" }
+                return { ...existing, employee: "" }
             })
         }
         console.log(formValues.amount);
-        // console.log(!Number.isInteger(formValues.amount));
         if (!formValues.amount) {
             setFormErrors((existing) => {
-                return { ...existing, amount: "Amount is Mandatory" }
+                return { ...existing, amount: "Enter Amount" }
             })
             res = false;
         } else {
@@ -512,7 +513,7 @@ const ManageBankStatement = () => {
         }
         if (!formValues.date) {
             setFormErrors((existing) => {
-                return { ...existing, date: "Select a date" }
+                return { ...existing, date: "Select Date" }
             })
             res = false;
         } else {
@@ -532,7 +533,7 @@ const ManageBankStatement = () => {
         }
         if (!formValues.how) {
             setFormErrors((existing) => {
-                return { ...existing, how: "Select How paid" }
+                return { ...existing, how: "Select How Received" }
             })
             res = false;
         } else {
@@ -542,7 +543,7 @@ const ManageBankStatement = () => {
         }
         if (!formValues.client) {
             setFormErrors((existing) => {
-                return { ...existing, client: "Enter Client" }
+                return { ...existing, client: "Select Client" }
             })
             res = false;
         } else {
@@ -1359,8 +1360,8 @@ const ManageBankStatement = () => {
                                                 <p>{ele[1]}</p> : ""))} */}
                                     </div>
 
-                                    <div className='w-[12%] px-6  py-4 text-blue-600 cursor-pointer font-medium '>
-                                        {(!(item.clientid) && item.crdr === "CR" && item.clientname == "") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
+                                    <div className='w-[12%] px-6  py-4 text-blue-600  font-medium '>
+                                        {(!(item.clientid) && item.crdr === "CR" && item.clientname == "") && <p className="cursor-pointer" onClick={() => openCreditRecipt(item)}>Enter CR</p>}
 
                                         {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                     </div>
@@ -1523,7 +1524,7 @@ const ManageBankStatement = () => {
                                 <form onSubmit={handleSubmit}>
                                     <div className="w-full mt-[5px] ">
                                         <div className="flex gap-[48px] justify-center ">
-                                            <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                            <div className=" space-y-[20px] py-[20px] px-[10px]">
                                                 <div className="">
                                                     <div className="text-[13px]">Mode<label className="text-red-500">*</label></div>
                                                     <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm " name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
@@ -1534,23 +1535,23 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[13px]">Particulars<label className="text-red-500">*</label></div>
                                                     {/* <input className="w-[230px] h-[40px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="particulars" value={formValues.particulars} onChange={handleChange} /> */}
                                                     <input className=" text-[11px] pl-4 break-all w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm text-xs " name="particulars" value={formValues.particulars} onChange={handleChange}  />
-                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.particulars}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.particulars}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[13px]">Amount<label className="text-red-500">*</label></div>
                                                     <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange}  />
-                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.amount}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amount}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[13px]">Vendor</div>
                                                     <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                                        <option >Select Vendor List</option>
+                                                        <option >Select Vendor </option>
                                                         {vendorList && vendorList.map(item => (
                                                             <option value={item}>
                                                                 {item[1]}
@@ -1560,11 +1561,11 @@ const ManageBankStatement = () => {
                                                     
                                                 </div>
                                             </div>
-                                            <div className="space-y-[12px] py-[20px] px-[10px]">
+                                            <div className="space-y-[20px] py-[20px] px-[10px]">
                                                 <div className="">
                                                     <div className="text-[13px]">Date <label className="text-red-500">*</label></div>
                                                     <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="date" name="date" value={formValues.date} onChange={handleChange}  />
-                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.date}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.date}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[13px]">CR/DR <label className="text-red-500">*</label></div>
@@ -1576,7 +1577,7 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[10px] text-[#CD0000] ">{formErrors.crdr}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.crdr}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[13px]">How Recieved(CR)?</div>
@@ -1613,21 +1614,23 @@ const ManageBankStatement = () => {
                 maxwidth={'md'} bankStatement={currentStatement}>
                 {/* <h1>{currentStatement}</h1> */}
                 <>
-                    {/* <Draggable> */}
+                    <Draggable handle="div.move">
                         <div className='flex justify-center items-center mt-[100px]'>
-                            <div className="w-[1050px] h-[500px] bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">Enter CR</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <img onClick={handleCloseCR} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
+                            <div className="w-[1050px] h-[500px] bg-white rounded-lg relative">
+                                <div className="move cursor-move">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">Enter CR</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                            <img onClick={handleCloseCR} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
+                                        </div>
                                     </div>
                                 </div>
                                 {/* <form onSubmit={handleCR} > */}
                                     <div className="w-full mt-[5px] ">
                                         <div className="flex gap-[48px] justify-center items-center">
-                                            <div className=" space-y-[5px] py-[5px] px-[5px]">
+                                            <div className=" space-y-3 py-[5px] px-[5px]">
                                                 <div className="">
                                                     <div className="text-[14px]">Cura Office<label className="text-red-500">*</label></div>
                                                     <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
@@ -1644,19 +1647,19 @@ const ManageBankStatement = () => {
                                                     </select> */}
                                                     
                                                     <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={() => {}} formValueName="employee" value={formValues.employee} idName="id"/>
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.employee}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.employee}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
                                                     <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
-
+                                                        <option value="" hidden> Select Mode</option>
                                                         {mode && mode.map(item => (
                                                             <option key={item} value={item[0]}>
                                                                 {item[1]}
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.modeofpayment}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.modeofpayment}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Recieved Date<label className="text-red-500">*</label></div>
@@ -1690,10 +1693,10 @@ const ManageBankStatement = () => {
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.how}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.how}</div>
                                                 </div>
                                             </div>
-                                            <div className=" space-y-[12px] py-[20px] px-[10px]">
+                                            <div className=" space-y-3 py-[20px] px-[10px] mt-[-105px]">
 
                                                 <div className="">
                                                     <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
@@ -1743,32 +1746,32 @@ const ManageBankStatement = () => {
                                                     </option>
                                                 ))}
                                             </select> */}
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.client}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Receipt Description</div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="desc" value={formValues.desc} onChange={handleChange} />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.desc}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.desc}</div>
                                                 </div>
-                                                <div className="">
+                                                {/* <div className="">
                                                     <div className="text-[14px]">Pending Amount </div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="pending" value={formValues.pending} onChange={handleChange} disabled />
                                                     <div className="text-[12px] text-[#CD0000] ">{formErrors.pending}</div>
-                                                </div>
+                                                </div> */}
                                                 <div className="">
                                                     <div className="text-[14px]">Service Amount</div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.serviceAmount}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Reimbursement Amount </div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbAmount" value={formValues.reimbAmount} onChange={handleChange} />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.reimbAmount}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.reimbAmount}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">TDS </div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
-                                                    <div className="text-[12px] text-[#CD0000] ">{formErrors.TDS}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.TDS}</div>
                                                 </div>
 
 
@@ -1780,14 +1783,14 @@ const ManageBankStatement = () => {
 
                                     <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Save</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>
                                 {/* </form> */}
                             </div>
                         </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                 </>
             </Modal>
 
@@ -1797,25 +1800,25 @@ const ManageBankStatement = () => {
             <Modal open={isConfirmManageStatementDialogue} >
                 <>
                     {/* <Draggable> */}
-                        <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48' >
-                            <div className="h-[40px] flex justify-center items-center">
+                        <div className='w-2/4 h-64 rounded-xl bg-white mx-auto mt-48 relative' >
+                            <div className="h-[40px]  flex justify-center items-center">
                                 <div className="w-[150px] mt-10 w-full text-center">
                                     <div className="text-[24px]">Save Bank Statement</div>
                                     <hr class="w-60 h-1 mx-auto  bg-gray-100"></hr>
                                 </div>
 
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                     <img onClick={handleCloseForConfirm} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                                 </div>
                             </div>
                             <div className="mt-8 w-full text-center">
-                                <div className="text-[14px]">Client:{clientName}</div>
+                                {/* <div className="text-[14px]">Client:{clientName}</div> */}
                             </div>
-                            <div className="mt-4 w-full text-center">
+                            <div className="mt-14 w-full text-center ">
                                 <p className="text-[14px]">Are you sure you want to Add new Bank statement</p>
                             </div>
                             <div className="my-10 flex justify-center items-center gap-[10px]">
-                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={handleCR}>Save</button>
+                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={handleCR}>Add</button>
                                 <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
                             </div>
                         </div>

@@ -65,13 +65,13 @@ const fetchCityData = async (id) => {
             }>
               <option >Select country</option>
               {country && country.map(item => {
-                if(item[0] == 5) {
-                  return <option key={item[0]} value={item[0]} selected>
-                  {item[1]}
+                if(item.id == 5) {
+                  return <option key={item.id} value={item.id} selected>
+                  {item.name}
                   </option>
                   }else {
-                      return <option key={item[0]} value={item[0]} >
-                      {item[1]}
+                      return <option key={item.id} value={item.id} >
+                      {item.name}
                   </option>
                   }
 })}
