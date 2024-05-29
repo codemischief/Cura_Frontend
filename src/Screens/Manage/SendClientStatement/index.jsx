@@ -4,10 +4,12 @@ import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
-import SimpleTable from "../../../Components/common/table/CustomTable";
+import SimpleTable from "../../../Components/common/table/ClientPortalTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import CustomButton from "../../../Components/common/CustomButton";
+import AsyncSelect from "react-select/async";
+import { APIService } from '../../../services/API';
 
 import { useDispatch } from "react-redux";
 import {
@@ -231,45 +233,76 @@ const OrderReceiptList = () => {
   };
 
   const handleShow = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "recddate",
-          "fy",
-          "monthyear",
-          "amount",
-          "entityname",
-          "paymentmode",
-          "clientid",
-          "clientname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname"
-        ],
-        sort_by: ["id"],
-        order: "desc",
-        filters: [],
-        search_key: "",
-        pg_no: 1,
-        pg_size: 15,
-      };
-      dispatch(getOrderReceiptData(obj));
-      setShowTable(true);
-    } else {
-      // setError((prev) => ({
-      //   ...prev,
-      //   year: selectedYear ? prev.year : "please select a year first",
-      //   month: selectedMonth ? prev.month : "please select a year first",
-      // }));
-    }
+
+    let obj = {
+      user_id: 1234,
+      startdate: "2020-01-01",
+      enddate: "2022-01-01",
+      rows: [
+        "id",
+        "type",
+        "recddate",
+        "fy",
+        "monthyear",
+        "amount",
+        "entityname",
+        "paymentmode",
+        "clientid",
+        "clientname",
+        "orderid",
+        "orderdescription",
+        "serviceid",
+        "service",
+        "lobname"
+      ],
+      sort_by: ["id"],
+      order: "desc",
+      filters: [],
+      search_key: "",
+      pg_no: 1,
+      pg_size: 15,
+    };
+    dispatch(getOrderReceiptData(obj));
+    setShowTable(true);
   };
+
+  const [query, setQuery] = useState('')
+
+  const [selectedOption, setSelectedOption] = useState({
+    label: "Enter Client Name",
+    value: null
+  });
+
+  const handleClientNameChange = (e) => {
+    console.log('hey')
+    console.log(e)
+
+    setSelectedOption(e)
+  }
+
+  const loadOptions = async (e) => {
+    console.log(e)
+    if (e.length < 3) return;
+    const data = {
+      "user_id": 1234,
+      "pg_no": 0,
+      "pg_size": 0,
+      "search_key": e
+    }
+    const response = await APIService.getClientAdminPaginated(data)
+    const res = await response.json()
+    const results = res.data.map(e => {
+      return {
+        label: e[1],
+        value: e[0]
+      }
+    })
+    if (results === 'No Result Found') {
+      return []
+    }
+    return results
+  }
+
   return (
     <Stack gap="1rem">
       <Navbar />
@@ -289,11 +322,11 @@ const OrderReceiptList = () => {
             />
             {showTable && (
               <CustomButton
-              title="Send Client Statement"
-              onClick={() => {
-                showTable && setOpenModal(true);
-              }}
-            />
+                title="Send Client Statement"
+                onClick={() => {
+                  showTable && setOpenModal(true);
+                }}
+              />
             )}
           </div>
         </div>
@@ -311,7 +344,61 @@ const OrderReceiptList = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <DatePicker
+            <div className="">
+              <div className="text-[13px]">
+                Client <label className="text-red-500">*</label>
+              </div>
+              <AsyncSelect
+                onChange={handleClientNameChange}
+                value={selectedOption}
+                loadOptions={loadOptions}
+                cacheOptions
+                defaultOptions
+                onInputChange={(value) => setQuery(value)}
+
+                styles={{
+                  control: (provided, state) => ({
+                    ...provided,
+                    minHeight: 23,
+                    lineHeight: '0.8',
+                    height: 28,
+                    width: 200,
+                    fontSize: 10,
+                    // padding: '1px'
+                  }),
+                  // indicatorSeparator: (provided, state) => ({
+                  //   ...provided,
+                  //   lineHeight : '0.5',
+                  //   height : 2,
+                  //   fontSize : 12 // hide the indicator separator
+                  // }),
+                  dropdownIndicator: (provided, state) => ({
+                    ...provided,
+                    padding: '1px', // adjust padding for the dropdown indicator
+                  }),
+                  options: (provided, state) => ({
+                    ...provided,
+                    fontSize: 10// adjust padding for the dropdown indicator
+                  }),
+                  menu: (provided, state) => ({
+                    ...provided,
+                    width: 230, // Adjust the width of the dropdown menu
+                  }),
+                }}
+              />
+            </div>
+
+            <div className="">
+              <div className="text-sm">From <label className="text-red-500">*</label></div>
+              <input className="w-40 h-7 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="amount" />
+            </div>
+
+            <div className="">
+              <div className="text-sm">To <label className="text-red-500">*</label></div>
+              <input className="w-40 h-7 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="amount" />
+            </div>
+
+            {/* <DatePicker
               label={"Select Start Date"}
               onChange={handleDateChange}
               name="startDate"
@@ -320,7 +407,7 @@ const OrderReceiptList = () => {
               label={"Select End Date"}
               onChange={handleDateChange}
               name="endDate"
-            />
+            /> */}
             <Button
               variant="outlined"
               //   onClick={handleShow}
@@ -342,12 +429,60 @@ const OrderReceiptList = () => {
                 },
               }}
               onClick={handleShow}
-              disabled={!(startDate && endDate)}
+            // disabled={!(startDate && endDate)}
             >
               View Statement
             </Button>
           </Stack>
         </Stack>
+
+
+        {showTable && <div className="py-1">
+          <div className="font-semibold mb-2 text-base ">
+            Statement of Account
+          </div>
+          <Stack
+            spacing={0.5}
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+            >
+              <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
+                <div className="">Client Name</div>
+                <div className=""></div>
+              </div>
+            </Stack>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+            >
+              <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
+                <div className="">Data Range</div>
+                <div className=""></div>
+              </div>
+            </Stack>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+            >
+              <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
+                <div className="">Opening Balance</div>
+                <div className=""></div>
+              </div>
+            </Stack>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+            >
+              <div className="border-b-2 space-x-36 w-full text-xs px-2 font-medium flex  items-center py-0.5">
+                <div className="">Current Balance</div>
+                <div className=""></div>
+              </div>
+            </Stack>
+          </Stack>
+        </div>
+        }
 
         <SimpleTable
           columns={columns}
