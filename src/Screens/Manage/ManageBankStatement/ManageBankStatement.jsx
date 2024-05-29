@@ -260,7 +260,9 @@ const ManageBankStatement = () => {
             "receiptdesc": formValues.desc,
             "serviceamount": Number(formValues.serviceAmount),
             "reimbursementamount": Number(formValues.reimbAmount),
-            "tds": Number(formValues.TDS)
+            "tds": Number(formValues.TDS),
+            "banktransactionid" : Number(statementIdForClientReceipt),
+            "officeid" : 2
         }
         setClientName(formValues.client);
         const response = await APIService.addClientReceipt(data);
@@ -887,8 +889,11 @@ const ManageBankStatement = () => {
         setCurrentPage(value)
         fetchPageData(value);
     }
+    // const [currentStatementId,setCurrentStatementId] = useState(-1);
+    const [statementIdForClientReceipt,setStatementIdForClientReceipt] = useState(-1);
     const [currentMode, setCurrentMode] = useState("")
     const openCreditRecipt = (item) => {
+        setStatementIdForClientReceipt((prev) => item.id)
         console.log(item)
         const modeOfThisItem = item.modeofpayment;
         mode.map(ele => {
@@ -1355,7 +1360,7 @@ const ManageBankStatement = () => {
                                     </div>
 
                                     <div className='w-[12%] px-6  py-4 text-blue-600 cursor-pointer font-medium '>
-                                        {(!(item.clientid) && item.crdr === "CR") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
+                                        {(!(item.clientid) && item.crdr === "CR" && item.clientname == "") && <p onClick={() => openCreditRecipt(item)}>Enter CR</p>}
 
                                         {/* <p onClick={openCreditRecipt}>{item.crdr}</p> */}
                                     </div>
