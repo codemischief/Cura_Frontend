@@ -622,9 +622,11 @@ const Navbar = () => {
                     All Project Contacts
                   </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Details for Advance Holding Amount
-                </p>
+                <Link to={"/advanceHoldingAmount"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Details for Advance Holding Amount
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   PMA Client Statement-CI,CR and OR(All Entities)
                 </p>

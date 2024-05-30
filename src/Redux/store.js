@@ -17,6 +17,7 @@ import pmaInvoiceList from "./slice/reporting/pmaInvoiceList";
 import pmaClientReceivable from "./slice/reporting/ReportPmaClientReceivable"
 import ActivePmaAgreement from "./slice/reporting/ActivePmaAgreement";
 import ProjectContacts from "./slice/reporting/ProjectContacts";
+import AdvanceHoldingAmount from "./slice/reporting/AdvanceHoldingAmount";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -34,6 +35,7 @@ export const store = configureStore({
     pmaClientReceivable : pmaClientReceivable,
     activePmaAgreement: ActivePmaAgreement,
     projectContacts: ProjectContacts,
+    advanceHoldingAmount: AdvanceHoldingAmount,
   },
   // Add the RTK Query API middleware
 });
