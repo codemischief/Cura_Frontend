@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setPmaClientReportFilters, setPageNumber } from "../../../Redux/slice/reporting/DuplicateClientReports";
+import { setClientBankDetailsFilters, setPageNumber } from "../../../Redux/slice/reporting/ClientBankDetails";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.duplicateClientsReport);
+  const { filter } = useSelector((state) => state.clientBankDetails);
 
   const handleFilterChange = (filters) => {
-    dispatch(setPmaClientReportFilters({...filters}));
+    dispatch(setClientBankDetailsFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 

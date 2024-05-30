@@ -7,7 +7,7 @@ import {
 } from "../../helper";
 
 const initialState = {
-  duplicateClientsReport: [],
+  clientBankDetails: [],
   totalAmount: {},
   status: "",
   filter: {},
@@ -23,12 +23,12 @@ const initialState = {
 };
 
 export const pmaSlice = createSlice({
-  name: "duplicateClientsReport",
+  name: "clientBankDetails",
   initialState,
   reducers: {
-    setDuplicateClientsReport: (state, { payload }) => {
+    setClientBankDetails: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.duplicateClientsReport = duplicateClientsReport(data.data, year, month);
+      state.clientBankDetails = duplicateClientsReport(data.data, year, month);
       console.log(payload.data)
       console.log(payload.data.total)
       state.totalCount = payload.data.total_count;
@@ -57,7 +57,7 @@ export const pmaSlice = createSlice({
         sort_order: "",
       };
     },
-    setDuplicateClientsReportFilters: (state, { payload }) => {
+    setClientBankDetailsFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -69,38 +69,38 @@ export const pmaSlice = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setDuplicateClientsReport,
+  setClientBankDetails,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setPmaClientReportFilters,
+  setClientBankDetailsFilters,
   setInitialState,
   setSorting,
 } = pmaSlice.actions;
 
-export const getDuplicateClientsReport =
+export const getClientBankDetails =
   (payloadObj, year, month) => async (dispatch) => {
     console.log("called");
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportDuplicateClients`,
+        `${env_URL_SERVER}reportClientBankDetails`,
         payloadObj
       );
 
-      dispatch(setDuplicateClientsReport({ data: response.data, year, month }));
+      dispatch(setClientBankDetails({ data: response.data, year, month }));
       dispatch(setStatus("success"));
     } catch (err) {
       dispatch(setStatus("error"));
     }
   };
 
-export const downloadDuplicateClientsReport =
+export const downloadClientBankDetails =
   (payloadObj, year, month) => async (dispatch) => {
     try {
       dispatch(setStatus("loading"));
       const response = await axios.post(
-        `${env_URL_SERVER}reportDuplicateClients`,
+        `${env_URL_SERVER}reportClientBankDetails`,
         payloadObj
       );
       if ((response.data.filename, payloadObj.user_id)) {
@@ -131,7 +131,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportPMAClientPortalReport.xlsx");
+    FileSaver.saveAs(blob, "ClientBankDetails.xlsx");
   } catch (error) {
     console.log("error", error);
   }

@@ -23,6 +23,7 @@ import pmaClientStatement from "./slice/reporting/PmaClientStatement";
 import NonPmaClientStAndRec from "./slice/reporting/NonPmaClientStAndRec";
 import ClientStatementAllEntities from "./slice/reporting/ClientStatementAllEntities";
 import DuplicateClientReports from "./slice/reporting/DuplicateClientReports";
+import ClientBankDetails from "./slice/reporting/ClientBankDetails";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -45,7 +46,8 @@ export const store = configureStore({
     pmaClientStatement: pmaClientStatement,
     nonPmaClientStAndRec: NonPmaClientStAndRec,
     clientStatementAllEntities: ClientStatementAllEntities,
-    reportDuplicateClients: DuplicateClientReports,
+    duplicateClientsReport: DuplicateClientReports,
+    clientBankDetails:ClientBankDetails
   },
   // Add the RTK Query API middleware
 });

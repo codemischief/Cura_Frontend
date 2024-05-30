@@ -572,9 +572,9 @@ const Navbar = () => {
                   </p>
                 </Link> */}
                 <Link to={"/clientStatementAll"}>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Client Statement-CI,CR and OR(All Entities)
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Client Statement-CI,CR and OR(All Entities)
+                  </p>
                 </Link>
                 {/* <Link to={"/lobReceiptPaymentsConsolidated"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
@@ -596,13 +596,15 @@ const Navbar = () => {
                   Client Statement
                 </p>
                 <Link to={"/duplicateClientReport"}>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Duplicate Client
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Duplicate Client
+                  </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Client Bank Details
-                </p>
+                <Link to={"/clientBankDetails"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Client Bank Details
+                  </p>
+                </Link>
                 <Link to={"/nonPmaClientStatement"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     CURA Non PMA Client Statement

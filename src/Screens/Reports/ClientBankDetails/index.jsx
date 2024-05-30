@@ -11,14 +11,14 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { APIService } from "../../../services/API";
 import { useDispatch } from "react-redux";
 import {
-  downloadDuplicateClientsReport,
-  getDuplicateClientsReport,
+  downloadClientBankDetails,
+  getClientBankDetails,
   setCountPerPage,
   setInitialState,
   setPageNumber,
   setSorting,
   setStatus
-} from "../../../Redux/slice/reporting/DuplicateClientReports"
+} from "../../../Redux/slice/reporting/ClientBankDetails"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
@@ -30,7 +30,7 @@ import SimpleTable from "../../../Components/common/table/ClientPortalTable";
 const PmaClientReport = () => {
   const dispatch = useDispatch();
   const {
-    duplicateClientsReport,
+    clientBankDetails,
     status,
     totalAmount,
     totalCount,
@@ -38,7 +38,7 @@ const PmaClientReport = () => {
     countPerPage,
     pageNo,
     filter
-  } = useSelector((state) => state.duplicateClientsReport)
+  } = useSelector((state) => state.clientBankDetails)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -76,7 +76,9 @@ const PmaClientReport = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["clientname","clienttypename","count"],
+      rows: ["clientname","onlinemailid","bankname","bankbranch",
+      "bankaccountno","bankaccountholdername","bankcity","bankifsccode",
+      "bankaccounttype"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -84,7 +86,7 @@ const PmaClientReport = () => {
       pg_no: +pageNo,
       pg_size: +countPerPage,
     };
-    dispatch(getDuplicateClientsReport(obj));
+    dispatch(getClientBankDetails(obj));
 
   };
 
@@ -111,7 +113,9 @@ const PmaClientReport = () => {
 
     let obj = {
       user_id: 1234,
-      rows: ["clientname","clienttypename","count"],
+      rows: ["clientname","onlinemailid","bankname","bankbranch",
+      "bankaccountno","bankaccountholdername","bankcity","bankifsccode",
+      "bankaccounttype"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -119,7 +123,7 @@ const PmaClientReport = () => {
       pg_size: +countPerPage,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(getDuplicateClientsReport(obj));
+    dispatch(getClientBankDetails(obj));
 
   }, [
     filter,
@@ -145,21 +149,29 @@ const PmaClientReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["clientname","clienttypename","count"],
+      rows: ["clientname","onlinemailid","bankname","bankbranch",
+      "bankaccountno","bankaccountholdername","bankcity","bankifsccode",
+      "bankaccounttype"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
         "clientname": "Client Name",
-        "clienttypename": "Client Type",
-        "count": "Count",
+        "onlinemailid": "Online Mail ID",
+        "bankname": "Bank Name",
+        "bankbranch": "Bank Branch",
+        "bankaccountno": "Bank Account Number",
+        "bankaccountholdername": "Bank Account Holder",
+        "bankcity": "Bank City",
+        "bankifsccode": "Bank IFSC Holder",
+        "bankaccounttype": "Bank Account Type",
       },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadDuplicateClientsReport(obj))
+    dispatch(downloadClientBankDetails(obj))
     // .then((response) => {
     //   const tableData = response.data;
     //   const worksheet = XLSX.utils.json_to_sheet(tableData);
@@ -195,8 +207,8 @@ const PmaClientReport = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Duplicate Clients Report"}
-            path={["Reports", "Client", "Duplicate Clients Report"]}
+            heading={"Client Bank Details"}
+            path={["Reports", "Client", "Client Bank Details"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -228,7 +240,7 @@ const PmaClientReport = () => {
 
         <SimpleTable
           columns={columns}
-          data={duplicateClientsReport}
+          data={clientBankDetails}
           pageNo={pageNo}
           isLoading={status === "loading"}
           totalCount={totalCount}
