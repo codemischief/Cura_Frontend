@@ -75,7 +75,8 @@ import PmaClientReport from "./Screens/Reports/pmaClientReport";
 import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
 import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
 import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
-import ProjectContact from "./Screens/Reports/ProjectContacts"
+import ProjectContact from "./Screens/Reports/ProjectContacts";
+import AdvanceHoldingAmount from "./Screens/Reports/AdvanceHoldingAmount";
 
 const App = () => {
   const ROLES = {
@@ -235,6 +236,7 @@ const App = () => {
           <Route path="/pmaClientReceivable" element={<PmaClientReceivable/>}/>
           <Route path="/activePmaAgreement" element={<ActivePmaAgreement/>}/>
           <Route path="/projectContact" element={<ProjectContact/>}/>
+          <Route path="/advanceHoldingAmount" element={<AdvanceHoldingAmount />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

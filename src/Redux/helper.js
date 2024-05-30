@@ -145,4 +145,12 @@ export const projectContacts = (data) => {
     effectivedate : billing.effectivedate? formatDate(billing.effectivedate): "",
   }));
 }
+export const advanceHoldingAmount = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    payments : billing.payments ? floorDecimal(billing.payments) : "0.00",
+    receipts : billing.receipts ? floorDecimal(billing.receipts) : "0.00",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
