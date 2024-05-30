@@ -78,6 +78,7 @@ import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
 import ProjectContact from "./Screens/Reports/ProjectContacts";
 import AdvanceHoldingAmount from "./Screens/Reports/AdvanceHoldingAmount";
 import PmaClientStatementAll from "./Screens/Reports/PMAClientStatementAll";
+import PmaClientStatement from "./Screens/Reports/PmaClientStatement";
 
 const App = () => {
   const ROLES = {
@@ -239,6 +240,7 @@ const App = () => {
           <Route path="/projectContact" element={<ProjectContact/>}/>
           <Route path="/advanceHoldingAmount" element={<AdvanceHoldingAmount />}/>
           <Route path="/pmaClientStatementAll" element={<PmaClientStatementAll />}/>
+          <Route path="/pmaClientStatement" element={<PmaClientStatement />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
