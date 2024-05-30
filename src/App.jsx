@@ -78,7 +78,7 @@ import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
 import ProjectContact from "./Screens/Reports/ProjectContacts";
 import AdvanceHoldingAmount from "./Screens/Reports/AdvanceHoldingAmount";
 import PmaClientStatementAll from "./Screens/Reports/PMAClientStatementAll";
-
+import ShowAllOdersInformation from "./Screens/Manage/ManageOrder/ShowAllOrdersInformation/index.jsx";
 const App = () => {
   const ROLES = {
     Registered: "3",
@@ -113,6 +113,7 @@ const App = () => {
             element={<DeletePage />}
           />
           <Route path="/admin/manageOrder" element={<ManageOrder />} />
+         
           <Route path="/admin/manageuser" element={<ManageUser />} />
           <Route path="/admin/country" element={<Country />} />
           <Route path="/admin/state" element={<State />} />
@@ -198,6 +199,10 @@ const App = () => {
           <Route
             path="/manage/manageclientinfo/orders/:clientname"
             element={<ManageOrder />}
+          />
+           <Route
+            path="manage/manageclientinfo/orders/showall/:orderid"
+            element={<ShowAllOdersInformation />}
           />
           <Route
             path="/manage/manageclientproperty/pmaagreement/:propertyid"

@@ -1546,9 +1546,13 @@ const ManageOrder = () => {
                                                 <p>Invoices</p>
                                             </div>
                                         </Link>
+                                        <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} state={{orderid : item.id}}>
+
+                                        
                                         <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                             <p>Show All</p>
                                         </div>
+                                        </Link>
                                         <div className='w-[110px] p-4'>
                                             <p>{item.id}</p>
                                         </div>
