@@ -43,7 +43,7 @@ import {
             </tr>
             <tr className="bg-[#F0F6FF] h-[56px] text-left ">
               {columns.map((column, index) => (
-                <th key={index} style={{ ...column.cellStyle}}>
+                <th key={index} style={{ ...column.cellStyle ,  textAlign : column.sorting ? 'left' : 'center'}}>
                   {column.title}
                   {column.sorting && (
                     <button onClick={() => handleSortingChange(column.field)}>
@@ -94,7 +94,7 @@ import {
                         ...column.cellStyle,
                         paddingTop: "4px",
                         paddingBottom: "4px",
-                        
+                        textAlign : "left"
                       }}
                       className="py-3 text-left"
                     >

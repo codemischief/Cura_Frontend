@@ -36,7 +36,7 @@ export default function connectionDataColumn(onQuery) {
       field: "payments",
       sorting: true,
       // cellStyle: { minWidth: "20px", },
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
     },
     {
@@ -44,7 +44,7 @@ export default function connectionDataColumn(onQuery) {
       field: "receipts",
       sorting: true,
       // cellStyle: { minWidth: "20px", },
-      filterComponent: DateFilterField,
+      filterComponent: NumberFilterField,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
     },
 

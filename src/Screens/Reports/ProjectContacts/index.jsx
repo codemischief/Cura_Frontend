@@ -210,13 +210,13 @@ const PmaInvoiceList = () => {
             path={["Reports", "PMA", "Project Contacts"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
+            
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            )}
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}

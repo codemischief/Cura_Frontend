@@ -11,6 +11,21 @@ export default function connectionDataColumn(onQuery) {
 
   const columns = [
     {
+      title: "Sr No",
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "10%" },
+      sorting: false,
+      render: (index) => {
+        return (
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "center", width: "50px" }}
+          >
+            {index + 1}
+          </Stack>
+        );
+      },
+    },
+    {
       title: "Client Name",
       field: "clientname",
       sorting: true,

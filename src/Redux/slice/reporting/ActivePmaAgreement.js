@@ -37,6 +37,7 @@ export const pmaSlice = createSlice({
     setStatus: (state, { payload }) => {
       state.status = payload;
     },
+    
     setPageNumber: (state, { payload }) => {
       state.pageNo = payload;
     },

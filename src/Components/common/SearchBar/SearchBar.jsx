@@ -11,9 +11,9 @@ const SearchBar = ({
   ...searchProps
 }) => {
   return (
-    <div className="flex bg-[#EBEBEB] h-[36px] focus:!outline-none !focus:border-none">
+    <div className="flex bg-[#F5F5F5] h-[36px] focus:!outline-none !focus:border-none">
       <input
-        className="h-[36px] bg-[#EBEBEB] text-[#787878] pl-3 focus:!outline-none "
+        className="h-[36px] bg-[#F5F5F5] text-[#787878] pl-3 focus:!outline-none "
         type="text"
         placeholder="Search"
         value={value}
@@ -21,7 +21,7 @@ const SearchBar = ({
         {...searchProps}
       />
       <button>
-        <CloseOutlined onClick={removeSearchValue} />
+        <CloseOutlined onClick={removeSearchValue} sx={{ color: "#787878", paddingRight:"0.38rem" }} />
       </button>
       <div className="h-[36px] w-[40px] bg-[#004DD7] flex items-center justify-center rounded-r-lg">
         <button>
@@ -35,4 +35,4 @@ const SearchBar = ({
   );
 };
 
-export default SearchBar;
+export default SearchBar;

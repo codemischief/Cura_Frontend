@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setPmaClientReportFilters, setPageNumber } from "../../../Redux/slice/reporting/DuplicateClientReports";
+// import { setPmaClientReportFilters, setPageNumber } from "../../../Redux/slice/reporting/DuplicateClientReports";
+import { setDuplicateClientsReport , setPageNumber } from "../../../Redux/slice/reporting/DuplicateClientReports";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
@@ -8,7 +9,7 @@ export function CustomFilterField(props) {
   const { filter } = useSelector((state) => state.duplicateClientsReport);
 
   const handleFilterChange = (filters) => {
-    dispatch(setPmaClientReportFilters({...filters}));
+    dispatch(setDuplicateClientsReport({...filters}));
     dispatch(setPageNumber(1))
   };
 

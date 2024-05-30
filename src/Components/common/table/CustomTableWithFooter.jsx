@@ -257,6 +257,11 @@ const helper = (index, obj, pageName) => {
     if (index == 2) {
       return `Total: ${obj.total_amount}`
     }
+  }else if(pageName == 'pmaClientStatement') {
+    console.log(obj)
+    if(index == 5) {
+      return `Total : ${obj?.sumamount}`
+    }
   }
 }
 const helper2 = (index, obj, pageName) => {

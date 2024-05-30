@@ -25,6 +25,7 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import SimpleTable from "../../../Components/common/table/CustomTable";
+import CLientPortalTable from "../../../Components/common/table/ClientPortalTable";
 
 
 const PmaInvoiceList = () => {
@@ -199,13 +200,13 @@ const PmaInvoiceList = () => {
             path={["Reports", "PMA", "Details For Advance Holding Amount"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
+           
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            )}
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
@@ -226,7 +227,7 @@ const PmaInvoiceList = () => {
           
         </Stack> */}
 
-        <SimpleTable
+        <CLientPortalTable
           columns={columns}
           data={advanceHoldingAmount}
           pageNo={pageNo}

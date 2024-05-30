@@ -24,7 +24,12 @@ export const FilterField = (props) => {
       onFilterChange(copiedFilters);
     }
   }, [search]);
-
+  useEffect(() => {
+    let copiedFilters = { ...filter };
+    if (search && !copiedFilters.hasOwnProperty(columnfield)) {
+      setSearch("");
+    }
+  }, [filter]);
   const open = Boolean(anchorEl);
 
   const optionType = {
@@ -99,22 +104,26 @@ export const FilterField = (props) => {
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleEnterKeyPress}
           />
-          {search && (
+          
             <Close
               sx={{
                 height: "12px",
                 w: "12px",
-                color: "#C6C6C6",
+                color: search ? "#C6C6C6" : 'transparent',
                 cursor: "pointer",
               }}
               onClick={handleResetFilter}
             />
-          )}
+          
           <Tooltip title={isDisabled ? "filter disabled" : "Filters"}>
             <button className="max-w-[32%] px-1 py-2" onClick={handleClick}>
               <FilterAlt
-                sx={{ height: "16px", w: "16px", color: "#C6C6C6" }}
-                color="#C6C6C6"
+                sx={
+                  filter && filter[columnfield] && filter[columnfield]?.[0]
+                    ? { height: "16px", width: "16px", color:"#004DD7" }
+                    : { height: "16px", width: "16px", color: "#C6C6C6" }
+                }
+                // color="#C6C6C6"
               />
             </button>
           </Tooltip>

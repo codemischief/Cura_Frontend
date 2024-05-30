@@ -233,13 +233,13 @@ const LobReceiptPayments = () => {
             path={["Reports", "Lists", "Client Statement-CI,CR and OR(All Entities)"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
+            {/* <h1>hey</h1> */}
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            )}
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}

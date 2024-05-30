@@ -76,7 +76,7 @@ export default function connectionDataColumn(onQuery) {
       field: "rentamount",
       sorting: true,
       // cellStyle: { minWidth: "20px", },
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
     },
     {
@@ -109,7 +109,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%"  },
     },
     {
       title: "POA Start Date",

@@ -17,7 +17,9 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus
+  setStatus,
+  setActivePmaAgreementFilters
+
 } from "../../../Redux/slice/reporting/ActivePmaAgreement";
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -151,7 +153,7 @@ const PmaInvoiceList = () => {
     let obj = {
       user_id: 1234,
       rows: ["clientname","propertydescription","description","propertystatus",
-      "electricitybillingunit","electricityconsumernumber",
+      "electricitybillingunit",
       "propertytaxnumber","rentamount","startdate","enddate","lnlstartdate",
       "lnlenddate","poastartdate"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -162,8 +164,8 @@ const PmaInvoiceList = () => {
         "propertydescription": "Property Description",
         "description": "Care Taking Description",
         "propertystatus": "Property Status",
+        "propertytaxnumber" : "Property Tax Number",
         "electricitybillingunit": "Electricity Billing Unit",
-        "electricityconsumernumber": "Electricity Consumer Number",
         "rentamount": "Rent",
         "startdate": "PMA Start Date",
         "enddate": "PMA End Date",
@@ -215,24 +217,33 @@ const PmaInvoiceList = () => {
             heading={"Active PMA Agreements"}
             path={["Reports", "PMA", "Active PMA Agreements"]}
           />
-          <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
-              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-                <p>
-                  Generated on: <span> {new Date().toLocaleString()}</span>
-                </p>
-              </div>
-            )}
-            <SearchBar
-              value={searchInput}
-              handleSearchvalue={handleSearchvalue}
-              handleSearch={handleSearch}
-              removeSearchValue={removeSearchValue}
-              onKeyDown={handleSearchEnterKey}
-            />
-          </div>
-        </div>
 
+            <div className="flex justify-between gap-7 h-[36px]">
+            
+                <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+                  <p>
+                    Generated on: <span> {new Date().toLocaleString()}</span>
+                  </p>
+                </div>
+              
+          {/* <div className="flex flex-col"> */}
+              <SearchBar
+                value={searchInput}
+                handleSearchvalue={handleSearchvalue}
+                handleSearch={handleSearch}
+                removeSearchValue={removeSearchValue}
+                onKeyDown={handleSearchEnterKey}
+              />
+            
+            {/* </div> */}
+           </div>
+        </div>
+        <div className="flex justify-end">
+
+        <Button variant="outlined" size="small" onClick={() => dispatch(setActivePmaAgreementFilters({}))}>
+              Clear All
+            </Button>
+        </div>
         {/* <Stack
           marginTop={"8px"}
           justifyContent={"space-between"}
@@ -244,6 +255,7 @@ const PmaInvoiceList = () => {
         </Stack> */}
 
         <SimpleTable
+          
           columns={columns}
           data={activePmaAgreement}
           pageNo={pageNo}
@@ -256,7 +268,7 @@ const PmaInvoiceList = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 12rem)"
+          height="calc(100vh - 14rem)"
         />
       </div>
       {toast && (

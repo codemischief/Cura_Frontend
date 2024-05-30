@@ -11,13 +11,13 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "10%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "10%" },
       sorting: false,
       render: (index) => {
         return (
           <Stack
             direction="row"
-            sx={{ justifyContent: "center", width: "50px" }}
+            sx={{ justifyContent: "center", minWidth: "50px" }}
           >
             {index + 1}
           </Stack>
@@ -29,7 +29,7 @@ export default function connectionDataColumn(onQuery) {
         field: "clientid",
         sorting: true,
         filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "10%" },
     },
     {
       title: "Client Name",
@@ -37,7 +37,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "20%"  },
     },
     {
         title: "Email 1",
@@ -45,7 +45,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "20%"  },
       },
       {
         title: "Email 2",
@@ -53,7 +53,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "20%"  },
       },
       {
         title: "Client Portal Online Mail IDs",
@@ -61,7 +61,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "30%"  },
       },
       
   ];
