@@ -221,29 +221,32 @@ const ManageBankStatement = () => {
     }
 
     const addBankStatement = async () => {
-        console.log(formValues.modeofpayment)
-        setVendorId((formValues.vendor).split(",", 1)[0]);
-        setModeEdit((formValues.modeofpayment).split(",", 1)[0])
-        console.log(modeEdit, vendorId)
+        // console.log(formValues.modeofpayment)
+        // setVendorId((formValues.vendor).split(",", 1)[0]);
+        // setModeEdit((formValues.modeofpayment).split(",", 1)[0])
+        // console.log(modeEdit, vendorId)
+        console.log('called')
         const data = {
-            "user_id": userId || 1234,
+            "user_id": 1234,
             "modeofpayment": Number(formValues.modeofpayment),
             "date": formValues.date,
             "amount": Number(formValues.amount),
             "particulars": formValues.particulars,
             "crdr": formValues.crdr,
-            "vendorid": Number(vendorId),
-            "createdby": userId || 1234
+            "vendorid": Number(formValues.vendor),
+            // "createdby": userId || 1234
         }
 
         const response = await APIService.addBankStatement(data);
-        if (response.ok) {
+        const res = await response.json()
+        if (res.result == 'success') {
             setIsLoading(false);
             openConfirmModal();
         } else {
             setIsLoading(false);
             openFailureModal();
         }
+        setFormValues(initialValues)
         fetchBankStatement();
     }
     const addCreditRecipt = async () => {
@@ -396,6 +399,7 @@ const ManageBankStatement = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(validate)
         if (!validate()) {
             return;
         }
@@ -1545,7 +1549,7 @@ const ManageBankStatement = () => {
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[13px]">Amount<label className="text-red-500">*</label></div>
-                                                    <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange}  />
+                                                    <input className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="number" name="amount" value={formValues.amount} onChange={handleChange}  />
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amount}</div>
                                                 </div>
                                                 <div className="">
@@ -1553,7 +1557,7 @@ const ManageBankStatement = () => {
                                                     <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="vendor" value={formValues.vendor} onChange={handleChange} >
                                                         <option >Select Vendor </option>
                                                         {vendorList && vendorList.map(item => (
-                                                            <option value={item}>
+                                                            <option value={item[0]}>
                                                                 {item[1]}
                                                             </option>
                                                         ))}
@@ -1783,7 +1787,7 @@ const ManageBankStatement = () => {
 
                                     <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Add</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addBankStatement}>Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>
@@ -1818,7 +1822,7 @@ const ManageBankStatement = () => {
                                 <p className="text-[14px]">Are you sure you want to Add new Bank statement</p>
                             </div>
                             <div className="my-10 flex justify-center items-center gap-[10px]">
-                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={handleCR}>Add</button>
+                                <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addBankStatement}>Add</button>
                                 <button className='w-[132px] h-[48px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseForConfirm}>Cancel</button>
                             </div>
                         </div>
