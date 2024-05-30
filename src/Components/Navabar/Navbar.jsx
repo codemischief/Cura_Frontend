@@ -571,9 +571,11 @@ const Navbar = () => {
                     Entity-Receipt-Payments
                   </p>
                 </Link> */}
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Client Statement-CI,CR and OR(All Entities)
-                </p>
+                <Link to={"/clientStatementAll"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Client Statement-CI,CR and OR(All Entities)
+                  </p>
+                </Link>
                 {/* <Link to={"/lobReceiptPaymentsConsolidated"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     LOB-Receipts-Payments Consolidated
@@ -593,18 +595,26 @@ const Navbar = () => {
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Client Statement
                 </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Duplicate Client
-                </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Client Bank Details
-                </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  CURA Non PMA Client Statement
-                </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  CURA Non PMA Client Receivables
-                </p>
+                <Link to={"/duplicateClientReport"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Duplicate Client
+                  </p>
+                </Link>
+                <Link to={"/clientBankDetails"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Client Bank Details
+                  </p>
+                </Link>
+                <Link to={"/nonPmaClientStatement"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    CURA Non PMA Client Statement
+                  </p>
+                </Link>
+                <Link to={"/nonPmaClientReceivables"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    CURA Non PMA Client Receivables
+                  </p>
+                </Link>
               </div>
             </div>
             <div className="ml-5 mt-4 flex-col space-y-2">
@@ -632,9 +642,11 @@ const Navbar = () => {
                     PMA Client Statement-CI,CR and OR(All Entities)
                   </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  CURA PMA Client Statement
-                </p>
+                <Link to={"/pmaClientStatement"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    CURA PMA Client Statement
+                  </p>
+                </Link>
                 <Link to="/pmaClientReceivable">
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     CURA PMA Client Receivables

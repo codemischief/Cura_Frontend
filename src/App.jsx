@@ -78,7 +78,16 @@ import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
 import ProjectContact from "./Screens/Reports/ProjectContacts";
 import AdvanceHoldingAmount from "./Screens/Reports/AdvanceHoldingAmount";
 import PmaClientStatementAll from "./Screens/Reports/PMAClientStatementAll";
+
 import ShowAllOdersInformation from "./Screens/Manage/ManageOrder/ShowAllOrdersInformation/index.jsx";
+
+import PmaClientStatement from "./Screens/Reports/PmaClientStatement";
+import NonPmaClientStatement from "./Screens/Reports/NonPmaClientStatement";
+import NonPmaClientReceivables from "./Screens/Reports/NonPmaClientReceivables";
+import ClientStatementAll from "./Screens/Reports/ClientStatement-CI,CRAndOR";
+import DuplicateClientReport from "./Screens/Reports/DupilcateClientsReport";
+import ClientBankDetails from "./Screens/Reports/ClientBankDetails"
+
 const App = () => {
   const ROLES = {
     Registered: "3",
@@ -244,6 +253,12 @@ const App = () => {
           <Route path="/projectContact" element={<ProjectContact/>}/>
           <Route path="/advanceHoldingAmount" element={<AdvanceHoldingAmount />}/>
           <Route path="/pmaClientStatementAll" element={<PmaClientStatementAll />}/>
+          <Route path="/pmaClientStatement" element={<PmaClientStatement />}/>
+          <Route path="/nonPmaClientStatement" element={<NonPmaClientStatement />}/>
+          <Route path="/nonPmaClientReceivables" element={<NonPmaClientReceivables />}/>
+          <Route path="/clientStatementAll" element={<ClientStatementAll />}/>
+          <Route path="/duplicateClientReport" element={<DuplicateClientReport />}/>
+          <Route path="/clientBankDetails" element={<ClientBankDetails />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

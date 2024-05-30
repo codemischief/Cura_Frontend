@@ -161,4 +161,35 @@ export const pmaClientStatementAll = (data) => {
     amount : billing.amount ? floorDecimal(billing.amount) : "0.00",
   }));
 }
+export const pmaClientStatement = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    date : billing.date? formatDate(billing.date): "",
+    amount : billing.amount ? floorDecimal(billing.amount) : "0.00",
+  }));
+}
+export const nonPmaClientStAndRec = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    date : billing.date? formatDate(billing.date): "",
+    amount : billing.amount ? floorDecimal(billing.amount) : "0.00",
+  }));
+}
+
+export const clientStatementAllEntities = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    date : billing.date? formatDate(billing.date): "",
+    amount : billing.amount ? floorDecimal(billing.amount) : "0.00",
+  }));
+}
+export const duplicateClientsReport = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
