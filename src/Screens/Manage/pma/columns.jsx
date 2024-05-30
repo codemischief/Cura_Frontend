@@ -20,7 +20,9 @@ export default function connectionDataColumn(onQuery) {
             direction="row"
             sx={{ justifyContent: "center", width: "30px" }}
           >
-            {rowData?.tableData.index + 1}
+            {console.log(rowData)}
+            {rowData + 1}
+            {/* {rowData?.tableData?.index + 1} */}
           </Stack>
         );
       },
@@ -30,32 +32,40 @@ export default function connectionDataColumn(onQuery) {
       title: "Client Name",
       field: "clientname",
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       filterComponent: TextFilterField,
       title: "Quote Description",
       field: "briefdescription",
       width: "20%",
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       title: "Invoice Date",
       field: "invoicedate",
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
 
       filterComponent: DateFilterField,
-      sorting: false,
+      sorting: true,
     },
     {
       title: "Invoice Amount",
       field: "totalamt",
       type: "numeric",
-      grouping: true,
+      // grouping: true,
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       title: "Total Base Amount",
       field: "totalbaseamt",
       type: "numeric",
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
 
     {
@@ -63,30 +73,40 @@ export default function connectionDataColumn(onQuery) {
       field: "totaltaxamt",
       type: "numeric",
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       title: "Fixed Amount",
       field: "fixedamt",
       type: "numeric",
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       title: "Fixed Tax Amount",
       field: "fixedtaxamt",
       type: "numeric",
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       title: "Rented Amount",
       field: "rentedamt",
       type: "numeric",
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
     {
       title: "Rented Tax Amount",
       field: "rentedtaxamt",
       type: "numeric",
       filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, minWidth: 80 },
+      sorting : true
     },
   ];
   return columns;

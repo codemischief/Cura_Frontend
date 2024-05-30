@@ -379,7 +379,7 @@ const ManageBankStatement = () => {
     }, []);
     //Validation of the form
     const initialValues = {
-        modeofpayment: "",
+        modeofpayment: 5,
         particulars: "",
         amount: "",
         vendor: "",

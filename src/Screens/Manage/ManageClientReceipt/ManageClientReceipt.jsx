@@ -1494,7 +1494,7 @@ const ManageClientReceipt = () => {
                                         <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
                         {!pageLoading && existingClientReceipt.map((item, index) => {
-                            return <div className='w-full py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
+                            return <div className='w-full min-h-10 py-1 bg-white flex justify-between items-center border-gray-400 border-b-[1px]'>
                                 <div className="w-[87%] flex items-center">
                                     <div className='w-[3%] flex'>
                                         <div className='px-3 overflow-x-hidden'>
