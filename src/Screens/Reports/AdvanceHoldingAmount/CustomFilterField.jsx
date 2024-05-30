@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setPmaInvoiceListFilters, setPageNumber } from "../../../Redux/slice/reporting/pmaInvoiceList";
+import { setAdvanceHoldingAmountFilters, setPageNumber } from "../../../Redux/slice/reporting/AdvanceHoldingAmount";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.pmaInvoiceList);
+  const { filter } = useSelector((state) => state.advanceHoldingAmount);
 
   const handleFilterChange = (filters) => {
-    dispatch(setPmaInvoiceListFilters({...filters}));
+    dispatch(setAdvanceHoldingAmountFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 
