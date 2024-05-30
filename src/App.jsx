@@ -81,7 +81,8 @@ import PmaClientStatementAll from "./Screens/Reports/PMAClientStatementAll";
 import PmaClientStatement from "./Screens/Reports/PmaClientStatement";
 import NonPmaClientStatement from "./Screens/Reports/NonPmaClientStatement";
 import NonPmaClientReceivables from "./Screens/Reports/NonPmaClientReceivables";
-import ClientStatementAll from "./Screens/Reports/ClientStatement-CI,CRAndOR"
+import ClientStatementAll from "./Screens/Reports/ClientStatement-CI,CRAndOR";
+import DuplicateClientReport from "./Screens/Reports/DupilcateClientsReport";
 
 const App = () => {
   const ROLES = {
@@ -247,6 +248,7 @@ const App = () => {
           <Route path="/nonPmaClientStatement" element={<NonPmaClientStatement />}/>
           <Route path="/nonPmaClientReceivables" element={<NonPmaClientReceivables />}/>
           <Route path="/clientStatementAll" element={<ClientStatementAll />}/>
+          <Route path="/duplicateClientReport" element={<DuplicateClientReport />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

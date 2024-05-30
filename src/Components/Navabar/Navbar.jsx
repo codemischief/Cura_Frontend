@@ -595,9 +595,11 @@ const Navbar = () => {
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Client Statement
                 </p>
+                <Link to={"/duplicateClientReport"}>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Duplicate Client
                 </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Client Bank Details
                 </p>
