@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { routeMapObj } from "./routeMap";
 
 // ----------------------------------------------------------------------
 
@@ -71,7 +72,6 @@ function AuthProvider({ children }) {
             payload: {
               isAuthenticated: true,
               user: JSON.parse(user),
-              
             },
           });
         } else {
@@ -109,11 +109,20 @@ function AuthProvider({ children }) {
           company_key,
         }
       );
-      const { token, user_id, role_id } = response.data;
+      const { token, user_id, role_id, access_rights } = response.data;
       if (token) {
+        const replaceKeys = () => {
+          return Object.keys(access_rights).reduce((acc, key) => {
+            const newKey = routeMapObj[key] || key;
+            acc[newKey] = access_rights[key];
+            return acc;
+          }, {});
+        };
+        console.log('replaceKeys()', replaceKeys())
         let userObj = {
           id: user_id,
           roleId: role_id,
+          allowedModules: replaceKeys(),
         };
         setSession(userObj, token);
         dispatch({
@@ -143,7 +152,6 @@ function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         ...state,
-
         method: "jwt",
         login,
         logout,

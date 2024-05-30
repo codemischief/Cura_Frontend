@@ -1,5 +1,7 @@
+import PropTypes from "prop-types";
+
 import { CircularProgress, Modal, Typography } from "@mui/material";
-import React, { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import Cross from "../../../assets/cross.png";
 import { APIService } from "../../../services/API";
@@ -12,6 +14,8 @@ import {
   editProspectData,
 } from "../../../Redux/slice/Research/ProspectSlice";
 import { useSelector } from "react-redux";
+import { CrossIcon } from "../../../Components/Svg/CrossIcon";
+import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -24,7 +28,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
-  console.log("editData", editData);
   const dispatch = useDispatch();
   // const [isPending, startTransition] = useTransition();
   const [countryData, setCountryData] = useState([]);
@@ -34,8 +37,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const [apiError, setApiError] = useState("");
   const [openConfirmation, setOpenConfimation] = useState(false);
   const { formSubmissionStatus } = useSelector((state) => state.prospect);
-
-  console.log(isOpen, "isOpen");
 
   const fetchCountryData = async () => {
     setLoading(true);
@@ -143,7 +144,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         openSucess();
       }
     } catch (error) {
-      console.log("error", error);
       if (
         error.response &&
         error.response.data &&
@@ -197,213 +197,231 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
               <FormikProvider value={values}>
                 <Form className="space-y-4" onSubmit={handleSubmit}>
                   <div className="w-[778px] h-auto bg-white rounded-lg">
-                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                      <div className="mr-[300px] ml-[300px]">
-                        <div className="text-[16px]">
-                          {editData.id ? "Edit Prospect" : "New Prospect"}
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                        <img
-                          onClick={handleClose}
-                          className="w-[20px] h-[20px] cursor-pointer"
-                          src={Cross}
-                          alt="cross"
-                        />
-                      </div>
-                    </div>
+                    <ModalHeader
+                      onClose={handleClose}
+                      title={editData.id ? "Edit Prospect" : "New Prospect"}
+                    />
                     <div className="h-auto w-full mt-[5px] ">
                       <div className="flex gap-[48px] justify-center items-center">
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
-                            <div className="text-[13px]">
-                              Person name{" "}
-                              <label className="text-red-500">*</label>
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Person name
+                              </label>
+                              <span className="requiredError">*</span>
                             </div>
                             <input
-                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="personname"
                               value={formik.values.personname}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
-                            <div className="text-[10px] text-[#CD0000] ">
+                            <div className="inputValidationError">
                               {touched.personname && errors.personname && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.personname}
-                                </div>
+                                <div>{errors.personname}</div>
                               )}
                             </div>
                           </div>
                           <div className="">
-                            <div className="text-[13px]">
-                              Country Name
-                              <label className="text-red-500">*</label>
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Country Name
+                              </label>
+                              <span className="requiredError">*</span>
                             </div>
                             <select
-                              className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="countryId"
                               value={formik.values.countryId}
                               defaultValue="Select Country"
                               onChange={handleCountrySelect}
                             >
-                              <option value="none" hidden={true}>
+                              <option
+                                value="none"
+                                hidden={true}
+                                className="inputFieldValue"
+                              >
                                 Select a Country
                               </option>
 
                               {countryData.length > 0 &&
                                 countryData?.map((editData) => (
-                                  <option value={editData.id} key={editData.id}>
+                                  <option
+                                    value={editData.id}
+                                    key={editData.id}
+                                    className="p-4"
+                                  >
                                     {editData.name}
                                   </option>
                                 ))}
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">
-                              {/* {formErrors.country} */}
+                            <div className="inputValidationError">
                               {errors.countryId && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.countryId}
-                                </div>
+                                <div>{errors.countryId}</div>
                               )}
                             </div>
                           </div>
                           <div className="">
-                            <div className="text-[13px]">
-                              State Name
-                              <label className="text-red-500">*</label>
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                State Name
+                              </label>
+                              {/* <span className="requiredError">*</span> */}
                             </div>
                             <select
-                              className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="state"
                               value={formik.values.state}
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="">select state</option>
+                              <option value="" className="inputFieldValue">
+                                select state
+                              </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
                                   return (
-                                    <option value={editData[0]}>
+                                    <option
+                                      value={editData[0]}
+                                      key={editData[0]}
+                                    >
                                       {editData[0]}
                                     </option>
                                   );
                                 })}
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">
+                            <div className="inputValidationError">
                               {/* {formErrors.state} */}
-                              {errors.state && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.state}
-                                </div>
-                              )}
+                              {errors.state && <div>{errors.state}</div>}
                             </div>
                           </div>
                           <div className="">
-                            <div className="text-[13px]">
+                            {/* <div className="text-[13px]">
                               City Name{" "}
                               <label className="text-red-500">*</label>
+                            </div> */}
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                City Name
+                              </label>
+                              {/* <span className="requiredError">*</span> */}
                             </div>
 
                             <select
-                              className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
                               name="city"
                               value={formik.values.city}
                               defaultValue="Select State"
                               onChange={handleChange}
                               onBlur={handleBlur}
                             >
-                              <option value="">select country</option>
+                              <option value="" className="inputValidationError">
+                                select city
+                              </option>
                               {cityData.length > 0 &&
                                 cityData.map((editData) => {
                                   return (
-                                    <option value={editData.city} selected>
+                                    <option
+                                      value={editData.city}
+                                      key={editData.city}
+                                      selected
+                                    >
                                       {editData.city}
                                     </option>
                                   );
                                 })}
                             </select>
-                            <div className="text-[10px] text-[#CD0000] ">
+                            <div className="inputValidationError">
                               {/* {formErrors.city} */}
-                              {errors.city && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.city}
-                                </div>
-                              )}
+                              {errors.city && <div>{errors.city}</div>}
                             </div>
                           </div>
                           <div className="">
-                            <div className="text-[13px]">
+                            {/* <div className="text-[13px]">
                               Suburb <label className="text-red-500">*</label>
+                            </div> */}
+                            <div className="flex">
+                              <label className="inputFieldLabel">Suburb</label>
+                              {/* <span className="requiredError">*</span> */}
                             </div>
                             <input
-                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="suburb"
                               value={formik.values.suburb}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            <div className="text-[10px] text-[#CD0000] ">
+                            <div className="inputValidationError">
                               {/* {formErrors.suburb} */}
                               {touched.suburb && errors.suburb && (
-                                <div className="text-red-600 text-xs">
-                                  {errors.suburb}
-                                </div>
+                                <div>{errors.suburb}</div>
                               )}
                             </div>
                           </div>
                           <div className="">
-                            <div className="text-[13px]">
-                              Property Location{" "}
-                              <label className="text-red-500">*</label>
-                            </div>
+                            <label className="inputFieldLabel">
+                              Property Location
+                            </label>
+                            {/* <span className="requiredError">*</span> */}
                             <input
-                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="propertylocation"
                               value={formik.values.propertylocation}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            <div className="text-[10px] text-[#CD0000] ">
+                            <div className="inputValidationError">
                               {touched.propertylocation &&
                                 errors.propertylocation && (
-                                  <div className="text-red-600 text-xs">
-                                    {errors.propertylocation}
-                                  </div>
+                                  <div>{errors.propertylocation}</div>
                                 )}
                             </div>
                           </div>
                           <div className="">
-                            <div className="text-[13px]">
+                            {/* <div className="text-[13px]">
                               Possible Services{" "}
                               <label className="text-red-500">*</label>
+                            </div> */}
+                            <div className="flex">
+                              <label className="inputFieldLabel">
+                                Possible Services
+                              </label>
+                              {/* <span className="requiredError">*</span> */}
                             </div>
                             <input
-                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="possibleservices"
                               value={formik.values.possibleservices}
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                            <div className="text-[10px] text-[#CD0000] ">
+                            <div className="inputValidationError">
                               {/* {formErrors.possibleServices} */}
                               {touched.possibleservices &&
                                 errors.possibleservices && (
-                                  <div className="text-red-600 text-xs">
-                                    {errors.possibleservices}
-                                  </div>
+                                  <div>{errors.possibleservices}</div>
                                 )}
                             </div>
                           </div>
                         </div>
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
-                            <div className="text-[13px]">Email </div>
+                            {/* <div className="text-[13px]">Email </div> */}
+                            <label className="inputFieldLabel">Email</label>
                             <input
-                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
                               type="email"
                               name="email"
                               value={formik.values.email}
@@ -412,9 +430,13 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             />
                           </div>
                           <div className="">
-                            <div className="text-[13px]">Phone Number </div>
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Phone Number
+                            </label>
                             <input
-                              className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
                               type="text"
                               name="phoneNumber"
                               value={formik.values.phoneNumber}
@@ -492,4 +514,19 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   // );
 };
 
+ProspectForm.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  editData: PropTypes.shape({
+    id: PropTypes.string,
+    country: PropTypes.number,
+    state: PropTypes.string,
+    city: PropTypes.string,
+    personname: PropTypes.string,
+    suburb: PropTypes.string,
+    propertylocation: PropTypes.string,
+    possibleservices: PropTypes.string,
+  }),
+  openSucess: PropTypes.func.isRequired,
+};
 export default ProspectForm;

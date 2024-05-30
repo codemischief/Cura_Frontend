@@ -16,7 +16,7 @@ function path(root, sublink) {
       manageUsers: path(ROOTS.admin, "/manageuser"),
       manageEmployees: path(ROOTS.admin, "/manageemployees"),
       manageBuilder: {
-        root: path(ROOTS.admin, "/managebuilder"),
+        root: path(ROOTS.admin, "/manageBuilder"),
         contact: "/managebuilder/projects/:buildername",
         projects: "/managebuilder/contacts/:buildername",
       },

@@ -5,7 +5,7 @@ import { setFilters, setPageNumber } from "../../../Redux/slice/Research/Prospec
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.entityReceiptPayments);
+  const { filter } = useSelector((state) => state.prospect);
 
   const handleFilterChange = (filters) => {
     dispatch(setFilters({...filters}))

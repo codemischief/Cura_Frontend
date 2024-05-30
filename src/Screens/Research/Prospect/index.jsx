@@ -142,7 +142,7 @@ const PropectusPage = () => {
         "propertylocation",
         "possibleservices",
       ],
-      filters: filter,
+      filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
       order: sorting.sort_order,
       pg_no: +pageNo,
@@ -248,7 +248,7 @@ const PropectusPage = () => {
   };
 
   return (
-    <Stack gap="1rem">
+    <div className="h-[calc(100vh-7rem)]">
       {openForm && (
         <ProspectForm
           isOpen={openForm}
@@ -257,7 +257,7 @@ const PropectusPage = () => {
           openSucess={openSucess}
         />
       )}
-      <div className="flex flex-col px-4">
+      <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
             heading={"Prospect"}
@@ -273,7 +273,6 @@ const PropectusPage = () => {
             />
             <button
               className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
-              // onClick={handleOpen}
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
@@ -283,37 +282,25 @@ const PropectusPage = () => {
             </button>
           </div>
         </div>
-
-        <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          alignItems={"center"}
-          height={"3.875rem"}
-        >
-          <Stack
-            direction={"row"}
-            justifyContent={"space-around"}
-            alignItems={"center"}
-            gap={"24px"}
-          ></Stack>
-        </Stack>
-        <SimpleTable
-          columns={columns}
-          data={PropectusData}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
+        <div className="w-full h-full overflow-y-auto">
+          <SimpleTable
+            columns={columns}
+            data={PropectusData}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            height="calc(100vh - 15rem)"
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+          />
+        </div>
       </div>
 
       {openSubmissionPrompt && (
@@ -331,7 +318,7 @@ const PropectusPage = () => {
           deleteError={deleteError}
         />
       )}
-    </Stack>
+    </div>
   );
 };
 

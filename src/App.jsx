@@ -34,11 +34,7 @@ import ManageVendor from "./Screens/Manage/ManageVendor/ManagerVendor";
 import ManageVendorInvoice from "./Screens/Manage/ManageVendorInvoice/ManageVendorInvoice";
 import ManageVendorPayment from "./Screens/Manage/ManageVendorPayment/ManageVendorPayment";
 
-import {
-  Route,
-  Routes,
-  Outlet,
-} from "react-router-dom";
+import { Route, Routes, Outlet } from "react-router-dom";
 import Userscreen from "./Screens/UserScreens/Userscreen";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
@@ -115,6 +111,7 @@ const App = () => {
             <Route path="" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user" element={<Userscreen />} />
+            <Route path="/unauthorized" element={<>Unauthorized</>} />
 
           {/* <Route element={<RequireAuth />}> */}
           <Route

@@ -12,9 +12,9 @@ const HeaderBreadcrum = ({ heading, path , handleBack = () => {} }) => {
         </div>
       </button>
 
-      <div className="flex-col">
-        <h1 className="text-[18px]">{heading}</h1>
-        <p className="text-[14px]">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-[1.3125rem] text-[#282828] leading-[1.125rem] font-sans">{heading}</h1>
+        <p className="text-[0.875rem] leading-[1.3125rem] text-[#282828] font-sans">
           {path?.map((data, index) => (
             <>
               {data}
