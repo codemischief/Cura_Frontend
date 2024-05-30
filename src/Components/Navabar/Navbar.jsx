@@ -571,9 +571,11 @@ const Navbar = () => {
                     Entity-Receipt-Payments
                   </p>
                 </Link> */}
+                <Link to={"/clientStatementAll"}>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Client Statement-CI,CR and OR(All Entities)
                 </p>
+                </Link>
                 {/* <Link to={"/lobReceiptPaymentsConsolidated"}>
                   <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                     LOB-Receipts-Payments Consolidated
