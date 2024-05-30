@@ -30,7 +30,9 @@ const SimpleTable = ({
         <thead className="h-[115px] sticky top-0 z-100 bg-white">
           <tr className="h-[56px]">
             {columns.map((column, index) => (
+              
               <th key={index} style={{ ...column.cellStyle }}>
+                 {console.log(column.cellStyle)}
                 {column.filterComponent && [
                   <column.filterComponent
                     key={column.field}
