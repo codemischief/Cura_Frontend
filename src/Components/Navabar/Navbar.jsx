@@ -604,9 +604,11 @@ const Navbar = () => {
                     CURA Non PMA Client Statement
                   </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  CURA Non PMA Client Receivables
-                </p>
+                <Link to={"/nonPmaClientReceivables"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    CURA Non PMA Client Receivables
+                  </p>
+                </Link>
               </div>
             </div>
             <div className="ml-5 mt-4 flex-col space-y-2">

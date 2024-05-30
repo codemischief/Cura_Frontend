@@ -80,6 +80,7 @@ import AdvanceHoldingAmount from "./Screens/Reports/AdvanceHoldingAmount";
 import PmaClientStatementAll from "./Screens/Reports/PMAClientStatementAll";
 import PmaClientStatement from "./Screens/Reports/PmaClientStatement";
 import NonPmaClientStatement from "./Screens/Reports/NonPmaClientStatement";
+import NonPmaClientReceivables from "./Screens/Reports/NonPmaClientReceivables";
 
 const App = () => {
   const ROLES = {
@@ -243,6 +244,7 @@ const App = () => {
           <Route path="/pmaClientStatementAll" element={<PmaClientStatementAll />}/>
           <Route path="/pmaClientStatement" element={<PmaClientStatement />}/>
           <Route path="/nonPmaClientStatement" element={<NonPmaClientStatement />}/>
+          <Route path="/nonPmaClientReceivables" element={<NonPmaClientReceivables />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
