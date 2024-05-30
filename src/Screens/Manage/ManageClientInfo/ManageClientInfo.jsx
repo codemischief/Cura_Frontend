@@ -549,7 +549,9 @@ const ManageClientInfo = () => {
         openAddCancelModal();
     }
     const initials = () => {
+        console.log('called')
         setFormValues(initialValues);
+        setFormErrorsClientInfo({})
         setFormErrors({});
     }
     const [clientTypeData, setClientTypeData] = useState([]);
