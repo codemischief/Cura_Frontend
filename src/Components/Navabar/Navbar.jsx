@@ -617,9 +617,11 @@ const Navbar = () => {
                     Active PMA Agreements
                   </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  All Project Contacts
-                </p>
+                <Link to={"/projectContact"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    All Project Contacts
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Details for Advance Holding Amount
                 </p>

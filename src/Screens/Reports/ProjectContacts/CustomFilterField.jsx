@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../Components/common/table/FilterField";
-import { setActivePmaAgreementFilters, setPageNumber } from "../../../Redux/slice/reporting/ActivePmaAgreement";
+import { setProjectContactsFilters, setPageNumber } from "../../../Redux/slice/reporting/ProjectContacts";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.activePmaAgreement);
+  const { filter } = useSelector((state) => state.projectContacts);
 
   const handleFilterChange = (filters) => {
-    dispatch(setActivePmaAgreementFilters({...filters}));
+    dispatch(setProjectContactsFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 

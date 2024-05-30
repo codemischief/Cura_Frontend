@@ -137,4 +137,12 @@ export const activePmaAgreement = (data) => {
     poastartdate : billing.poastartdate? formatDate(billing.poastartdate): "",
   }));
 }
+export const projectContacts = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    tenureenddate : billing.tenureenddate? formatDate(billing.tenureenddate): "",
+    effectivedate : billing.effectivedate? formatDate(billing.effectivedate): "",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

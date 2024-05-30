@@ -75,6 +75,7 @@ import PmaClientReport from "./Screens/Reports/pmaClientReport";
 import PmaInvoiceList from "./Screens/Reports/PmaInvoiceList";
 import PmaClientReceivable from "./Screens/Reports/PmaClientReceivables/index.jsx";
 import ActivePmaAgreement from "./Screens/Reports/ActivePmaAgreement";
+import ProjectContact from "./Screens/Reports/ProjectContacts"
 
 const App = () => {
   const ROLES = {
@@ -216,6 +217,8 @@ const App = () => {
             path="/manage/manageclientinvoice/:orderid"
             element={<ManageClientInvoice />}
           />
+          <Route path="/sendClientStatement" element={<SendClientStatement/>}/>
+
           <Route path="/manage/pmaBilling" element={<PmaBilling />} />
           <Route path="admin/temp" element={<Temp />} />
           <Route path="/orderPaymentList" element={<OrderPaymentList />} />
@@ -231,7 +234,7 @@ const App = () => {
           <Route path="/pmaInvoiceList" element={<PmaInvoiceList/>} />
           <Route path="/pmaClientReceivable" element={<PmaClientReceivable/>}/>
           <Route path="/activePmaAgreement" element={<ActivePmaAgreement/>}/>
-          <Route path="/sendClientStatement" element={<SendClientStatement/>}/>
+          <Route path="/projectContact" element={<ProjectContact/>}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />
