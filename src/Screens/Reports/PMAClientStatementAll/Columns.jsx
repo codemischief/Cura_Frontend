@@ -11,7 +11,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "10%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "4%" },
       sorting: false,
       render: (index) => {
         return (
@@ -30,7 +30,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"  },
     },
     {
       title: "Entity",
@@ -38,14 +38,14 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
     },
     {
         title: "Client Name",
         field: "clientname",
         sorting: true,
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"  },
     },
     {
       title: "Type",
@@ -53,7 +53,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
     },
     {
         title: "Date",
@@ -61,7 +61,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: DateFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
       {
         title: "Amount",
@@ -69,7 +69,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
       {
         title: "Order Details",
@@ -77,7 +77,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
       {
         title: "Lob Name",
@@ -85,7 +85,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
       {
         title: "Service",
@@ -93,7 +93,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
       {
         title: "FY",
@@ -101,7 +101,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
       {
         title: "Mode",
@@ -109,7 +109,7 @@ export default function connectionDataColumn(onQuery) {
         sorting: true,
         // cellStyle: { minWidth: "20px", },
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "8.7%"   },
       },
   ];
   return columns;

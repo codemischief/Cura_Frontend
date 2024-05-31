@@ -1,17 +1,16 @@
 import { Stack } from "@mui/material";
-import styleConst from "./styleConst";
 import {
-  DateFilterField,
   NumberFilterField,
-  TextFilterField,
+  TextFilterField
 } from "./CustomFilterField";
+import styleConst from "./styleConst";
 
 export default function connectionDataColumn(onQuery) {
   const { cellStyleCommon } = styleConst;
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "10%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "10%" },
       sorting: false,
       render: (index) => {
         return (
@@ -29,7 +28,7 @@ export default function connectionDataColumn(onQuery) {
       field: "clientname",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "30%" },
     },
     {
       title: "Payments",
@@ -37,7 +36,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "30%" },
     },
     {
       title: "Receipts",
@@ -45,7 +44,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", minWidth: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "30%" },
     },
 
   ];
