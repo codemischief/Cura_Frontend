@@ -210,4 +210,12 @@ export const bankTransferReconsiliation = (data) => {
     date : billing.date? formatDate(billing.date): "",
   }));
 }
+export const clientOrderReceiptMismatchDetails = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    diff : billing.diff ? floorDecimal(billing.diff) : "0.00",
+    date : billing.date? formatDate(billing.date): "",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
