@@ -51,14 +51,8 @@ const EditManageStatement = (props) => {
             "date":String(formValues.date),
             "amount":formValues.amount,
             "particulars":String(formValues.particulars),
-            "crdr":String(formValues.crdr),
-            // "chequeno":"ABC123",
-            // "availablebalance":99999.00,
-            // "dateadded":"20-03-2024 00:00:01",
-            // "clientid": 45000,
-            // "orderid": 4040404,
+            "crdr": formValues.crdr == 'Credit' ? "CR" : "DR",
             "receivedby":Number(formValues.how),
-            // "details":"abcdefg",
             "vendorid":Number(formValues.vendor),
             "createdby":1234
         }
@@ -199,7 +193,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[13px]"> Mode <label className="text-red-500">*</label></div>
                                             <select className="text-[11px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} >
-                                            <option>{currentMode}</option>
+                                            {/* <option>{currentMode}</option> */}
                                                 {mode && mode.map(item => (
                                                     <option key={item[0]} value={item[0]}>
                                                         {item[1]}
@@ -270,7 +264,7 @@ const EditManageStatement = (props) => {
                             <div className="my-10 flex justify-center items-center gap-[10px]">
                                 <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit">Save</button>
                                 <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleDialogClose}>Cancel</button>
-                                {isLoading && <CircularProgress />}
+                                
                             </div>
                         </form>
                     </div>

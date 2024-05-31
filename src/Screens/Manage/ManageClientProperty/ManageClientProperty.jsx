@@ -37,6 +37,7 @@ import ActiveFilter from "../../../assets/active_filter.png"
 const ManageClientProperty = () => {
     const menuRef = useRef();
     const { state } = useLocation()
+    console.log(state)
     // we have the module here
     const navigate = useNavigate()
     const [pageLoading, setPageLoading] = useState(false);
@@ -117,12 +118,12 @@ const ManageClientProperty = () => {
         console.log(result);
         if (Array.isArray(result)) {
             setAllCity(result)
-            if (result.length > 0) {
-                setFormValues((existing) => {
-                    const newData = { ...existing, city: result[0].id }
-                    return newData;
-                })
-            }
+            // if (result.length > 0) {
+            //     setFormValues((existing) => {
+            //         const newData = { ...existing, city: result[0].id }
+            //         return newData;
+            //     })
+            // }
         }
     }
     const fetchUsersData = async () => {
@@ -134,9 +135,9 @@ const ManageClientProperty = () => {
 
         console.log(result.data);
         console.log('hey')
-        setFormValues((existing) => {
-            return { ...existing, userName: result.data[0].id }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, userName: result.data[0].id }
+        // })
         if (Array.isArray(result.data)) {
             setAllUsername(result.data);
         }
@@ -164,9 +165,9 @@ const ManageClientProperty = () => {
         const response = await APIService.getEntityAdmin(data)
         const result = (await response.json());
         console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, entity: result.data[0][0] }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, entity: result.data[0][0] }
+        // })
         if (Array.isArray(result.data)) {
             setAllEntites(result.data);
         }
@@ -186,9 +187,9 @@ const ManageClientProperty = () => {
         const response = await APIService.getLob(data);
         const result = (await response.json());
         console.log(result.data);
-        setFormValues((existing) => {
-            return { ...existing, lob: result.data[0].id }
-        })
+        // setFormValues((existing) => {
+        //     return { ...existing, lob: result.data[0].id }
+        // })
         if (Array.isArray(result.data)) {
             setAllLOB(result.data);
         }
@@ -433,9 +434,20 @@ const ManageClientProperty = () => {
         setExistingClientProperty(result.client_info);
         setPageLoading(false);
     }
-
+    const setHyperLinkData = () => {
+        if(state != null) {
+            console.log(state)
+            setClientNameText(state.clientname)
+            const temp = {...formValues}
+            const ex = temp.client_property
+            ex.clientid = state.clientid
+            temp.client_property = ex 
+            setFormValues(temp);
+            // console.log(formValues)
+        }
+    }
     useEffect(() => {
-
+        setHyperLinkData()
         fetchClientData();
         fetchData();
         fetchStateData(5);
@@ -488,6 +500,7 @@ const ManageClientProperty = () => {
         openAddCancelModal();
     }
     const initials = () => {
+        setHyperLinkData()
         setFormValues(initialValues);
         setFormErrors({});
     }
@@ -561,9 +574,10 @@ const ManageClientProperty = () => {
         console.log(res)
         setClientData(res.data);
     }
+    // console.log(state.clientid)
     const initialValues = {
         "client_property": {
-            "clientid": null,
+            "clientid": state?.clientid,
             "propertytype": null,
             "leveloffurnishing": null,
             "numberofparkings": null,
@@ -662,6 +676,7 @@ const ManageClientProperty = () => {
 
     // validate form and to throw Error message
     const validate = () => {
+        console.log(formValues)
         var res = true;
         if (!formValues.client_property.clientid) {
             setFormErrors((existing) => {
@@ -1467,6 +1482,7 @@ const ManageClientProperty = () => {
                     }
               }
       }
+      const [clientNameText,setClientNameText] = useState('Select Client')
     return (
         <div className="h-screen font-medium">
             <Navbar />
@@ -1820,13 +1836,13 @@ const ManageClientProperty = () => {
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='px-1 text-[11px] text-blue-500'>
                                         {/* /manage/manageclientproperty/pmaagreement/:propertyid */}
-                                        <Link to={`/manage/manageclientproperty/pmaagreement/${item.id}`} state={{ clientPropertyId: item.id }}>PMA Agreement </Link>
+                                        <Link to={`/manage/manageclientproperty/pmaagreement/${item.id}`} state={{ clientPropertyId: item.id , clientid : item.clientid, clientname : item.client , clientpropertydescription : item.description , hyperlinked : true}}>PMA Agreement </Link>
                                             {/* <Link to={`pmaagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id , clientid : item.clientid , clientname : item.client , description : item.description, project : item.project}}>PMA Agreement</Link> */}
                                         </div>
                                     </div>
                                     <div className='w-[9%]  flex items-center'>
                                         <div className='pl-1 text-[11px] text-blue-500'>
-                                        <Link to={`/manage/manageclientproperty/llagreement/${item.id}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link>
+                                        <Link to={`/manage/manageclientproperty/llagreement/${item.id}`} state={{ clientPropertyId: item.id , clientid : item.clientid, clientname : item.client , clientpropertydescription : item.description , hyperlinked : true }}>L&L Agreement</Link>
                                             {/* <Link to={`llagreement/${item.project.split(` `).join(`-`).toLowerCase()}`} state={{ clientPropertyId: item.id }}>L&L Agreement</Link> */}
                                         </div>
                                     </div>
@@ -1955,7 +1971,7 @@ const ManageClientProperty = () => {
                                 </div>
                             </div>
 
-                            {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={"Select Client Name"} clientid={null} />}
+                            {selectedDialog == 1 && <ProjectInformation clientData={clientData} initialCountries={allCountry} initialSociety={existingSociety} initialStates={allState} initialCities={allCity} clientTypeData={clientTypeData} formValues={formValues} setFormValues={setFormValues} propertyType={propertyType} levelOfFurnishing={levelOfFurnishing} propertyStatus={propertyStatus} formErrors={formErrors} setCurrClientName={setCurrClientName} clientname={clientNameText} setClientNameText={setClientNameText} clientid={state?.clientid} hyperlinkState={state}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 3 && <POADetails initialCountries={allCountry} initialStates={allState} initialCities={allCity} formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 4 && <OwnerDetails formValues={formValues} setFormValues={setFormValues} />}

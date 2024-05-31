@@ -38,6 +38,7 @@ import ActiveFilter from "../../../assets/active_filter.png"
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManagePmaArgreement = () => {
     const {state} = useLocation();
+
     const navigate = useNavigate()
     console.log(state)
     const dataRows = [
@@ -398,7 +399,7 @@ const ManagePmaArgreement = () => {
         setShowEditModal(true);
     }
     const initialValues = {
-        client: "",
+        client: null,
         clientProperty: null,
         pmaStartDate: null,
         pmaEndDate: null,
@@ -417,7 +418,22 @@ const ManagePmaArgreement = () => {
         status: false
     };
     const [formValues, setFormValues] = useState(initialValues);
+    const handleHyperLinkState = () => {
+        if(state != null) {
+
+            const v ={...selectedOption}
+             v.label = state.clientname 
+             v.value = state.clientid 
+             setSelectedOption(v)
+             const temp = {...formValues}
+             temp.client = state.clientid 
+             temp.clientProperty = state.clientPropertyId 
+             getOrdersByClientId(state.clientid)
+             setFormValues(temp)
+        }
+    }
     useEffect(() => {
+        handleHyperLinkState()
         fetchData();
         fetchCountryData();
         fetchStateData(5)
@@ -476,7 +492,7 @@ const ManagePmaArgreement = () => {
                 value: null
             }
         )
-
+        handleHyperLinkState()
         setOrders([]);
         setClientPropertyData([]);
 
@@ -1682,6 +1698,8 @@ const ManagePmaArgreement = () => {
                                                 <div className="text-[13px]">
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
+                                                {state?.hyperlinked ?
+                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -1710,16 +1728,30 @@ const ManagePmaArgreement = () => {
                                                             ...provided,
                                                             padding: '1px', // adjust padding for the dropdown indicator
                                                         }),
-                                                        options: (provided, state) => ({
+                                                        // options: (provided, state) => ({
+                                                        //     ...provided,
+                                                        //     fontSize: 10// adjust padding for the dropdown indicator
+                                                        // }),
+                                                        option: (provided, state) => ({
                                                             ...provided,
-                                                            fontSize: 10// adjust padding for the dropdown indicator
+                                                            padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                            margin: 0, // Ensure no extra margin
+                                                            fontSize: 10 // Adjust font size of individual options
                                                         }),
                                                         menu: (provided, state) => ({
                                                             ...provided,
                                                             width: 230, // Adjust the width of the dropdown menu
+                                                            zIndex: 9999 // Ensure the menu appears above other elements
                                                         }),
+                                                        menuList: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: 0, // Adjust padding of the menu list
+                                                            fontSize: 10,
+                                                            maxHeight: 150 // Adjust font size of the menu list
+                                                        }),
+                                                        
                                                     }}
-                                                />
+                                                />}
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                             </div>
                                             <div className="">
@@ -1814,7 +1846,8 @@ const ManagePmaArgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
+                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
+                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />}
                                                 <div className="text-[10px] text-[#CD0000] ">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">

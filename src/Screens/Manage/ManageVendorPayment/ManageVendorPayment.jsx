@@ -42,7 +42,7 @@ const ManageVendorPayment = () => {
     const { state } = useLocation()
     const navigate = useNavigate();
     console.log(state)
-    console.log(state?.orderid)
+    // console.log(state?.orderid)
     // we have the module here
     const [pageLoading, setPageLoading] = useState(false);
     const [existingEmployees, setExistingEmployees] = useState([]);
@@ -458,11 +458,11 @@ const ManageVendorPayment = () => {
         setShowEditModal(true);
     }
     const initialValues = {
-        client: "",
+        client: state?.clientid,
         paymentby: null,
         amount: "",
         paymentdate: null,
-        orderid: null,
+        orderid: state?.orderid,
         vendorid: null,
         mode: 5,
         description: "",
@@ -472,7 +472,21 @@ const ManageVendorPayment = () => {
         officeid: null
     };
     const [formValues, setFormValues] = useState(initialValues);
+    const setHyperLinkData = () => {
+        if(state != null){
+            const v = {...selectedOption}
+            v.label = state.clientname 
+            v.value = state.clientid
+            setSelectedOption(v)
+            const temp= {...formValues}
+            temp.client = state.clientid 
+            temp.orderid = state.orderid
+            getOrderData(state.orderid)
+            setFormValues(temp)
+        }
+    }
     useEffect(() => {
+        setHyperLinkData()
         fetchData();
         // fetchUsersData();
         fetchModesData();
@@ -513,6 +527,7 @@ const ManageVendorPayment = () => {
     }
 
     const initials = () => {
+        setHyperLinkData()
         setFormValues(initialValues);
         setFormErrors({});
         setSelectedOption(
@@ -1584,6 +1599,8 @@ const ManageVendorPayment = () => {
                                                 <div className="text-[13px] mb-0.5">
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
+                                                {state?.hyperlinked ?
+                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -1595,9 +1612,9 @@ const ManageVendorPayment = () => {
                                                     styles={{
                                                         control: (provided, state) => ({
                                                             ...provided,
-                                                            minHeight: 10,
-                                                            lineHeight: '1.3',
-                                                            height: '20',
+                                                            minHeight: 23,
+                                                            lineHeight: '0.8',
+                                                            height: 4,
                                                             width: 230,
                                                             fontSize: 10,
                                                             // padding: '1px'
@@ -1610,18 +1627,32 @@ const ManageVendorPayment = () => {
                                                         // }),
                                                         dropdownIndicator: (provided, state) => ({
                                                             ...provided,
-                                                            // padding: '1px', // adjust padding for the dropdown indicator
+                                                            padding: '1px', // adjust padding for the dropdown indicator
                                                         }),
-                                                        options: (provided, state) => ({
+                                                        // options: (provided, state) => ({
+                                                        //     ...provided,
+                                                        //     fontSize: 10// adjust padding for the dropdown indicator
+                                                        // }),
+                                                        option: (provided, state) => ({
                                                             ...provided,
-                                                            fontSize: 10// adjust padding for the dropdown indicator
+                                                            padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                            margin: 0, // Ensure no extra margin
+                                                            fontSize: 10 // Adjust font size of individual options
                                                         }),
                                                         menu: (provided, state) => ({
                                                             ...provided,
                                                             width: 230, // Adjust the width of the dropdown menu
+                                                            zIndex: 9999 // Ensure the menu appears above other elements
                                                         }),
+                                                        menuList: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: 0, // Adjust padding of the menu list
+                                                            fontSize: 10,
+                                                            maxHeight: 150 // Adjust font size of the menu list
+                                                        }),
+                                                        
                                                     }}
-                                                />
+                                                />}
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.client}</div>
                                             </div>
                                             <div className="">
@@ -1658,10 +1689,10 @@ const ManageVendorPayment = () => {
                                             </div>
                                         </div>
                                         <div className=" space-y-3 py-5">
-                                            <div className="">
+                                            {/* <div className="">
                                                 <div className="text-sm text-[#787878] mb-0.5">Payment ID </div>
                                                 <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} ></div>
-                                            </div>
+                                            </div> */}
                                             <div className="">
                                                 <div className="text-[13px] mb-1">
                                                     Order <label className="text-red-500">*</label>
@@ -1679,10 +1710,11 @@ const ManageVendorPayment = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
+                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
                                                 <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={(e) => {
                                                     handleChange(e)
                                                     getOrderData(e.target.value)
-                                                }} formValueName="orderid" value={formValues.orderid} />
+                                                }} formValueName="orderid" value={formValues.orderid} />}
 
                                                 <div className="text-[9px] text-[#CD0000] absolute ">{formErrors.orderid}</div>
                                             </div>

@@ -311,7 +311,21 @@ const ManageClientInvoice = () => {
         setExistingClientInvoice(result);
         setPageLoading(false);
     }
+    const setHyperLinkData = () => {
+        if(state != null) {
+            const v = {...selectedOption}
+            v.label = state.clientname
+            v.value = state.clientid 
+            setSelectedOption(v)
+            const temp = {...formValues}
+            temp.client = state.clientid 
+            temp.order = state.orderid 
+            setFormValues(temp)
+
+        }
+    }
     useEffect(() => {
+        setHyperLinkData()
         fetchData();
 
         const handler = (e) => {
@@ -424,12 +438,12 @@ const ManageClientInvoice = () => {
     }
 
     const initialValues = {
-        client: "",
+        client: state?.clientid,
         estimateAmount: "",
         baseAmount: "",
         invoiceAmount: "",
         invoiceDescription: "",
-        order: null,
+        order: state?.orderid,
         estimateDate: null,
         gst: "",
         invoiceDate: null
@@ -1427,6 +1441,8 @@ const ManageClientInvoice = () => {
                                         <div className="text-[13px] pb-0.5">
                                             Client Name<label className="text-red-500">*</label>
                                         </div>
+                                        {state?.hyperlinked ?
+                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" >{state.clientname}</div> :
                                         <AsyncSelect
                                             onChange={handleClientNameChange}
                                             value={selectedOption}
@@ -1434,7 +1450,7 @@ const ManageClientInvoice = () => {
                                             cacheOptions
                                             defaultOptions
                                             onInputChange={(value) => setQuery(value)}
-
+                                            
                                             styles={{
                                                 control: (provided, state) => ({
                                                     ...provided,
@@ -1455,16 +1471,30 @@ const ManageClientInvoice = () => {
                                                     ...provided,
                                                     padding: '1px', // adjust padding for the dropdown indicator
                                                 }),
-                                                options: (provided, state) => ({
+                                                // options: (provided, state) => ({
+                                                //     ...provided,
+                                                //     fontSize: 10// adjust padding for the dropdown indicator
+                                                // }),
+                                                option: (provided, state) => ({
                                                     ...provided,
-                                                    fontSize: 10// adjust padding for the dropdown indicator
+                                                    padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                    margin: 0, // Ensure no extra margin
+                                                    fontSize: 10 // Adjust font size of individual options
                                                 }),
                                                 menu: (provided, state) => ({
                                                     ...provided,
                                                     width: 230, // Adjust the width of the dropdown menu
+                                                    zIndex: 9999 // Ensure the menu appears above other elements
                                                 }),
+                                                menuList: (provided, state) => ({
+                                                    ...provided,
+                                                    padding: 0, // Adjust padding of the menu list
+                                                    fontSize: 10,
+                                                    maxHeight: 150 // Adjust font size of the menu list
+                                                }),
+                                                
                                             }}
-                                        />
+                                        />}
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
                                     </div>
                                     <div className="">
@@ -1505,7 +1535,8 @@ const ManageClientInvoice = () => {
                                                 </option>
                                             ))}
                                         </select> */}
-                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />
+                                        {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
+                                        <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />}
                                         {/* <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/> */}
                                         <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
                                     </div>
