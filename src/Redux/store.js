@@ -27,6 +27,7 @@ import ClientBankDetails from "./slice/reporting/ClientBankDetails";
 import MonthlyBankSummary from "./slice/reporting/MonthlyBankSummary";
 import BankTransferReconciliation from "./slice/reporting/BankTransferReconciliation";
 import ClientOrderReceiptMismatchDetails from "./slice/reporting/ClientOrderReceiptMismatchDetails";
+import BankReceiptsReconciliation from "./slice/reporting/BankReceiptsReconciliation";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -54,6 +55,7 @@ export const store = configureStore({
     monthlyBankSummary:MonthlyBankSummary,
     bankTransferReconsiliation: BankTransferReconciliation,
     clientOrderReceiptMismatchDetails: ClientOrderReceiptMismatchDetails,
+    bankReceiptReconciliation: BankReceiptsReconciliation,
   },
   // Add the RTK Query API middleware
 });

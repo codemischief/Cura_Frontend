@@ -519,9 +519,11 @@ const Navbar = () => {
                     Bank Transfer Reconciliation
                   </p>
                 </Link>
+                <Link to={"/bankReceiptReconciliation"}>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Daily Bank Receipts Reconciliation
                 </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Daily Bank Payments Reconciliation
                 </p>

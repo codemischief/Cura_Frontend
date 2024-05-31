@@ -296,7 +296,7 @@ const helper2 = (index, obj, pageName) => {
     } else if (index == 5) {
 
     }
-  } else if (pageName == "pmaClientStatement") {
+  } else if (pageName == "bankReceiptReconciliation") {
      return ""
   } else {
     if (index == 2) {

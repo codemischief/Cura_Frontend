@@ -217,5 +217,15 @@ export const clientOrderReceiptMismatchDetails = (data) => {
     diff : billing.diff ? floorDecimal(billing.diff) : "0.00",
     date : billing.date? formatDate(billing.date): "",
   }));
-}
+} 
+export const bankReceiptReconciliation = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    bankst_cr : billing.bankst_cr ? floorDecimal(billing.bankst_cr) : "0.00",
+    client_receipt : billing.client_receipt ? floorDecimal(billing.client_receipt) : "0.00",
+    order_receipt : billing.order_receipt ? floorDecimal(billing.order_receipt) : "0.00",
+    date : billing.date? formatDate(billing.date): "",
+  }));
+} 
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
