@@ -86,7 +86,8 @@ import NonPmaClientStatement from "./Screens/Reports/NonPmaClientStatement";
 import NonPmaClientReceivables from "./Screens/Reports/NonPmaClientReceivables";
 import ClientStatementAll from "./Screens/Reports/ClientStatement-CI,CRAndOR";
 import DuplicateClientReport from "./Screens/Reports/DupilcateClientsReport";
-import ClientBankDetails from "./Screens/Reports/ClientBankDetails"
+import ClientBankDetails from "./Screens/Reports/ClientBankDetails";
+import MonthlyBankSummary from "./Screens/Reports/MonthlyBankSummary";
 
 const App = () => {
   const ROLES = {
@@ -259,6 +260,7 @@ const App = () => {
           <Route path="/clientStatementAll" element={<ClientStatementAll />}/>
           <Route path="/duplicateClientReport" element={<DuplicateClientReport />}/>
           <Route path="/clientBankDetails" element={<ClientBankDetails />}/>
+          <Route path="/monthlyBankSummary" element={<MonthlyBankSummary />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

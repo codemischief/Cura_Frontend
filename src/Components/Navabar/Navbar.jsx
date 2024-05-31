@@ -507,9 +507,11 @@ const Navbar = () => {
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Bank Balance Reconciliation
                 </p>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Monthly Bank Summary
-                </p>
+                <Link to={"/monthlyBankSummary"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Monthly Bank Summary
+                  </p>
+                </Link>
                 <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
                   Bank Transfer Reconciliation
                 </p>

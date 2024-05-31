@@ -192,4 +192,14 @@ export const duplicateClientsReport = (data) => {
     ...billing,
   }));
 }
+export const reportMonthlyBankSummary = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    payments : billing.payments ? floorDecimal(billing.payments) : "0.00",
+    bankpayments : billing.bankpayments ? floorDecimal(billing.bankpayments) : "0.00",
+    bankreceipts : billing.bankreceipts ? floorDecimal(billing.bankreceipts) : "0.00",
+    receipts : billing.receipts ? floorDecimal(billing.receipts) : "0.00",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
