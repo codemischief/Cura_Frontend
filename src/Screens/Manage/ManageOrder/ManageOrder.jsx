@@ -1497,7 +1497,7 @@ const ManageOrder = () => {
                                 <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
                             {!pageLoading && existingOrder.map((item, index) => {
-                                return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px]'>
+                                return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px] break-words'>
                                     <div className='w-full flex'>
                                         <div className='w-[40px] p-4'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -1514,7 +1514,7 @@ const ManageOrder = () => {
                                         <div className='w-[215px] p-4'>
                                             <p> {item.clientproperty}</p>
                                         </div>
-                                        <div className='w-[125px] p-4'>
+                                        <div className='w-[125px] p-4 '>
                                             <p> {item.servicename}</p>
                                         </div>
                                         <div className='w-[130px] p-4'>

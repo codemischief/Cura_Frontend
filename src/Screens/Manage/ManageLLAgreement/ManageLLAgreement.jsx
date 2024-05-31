@@ -1992,13 +1992,12 @@ const ManageLLAgreement = () => {
                                                             styles={{
                                                                 control: (provided, state) => ({
                                                                     ...provided,
-                                                                    minHeight: 25,
-                                                                    lineHeight: '1.3',
-                                                                    height: 2,
-                                                                    fontSize: 12,
-                                                                    padding: '1px',
-                                                                    float : 'left',
-                                                                    width : "300px"
+                                                                    minHeight: 23,
+                                                                    lineHeight: '0.8',
+                                                                    height: 4,
+                                                                    width: 230,
+                                                                    fontSize: 10,
+                                                                    // padding: '1px'
                                                                 }),
                                                                 // indicatorSeparator: (provided, state) => ({
                                                                 //   ...provided,
@@ -2008,12 +2007,30 @@ const ManageLLAgreement = () => {
                                                                 // }),
                                                                 dropdownIndicator: (provided, state) => ({
                                                                     ...provided,
-                                                                    padding: '3px', // adjust padding for the dropdown indicator
+                                                                    padding: '1px', // adjust padding for the dropdown indicator
                                                                 }),
-                                                                options: (provided, state) => ({
+                                                                // options: (provided, state) => ({
+                                                                //     ...provided,
+                                                                //     fontSize: 10// adjust padding for the dropdown indicator
+                                                                // }),
+                                                                option: (provided, state) => ({
                                                                     ...provided,
-                                                                    fontSize: 12 // adjust padding for the dropdown indicator
-                                                                })
+                                                                    padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                                    margin: 0, // Ensure no extra margin
+                                                                    fontSize: 10 // Adjust font size of individual options
+                                                                }),
+                                                                menu: (provided, state) => ({
+                                                                    ...provided,
+                                                                    width: 230, // Adjust the width of the dropdown menu
+                                                                    zIndex: 9999 // Ensure the menu appears above other elements
+                                                                }),
+                                                                menuList: (provided, state) => ({
+                                                                    ...provided,
+                                                                    padding: 0, // Adjust padding of the menu list
+                                                                    fontSize: 10,
+                                                                    maxHeight: 150 // Adjust font size of the menu list
+                                                                }),
+                                                                
                                                             }}
                                                             />
                                                             <button onClick={() => handleDeleteAtIndex(index)}>
