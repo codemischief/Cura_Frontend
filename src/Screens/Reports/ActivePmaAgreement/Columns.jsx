@@ -37,7 +37,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "8%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
     {
       title: "Care Taking Description",
@@ -85,7 +85,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "8%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%" },
     },
     {
       title: "PMA End Date",
@@ -93,7 +93,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "8%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%" },
     },
     {
       title: "LnL Start Date",
@@ -101,7 +101,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "8%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%" },
     },
     {
       title: "LnL End Date",
@@ -109,7 +109,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "8%"  },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%"  },
     },
     {
       title: "POA Start Date",
@@ -117,7 +117,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "8%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%"},
     },
 
   ];

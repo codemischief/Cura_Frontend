@@ -115,7 +115,7 @@ const FilterField = (props) => {
 
   return (
     <>
-      <div className="w-full  p-3">
+      <div className="w-full p-3">
         <div className="w-[100%] flex items-center bg-[#F5F5F5] rounded-md">
           <input
             className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
@@ -143,6 +143,7 @@ const FilterField = (props) => {
                 color="#C6C6C6"
               />
             </button>
+            {/* <h1>hey</h1> */}
           </Tooltip>
         </div>
       </div>
