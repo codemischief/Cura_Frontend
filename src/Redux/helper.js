@@ -228,4 +228,15 @@ export const bankReceiptReconciliation = (data) => {
     date : billing.date? formatDate(billing.date): "",
   }));
 } 
+export const bankPaymentsReconciliation = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+    bankst_dr : billing.bankst_dr ? floorDecimal(billing.bankst_dr) : "0.00",
+    order_payments : billing.order_payments ? floorDecimal(billing.order_payments) : "0.00",
+    contractual_payments : billing.contractual_payments ? floorDecimal(billing.contractual_payments) : "0.00",
+    contorderpayments : billing.contorderpayments ? floorDecimal(billing.contorderpayments) : "0.00",
+    date : billing.date? formatDate(billing.date): "",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

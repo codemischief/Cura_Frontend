@@ -91,6 +91,7 @@ import MonthlyBankSummary from "./Screens/Reports/MonthlyBankSummary";
 import BankTransferReconciliation from "./Screens/Reports/BankTransferReconciliation";
 import ClientOrderReceiptMismatchDetails from "./Screens/Reports/ClientOrderReceiptMismatchDetails";
 import BankReceiptReconciliation from "./Screens/Reports/BankReceiptsReconciliation";
+import BankPaymentReconciliation from "./Screens/Reports/BankPaymentReconciliation";
 
 const App = () => {
   const ROLES = {
@@ -267,6 +268,7 @@ const App = () => {
           <Route path="/bankTransferReconciliation" element={<BankTransferReconciliation />}/>
           <Route path="/clientOrderReceiptMismatchDetails" element={<ClientOrderReceiptMismatchDetails />}/>
           <Route path="/bankReceiptReconciliation" element={<BankReceiptReconciliation />}/>
+          <Route path="/bankPaymentReconciliation" element={<BankPaymentReconciliation />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

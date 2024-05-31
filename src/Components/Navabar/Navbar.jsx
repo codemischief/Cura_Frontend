@@ -520,13 +520,15 @@ const Navbar = () => {
                   </p>
                 </Link>
                 <Link to={"/bankReceiptReconciliation"}>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Daily Bank Receipts Reconciliation
-                </p>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Daily Bank Receipts Reconciliation
+                  </p>
                 </Link>
-                <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
-                  Daily Bank Payments Reconciliation
-                </p>
+                <Link to={"/bankPaymentReconciliation"}>
+                  <p className="text-thin text-xs hover:bg-[#DAE7FF] w-[94%] rounded-md p-1">
+                    Daily Bank Payments Reconciliation
+                  </p>
+                </Link>
               </div>
             </div>
             <div className="ml-5 mt-4 flex-col space-y-2">
