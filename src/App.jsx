@@ -88,6 +88,7 @@ import ClientStatementAll from "./Screens/Reports/ClientStatement-CI,CRAndOR";
 import DuplicateClientReport from "./Screens/Reports/DupilcateClientsReport";
 import ClientBankDetails from "./Screens/Reports/ClientBankDetails";
 import MonthlyBankSummary from "./Screens/Reports/MonthlyBankSummary";
+import BankTransferReconciliation from "./Screens/Reports/BankTransferReconciliation";
 
 const App = () => {
   const ROLES = {
@@ -261,6 +262,7 @@ const App = () => {
           <Route path="/duplicateClientReport" element={<DuplicateClientReport />}/>
           <Route path="/clientBankDetails" element={<ClientBankDetails />}/>
           <Route path="/monthlyBankSummary" element={<MonthlyBankSummary />}/>
+          <Route path="/bankTransferReconciliation" element={<BankTransferReconciliation />}/>
           {/* </Route>  */}
 
           <Route path="/*" element={<NotFound />} />

@@ -11,7 +11,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "5%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "4%" },
       sorting: false,
       render: (index) => {
         return (
@@ -29,7 +29,7 @@ export default function connectionDataColumn(onQuery) {
       field: "name",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
     {
       title: "Month Year",
@@ -37,7 +37,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { width: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
     {
       title: "Order Payments",
@@ -45,7 +45,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { width: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
     {
       title: "Payments(DR)",
@@ -53,7 +53,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { width: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
     {
       title: "Order Receipt",
@@ -61,7 +61,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { width: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
     {
       title: "Receipts(CR)",
@@ -69,7 +69,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { width: "20px", },
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "15%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "16%" },
     },
   ];
   return columns;
