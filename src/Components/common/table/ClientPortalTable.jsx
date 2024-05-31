@@ -99,7 +99,9 @@ import {
                       className="py-3 text-left"
                     >
                       {column.render
-                        ? column.render((pageNo - 1) * countPerPage + rowIndex)
+                        ? <div className=" flex justify-center items-center">
+                        <p>{(pageNo - 1) * countPerPage + rowIndex + 1}</p>
+                      </div>
                         : rowData[column.field]}
                     </td>
                   ))}

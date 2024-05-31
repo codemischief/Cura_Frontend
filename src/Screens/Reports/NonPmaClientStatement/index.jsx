@@ -184,13 +184,13 @@ const LobReceiptPayments = () => {
             path={["Reports", "Clients", "CURA Non Pma Client Statement"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
+            
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            )}
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
@@ -202,7 +202,7 @@ const LobReceiptPayments = () => {
         </div>
 
         <SimpleTableWithFooter
-          pageName={'pmaClientStatement'}
+          pageName={'nonPmaClientStatement'}
           columns={columns}
           data={NonPmaClientStAndRec}
           totalData={totalAmount}

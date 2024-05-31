@@ -262,6 +262,14 @@ const helper = (index, obj, pageName) => {
     if(index == 5) {
       return `Total : ${obj?.sumamount}`
     }
+  }else if( pageName == 'nonPmaClientReceivables') {
+    if(index == 2) {
+      return   `Toal : ${obj?.sumamount}`
+    }
+  }else if(pageName == 'nonPmaClientStatement') {
+    if(index == 6) {
+      return  `Total : ${obj?.sumamount}`
+    }
   }
 }
 const helper2 = (index, obj, pageName) => {

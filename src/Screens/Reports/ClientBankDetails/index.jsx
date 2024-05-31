@@ -211,13 +211,13 @@ const PmaClientReport = () => {
             path={["Reports", "Client", "Client Bank Details"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
+           
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            )}
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
