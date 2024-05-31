@@ -37,12 +37,14 @@ const ManageBankStatement = () => {
     const navigate = useNavigate()
     const dataRows = [
         "mode",
+        "modeofpayment",
         "date",
         "crdr",
         "amount",
         "particulars",
         "clientname",
-        "id"
+        "id",
+        "creditdebit" 
     ]
     const menuRef = useRef();
     const [existingStatement, setExistingStatement] = useState([]);
@@ -383,7 +385,7 @@ const ManageBankStatement = () => {
         particulars: "",
         amount: "",
         vendor: "",
-        date: "",
+        date: null,
         crdr: "",
         how: ""
     };
@@ -396,6 +398,10 @@ const ManageBankStatement = () => {
         setFormValues({ ...formValues, [name]: value });
 
     };
+    const handleCrChange = (e) => {
+        const { name, value } = e.target;
+        setCrFormValues({ ...crFormValues, [name]: value });
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -770,7 +776,7 @@ const ManageBankStatement = () => {
             filterData: "Numeric",
             filterInput: ""
         },
-        crdr: {
+        creditdebit: {
             filterType: "",
             filterValue: "",
             filterData: "String",
@@ -897,6 +903,18 @@ const ManageBankStatement = () => {
     // const [currentStatementId,setCurrentStatementId] = useState(-1);
     const [statementIdForClientReceipt,setStatementIdForClientReceipt] = useState(-1);
     const [currentMode, setCurrentMode] = useState("")
+    const [crFormValues,setCrFormValues] = useState({
+        receivedDate: null,
+        receivedBy: 1234,
+        receiptMode: 5,
+        client: null,
+        howReceived: null,
+        serviceAmount: null,
+        reimbursementAmount: 0,
+        amountReceived: null,
+        TDS: 0,
+        receiptDescription: null,
+    })
     const openCreditRecipt = (item) => {
         setStatementIdForClientReceipt((prev) => item.id)
         console.log(item)
@@ -906,6 +924,22 @@ const ManageBankStatement = () => {
                 setCurrentMode(ele[1])
             }
         })
+        // {
+        //     mode: 'DAP-ICICI-42',
+        //     date: '2024-03-20',
+        //     crdr: 'CR',
+        //     amount: 112.11,
+        //     particulars: 'put any description or notes here',
+        //     clientname: '',
+        //     id: 100160
+        //   }
+        console.log(item)
+        const temp = {...crFormValues}
+        temp.receiptMode = item.mode 
+        temp.receivedDate = item.date 
+        temp.amountReceived = item.amount 
+        temp.serviceAmount = item.amount
+        setCrFormValues(temp)
         const initialValues = {
             modeofpayment: currentMode,
             particulars: item.particulars,
@@ -916,6 +950,7 @@ const ManageBankStatement = () => {
             how: item.how,
         };
         setFormValues(initialValues);
+
         setCreditReceipt(true);
 
     }
@@ -1207,12 +1242,12 @@ const ManageBankStatement = () => {
                                     onKeyDown={(event) => handleEnterToFilter(event,typeFilterInput,
                                         setTypeFilterInput,
                                         'contains',
-                                        'crdr')}
+                                        'creditdebit')}
                                     />
-                                    {filterMapState.crdr.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
+                                    {filterMapState.creditdebit.filterType == "" ?  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> :  <button className='w-[25%] px-1 py-2' onClick={() => setTypeFilter((prev) => !prev)}><img src={ActiveFilter} className='h-3 w-3' /></button>  }
                                     {/* <button className='px-1 py-2 w-[30%]' onClick={() => setTypeFilter((prev) => !prev)}><img src={Filter} className='h-3 w-3' /></button> */}
                                 </div>
-                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='crdr' menuRef={menuRef} filterType={filterMapState.crdr.filterType} />}
+                                {typeFilter && <CharacterFilter inputVariable={typeFilterInput} setInputVariable={setTypeFilterInput} handleFilter={newHandleFilter} filterColumn='creditdebit' menuRef={menuRef} filterType={filterMapState.creditdebit.filterType} />}
                             </div>
                             <div className='w-[10%] px-4 py-2.5'>
                                 <div className='w-[90%] flex items-center bg-[#EBEBEB] rounded-[5px]'>
@@ -1296,7 +1331,7 @@ const ManageBankStatement = () => {
                                 <p>Date <button onClick={() => handleSort("date")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
-                                <p>Type <button onClick={() => handleSort("crdr")}><span className="font-extrabold">↑↓</span></button></p>
+                                <p>Type <button onClick={() => handleSort("creditdebit")}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[10%]  p-4'>
                                 <p>Amount <button onClick={() => handleSort("amount")}><span className="font-extrabold">↑↓</span></button></p>
@@ -1344,11 +1379,17 @@ const ManageBankStatement = () => {
                                     <div className='w-[10%]  p-4'>
                                         {/* <p>{item.date}</p> */}
                                         {formatDate(item.date)}
+                                        {/* total : {
+                                            'amount' : 1234
+                                        } */}
                                         {/* {item.date} */}
                                         {/* <p>{dayjs(item.date, "dd-mmm-yyyy")}</p> */}
                                     </div>
                                     <div className='w-[10%]  p-4'>
-                                        <p>{item.crdr === "CR" ? "Credit" : "Debit"}</p>
+                                        <p>{item.creditdebit}</p>
+                                        {/* <p>{item.crdr === "CR" ? "Credit" : ""}</p>
+                                        <p>{item.crdr === "DR" ? "Debit" : ""}</p> */}
+                                        {/* <p>{item.crdr === "CR" ? "Credit" : "Debit"}</p> */}
                                     </div>
                                     <div className='w-[10%]  p-4'>
                                         <p>{item.amount.toFixed(2)}</p>
@@ -1574,7 +1615,7 @@ const ManageBankStatement = () => {
                                                 <div className="">
                                                     <div className="text-[13px]">CR/DR <label className="text-red-500">*</label></div>
                                                     <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="crdr" value={formValues.crdr} onChange={handleChange} >
-                                                        <option >Select CR/DR</option>
+                                                        <option hidden>Select CR/DR</option>
                                                         {crdr && crdr.map(item => (
                                                             <option value={item}>
                                                                 {item}
@@ -1620,7 +1661,7 @@ const ManageBankStatement = () => {
                 <>
                     <Draggable handle="div.move">
                         <div className='flex justify-center items-center mt-[100px]'>
-                            <div className="w-[1050px] h-[500px] bg-white rounded-lg relative">
+                            <div className="w-[1050px] h-[450px] bg-white rounded-lg relative">
                                 <div className="move cursor-move">
                                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                                         <div className="mr-[410px] ml-[410px]">
@@ -1650,12 +1691,12 @@ const ManageBankStatement = () => {
                                                         ))}
                                                     </select> */}
                                                     
-                                                    <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={() => {}} formValueName="employee" value={formValues.employee} idName="id"/>
+                                                    <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={(e) => handleCrChange(e)} formValueName="receivedBy" value={crFormValues.receivedBy} idName="id"/>
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.employee}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="modeofpayment" value={formValues.modeofpayment} onChange={handleChange} required>
+                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="receiptMode" value={crFormValues.receiptMode} onChange={handleCrChange} required>
                                                         <option value="" hidden> Select Mode</option>
                                                         {mode && mode.map(item => (
                                                             <option key={item} value={item[0]}>
@@ -1667,24 +1708,14 @@ const ManageBankStatement = () => {
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Recieved Date<label className="text-red-500">*</label></div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="date" value={formValues.date} onChange={handleChange} disabled />
+                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receivedDate" value={crFormValues.receivedDate} onChange={handleCrChange} disabled />
 
                                                     {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.recddate}</div> */}
                                                 </div>
-                                                <div className="">
-                                                    <div className="text-[14px]">Entity<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="entity" value={formValues.entity} onChange={handleChange} required >
-                                                        {entity && entity.map(item => (
-                                                            <option key={item} value={item[0]}>
-                                                                {item[1]}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
-                                                </div>
+                                                
                                                 <div className="">
                                                     <div className="text-[14px]">Amount Recieved<label className="text-red-500">*</label></div>
-                                                    <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amount" value={formValues.amount} onChange={handleChange} required />
+                                                    <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amountReceived" value={crFormValues.amountReceived} onChange={handleCrChange} required />
                                                     {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
                                                 </div>
                                                 <div className="">
@@ -1700,7 +1731,7 @@ const ManageBankStatement = () => {
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.how}</div>
                                                 </div>
                                             </div>
-                                            <div className=" space-y-3 py-[20px] px-[10px] mt-[-105px]">
+                                            <div className=" space-y-3 py-[20px] px-[10px] mt-[-55px]">
 
                                                 <div className="">
                                                     <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
@@ -1732,15 +1763,30 @@ const ManageBankStatement = () => {
                                                                 ...provided,
                                                                 padding: '1px', // adjust padding for the dropdown indicator
                                                             }),
-                                                            options: (provided, state) => ({
+                                                            // options: (provided, state) => ({
+                                                            //     ...provided,
+                                                            //     fontSize: 10// adjust padding for the dropdown indicator
+                                                            // }),
+                                                            option: (provided, state) => ({
                                                                 ...provided,
-                                                                fontSize: 10// adjust padding for the dropdown indicator
+                                                                padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                                margin: 0, // Ensure no extra margin
+                                                                fontSize: 10 // Adjust font size of individual options
                                                             }),
                                                             menu: (provided, state) => ({
                                                                 ...provided,
                                                                 width: 230, // Adjust the width of the dropdown menu
+                                                                zIndex: 9999 // Ensure the menu appears above other elements
                                                             }),
+                                                            menuList: (provided, state) => ({
+                                                                ...provided,
+                                                                padding: 0, // Adjust padding of the menu list
+                                                                fontSize: 10,
+                                                                maxHeight: 150 // Adjust font size of the menu list
+                                                            }),
+                                                            
                                                         }}
+                                                    
                                                     />
                                                     {/* <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="client" value={formValues.client} onChange={handleChange} required >
                                                 <option >Select Client</option>
@@ -1764,17 +1810,17 @@ const ManageBankStatement = () => {
                                                 </div> */}
                                                 <div className="">
                                                     <div className="text-[14px]">Service Amount</div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
+                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="serviceAmount" value={crFormValues.serviceAmount} onChange={handleCrChange} />
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.serviceAmount}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Reimbursement Amount </div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbAmount" value={formValues.reimbAmount} onChange={handleChange} />
+                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="reimbursementAmount" value={crFormValues.reimbursementAmount} onChange={handleCrChange} />
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.reimbAmount}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">TDS </div>
-                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={formValues.TDS} onChange={handleChange} />
+                                                    <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="TDS" value={crFormValues.TDS} onChange={handleCrChange} />
                                                     <div className="text-[10px] text-[#CD0000] absolute">{formErrors.TDS}</div>
                                                 </div>
 
@@ -1787,7 +1833,7 @@ const ManageBankStatement = () => {
 
                                     <div className="mt-[10px] flex justify-center items-center gap-[10px]">
 
-                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addBankStatement}>Add</button>
+                                        <button className='w-[100px] h-[35px] bg-[#004DD7] text-white rounded-md' type="submit" onClick={addCreditRecipt}>Add</button>
                                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={handleCloseCR}>Cancel</button>
                                         {isLoading && <CircularProgress />}
                                     </div>

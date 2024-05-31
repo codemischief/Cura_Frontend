@@ -40,6 +40,7 @@ const ManageOrder = () => {
     const menuRef = useRef();
     const navigate = useNavigate()
     const { state } = useLocation()
+    console.log(state)
     const [existingOrder, setExistingOrder] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [currentPages, setCurrentPages] = useState(15);
@@ -232,6 +233,12 @@ const ManageOrder = () => {
     }
 
     useEffect(() => {
+        const temp = {...formValues}
+        const ex = temp.order_info 
+        ex.clientname = state?.clientname 
+        ex.clientid = state?.clientid 
+        temp.order_info = ex 
+        setFormValues(temp)
         fetchData();
         fetchUsersData()
         fetchOrderStatusData()
@@ -1528,25 +1535,25 @@ const ManageOrder = () => {
                                         <div className='w-[120px] p-4'>
                                             <p>{item.createdbyname}</p>
                                         </div>
-                                        <Link to={`/manage/managevendorpayment/${item.id}`} state={{ orderid: item.id }}>
+                                        <Link to={`/manage/managevendorpayment/${item.id}`} state={{ orderid: item.id,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true }}>
 
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                                 <p>Payments</p>
                                             </div>
 
                                         </Link>
-                                        <Link to={`/manage/manageorderreceipt/${item.id}`} state={{ orderid: item.id }}>
+                                        <Link to={`/manage/manageorderreceipt/${item.id}`} state={{ orderid: item.id ,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true  }}>
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                                 <p>Receipts</p>
                                             </div>
                                         </Link>
-                                        <Link to={`/manage/manageclientinvoice/${item.id}`} state={{ orderid: item.id }}>
+                                        <Link to={`/manage/manageclientinvoice/${item.id}`} state={{ orderid: item.id ,clientid : item.clientid, clientname : item.clientname , orderdescription : item.briefdescription , hyperlinked : true  }}>
 
                                             <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
                                                 <p>Invoices</p>
                                             </div>
                                         </Link>
-                                        <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} state={{orderid : item.id}}>
+                                        <Link to={`/manage/manageclientinfo/orders/showall/${item.id}`} state={{orderid : item.id , orderdescription : item.briefdescription}}>
 
                                         
                                         <div className='w-[70px] p-4 text-blue-500 cursor-pointer'>
@@ -1675,7 +1682,7 @@ const ManageOrder = () => {
                                     <div>Order Status history</div>
                                 </div>
                             </div>
-                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} />}
+                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">

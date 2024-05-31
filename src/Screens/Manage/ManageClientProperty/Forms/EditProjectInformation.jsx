@@ -86,13 +86,13 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
 
               styles={{
                 control: (provided, state) => ({
-                  ...provided,
-                  minHeight: 23,
-                  lineHeight: '0.8',
-                  height: 4,
-                  width: 230,
-                  fontSize: 10,
-                  // padding: '1px'
+                    ...provided,
+                    minHeight: 23,
+                    lineHeight: '0.8',
+                    height: 4,
+                    width: 230,
+                    fontSize: 10,
+                    // padding: '1px'
                 }),
                 // indicatorSeparator: (provided, state) => ({
                 //   ...provided,
@@ -101,18 +101,32 @@ const EditProjectInformation = ({ clientData, initialSociety, initialStates, ini
                 //   fontSize : 12 // hide the indicator separator
                 // }),
                 dropdownIndicator: (provided, state) => ({
-                  ...provided,
-                  padding: '1px', // adjust padding for the dropdown indicator
+                    ...provided,
+                    padding: '1px', // adjust padding for the dropdown indicator
                 }),
-                options: (provided, state) => ({
-                  ...provided,
-                  fontSize: 10// adjust padding for the dropdown indicator
+                // options: (provided, state) => ({
+                //     ...provided,
+                //     fontSize: 10// adjust padding for the dropdown indicator
+                // }),
+                option: (provided, state) => ({
+                    ...provided,
+                    padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                    margin: 0, // Ensure no extra margin
+                    fontSize: 10 // Adjust font size of individual options
                 }),
                 menu: (provided, state) => ({
-                  ...provided,
-                  width: 230, // Adjust the width of the dropdown menu
+                    ...provided,
+                    width: 230, // Adjust the width of the dropdown menu
+                    zIndex: 9999 // Ensure the menu appears above other elements
                 }),
-              }}
+                menuList: (provided, state) => ({
+                    ...provided,
+                    padding: 0, // Adjust padding of the menu list
+                    fontSize: 10,
+                    maxHeight: 150 // Adjust font size of the menu list
+                }),
+                
+            }}
             />
             {/* <select
               className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm"

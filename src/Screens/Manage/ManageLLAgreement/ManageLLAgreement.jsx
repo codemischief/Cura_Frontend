@@ -37,6 +37,9 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageLLAgreement = () => {
     const navigate = useNavigate();
     const { state } =  useLocation();
+
+    console.log(state)
+
     // const initialRows = [
     //     "id",
     //     "clientpropertyid",
@@ -393,7 +396,22 @@ const ManageLLAgreement = () => {
         setExistingLLAgreement(result);
         setPageLoading(false);
     }
+    const setHyperlinkData = () => {
+        if(state != null) {
+            const v = {...selectedOption}
+            v.label = state.clientname 
+            v.value = state.clientid 
+            setSelectedOption(v)
+            getOrdersByClientId(state.clientid)
+            const temp = {...formValues}
+            temp.client = state.clientid 
+            temp.clientProperty = state.clientPropertyId
+            setFormValues(temp)
+        }
+
+    }
     useEffect(() => {
+        setHyperlinkData()
         fetchData();
         fetchCountryData();
         fetchStateData(5)
@@ -438,6 +456,7 @@ const ManageLLAgreement = () => {
         openAddCancelModal();
     }
     const initials = () => {
+        setHyperlinkData()
         setFormValues(initialValues);
         setFormErrors({});
         setSelectedOption(
@@ -446,10 +465,8 @@ const ManageLLAgreement = () => {
                 value: null
             }
         )
-
         setOrders([]);
         setClientPropertyData([]);
-
         setOrderText("Select Order");
         setPropertyText("Select Client Property")
     }
@@ -1727,6 +1744,8 @@ const ManageLLAgreement = () => {
                                                 <div className="text-[13px]">
                                                     Client <label className="text-red-500">*</label>
                                                 </div>
+                                                {state?.hyperlinked ?
+                                                 <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientname}</div> : 
                                                 <AsyncSelect
                                                     onChange={handleClientNameChange}
                                                     value={selectedOption}
@@ -1738,11 +1757,12 @@ const ManageLLAgreement = () => {
                                                     styles={{
                                                         control: (provided, state) => ({
                                                             ...provided,
-                                                            minHeight: 25,
-                                                            lineHeight: '1.3',
-                                                            height: 2,
-                                                            fontSize: 12,
-                                                            padding: '1px'
+                                                            minHeight: 23,
+                                                            lineHeight: '0.8',
+                                                            height: 4,
+                                                            width: 230,
+                                                            fontSize: 10,
+                                                            // padding: '1px'
                                                         }),
                                                         // indicatorSeparator: (provided, state) => ({
                                                         //   ...provided,
@@ -1752,14 +1772,32 @@ const ManageLLAgreement = () => {
                                                         // }),
                                                         dropdownIndicator: (provided, state) => ({
                                                             ...provided,
-                                                            padding: '3px', // adjust padding for the dropdown indicator
+                                                            padding: '1px', // adjust padding for the dropdown indicator
                                                         }),
-                                                        options: (provided, state) => ({
+                                                        // options: (provided, state) => ({
+                                                        //     ...provided,
+                                                        //     fontSize: 10// adjust padding for the dropdown indicator
+                                                        // }),
+                                                        option: (provided, state) => ({
                                                             ...provided,
-                                                            fontSize: 12 // adjust padding for the dropdown indicator
-                                                        })
+                                                            padding: '2px 10px', // Adjust padding of individual options (top/bottom, left/right)
+                                                            margin: 0, // Ensure no extra margin
+                                                            fontSize: 10 // Adjust font size of individual options
+                                                        }),
+                                                        menu: (provided, state) => ({
+                                                            ...provided,
+                                                            width: 230, // Adjust the width of the dropdown menu
+                                                            zIndex: 9999 // Ensure the menu appears above other elements
+                                                        }),
+                                                        menuList: (provided, state) => ({
+                                                            ...provided,
+                                                            padding: 0, // Adjust padding of the menu list
+                                                            fontSize: 10,
+                                                            maxHeight: 150 // Adjust font size of the menu list
+                                                        }),
+                                                        
                                                     }}
-                                                />
+                                                />}
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.client}</div>
                                             </div>
                                             <div className="">
@@ -1782,7 +1820,8 @@ const ManageLLAgreement = () => {
                                                         </option>
                                                     ))}
                                                 </select> */}
-                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />
+                                                {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.clientpropertydescription}</div>  : 
+                                                <OrderDropDown options={clientPropertyData} orderText={propertyText} setOrderText={setPropertyText} leftLabel="ID" rightLabel="Property Description" leftAttr="id" rightAttr="propertyname" toSelect="propertyname" handleChange={handleChange} formValueName="clientProperty" value={formValues.clientProperty} />}
                                                 <div className="text-[8px] text-[#CD0000] absolute">{formErrors.clientProperty}</div>
                                             </div>
                                             <div className="">

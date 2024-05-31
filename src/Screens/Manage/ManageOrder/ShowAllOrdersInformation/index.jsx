@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../../../Components/Navabar/Navbar'
 import { Stack, Typography } from '@mui/material'
-import { ArrowLeftOutlined ,CloseCircleOutlined} from '@ant-design/icons'
+import { ArrowLeftOutlined ,CloseOutlined } from '@ant-design/icons'
 import { APIService } from '../../../../services/API'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 // import { useScroll } from 'framer-motion'
 const ShowAllOdersInformation = () => {
     const [paymentsData,setPaymentsData] = useState([])
+    const [receiptsData,setReceiptsData] = useState([])
+    const [invoicesData,setInvoicesData] = useState([])
     const {state} = useLocation()
+    const navigate = useNavigate()
     console.log(state)
   const fetchPaymentData = async () => {
       const data = {
@@ -23,7 +26,7 @@ const ShowAllOdersInformation = () => {
               "modeofpayment",
               'orderid'
         ],
-        "filters": [],
+        "filters": [['orderid','equalTo',state?.orderid,'Numeric']],
         "sort_by": [],
         "order": 'desc',
         "pg_no": 0,
@@ -48,23 +51,9 @@ const ShowAllOdersInformation = () => {
             "receivedbyname",
             "recddate",
             "paymentmodename",
-            "id",
-            "receivedby",
-            "paymentmode",
-            "orderid",
-            "dated",
-            "createdby",
-            "isdeleted",
-            "createdon",
-            "entityid",
-            "entity",
-            "officeid",
-            "office",
-            "clientid",
-            "createdbyname",
-            "clientpropertyid"
+            "orderid"
         ],
-        "filters": [],
+        "filters": [['orderid','equalTo',state?.orderid,'Numeric']],
         "sort_by": [],
         "order": "desc",
         "pg_no": 0,
@@ -74,15 +63,42 @@ const ShowAllOdersInformation = () => {
         ;
     const response = await APIService.getOrderReceipt(data);
     const temp = await response.json();
+    console.log(temp)
+    setReceiptsData(temp.data)
   }
-  const fetchInvoicesData = () => {
-
+  const fetchInvoicesData = async () => {
+    const data = {
+        "user_id": 1234,
+        "rows": [
+            "clientname",
+            "quotedescription",
+            "estimateamount",
+            "estimatedate",
+            "invoiceamount",
+            "invoicedate",
+            "id",
+            'orderid'
+        ],
+        "filters": [['orderid','equalTo',state?.orderid,'Numeric']],
+        "sort_by": [],
+        "order":  "desc",
+        "pg_no": 0,
+        "pg_size": 0,
+    };
+    const response = await APIService.getClientInvoice(data);
+    const temp = await response.json();
+    setInvoicesData((prev) => temp.data)
   }
   useEffect(() => {
     fetchPaymentData()
+    fetchReceiptsData()
+    fetchInvoicesData()
   },[])
+  const commonstyles = 'pl-4 border-r-[0.5px] border-gray-300'
+  const commonStylesData =  'pl-4 border-r-[0.5px] border-gray-300 h-12 font-normal'
   return (
-    <div className='h-screen w-full'>
+    <div className=' w-full bg-[#E6ECF5]
+        '>
         <Navbar/>
         <Stack
         direction={"column"}
@@ -94,67 +110,56 @@ const ShowAllOdersInformation = () => {
             {/* this should the best the left Box  */}
             <Stack direction={'row'} gap={'10px'}>
                 
-                <ArrowLeftOutlined />
-               <Typography className='text-4xl' fontSize={24} fontFamily={'Open Sans'} fontWeight={'600'}>Order Description : Leave license and PV</Typography>
+                <ArrowLeftOutlined onClick={() => navigate(-1)} style={{
+                    background : '#EBEBEB',
+                    padding : '10px',
+                    borderRadius : '100px'
+                }}/>
+               <Typography className='text-4xl' fontSize={24} fontFamily={'Open Sans'} fontWeight={'600'}>Order Description : {state.orderdescription}</Typography>
             </Stack>
             
 
-            <CloseCircleOutlined style={{ fontSize: '32px', cursor : 'pointer'}}/>
+            <CloseOutlined style={{ fontSize: '18px', cursor : 'pointer' , background : '#D7D7D7', borderRadius : '200px', padding : '10px'}} onClick={() => navigate(-1)} />
             {/* <Typography>Another Heading</Typography> */}
          </Stack>
           
-        <Stack direction={'column'} gap={'100px'}>
+        <Stack direction={'column'} gap={'100px'} sx={{marginTop : '40px'}}>
             <Stack direction={'column'} justifyItems={'center'} justifyContent={'center'}>
                 <div className='w-full h-12 bg-[#DAE7FF] flex flex-col justify-center pl-7'>
                     <p className='text-[18px] font-[600]'>Receipts</p>
                 </div>
-                <table>
-                    <thead className='bg-[#EDF3FF] text-xs font-thin'>
-                        <th>Client Name</th>
-                        <th>Property</th>
-                        <th>Order Description</th>
-                        <th>Amount</th>
-                        <th>TDS</th>
-                        <th>Received By</th>
-                        <th>Received Date</th>
-                        <th>Payment Mode</th>
-                        <th>Payment Status</th>
+                <table className='bg-[#EDF3FF]'>
+                    <thead className='bg-[#EDF3FF] text-xs font-thin h-12 text-left pl-4 border-black border-t-[0.8px] border-b-[0.8px]'>
+                        <th className={commonstyles}>Client Name</th>
+                        <th className={commonstyles}>Property</th>
+                        <th className={commonstyles}>Order Description</th>
+                        <th className={commonstyles}>Amount</th>
+                        <th className={commonstyles}>TDS</th>
+                        <th className={commonstyles}>Received By</th>
+                        <th className={commonstyles}>Received Date</th>
+                        <th className={commonstyles}>Payment Mode</th>
+                        <th className={commonstyles}>Payment Status</th>
                     </thead>
+                    {receiptsData && 
                     <tbody className='text-xs font-thin'>
-                        <tr> 
-                            <td>Client Name</td>
-                            <td>Property</td>
-                            <td>Order Description</td>
-                            <td>Amount</td>
-                            <td>TDS</td>
-                            <td>Received By</td>
-                            <td>Received Date</td>
-                            <td>Payment Mode</td>
-                            <td>Payment Status</td>
-                        </tr>
-                        <tr> 
-                            <td>Client Name</td>
-                            <td>Property</td>
-                            <td>Order Description</td>
-                            <td>Amount</td>
-                            <td>TDS</td>
-                            <td>Received By</td>
-                            <td>Received Date</td>
-                            <td>Payment Mode</td>
-                            <td>Payment Status</td>
-                        </tr>
-                        <tr> 
-                            <td>Client Name</td>
-                            <td>Property</td>
-                            <td>Order Description</td>
-                            <td>Amount</td>
-                            <td>TDS</td>
-                            <td>Received By</td>
-                            <td>Received Date</td>
-                            <td>Payment Mode</td>
-                            <td>Payment Status</td>
-                        </tr>
+                       
+                        {receiptsData.map((item) => {
+                            return <tr>
+                                    <td className={commonStylesData}>{item.clientname}</td>
+                                    <td className={commonStylesData}>Property</td>
+                                    <td className={commonStylesData}>Order Description</td>
+                                    <td className={commonStylesData}>{item.amount}</td>
+                                    <td className={commonStylesData}>TDS</td>
+                                    <td className={commonStylesData}>Received By</td>
+                                    <td className={commonStylesData}>Received Date</td>
+                                    <td className={commonStylesData}>Payment Mode</td>
+                                    <td className={commonStylesData}>Payment Status</td>
+                            </tr>
+                        })}
+                       
                     </tbody>
+}
+                   {receiptsData.length == 0 && <h1 className='pl-5 py-5'> No Records To Show</h1>}
                 </table>
             </Stack>
 
@@ -166,34 +171,37 @@ const ShowAllOdersInformation = () => {
                 <div className='w-full h-12 bg-[#DAE7FF] flex flex-col justify-center pl-7'>
                     <p className='text-[18px] font-[600]'>Payments</p>
                 </div>
-                <table>
-                    <thead className='bg-[#EDF3FF] text-xs font-thin'>
-                        <th>Client Name</th>
-                        <th>Property</th>
-                        <th>Order Description</th>
-                        <th>Vendor Name</th>
-                        <th>Amount</th>
-                        <th>Payment By</th>
-                        <th>Payment Date</th>
-                        <th>Mode Of Payment</th>
+                <table className='bg-[#EDF3FF]'>
+                    <thead className='bg-[#EDF3FF] text-xs font-thin h-12 text-left border-black border-t-[0.8px] border-b-[0.8px]'>
+                        <th className={commonstyles}>Client Name</th>
+                        <th className={commonstyles}>Property</th>
+                        <th className={commonstyles}>Order Description</th>
+                        <th className={commonstyles}>Vendor Name</th>
+                        <th className={commonstyles}>Amount</th>
+                        <th className={commonstyles}>Payment By</th>
+                        <th className={commonstyles}>Payment Date</th>
+                        <th className={commonstyles}>Mode Of Payment</th>
                         
                     </thead>
+                    {paymentsData && 
                     <tbody className='text-xs font-thin'>
-                        {paymentsData.length}
+                        
                         {paymentsData.map((item) => {
                             return <tr>
-                                <td>{item.clientname}</td>
-                                <td>{item.property}</td>
-                                <td>{item.briefdescription}</td>
-                                <td>{item.vendorname}</td>
-                                <td>{item.amount}</td>
-                                <td>{item.paymentbyname}</td>
-                                <td>{item.paymentdate}</td>
-                                <td>{item.modeofpayment}</td> 
+                                <td className={commonStylesData}>{item.clientname}</td>
+                                <td className={commonStylesData}>{item.property}</td>
+                                <td className={commonStylesData}>{item.briefdescription}</td>
+                                <td className={commonStylesData}>{item.vendorname}</td>
+                                <td className={commonStylesData}>{item.amount}</td>
+                                <td className={commonStylesData}>{item.paymentbyname}</td>
+                                <td className={commonStylesData}>{item.paymentdate}</td>
+                                <td className={commonStylesData}>{item.modeofpayment}</td> 
                             </tr>
                         })}
                         
                     </tbody>
+}
+                    {paymentsData.length == 0 && <h1 className='pl-5 py-5'> No Records To Show</h1>}
                 </table>
             </Stack>
 
@@ -205,42 +213,31 @@ const ShowAllOdersInformation = () => {
                 <div className='w-full h-12 bg-[#DAE7FF] flex flex-col justify-center pl-7'>
                     <p className='text-[18px] font-[600]'>Invoices</p>
                 </div>
-                <table>
-                    <thead className='bg-[#EDF3FF] text-xs font-thin'>
-                        <th>Client Name</th>
-                        <th>Order Description</th>
-                        <th>Estimate Amount</th>
-                        <th>Estimate Date</th>
-                        <th>Invoice Amount</th>
-                        <th>Invoice Date</th>
+                <table className='bg-[#EDF3FF]'>
+                    <thead className='bg-[#EDF3FF] text-xs font-thin h-12 text-left border-black border-t-[0.8px] border-b-[0.8px]'>
+                        <th className={commonstyles} >Client Name</th>
+                        <th className={commonstyles} >Order Description</th>
+                        <th className={commonstyles} >Estimate Amount</th>
+                        <th className={commonstyles} >Estimate Date</th>
+                        <th className={commonstyles} >Invoice Amount</th>
+                        <th className={commonstyles} >Invoice Date</th>
                        
                     </thead>
+                    {invoicesData && 
                     <tbody className='text-xs font-thin'>
-                        <tr> 
-                            <td>Client Name</td>
-                            <td>Order Description</td>
-                            <td>Estimate Amount</td>
-                            <td>Estimate Date</td>
-                            <td>Invoice Amount</td>
-                            <td>Invoice Date</td>
-                        </tr>
-                        <tr> 
-                            <td>Client Name</td>
-                            <td>Order Description</td>
-                            <td>Estimate Amount</td>
-                            <td>Estimate Date</td>
-                            <td>Invoice Amount</td>
-                            <td>Invoice Date</td>
-                        </tr>
-                        <tr> 
-                            <td>Client Name</td>
-                            <td>Order Description</td>
-                            <td>Estimate Amount</td>
-                            <td>Estimate Date</td>
-                            <td>Invoice Amount</td>
-                            <td>Invoice Date</td>
-                        </tr>
-                    </tbody>
+                        {invoicesData.map((item) => {
+                            return <tr>
+                                <td className={commonStylesData}>{item.clientname}</td>
+                                <td className={commonStylesData}>Order Description</td>
+                                <td className={commonStylesData}>Estimate Amount</td>
+                                <td className={commonStylesData}>Estimate Date</td>
+                                <td className={commonStylesData}>Invoice Amount</td>
+                                <td className={commonStylesData}>Invoice Date</td>
+                            </tr>
+                        })}
+                        
+                    </tbody>}
+                    {invoicesData.length == 0 && <h1 className='pl-5 py-5'> No Records To Show</h1>}
                 </table>
             </Stack>
           </Stack>
