@@ -12,7 +12,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "50px" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "10%" },
       sorting: false,
       render: (index) => {
         return (
@@ -31,7 +31,7 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "45%"  },
     },
     
     {
@@ -39,7 +39,7 @@ export default function connectionDataColumn(onQuery) {
       field: "amount",
       sorting: true,
       filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "45%" },
     },
   ];
   return columns;

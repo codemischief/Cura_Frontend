@@ -149,12 +149,15 @@ export const FilterField = (props) => {
                 filter[columnfield]?.[0] &&
                 filter[columnfield]?.[0] === option?.key &&
                 option?.key !== "noFilter"
-                  ? { background: "lightblue", color: "black" }
+                  ? { background: "#dae7ff", color: "black" }
                   : {}),
                 ":hover": {
-                  background: "#F0F6FF", // Change this to your desired hover background color
+                  background: "#dae7ff", // Change this to your desired hover background color
                   color: "black", // Change this to your desired hover text color
                 },
+                fontSize : '0.875rem',
+                lineHeight : '1.25rem',
+                fontWeight : '100'
               }}
               className={` ${
                 filter &&

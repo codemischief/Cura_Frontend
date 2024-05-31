@@ -73,7 +73,7 @@ export const {
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setPmaClientReportFilters,
+  setDuplicateClientsReportFilters,
   setInitialState,
   setSorting,
 } = pmaSlice.actions;
@@ -131,7 +131,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "reportPMAClientPortalReport.xlsx");
+    FileSaver.saveAs(blob, "DuplicateClientReport.xlsx");
   } catch (error) {
     console.log("error", error);
   }
