@@ -299,7 +299,7 @@ const LobReceiptPayments = () => {
         </Stack>
 
         <SimpleTableWithFooter
-          pageName={'bankReceiptReconciliation'}
+          pageName={'bankPaymentsReconciliation'}
           columns={columns}
           data={bankPaymentsReconciliation}
           totalData={totalAmount}
