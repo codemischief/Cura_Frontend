@@ -3,8 +3,8 @@ import useAuth from "./JwtContext";
 
 const AuthGuard = ({ children }) => {
   const location = useLocation();
-  // const { isAuthenticated, user } = useAuth();
-  const isAuthenticated = true
+  const { isAuthenticated, user } = useAuth();
+  // const isAuthenticated = true
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
