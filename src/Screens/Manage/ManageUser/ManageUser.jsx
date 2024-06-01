@@ -1074,7 +1074,6 @@ const ManageUser = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {isEditDialogue && <EditUser handleClose={() => setIsEditDialogue(false)} currUser={editId} allCity={allCity} allLOB={allLOB} allRoles={allRoles} showSuccess={openEditSuccess} showCancel={openCancelModal} openFailureModal={openFailureModal} setErrorMessage={setErrorMessage} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New User created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="User deleted succesfully" />}

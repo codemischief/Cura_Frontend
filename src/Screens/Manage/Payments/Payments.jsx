@@ -1087,7 +1087,6 @@ const Payments = () => {
                <CircularProgress color="inherit"/>
 
             </Backdrop>
-            <Navbar />
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Contractual Payment Created Successfully" />}
             {showEditSuccess && <SucessfullModal isOpen={showEditSuccess} handleClose={() => setShowEditSuccess(false)} message="Changes Saved Successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="SuccessFully Deleted Payment" />}

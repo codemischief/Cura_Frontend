@@ -1097,7 +1097,6 @@ const ManageVendor = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {isEditDialogue && <EditVendor handleClose={() => setIsEditDialogue(false)} currVendor={invoiceId} allCity={allCity} tallyLedgerData={tallyLedgerData} allCategory={allCategory} typeOfOrganization={typeOfOrganization} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor deleted succesfully" />}

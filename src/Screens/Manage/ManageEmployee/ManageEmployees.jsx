@@ -1099,7 +1099,6 @@ const ManageEmployees = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {isEditDialogue && <EditManageEmployee isOpen={isEditDialogue} handleClose={() => setIsEditDialogue(false)} item={currItem} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New employee created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Successfully Deleted Employee" />}

@@ -37,6 +37,7 @@ const LobReceiptPayments = () => {
     filter,
   } = useSelector((state) => state.bankPaymentsReconciliation);
   console.log(totalAmount)
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);

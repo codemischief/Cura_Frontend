@@ -1130,7 +1130,6 @@ const ManageVendorPayment = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {showEditModal && <EditVendorPayment handleClose={() => setShowEditModal(false)} currPayment={currInvoice} modesData={modesData} orders={orders} vendorData={vendorData} usersData={usersData} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {/* {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} />} */}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Payment Created successfully" />}

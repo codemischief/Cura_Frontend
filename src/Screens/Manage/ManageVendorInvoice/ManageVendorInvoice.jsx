@@ -1152,7 +1152,6 @@ const ManageVendorInvoice = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {showEditModal && <EditVendorInvoice handleClose={() => { setShowEditModal(false) }} currInvoice={currInvoice} clientPropertyData={clientPropertyData} showSuccess={openEditSuccess} modesData={modesData} usersData={usersData} vendorData={vendorData} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Vendor Invoice created successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Vendor Invoice Deleted successfully" />}

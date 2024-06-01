@@ -699,7 +699,6 @@ const City = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {showAddConfirmation && <SaveConfirmationCity currentCity={currentCity} showCancel={openCancel} initials={initials} handleClose={() => setShowAddConfirmation(false)} addCity={addCity} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New City added successfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="City Deleted Successully" />}

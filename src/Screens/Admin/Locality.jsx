@@ -728,8 +728,6 @@ const Locality = () => {
                <CircularProgress color="inherit"/>
 
             </Backdrop>
-            <Navbar />
-
             {editModal && <EditLocalityModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} openPrompt={openEditSuccess} showCancel={openCancelModal} />}
             {showSuccess && <SucessfullModal isOpen={showSuccess} handleClose={() => setShowSuccess(false)} message="New Locality added successfully" />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new Locality added." />}

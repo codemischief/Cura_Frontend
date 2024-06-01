@@ -733,7 +733,6 @@ const Service = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {isEditDialogue && <EditService handleClose={() => setIsEditDialogue(false)} currService={editId} allLOB={allLOB} showSuccess={openEditSuccess} showCancel={openCancelModal} />}
             {showAddSuccess && <SucessfullModal isOpen={showAddSuccess} message="New Service created succesfully" />}
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Service deleted succesfully" />}

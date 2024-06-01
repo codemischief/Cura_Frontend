@@ -628,7 +628,6 @@ const Country = () => {
         <CircularProgress color="inherit" />
 
       </Backdrop>
-      <Navbar />
       {showSucess && <SucessfullModal isOpen={showSucess} message="New Country Added Successfully" />}
       {showCancel && <CancelModel isOpen={showCancel} message="Process cancelled, no new Country added." />}
       {showCancelEdit && <CancelModel isOpen={showCancelEdit} message="Process cancelled, no changes saved." />}

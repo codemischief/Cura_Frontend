@@ -744,7 +744,6 @@ const ManageBuilder = () => {
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <Navbar />
             <SucessfullModal isOpen={showSucess} message="New Builder created succesfully " />
             {showDeleteSuccess && <SucessfullModal isOpen={showDeleteSuccess} message="Builder Deleted Successfully" />}
             <FailureModal isOpen={showFailure} message={errorMessage} />

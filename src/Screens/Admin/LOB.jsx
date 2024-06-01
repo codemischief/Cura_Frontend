@@ -568,7 +568,6 @@ const LOB = () => {
                 <CircularProgress color="inherit" />
 
             </Backdrop>
-            <Navbar />
             {editModal && <EditLobModal isOpen={editModal} handleClose={() => setEditModal(false)} item={currItem} fetchData={fetchData} showSuccess={openSuccessEditModal} showCancel={openCancelModal} />}
             {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no new LOB added." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}

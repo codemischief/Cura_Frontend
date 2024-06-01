@@ -1181,7 +1181,6 @@ const ManageClientReceipt = () => {
     }
     return (
         <div className='h-screen font-medium'>
-            <Navbar />
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
