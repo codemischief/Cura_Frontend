@@ -960,11 +960,9 @@ const getLLTenant = async (data) => {
 
   return response;
 };
-const download = async (data) => {
-  const response = await fetch(`${env_URL_SERVER}download/${data.filename}`, {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
+const download = async (data,filename) => {
+  const response = await fetch(`${env_URL_SERVER}download/${filename}`,METHOD_POST(data));
+
   console.log(response);
   return response;
 };
