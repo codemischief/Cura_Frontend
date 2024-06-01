@@ -7,7 +7,7 @@ function path(root, sublink) {
     admin: "/admin",
     research: "/research",
     manage: "/manage",
-    report: "/report",
+    report: "/reports",
   };
   
   export const PATH_DASHBOARD = {
@@ -15,13 +15,6 @@ function path(root, sublink) {
     admin: {
       manageUsers: path(ROOTS.admin, "/manageuser"),
       manageEmployees: path(ROOTS.admin, "/manageemployees"),
-      manageBuilder: {
-        root: path(ROOTS.admin, "/manageBuilder"),
-        contact: "/managebuilder/projects/:buildername",
-        projects: "/managebuilder/contacts/:buildername",
-      },
-      projectManagementInfo: path(ROOTS.admin, "/manageprojectinfo"),
-      manageOrder: path(ROOTS.admin, "/manageOrder"),
       country: path(ROOTS.admin, "/country"),
       state: path(ROOTS.admin, "/state"),
       city: path(ROOTS.admin, "/city"),
@@ -45,6 +38,13 @@ function path(root, sublink) {
       governmentDepartment: path(ROOTS.research, "/governmentdepartment"),
     },
     manage: {
+      manageOrder: path(ROOTS.admin, "/manageOrder"),
+      projectManagementInfo: path(ROOTS.admin, "/manageprojectinfo"),
+      manageBuilder: {
+        root: path(ROOTS.manage, "/manageBuilder"),
+        contact: "/managebuilder/projects/:buildername",
+        projects: "/managebuilder/contacts/:buildername",
+      },
       bankStatement: path(ROOTS.manage, "/bankstatement"),
       clientInfo: path(ROOTS.manage, "/manageclientinfo"),
       clientProperty: path(ROOTS.manage, "/manageclientproperty"),
@@ -57,4 +57,34 @@ function path(root, sublink) {
       vendorInvoice: path(ROOTS.manage, "/managevendorinvoice"),
       vendorPayment: path(ROOTS.manage, "/managevendorpayment"),
     },
+    reports : {
+      orderPaymentList : path(ROOTS.report, "/orderPaymentList"),
+      orderReceiptList : path(ROOTS.report, "/orderReceiptList"),
+      orderInvoiceList : path(ROOTS.report, "/orderInvoiceList"),
+      clientReceiptList : path(ROOTS.report, "/clientReceiptList"),
+      vendorInvoiceList : path(ROOTS.report, "/vendorInvoiceList"),
+      lobReceiptPayments : path(ROOTS.report, "/lobReceiptPayments"),
+      entityReceiptPayments : path(ROOTS.report, "/entityReceiptPayments"),
+      lobReceiptPaymentsConsolidated : path(ROOTS.report, "/lobReceiptPaymentsConsolidated"),
+      pmaBillingTrendView : path(ROOTS.report, "/pmaBillingTrendView"),
+      pmaClientReport : path(ROOTS.report, "/pmaClientReport"),
+      pmaInvoiceList : path(ROOTS.report, "/pmaInvoiceList"),
+      pmaClientReceivable : path(ROOTS.report, "/pmaClientReceivable"),
+      activePmaAgreement : path(ROOTS.report, "/activePmaAgreement"),
+      projectContact : path(ROOTS.report, "/projectContact"),
+      advanceHoldingAmount : path(ROOTS.report, "/advanceHoldingAmount"),
+      pmaClientStatementAll : path(ROOTS.report, "/pmaClientStatementAll"),
+      pmaClientStatement : path(ROOTS.report, "/pmaClientStatement"),
+      nonPmaClientStatement : path(ROOTS.report, "/nonPmaClientStatement"),
+      nonPmaClientReceivables : path(ROOTS.report, "/nonPmaClientReceivables"),
+      clientStatementAll : path(ROOTS.report, "/clientStatementAll"),
+      duplicateClientReport : path(ROOTS.report, "/duplicateClientReport"),
+      clientBankDetails : path(ROOTS.report, "/clientBankDetails"),
+      monthlyBankSummary : path(ROOTS.report, "/monthlyBankSummary"),
+      bankTransferReconciliation : path(ROOTS.report, "/bankTransferReconciliation"),
+      clientOrderReceiptMismatchDetails : path(ROOTS.report, "/clientOrderReceiptMismatchDetails"),
+      bankReceiptReconciliation : path(ROOTS.report, "/bankReceiptReconciliation"),
+      bankPaymentReconciliation : path(ROOTS.report, "/bankPaymentReconciliation"),
+
+    }
   };
