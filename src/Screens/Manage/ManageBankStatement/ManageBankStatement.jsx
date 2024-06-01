@@ -44,7 +44,8 @@ const ManageBankStatement = () => {
         "particulars",
         "clientname",
         "id",
-        "creditdebit" 
+        "creditdebit",
+        
     ]
     const menuRef = useRef();
     const [existingStatement, setExistingStatement] = useState([]);
