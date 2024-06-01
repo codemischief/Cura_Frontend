@@ -35,7 +35,24 @@ import ActiveFilter from "../../../assets/active_filter.png"
 import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 import { formatDate } from '../../../utils/formatDate';
 const ManageClientInvoice = () => {
-
+    const dataRows = [
+        "clientname",
+        "quotedescription",
+        "invoiceamount",
+        "entityname",
+        "createdbyname",
+        "invoicedate",
+        "id",
+        // "clientid",
+        // "orderid",
+        // "ordername",
+        // "estimatedate",
+        // "estimateamount",
+        // "createdon",
+        // "baseamount",
+        // "tax",
+        // "entityid",
+    ]
     const menuRef = useRef();
     const navigate = useNavigate(-1)
     const {state} = useLocation()
@@ -183,24 +200,7 @@ const ManageClientInvoice = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -229,24 +229,7 @@ const ManageClientInvoice = () => {
         setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -277,24 +260,7 @@ const ManageClientInvoice = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -563,13 +529,14 @@ const ManageClientInvoice = () => {
                 "filename" : temp.filename,
                 "user_id" : 1234
             }
-            fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
-                method: 'POST', // or the appropriate HTTP method
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(d) // Convert the object to a JSON string
-            })
+            // fetch(`http://20.197.13.140:8000/download/${temp.filename}`, {
+                //     method: 'POST', // or the appropriate HTTP method
+                //     headers: {
+                    //         'Content-Type': 'application/json'
+                    //     },
+                    //     body: JSON.stringify(d) // Convert the object to a JSON string
+                    // })
+            APIService.download(d,temp.filename)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -640,24 +607,7 @@ const ManageClientInvoice = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -681,24 +631,7 @@ const ManageClientInvoice = () => {
         setCurrentPage(1);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -854,24 +787,7 @@ const ManageClientInvoice = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -926,24 +842,7 @@ const ManageClientInvoice = () => {
         setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "clientid",
-                "clientname",
-                "orderid",
-                "ordername",
-                "estimatedate",
-                "estimateamount",
-                "invoicedate",
-                "invoiceamount",
-                "quotedescription",
-                "createdon",
-                "baseamount",
-                "tax",
-                "entityid",
-                "entityname",
-                "createdbyname"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -1304,7 +1203,7 @@ const ManageClientInvoice = () => {
                                     </div> */}
                                     <div className='w-[14%]  flex pl-0.5'>
                                         <div className='p-3'>
-                                            <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : null}</p>
+                                            <p>{item.invoiceamount ? item.invoiceamount.toFixed(2) : "0.00"}</p>
                                         </div>
                                     </div>
                                     <div className='w-[13%]  flex pl-1'>
@@ -1422,17 +1321,18 @@ const ManageClientInvoice = () => {
             >
 
                 <div className='flex justify-center'>
-
+                    <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className='move cursor-move'>
+                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-base">New Client Invoice </div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
                                 <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
-
+                        </div>
                         <div className="h-auto w-full mt-1 ">
                             <div className="flex gap-12 justify-center">
                                 <div className=" space-y-3 py-5">
@@ -1494,7 +1394,7 @@ const ManageClientInvoice = () => {
                                                 
                                             }}
                                         />}
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Estimate Amount</div>
@@ -1513,7 +1413,7 @@ const ManageClientInvoice = () => {
                                     <div className="">
                                         <div className="text-sm">Quote/Invoice Description <label className="text-red-500">*</label></div>
                                         <textarea className="w-56 h-16 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none resize-none" type="text" name="invoiceDescription" value={formValues.invoiceDescription} onChange={handleChange} />
-                                        <p className="text-[10px] text-[#CD0000] mt-[-5px] ">{formErrors.invoiceDescription}</p>
+                                        <p className="text-[10px] text-[#CD0000] mt-[-5px] absolute">{formErrors.invoiceDescription}</p>
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
@@ -1537,7 +1437,7 @@ const ManageClientInvoice = () => {
                                         {state?.hyperlinked ? <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" >{state.orderdescription}</div>  : 
                                         <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}  />}
                                         {/* <DropDown options={orders} initialValue="Select Order" leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order}/> */}
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Estimate Date</div>
@@ -1560,7 +1460,7 @@ const ManageClientInvoice = () => {
                         </div>
 
                     </div>
-
+                   </Draggable>
                 </div>
             </Modal>
         </div>

@@ -90,7 +90,10 @@ const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, right
           />
         </svg>
       </button> */}
-      {show && (
+      {show && options.length == 0 && <div className="flex text-[10px] absolute bg-[#D9D9D9] top-[22px] w-[230px] h-[50px] flex items-center justify-center">
+                   <p className="w-[70%]">Please Select a Client Before Selecting Order</p>
+              </div>}
+      {show && options.length > 0 &&  (
         <>
          
         <div
@@ -105,6 +108,7 @@ const OrderDropDown = ({ orderText,setOrderText,value, options, leftLabel, right
                     <p >{rightLabel}</p>
                   </div>     
           <div className="flex flex-col overflow-y-auto" >
+            
             {options &&
               options?.map((item, index) => {
                 return (
