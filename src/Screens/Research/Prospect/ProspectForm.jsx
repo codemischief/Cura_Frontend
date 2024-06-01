@@ -16,6 +16,7 @@ import {
 import { useSelector } from "react-redux";
 import { CrossIcon } from "../../../Components/Svg/CrossIcon";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
+import CustomSelect from "./CustomSelect";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -232,7 +233,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            <select
+                            {/* <select
                               className="selectBoxField inputFieldValue"
                               name="countryId"
                               value={formik.values.countryId}
@@ -257,7 +258,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                     {editData.name}
                                   </option>
                                 ))}
-                            </select>
+                            </select> */}
+                            <CustomSelect onSelect={handleCountrySelect} options={countryData}/>
                             <div className="inputValidationError">
                               {errors.countryId && (
                                 <div>{errors.countryId}</div>
