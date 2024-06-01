@@ -508,7 +508,8 @@ const ManageClientInfo = () => {
             "includeinmailinglist": false,
             "entityid": 1,
             "tenantof": null,
-            "tenentofproperty": null
+            "tenentofproperty": null,
+            "tenantofname" : "Select Tenant Of "
         },
         "client_access": [],
         "client_bank_info": [],
@@ -1229,6 +1230,7 @@ const ManageClientInfo = () => {
 
         }
     }
+    const [orderText,setOrderText] = useState('Select Tenant Of Property')
     return (
         <div className='h-screen font-medium'>
             <Navbar />
@@ -1772,7 +1774,7 @@ const ManageClientInfo = () => {
                             </div>
                         </div>
 
-                        {selectedDialog == 1 && <ClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo} />}
+                        {selectedDialog == 1 && <ClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allState} initialCities={allCity} formErrors={formErrorsClientInfo} orderText={orderText} setOrderText={setOrderText}/>}
                         {selectedDialog == 2 && <ClientPortal formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <BankDetails formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 4 && <LegalInformation formValues={formValues} setFormValues={setFormValues} relationData={relationData} allCountry={allCountry} allState={allState} initialCities={allCity} />}

@@ -48,7 +48,8 @@ const EditClientInfoModal = (props) => {
             "includeinmailinglist": true,
             "entityid": 2,
             "tenantof": 181132,
-            "tenantofproperty": 0
+            "tenantofproperty": 0,
+            
         },
         "client_access": [
             {
@@ -554,6 +555,8 @@ const EditClientInfoModal = (props) => {
         props.handleClose();
         props.showCancel();
     }
+    const [selectedOptionText,setSelectedOptionText] = useState('Select Client')
+    const [orderText,setOrderText] = useState('Select Tenant Of Property')
     return (
         <Modal open={true}
             fullWidth={true}
@@ -594,7 +597,7 @@ const EditClientInfoModal = (props) => {
                             <h1>Fetching Data</h1>
                             <CircularProgress />
                         </div>}
-                        {!pageLoading && selectedDialog == 1 && <EditClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allStates} initialCities={allCities} formErrors={formErrorsClientInfo} tenantofname={tenantofName} />}
+                        {!pageLoading && selectedDialog == 1 && <EditClientInformation formValues={formValues} setFormValues={setFormValues} allCountry={allCountry} clientTypeData={clientTypeData} tenentOfData={tenentOfData} allEntities={allEntities} initialStates={allStates} initialCities={allCities} formErrors={formErrorsClientInfo} tenantofname={tenantofName} setTenantOfName={setTenantOfName} orderText={orderText} setOrderText={setOrderText} selectedOptionText={selectedOptionText}/>}
                         {selectedDialog == 2 && <EditClientPortal formValues={formValues} setFormValues={setFormValues} />}
                         {selectedDialog == 3 && <EditBankDetails formValues={formValues} setFormValues={setFormValues} />}
 
