@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { routeMapObj } from "./routeMap";
+import { replaceKeys } from "./routeMap";
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +82,6 @@ function AuthProvider({ children }) {
               user: null,
             },
           });
-          console.log("authSideEffect-2");
         }
       } catch (err) {
         console.log("err", err);
@@ -111,18 +110,10 @@ function AuthProvider({ children }) {
       );
       const { token, user_id, role_id, access_rights } = response.data;
       if (token) {
-        const replaceKeys = () => {
-          return Object.keys(access_rights).reduce((acc, key) => {
-            const newKey = routeMapObj[key] || key;
-            acc[newKey] = access_rights[key];
-            return acc;
-          }, {});
-        };
-        console.log('replaceKeys()', replaceKeys())
         let userObj = {
           id: user_id,
           roleId: role_id,
-          allowedModules: replaceKeys(),
+          allowedModules: replaceKeys(access_rights),
         };
         setSession(userObj, token);
         dispatch({
@@ -141,6 +132,7 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     setSession(null);
+    toast.success("logout successfully");
     navigate("/login");
   };
 

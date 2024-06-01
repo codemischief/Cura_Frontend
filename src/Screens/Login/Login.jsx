@@ -171,7 +171,7 @@ const Login = () => {
                       : "bg-blue-700"
                   }`}
                 >
-                  {isSubmitting ? <CircularProgress /> : "Login"}
+                  {isSubmitting ? <CircularProgress sx={{color:"white"}}/> : "Login"}
                 </button>
               </div>
             </Form>

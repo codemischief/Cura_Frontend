@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
-const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities,tenantofname}) => {
+import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
+const EditClientInformation = ({formErrors, formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities,tenantofname, orderText , setOrderText, setTenantOfName}) => {
+    console.log(orderText)
     // console.log(formErrors)
     const [Salutation, setSalutation] = useState([
         {
@@ -120,9 +122,16 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
       //   ...formValues.client_property,
       //   clientid : e.value
       //  }})
+       const l = {...tenantofname}
+       l.label = e.label 
+       l.value = e.value 
+       setTenantOfName(l)
+       
+       setOrderText((prev) => 'Select Tenant Of Property')
        const existing = {...formValues}
        const temp = {...existing.client_info}
        temp.tenantof = e.value
+       temp.tenantofproperty = null
        existing.client_info = temp;
        getClientPropertyByClientId(e.value)
        setFormValues(existing)
@@ -496,7 +505,16 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                     
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
-                        <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenantofproperty} onChange={
+                        {console.log(orderText)}
+                        <OrderDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                            setFormValues({
+                                ...formValues, client_info: {
+                                    ...formValues.client_info,
+                                    tenentofproperty: e.target.value
+                                }
+                            })
+                        }} formValueName="tenentofproperty" value={formValues.client_info.tenentofproperty}  />
+                        {/* <select className="text-[10px] px-3 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" name="tenentof" value={formValues.client_info.tenantofproperty} onChange={
                             (e) => {
                                 setFormValues({
                                     ...formValues, client_info: {
@@ -512,7 +530,7 @@ const EditClientInformation = ({formErrors, formValues, setFormValues, allCountr
                                      {item.propertyname}
                                </option>
                              })}
-                        </select>
+                        </select> */}
                         {/* <div className="text-[8px] text-[#CD0000] absolute ">{formErrors.modeofpayment}</div> */}
                     </div>
                     
