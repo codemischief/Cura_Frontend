@@ -13,3 +13,10 @@ export const AuthProvider = ({children}) => {
 }
 
 export default AuthContext;
+
+const accessMoule = {
+    "builder" :{
+        edit:true,
+        add:true
+    }
+}

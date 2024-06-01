@@ -39,7 +39,7 @@ const Dashboard = () => {
 
     return (
         <div className="w-screen h-screen overflow-x-hidden bg-[#F5F5F5]">
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="w-screen p-5">
                 {/* this is the background container */}
                 <div className="flex justify-between">

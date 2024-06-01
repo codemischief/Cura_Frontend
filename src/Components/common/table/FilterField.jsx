@@ -75,7 +75,7 @@ export const FilterField = (props) => {
         let filters = {
           text: "contains",
           number: "equalTo",
-          date:"equalTo"
+          date: "equalTo",
         };
         let filterType = {
           text: "String",
@@ -90,19 +90,18 @@ export const FilterField = (props) => {
     }
   };
 
-
-  
   return (
     <>
-      <div className="w-full  py-3">
-        <div className="max-w-[150px] flex items-center bg-[#F5F5F5] rounded-md">
+      <div className="w-full h-full flex justify-start p-3">
+        <div className="w-fit h-[1.75rem] flex justify-between items-center bg-[#F5F5F5] rounded-md">
           <input
-            className="w-[68%] bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none font-medium"
+            className="w-fit max-w-[50%] min-[3rem] h-full bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
             type={type}
             disabled={isDisabled}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleEnterKeyPress}
+            title={isDisabled ? "disabled" : ""}
           />
           
             <Close
@@ -116,7 +115,10 @@ export const FilterField = (props) => {
             />
           
           <Tooltip title={isDisabled ? "filter disabled" : "Filters"}>
-            <button className="max-w-[32%] px-1 py-2" onClick={handleClick}>
+            <button
+              className="w-[2rem] h-full flex items-center justify-center"
+              onClick={handleClick}
+            >
               <FilterAlt
                 sx={
                   filter && filter[columnfield] && filter[columnfield]?.[0]
