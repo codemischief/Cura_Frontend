@@ -114,19 +114,68 @@ export const navMenuConfig = [
         ],
       },
       {
-        subheader: "Vendor",
+        subheader: "Client",
         items: [
-          { title: "Vendor Summary", path: PATH_DASHBOARD.reports },
-          { title: "Vendor Statement", path: PATH_DASHBOARD.reports },
+          { title: "Client Statement", path: PATH_DASHBOARD.reports },
+          { title: "Duplicate Client", path: PATH_DASHBOARD.reports },
+          { title: "Client Bank Details", path: PATH_DASHBOARD.reports },
+          { title: "CURA Non PMA Client Statement", path: PATH_DASHBOARD.reports },
+          { title: "CURA Non PMA Client Receivables", path: PATH_DASHBOARD.reports },
         ],
       },
       {
-        subheader: "Monthly Margin",
+        subheader: "Contact",
         items: [
-          { title: "LOB-Receipts-Payments", path: PATH_DASHBOARD.reports.lobReceiptPayments},
-          { title: "Entity-Receipt-Payments", path: PATH_DASHBOARD.reports.entityReceiptPayments },
-          { title: "Client Statement-CI,CR and OR(All Entities)", path: PATH_DASHBOARD.reports },
-          { title: "LOB-Receipts-Payments Consolidated", path: PATH_DASHBOARD.reports.lobReceiptPaymentsConsolidated },
+          { title: "All Owner Email IDs", path: PATH_DASHBOARD.reports },
+          { title: "All Tenant Email IDs", path: PATH_DASHBOARD.reports },
+          { title: "Client Contacts", path: PATH_DASHBOARD.reports },
+          { title: "Owners Phone No's", path: PATH_DASHBOARD.reports },
+          { title: "Clients Phone No's", path: PATH_DASHBOARD.reports },
+        ],
+      },
+      {
+        subheader: "Exceptions",
+        items: [
+          { title: "Payment Under Suspense Order", path: PATH_DASHBOARD.reports },
+          { title: "Receipt Under Suspense Order", path: PATH_DASHBOARD.reports },
+          { title: "Clients With Orders But No Email IDs", path: PATH_DASHBOARD.reports },
+          { title: "Employee Without Vendor", path: PATH_DASHBOARD.reports },
+          { title: "Bank Transaction With Wrong User Names", path: PATH_DASHBOARD.reports },
+          { title: "Entity Blank Report (CR,OR,OI,OP)", path: PATH_DASHBOARD.reports },
+          { title: "Owners With no Properties", path: PATH_DASHBOARD.reports },
+          { title: "Properties With no Projects", path: PATH_DASHBOARD.reports },
+        ],
+      },
+      {
+        subheader: "Orders",
+        items: [
+          { title: "Aged Orders", path: PATH_DASHBOARD.reports },
+          { title: "Order Analysis", path: PATH_DASHBOARD.reports },
+        ],
+      },
+      {
+        subheader: "Lists",
+        items: [
+          { title: "Order Payment List", path: PATH_DASHBOARD.reports.orderPaymentList },
+          { title: "Order Receipt List", path: PATH_DASHBOARD.reports.orderReceiptList },
+          { title: "Order Invoice List", path: PATH_DASHBOARD.reports.orderInvoiceList },
+          { title: "Vendor Invoice List", path: PATH_DASHBOARD.reports.vendorInvoiceList },
+          { title: "Client Receipt List", path: PATH_DASHBOARD.reports.clientReceiptList },
+          { title: "L and L List", path: PATH_DASHBOARD.reports },
+        ],
+      },
+      {
+        subheader: "PMA",
+        items: [
+          { title: "Active PMA Agreements", path: PATH_DASHBOARD.reports.orderPaymentList },
+          { title: "All Project Contacts", path: PATH_DASHBOARD.reports.orderReceiptList },
+          { title: "Details For Advance Holding Amount", path: PATH_DASHBOARD.reports.orderInvoiceList },
+          { title: "PMA Client Statement- CI,CR and OR(All Entities)", path: PATH_DASHBOARD.reports.vendorInvoiceList },
+          { title: "CURA PMA Client Statement", path: PATH_DASHBOARD.reports.clientReceiptList },
+          { title: "CURA PMA Client Receivables", path: PATH_DASHBOARD.reports },
+          { title: "PMA Invoice List", path: PATH_DASHBOARD.reports },
+          { title: "PMA Billing Trend Report", path: PATH_DASHBOARD.reports },
+          { title: "Client Portal Report", path: PATH_DASHBOARD.reports },
         ],
       },
       {
@@ -142,6 +191,27 @@ export const navMenuConfig = [
         ],
       },
       {
+        subheader: "Vendor",
+        items: [
+          { title: "Vendor Summary", path: PATH_DASHBOARD.reports },
+          { title: "Vendor Statement", path: PATH_DASHBOARD.reports },
+        ],
+      },
+      {
+        subheader: "Legal",
+        items: [{ title: "Active L & L Agreement", path: PATH_DASHBOARD.reports }],
+      },
+      {
+        subheader: "Monthly Margin",
+        items: [
+          { title: "LOB-Receipts-Payments", path: PATH_DASHBOARD.reports.lobReceiptPayments},
+          { title: "Entity-Receipt-Payments", path: PATH_DASHBOARD.reports.entityReceiptPayments },
+          { title: "Client Statement-CI,CR and OR(All Entities)", path: PATH_DASHBOARD.reports },
+          { title: "LOB-Receipts-Payments Consolidated", path: PATH_DASHBOARD.reports.lobReceiptPaymentsConsolidated },
+        ],
+      },
+      
+      {
         subheader: "Report Trace",
         items: [
           { title: "Client Trace", path: PATH_DASHBOARD.reports },
@@ -149,26 +219,16 @@ export const navMenuConfig = [
           { title: "Vendor Trace", path: PATH_DASHBOARD.reports },
         ],
       },
-      {
-        subheader: "Exceptions",
-        items: [
-          { title: "Manage Vendor", path: PATH_DASHBOARD.reports },
-          { title: "Manage Vendor Invoice", path: PATH_DASHBOARD.reports },
-          { title: "Manage Vendor Payment", path: PATH_DASHBOARD.reports },
-        ],
-      },
+      // {
+      //   subheader: "Exceptions",
+      //   items: [
+      //     { title: "Manage Vendor", path: PATH_DASHBOARD.reports },
+      //     { title: "Manage Vendor Invoice", path: PATH_DASHBOARD.reports },
+      //     { title: "Manage Vendor Payment", path: PATH_DASHBOARD.reports },
+      //   ],
+      // },
       
-      {
-        subheader: "Lists",
-        items: [
-          { title: "Order Payment List", path: PATH_DASHBOARD.reports.orderPaymentList },
-          { title: "Order Receipt List", path: PATH_DASHBOARD.reports.orderReceiptList },
-          { title: "Order Invoice List", path: PATH_DASHBOARD.reports.orderInvoiceList },
-          { title: "Vendor Invoice List", path: PATH_DASHBOARD.reports.vendorInvoiceList },
-          { title: "Client Receipt List", path: PATH_DASHBOARD.reports.clientReceiptList },
-          { title: "L and L List", path: PATH_DASHBOARD.reports },
-        ],
-      },
+      
       {
         subheader: "Service Tax Reports",
         items: [
@@ -176,17 +236,8 @@ export const navMenuConfig = [
           { title: "Service Tax Paid by Vendor", path: PATH_DASHBOARD.reports },
         ],
       },
-      {
-        subheader: "Orders",
-        items: [
-          { title: "Aged Order", path: PATH_DASHBOARD.reports },
-          { title: "Order Analysis", path: PATH_DASHBOARD.reports },
-        ],
-      },
-      {
-        subheader: "Legal",
-        items: [{ title: "Active L & L Agreement", path: PATH_DASHBOARD.reports }],
-      },
+      
+      
       {
         subheader: "Statistics",
         items: [
