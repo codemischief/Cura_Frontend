@@ -85,6 +85,7 @@ import PrivateLayout from "./layout/Privatelayout";
 import AuthGuard from "./context/AuthGuard";
 import useAuth from "./context/JwtContext";
 import PropectusPage from "./Screens/Research/Prospect";
+import ClientTraceReport from "./Screens/Reports/ReportTrace/ClientTraceReport";
 import { CircularProgress } from "@mui/material";
 
 const App = () => {
@@ -310,6 +311,10 @@ const App = () => {
               <Route
                 path="/bankPaymentReconciliation"
                 element={<BankPaymentReconciliation />}
+              />
+              <Route
+                path="/report/clientTraceReport"
+                element={<ClientTraceReport />}
               />
             </Route>
 
