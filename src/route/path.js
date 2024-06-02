@@ -20,8 +20,7 @@ function path(root, sublink) {
         contact: "/managebuilder/projects/:buildername",
         projects: "/managebuilder/contacts/:buildername",
       },
-      projectManagementInfo: path(ROOTS.admin, "/manageprojectinfo"),
-      manageOrder: path(ROOTS.admin, "/manageOrder"),
+      
       country: path(ROOTS.admin, "/country"),
       state: path(ROOTS.admin, "/state"),
       city: path(ROOTS.admin, "/city"),
@@ -46,9 +45,11 @@ function path(root, sublink) {
     },
     manage: {
       bankStatement: path(ROOTS.manage, "/bankstatement"),
+      projectManagementInfo: path(ROOTS.manage, "/manageprojectinfo"),
       clientInfo: path(ROOTS.manage, "/manageclientinfo"),
       clientProperty: path(ROOTS.manage, "/manageclientproperty"),
       clientReceipt: path(ROOTS.manage, "/manageclientreceipt"),
+      manageOrder: path(ROOTS.manage, "/manageOrder"),
       llAgreement: path(ROOTS.manage, "/managellagreement"),
       pmaAgreement: path(ROOTS.manage, "/managepmaagreement"),
       orderReceipt: path(ROOTS.manage, "/manageorderreceipt"),
@@ -56,5 +57,6 @@ function path(root, sublink) {
       vendor: path(ROOTS.manage, "/managevendor"),
       vendorInvoice: path(ROOTS.manage, "/managevendorinvoice"),
       vendorPayment: path(ROOTS.manage, "/managevendorpayment"),
+      pmaBilling: path(ROOTS.manage, "/pmaBilling"),
     },
   };
