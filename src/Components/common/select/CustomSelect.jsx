@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { CircularProgress } from "@mui/material";
 
-const CustomSelect = ({ options, onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(-1);
-
+const CustomSelect = ({ isLoading, options, value, onSelect }) => {
   const dropdownRef = useRef(null);
   const optionRefs = useRef([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   useEffect(() => {
     if (isOpen) {
@@ -31,7 +31,6 @@ const CustomSelect = ({ options, onSelect }) => {
   };
 
   const selectOption = (option) => {
-    setSelectedOption(option);
     onSelect(option);
     setIsOpen(false);
   };
@@ -45,18 +44,17 @@ const CustomSelect = ({ options, onSelect }) => {
         setActiveIndex((prevIndex) =>
           Math.min(prevIndex + 1, options.length - 1)
         );
-        setSelectedOption(
-          options[Math.min(activeIndex + 1, options.length - 1)]
-        );
+
+        onSelect(options[Math.min(activeIndex + 1, options.length - 1)]);
       }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActiveIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      setSelectedOption(options[Math.max(activeIndex - 1, 0)]);
+      onSelect(options[Math.max(activeIndex - 1, 0)]);
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (isOpen && activeIndex >= 0 && activeIndex < options.length) {
-        setSelectedOption(options[activeIndex]);
+        onSelect(options[activeIndex]);
       }
 
       setIsOpen(false);
@@ -64,12 +62,13 @@ const CustomSelect = ({ options, onSelect }) => {
       const newSearchTerm = searchTerm + e.key;
       //   setSearchTerm(newSearchTerm);
 
-      const findById = options.find((option) =>
+      const findById = options?.find((option) =>
         option.name.toLowerCase().startsWith(newSearchTerm.toLowerCase())
       );
-      if (findById) setSelectedOption(findById);
+      if (findById) onSelect(findById);
+      // if (findById) setSelectedOption(findById);
 
-      const firstIndex = options.findIndex((option) =>
+      const firstIndex = options?.findIndex((option) =>
         option.name.toLowerCase().startsWith(newSearchTerm.toLowerCase())
       );
 
@@ -77,11 +76,10 @@ const CustomSelect = ({ options, onSelect }) => {
         setActiveIndex(firstIndex);
         setIsOpen(true);
       } else {
-        setIsOpen(false);
+        // setIsOpen(false);
       }
     }
   };
-  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -100,7 +98,7 @@ const CustomSelect = ({ options, onSelect }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
-   
+
   return (
     <div className="relative inline-block text-left w-64">
       <div>
@@ -112,7 +110,7 @@ const CustomSelect = ({ options, onSelect }) => {
           ref={dropdownRef}
           tabIndex="0"
         >
-          {selectedOption ? selectedOption.name : "Select an option"}
+          {value ?? "Select an option"}
           <svg
             className="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
@@ -133,24 +131,45 @@ const CustomSelect = ({ options, onSelect }) => {
         <div className="origin-top-right absolute right-0 mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           <div className="rounded-md ring-1 ring-black ring-opacity-5">
             <div className="py-1 max-h-60 overflow-y-auto">
-              {options.map((option, index) => (
-                <div
-                  key={option.id}
-                  ref={(el) => (optionRefs.current[index] = el)}
-                  className={`cursor-pointer select-none relative py-2 pl-3 pr-9 ${
-                    activeIndex === index ? "bg-indigo-100" : ""
-                  }`}
-                //   onMouseDown={() => selectOption(option)}
-                >
-                  {option.name}
+              {isLoading ? (
+                <div className="flex justify-center items-center">
+                  <CircularProgress size={20} />
                 </div>
-              ))}
+              ) : options?.length > 0 ? (
+                options?.map((option, index) => (
+                  <div
+                    key={option.id}
+                    ref={(el) => (optionRefs.current[index] = el)}
+                    className={`cursor-pointer select-none relative py-2 pl-3 pr-9 ${
+                      activeIndex === index ? "bg-indigo-100" : ""
+                    }`}
+                    onMouseDown={() => selectOption(option)}
+                    // onClick={() => selectOption(option)}
+                  >
+                    {option?.name}
+                  </div>
+                ))
+              ) : (
+                <p>No data </p>
+              )}
             </div>
           </div>
         </div>
       )}
     </div>
   );
+};
+
+CustomSelect.propTypes = {
+  isLoading: PropTypes.bool,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  value: PropTypes.any,
+  onSelect: PropTypes.func.isRequired,
 };
 
 export default CustomSelect;
