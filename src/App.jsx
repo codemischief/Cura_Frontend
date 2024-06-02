@@ -131,7 +131,7 @@ const App = () => {
                 path="/admin/deleteById/:pagename"
                 element={<DeletePage />}
               />
-              <Route path="/admin/manageOrder" element={<ManageOrder />} />
+              <Route path="/manage/manageOrder" element={<ManageOrder />} />
               <Route path="/admin/manageuser" element={<ManageUser />} />
               <Route path="/admin/country" element={<Country />} />
               <Route path="/admin/state" element={<State />} />
