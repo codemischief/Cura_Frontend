@@ -39,6 +39,8 @@ export const routeMapObj = Object.freeze({
   LLAgreement: PATH_DASHBOARD.manage.llAgreement,
   VendorPayment: PATH_DASHBOARD.manage.vendorPayment,
   ClientInvoice: PATH_DASHBOARD.manage.clientInvoice,
+  ClientReceipt: PATH_DASHBOARD.manage.clientReceipt,
+  VendorInvoice: PATH_DASHBOARD.manage.vendorInvoice,
 });
 
 export const replaceKeys = (access_rights) => {
@@ -48,18 +50,3 @@ export const replaceKeys = (access_rights) => {
     return acc;
   }, {});
 };
-
-{
-  // "ClientReceipt": {
-  //   "get": true,
-  //   "delete": true,
-  //   "edit": true,
-  //   "add": true
-  // },
-  // "VendorInvoice": {
-  //   "get": true,
-  //   "delete": true,
-  //   "edit": true,
-  //   "add": true
-  // },
-}

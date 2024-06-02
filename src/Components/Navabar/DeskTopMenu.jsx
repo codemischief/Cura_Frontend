@@ -22,10 +22,13 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
   ...theme.typography.body2,
   padding: 0,
   marginTop: theme.spacing(3),
-  color: theme.palette.text.secondary,
-  transition: theme.transitions.create("color"),
+  // color: theme.palette.text.secondary,
+  // transition: theme.transitions.create("color"),
+  color: "#505050",
   "&:hover": {
-    color: "red",
+    color: "#505050",
+    background: "#DAE7FF",
+    borderRadius: "0.3125rem",
   },
 }));
 function IconBullet({ type = "item" }) {
@@ -147,11 +150,11 @@ function MenuDesktopItem({
         ref={paperRef}
         elevation={12}
         // Added class to hide scrollbar
-        className="no-scrollbar" 
+        className="no-scrollbar"
         sx={{
           width: "98%",
           position: "absolute",
-          padding:"28px",
+          padding: "28px",
           top: 98,
           left: 18,
           maxHeight: "500px",
@@ -161,16 +164,19 @@ function MenuDesktopItem({
           transform: isOpen === title ? "translateY(0)" : "translateY(-4px)",
           transition: "opacity 0.2s ease, transform 0.2s ease",
           minHeight: "205px",
-          zIndex:"9",
+          zIndex: "9",
         }}
       >
-        <div className="grid grid-cols-5 w-full gap-x-[18px] menu" ref={paperRef}>
+        <div
+          className="grid grid-cols-5 w-full gap-x-[18px] menu"
+          ref={paperRef}
+        >
           {children?.map((list) => {
             const { subheader, items } = list;
             return (
               <div
                 key={subheader}
-                className={`w-full border-r border-[#CBCBCB]`}
+                className={`w-full border-r border-[#CBCBCB] px-4`}
               >
                 {/* <List
                   sx={{
@@ -181,7 +187,6 @@ function MenuDesktopItem({
                   }}
                 > */}
                 <div className="felx flex-col gap-2">
-
                   <ListSubheader
                     disableSticky
                     disableGutters
@@ -229,13 +234,12 @@ function MenuDesktopItem({
                     >
                       <>
                         {/* <IconBullet /> */}
-                        {item.title}
+                        <div className="px-2">{item.title}</div>
                       </>
                     </ListItemStyle>
                   ))}
-                {/* </List> */}
+                  {/* </List> */}
                 </div>
-                
               </div>
               // </Grid>
             );
@@ -314,7 +318,14 @@ export default function MenuDesktop({ isOffset, isHome }) {
   };
 
   return (
-    <Stack width={"fit-content"} height={"39px"} direction="row" justifyContent={"center"} alignItems={"center"}>
+    <Stack
+      width={"fit-content"}
+      height={"39px"}
+      direction="row"
+      gap={"4px"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       {navMenuConfig?.map((link) => (
         <MenuDesktopItem
           key={link.title}
@@ -334,4 +345,4 @@ export default function MenuDesktop({ isOffset, isHome }) {
 MenuDesktop.propTypes = {
   isHome: PropTypes.bool.isRequired,
   isOffset: PropTypes.bool.isRequired,
-}
+};
