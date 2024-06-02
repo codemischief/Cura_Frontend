@@ -8,7 +8,7 @@ export const ROOTS = {
 
   research: "/research",
   manage: "/manage",
-  report: "/report",
+  report: "/reports",
 };
 
 export const PATH_DASHBOARD = {
@@ -68,5 +68,12 @@ export const PATH_DASHBOARD = {
     vendorPayment: path(ROOTS.manage, "/managevendorpayment"),
     pmaBilling: path(ROOTS.manage, "/pmaBilling"),
   },
-  report: {},
+  report: {
+    list: {
+      orderPaymentList: path(ROOTS.report, "/orderPaymentList"),
+      orderReceipt: path(ROOTS.report, "/orderReceiptList"),
+      orderInvoiceList: path(ROOTS.report, "/orderInvoiceList"),
+      clientReceiptList: path(ROOTS.report, "/clientReceiptList"),
+    },
+  },
 };

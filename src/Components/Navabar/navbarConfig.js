@@ -155,11 +155,17 @@ export const navMenuConfig = [
       {
         subheader: "Lists",
         items: [
-          { title: "Order Payment List", path: "" },
-          { title: "Order Receipt List", path: "" },
-          { title: "Order Invoice List", path: "" },
+          {
+            title: "Order Payment List",
+            path: PATH_DASHBOARD?.report?.list?.orderPaymentList,
+          },
+          {
+            title: "Order Receipt List",
+            path: PATH_DASHBOARD.report.list.orderReceipt,
+          },
+          { title: "Order Invoice List", path: PATH_DASHBOARD.report.list.orderInvoiceList },
           { title: "Vendor Payment List", path: "" },
-          { title: "Client Receipt List", path: "" },
+          { title: "Client Receipt List", path: PATH_DASHBOARD.report.list.clientReceiptList },
           { title: "L and L List", path: "" },
         ],
       },

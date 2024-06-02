@@ -222,11 +222,20 @@ const App = () => {
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
               <Route path="admin/temp" element={<Temp />} />
-              <Route path="/orderPaymentList" element={<OrderPaymentList />} />
-              <Route path="/orderReceiptList" element={<OrderReceiptList />} />
-              <Route path="/orderInvoiceList" element={<OrderInvoiceList />} />
               <Route
-                path="/clientReceiptList"
+                path="/reports/orderPaymentList"
+                element={<OrderPaymentList />}
+              />
+              <Route
+                path="/reports/orderReceiptList"
+                element={<OrderReceiptList />}
+              />
+              <Route
+                path="/reports/orderInvoiceList"
+                element={<OrderInvoiceList />}
+              />
+              <Route
+                path="/reports/clientReceiptList"
                 element={<ClientReceiptList />}
               />
               <Route
