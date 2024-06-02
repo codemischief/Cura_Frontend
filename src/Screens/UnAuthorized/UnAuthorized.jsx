@@ -8,10 +8,10 @@ const UnAuthorized = () => {
         src={Logo}
         alt="company Logo"
       />
-      <div className="w-3/5 my-[1.75rem] h-full bg-white rounded-lg flex flex-col items-center self-center justify-self-center">
-        <div className="h-full w-full">
-          <h4>Access Denied</h4>
-          <p>
+      <div className="w-3/5 my-[1.75rem] h-full bg-white rounded-lg flex flex-col items-center self-center justify-start py-[3.55rem]">
+        <div className=" flex flex-col h-fit w-full max-w-[35rem] text-center gap-[9.69rem] justify-start text-[#282828]">
+          <h4 className="text-[1.3125rem]">Access Denied</h4>
+          <p className="text-[1.5rem] leading-[2.25rem]">
             You are not authorised to perform this action. Please contact your
             administrator if you believe this is an error.
           </p>
