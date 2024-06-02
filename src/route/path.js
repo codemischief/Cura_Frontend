@@ -23,7 +23,6 @@ export const PATH_DASHBOARD = {
       projects: "/managebuilder/contacts/:buildername",
     },
     projectManagementInfo: path(ROOTS.admin, "/manageprojectinfo"),
-    manageOrder: path(ROOTS.admin, "/manageOrder"),
     country: path(ROOTS.admin, "/country"),
     state: path(ROOTS.admin, "/state"),
     city: path(ROOTS.admin, "/city"),
@@ -56,6 +55,7 @@ export const PATH_DASHBOARD = {
   },
   manage: {
     bankStatement: path(ROOTS.manage, "/bankstatement"),
+      manageOrder: path(ROOTS.manage, "/manageOrder"),
     clientInfo: path(ROOTS.manage, "/manageclientinfo"),
     clientProperty: path(ROOTS.manage, "/manageclientproperty"),
     clientReceipt: path(ROOTS.manage, "/manageclientreceipt"),

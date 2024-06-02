@@ -37,28 +37,28 @@ const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 const ManageClientReceipt = () => {
     const navigate = useNavigate()
     const initialRows = [
-        "id",
-        "receivedby",
-        "receivedbyname",
-        "amount",
-        "recddate",
-        "tds",
-        "paymentmode",
-        "paymentmodename",
-        "clientid",
         "clientname",
-        "receiptdesc",
-        "dated",
-        "createdby",
-        "isdeleted",
+        "amount",
         "serviceamount",
         "reimbursementamount",
-        "entityid",
-        "entity",
-        "howreceived",
-        "howreceivedid",
-        "officeid",
-        "office"
+        "recddate",
+        "paymentmodename",
+        "receivedbyname",
+        "tds",
+        "clientid",
+        "id",
+        // "receivedby",
+        // "paymentmode",
+        // "receiptdesc",
+        // "dated",
+        // "createdby",
+        // "isdeleted",
+        // "entityid",
+        // "entity",
+        // "howreceived",
+        // "howreceivedid",
+        // "officeid",
+        // "office"
     ]
     const menuRef = useRef();
     // we have the module here
@@ -1653,20 +1653,23 @@ const ManageClientReceipt = () => {
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <Draggable>
-                        <div className="w-[1050px] h-auto bg-white rounded-lg">
+                    <Draggable handle='div.move'>
+                        <div className="w-[1050px] h-auto bg-white rounded-lg relative">
+                            <div className='move cursor-move'>
+
                             <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
                                 <div className="mr-[370px] ml-[370px]">
                                     <div className="text-base">New Client Receipt</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
+                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
                                     <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                                 </div>
+                            </div>
                             </div>
 
                             <div className="h-auto w-full mt-1">
                                 <div className="flex gap-12 justify-center ">
-                                    <div className=" space-y-3 py-5">
+                                    <div className=" space-y-4 py-5">
                                         <div className="">
                                             <div className="text-sm text-[#787878] mb-1">Cura Office </div>
                                             <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
@@ -1674,7 +1677,7 @@ const ManageClientReceipt = () => {
                                         <div className="">
                                             <div className="text-sm">Received Date<label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" name="receivedDate" value={formValues.receivedDate} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.receivedDate}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">
@@ -1693,7 +1696,7 @@ const ManageClientReceipt = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.receivedBy}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">
@@ -1711,7 +1714,7 @@ const ManageClientReceipt = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.receiptMode}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm mb-0.5">
@@ -1732,8 +1735,10 @@ const ManageClientReceipt = () => {
                                                         minHeight: 23,
                                                         lineHeight: '0.8',
                                                         height: 4,
-                                                        width: 230,
+                                                        width: 225,
                                                         fontSize: 10,
+                                                        // fontWeight : 500,
+                                                        // fontFamily : 'sans-serif'
                                                         // padding: '1px'
                                                     }),
                                                     // indicatorSeparator: (provided, state) => ({
@@ -1770,7 +1775,7 @@ const ManageClientReceipt = () => {
                                                     
                                                 }}
                                             />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">
@@ -1789,29 +1794,29 @@ const ManageClientReceipt = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.howreceived}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.howreceived}</div>
                                         </div>
                                     </div>
-                                    <div className=" space-y-3 py-5">
+                                    <div className=" space-y-4 py-5">
                                         <div className="">
                                             <div className="text-sm">Service Amount </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="serviceAmount" value={formValues.serviceAmount} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.serviceAmount}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.serviceAmount}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Reimbursement Amount </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="reimbursementAmount" value={formValues.reimbursementAmount} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.reimbursementAmount}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.reimbursementAmount}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amountReceived}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">TDS </div>
                                             <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="number" name="TDS" value={formValues.TDS} onChange={handleChange} />
-                                            <div className="text-[10px] text-[#CD0000] ">{formErrors.TDS}</div>
+                                            <div className="text-[10px] text-[#CD0000] absolute">{formErrors.TDS}</div>
                                         </div>
                                         <div className="">
                                             <div className="text-sm">Receipt Description</div>
@@ -1837,18 +1842,18 @@ const ManageClientReceipt = () => {
                 <div className='flex justify-center'>
                     <Draggable>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                             <div className="mr-[410px] ml-[410px]">
                                 <div className="text-[16px]">New Order Receipt</div>
                             </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                 <button onClick={() => {handleCloseOrModel()}}><img  className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                             </div>
                         </div>
 
                         <div className="h-auto w-full mt-[5px]">
                             <div className="flex gap-[48px] justify-center ">
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-4 py-5">
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Cura Office </div>
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"   >Pune</div>
@@ -1896,7 +1901,7 @@ const ManageClientReceipt = () => {
                                                   }),
                                             }}
                                         /> */}
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.client}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.client}</div>
                                     </div>
                                     
                                     
@@ -1916,7 +1921,7 @@ const ManageClientReceipt = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receiptMode}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.receiptMode}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -1930,12 +1935,12 @@ const ManageClientReceipt = () => {
                                         >
                                             {/* <option value="none" hidden >Select Received By</option> */}
                                             {usersData.map((item) => (
-                                                <option key={item.id} value={item.id}>
+                                                <option key={item.id} value={item.id} >
                                                     {item.name}
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedBy}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.receivedBy}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">TDS </div>
@@ -1947,7 +1952,7 @@ const ManageClientReceipt = () => {
                                     </div>
                                     
                                 </div>
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-4 py-5">
                                 <div className="">
                                         <div className="text-sm text-[#787878]">Receipt ID </div>
                                         <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"></div>
@@ -1973,17 +1978,17 @@ const ManageClientReceipt = () => {
                                                  handleOrChange(e)
                                                  getOrderData(e.target.value)
                                         }} formValueName="order" value={orFormValues.order}  />
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.order}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.order}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-[13px]">Received Date <label className="text-red-500">*</label></div>
                                         <input className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" type="date" name="receivedDate" value={orFormValues.receivedDate} onChange={handleOrChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.receivedDate}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Amount Received <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={orFormValues.amountReceived} onChange={handleOrChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{orFormErrors.amountReceived}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{orFormErrors.amountReceived}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm ">Pending Amount </div>
