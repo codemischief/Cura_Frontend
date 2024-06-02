@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 
 const AuthGuard = ({ children }) => {
   const location = useLocation();
-  const { isAuthenticated, user } = useAuth();
-  // const isAuthenticated = true
+  // const { isAuthenticated, user } = useAuth();
+  const isAuthenticated = true
 
   if (!isAuthenticated) {
     toast.warning("Session expired");

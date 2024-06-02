@@ -86,6 +86,7 @@ import AuthGuard from "./context/AuthGuard";
 import useAuth from "./context/JwtContext";
 import PropectusPage from "./Screens/Research/Prospect";
 import { CircularProgress } from "@mui/material";
+import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -105,7 +106,7 @@ const App = () => {
             <Route path="" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user" element={<Userscreen />} />
-            <Route path="/unauthorized" element={<>Unauthorized</>} />
+            <Route path="/unauthorized" element={<UnAuthorized />} />
 
             {/* <Route element={<RequireAuth />}> */}
             <Route
