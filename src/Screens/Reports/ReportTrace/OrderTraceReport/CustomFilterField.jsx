@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../../Components/common/table/FilterField";
-import { setClientTraceReportFilters, setPageNumber } from "../../../../Redux/slice/reporting/ClientTraceReport";
+import { setFilters, setPageNumber } from "../../../../Redux/slice/reporting/OrderTraceReport";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.clientTraceReport);
+  const { filter } = useSelector((state) => state.orderTraceReport);
 
   const handleFilterChange = (filters) => {
-    dispatch(setClientTraceReportFilters({...filters}));
+    dispatch(setFilters({...filters}));
     dispatch(setPageNumber(1))
   };
 

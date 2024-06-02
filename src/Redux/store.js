@@ -31,6 +31,7 @@ import BankReceiptsReconciliation from "./slice/reporting/BankReceiptsReconcilia
 import BankPaymentsReconciliation from "./slice/reporting/BankPaymentsReconciliation";
 import ProsPectReducer from "./slice/Research/ProspectSlice";
 import ClientTraceReport from "./slice/reporting/ClientTraceReport";
+import OrderTraceReport from "./slice/reporting/OrderTraceReport";
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -62,6 +63,7 @@ export const store = configureStore({
     bankPaymentsReconciliation : BankPaymentsReconciliation,
     prospect: ProsPectReducer,
     clientTraceReport:ClientTraceReport,
+    orderTraceReport:OrderTraceReport,
   },
   // Add the RTK Query API middleware
 });
