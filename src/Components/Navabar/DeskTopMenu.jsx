@@ -172,12 +172,16 @@ function MenuDesktopItem({
                 key={subheader}
                 className={`w-full border-r border-[#CBCBCB]`}
               >
-                <List
+                {/* <List
                   sx={{
+                    display:"flex",
+                    flexDirection:"column",
                     paddingBottom: "18px",
-                    gap:"16px",
+                    gap:"8px",
                   }}
-                >
+                > */}
+                <div className="felx flex-col gap-2">
+
                   <ListSubheader
                     disableSticky
                     disableGutters
@@ -229,7 +233,9 @@ function MenuDesktopItem({
                       </>
                     </ListItemStyle>
                   ))}
-                </List>
+                {/* </List> */}
+                </div>
+                
               </div>
               // </Grid>
             );
