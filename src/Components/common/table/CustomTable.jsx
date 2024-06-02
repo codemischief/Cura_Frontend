@@ -33,10 +33,11 @@ const SimpleTable = ({
                 >
                   {column.filterComponent && [
                     <column.filterComponent
+                      filterStyle={column.cellStyle}
                       key={column.field}
                       columnfield={column.field}
                       isDisabled={column.filterDisabled || false}
-                    />,
+                    />
                   ]}
                 </th>
               ))}

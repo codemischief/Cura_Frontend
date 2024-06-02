@@ -1,8 +1,6 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Button, Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
@@ -17,12 +15,10 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus,
 } from "../../../Redux/slice/reporting/OrderPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
 
 const OrderPaymentList = () => {
   const dispatch = useDispatch();
@@ -37,7 +33,6 @@ const OrderPaymentList = () => {
   } = useSelector((state) => state.orderPayment);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);

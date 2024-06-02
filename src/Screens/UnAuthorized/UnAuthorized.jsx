@@ -1,6 +1,18 @@
+import { useEffect } from "react";
 import Logo from "../../assets/logo.jpg";
+// import { useNavigation } from "react-router-dom";
+import useAuth from "../../context/JwtContext";
 
 const UnAuthorized = () => {
+  const { isAuthenticated } = useAuth();
+  // const navigate = useNavigation();
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     isAuthenticated ? navigate("/dashboard") : navigate("/login");
+  //   }, 5000);
+  // }, []);
+
   return (
     <div className="flex w-screen h-screen py-20 justify-center bg-[#F5F5F5]">
       <img
