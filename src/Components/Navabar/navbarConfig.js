@@ -54,48 +54,49 @@ export const navMenuConfig = [
       {
         subheader: "Builder",
         items: [
-          { title: "Manage Builder", path: "" },
-          { title: "Manage Project", path: "" },
+          { title: "Manage Builder", path: PATH_DASHBOARD.manage.bankStatement },
+          { title: "Manage Project", path: PATH_DASHBOARD.manage.projectManagementInfo },
         ],
       },
-      {
-        subheader: "Statement",
-        items: [
-          { title: "Bank Statement", path: "" },
-          { title: "Send Client Statement", path: "#" },
-        ],
-      },
+      
       {
         subheader: "Client",
         items: [
-          { title: "Manage Client", path: "" },
-          { title: "Manage Client Property", path: "" },
-          { title: "Manage Client Invoice", path: "" },
-          { title: "Manage Client Receipt", path: "" },
+          { title: "Manage Client", path: PATH_DASHBOARD.manage.clientInfo },
+          { title: "Manage Client Property", path: PATH_DASHBOARD.manage.clientProperty },
+          { title: "Manage Client Invoice", path: PATH_DASHBOARD.manage.clientInvoice },
+          { title: "Manage Client Receipt", path: PATH_DASHBOARD.manage.clientReceipt },
         ],
       },
       {
         subheader: "Order",
         items: [
-          { title: "Manage Order", path: "" },
-          { title: "Manage Order Receipt", path: "" },
+          { title: "Manage Order", path: PATH_DASHBOARD.manage.manageOrder },
+          { title: "Manage Order Receipt", path: PATH_DASHBOARD.manage.orderReceipt },
         ],
       },
       {
         subheader: "Vendor",
         items: [
-          { title: "Manage Vendor", path: "" },
-          { title: "Manage Vendor Invoice", path: "" },
-          { title: "Manage Vendor Payment", path: "" },
+          { title: "Manage Vendor", path: PATH_DASHBOARD.manage.vendor },
+          { title: "Manage Vendor Invoice", path: PATH_DASHBOARD.manage.vendorInvoice },
+          { title: "Manage Vendor Payment", path: PATH_DASHBOARD.manage.vendorPayment},
         ],
       },
       {
         subheader: "Service",
         items: [
-          { title: "PMA Agreement", path: "" },
-          { title: "L&L Agreement", path: "" },
-          { title: "PMA Billing", path: "#" },
+          { title: "PMA Agreement", path: PATH_DASHBOARD.manage.pmaAgreement },
+          { title: "L&L Agreement", path: PATH_DASHBOARD.manage.llAgreement },
+          { title: "PMA Billing", path: PATH_DASHBOARD.manage.pmaBilling },
           { title: "Email PMA Statement", path: "#" },
+        ],
+      },
+      {
+        subheader: "Statement",
+        items: [
+          { title: "Bank Statement", path: PATH_DASHBOARD.manage.bankStatement },
+          { title: "Send Client Statement", path: "#" },
         ],
       },
     ],
