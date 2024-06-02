@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal } from '@mui/material'
+import { Modal , CircularProgress, Backdrop} from '@mui/material'
 import Cross from "../../../assets/cross.png"
 import { APIService } from '../../../services/API'
 import AsyncSelect from "react-select/async";
@@ -219,22 +219,36 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
             maxWidth={'md'}
             className='flex justify-center items-center'
         >
-
             <div className='flex justify-center'>
-                
+                 
+                        <Backdrop
+                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                            open={pageLoading}
+                            onClick={() => {}}
+                            >
+
+                        <CircularProgress color="inherit"/>
+
+                        </Backdrop>
+                <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-base">Edit Client Invoice </div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={() => {close()}}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+                        <div className='move cursor-move'>
+                            <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-base">Edit Client Invoice </div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
+                                    <button onClick={() => {close()}}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
                         </div>
-                        
                         <div className="text-sm text-center mt-1 font-semibold">Invoice ID: {invoiceId}</div>
+                        <div className="h-[350px] w-full mt-1 ">
+                        {/* {pageLoading && <div className='flex space-x-2 items-center justify-center mt-2 mb-2'>
+                            <CircularProgress />
+                            <h1>Fetching Data</h1>
+                        </div> } */}
                         {!pageLoading &&
-                        <div className="h-auto w-full mt-1 ">
                             <div className="flex gap-12 justify-center">
                                 <div className=" space-y-3 py-5">
                                     <div className="">
@@ -293,7 +307,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                                 
                                             }}
                                         />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Estimate Amount</div>
@@ -312,7 +326,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                     <div className="">
                                         <div className="text-sm">Quote/Invoice Description <label className="text-red-500">*</label></div>
                                         <textarea className="w-56 h-16 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="invoiceDescription" value={formValues.invoiceDescription} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.invoiceDescription}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.invoiceDescription}</div>
                                     </div>
                                 </div>
                                 <div className=" space-y-3 py-5">
@@ -334,7 +348,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                             ))}
                                         </select> */}
                                         <OrderDropDown options={orders} orderText={orderText} setOrderText={setOrderText} leftLabel="ID" rightLabel="OrderName" leftAttr="id" rightAttr="ordername" toSelect="ordername" handleChange={handleChange} formValueName="order" value={formValues.order} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.order}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.order}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Estimate Date</div>
@@ -349,8 +363,8 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="date" name="invoiceDate" value={formValues.invoiceDate} onChange={handleChange} />
                                     </div>
                                 </div>
-                            </div>
-                        </div>}
+                            </div>}
+                        </div>
                         <div className="my-3 flex justify-center items-center gap-3">
                             <button className='w-28 h-10 bg-[#004DD7] text-white rounded-md text-lg' onClick={handleEdit} >Save</button>
                             <button className='w-28 h-10 border-[1px] border-[#282828] rounded-md text-lg' onClick={() => {close()}}>Cancel</button>
@@ -358,6 +372,7 @@ const EditClientInvoice = ({ handleClose, invoiceId, showSuccess , showCancel })
 
                     </div>
                 
+            </Draggable>
             </div>
         </Modal>
     )
