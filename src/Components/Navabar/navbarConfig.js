@@ -10,16 +10,16 @@ export const navMenuConfig = [
         subheader: "Personnel",
         items: [
           { title: "Users", path: PATH_DASHBOARD.admin.manageUsers },
-          { title: "Employees", path: "#" },
-          { title: "Contractual Payment", path: "#" },
+          { title: "Employees", path: PATH_DASHBOARD.admin.manageEmployees },
+          { title: "Contractual Payment", path: PATH_DASHBOARD.admin.payments },
         ],
       },
       {
         subheader: "Offerings",
         items: [
-          { title: "LOB (Line of business)", path: "#" },
-          { title: "Services", path: "#" },
-          { title: "Grinding Machine ", path: "#" },
+          { title: "LOB (Line of business)", path: PATH_DASHBOARD.admin.LOB },
+          { title: "Services", path: PATH_DASHBOARD.admin.service },
+          { title: "Grinding Machine ", path: PATH_DASHBOARD },
           { title: "Drilling Machine ", path: "#" },
           { title: "Milling Machine ", path: "#" },
         ],
@@ -27,22 +27,31 @@ export const navMenuConfig = [
       {
         subheader: "Locations",
         items: [
-          { title: "Country", path: "#" },
-          { title: "State", path: "#" },
-          { title: "City", path: "#" },
-          { title: "Locality", path: "#" },
+          { title: "Country", path: PATH_DASHBOARD.admin.country },
+          { title: "State", path: PATH_DASHBOARD.admin.state },
+          { title: "City", path: PATH_DASHBOARD.admin.city },
+          { title: "Locality", path: PATH_DASHBOARD.admin.locality },
         ],
       },
       {
         subheader: "Data Management",
-        items: [{ title: "Delete by ID", path: "#" }],
+        items: [{ title: "Delete by ID", path: PATH_DASHBOARD.admin.deleteId }],
       },
       {
         subheader: "Margin Report",
         items: [
-          { title: "LOB- Receipts - Payments", path: "#" },
-          { title: "Entity-Receipts-Payments", path: "#" },
-          { title: "LOB - Receipts-Payments-Consolidated", path: "#" },
+          {
+            title: "LOB- Receipts - Payments",
+            path: PATH_DASHBOARD.admin.lobReceiptPayments,
+          },
+          {
+            title: "Entity-Receipts-Payments",
+            path: PATH_DASHBOARD.admin.entityReceiptPayment,
+          },
+          {
+            title: "LOB - Receipts-Payments-Consolidated",
+            path: PATH_DASHBOARD.admin.lobReceiptPaymentsConsolidated,
+          },
         ],
       },
     ],
@@ -54,33 +63,57 @@ export const navMenuConfig = [
       {
         subheader: "Builder",
         items: [
-          { title: "Manage Builder", path: PATH_DASHBOARD.manage.bankStatement },
-          { title: "Manage Project", path: PATH_DASHBOARD.manage.projectManagementInfo },
+          {
+            title: "Manage Builder",
+            path: PATH_DASHBOARD.manage.bankStatement,
+          },
+          {
+            title: "Manage Project",
+            path: PATH_DASHBOARD.manage.projectManagementInfo,
+          },
         ],
       },
-      
+
       {
         subheader: "Client",
         items: [
           { title: "Manage Client", path: PATH_DASHBOARD.manage.clientInfo },
-          { title: "Manage Client Property", path: PATH_DASHBOARD.manage.clientProperty },
-          { title: "Manage Client Invoice", path: PATH_DASHBOARD.manage.clientInvoice },
-          { title: "Manage Client Receipt", path: PATH_DASHBOARD.manage.clientReceipt },
+          {
+            title: "Manage Client Property",
+            path: PATH_DASHBOARD.manage.clientProperty,
+          },
+          {
+            title: "Manage Client Invoice",
+            path: PATH_DASHBOARD.manage.clientInvoice,
+          },
+          {
+            title: "Manage Client Receipt",
+            path: PATH_DASHBOARD.manage.clientReceipt,
+          },
         ],
       },
       {
         subheader: "Order",
         items: [
           { title: "Manage Order", path: PATH_DASHBOARD.manage.manageOrder },
-          { title: "Manage Order Receipt", path: PATH_DASHBOARD.manage.orderReceipt },
+          {
+            title: "Manage Order Receipt",
+            path: PATH_DASHBOARD.manage.orderReceipt,
+          },
         ],
       },
       {
         subheader: "Vendor",
         items: [
           { title: "Manage Vendor", path: PATH_DASHBOARD.manage.vendor },
-          { title: "Manage Vendor Invoice", path: PATH_DASHBOARD.manage.vendorInvoice },
-          { title: "Manage Vendor Payment", path: PATH_DASHBOARD.manage.vendorPayment},
+          {
+            title: "Manage Vendor Invoice",
+            path: PATH_DASHBOARD.manage.vendorInvoice,
+          },
+          {
+            title: "Manage Vendor Payment",
+            path: PATH_DASHBOARD.manage.vendorPayment,
+          },
         ],
       },
       {
@@ -95,7 +128,10 @@ export const navMenuConfig = [
       {
         subheader: "Statement",
         items: [
-          { title: "Bank Statement", path: PATH_DASHBOARD.manage.bankStatement },
+          {
+            title: "Bank Statement",
+            path: PATH_DASHBOARD.manage.bankStatement,
+          },
           { title: "Send Client Statement", path: "#" },
         ],
       },
