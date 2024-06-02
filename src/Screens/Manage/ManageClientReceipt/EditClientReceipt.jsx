@@ -189,28 +189,30 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                 className='flex justify-center items-center'
             >
                 <div className='flex justify-center'>
-                    <Draggable>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
-                            <div className="mr-[370px] ml-[370px]">
-                                <div className="text-base">Edit Client Receipt</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white">
-                                <button onClick={() => {close()}}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
+                    <Draggable handle='div.move'>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg relative">
+                        <div className='move cursor-move'>
+                            <div className="h-10 bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="mr-[370px] ml-[370px]">
+                                    <div className="text-base">Edit Client Receipt : {currClientReceipt.id}</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-7 h-7 bg-white absolute right-2">
+                                    <button onClick={() => {close()}}><img className="w-5 h-5" src={Cross} alt="cross" /></button>
+                                </div>
                             </div>
                         </div>
 
                         <div className="h-auto w-full mt-1">
                             <div className="flex gap-12 justify-center ">
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-4 py-5">
                                     <div className="">
                                         <div className="text-sm text-[#787878]">Cura Office </div>
-                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                        <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice"  onChange={handleChange} >Pune</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">Received Date<label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="date" value={formValues.receivedDate} name="receivedDate" onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedDate}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.receivedDate}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -228,7 +230,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receivedBy}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.receivedBy}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -246,7 +248,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.receiptMode}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute ">{formErrors.receiptMode}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -266,7 +268,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                                     minHeight: 23,
                                                     lineHeight: '0.8',
                                                     height: 4,
-                                                    width: 230,
+                                                    width: 225,
                                                     fontSize: 10,
                                                     // padding: '1px'
                                                 }),
@@ -304,7 +306,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                                 
                                             }}
                                         />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.client}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">
@@ -322,10 +324,10 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                                 </option>
                                             ))}
                                         </select>
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.howReceived}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.howReceived}</div>
                                     </div>
                                 </div>
-                                <div className=" space-y-3 py-5">
+                                <div className=" space-y-4 py-5">
                                     <div className="">
                                         <div className="text-sm">Service Amount </div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="serviceamount" value={formValues.serviceamount} onChange={handleChange} />
@@ -337,7 +339,7 @@ const EditClientReceipt = ({currClientReceipt,handleClose,showSuccess , showCanc
                                     <div className="">
                                         <div className="text-sm">Amount Recived <label className="text-red-500">*</label></div>
                                         <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" type="text" name="amountReceived" value={formValues.amountReceived} onChange={handleChange} />
-                                        <div className="text-[10px] text-[#CD0000] ">{formErrors.amountReceived}</div>
+                                        <div className="text-[10px] text-[#CD0000] absolute">{formErrors.amountReceived}</div>
                                     </div>
                                     <div className="">
                                         <div className="text-sm">TDS </div>
