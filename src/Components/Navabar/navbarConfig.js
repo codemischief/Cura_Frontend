@@ -19,9 +19,6 @@ export const navMenuConfig = [
         items: [
           { title: "LOB (Line of business)", path: PATH_DASHBOARD.admin.LOB },
           { title: "Services", path: PATH_DASHBOARD.admin.service },
-          { title: "Grinding Machine ", path: PATH_DASHBOARD },
-          { title: "Drilling Machine ", path: "#" },
-          { title: "Milling Machine ", path: "#" },
         ],
       },
       {
