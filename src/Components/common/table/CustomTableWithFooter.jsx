@@ -273,35 +273,24 @@ const helper = (index, obj, pageName) => {
   }
   else if (pageName == "bankReceiptReconciliation") {
     if (index == 2) {
-      return ` Total: ${obj.bankst_cr}`
+      return ` Total: ${obj[0].bankst_cr}`
     } else if (index == 3) {
-      return `Total: ${obj.client_receipt}`
+      return `Total: ${obj[0].client_receipt}`
     } else if (index == 4) {
-      return `Total: ${obj.order_receipt}`
-    } else {
-      return ""
-    }
-  }
-  else if (pageName == "bankReceiptReconciliation") {
-    if (index == 2) {
-      return ` Total: ${obj.bankst_cr}`
-    } else if (index == 3) {
-      return `Total: ${obj.client_receipt}`
-    } else if (index == 4) {
-      return `Total: ${obj.order_receipt}`
+      return `Total: ${obj[0].order_receipt}`
     } else {
       return ""
     }
   }
   else if (pageName == "bankPaymentsReconciliation") {
-    if (index == 1) {
-      return ` Total: ${obj.bankst_dr}`
-    } else if (index == 2) {
-      return `Total: ${obj.contorderpayments}`
+    if (index == 2) {
+      return ` Total: ${obj[0].bankst_dr}`
     } else if (index == 3) {
-      return `Total: ${obj.order_payments}`
-    }else if (index == 4) {
-      return `Total: ${obj.contractual_payments}`
+      return `Total: ${obj[0].contorderpayments}`
+    } else if (index == 4) {
+      return `Total: ${obj[0].order_payments}`
+    }else if (index == 5) {
+      return `Total: ${obj[0].contractual_payments}`
     } else {
       return ""
     }
