@@ -17,13 +17,13 @@ import {
   setInitialState,
   setPageNumber,
   setSorting,
-} from "../../../../Redux/slice/reporting/OrderTraceReport";
+} from "../../../../Redux/slice/reporting/VendorTraceReport";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../../utils/filters";
 import * as XLSX from "xlsx";
 
-const OrderTraceReport = () => {
+const VendorTraceReport = () => {
   const dispatch = useDispatch();
   const {
     data,
@@ -34,7 +34,7 @@ const OrderTraceReport = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.orderTraceReport);
+  } = useSelector((state) => state.vendorTraceReport);
   const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [toast, setToast] = useState(false);
@@ -58,7 +58,7 @@ const OrderTraceReport = () => {
     if (selectedOption.value) {
       let obj = {
         user_id: 1234,
-        orderID:selectedOption.value,
+        clientID:selectedOption.value,
         rows: ["type","orderid"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
@@ -94,7 +94,7 @@ const OrderTraceReport = () => {
     if (selectedOption.value) {
       let obj = {
         user_id: 1234,
-        orderID:selectedOption.value,
+        clientID:selectedOption.value,
         rows: ["type","orderid"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
@@ -125,7 +125,7 @@ const OrderTraceReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      orderID:selectedOption.value,
+      clientID:selectedOption.value,
       rows: ["type","orderid"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
@@ -158,7 +158,7 @@ const OrderTraceReport = () => {
   };
 
   const [selectedOption,setSelectedOption] = useState({
-    label : "Select Order ID",
+    label : "Select Vendor ID",
     value : null
    });
    const [query,setQuery] = useState('')
@@ -176,7 +176,7 @@ const OrderTraceReport = () => {
         "pg_size" : 0,
         "search_key" : e
       }
-      const response = await APIService.getOrder(data)
+      const response = await APIService.getVendors(data)
       const res = await response.json()
       const results = res.data.map(e => {
         return {
@@ -195,8 +195,8 @@ const OrderTraceReport = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Trace Report"}
-            path={["Reports", "Report Trace", "Order Trace Report"]}
+            heading={"Vendor Trace Report"}
+            path={["Reports", "Report Trace", "Vendor Trace Report"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -230,7 +230,7 @@ const OrderTraceReport = () => {
             gap={"24px"}
           >
             <div className="">
-              <div className="text-[13px]">Order ID </div>
+              <div className="text-[13px]">Vendor ID </div>
               <AsyncSelect
                 onChange={handleClientNameChange}
                 value={selectedOption}
@@ -339,4 +339,4 @@ const OrderTraceReport = () => {
   );
 };
 
-export default OrderTraceReport;
+export default VendorTraceReport;

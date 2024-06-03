@@ -87,6 +87,7 @@ import useAuth from "./context/JwtContext";
 import PropectusPage from "./Screens/Research/Prospect";
 import ClientTraceReport from "./Screens/Reports/ReportTrace/ClientTraceReport";
 import OrderTraceReport from "./Screens/Reports/ReportTrace/OrderTraceReport/index.jsx";
+import VendorTraceReport from "./Screens/Reports/ReportTrace/VendorTraceReport/index.jsx";
 import { CircularProgress } from "@mui/material";
 import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
 
@@ -330,6 +331,10 @@ const App = () => {
               <Route
                 path="/report/orderTraceReport"
                 element={<OrderTraceReport />}
+              />
+              <Route
+                path="/report/vendorTraceReport"
+                element={<VendorTraceReport />}
               />
             </Route>
 
