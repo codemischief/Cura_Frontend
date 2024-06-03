@@ -1,6 +1,7 @@
 import {
   Backdrop,
   CircularProgress,
+  LinearProgress,
   Modal,
 } from "@mui/material";
 import PropTypes from "prop-types";
@@ -21,7 +22,6 @@ const SimpleTableWithFooter = ({
   handleSortingChange,
   downloadExcel,
   height = "calc(100vh - 19rem)",
-
 }) => {
   return [
 
@@ -47,7 +47,13 @@ const SimpleTableWithFooter = ({
           <tr className="bg-[#F0F6FF] h-[56px] text-left">
             {columns.map((column, index) => (
               <th key={index} style={{ ...column.cellStyle }}  >
-            
+                {/* {column.sorting ? } */}
+                {/* {column.title}
+                  {column.sorting && (
+                    <button onClick={() => handleSortingChange(column.field)}>
+                      <span className="font-extrabold px-1">↑↓</span>
+                    </button>
+                  )} */}
                 {column.sorting
                   ? <div className="flex">
                     <p>{column.title}</p>
@@ -55,11 +61,9 @@ const SimpleTableWithFooter = ({
                       <span className="font-extrabold px-1">↑↓</span>
                     </button>
                   </div>
-                  : 
-                  <div className="flex justify-center">
-                    <p >{column.title}</p>
-                  </div>
-                  }
+                  : <div className="flex justify-center">
+                    <p >Sr No</p>
+                  </div>}
               </th>
             ))}
           </tr>
@@ -91,22 +95,7 @@ const SimpleTableWithFooter = ({
           )}
           <>
             {/* {console.log(data)} */}
-            {data.length === 0 && (
-              <tr className="w-full h-full">
-                <td
-                  className="w-full h-full"
-                  colSpan={columns?.length + 1}
-                  align="center"
-                >
-                  <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center">
-                    <p className="text-sm max-w-[10em] lg:max-w-none">
-                      The Data you are looking for could not be found.
-                    </p>
-                  </div>
-                </td>
-              </tr>
-            )}
-            {data.length > 0 && (
+            {data.length > 0 ? (
               data?.map((rowData, rowIndex) => (
                 <tr
                   key={rowIndex}
@@ -132,7 +121,11 @@ const SimpleTableWithFooter = ({
                   ))}
                 </tr>
               ))
-            ) }
+            ) : (
+              <tr className="w-full flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
+                No records to display{" "}
+              </tr>
+            )}
             {data.length > 0 && <tr className="sticky bottom-0 z-100 bg-[#F0F6FF]">
               {columns.map((column, colIndex) => (
                 <td
@@ -302,12 +295,6 @@ const helper = (index, obj, pageName) => {
       return ""
     }
   }
-  else if(pageName==="ClientReciptReports"){
-    if(index===8){
-     return `Total: ${obj?.total_amount}`
-    }
- }
- 
 }
 const helper2 = (index, obj, pageName) => {
   if (pageName == "lobreceiptpayments") {
