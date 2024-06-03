@@ -241,8 +241,7 @@ const OrderPaymentList = () => {
   };
   return (
     <div className="pt-3">
-      {/* <Navbar />
-       */}
+    
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
