@@ -13,11 +13,13 @@ const Delete = (props) => {
     const [showSucess,setShowSucess] = useState(false);
     const deleteStatement = async (item) =>{
         // props.setShowDelete(true);
+        
         console.log(props);
         setShowLoading(true);
         const data = {"user_id":1234,"id": props.currentStatement};
         console.log(data);
         const response = await APIService.deleteBankStatement(data);
+        props.closeDialog(false);
           await props.fetchData();
           setShowLoading(false);
           if((await response.json()).result === "success"){
@@ -58,12 +60,12 @@ const Delete = (props) => {
              <>
              <Draggable>
             <div className='bg-white rounded-lg'>
-                <div className="w-auto h-auto flex flex-col justify-center items-center rounded-lg">
-                    <div className="h-[40px] flex justify-center items-center">
+                <div className="w-auto h-auto flex flex-col justify-center items-center rounded-lg relative">
+                    <div className="h-[40px] bg-[#EDF3FF] flex justify-center items-center rounded-md">
                         <div className="ml-56 mr-52">
                             <div className="text-[16px]">Delete</div>
                         </div>
-                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                             <button onClick={() => {handleDialogClose()}}>
                             <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                             </button>
@@ -78,7 +80,7 @@ const Delete = (props) => {
                     <div className="my-5 flex justify-center items-center gap-[10px]">
                         <button className='w-[100px] h-[35px] bg-red-700 text-white rounded-md' onClick={() => deleteStatement(props.item)}>Delete</button>
                         <button className='w-[100px] h-[35px] border-[1px] border-[#282828] rounded-md' onClick={() => {handleDialogClose()}}>Cancel</button>
-                        {showLoading && <CircularProgress/>}
+                        {/* {showLoading && <CircularProgress/>} */}
                     </div>
                 </div>
             </div>

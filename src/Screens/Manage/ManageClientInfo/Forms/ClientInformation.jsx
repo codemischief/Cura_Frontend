@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import { APIService } from '../../../../services/API';
 import AsyncSelect from "react-select/async"
-import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
+// import OrderDropDown from '../../../../Components/Dropdown/OrderDropdown';
+import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
 const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeData, tenentOfData, allEntities, initialStates, initialCities ,formErrors , orderText, setOrderText}) => {
     const [tenantOfProperty,setTenantOfProperty] = useState([]);
     const [Salutation, setSalutation] = useState([
@@ -485,7 +486,7 @@ const ClientInformation = ({ formValues, setFormValues, allCountry, clientTypeDa
 
                     <div className="">
                         <div className="text-[13px]">Tenant Of Property</div>
-                        <OrderDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                        <PropertyDropDown options={tenantOfProperty} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
                             setFormValues({
                                 ...formValues, client_info: {
                                     ...formValues.client_info,
