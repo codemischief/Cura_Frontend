@@ -97,14 +97,11 @@ const ShowAllOdersInformation = () => {
   const commonstyles = 'pl-4 border-r-[0.5px] border-gray-300'
   const commonStylesData =  'pl-4 border-r-[0.5px] border-gray-300 h-12 font-normal'
   return (
-    <div className=' w-full bg-[#E6ECF5]
-        '>
-        <Navbar/>
+    <div className=' w-full bg-[#E6ECF5]'>
         <Stack
         direction={"column"}
         className='p-8'
         >
-         
          <Stack direction={'row'} justifyContent={'space-between'}>
 
             {/* this should the best the left Box  */}

@@ -1,8 +1,6 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
+import { Button, Stack } from "@mui/material";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
@@ -12,16 +10,15 @@ import { useDispatch } from "react-redux";
 import {
   downloadPaymentDataXls,
   getOrderPaymentData,
+  resetOrderPaymentData,
   setCountPerPage,
   setInitialState,
   setPageNumber,
   setSorting,
-  setStatus,
 } from "../../../Redux/slice/reporting/OrderPaymentSlice";
 import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
-import * as XLSX from "xlsx";
 
 const OrderPaymentList = () => {
   const dispatch = useDispatch();
@@ -36,7 +33,6 @@ const OrderPaymentList = () => {
   } = useSelector((state) => state.orderPayment);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [toast, setToast] = useState(false);
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -117,6 +113,12 @@ const OrderPaymentList = () => {
     setSearch("");
     setSearchInput("");
   };
+
+  useEffect(() => {
+    dispatch(setInitialState());
+    dispatch(resetOrderPaymentData());
+  }, []);
+
   useEffect(() => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
@@ -173,44 +175,6 @@ const OrderPaymentList = () => {
   };
 
   const downloadExcel = async () => {
-    // let obj = {
-    //   user_id: 1234,
-    //   startdate: startDate ?? "2021-01-01",
-    //   enddate: endDate ?? "2022-01-01",
-    //   rows: [
-    //     "type",
-    //     "id",
-    //     "paymentdate",
-    //     "monthyear",
-    //     "fy",
-    //     "amount",
-    //     "entityname",
-    //     "mode_of_payment",
-    //     "clientid",
-    //     "clientname",
-    //     "vendorname",
-    //     "orderid",
-    //     "orderdescription",
-    //     "serviceid",
-    //     "service",
-    //     "lobname",
-    //   ],
-    //   sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-
-    //   filters: formatedFilterData(filter),
-    //   search_key: search,
-    //   pg_no: 0,
-    //   pg_size: 0,
-    //   order: sorting.sort_order ? sorting.sort_order : undefined,
-    // };
-    // dispatch(downloadPaymentDataXls(obj)).then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "orderPayment.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
     let obj = {
       user_id: 1234,
       startdate: startDate ?? "2021-01-01",
@@ -236,22 +200,22 @@ const OrderPaymentList = () => {
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       colmap: {
-        "id": "ID",
-        "type": "Type",
-        "paymentdate": "Payment Date",
-        "monthyear": "Fiscal Month",
-        "fy": "Fiscal Year",
-        "amount": "Amount",
-        "entityname": "Entity",
-        "mode_of_payment": "Mode",
-        "clientid": "Client ID",
-        "clientname": "Client Name",
-        "vendorname": "Vendor Name",
-        "orderid": "Order ID",
-        "orderdescription": "Order Description",
-        "serviceid": "Service ID",
-        "service": "Service",
-        "lobname": "LOB name"
+        id: "ID",
+        type: "Type",
+        paymentdate: "Payment Date",
+        monthyear: "Fiscal Month",
+        fy: "Fiscal Year",
+        amount: "Amount",
+        entityname: "Entity",
+        mode_of_payment: "Mode",
+        clientid: "Client ID",
+        clientname: "Client Name",
+        vendorname: "Vendor Name",
+        orderid: "Order ID",
+        orderdescription: "Order Description",
+        serviceid: "Service ID",
+        service: "Service",
+        lobname: "LOB name",
       },
       filters: formatedFilterData(filter),
       search_key: search,
@@ -276,9 +240,8 @@ const OrderPaymentList = () => {
     }
   };
   return (
-    <Stack gap="1rem">
-      {/* <Navbar />
-       */}
+    <div className="pt-3">
+    
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -375,7 +338,7 @@ const OrderPaymentList = () => {
           message="New Invoice Added Successfully"
         />
       )}
-    </Stack>
+    </div>
   );
 };
 

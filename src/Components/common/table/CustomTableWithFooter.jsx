@@ -257,18 +257,42 @@ const helper = (index, obj, pageName) => {
     if (index == 2) {
       return `Total: ${obj.total_amount}`
     }
-  }else if(pageName == 'pmaClientStatement') {
+  } else if (pageName == 'pmaClientStatement') {
     console.log(obj)
-    if(index == 5) {
+    if (index == 5) {
       return `Total : ${obj?.sumamount}`
     }
-  }else if( pageName == 'nonPmaClientReceivables') {
-    if(index == 2) {
-      return   `Toal : ${obj?.sumamount}`
+  } else if (pageName == 'nonPmaClientReceivables') {
+    if (index == 2) {
+      return `Toal : ${obj?.sumamount}`
     }
-  }else if(pageName == 'nonPmaClientStatement') {
-    if(index == 6) {
-      return  `Total : ${obj?.sumamount}`
+  } else if (pageName == 'nonPmaClientStatement') {
+    if (index == 6) {
+      return `Total : ${obj?.sumamount}`
+    }
+  }
+  else if (pageName == "bankReceiptReconciliation") {
+    if (index == 2) {
+      return ` Total: ${obj[0].bankst_cr}`
+    } else if (index == 3) {
+      return `Total: ${obj[0].client_receipt}`
+    } else if (index == 4) {
+      return `Total: ${obj[0].order_receipt}`
+    } else {
+      return ""
+    }
+  }
+  else if (pageName == "bankPaymentsReconciliation") {
+    if (index == 2) {
+      return ` Total: ${obj[0].bankst_dr}`
+    } else if (index == 3) {
+      return `Total: ${obj[0].contorderpayments}`
+    } else if (index == 4) {
+      return `Total: ${obj[0].order_payments}`
+    }else if (index == 5) {
+      return `Total: ${obj[0].contractual_payments}`
+    } else {
+      return ""
     }
   }
 }
@@ -297,7 +321,7 @@ const helper2 = (index, obj, pageName) => {
 
     }
   } else if (pageName == "bankReceiptReconciliation") {
-     return ""
+    return ""
   } else {
     if (index == 2) {
       return ` Total: ${obj.totalreceipt}`

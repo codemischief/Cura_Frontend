@@ -1282,7 +1282,7 @@ const ManageOrder = () => {
                                 </div>
                                 {propertyDescriptionFilter && <CharacterFilter inputVariable={propertyDescriptionFilterInput} setInputVariable={setPropertyDescriptionFilterInput} handleFilter={newHandleFilter} filterColumn='clientproperty' menuRef={menuRef} filterType={filterMapState.clientproperty.filterType} />}
                             </div>
-                            <div className='w-[125px] px-4  py-2.5'>
+                            <div className='w-[150px] px-4  py-2.5'>
                                 <div className="w-[100%] flex items-center bg-[#EBEBEB] rounded-md">
                                     <input className="w-[72%] bg-[#EBEBEB] rounded-md text-xs pl-2 outline-none" value={serviceFilterInput} onChange={(e) => setServiceFilterInput(e.target.value)}
 
@@ -1450,7 +1450,7 @@ const ManageOrder = () => {
                             <div className='w-[215px] p-4'>
                                 <p> Proper Description <button onClick={() => handleSort('clientproperty')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
-                            <div className='w-[125px] p-4'>
+                            <div className='w-[150px] p-4'>
                                 <p> Service <button onClick={() => handleSort('servicename')}><span className="font-extrabold">↑↓</span></button></p>
                             </div>
                             <div className='w-[130px] p-4'>
@@ -1496,7 +1496,7 @@ const ManageOrder = () => {
                                 <h1 className='ml-10'>No Records To Show</h1>
                             </div>}
                             {!pageLoading && existingOrder.map((item, index) => {
-                                return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px] break-words'>
+                                return <div className='w-full h-auto bg-white flex justify-between border-gray-400 border-b-[1px] '>
                                     <div className='w-full flex'>
                                         <div className='w-[40px] p-4'>
                                             <p>{index + 1 + (currentPage - 1) * currentPages}</p>
@@ -1513,7 +1513,7 @@ const ManageOrder = () => {
                                         <div className='w-[215px] p-4'>
                                             <p> {item.clientproperty}</p>
                                         </div>
-                                        <div className='w-[125px] p-4 '>
+                                        <div className='w-[150px] p-4 '>
                                             <p> {item.servicename}</p>
                                         </div>
                                         <div className='w-[130px] p-4'>

@@ -210,7 +210,7 @@ const LobReceiptPayments = () => {
   };
   return (
     <Stack gap="1rem">
-      <Navbar />
+      
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
@@ -299,7 +299,7 @@ const LobReceiptPayments = () => {
         </Stack>
 
         <SimpleTableWithFooter
-          pageName={'bankReceiptReconciliation'}
+          pageName={'bankPaymentsReconciliation'}
           columns={columns}
           data={bankPaymentsReconciliation}
           totalData={totalAmount}

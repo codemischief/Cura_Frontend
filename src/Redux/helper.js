@@ -239,4 +239,16 @@ export const bankPaymentsReconciliation = (data) => {
     date : billing.date? formatDate(billing.date): "",
   }));
 }
+export const clientTraceReport = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
+export const orderTraceReport = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

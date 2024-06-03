@@ -33,10 +33,11 @@ const SimpleTable = ({
                 >
                   {column.filterComponent && [
                     <column.filterComponent
+                      filterStyle={column.cellStyle}
                       key={column.field}
                       columnfield={column.field}
                       isDisabled={column.filterDisabled || false}
-                    />,
+                    />
                   ]}
                 </th>
               ))}
@@ -84,8 +85,22 @@ const SimpleTable = ({
                 </td>
               </tr>
             )}
-
-            {data.length > 0 ? (
+            {data.length === 0 && (
+              <tr className="w-full h-full">
+                <td
+                  className="w-full h-full"
+                  colSpan={columns?.length + 1}
+                  align="center"
+                >
+                  <div className="w-full h-full py-5 flex flex-col gap-3 items-start sm:items-center justify-center">
+                    <p className="text-sm max-w-[10em] lg:max-w-none">
+                      The Data you are looking for could not be found.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            )}
+            {data.length > 0 &&
               data?.map((rowData, rowIndex) => (
                 <tr
                   key={rowData.id}
@@ -113,14 +128,7 @@ const SimpleTable = ({
                     </td>
                   ))}
                 </tr>
-              ))
-            ) : (
-              <tr className="w-full flex justify-center items-center border border-b border-[#CBCBCB] text-[#282828] align-middle text-center">
-                <td colSpan={columns.length} align="center">
-                  No records to display{" "}
-                </td>
-              </tr>
-            )}
+              ))}
           </tbody>
         </table>
       </div>

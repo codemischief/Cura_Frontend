@@ -9,7 +9,7 @@ import {
 } from "../../Filters/data";
 
 export const FilterField = (props) => {
-  const { columnfield, type, onFilterChange, filter, isDisabled } = props;
+  const { columnfield, type, onFilterChange, filter, isDisabled, filterStyle } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -40,6 +40,24 @@ export const FilterField = (props) => {
 
   const handleFilter = (filters) => {
     if (search) {
+      let filterType = {
+        text: "String",
+        number: "Numeric",
+        date: "Date",
+      };
+      let queryType = type === "number" ? Number(search) : search;
+      if (filters === "noFilter") {
+        const prevFilters = { ...filter };
+        delete prevFilters[columnfield];
+        onFilterChange(prevFilters);
+        setSearch("");
+      } else {
+        const prevFilters = { ...filter };
+        prevFilters[columnfield] = [filters, queryType, filterType[type]];
+        onFilterChange({ ...prevFilters });
+      }
+    }
+    if (!search && (filters === "isNull" || filters === "isNotNull")) {
       let filterType = {
         text: "String",
         number: "Numeric",
@@ -91,11 +109,11 @@ export const FilterField = (props) => {
   };
 
   return (
-    <>
-      <div className="w-full h-full flex justify-start p-3">
-        <div className="w-fit h-[1.75rem] flex justify-between items-center bg-[#F5F5F5] rounded-md">
+    <div style={filterStyle}>
+      <div className="w-full h-full flex justify-start py-3 px-1">
+        <div className="w-full h-[1.75rem] flex justify-start items-center bg-[#F5F5F5] rounded-md">
           <input
-            className="w-fit max-w-[50%] min-[3rem] h-full bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
+            className="w-full min-w-[3rem] h-full bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
             type={type}
             disabled={isDisabled}
             value={search}
@@ -103,26 +121,26 @@ export const FilterField = (props) => {
             onKeyDown={handleEnterKeyPress}
             title={isDisabled ? "disabled" : ""}
           />
-          
-            <Close
-              sx={{
-                height: "12px",
-                w: "12px",
-                color: search ? "#C6C6C6" : 'transparent',
-                cursor: "pointer",
-              }}
-              onClick={handleResetFilter}
-            />
-          
+
+          <Close
+            sx={{
+              height: "12px",
+              w: "12px",
+              color: search ? "#C6C6C6" : "transparent",
+              cursor: "pointer",
+            }}
+            onClick={handleResetFilter}
+          />
+
           <Tooltip title={isDisabled ? "filter disabled" : "Filters"}>
             <button
-              className="w-[2rem] h-full flex items-center justify-center"
+              className="h-full flex items-center justify-center"
               onClick={handleClick}
             >
               <FilterAlt
                 sx={
                   filter && filter[columnfield] && filter[columnfield]?.[0]
-                    ? { height: "16px", width: "16px", color:"#004DD7" }
+                    ? { height: "16px", width: "16px", color: "#004DD7" }
                     : { height: "16px", width: "16px", color: "#C6C6C6" }
                 }
                 // color="#C6C6C6"
@@ -157,9 +175,9 @@ export const FilterField = (props) => {
                   background: "#dae7ff", // Change this to your desired hover background color
                   color: "black", // Change this to your desired hover text color
                 },
-                fontSize : '0.875rem',
-                lineHeight : '1.25rem',
-                fontWeight : '100'
+                fontSize: "0.875rem",
+                lineHeight: "1.25rem",
+                fontWeight: "100",
               }}
               className={` ${
                 filter &&
@@ -174,7 +192,7 @@ export const FilterField = (props) => {
           ))}
         </Popover>
       )}
-    </>
+    </div>
   );
 };
 

@@ -2,8 +2,8 @@
 import logo from "../../assets/logo-white1.jpg";
 const MainLogo = () => {
   return (
-    <div className="h-full w-16 flex justify-center items-center">
-      <img src={logo} className="h-1/3" />
+    <div className="w-fit h-fit flex justify-center items-center">
+      <img src={logo} className="w-[4.453rem] h-[1.5rem]" />
     </div>
   );
 };

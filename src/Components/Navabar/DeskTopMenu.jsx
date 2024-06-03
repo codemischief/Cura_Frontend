@@ -22,10 +22,13 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
   ...theme.typography.body2,
   padding: 0,
   marginTop: theme.spacing(3),
-  color: theme.palette.text.secondary,
-  transition: theme.transitions.create("color"),
+  // color: theme.palette.text.secondary,
+  // transition: theme.transitions.create("color"),
+  color: "#505050",
   "&:hover": {
-    color: "red",
+    color: "#505050",
+    background: "#DAE7FF",
+    borderRadius: "0.3125rem",
   },
 }));
 function IconBullet({ type = "item" }) {
@@ -56,7 +59,6 @@ IconBullet.propTypes = {
 const LinkStyle = styled(Link)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.common.white,
-  marginRight: theme.spacing(5),
   transition: theme.transitions.create("opacity", {
     duration: theme.transitions.duration.shortest,
   }),
@@ -117,19 +119,18 @@ function MenuDesktopItem({
         // ...(isHome && { color: "common.white" }),
         // ...(isOffset && { color: "text.primary" }),
         ...(isOpen && isOpen === title && { color: "white" }),
-        width: "142px",
+        width: "158px",
         height: "26px",
         padding: "6px 12px",
         textAlign: "center",
         fontFamily: "Open Sans",
         fontSize: "16px",
         fontStyle: "normal",
-        fontWeight: 500,
+        fontWeight: 400,
         lineHeight: "85.714%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        gap: "10px",
         background: isOpen && isOpen === title ? "white" : "transparent",
         color: isOpen && isOpen === title ? "blue" : "inherit",
         textDecoration: "none",
@@ -148,11 +149,14 @@ function MenuDesktopItem({
       <Paper
         ref={paperRef}
         elevation={12}
+        // Added class to hide scrollbar
+        className="no-scrollbar"
         sx={{
-          width: "100%",
+          width: "98%",
           position: "absolute",
-          top: 90,
-          left: 0,
+          padding: "28px",
+          top: 98,
+          left: 18,
           maxHeight: "500px",
           borderRadius: "15px",
           overflowY: "scroll",
@@ -160,25 +164,29 @@ function MenuDesktopItem({
           transform: isOpen === title ? "translateY(0)" : "translateY(-4px)",
           transition: "opacity 0.2s ease, transform 0.2s ease",
           minHeight: "205px",
-          zIndex:"9"
+          zIndex: "9",
         }}
       >
-        <div className="grid grid-cols-5 w-full gap-x-[18px]" ref={paperRef}>
+        <div
+          className="grid grid-cols-5 w-full gap-x-[18px] menu"
+          ref={paperRef}
+        >
           {children?.map((list) => {
             const { subheader, items } = list;
             return (
               <div
                 key={subheader}
-                className={`w-full border-r border-[#CBCBCB]`}
+                className={`w-full border-r border-[#CBCBCB] px-4`}
               >
-                <List
+                {/* <List
                   sx={{
-                    paddingLeft: "23px",
-                    paddingRight: "23px",
-                    paddingTop: "14px",
-                    paddingBottom: "14px",
+                    display:"flex",
+                    flexDirection:"column",
+                    paddingBottom: "18px",
+                    gap:"8px",
                   }}
-                >
+                > */}
+                <div className="felx flex-col gap-2">
                   <ListSubheader
                     disableSticky
                     disableGutters
@@ -226,11 +234,12 @@ function MenuDesktopItem({
                     >
                       <>
                         {/* <IconBullet /> */}
-                        {item.title}
+                        <div className="px-2">{item.title}</div>
                       </>
                     </ListItemStyle>
                   ))}
-                </List>
+                  {/* </List> */}
+                </div>
               </div>
               // </Grid>
             );
@@ -309,7 +318,14 @@ export default function MenuDesktop({ isOffset, isHome }) {
   };
 
   return (
-    <Stack direction="row" justifyContent={"center"} alignItems={"center"}>
+    <Stack
+      width={"fit-content"}
+      height={"39px"}
+      direction="row"
+      gap={"4px"}
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       {navMenuConfig?.map((link) => (
         <MenuDesktopItem
           key={link.title}

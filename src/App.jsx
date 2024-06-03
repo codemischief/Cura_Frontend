@@ -1,6 +1,4 @@
-import React from "react";
 import Login from "./Screens/Login/Login";
-import Navbar from "./Components/Navabar/Navbar";
 import Dashboard from "./Screens/Dashboard/Dashboard";
 import NotFound from "./Screens/NotFound/notFound";
 import Country from "./Screens/Admin/Country";
@@ -12,7 +10,6 @@ import ManageProjectInfo from "./Screens/Manage/ManageProjectInfo/ManageProjectI
 import ManageOrder from "./Screens/Manage/ManageOrder/ManageOrder";
 import ManageEmployees from "./Screens/Manage/ManageEmployee/ManageEmployees";
 import ManageBuilder from "./Screens/Manage/ManageBuilder/ManageBuilder";
-import Prospect from "./Screens/Research/Prospect/Prospect";
 import Owner from "./Screens/Research/Owner/Owner";
 import Educational from "./Screens/Research/Educational/Educational";
 import Architect from "./Screens/Research/Architect/Architect";
@@ -22,7 +19,6 @@ import COC from "./Screens/Research/COC/COC";
 import Banks from "./Screens/Research/Banks/Banks";
 import Friends from "./Screens/Research/Friends/Friends";
 import Payments from "./Screens/Manage/Payments/Payments";
-import RequireAuth from "./context/RequireAuth";
 import ManageClientInfo from "./Screens/Manage/ManageClientInfo/ManageClientInfo";
 import ManageClientProperty from "./Screens/Manage/ManageClientProperty/ManageClientProperty";
 import ManageClientReceipt from "./Screens/Manage/ManageClientReceipt/ManageClientReceipt";
@@ -86,15 +82,17 @@ import ClientOrderReceiptMismatchDetails from "./Screens/Reports/ClientOrderRece
 import BankReceiptReconciliation from "./Screens/Reports/BankReceiptsReconciliation";
 import BankPaymentReconciliation from "./Screens/Reports/BankPaymentReconciliation";
 import PrivateLayout from "./layout/Privatelayout";
-// import { UserProvider } from "./context/useAuth";
 import AuthGuard from "./context/AuthGuard";
-import { ToastContainer } from "react-toastify";
-import useAuth, { AuthProvider } from "./context/JwtContext";
+import useAuth from "./context/JwtContext";
 import PropectusPage from "./Screens/Research/Prospect";
+import ClientTraceReport from "./Screens/Reports/ReportTrace/ClientTraceReport";
+import OrderTraceReport from "./Screens/Reports/ReportTrace/OrderTraceReport/index.jsx";
+import VendorTraceReport from "./Screens/Reports/ReportTrace/VendorTraceReport/index.jsx";
+import { CircularProgress } from "@mui/material";
+import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
-  console.log("hello", isInitialized);
   const ROLES = {
     Registered: "3",
     Public: "2",
@@ -111,207 +109,261 @@ const App = () => {
             <Route path="" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user" element={<Userscreen />} />
-            <Route path="/unauthorized" element={<>Unauthorized</>} />
+            <Route path="/unauthorized" element={<UnAuthorized />} />
 
-          {/* <Route element={<RequireAuth />}> */}
-          <Route
-            element={
-              <AuthGuard>
-                <PrivateLayout />
-              </AuthGuard>
-            }
-          >
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin/manageuser" element={<ManageUser />} />
+            {/* <Route element={<RequireAuth />}> */}
             <Route
-              path="/admin/manageemployees"
-              element={<ManageEmployees />}
-            />
-            <Route path="/admin/managebuilder" element={<ManageBuilder />} />
-            <Route
-              path="/admin/manageprojectinfo"
-              element={<ManageProjectInfo />}
-            />
-            <Route path="/admin/deleteById" element={<DeleteById />} />
-            <Route
-              path="/admin/deleteById/:pagename"
-              element={<DeletePage />}
-            />
-            <Route path="/admin/manageOrder" element={<ManageOrder />} />
-            <Route path="/admin/manageuser" element={<ManageUser />} />
-            <Route path="/admin/country" element={<Country />} />
-            <Route path="/admin/state" element={<State />} />
-            <Route path="/admin/city" element={<City />} />
-            <Route path="/admin/locality" element={<Locality />} />
-            <Route path="/admin/LOB" element={<LOB />} />
-            <Route path="/admin/service" element={<Service />} />
-            <Route path="/admin/payments" element={<Payments />} />
-            <Route path="/research/prospect" element={<Prospect />} />
-            <Route path="/research/owner" element={<Owner />} />
-            <Route path="/research/educational" element={<Educational />} />
-            <Route path="/research/architect" element={<Architect />} />
-            <Route path="/research/mandals" element={<Mandals />} />
-            <Route path="/research/professionals" element={<Professionals />} />
-            <Route path="/research/coc" element={<COC />} />
-            <Route path="/research/banks" element={<Banks />} />
-            <Route path="/research/friends" element={<Friends />} />
-            <Route path="/reasearch/agent" element={<Agent />} />
-            <Route path="/reasearch/employer" element={<Employer />} />
-            <Route
-              path="/reasearch/governmentdepartment"
-              element={<GovernmentDepartment />}
-            />
-            <Route
-              path="/manage/bankstatement"
-              element={<ManageBankStatement />}
-            />
-            <Route
-              path="/manage/manageclientinfo"
-              element={<ManageClientInfo />}
-            />
-            <Route
-              path="/manage/manageclientproperty"
-              element={<ManageClientProperty />}
-            />
-            <Route
-              path="/manage/manageclientreceipt"
-              element={<ManageClientReceipt />}
-            />
-            <Route
-              path="/manage/managellagreement"
-              element={<ManageLLAgreement />}
-            />
-            <Route
-              path="/manage/managepmaagreement"
-              element={<ManagePmaArgreement />}
-            />
-            <Route
-              path="/manage/manageorderreceipt"
-              element={<ManageOrderReceipt />}
-            />
-            <Route
-              path="/manage/manageclientinvoice"
-              element={<ManageClientInvoice />}
-            />
-            <Route path="/manage/managevendor" element={<ManageVendor />} />
-            <Route
-              path="/manage/managevendorinvoice"
-              element={<ManageVendorInvoice />}
-            />
-            <Route
-              path="/manage/managevendorpayment"
-              element={<ManageVendorPayment />}
-            />
-            <Route
-              path="admin/managebuilder/projects/:buildername"
-              element={<ManageBuilderProject />}
-            />
-            <Route
-              path="admin/managebuilder/contacts/:buildername"
-              element={<ManageBuilderContact />}
-            />
-            <Route
-              path="/manage/manageclientinfo/properties/:clientname"
-              element={<ManageClientPropertyByClientName />}
-            />
-            <Route
-              path="/manage/manageclientproperty/pmaagreement/:clientname"
-              element={<ClientPmaArgreement />}
-            />
-            <Route
-              path="/manage/manageclientproperty/llagreement/:clientname"
-              element={<ClientLLAgreement />}
-            />
-            <Route path="/manage/pmaBilling" element={<PmaBilling />} />
-            <Route path="admin/temp" element={<Temp />} />
-            <Route path="/orderPaymentList" element={<OrderPaymentList />} />
-            <Route path="/orderReceiptList" element={<OrderReceiptList />} />
-            <Route path="/orderInvoiceList" element={<OrderInvoiceList />} />
-            <Route path="/clientReceiptList" element={<ClientReceiptList />} />
-            <Route path="/vendorInvoiceList" element={<VendorInvoiceList />} />
-            <Route
-              path="/lobReceiptPayments"
-              element={<LobReceiptPayments />}
-            />
-            <Route
-              path="/entityReceiptPayments"
-              element={<EntityReceiptPayments />}
-            />
-            <Route
-              path="/lobReceiptPaymentsConsolidated"
-              element={<LobReceiptPaymentsConsolidated />}
-            />
-            <Route
-              path="/pmaBillingTrendView"
-              element={<PmaBillingTrendView />}
-            />
-            <Route path="/pmaClientReport" element={<PmaClientReport />} />
-            <Route path="/pmaInvoiceList" element={<PmaInvoiceList />} />
-            <Route
-              path="/pmaClientReceivable"
-              element={<PmaClientReceivable />}
-            />
-            <Route
-              path="/activePmaAgreement"
-              element={<ActivePmaAgreement />}
-            />
-            <Route path="/projectContact" element={<ProjectContact />} />
-            <Route
-              path="/advanceHoldingAmount"
-              element={<AdvanceHoldingAmount />}
-            />
-            <Route
-              path="/pmaClientStatementAll"
-              element={<PmaClientStatementAll />}
-            />
-            <Route
-              path="/pmaClientStatement"
-              element={<PmaClientStatement />}
-            />
-            <Route
-              path="/nonPmaClientStatement"
-              element={<NonPmaClientStatement />}
-            />
-            <Route
-              path="/nonPmaClientReceivables"
-              element={<NonPmaClientReceivables />}
-            />
-            <Route
-              path="/clientStatementAll"
-              element={<ClientStatementAll />}
-            />
-            <Route
-              path="/duplicateClientReport"
-              element={<DuplicateClientReport />}
-            />
-            <Route path="/clientBankDetails" element={<ClientBankDetails />} />
-            <Route
-              path="/monthlyBankSummary"
-              element={<MonthlyBankSummary />}
-            />
-            <Route
-              path="/bankTransferReconciliation"
-              element={<BankTransferReconciliation />}
-            />
-            <Route
-              path="/clientOrderReceiptMismatchDetails"
-              element={<ClientOrderReceiptMismatchDetails />}
-            />
-            <Route
-              path="/bankReceiptReconciliation"
-              element={<BankReceiptReconciliation />}
-            />
-            <Route
-              path="/bankPaymentReconciliation"
-              element={<BankPaymentReconciliation />}
-            />
-          </Route>
+              element={
+                <AuthGuard>
+                  <PrivateLayout />
+                </AuthGuard>
+              }
+            >
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin/manageuser" element={<ManageUser />} />
+              <Route
+                path="/admin/manageemployees"
+                element={<ManageEmployees />}
+              />
+              <Route path="/admin/managebuilder" element={<ManageBuilder />} />
+              <Route
+                path="/admin/manageprojectinfo"
+                element={<ManageProjectInfo />}
+              />
+              <Route path="/admin/deleteById" element={<DeleteById />} />
+              <Route
+                path="/admin/deleteById/:pagename"
+                element={<DeletePage />}
+              />
+              <Route path="/manage/manageOrder" element={<ManageOrder />} />
+              <Route path="/admin/manageuser" element={<ManageUser />} />
+              <Route path="/admin/country" element={<Country />} />
+              <Route path="/admin/state" element={<State />} />
+              <Route path="/admin/city" element={<City />} />
+              <Route path="/admin/locality" element={<Locality />} />
+              <Route path="/admin/LOB" element={<LOB />} />
+              <Route path="/admin/service" element={<Service />} />
+              <Route path="/admin/payments" element={<Payments />} />
+              <Route path="/research/prospect" element={<PropectusPage />} />
+              <Route path="/research/owner" element={<Owner />} />
+              <Route path="/research/educational" element={<Educational />} />
+              <Route path="/research/architect" element={<Architect />} />
+              <Route path="/research/mandals" element={<Mandals />} />
+              <Route
+                path="/research/professionals"
+                element={<Professionals />}
+              />
+              <Route path="/research/coc" element={<COC />} />
+              <Route path="/research/banks" element={<Banks />} />
+              <Route path="/research/friends" element={<Friends />} />
+              <Route path="/reasearch/agent" element={<Agent />} />
+              <Route path="/reasearch/employer" element={<Employer />} />
+              <Route
+                path="/reasearch/governmentdepartment"
+                element={<GovernmentDepartment />}
+              />
+              <Route
+                path="/manage/bankstatement"
+                element={<ManageBankStatement />}
+              />
+              <Route
+                path="/manage/manageclientinfo"
+                element={<ManageClientInfo />}
+              />
+              <Route
+                path="/manage/manageclientproperty"
+                element={<ManageClientProperty />}
+              />
+              <Route
+                path="/manage/manageclientreceipt"
+                element={<ManageClientReceipt />}
+              />
+              <Route
+                path="/manage/managellagreement"
+                element={<ManageLLAgreement />}
+              />
+              <Route
+                path="/manage/managepmaagreement"
+                element={<ManagePmaArgreement />}
+              />
+              <Route
+                path="/manage/manageorderreceipt"
+                element={<ManageOrderReceipt />}
+              />
+              <Route
+                path="/manage/manageclientinvoice"
+                element={<ManageClientInvoice />}
+              />
+              <Route path="/manage/managevendor" element={<ManageVendor />} />
+              <Route
+                path="/manage/managevendorinvoice"
+                element={<ManageVendorInvoice />}
+              />
+              <Route
+                path="/manage/managevendorpayment"
+                element={<ManageVendorPayment />}
+              />
+              <Route
+                path="admin/managebuilder/projects/:buildername"
+                element={<ManageBuilderProject />}
+              />
+              <Route
+                path="admin/managebuilder/contacts/:buildername"
+                element={<ManageBuilderContact />}
+              />
+
+              <Route
+                path="/manage/managevendorpayment/:orderid"
+                element={<ManageVendorPayment />}
+              />
+                <Route
+                path="/manage/manageclientinvoice/:orderid"
+                element={<ManageClientInvoice />}
+              />
+              <Route
+                path="/manage/manageorderreceipt/:orderid"
+                element={<ManageOrderReceipt />}
+              />
+              <Route
+                path="/manage/manageclientinfo/orders/showall/:orderid"
+                element={<ShowAllOdersInformation />}
+              />
+              <Route
+                path="/manage/manageclientinfo/properties/:clientname"
+                element={<ManageClientProperty />}
+              />
+              <Route
+                path="/manage/manageclientinfo/orders/:clientname"
+                element={<ManageOrder />}
+              />
+              <Route
+                path="/manage/manageclientproperty/pmaagreement/:clientname"
+                element={<ManagePmaArgreement />}
+              />
+              <Route
+                path="/manage/manageclientproperty/llagreement/:clientname"
+                element={<ManageLLAgreement />}
+              />
+              <Route path="/manage/pmaBilling" element={<PmaBilling />} />
+              <Route path="admin/temp" element={<Temp />} />
+              <Route
+                path="/reports/orderPaymentList"
+                element={<OrderPaymentList />}
+              />
+              <Route
+                path="/reports/orderReceiptList"
+                element={<OrderReceiptList />}
+              />
+              <Route
+                path="/reports/orderInvoiceList"
+                element={<OrderInvoiceList />}
+              />
+              <Route
+                path="/reports/clientReceiptList"
+                element={<ClientReceiptList />}
+              />
+              <Route
+                path="/reports/vendorPaymentsList"
+                element={<VendorInvoiceList />}
+              />
+              <Route
+                path="/reports/lobReceiptPayments"
+                element={<LobReceiptPayments />}
+              />
+              <Route
+                path="/reports/entityReceiptPayments"
+                element={<EntityReceiptPayments />}
+              />
+              <Route
+                path="/reports/lobReceiptPaymentsConsolidated"
+                element={<LobReceiptPaymentsConsolidated />}
+              />
+              <Route
+                path="/reports/pmaBillingTrendView"
+                element={<PmaBillingTrendView />}
+              />
+              <Route path="/reports/pmaClientReport" element={<PmaClientReport />} />
+              <Route path="/reports/pmaInvoiceList" element={<PmaInvoiceList />} />
+              <Route
+                path="/reports/pmaClientReceivable"
+                element={<PmaClientReceivable />}
+              />
+              <Route
+                path="/reports/activePmaAgreement"
+                element={<ActivePmaAgreement />}
+              />
+              <Route path="/reports/projectContact" element={<ProjectContact />} />
+              <Route
+                path="/reports/advanceHoldingAmount"
+                element={<AdvanceHoldingAmount />}
+              />
+              <Route
+                path="/reports/pmaClientStatementAll"
+                element={<PmaClientStatementAll />}
+              />
+              <Route
+                path="/reports/pmaClientStatement"
+                element={<PmaClientStatement />}
+              />
+              <Route
+                path="/reports/nonPmaClientStatement"
+                element={<NonPmaClientStatement />}
+              />
+              <Route
+                path="/reports/nonPmaClientReceivables"
+                element={<NonPmaClientReceivables />}
+              />
+              <Route
+                path="/reports/clientStatementAll"
+                element={<ClientStatementAll />}
+              />
+              <Route
+                path="/reports/duplicateClientReport"
+                element={<DuplicateClientReport />}
+              />
+              <Route
+                path="/reports/clientBankDetails"
+                element={<ClientBankDetails />}
+              />
+              <Route
+                path="/reports/monthlyBankSummary"
+                element={<MonthlyBankSummary />}
+              />
+              <Route
+                path="/reports/bankTransferReconciliation"
+                element={<BankTransferReconciliation />}
+              />
+              <Route
+                path="/reports/clientOrderReceiptMismatchDetails"
+                element={<ClientOrderReceiptMismatchDetails />}
+              />
+              <Route
+                path="/reports/bankReceiptReconciliation"
+                element={<BankReceiptReconciliation />}
+              />
+              <Route
+                path="/reports/bankPaymentsReconciliation"
+                element={<BankPaymentReconciliation />}
+              />
+              <Route
+                path="/reports/clientTraceReport"
+                element={<ClientTraceReport />}
+              />
+              <Route
+                path="/reports/orderTraceReport"
+                element={<OrderTraceReport />}
+              />
+              <Route
+                path="/reports/vendorTraceReport"
+                element={<VendorTraceReport />}
+              />
+            </Route>
 
             <Route path="/*" element={<NotFound />} />
           </Route>
         </Routes>
       ) : (
-        <p>Loading....</p>
+        <CircularProgress />
       )}
     </div>
   );

@@ -57,7 +57,7 @@ input[type="number"] {
 
 .selectBoxField {
   display: flex;
-  width: 15rem;
+  width: 17.5625rem;
   height: 1.5rem;
   padding: 0.1875rem 1.25rem;
   justify-content: center;
@@ -92,7 +92,7 @@ input[type="number"] {
   align-items: center;
   flex-shrink: 0;
   border: 1px solid#C6C6C6;
-  width: 15rem;
+  width: 17.5625rem;
 }
 
 .inputValidationError {
@@ -102,6 +102,15 @@ input[type="number"] {
   font-style: normal;
   font-weight: 400;
   line-height: 150%;
+}
+
+
+
+/* .no-scrollbar::-webkit-scrollbar {
+  display: none;
+} */
+.menu :nth-child(5n) {
+  border: none;
 }
 /* input::selection {
     background-color: transparent;

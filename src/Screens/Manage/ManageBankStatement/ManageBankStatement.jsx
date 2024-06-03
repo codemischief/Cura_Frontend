@@ -45,7 +45,8 @@ const ManageBankStatement = () => {
         "clientname",
         "id",
         "creditdebit",
-        
+        'vendorid',
+        'receivedhow'
     ]
     const menuRef = useRef();
     const [existingStatement, setExistingStatement] = useState([]);
@@ -237,6 +238,7 @@ const ManageBankStatement = () => {
             "particulars": formValues.particulars,
             "crdr": formValues.crdr,
             "vendorid": Number(formValues.vendor),
+            'howreceived' : formValues.how
             // "createdby": userId || 1234
         }
 
@@ -253,23 +255,24 @@ const ManageBankStatement = () => {
         fetchBankStatement();
     }
     const addCreditRecipt = async () => {
-        if(!validateCR()) {
+        if(!crValidate()) {
             return ;
         }
         const data = {
             "user_id": userId || 1234,
-            "receivedby": Number(formValues.employee),
-            "paymentmode": Number(formValues.modeofpayment),
-            "recddate": formValues.date,
-            "entityid": Number(formValues.entity),
-            "amount": Number(formValues.amount),
-            "howreceivedid": Number(formValues.how),
-            "clientid": Number(formValues.client),
-            "receiptdesc": formValues.desc,
-            "serviceamount": Number(formValues.serviceAmount),
-            "reimbursementamount": Number(formValues.reimbAmount),
-            "tds": Number(formValues.TDS),
+            "receivedby": Number(crFormValues.receivedBy),
+            "paymentmode": Number(crFormValues.receiptMode),
+            "recddate": crFormValues.receivedDate,
+            "entityid": 1,
+            "amount": Number(crFormValues.amountReceived),
+            "howreceivedid": Number(crFormValues.howReceived),
+            "clientid": Number(crFormValues.client),
+            "receiptdesc": crFormValues.receiptDescription,
+            "serviceamount": Number(crFormValues.serviceAmount),
+            "reimbursementamount": Number(crFormValues.reimbursementAmount),
+            "tds": Number(crFormValues.TDS),
             "banktransactionid" : Number(statementIdForClientReceipt),
+            
             "officeid" : 2
         }
         setClientName(formValues.client);
@@ -383,12 +386,12 @@ const ManageBankStatement = () => {
     //Validation of the form
     const initialValues = {
         modeofpayment: 5,
-        particulars: "",
-        amount: "",
-        vendor: "",
+        particulars: null,
+        amount: null,
+        vendor: null,
         date: null,
-        crdr: "",
-        how: ""
+        crdr: null,
+        how: null
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -936,10 +939,11 @@ const ManageBankStatement = () => {
         //   }
         console.log(item)
         const temp = {...crFormValues}
-        temp.receiptMode = item.mode 
+        temp.receiptMode = item.modeofpayment
         temp.receivedDate = item.date 
         temp.amountReceived = item.amount 
         temp.serviceAmount = item.amount
+        temp.howReceived = item.receivedhow
         setCrFormValues(temp)
         const initialValues = {
             modeofpayment: currentMode,
@@ -956,6 +960,25 @@ const ManageBankStatement = () => {
 
     }
     const handleCloseCR = () => {
+        openCancelModal()
+        setCrFormErrors({})
+        setCrFormValues({
+            receivedDate: null,
+            receivedBy: 1234,
+            receiptMode: 5,
+            client: null,
+            howReceived: null,
+            serviceAmount: null,
+            reimbursementAmount: 0,
+            amountReceived: null,
+            TDS: 0,
+            receiptDescription: null,
+        })
+        setCrSelectedOption({
+            'label' : 'Select Client',
+            'value' : null
+        })
+
         setCreditReceipt(false);
     }
     const [showEditSuccess, setShowEditSuccess] = useState(false);
@@ -973,15 +996,45 @@ const ManageBankStatement = () => {
     const [crFormErrors,setCrFormErrors] = useState({})
     const crValidate = () => {
         var res = true;
-        
-        if (!formValues.employee) {
-            setFormErrors((existing) => {
-                return { ...existing, employee: "Select Received By" }
+        console.log(crFormValues)
+        if (!crFormValues.client) {
+            setCrFormErrors((existing) => {
+                return { ...existing, client: "Select Client" }
             })
             res = false;
         } else {
-            setFormErrors((existing) => {
-                return { ...existing, employee: "" }
+            setCrFormErrors((existing) => {
+                return { ...existing, client: "" }
+            })
+        }
+        if (!crFormValues.receiptMode) {
+            setCrFormErrors((existing) => {
+                return { ...existing, receiptMode: "Select Receipt Mode" }
+            })
+            res = false;
+        } else {
+            setCrFormErrors((existing) => {
+                return { ...existing, receiptMode: "" }
+            })
+        }
+        if (!crFormValues.howReceived) {
+            setCrFormErrors((existing) => {
+                return { ...existing, howReceived: "Select How Received" }
+            })
+            res = false;
+        } else {
+            setCrFormErrors((existing) => {
+                return { ...existing, howReceived: "" }
+            })
+        }
+        if(!crFormValues.amountReceived) {
+            setCrFormErrors((existing) => {
+                return { ...existing, amountReceived: "Enter Amount Received" }
+            })
+            res = false;
+        }else {
+            setCrFormErrors((existing) => {
+                return { ...existing, amountReceived: "" }
             })
         }
 
@@ -1038,6 +1091,18 @@ const ManageBankStatement = () => {
         value: null
     });
     const [query, setQuery] = useState('')
+    const [crSelectedOption,setCrSelectedOption] = useState({
+        'label' : 'Select Client',
+        'value' : null
+    })
+    const handleCrClientNameChange = (e) => {
+        console.log('hey')
+        console.log(e)
+        const existing = { ...crFormValues }
+        existing.client = e.value
+        setCrFormValues(existing)
+        setCrSelectedOption(e)
+    }
     const handleClientNameChange = (e) => {
         console.log('hey')
         console.log(e)
@@ -1555,15 +1620,17 @@ const ManageBankStatement = () => {
                 className="flex justify-center items-center"
                 >
                 <>
-                    {/* <Draggable> */}
+                    <Draggable handle="div.move">
                         <div className='flex justify-center items-center '>
-                            <div className="w-[1050px] h-auto bg-white rounded-lg">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                                    <div className="mr-[410px] ml-[410px]">
-                                        <div className="text-[16px]">New Bank Statement</div>
-                                    </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                        <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
+                            <div className="w-[1050px] h-auto bg-white rounded-lg relative">
+                                <div className="move cursor-move">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                        <div className="mr-[410px] ml-[410px]">
+                                            <div className="text-[16px]">New Bank Statement</div>
+                                        </div>
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                            <img onClick={handleClose} className="w-[20px] h-[20px] cursor-pointer" src={Cross} alt="cross" />
+                                        </div>
                                     </div>
                                 </div>
                                 <form onSubmit={handleSubmit}>
@@ -1627,9 +1694,9 @@ const ManageBankStatement = () => {
                                                 <div className="">
                                                     <div className="text-[13px]">How Recieved(CR)?</div>
                                                     <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} >
-                                                        <option >Select how Received</option>
+                                                        <option hidden>Select how Received</option>
                                                         {howReceived && howReceived.map(item => (
-                                                            <option value={item}>
+                                                            <option value={item[0]}>
                                                                 {item[1]}
                                                             </option>
                                                         ))}
@@ -1648,7 +1715,7 @@ const ManageBankStatement = () => {
                                 </form>
                             </div>
                         </div>
-                    {/* </Draggable> */}
+                    </Draggable>
                 </>
             </Modal>
 
@@ -1661,7 +1728,7 @@ const ManageBankStatement = () => {
                 <>
                     <Draggable handle="div.move">
                         <div className='flex justify-center items-center mt-[100px]'>
-                            <div className="w-[1050px] h-[450px] bg-white rounded-lg relative">
+                            <div className="w-[1050px] h-[470px] bg-white rounded-lg relative">
                                 <div className="move cursor-move">
                                     <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center">
                                         <div className="mr-[410px] ml-[410px]">
@@ -1675,7 +1742,7 @@ const ManageBankStatement = () => {
                                 {/* <form onSubmit={handleCR} > */}
                                     <div className="w-full mt-[5px] ">
                                         <div className="flex gap-[48px] justify-center items-center">
-                                            <div className=" space-y-3 py-[5px] px-[5px]">
+                                            <div className=" space-y-4 py-[5px] px-[5px]">
                                                 <div className="">
                                                     <div className="text-[14px]">Cura Office<label className="text-red-500">*</label></div>
                                                     <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="Pune" value="Pune" disabled />
@@ -1692,7 +1759,7 @@ const ManageBankStatement = () => {
                                                     </select> */}
                                                     
                                                     <DropDown options={existingUsers} initialValue="Select Received By" leftLabel="Name" rightLabel="Username" leftAttr="name" rightAttr="username" toSelect="name" handleChange={(e) => handleCrChange(e)} formValueName="receivedBy" value={crFormValues.receivedBy} idName="id"/>
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.employee}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.receivedBy}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Mode<label className="text-red-500">*</label></div>
@@ -1710,34 +1777,34 @@ const ManageBankStatement = () => {
                                                     <div className="text-[14px]">Recieved Date<label className="text-red-500">*</label></div>
                                                     <input className="text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="receivedDate" value={crFormValues.receivedDate} onChange={handleCrChange} disabled />
 
-                                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.recddate}</div> */}
+                                                    <div className="text-[12px] text-[#CD0000] absolute">{crFormErrors.receivedDate}</div>
                                                 </div>
                                                 
                                                 <div className="">
-                                                    <div className="text-[14px]">Amount Recieved<label className="text-red-500">*</label></div>
+                                                    <div className="text-[14px]">Amount Received<label className="text-red-500">*</label></div>
                                                     <input className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="amountReceived" value={crFormValues.amountReceived} onChange={handleCrChange} required />
-                                                    {/* <div className="text-[12px] text-[#CD0000] ">{formErrors.amount}</div> */}
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.amountReceived}</div>
                                                 </div>
                                                 <div className="">
-                                                    <div className="text-[14px]">How Recieved?<label className="text-red-500">*</label></div>
-                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="how" value={formValues.how} onChange={handleChange} required>
-                                                        <option >Select How Recieved</option>
+                                                    <div className="text-[14px]">How Received?<label className="text-red-500">*</label></div>
+                                                    <select className="text-[12px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" name="howReceived" value={crFormValues.howReceived} onChange={handleCrChange} required>
+                                                        <option hidden>Select How Recieved</option>
                                                         {howReceived && howReceived.map(item => (
                                                             <option key={item} value={item[0]}>
                                                                 {item[1]}
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.how}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.howReceived}</div>
                                                 </div>
                                             </div>
-                                            <div className=" space-y-3 py-[20px] px-[10px] mt-[-55px]">
+                                            <div className=" space-y-4 py-[20px] px-[10px] mt-[-55px]">
 
                                                 <div className="">
                                                     <div className="text-[14px]">Client <label className="text-red-500">*</label></div>
                                                     <AsyncSelect
-                                                        onChange={handleClientNameChange}
-                                                        value={selectedOption}
+                                                        onChange={handleCrClientNameChange}
+                                                        value={crSelectedOption}
                                                         loadOptions={loadOptions}
                                                         cacheOptions
                                                         defaultOptions
@@ -1796,7 +1863,7 @@ const ManageBankStatement = () => {
                                                     </option>
                                                 ))}
                                             </select> */}
-                                                    <div className="text-[10px] text-[#CD0000] absolute">{formErrors.client}</div>
+                                                    <div className="text-[10px] text-[#CD0000] absolute">{crFormErrors.client}</div>
                                                 </div>
                                                 <div className="">
                                                     <div className="text-[14px]">Receipt Description</div>

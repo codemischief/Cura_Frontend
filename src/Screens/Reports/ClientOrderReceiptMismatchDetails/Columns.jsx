@@ -60,7 +60,7 @@ export default function connectionDataColumn(onQuery) {
       field: "fullname",
       sorting: true,
       // cellStyle: { width: "20px", },
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "19%" },
     },
   ];

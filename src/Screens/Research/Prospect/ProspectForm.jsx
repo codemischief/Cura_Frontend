@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { CircularProgress, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
-import Cross from "../../../assets/cross.png";
 import { APIService } from "../../../services/API";
 import { Form, FormikProvider, useFormik } from "formik";
 import * as Yup from "yup";
@@ -14,8 +13,8 @@ import {
   editProspectData,
 } from "../../../Redux/slice/Research/ProspectSlice";
 import { useSelector } from "react-redux";
-import { CrossIcon } from "../../../Components/Svg/CrossIcon";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
+import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
   countryId: Yup.string().required("Country Name is required"),
@@ -29,8 +28,10 @@ const validationSchema = Yup.object().shape({
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  // const [isPending, startTransition] = useTransition();
-  const [countryData, setCountryData] = useState([]);
+  const [countryData, setCountryData] = useState({
+    arr: [],
+    obj: {},
+  });
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,8 +52,13 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
+    const resultConverted = await result?.reduce((acc, current) => {
+      acc[current.id] = current.name;
+      return acc;
+    }, {});
+
     setLoading(false);
-    setCountryData(result);
+    setCountryData({ arr: result, obj: resultConverted });
   };
 
   const fetchCityData = async (id) => {
@@ -100,21 +106,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      const data = {
-        user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
-        city: values.city,
-        state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-
-        createdby: 1234,
-        isdeleted: false,
-      };
       setOpenConfimation(true);
     },
   });
@@ -171,11 +162,11 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleChange = (e) => {
     setFieldValue(e.target.name, e.target.value);
   };
-  const handleCountrySelect = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+  const handleCountrySelect = (country) => {
+    setFieldValue("countryId", country?.id);
     setFieldValue("state", "");
     setFieldValue("city", "");
-    fetchStateData(e.target.value);
+    fetchStateData(country?.id);
   };
 
   const handleState = (e) => {
@@ -202,7 +193,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       title={editData.id ? "Edit Prospect" : "New Prospect"}
                     />
                     <div className="h-auto w-full mt-[5px] ">
-                      <div className="flex gap-[48px] justify-center items-center">
+                      <div className="flex gap-[48px] justify-center items-start">
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
                             <div className="flex">
@@ -232,32 +223,13 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            <select
-                              className="selectBoxField inputFieldValue"
-                              name="countryId"
-                              value={formik.values.countryId}
-                              defaultValue="Select Country"
-                              onChange={handleCountrySelect}
-                            >
-                              <option
-                                value="none"
-                                hidden={true}
-                                className="inputFieldValue"
-                              >
-                                Select a Country
-                              </option>
 
-                              {countryData.length > 0 &&
-                                countryData?.map((editData) => (
-                                  <option
-                                    value={editData.id}
-                                    key={editData.id}
-                                    className="p-4"
-                                  >
-                                    {editData.name}
-                                  </option>
-                                ))}
-                            </select>
+                            <CustomSelect
+                              isLoading={loading}
+                              value={countryData?.obj[formik.values.countryId]}
+                              onSelect={handleCountrySelect}
+                              options={countryData?.arr}
+                            />
                             <div className="inputValidationError">
                               {errors.countryId && (
                                 <div>{errors.countryId}</div>

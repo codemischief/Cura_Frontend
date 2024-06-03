@@ -1,15 +1,10 @@
-import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
 import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
 import SimpleTable from "../../../Components/common/table/CustomTable";
 import connectionDataColumn from "./Columns";
 import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import {
   deleteProspect,
@@ -23,7 +18,7 @@ import ProspectForm from "./ProspectForm";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
-import DeleteProspect from "./DeleteProspect";
+import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 
 const PropectusPage = () => {
   const dispatch = useDispatch();
@@ -47,7 +42,6 @@ const PropectusPage = () => {
   const [deleteError, setDeleteError] = useState("");
 
   const handleEdit = (data) => {
-    console.log("data", data);
     setEditData({ ...data });
     setOpenForm(true);
   };
@@ -196,7 +190,7 @@ const PropectusPage = () => {
       pg_size: 15,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPaymentDataXls(obj));
+    // dispatch(downloadPaymentDataXls(obj));
   };
 
   const handleFormOpen = () => {
@@ -311,7 +305,7 @@ const PropectusPage = () => {
         />
       )}
       {isDeleteDialogue && (
-        <DeleteProspect
+        <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteProspects}
