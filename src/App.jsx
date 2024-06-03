@@ -242,98 +242,98 @@ const App = () => {
                 element={<ClientReceiptList />}
               />
               <Route
-                path="/vendorInvoiceList"
+                path="/reports/vendorPaymentsList"
                 element={<VendorInvoiceList />}
               />
               <Route
-                path="/lobReceiptPayments"
+                path="/reports/lobReceiptPayments"
                 element={<LobReceiptPayments />}
               />
               <Route
-                path="/entityReceiptPayments"
+                path="/reports/entityReceiptPayments"
                 element={<EntityReceiptPayments />}
               />
               <Route
-                path="/lobReceiptPaymentsConsolidated"
+                path="/reports/lobReceiptPaymentsConsolidated"
                 element={<LobReceiptPaymentsConsolidated />}
               />
               <Route
-                path="/pmaBillingTrendView"
+                path="/reports/pmaBillingTrendView"
                 element={<PmaBillingTrendView />}
               />
-              <Route path="/pmaClientReport" element={<PmaClientReport />} />
-              <Route path="/pmaInvoiceList" element={<PmaInvoiceList />} />
+              <Route path="/reports/pmaClientReport" element={<PmaClientReport />} />
+              <Route path="/reports/pmaInvoiceList" element={<PmaInvoiceList />} />
               <Route
-                path="/pmaClientReceivable"
+                path="/reports/pmaClientReceivable"
                 element={<PmaClientReceivable />}
               />
               <Route
-                path="/activePmaAgreement"
+                path="/reports/activePmaAgreement"
                 element={<ActivePmaAgreement />}
               />
-              <Route path="/projectContact" element={<ProjectContact />} />
+              <Route path="/reports/projectContact" element={<ProjectContact />} />
               <Route
-                path="/advanceHoldingAmount"
+                path="/reports/advanceHoldingAmount"
                 element={<AdvanceHoldingAmount />}
               />
               <Route
-                path="/pmaClientStatementAll"
+                path="/reports/pmaClientStatementAll"
                 element={<PmaClientStatementAll />}
               />
               <Route
-                path="/pmaClientStatement"
+                path="/reports/pmaClientStatement"
                 element={<PmaClientStatement />}
               />
               <Route
-                path="/nonPmaClientStatement"
+                path="/reports/nonPmaClientStatement"
                 element={<NonPmaClientStatement />}
               />
               <Route
-                path="/nonPmaClientReceivables"
+                path="/reports/nonPmaClientReceivables"
                 element={<NonPmaClientReceivables />}
               />
               <Route
-                path="/clientStatementAll"
+                path="/reports/clientStatementAll"
                 element={<ClientStatementAll />}
               />
               <Route
-                path="/duplicateClientReport"
+                path="/reports/duplicateClientReport"
                 element={<DuplicateClientReport />}
               />
               <Route
-                path="/clientBankDetails"
+                path="/reports/clientBankDetails"
                 element={<ClientBankDetails />}
               />
               <Route
-                path="/monthlyBankSummary"
+                path="/reports/monthlyBankSummary"
                 element={<MonthlyBankSummary />}
               />
               <Route
-                path="/bankTransferReconciliation"
+                path="/reports/bankTransferReconciliation"
                 element={<BankTransferReconciliation />}
               />
               <Route
-                path="/clientOrderReceiptMismatchDetails"
+                path="/reports/clientOrderReceiptMismatchDetails"
                 element={<ClientOrderReceiptMismatchDetails />}
               />
               <Route
-                path="/bankReceiptReconciliation"
+                path="/reports/bankReceiptReconciliation"
                 element={<BankReceiptReconciliation />}
               />
               <Route
-                path="/bankPaymentReconciliation"
+                path="/reports/bankPaymentsReconciliation"
                 element={<BankPaymentReconciliation />}
               />
               <Route
-                path="/report/clientTraceReport"
+                path="/reports/clientTraceReport"
                 element={<ClientTraceReport />}
               />
               <Route
-                path="/report/orderTraceReport"
+                path="/reports/orderTraceReport"
                 element={<OrderTraceReport />}
               />
               <Route
-                path="/report/vendorTraceReport"
+                path="/reports/vendorTraceReport"
                 element={<VendorTraceReport />}
               />
             </Route>
