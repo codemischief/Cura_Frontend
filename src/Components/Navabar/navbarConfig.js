@@ -19,16 +19,12 @@ export const navMenuConfig = [
         items: [
           { title: "LOB (Line of business)", path: PATH_DASHBOARD.admin.LOB },
           { title: "Services", path: PATH_DASHBOARD.admin.service },
-          { title: "Grinding Machine ", path: PATH_DASHBOARD },
-          { title: "Drilling Machine ", path: "#" },
-          { title: "Milling Machine ", path: "#" },
         ],
       },
       {
         subheader: "Locations",
         items: [
           { title: "Country", path: PATH_DASHBOARD.admin.country },
-          { title: "State", path: PATH_DASHBOARD.admin.state },
           { title: "City", path: PATH_DASHBOARD.admin.city },
           { title: "Locality", path: PATH_DASHBOARD.admin.locality },
         ],
@@ -41,7 +37,7 @@ export const navMenuConfig = [
         subheader: "Margin Report",
         items: [
           {
-            title: "LOB- Receipts - Payments",
+            title: "LOB-Service-Receipts-Payments",
             path: PATH_DASHBOARD.admin.lobReceiptPayments,
           },
           {

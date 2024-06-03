@@ -33,9 +33,9 @@ export const PATH_DASHBOARD = {
     service: path(ROOTS.admin, "/service"),
     payments: path(ROOTS.admin, "/payments"),
     deleteId: path(ROOTS.admin, "deleteById"),
-    entityReceiptPayment: "entityReceiptPayments",
-    lobReceiptPayments: "lobReceiptPayments",
-    lobReceiptPaymentsConsolidated: "lobReceiptPaymentsConsolidated",
+    entityReceiptPayment: path(ROOTS.admin, "/entityReceiptPayments"),
+    lobReceiptPayments: path(ROOTS.admin, "/lobReceiptPayments"),
+    lobReceiptPaymentsConsolidated :path(ROOTS.admin, "/lobReceiptPaymentsConsolidated"),
   },
   research: {
     prospect: path(ROOTS.research, "/prospect"),
