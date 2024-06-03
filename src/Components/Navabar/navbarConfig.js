@@ -25,7 +25,6 @@ export const navMenuConfig = [
         subheader: "Locations",
         items: [
           { title: "Country", path: PATH_DASHBOARD.admin.country },
-          { title: "State", path: PATH_DASHBOARD.admin.state },
           { title: "City", path: PATH_DASHBOARD.admin.city },
           { title: "Locality", path: PATH_DASHBOARD.admin.locality },
         ],
@@ -119,7 +118,6 @@ export const navMenuConfig = [
           { title: "PMA Agreement", path: PATH_DASHBOARD.manage.pmaAgreement },
           { title: "L&L Agreement", path: PATH_DASHBOARD.manage.llAgreement },
           { title: "PMA Billing", path: PATH_DASHBOARD.manage.pmaBilling },
-          { title: "Email PMA Statement", path: "#" },
         ],
       },
       {

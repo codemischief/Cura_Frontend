@@ -38,7 +38,18 @@ import OrderDropDown from '../../../Components/Dropdown/OrderDropdown';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 import { formatDate } from '../../../utils/formatDate';
 const ManageVendorInvoice = () => {
-
+    const dataRows = [
+        "vendorname",
+        "clientname",
+        "briefdescription",
+        "invoiceamount",
+        "invoicedate",
+        "entity",
+        "createdbyname",
+        "amount",
+        "estimatedate",
+        "id",
+    ]
     const menuRef = useRef();
     const navigate = useNavigate();
     // we have the module here
@@ -244,33 +255,7 @@ const ManageVendorInvoice = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -294,33 +279,7 @@ const ManageVendorInvoice = () => {
         setCurrentPage(() => pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -343,33 +302,7 @@ const ManageVendorInvoice = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -401,7 +334,6 @@ const ManageVendorInvoice = () => {
     const [orders, setOrders] = useState([]);
 
     const getOrdersByClientId = async (id) => {
-        console.log('hello')
         const data = {
             "user_id": 1234,
             "client_id": id
@@ -675,33 +607,7 @@ const ManageVendorInvoice = () => {
         setIsSearchOn(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -725,33 +631,7 @@ const ManageVendorInvoice = () => {
         setCurrentPage((prev) => 1)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -1017,33 +897,7 @@ const ManageVendorInvoice = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -1070,33 +924,7 @@ const ManageVendorInvoice = () => {
         setFlag((prev) => !prev)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "estimatedate",
-                "amount",
-                "estimatedesc",
-                "orderid",
-                "briefdescription",
-                "vendorid",
-                "vendorname",
-                "invoicedate",
-                "invoiceamount",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "createdon",
-                "notes",
-                "vat1",
-                "vat2",
-                "servicetax",
-                "invoicenumber",
-                "entityid",
-                "entity",
-                "officeid",
-                "office",
-                "createdbyname",
-                "clientname"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -1610,11 +1438,11 @@ const ManageVendorInvoice = () => {
                         <div className="w-[1050px] h-auto bg-white rounded-lg">
                             <div className="move cursor-move">
 
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">New Vendor Invoice</div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                         <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                     </div>
                                 </div>
