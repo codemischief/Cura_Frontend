@@ -25,7 +25,6 @@ export const navMenuConfig = [
         subheader: "Locations",
         items: [
           { title: "Country", path: PATH_DASHBOARD.admin.country },
-          { title: "State", path: PATH_DASHBOARD.admin.state },
           { title: "City", path: PATH_DASHBOARD.admin.city },
           { title: "Locality", path: PATH_DASHBOARD.admin.locality },
         ],
@@ -119,7 +118,6 @@ export const navMenuConfig = [
           { title: "PMA Agreement", path: PATH_DASHBOARD.manage.pmaAgreement },
           { title: "L&L Agreement", path: PATH_DASHBOARD.manage.llAgreement },
           { title: "PMA Billing", path: PATH_DASHBOARD.manage.pmaBilling },
-          { title: "Email PMA Statement", path: "#" },
         ],
       },
       {
@@ -225,13 +223,13 @@ export const navMenuConfig = [
       {
         subheader: "Tally Report",
         items: [
-          { title: "Client Receipt", path: "" },
-          { title: "Order Payment-DD", path: "" },
-          { title: "Order Payment-B2C", path: "" },
-          { title: "Order Payment-B2B", path: "" },
-          { title: "Order Receipt-C2B", path: "" },
-          { title: "OR-Invoice-Service Tax/GST", path: "" },
-          { title: "Order Payment Without TDS", path: "" },
+          { title: "Client Receipt", path: PATH_DASHBOARD.report.tally.ClientReceipt },
+          { title: "Order Payment-DD", path: PATH_DASHBOARD.report.tally.OrderPaymentDD },
+          { title: "Order Payment-B2C", path: PATH_DASHBOARD.report.tally.OrderPaymentBanktoCash },
+          { title: "Order Payment-B2B", path: PATH_DASHBOARD.report.tally.OrderPaymentBanktoBank },
+          { title: "Order Receipt-C2B", path: PATH_DASHBOARD.report.tally.OrderPaymentWithTds },
+          { title: "OR-Invoice-Service Tax/GST", path: PATH_DASHBOARD.report.tally.OrderReceiptToInvoiceTax },
+          { title: "Order Payment Without TDS", path: PATH_DASHBOARD.report.tally.OrderPaymentWithoutTds },
         ],
       },
       {

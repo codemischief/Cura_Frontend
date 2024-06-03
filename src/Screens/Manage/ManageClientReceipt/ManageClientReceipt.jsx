@@ -1862,7 +1862,7 @@ const ManageClientReceipt = () => {
                                         <div className="text-[13px]">
                                             Client <label className="text-red-500">*</label>
                                         </div>
-                                        <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs"  value={orSelectedOption.label} readOnly />
+                                        <input className="w-56 h-5 border-[1px] bg-[#F5F5F5] border-[#C6C6C6] rounded-sm px-3 text-xs"  value={orSelectedOption.label} readOnly />
                                         {/* <AsyncSelect
                                             onChange={handleOrClientNameChange}
                                             value={orSelectedOption}

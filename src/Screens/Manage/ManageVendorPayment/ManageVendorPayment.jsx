@@ -93,31 +93,16 @@ const ManageVendorPayment = () => {
     const [deleteConfirmation, showDeleteConfirmation] = useState(false);
     // const [filterArray,setFilterArray] = useState([]);
     const dataRows = [
-        "id",
-        "paymentby",
-        "paymentbyname",
+        "vendorname",
+        "clientname",
+        "propertydescription",
+        "briefdescription",
         "amount",
         "paymentdate",
-        "orderid",
-        "briefdescription",
-        "vendorid",
-        "vendorname",
-        "mode",
         "modeofpayment",
-        "description",
-        "tds",
-        "servicetaxamount",
-        "dated",
-        "createdby",
+        "paymentbyname",
         "createdbyname",
-        "isdeleted",
-        "createdon",
-        "entityid",
-        "entity",
-        "officeid",
-        "office",
-        "clientname",
-        "propertydescription"
+        "id",
     ]
     const fetchCountryData = async () => {
         setPageLoading(true);
@@ -1139,7 +1124,7 @@ const ManageVendorPayment = () => {
             {openAddConfirmation && <SaveConfirmationVendorPayment addVendorPayment={addVendorPayment} handleClose={() => setOpenAddConfirmation(false)} showCancel={openAddCancelModal} setDefault={initials} />}
             {isFailureModal && <FailureModal isOpen={isFailureModal} message={errorMessage} />}
             {showDeleteModal && <DeleteVendorPayment handleClose={() => setShowDeleteModal(false)} item={currVendorInvoice} handleDelete={deleteVendorPayment} showCancel={openCancelModal} />}
-            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no Vendor Payment added." />}
+            {showCancelModelAdd && <CancelModel isOpen={showCancelModelAdd} message="Process cancelled, no New Vendor Payment added." />}
             {showCancelModel && <CancelModel isOpen={showCancelModel} message="Process cancelled, no changes saved." />}
             <div className='h-[calc(100vh_-_7rem)] w-full  px-10'>
                 <div className='h-16 w-full  flex justify-between items-center p-2  border-gray-300 border-b-2'>

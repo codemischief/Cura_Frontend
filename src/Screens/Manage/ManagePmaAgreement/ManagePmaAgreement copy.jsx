@@ -42,32 +42,18 @@ const ManagePmaArgreement = () => {
     const navigate = useNavigate()
     console.log(state)
     const dataRows = [
-        "id",
-        "clientpropertyid",
+        "clientname",
+        "propertydescription",
+        "orderdescription",
+        "propertystatusname",
+        "description",
+        "active",
         "startdate",
         "enddate",
-        "actualenddate",
-        "active",
-        "scancopy",
-        "reasonforearlyterminationifapplicable",
-        "dated",
-        "createdby",
-        "isdeleted",
-        "description",
-        "rented",
-        "fixed",
-        "rentedtax",
-        "fixedtax",
-        "orderid",
-        "orderdescription",
-        "poastartdate",
         "poaenddate",
         "poaholder",
-        "clientname",
-        "status",
-        "propertystatus",
-        "propertydescription",
-        "propertystatusname"
+        "id",
+        
     ]
     const menuRef = useRef();
     // we have the module here
@@ -1505,7 +1491,7 @@ const ManagePmaArgreement = () => {
                             <h1 className='ml-10'>No Records To Show</h1>
                         </div>}
                         {!pageLoading && existingPmaAgreement.map((item, index) => {
-                            return <div className='w-full h-auto bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1'>
+                            return <div className='w-full h-auto min-h-10 bg-white flex justify-between items-center border-gray-400 border-b-[1px] py-1'>
                                 <div className="w-[90%] flex items-center">
                                     <div className='w-[2%] flex overflow-x-hidden'>
                                         <div className='px-3 '>
@@ -1680,11 +1666,11 @@ const ManagePmaArgreement = () => {
                             <div className="w-[1050px] h-auto bg-white rounded-lg">
                                 <div className='move cursor-move'>
     
-                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg">
+                                    <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-t-lg relative">
                                         <div className="mr-[410px] ml-[410px]">
                                             <div className="text-[16px]">New PMA Agreement</div>
                                         </div>
-                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                        <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                             <button onClick={handleClose}><img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                         </div>
                                     </div>

@@ -36,7 +36,41 @@ import Draggable from 'react-draggable';
 const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER
 
 const ManageVendor = () => {
-
+    const dataRows = [
+        "vendorname",
+        "tdssection",
+        "tallyledger",
+        "category",
+        "city",
+        "id",
+        // "addressline1",
+        // "addressline2",
+        // "suburb",
+        // "state",
+        // "country",
+        // "type",
+        // "details",
+        // "phone1",
+        // "email",
+        // "ownerinfo",
+        // "panno",
+        // "tanno",
+        // "gstservicetaxno",
+        // "bankname",
+        // "bankbranch",
+        // "bankcity",
+        // "bankacctno",
+        // "bankcity",
+        // "bankbranch",
+        // "bankacctholdername",
+        // "bankifsccode",
+        // "bankaccttype",
+        // "dated",
+        // "createdby",
+        // "isdeleted",
+        // "companydeductee",
+        // "tallyledgerid",
+    ]
     const menuRef = useRef();
     const navigate = useNavigate();
     // we have the module here
@@ -214,40 +248,7 @@ const ManageVendor = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows": dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -268,40 +269,7 @@ const ManageVendor = () => {
         setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -324,40 +292,7 @@ const ManageVendor = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -664,40 +599,7 @@ const ManageVendor = () => {
         setCurrentPage((prev) => 1);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -721,40 +623,7 @@ const ManageVendor = () => {
         setCurrentPage(1);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -897,40 +766,7 @@ const ManageVendor = () => {
         setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows":dataRows,
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -978,40 +814,7 @@ const ManageVendor = () => {
         setFlag((prev) => !prev);
         const data = {
             "user_id": 1234,
-            "rows": [
-                "id",
-                "vendorname",
-                "addressline1",
-                "addressline2",
-                "suburb", "city",
-                "state",
-                "country",
-                "type",
-                "details",
-                "category",
-                "phone1",
-                "email",
-                "ownerinfo",
-                "panno",
-                "tanno",
-                "gstservicetaxno",
-                "tdssection",
-                "bankname",
-                "bankbranch",
-                "bankcity",
-                "bankacctno",
-                "bankcity",
-                "bankbranch",
-                "bankacctholdername",
-                "bankifsccode",
-                "bankaccttype",
-                "dated",
-                "createdby",
-                "isdeleted",
-                "companydeductee",
-                "tallyledgerid",
-                "tallyledger"
-            ],
+            "rows": dataRows,
             "filters": filterState,
             "sort_by": [field],
             "order": !flag ? "asc" : "desc",
@@ -1447,13 +1250,13 @@ const ManageVendor = () => {
                 <>
                     <Draggable handle='div.move'>
                         <div className='flex justify-center'>
-                            <div className="w-[1050px] h-auto bg-white rounded-lg">
+                            <div className="w-[1050px] h-auto bg-white rounded-lg relative">
                                 <div className="move cursor-move">
-                                    <div className="h-10  justify-center flex items-center rounded-t-lg">
+                                    <div className="h-10 bg-[#EDF3FF] justify-center flex items-center rounded-t-lg">
                                         <div className="mr-[410px] ml-[410px]">
                                             <div className="text-base">Add New Vendor </div>
                                         </div>
-                                        <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB]">
+                                        <div className="flex justify-center items-center rounded-full w-7 h-7 bg-[#EBEBEB] absolute right-2">
                                             <button onClick={handleClose}><img onClick={handleClose} className="w-5 h-5" src={Cross} alt="cross" /></button>
                                         </div>
                                     </div>
@@ -1462,7 +1265,7 @@ const ManageVendor = () => {
                                 <div className="h-auto w-full mt-1 ">
                                     <div className="flex gap-12 justify-center">
                                         <div className="">
-                                            <div className=" space-y-2 py-1">
+                                            <div className=" space-y-3 py-1">
                                                 <div className="font-semibold text-sm text-[#282828]">Basic Information</div>
                                                 <div className="">
                                                     <div className="text-sm text-[#505050]">Vendor Name <label className="text-red-500">*</label></div>
@@ -1489,7 +1292,7 @@ const ManageVendor = () => {
                                                     <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" type="text" name="ownerDetails" value={formValues.ownerDetails} onChange={handleChange} />
                                                 </div>
                                             </div>
-                                            <div className=" space-y-2 py-1 mt-2">
+                                            <div className=" space-y-3 py-1 mt-2">
                                                 <div className="font-semibold text-sm text-[#282828]">Accounting Information</div>
                                                 <div className="">
                                                     <div className="text-[13px] text-[#505050]">Type Of Organization </div>
@@ -1519,7 +1322,7 @@ const ManageVendor = () => {
                                             </div>
                                         </div>
                                         <div className="">
-                                            <div className=" space-y-2 py-1 mt-6">
+                                            <div className=" space-y-3 py-1 mt-6">
                                                 <div className="">
                                                     <div className="text-sm text-[#505050]">Category <label className="text-red-500">*</label></div>
                                                     <select className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none"
@@ -1570,7 +1373,7 @@ const ManageVendor = () => {
                                                     <input className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs outline-none" name="details" value={formValues.details} onChange={handleChange} />
                                                 </div>
                                             </div>
-                                            <div className=" space-y-2 py-1 mt-8">
+                                            <div className=" space-y-3 py-1 mt-8">
 
                                                 <div className="">
                                                     <div className="text-sm text-[#505050]">Tally Ledger </div>
