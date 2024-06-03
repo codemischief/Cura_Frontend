@@ -212,15 +212,19 @@ const App = () => {
               />
               <Route
                 path="/manage/manageclientinfo/properties/:clientname"
-                element={<ManageClientPropertyByClientName />}
+                element={<ManageClientProperty />}
+              />
+              <Route
+                path="/manage/manageclientinfo/orders/:clientname"
+                element={<ManageOrder />}
               />
               <Route
                 path="/manage/manageclientproperty/pmaagreement/:clientname"
-                element={<ClientPmaArgreement />}
+                element={<ManagePmaArgreement />}
               />
               <Route
                 path="/manage/manageclientproperty/llagreement/:clientname"
-                element={<ClientLLAgreement />}
+                element={<ManageLLAgreement />}
               />
               <Route path="/manage/pmaBilling" element={<PmaBilling />} />
               <Route path="admin/temp" element={<Temp />} />
