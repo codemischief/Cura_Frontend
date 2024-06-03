@@ -1,6 +1,7 @@
 import { FilePdfOutlined } from "@ant-design/icons";
 import { Refresh } from "@mui/icons-material";
 import { MenuItem, Pagination, Popover } from "@mui/material";
+import { CloseOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import Pdf from "../../../assets/pdf.png";
 import Excel from "../../../assets/excel.png";
@@ -53,12 +54,15 @@ const PaginationComponent = ({
           open={open}
           anchorEl={anchorEl}
           onClose={() => setAnchorEl(null)}
-          sx={{ top: "-50px", left: "-20px" }}
+          sx={{ top: "-50px", left: "-20px"  }}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
           }}
         >
+          <div className="flex justify-end">
+            <CloseOutlined onClick={() => setAnchorEl(null)} sx={{ color: "#787878", height: 20, width: 20, cursor: "pointer" }} />
+          </div>
           <MenuItem
             className="flex space-x-2 justify-center items-center ml-3 mt-3"
             // onClick={downloadPDF}/
