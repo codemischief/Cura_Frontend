@@ -109,16 +109,6 @@ export const PATH_DASHBOARD = {
       pmaInvoiceList: path(ROOTS.report,"/pmaInvoiceList"),
       pmaBillingTrendReport: path(ROOTS.report,"/pmaBillingTrendView"),
       clientPortalReport: path(ROOTS.report,"/pmaClientReport"),
-    },
-    tally: {
-      ClientReceipt: path(ROOTS.report, "/clientReceipt"),
-      OrderPaymentDD:path(ROOTS.report, "/OrderPaymentDD"),
-      OrderPaymentBanktoCash:path(ROOTS.report,"/orderpaymentbanktocash"),
-      OrderPaymentBanktoBank:path(ROOTS.report,"/orderpaymentbanktobank"),
-      OrderPaymentWithTds:path(ROOTS.report,"/orderpaymentwithtds"),
-      OrderPaymentWithoutTds:path(ROOTS.report,"/orderpaymentwithouttds"),
-      OrderReceiptToInvoiceTax:path(ROOTS.report,"/orderreceipttoinvoiceTax")
-
-    },
+    }
   },
 };
