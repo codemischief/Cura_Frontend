@@ -106,21 +106,6 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      const data = {
-        user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
-        city: values.city,
-        state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-
-        createdby: 1234,
-        isdeleted: false,
-      };
       setOpenConfimation(true);
     },
   });
@@ -208,7 +193,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                       title={editData.id ? "Edit Prospect" : "New Prospect"}
                     />
                     <div className="h-auto w-full mt-[5px] ">
-                      <div className="flex gap-[48px] justify-center items-center">
+                      <div className="flex gap-[48px] justify-center items-start">
                         <div className=" space-y-[10px] py-[20px] px-[10px]">
                           <div className="">
                             <div className="flex">
@@ -238,32 +223,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               </label>
                               <span className="requiredError">*</span>
                             </div>
-                            {/* <select
-                              className="selectBoxField inputFieldValue"
-                              name="countryId"
-                              value={formik.values.countryId}
-                              defaultValue="Select Country"
-                              onChange={handleCountrySelect}
-                            >
-                              <option
-                                value="none"
-                                hidden={true}
-                                className="inputFieldValue"
-                              >
-                                Select a Country
-                              </option>
 
-                              {countryData.length > 0 &&
-                                countryData?.map((editData) => (
-                                  <option
-                                    value={editData.id}
-                                    key={editData.id}
-                                    className="p-4"
-                                  >
-                                    {editData.name}
-                                  </option>
-                                ))}
-                            </select> */}
                             <CustomSelect
                               isLoading={loading}
                               value={countryData?.obj[formik.values.countryId]}

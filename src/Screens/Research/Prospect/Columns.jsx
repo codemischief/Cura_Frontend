@@ -46,7 +46,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "300px",
+        maxWidth: "18.25rem",
       },
     },
     {
@@ -60,7 +60,9 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "300px",
+        minWidth: "50px",
+        maxWidth:"13.563"
+        
       },
     },
     {
@@ -101,7 +103,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "200px",
+        minWidth: "300px",
       },
 
       filterComponent: TextFilterField,

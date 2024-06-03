@@ -1,6 +1,6 @@
-export const CrossIcon = ({ onClick }) => (
+export const CrossIcon = ({ onClick, bgColor = "#fff" }) => (
   <div
-    className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white"
+    className={`flex justify-center items-center rounded-full w-[30px] h-[30px] bg-[${bgColor}]`}
     onClick={onClick}
   >
     <svg
