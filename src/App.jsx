@@ -211,6 +211,23 @@ const App = () => {
                 path="admin/managebuilder/contacts/:buildername"
                 element={<ManageBuilderContact />}
               />
+
+              <Route
+                path="/manage/managevendorpayment/:orderid"
+                element={<ManageVendorPayment />}
+              />
+                <Route
+                path="/manage/manageclientinvoice/:orderid"
+                element={<ManageClientInvoice />}
+              />
+              <Route
+                path="/manage/manageorderreceipt/:orderid"
+                element={<ManageOrderReceipt />}
+              />
+              <Route
+                path="/manage/manageclientinfo/orders/showall/:orderid"
+                element={<ShowAllOdersInformation />}
+              />
               <Route
                 path="/manage/manageclientinfo/properties/:clientname"
                 element={<ManageClientProperty />}

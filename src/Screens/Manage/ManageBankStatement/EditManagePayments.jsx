@@ -15,7 +15,18 @@ const EditManageStatement = (props) => {
     const [showFailure, setShowFailure] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [employeeId, setEmployeeId] =useState(Number);
-    const crdr =["Credit","Debit"];
+    const crdr =[
+        {
+            'id' : 1,
+            'label' : "Credit",
+            'value' : 'CR'
+        },
+        {
+            'id' : 2,
+            'label' : "Debit",
+            'value' : 'DR'
+        }
+    ];
     const [vendorList,setVendorList]= useState(props.bankStatement.vendorList)
     const [howReceived,sethowReceived]=useState(props.bankStatement.how)
     const [mode,setMode]=useState(props.bankStatement.mode)
@@ -51,10 +62,12 @@ const EditManageStatement = (props) => {
             "date":String(formValues.date),
             "amount":formValues.amount,
             "particulars":String(formValues.particulars),
-            "crdr": formValues.crdr == 'Credit' ? "CR" : "DR",
+            "crdr": formValues.crdr,
             "receivedby":Number(formValues.how),
             "vendorid":Number(formValues.vendor),
-            "createdby":1234
+            "howreceived" : Number(formValues.how)
+            // "createdby":1234
+
         }
                 const response = await APIService.editBankStatement(data);
         if (response.ok) {
@@ -74,10 +87,10 @@ const EditManageStatement = (props) => {
         modeofpayment: props.bankStatement.item.modeofpayment ,
         particulars: props.bankStatement.item.particulars,
         amount: props.bankStatement.item.amount,
-        // vendor: props.bankStatement,
+        vendor: props.bankStatement.item.vendorid,
         date: props.bankStatement.item.date,
         crdr: props.bankStatement.item.crdr,
-        how: props.bankStatement.item.how,
+        how: props.bankStatement.item.receivedhow,
     };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -173,17 +186,19 @@ const EditManageStatement = (props) => {
                 className='flex justify-center items-center'
                  >
                     <>
-                    <Draggable>
+                    <Draggable handle='div.move'>
                 <div className='flex justify-center items-center  '>
-                    <div className="w-[1050px] h-auto bg-white rounded-lg">
-                        <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
-                            <div className="mr-[410px] ml-[410px]">
-                                <div className="text-[16px]">Edit Bank Statement</div>
-                            </div>
-                            <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
-                                <button onClick={handleDialogClose}>
-                                <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
-                                </button>
+                    <div className="w-[1050px] h-auto bg-white rounded-lg relative">
+                        <div className='move cursor-move'>
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="mr-[410px] ml-[410px]">
+                                    <div className="text-[16px]">Edit Bank Statement</div>
+                                </div>
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
+                                    <button onClick={handleDialogClose}>
+                                    <img className="w-[20px] h-[20px]" src={Cross} alt="cross" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <form onSubmit={handleSubmit}>
@@ -217,7 +232,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">Vendor</div> 
                                             <select className=" text-[12px] pl-4 w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm" type="text"  name="vendor" value={formValues.vendor} onChange={handleChange} >
-                                            
+                                                <option hidden>Select A Vendor</option>
                                                 {vendorList && vendorList.map(item => (
                                                     <option value={item[0]}>
                                                         {item[1]}
@@ -238,8 +253,8 @@ const EditManageStatement = (props) => {
                                             <div className="text-[13px]">DR/CR <label className="text-red-500">*</label></div>
                                             <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="crdr" value={formValues.crdr} onChange={handleChange} required>
                                                 {crdr && crdr.map(item => (
-                                                    <option key={item} value={item}>
-                                                        {item}
+                                                    <option key={item.id} value={item.value}>
+                                                        {item.label}
                                                     </option>
                                                 ))}
                                             </select>
@@ -248,7 +263,7 @@ const EditManageStatement = (props) => {
                                         <div className="">
                                             <div className="text-[13px]">How Recieved(CR)? </div>
                                             <select className="text-[11px] pl-4 w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm" type="text" name="how" value={formValues.how} onChange={handleChange} >
-                                            
+                                                <option hidden>Select How Received</option>
                                                 {howReceived && howReceived.map(item => (
                                                     <option value={item[0]}>
                                                         {item[1]}
