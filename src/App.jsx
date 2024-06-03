@@ -90,6 +90,13 @@ import OrderTraceReport from "./Screens/Reports/ReportTrace/OrderTraceReport/ind
 import VendorTraceReport from "./Screens/Reports/ReportTrace/VendorTraceReport/index.jsx";
 import { CircularProgress } from "@mui/material";
 import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
+import ClientReceiptView from "./Screens/Reports/TallyReports/ClientReceipt/index.jsx";
+import OrderPaymentDDView from "./Screens/Reports/TallyReports/OrderPaymentDD/index.jsx";
+import OrderPaymentB2CView from "./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx";
+import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx";
+import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx";
+import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
+import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -356,6 +363,32 @@ const App = () => {
               <Route
                 path="/reports/vendorTraceReport"
                 element={<VendorTraceReport />}
+                path="/reports/clientReceipt"
+                element={<ClientReceiptView />}
+              />
+              <Route
+                path="/reports/orderpaymentDD"
+                element={<OrderPaymentDDView />}
+              />
+              <Route
+                path="/reports/orderpaymentbanktocash"
+                element={<OrderPaymentB2CView />}
+              />
+              <Route
+                path="reports/orderpaymentbanktobank"
+                element={<OrderPaymentB2BView />}
+              />
+              <Route
+                path="reports/orderpaymentwithtds"
+                element={<OrderPaymentWithTdsView />}
+              />
+              <Route
+                path="reports/orderpaymentwithouttds"
+                element={<OrderPaymentWithoutTdsView />}
+              />
+              <Route
+                path="reports/orderreceipttoinvoiceTax"
+                element={<OrderReceiptToInvoiceServiceTax />}
               />
             </Route>
 

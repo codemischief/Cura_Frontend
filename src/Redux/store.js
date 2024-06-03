@@ -33,6 +33,18 @@ import ProsPectReducer from "./slice/Research/ProspectSlice";
 import ClientTraceReport from "./slice/reporting/ClientTraceReport";
 import OrderTraceReport from "./slice/reporting/OrderTraceReport";
 import VendorTraceReport from "./slice/reporting/VendorTraceReport";
+import ClientReceiptReportReducer from "./slice/reporting/TallyReports/ClientReceipt/ClientReceipt"
+import OrderPaymentDDReportReducer from "./slice/reporting/TallyReports/OrderPaymentDD/OrderPaymentDD"
+import OrderPaymentB2CReducer from "./slice/reporting/TallyReports/OrderPaymentB2C/OrderPaymentB2C";
+import OrderPaymentB2BReducer from "./slice/reporting/TallyReports/OrderPaymentB2B/OrderPaymentB2B";
+import OrderPaymentWithTdsReducer from "./slice/reporting/TallyReports/OrderPaymentWithTds/OrderPaymentWithTds";
+import OrderPaymentWithoutTdsReducer from "./slice/reporting/TallyReports/OrderPaymentWithoutTds/OrderPaymentWithoutTds";
+import OrderReceiptToServiceTaxReducer from "./slice/reporting/TallyReports/OrderReceiptToInvoiceServiceTax/OrderReceiptToInvoiceServiceTax";
+
+
+
+
+
 export const store = configureStore({
   reducer: {
     pmaBilling: pmaReducer,
@@ -66,6 +78,14 @@ export const store = configureStore({
     clientTraceReport:ClientTraceReport,
     orderTraceReport:OrderTraceReport,
     vendorTraceReport: VendorTraceReport,
+    clientReceiptReport:ClientReceiptReportReducer,
+    orderPaymentDDReport:OrderPaymentDDReportReducer,
+    orderPaymentB2C:OrderPaymentB2CReducer,
+    orderPaymentB2B:OrderPaymentB2BReducer,
+    orderPaymentWithTds:OrderPaymentWithTdsReducer,
+    orderPaymentWithoutTds:OrderPaymentWithoutTdsReducer,
+    orderReceiptToServiceTax:OrderReceiptToServiceTaxReducer
+
   },
   // Add the RTK Query API middleware
 });
