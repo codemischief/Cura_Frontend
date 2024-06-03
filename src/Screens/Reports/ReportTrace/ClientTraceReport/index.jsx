@@ -176,7 +176,7 @@ const LobReceiptPayments = () => {
    }
    const loadOptions = async (e) => {
       console.log(e)
-      if(e.length < 1) return ;
+      if(e.length < 2) return ;
       const data = {
         "user_id" : 1234,
         "pg_no" : 0,
@@ -278,7 +278,7 @@ const LobReceiptPayments = () => {
                   }),
                   menu: (provided, state) => ({
                     ...provided,
-                    width: 230, // Adjust the width of the dropdown menu
+                    width: 180, // Adjust the width of the dropdown menu
                     zIndex: 9999 // Ensure the menu appears above other elements
                   }),
                   menuList: (provided, state) => ({

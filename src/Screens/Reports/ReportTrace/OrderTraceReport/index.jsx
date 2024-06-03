@@ -162,13 +162,13 @@ const OrderTraceReport = () => {
     value : null
    });
    const [query,setQuery] = useState('')
-   const handleClientNameChange = (e) => {
+   const handleOrderIDChange = (e) => {
        console.log(e)
        setSelectedOption(e)
    }
    const loadOptions = async (e) => {
       console.log(e)
-      if(e.length < 1) return ;
+      if(e.length < 2) return ;
       const data = {
         "user_id" : 1234,
         "rows": ["id"],
@@ -180,8 +180,8 @@ const OrderTraceReport = () => {
       const res = await response.json()
       const results = res.data.map(e => {
         return {
-          label : e[0],
-          value : e[0]
+          label : e.id,
+          value : e.id
         }
       })
       if(results === 'No Result Found') {
@@ -232,7 +232,7 @@ const OrderTraceReport = () => {
             <div className="">
               <div className="text-[13px]">Order ID </div>
               <AsyncSelect
-                onChange={handleClientNameChange}
+                onChange={handleOrderIDChange}
                 value={selectedOption}
                 loadOptions={loadOptions}
                 cacheOptions
@@ -271,7 +271,7 @@ const OrderTraceReport = () => {
                   }),
                   menu: (provided, state) => ({
                     ...provided,
-                    width: 230, // Adjust the width of the dropdown menu
+                    width: 180, // Adjust the width of the dropdown menu
                     zIndex: 9999 // Ensure the menu appears above other elements
                   }),
                   menuList: (provided, state) => ({

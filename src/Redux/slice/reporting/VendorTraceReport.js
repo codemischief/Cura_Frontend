@@ -129,7 +129,7 @@ export const downloadDataXls =
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, "orderTraceReport.xlsx");
+      FileSaver.saveAs(blob, "vendorTraceReport.xlsx");
     } catch (error) {
       console.log("error", error);
     }

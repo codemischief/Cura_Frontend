@@ -58,8 +58,8 @@ const VendorTraceReport = () => {
     if (selectedOption.value) {
       let obj = {
         user_id: 1234,
-        clientID:selectedOption.value,
-        rows: ["type","orderid"],
+        vendorID:selectedOption.value,
+        rows:  ["type","vendorid"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -94,8 +94,8 @@ const VendorTraceReport = () => {
     if (selectedOption.value) {
       let obj = {
         user_id: 1234,
-        clientID:selectedOption.value,
-        rows: ["type","orderid"],
+        vendorID:selectedOption.value,
+        rows:  ["type","vendorid"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -125,14 +125,14 @@ const VendorTraceReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      clientID:selectedOption.value,
-      rows: ["type","orderid"],
+      vendorID:selectedOption.value,
+      rows:  ["type","vendorid"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
         "type": "Type",
-        "orderid": "ID",
+        "vendorid": "ID",
       },
       search_key: search,
       pg_no: 0,
@@ -162,13 +162,13 @@ const VendorTraceReport = () => {
     value : null
    });
    const [query,setQuery] = useState('')
-   const handleClientNameChange = (e) => {
+   const handleVendorIDChange = (e) => {
        console.log(e)
        setSelectedOption(e)
    }
    const loadOptions = async (e) => {
       console.log(e)
-      if(e.length < 1) return ;
+      if(e.length < 2) return ;
       const data = {
         "user_id" : 1234,
         "rows": ["id"],
@@ -180,8 +180,8 @@ const VendorTraceReport = () => {
       const res = await response.json()
       const results = res.data.map(e => {
         return {
-          label : e[0],
-          value : e[0]
+          label : e.id,
+          value : e.id
         }
       })
       if(results === 'No Result Found') {
@@ -232,7 +232,7 @@ const VendorTraceReport = () => {
             <div className="">
               <div className="text-[13px]">Vendor ID </div>
               <AsyncSelect
-                onChange={handleClientNameChange}
+                onChange={handleVendorIDChange}
                 value={selectedOption}
                 loadOptions={loadOptions}
                 cacheOptions
@@ -271,7 +271,7 @@ const VendorTraceReport = () => {
                   }),
                   menu: (provided, state) => ({
                     ...provided,
-                    width: 230, // Adjust the width of the dropdown menu
+                    width: 180, // Adjust the width of the dropdown menu
                     zIndex: 9999 // Ensure the menu appears above other elements
                   }),
                   menuList: (provided, state) => ({
