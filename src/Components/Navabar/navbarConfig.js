@@ -144,12 +144,48 @@ export const navMenuConfig = [
       {
         subheader: "Bank Record",
         items: [
-          { title: "Client Order Receipt Mismatch Details", path: "" },
+          { title: "Client Order Receipt Mismatch Details", path: PATH_DASHBOARD.report.bankRecords.clientOrderReceiptMismatchDetails },
           { title: "Bank Balance Reconciliation", path: "" },
-          { title: "Monthly Bank Summary", path: "" },
-          { title: "Bank Transfer Reconciliation", path: "" },
-          { title: "Daily Bank Receipts Reconciliation", path: "" },
-          { title: "Daily Bank Payments Reconciliation", path: "" },
+          { title: "Monthly Bank Summary", path: PATH_DASHBOARD.report.bankRecords.monthlyBankSummary },
+          { title: "Bank Transfer Reconciliation", path: PATH_DASHBOARD.report.bankRecords.bankTransferReconsiliation },
+          { title: "Daily Bank Receipts Reconciliation", path: PATH_DASHBOARD.report.bankRecords.dailyBankReceiptsReconciliation },
+          { title: "Daily Bank Payments Reconciliation", path: PATH_DASHBOARD.report.bankRecords.dailyBankPaymentsReconciliation
+           },
+        ],
+      },
+      {
+        subheader: "Client",
+        items: [
+          { title: "Client Statement", path: "" },
+          { title: "Duplicate Clients ", path: PATH_DASHBOARD.report.clients.duplicateClients },
+          { title: "Client Bank Details", path: PATH_DASHBOARD.report.clients.clientBankDetails },
+          { title: "Cura Non PMA Statements", path: PATH_DASHBOARD.report.clients.nonPmaClientStatements },
+          { title: "Cura Non PMA Receivables", path: PATH_DASHBOARD.report.clients.nonPmaClientReceivables },
+        ],
+      },
+      {
+        subheader: "Contacts",
+        items: [
+          { title: "All Owner Email Ids", path: "" },
+          { title: "All Tenants Email Ids", path: "" },
+          { title: "Client Contacts", path: "" },
+          { title: "Owners Phone No's", path: "" },
+          { title: "Clients Phone No's", path: "" },
+        ],
+      },
+      {
+        subheader: "Exceptions",
+        items: [
+          { title: "Manage Vendor", path: "" },
+          { title: "Manage Vendor Invoice", path: "" },
+          { title: "Manage Vendor Payment", path: "" },
+        ],
+      },
+      {
+        subheader: "Orders",
+        items: [
+          { title: "Aged Order", path: "" },
+          { title: "Order Analysis", path: "" },
         ],
       },
       {
@@ -164,18 +200,29 @@ export const navMenuConfig = [
             path: PATH_DASHBOARD.report.list.orderReceipt,
           },
           { title: "Order Invoice List", path: PATH_DASHBOARD.report.list.orderInvoiceList },
-          { title: "Vendor Payment List", path: "" },
+          { title: "Vendor Payment List", path: PATH_DASHBOARD.report.list.vendorPayment },
           { title: "Client Receipt List", path: PATH_DASHBOARD.report.list.clientReceiptList },
           { title: "L and L List", path: "" },
         ],
       },
       {
-        subheader: "Monthly Margin",
+        subheader: "PMA",
         items: [
-          { title: "LOB-Receipts-Payments", path: "" },
-          { title: "Entity-Receipt-Payments", path: "" },
-          { title: "Client Statement-CI,CR and OR(All Entities)", path: "" },
-          { title: "LOB-Receipts-Payments Consolidated", path: "" },
+          {
+            title: "Active PMA Agreement",
+            path: PATH_DASHBOARD?.report?.pma.activePmaAgreement,
+          },
+          {
+            title: "All Project Contacts",
+            path: PATH_DASHBOARD.report.pma.projectContacts,
+          },
+          { title: "Details For Advance Holding Amount", path: PATH_DASHBOARD.report.pma.advanceHoldingAmont },
+          { title: "PMA Client Statement-CL,CR and OR(All Entities)", path: PATH_DASHBOARD.report.pma.pmaClientStatementAll },
+          { title: "Cura PMA Client Statement", path: PATH_DASHBOARD.report.pma.pmaClientStatement },
+          { title: "Cura PMA Client Receivables", path: PATH_DASHBOARD.report.pma.pmaClientReceivables },
+          { title: "PMA Invoice List", path: PATH_DASHBOARD.report.pma.pmaInvoiceList },
+          { title: "PMA Billing Treand Report", path: PATH_DASHBOARD.report.pma.pmaBillingTrendReport },
+          { title: "Client Portal Report", path: PATH_DASHBOARD.report.pma.clientPortalReport },
         ],
       },
       {
@@ -191,26 +238,28 @@ export const navMenuConfig = [
         ],
       },
       {
-        subheader: "Report Trace",
-        items: [
-          { title: "Client Trace", path: "" },
-          { title: "Order Trace", path: "" },
-          { title: "Vendor Trace", path: "" },
-        ],
-      },
-      {
-        subheader: "Exceptions",
-        items: [
-          { title: "Manage Vendor", path: "" },
-          { title: "Manage Vendor Invoice", path: "" },
-          { title: "Manage Vendor Payment", path: "" },
-        ],
-      },
-      {
         subheader: "Vendor",
         items: [
           { title: "Vendor Summary", path: "" },
           { title: "Vendor Statement", path: "" },
+        ],
+      },
+      {
+        subheader: "Legal",
+        items: [{ title: "Active L & L Agreement", path: "" }],
+      },
+      {
+        subheader: "Monthly Margin",
+        items: [
+          { title: "Client Statement-CI,CR and OR(All Entities)", path: PATH_DASHBOARD.report.monthlyMargin.clientStatementAll },
+        ],
+      },
+      {
+        subheader: "Report Trace",
+        items: [
+          { title: "Client Trace", path: PATH_DASHBOARD.report.reportTrace.clientTrace },
+          { title: "Order Trace", path:  PATH_DASHBOARD.report.reportTrace.orderTrace },
+          { title: "Vendor Trace", path:  PATH_DASHBOARD.report.reportTrace.vendorTrace },
         ],
       },
       {
@@ -220,17 +269,7 @@ export const navMenuConfig = [
           { title: "Service Tax Paid by Vendor", path: "" },
         ],
       },
-      {
-        subheader: "Orders",
-        items: [
-          { title: "Aged Order", path: "" },
-          { title: "Order Analysis", path: "" },
-        ],
-      },
-      {
-        subheader: "Legal",
-        items: [{ title: "Active L & L Agreement", path: "" }],
-      },
+      
       {
         subheader: "Statistics",
         items: [

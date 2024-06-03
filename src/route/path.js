@@ -1,3 +1,5 @@
+
+
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
@@ -74,6 +76,39 @@ export const PATH_DASHBOARD = {
       orderReceipt: path(ROOTS.report, "/orderReceiptList"),
       orderInvoiceList: path(ROOTS.report, "/orderInvoiceList"),
       clientReceiptList: path(ROOTS.report, "/clientReceiptList"),
+      vendorPayment: path(ROOTS.report,"/vendorPaymentsList")
     },
+    bankRecords: {
+      clientOrderReceiptMismatchDetails : path(ROOTS.report,"/clientOrderReceiptMismatchDetails"),
+      monthlyBankSummary :  path(ROOTS.report,"/monthlyBankSummary"),
+      bankTransferReconsiliation : path(ROOTS.report,"/bankTransferReconciliation"),
+      dailyBankReceiptsReconciliation : path(ROOTS.report,"/bankReceiptReconciliation"),
+      dailyBankPaymentsReconciliation : path(ROOTS.report,"/bankPaymentsReconciliation"),
+    },
+    monthlyMargin: {
+      clientStatementAll : path(ROOTS.report, "/clientStatementAll"),
+    },
+    reportTrace: {
+      clientTrace : path(ROOTS.report, "/clientTraceReport"),
+      orderTrace : path(ROOTS.report, "/orderTraceReport"),
+      vendorTrace : path(ROOTS.report, "/vendorTraceReport"),
+    },
+    clients: {
+      duplicateClients : path(ROOTS.report, "/duplicateClientReport"),
+      clientBankDetails : path(ROOTS.report, "/clientBankDetails"),
+      nonPmaClientStatements : path(ROOTS.report, "/nonPmaClientStatement"),
+      nonPmaClientReceivables : path(ROOTS.report, "/nonPmaClientReceivables"),
+    },
+    pma : {
+      activePmaAgreement: path(ROOTS.report, "/activePmaAgreement"),
+      projectContacts: path(ROOTS.report,"/projectContact"),
+      advanceHoldingAmont: path(ROOTS.report,"/advanceHoldingAmount"),
+      pmaClientStatementAll: path(ROOTS.report,"/pmaClientStatementAll"),
+      pmaClientStatement: path(ROOTS.report,"/pmaClientStatement"),
+      pmaClientReceivables: path(ROOTS.report,"/pmaClientReceivable"),
+      pmaInvoiceList: path(ROOTS.report,"/pmaInvoiceList"),
+      pmaBillingTrendReport: path(ROOTS.report,"/pmaBillingTrendView"),
+      clientPortalReport: path(ROOTS.report,"/pmaClientReport"),
+    }
   },
 };
