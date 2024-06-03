@@ -387,7 +387,7 @@ const App = () => {
                 element={<OrderPaymentWithoutTdsView />}
               />
               <Route
-                path="reports/orderReceipttoInvoiceTax"
+                path="reports/orderreceipttoinvoiceTax"
                 element={<OrderReceiptToInvoiceServiceTax />}
               />
             </Route>
