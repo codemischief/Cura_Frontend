@@ -24,7 +24,6 @@ export const PATH_DASHBOARD = {
       contact: "/managebuilder/projects/:buildername",
       projects: "/managebuilder/contacts/:buildername",
     },
-    projectManagementInfo: path(ROOTS.admin, "/manageprojectinfo"),
     country: path(ROOTS.admin, "/country"),
     state: path(ROOTS.admin, "/state"),
     city: path(ROOTS.admin, "/city"),
@@ -57,6 +56,7 @@ export const PATH_DASHBOARD = {
   },
   manage: {
     bankStatement: path(ROOTS.manage, "/bankstatement"),
+    projectManagementInfo: path(ROOTS.manage, "/manageprojectinfo"),
       manageOrder: path(ROOTS.manage, "/manageOrder"),
     clientInfo: path(ROOTS.manage, "/manageclientinfo"),
     clientProperty: path(ROOTS.manage, "/manageclientproperty"),

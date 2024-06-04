@@ -133,7 +133,6 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
     const fetchInitialData = async () => {
         setPageLoading(true);
         const data = { "user_id": 1234, "id": currOrderId }
-
         const response = await APIService.getOrderDataById(data)
         const res = await response.json()
         console.log(res)
@@ -141,9 +140,14 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         const existing = { ...formValues }
         existing.order_info = res.data.order_info;
         existing.order_photos = res.data.order_photos;
+        // fetchClientPropertyData(res.data.order_info.clientid)
+        getClientPropertyByClientId(res.data.order_info.clientid)
         await fetchClientName(res.data.order_info.clientid)
         setFormValues(existing);
-        setPageLoading(false)
+        setTimeout(() => {
+            setPageLoading(false)
+        },1000)
+        // setPageLoading(false)
     }
     const [clientName, setClientName] = useState("");
     const fetchClientName = async (id) => {
@@ -158,6 +162,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         if (id != null) {
             console.log(res.data);
             setClientName(res.data.clientname);
+            // fetchClientPropertyData(res.data.id)
             console.log(clientName)
         }
     }
@@ -192,13 +197,17 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         setOrderStatusData(res.data)
     }
     // const [clientPropertyData,setClientPropertyData] = useState([])
-    const fetchClientPropertyData = async () => {
-        const data = { "user_id": 1234 }
-        const response = await APIService.getClientPropertyAdmin(data)
+    const getClientPropertyByClientId = async (id) => {
+        const data = {
+            "user_id": 1234,
+            "client_id": id
+        }
+        const response = await APIService.getClientPropertyByClientId(data)
         const res = await response.json()
-        console.log(res)
-        setClientPropertyData(res.data)
+        console.log(res.data)
+        setClientPropertyData((prev) => res.data)
     }
+    
     // const [serviceData,setServiceData] = useState([])
     const fetchServiceData = async () => {
         const data = { "user_id": 1234 }
@@ -333,7 +342,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         fetchInitialData()
         fetchUsersData()
         fetchOrderStatusData()
-        fetchClientPropertyData()
+        // fetchClientPropertyData()
         fetchServiceData()
         fetchVendorData()
         fetchTallyLedgerData()
@@ -343,6 +352,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
         handleClose();
         showCancel();
     }
+    const [orderText,setOrderText] = useState('Select Client Property')
     return (
         <Modal open={true}
             fullWidth={true}
@@ -353,11 +363,11 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                 <Draggable handle='div.move'>
                     <div className="w-[1050px] h-auto bg-white  rounded-lg">
                         <div className="move cursor-move">
-                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                            <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                                 <div className="mr-[410px] ml-[410px]">
                                     <div className="text-[16px]">Edit Order</div>
                                 </div>
-                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                     <button onClick={() => { close() }}><img className="w-[20px] h-[20px]" src={Cross} alt="cross" /></button>
                                 </div>
                             </div>
@@ -374,7 +384,7 @@ const EditOrderModal = ({ currOrderId, handleClose, showSuccess, showCancel }) =
                             </div>
                         </div>
                         {!pageLoading && <>
-                            {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} />}
+                            {selectedDialog == 1 && <EditOrderInformation formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} clientName={clientName} formErrors={formErrors} setClientName={setClientName} orderText={orderText} setOrderText={setOrderText} />}
                             {selectedDialog == 2 && <EditPhotos formValues={formValues} setFormValues={setFormValues} currOrderId={currOrderId} />}
                             {selectedDialog == 3 && <EditOrderStatusHistory formValues={formValues} setFormValues={setFormValues} orderId={currOrderId} />}
                         </>

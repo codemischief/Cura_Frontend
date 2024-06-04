@@ -134,7 +134,7 @@ const App = () => {
               />
               <Route path="/admin/managebuilder" element={<ManageBuilder />} />
               <Route
-                path="/admin/manageprojectinfo"
+                path="/manage/manageprojectinfo"
                 element={<ManageProjectInfo />}
               />
               <Route path="/admin/deleteById" element={<DeleteById />} />

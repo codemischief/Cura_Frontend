@@ -28,7 +28,7 @@ const SaveConfirmationOrder = ({ addOrder, handleClose,showCancel,setDefault }) 
                             {/* <div className="text-[14px]">Order :  </div> */}
                         </div>
                         <div className="mt-4 w-full text-center">
-                            <p className="text-[14px]">Are you sure you want to add this order?</p>
+                            <p className="text-[14px]">Are you sure you want to add this Order?</p>
                         </div>
                         <div className="my-10 flex justify-center items-center gap-[10px]">
                             <button className='w-[132px] h-[48px] bg-[#004DD7] text-white rounded-md' onClick={addOrder}>Add</button>

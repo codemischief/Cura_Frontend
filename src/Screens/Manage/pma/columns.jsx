@@ -46,9 +46,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Invoice Date",
       field: "invoicedate",
       cellStyle: { ...cellStyleCommon, minWidth: 80 },
-
-      filterComponent: DateFilterField,
-      sorting: true,
+      sorting: false,
     },
     {
       title: "Invoice Amount",
