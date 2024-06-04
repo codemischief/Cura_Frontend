@@ -11,7 +11,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "5rem" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "0.5rem",maxWidth:"3rem",width:"2rem" },
       render: (index) => {
         return (
           <Stack
@@ -28,77 +28,80 @@ export default function connectionDataColumn(onQuery) {
       field: "uniqueid",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "4.813rem"  },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
     },
     {
       title: "Date",
       field: "date",
       sorting: true,
       filterComponent: DateFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "6.25rem" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
+
     },
     {
       title: "Type",
-      field: "voucher",
+      field: "type",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
+
     },
     {
       title: "Voucher Type",
       field: "vouchertype",
       sorting: true,
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem" },
+
     },
     {
       title: "Voucher Number",
       field: "vouchernumber",
       sorting: true,
-      filterComponent: NumberFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
     },
     {
         title: "DR. Ledger",
         field: "drledger",
         sorting: true,
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem" },
       },
       {
         title: "CR. Ledger",
         field: "crledger",
         sorting: true,
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"8rem" },
       },
       {
         title: "Ledger Amount",
         field: "ledgeramount",
         sorting: true,
         filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
       },
       {
         title: "Narration",
         field: "narration",
         sorting: true,
         filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"8rem" },
       },
       {
         title: "Instrument Number",
         field: "instrumentno",
         sorting: true,
-        filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "15%" },
+        filterComponent: TextFilterField,
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
       },
       {
         title: "Instrument Date",
         field: "instrumentdate",
         sorting: true,
         filterComponent: DateFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "15%" },
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem" },
       }
   ];
   return columns;

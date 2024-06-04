@@ -93,8 +93,8 @@ import { CircularProgress } from "@mui/material";
 import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
 import ClientReceiptView from "./Screens/Reports/TallyReports/ClientReceipt/index.jsx";
 import OrderPaymentDDView from "./Screens/Reports/TallyReports/OrderPaymentDD/index.jsx";
-import OrderPaymentB2CView from "./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx";
-import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx";
+import OrderPaymentB2CView from "./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx";
+import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx";
 import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx";
 import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
 import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
@@ -103,6 +103,8 @@ import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
 import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
 import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/index.jsx";
 import TdsPaidToGovernement from "./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx";
+import TdsPaidByVendorView from "./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx";
+import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -382,6 +384,10 @@ const App = () => {
                 element={<VendorTraceReport />}
               />
               <Route
+                path="/reports/clientReceipt"
+                element={<ClientReceiptView />}
+              />
+              <Route
                 path="/reports/orderpaymentDD"
                 element={<OrderPaymentDDView />}
               />
@@ -406,12 +412,20 @@ const App = () => {
                 element={<OrderReceiptToInvoiceServiceTax />}
               />
               <Route
+                path="reports/tdspaidbyvendor"
+                element={<TdsPaidByVendorView />}
+              />
+              <Route
                 path="reports/vendorstatement"
                 element={<VendorStatementView />}
               />
               <Route
                 path="reports/tdsPaidToGovernment"
                 element={<TdsPaidToGovernement />}
+              />
+              <Route
+                path="reports/vendorpaymentsummary"
+                element={<VendorPaymentPeriodView />}
               />
             </Route>
 

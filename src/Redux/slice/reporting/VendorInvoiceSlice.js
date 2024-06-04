@@ -2,10 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import {
   env_URL_SERVER,
-  updatedVendorInvoiceData
+  vendorStatementReport
 } from "../../helper";
 import FileSaver from "file-saver";
-import { vendorStatement } from "./Group9/VendorStatement";
 
 const initialState = {
   VendorInvoiceData: [],
@@ -28,7 +27,7 @@ export const pmaSlice = createSlice({
   reducers: {
     setVendorInvoiceData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.VendorInvoiceData = vendorStatement(data.data, year, month);
+      state.VendorInvoiceData = vendorStatementReport(data.data, year, month);
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {

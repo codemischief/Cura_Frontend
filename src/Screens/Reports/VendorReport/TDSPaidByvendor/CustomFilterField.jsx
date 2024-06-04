@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../../Components/common/table/FilterField";
 import { useSelector } from "react-redux";
-import { setPageNumber, setvendorStatementViewFilters } from "../../../../Redux/slice/reporting/Group9/VendorStatement";
+import { setTdsByVendorReportFilters,setPageNumber } from "../../../../Redux/slice/reporting/Group9/TdsByVendorSlice";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.vendorStatement);
+  const { filter } = useSelector((state) => state.tdspaidByVendor);
 
   const handleFilterChange = (filters) => {
-    dispatch(setvendorStatementViewFilters(filters));
+    dispatch(setTdsByVendorReportFilters(filters));
     dispatch(setPageNumber(1))
   };
 

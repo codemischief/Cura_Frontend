@@ -280,7 +280,7 @@ const ClientReceiptView = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Mode
               </label>
@@ -291,14 +291,14 @@ const ClientReceiptView = () => {
                 value={intialFields.mode}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Mode</option>
                 <option value="all">all</option>
                 {modeData.map((opt) => (
                   <option value={opt[0]}>{opt[1]}</option>
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Entity
               </label>
@@ -308,7 +308,8 @@ const ClientReceiptView = () => {
                 value={intialFields.entity}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select  Entity</option>
+
                 <option value="all">all</option>
 
                 {entityData.map((opt) => (
@@ -316,14 +317,14 @@ const ClientReceiptView = () => {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select Start Date"}
                 onChange={handleChange}
                 name="start_date"
               />
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select End Date"}
                 onChange={handleChange}

@@ -8,23 +8,24 @@ import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadVendorStatementReport,
-  getVendorStatementView,
+  downloadVendorPaymentPeriodReport,
+  getVendorPaymentPeriodView,
   setCountPerPage,
   setInitialState,
   setPageNumber,
   setSorting,
   setStatus,
-} from "../../../../Redux/slice/reporting/Group9/VendorStatement";
+} from "../../../../Redux/slice/reporting/Group9/VendorPaymentPeriodSlice";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
 
-const VendorStatementView = () => {
+const VendorPaymentPeriodView = () => {
   const dispatch = useDispatch();
   const {
-    vendorStatementView,
+    vendorPaymentPeriodData,
     status,
     totalAmount,
     totalCount,
@@ -32,7 +33,7 @@ const VendorStatementView = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.vendorStatement);
+  } = useSelector((state) => state.vendorPaymentPeriod);
  
   const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -41,7 +42,6 @@ const VendorStatementView = () => {
   const [intialFields, setIntialFields] = useState({
     start_date: "",
     end_date: "",
-    vendor: "",
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -64,34 +64,20 @@ const VendorStatementView = () => {
     dispatch(setPageNumber(1));
   };
 
-  const getVendor = async () => {
-    const data = {
-      user_id: 1234,
-    };
-    const vendor = await APIService.getVendorAdmin(data);
-    console.log(vendor,"vendor");
-    setVendor((await vendor.json()).data);
-  };
 
-  useState(() => {
-    getVendor();
-  }, []);
+
 
   const handleRefresh = () => {
     if (
       intialFields.start_date &&
-      intialFields.end_date &&
-      intialFields.vendor
+      intialFields.end_date 
     ) {
       let obj = {
         user_id: 1234,
         rows: [
-          "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
+          "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
         ],
-        vendorID: !isNaN(+intialFields.vendor)
-          ? +intialFields.vendor
-          : intialFields.vendor,
+      
         
         startdate: intialFields.start_date,
         enddate: intialFields.end_date,
@@ -102,7 +88,7 @@ const VendorStatementView = () => {
         pg_size: +countPerPage,
         order: undefined,
       };
-      dispatch(getVendorStatementView(obj));
+      dispatch(getVendorPaymentPeriodView(obj));
     }
   };
 
@@ -128,16 +114,13 @@ const VendorStatementView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
+    if (intialFields.start_date && intialFields.end_date) {
       let obj = {
         user_id: 1234,
         rows: [
-          "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
+          "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
         ],
-        vendorID: !isNaN(+intialFields.vendor)
-          ? +intialFields.vendor
-          : intialFields.vendor,
+       
         
         startdate: intialFields.start_date,
         enddate: intialFields.end_date,
@@ -148,7 +131,7 @@ const VendorStatementView = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getVendorStatementView(obj));
+      dispatch(getVendorPaymentPeriodView(obj));
     }
   }, [
     filter,
@@ -171,40 +154,36 @@ const VendorStatementView = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
+        "vendorname","mode_of_payment","registered","vattinno","panno","gstservicetaxno","amount","tds","servicetaxamount"
       ],
-      vendorID: !isNaN(+intialFields.vendor)
-        ? +intialFields.vendor
-        : intialFields.vendor,
      
       startdate: intialFields.start_date,
       downloadType: "excel",
       enddate: intialFields.end_date,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: [],
+      filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        type: "Type",
-        id: "ID",
-        clientname: "Client Name",
-        invoicedate_orderpaymentdate: "Date",
-        invoiceamount_orderpaymentamount:"Amount",
-        estimatedescription_orderdescription:"Estimate / Order Description",
-        monthyear:"Month-Year",
-        modeofpayment :"Mode of Payment",
-        entityname:"Entity"
+        vendorname: "Vendor Name",
+        mode_of_payment: "Mode of Payment",
+        registered: "Registered",
+        vattinno: "VAT Tin No",
+        panno:"PAN No",
+        gstservicetaxno:"Service Tax No.",
+        amount:"Total Payment",
+        tds :"Total TDS",
+        servicetaxamount:"Total Service Tax"
         
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadVendorStatementReport(obj));
+    dispatch(downloadVendorPaymentPeriodReport(obj));
   };
 
   const handleShow = () => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
+    if (intialFields.start_date && intialFields.end_date) {
       dispatch(setInitialState());
       setShowTable(true);
     } else {
@@ -221,8 +200,8 @@ const VendorStatementView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Vendor Statement"}
-            path={["Reports", "Vendor", "Vendor Statement"]}
+            heading={"Vendor Payment Summary for Period"}
+            path={["Reports", " TDS Report", "Vendor Payment Summary for Period"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -256,24 +235,7 @@ const VendorStatementView = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[200px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Vendor
-              </label>
-
-              <select
-                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="vendor"
-                value={intialFields.vendor}
-                onChange={handleChange}
-              >
-                <option selected value={""} className="hidden">Select Vendor</option>
-                <option value="all">all</option>
-                {vendorData.map((opt) => (
-                  <option value={opt[0]}>{opt[1]}</option>
-                ))}
-              </select>
-            </div>
+           
             
             <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
@@ -312,8 +274,8 @@ const VendorStatementView = () => {
               }}
               disabled={
                 !intialFields.start_date ||
-                !intialFields.end_date ||
-                !intialFields.vendor 
+                !intialFields.end_date 
+               
                 
               }
             >
@@ -321,10 +283,9 @@ const VendorStatementView = () => {
             </Button>
           </Stack>
         </Stack>
-        <SimpleTableWithFooter
-          pageName={"vendorStatement"}
+        <SimpleTable
           columns={columns}
-          data={vendorStatementView}
+          data={vendorPaymentPeriodData}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -343,4 +304,4 @@ const VendorStatementView = () => {
   );
 };
 
-export default VendorStatementView;
+export default VendorPaymentPeriodView;

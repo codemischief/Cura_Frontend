@@ -125,7 +125,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ActivePmaAgreement.xlsx");
+    FileSaver.saveAs(blob, "Vendor_statement.xlsx");
   } catch (error) {
     console.log("error", error);
   }

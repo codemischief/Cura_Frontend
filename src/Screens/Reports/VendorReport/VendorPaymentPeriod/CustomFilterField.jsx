@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../../Components/common/table/FilterField";
 import { useSelector } from "react-redux";
-import { setTdsPaidGovtDataFilters,setPageNumber } from "../../../../Redux/slice/reporting/Group9/tdsPaidToGovt";
+import { setvendorPaymentPeriodView ,setPageNumber, setvendorPaymentPeriodViewFilters} from "../../../../Redux/slice/reporting/Group9/VendorPaymentPeriodSlice";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.tdsToGovt);
+  const { filter } = useSelector((state) => state.vendorPaymentPeriod);
 
   const handleFilterChange = (filters) => {
-    dispatch(setTdsPaidGovtDataFilters(filters));
+    dispatch(setvendorPaymentPeriodViewFilters(filters));
     dispatch(setPageNumber(1))
   };
 

@@ -259,8 +259,8 @@ const OrderPaymentB2CView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Payment-Bank to Bank"}
-            path={["Reports", "Tally Report", " Order Payment-Bank to Bank"]}
+            heading={"Order Payment-Bank to Cank"}
+            path={["Reports", "Tally Report", " Order Payment-Bank to Cank"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -294,7 +294,7 @@ const OrderPaymentB2CView = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Mode
               </label>
@@ -305,14 +305,14 @@ const OrderPaymentB2CView = () => {
                 value={intialFields.mode}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Mode</option>
                 <option value="all">all</option>
                 {modeData.map((opt) => (
                   <option value={opt[0]}>{opt[1]}</option>
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Entity
               </label>
@@ -322,7 +322,7 @@ const OrderPaymentB2CView = () => {
                 value={intialFields.entity}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Entity</option>
                 <option value="all">all</option>
 
                 {entityData.map((opt) => (
@@ -330,14 +330,14 @@ const OrderPaymentB2CView = () => {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select Start Date"}
                 onChange={handleChange}
                 name="start_date"
               />
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select End Date"}
                 onChange={handleChange}

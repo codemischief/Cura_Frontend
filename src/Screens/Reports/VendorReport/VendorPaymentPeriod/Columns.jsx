@@ -35,34 +35,19 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "9.813rem",
-        minWidth: "14.813rem",
-
+        minWidth: "4.813rem",
       },
     },
     {
-      title: "Vendor Category",
-      field: "vendorcategory",
+      title: "Mode of Payment",
+      field: "mode_of_payment",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "6rem",
-        maxWidth:"11rem"
-      },
-    },
-    {
-      title: "Payment Mode",
-      field: "paymentmode",
-      sorting: true,
-      filterComponent: TextFilterField,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        minWidth: "6rem",
-        maxWidth: "9rem",
-
+        minWidth: "4rem",
+        maxWidth:"6rem"
       },
     },
     {
@@ -73,21 +58,22 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "3rem",
-        maxWidth: "8rem",
+        minWidth: "6rem",
+        maxWidth: "9rem",
 
       },
     },
     {
-      title: "TDS",
-      field: "tds",
+      title: "VAT Tin No",
+      field: "vattinno",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5.063rem",
-        maxWidth:"8rem"
+        minWidth: "3rem",
+        maxWidth: "9rem",
+
       },
     },
     {
@@ -98,73 +84,65 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "5.063rem",
-        maxWidth:"8.3rem"
+        minWidth: "3rem",
+        maxWidth: "9rem",
 
       },
     },
+    
+   
     {
-      title: "TDS Section",
-      field: "tdssection",
+      title: "Service Tax No.",
+      field: "gstservicetaxno",
+      
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "5.063rem",
-        maxWidth: "8rem",
+        maxWidth:"11rem"
 
       },
     },
     {
-      title: "Amount",
+      title: "Total Payment",
       field: "amount",
       sorting: true,
       filterComponent: NumberFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "6.063rem",
-        maxWidth: "9rem",
+        minWidth: "5.063rem",
+        maxWidth: "7rem",
+
       },
     },
     {
-      title: "Payment Date",
-      field: "paymentdate",
+      title: "Total TDS",
+      field: "tds",
       sorting: true,
-      filterComponent: DateFilterField,
+      filterComponent: NumberFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "5.063rem",
-        maxWidth: "11rem",
+        maxWidth: "7rem",
       },
     },
     {
-      title: "Month Year",
-      field: "monthyear",
+      title: "Total Service Tax",
+      field: "servicetaxamount",
+
       sorting: true,
-      filterComponent: TextFilterField,
+      filterComponent: NumberFilterField,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
         minWidth: "5.063rem",
-        maxWidth: "11rem",
+        maxWidth: "7rem",
       },
     },
-    {
-      title: "Company Deductee",
-      field: "companydeductee",
-      sorting: true,
-      filterComponent: TextFilterField,
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        minWidth: "5.063rem",
-        maxWidth: "8rem",
-      },
-    },
-    
   ];
   return columns;
 }

@@ -5,26 +5,22 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
   downloadVendorStatementReport,
-  getVendorStatementView,
+  getTdByVendorView,
   setCountPerPage,
-  setInitialState,
   setPageNumber,
   setSorting,
-  setStatus,
-} from "../../../../Redux/slice/reporting/Group9/VendorStatement";
+} from "../../../../Redux/slice/reporting/Group9/TdsByVendorSlice";
 import connectionDataColumn from "./Columns";
-import DatePicker from "../../../../Components/common/select/CustomDate";
-import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
 
 const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
   const {
-    vendorStatementView,
+    tdsByVendorView,
     status,
     totalAmount,
     totalCount,
@@ -32,27 +28,16 @@ const TdsPaidByVendorView = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.vendorStatement);
- 
+  } = useSelector((state) => state.tdspaidByVendor);
+
   const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [vendorData, setVendor] = useState([]);
   const [search, setSearch] = useState("");
-  const [intialFields, setIntialFields] = useState({
-    start_date: "",
-    end_date: "",
-    vendor: "",
-  });
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
-  };
-
-  const handleChange = (e) => {
-    let { name, value } = e.target;
-    setIntialFields({ ...intialFields, [name]: value });
   };
 
   const handlePageChange = (value) => {
@@ -64,46 +49,32 @@ const TdsPaidByVendorView = () => {
     dispatch(setPageNumber(1));
   };
 
-  const getVendor = async () => {
-    const data = {
-      user_id: 1234,
-    };
-    const vendor = await APIService.getVendorAdmin(data);
-    console.log(vendor,"vendor");
-    setVendor((await vendor.json()).data);
-  };
-
-  useState(() => {
-    getVendor();
-  }, []);
 
   const handleRefresh = () => {
-    if (
-      intialFields.start_date &&
-      intialFields.end_date &&
-      intialFields.vendor
-    ) {
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
-        ],
-        vendorID: !isNaN(+intialFields.vendor)
-          ? +intialFields.vendor
-          : intialFields.vendor,
-        
-        startdate: intialFields.start_date,
-        enddate: intialFields.end_date,
-        sort_by: undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: undefined,
-      };
-      dispatch(getVendorStatementView(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "vendorname",
+        "vendorcategory",
+        "paymentmode",
+        "registered",
+        "tds",
+        "panno",
+        "tdssection",
+        "amount",
+        "paymentdate",
+        "monthyear",
+        "companydeductee",
+      ],
+
+      sort_by: undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: undefined,
+    };
+    dispatch(getTdByVendorView(obj));
   };
 
   const handleSearch = () => {
@@ -128,28 +99,30 @@ const TdsPaidByVendorView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
-        ],
-        vendorID: !isNaN(+intialFields.vendor)
-          ? +intialFields.vendor
-          : intialFields.vendor,
-        
-        startdate: intialFields.start_date,
-        enddate: intialFields.end_date,
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getVendorStatementView(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "vendorname",
+        "vendorcategory",
+        "paymentmode",
+        "registered",
+        "tds",
+        "panno",
+        "tdssection",
+        "amount",
+        "paymentdate",
+        "monthyear",
+        "companydeductee",
+      ],
+
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getTdByVendorView(obj));
   }, [
     filter,
     countPerPage,
@@ -171,68 +144,61 @@ const TdsPaidByVendorView = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
+        "vendorname",
+        "vendorcategory",
+        "paymentmode",
+        "registered",
+        "tds",
+        "panno",
+        "tdssection",
+        "amount",
+        "paymentdate",
+        "monthyear",
+        "companydeductee",
       ],
-      paymentMode: !isNaN(+intialFields.vendor)
-        ? +intialFields.vendor
-        : intialFields.vendor,
      
-      startdate: intialFields.start_date,
       downloadType: "excel",
-      enddate: intialFields.end_date,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        type: "Type",
-        id: "ID",
-        clientname: "Client Name",
-        
-        invoicedate_orderpaymentdate: "Date",
-        invoiceamount_orderpaymentamount:"Amount",
-        estimatedescription_orderdescription:"Estimate / Order Description",
-        monthyear:"Month-Year",
-        modeofpayment :"Mode of Payment",
-        entityname:"Entity"
-        
+        vendorname: "Vendor Name",
+        vendorcategory: "Vendor Category",
+        paymentmode: "Payment Mode",
+        registered: "Registered",
+        tds: "TDS",
+        panno: "PAN No",
+        tdssection: "TDS Section",
+        amount: "Amount",
+        paymentdate: "Payment Date",
+        monthyear: "Month Year",
+        companydeductee: "Company Deductee",
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(downloadVendorStatementReport(obj));
   };
 
-  const handleShow = () => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
-      dispatch(setInitialState());
-      setShowTable(true);
-    } else {
-      setError((prev) => ({
-        ...prev,
-        year: selectedYear ? prev.year : "please select a year first",
-        month: selectedMonth ? prev.month : "please select a year first",
-      }));
-    }
-  };
+
 
   return (
     <Stack gap="1rem" sx={{ paddingTop: "20px" }}>
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Vendor Statement"}
-            path={["Reports", "Vendor", "Vendor Statement"]}
+            heading={"TDS Paid By Vendor"}
+            path={["Reports", "TDS Report", "TDS Paid By Vendor"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
+            
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            )}
+            
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
@@ -243,89 +209,10 @@ const TdsPaidByVendorView = () => {
           </div>
         </div>
 
-        <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          alignItems={"center"}
-          height={"3.875rem"}
-        >
-          <Stack
-            direction={"row"}
-            marginLeft={"30px"}
-            justifyContent={"space-around"}
-            alignItems={"center"}
-            gap={"24px"}
-          >
-            <div className="flex flex-col h-16 w-[200px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Vendor
-              </label>
-
-              <select
-                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="vendor"
-                value={intialFields.vendor}
-                onChange={handleChange}
-              >
-                <option selected value={""} >Select Vendor</option>
-                <option value="all">all</option>
-                {vendorData.map((opt) => (
-                  <option value={opt[0]}>{opt[1]}</option>
-                ))}
-              </select>
-            </div>
-            
-            <div className="flex flex-col h-16 w-[200px]">
-              <DatePicker
-                label={"Select Start Date"}
-                onChange={handleChange}
-                name="start_date"
-              />
-            </div>
-            <div className="flex flex-col h-16 w-[200px]">
-              <DatePicker
-                label={"Select End Date"}
-                onChange={handleChange}
-                name="end_date"
-              />
-            </div>
-
-            <Button
-              variant="outlined"
-              onClick={handleShow}
-              sx={{
-                height: "36px",
-                textTransform: "none",
-                color: "#004DD7",
-                borderRadius: "8px",
-                width: "133px",
-                fontSize: "14px",
-                border: "1px solid #004DD7",
-                fontWeight: "600px",
-                lineHeight: "18.9px",
-                marginTop: "12px",
-                "&:hover": {
-                  //you want this to be the same as the backgroundColor above
-                  backgroundColor: "#004DD7",
-                  color: "#fff",
-                },
-              }}
-              disabled={
-                !intialFields.start_date ||
-                !intialFields.end_date ||
-                !intialFields.vendor 
-                
-              }
-            >
-              Show
-            </Button>
-          </Stack>
-        </Stack>
-        <SimpleTableWithFooter
-          pageName={"vendorStatement"}
+    
+        <SimpleTable
           columns={columns}
-          data={vendorStatementView}
+          data={tdsByVendorView}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -337,7 +224,7 @@ const TdsPaidByVendorView = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          height="calc(100vh - 14rem)"
         />
       </div>
     </Stack>

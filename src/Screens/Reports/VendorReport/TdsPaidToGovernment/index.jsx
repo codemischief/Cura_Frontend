@@ -1,28 +1,26 @@
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
 import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
-import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadVendorStatementReport,
-  getVendorStatementView,
+  downloadTdsPaidToGovtReport,
+  getTdsPaidGovtData,
   setCountPerPage,
   setPageNumber,
   setSorting,
-} from "../../../../Redux/slice/reporting/Group9/VendorStatement";
+} from "../../../../Redux/slice/reporting/Group9/tdsPaidToGovt";
 import connectionDataColumn from "./Columns";
-import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
-import { getTdsPaidGovtData } from "../../../../Redux/slice/reporting/Group9/tdsPaidToGovt";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
 
-const TdsPaidToGovernement = () => {
+const TdsPaidByVendorView = () => {
   const dispatch = useDispatch();
   const {
-    vendorStatementView,
+    tdsPaidGovtData,
     status,
     totalAmount,
     totalCount,
@@ -30,17 +28,10 @@ const TdsPaidToGovernement = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.vendorStatement);
+  } = useSelector((state) => state.tdsToGovt);
 
-  const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [vendorData, setVendor] = useState([]);
   const [search, setSearch] = useState("");
-  const [intialFields, setIntialFields] = useState({
-    start_date: "",
-    end_date: "",
-    vendor: "",
-  });
 
   const columns = useMemo(() => connectionDataColumn(), []);
 
@@ -57,53 +48,19 @@ const TdsPaidToGovernement = () => {
     dispatch(setPageNumber(1));
   };
 
-  const getVendor = async () => {
-    const data = {
-      user_id: 1234,
-    };
-    const vendor = await APIService.getVendorAdmin(data);
-    console.log(vendor, "vendor");
-    setVendor((await vendor.json()).data);
-  };
-
-  useState(() => {
-    getVendor();
-  }, []);
-
   const handleRefresh = () => {
-    if (
-      intialFields.start_date &&
-      intialFields.end_date &&
-      intialFields.vendor
-    ) {
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "type",
-          "id",
-          "clientname",
-          "invoicedate_orderpaymentdate",
-          "invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription",
-          "monthyear",
-          "modeofpayment",
-          "entityname",
-        ],
-        vendorID: !isNaN(+intialFields.vendor)
-          ? +intialFields.vendor
-          : intialFields.vendor,
-
-        startdate: intialFields.start_date,
-        enddate: intialFields.end_date,
-        sort_by: undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: undefined,
-      };
-      dispatch(getVendorStatementView(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows:  ["order_description","amount","date","payment_description","vendorname"],
+      
+      sort_by: undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: undefined,
+    };
+    dispatch(getTdsPaidGovtData(obj));
   };
 
   const handleSearch = () => {
@@ -128,39 +85,23 @@ const TdsPaidToGovernement = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (
-      intialFields.start_date &&
-      intialFields.end_date &&
-      intialFields.vendor
-    ) {
-      let obj = {
-        user_id: 1234,
-        rows: [
-          "type",
-          "id",
-          "clientname",
-          "invoicedate_orderpaymentdate",
-          "invoiceamount_orderpaymentamount",
-          "estimatedescription_orderdescription",
-          "monthyear",
-          "modeofpayment",
-          "entityname",
-        ],
-        vendorID: !isNaN(+intialFields.vendor)
-          ? +intialFields.vendor
-          : intialFields.vendor,
-
-        startdate: intialFields.start_date,
-        enddate: intialFields.end_date,
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getTdsPaidGovtData(obj));
-    }
+    let obj = {
+      user_id: 1234,
+      rows: [
+        "order_description",
+        "amount",
+        "date",
+        "payment_description",
+        "vendorname",
+      ],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getTdsPaidGovtData(obj));
   }, [
     filter,
     countPerPage,
@@ -181,44 +122,26 @@ const TdsPaidToGovernement = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: [
-        "type",
-        "id",
-        "clientname",
-        "invoicedate_orderpaymentdate",
-        "invoiceamount_orderpaymentamount",
-        "estimatedescription_orderdescription",
-        "monthyear",
-        "modeofpayment",
-        "entityname",
-      ],
-      paymentMode: !isNaN(+intialFields.vendor)
-        ? +intialFields.vendor
-        : intialFields.vendor,
+      rows:  ["order_description","amount","date","payment_description","vendorname"],
 
-      startdate: intialFields.start_date,
       downloadType: "excel",
-      enddate: intialFields.end_date,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        type: "Type",
-        id: "ID",
-        clientname: "Client Name",
-
-        invoicedate_orderpaymentdate: "Date",
-        invoiceamount_orderpaymentamount: "Amount",
-        estimatedescription_orderdescription: "Estimate / Order Description",
-        monthyear: "Month-Year",
-        modeofpayment: "Mode of Payment",
-        entityname: "Entity",
+        order_description: "Order Description",
+        amount: "Amount",
+        date: "Date",
+        registered: "Registered",
+        payment_description: "Payment Description",
+        vendorname: "Vendor Name",
+        
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadVendorStatementReport(obj));
+    dispatch(downloadTdsPaidToGovtReport(obj));
   };
 
   return (
@@ -230,13 +153,12 @@ const TdsPaidToGovernement = () => {
             path={["Reports", "TDS Report", "TDS Paid to Government"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
-              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-                <p>
-                  Generated on: <span> {new Date().toLocaleString()}</span>
-                </p>
-              </div>
-            )}
+            <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+              <p>
+                Generated on: <span> {new Date().toLocaleString()}</span>
+              </p>
+            </div>
+
             <SearchBar
               value={searchInput}
               handleSearchvalue={handleSearchvalue}
@@ -247,10 +169,9 @@ const TdsPaidToGovernement = () => {
           </div>
         </div>
 
-        <SimpleTableWithFooter
-          pageName={"vendorStatement"}
+        <SimpleTable
           columns={columns}
-          data={vendorStatementView}
+          data={tdsPaidGovtData}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -262,11 +183,11 @@ const TdsPaidToGovernement = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-          height="calc(100vh - 18rem)"
+          height="calc(100vh - 14rem)"
         />
       </div>
     </Stack>
   );
 };
 
-export default TdsPaidToGovernement;
+export default TdsPaidByVendorView;

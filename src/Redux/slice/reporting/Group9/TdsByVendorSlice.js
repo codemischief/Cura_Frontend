@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import { env_URL_SERVER, tdsPaidGovtFormat } from "../../../helper";
+import { env_URL_SERVER, tdsPaidByVendorReport, vendorStatementReport } from "../../../helper";
 
 const initialState = {
-  tdsPaidGovtData: [],
+  tdsByVendorView: [],
   totalAmount: {},
   status: "",
   filter: {},
@@ -19,14 +19,14 @@ const initialState = {
   },
 };
 
-export const tdsPaidbyGovt = createSlice({
-  name: "tdspaidtogovt",
+export const tdsByVendorReport = createSlice({
+  name: "tdsByVendorReport",
   initialState,
   reducers: {
-    setTdsPaidGovtData: (state, { payload }) => {
+    setTdsByVendorReport: (state, { payload }) => {
       const { data } = payload.data;
 
-      state.tdsPaidGovtData = tdsPaidGovtFormat(data);
+      state.tdsByVendorView = tdsPaidByVendorReport(data);
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -53,7 +53,7 @@ export const tdsPaidbyGovt = createSlice({
         sort_order: "",
       };
     },
-    setTdsPaidGovtDataFilters: (state, { payload }) => {
+    setTdsByVendorReportFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -63,37 +63,37 @@ export const tdsPaidbyGovt = createSlice({
 });
 
 export const {
-  setTdsPaidGovtData,
+  setTdsByVendorReport,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setTdsPaidGovtDataFilters,
+  setTdsByVendorReportFilters,
   setInitialState,
   setSorting,
-} = tdsPaidbyGovt.actions;
+} = tdsByVendorReport.actions;
 
-export const getTdsPaidGovtData = (payloadObj) => async (dispatch) => {
+export const getTdByVendorView = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}reportTDStoGovernment`,
+      `${env_URL_SERVER}reportTDSByVendor`,
       payloadObj
     );
 
-    dispatch(setTdsPaidGovtData({ data: response.data }));
+    dispatch(setTdsByVendorReport({ data: response.data }));
     dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
 };
 
-export const downloadTdsPaidToGovtReport = (payloadObj) => async (
+export const downloadVendorStatementReport = (payloadObj) => async (
   dispatch
 ) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}reportTDStoGovernment`,
+      `${env_URL_SERVER}reportTDSByVendor`,
       payloadObj
     );
     if ((response.data.filename, payloadObj.user_id)) {
@@ -125,9 +125,9 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "Tds_paid_to_govt.xlsx");
+    FileSaver.saveAs(blob, "TdsByVendors.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-export default tdsPaidbyGovt.reducer;
+export default tdsByVendorReport.reducer;
