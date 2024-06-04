@@ -79,6 +79,7 @@ function MenuDesktopItem({
 }) {
   const paperRef = useRef();
   const { title, path, children } = item;
+
   // const isActive = pathname === path;
   const extraContainers =
     children?.length % 15 === 0 ? 0 : 15 - (children?.length % 15);
@@ -154,10 +155,10 @@ function MenuDesktopItem({
         sx={{
           width: "98%",
           position: "absolute",
-          padding: "28px",
+          padding: title === "Research" ? "28px 10rem" : "28px",
           top: 98,
           left: 18,
-          maxHeight: "500px",
+          maxHeight: "calc(100vh - 6.8rem)",
           borderRadius: "15px",
           overflowY: "scroll",
           opacity: isOpen === title ? 1 : 0,
@@ -165,123 +166,136 @@ function MenuDesktopItem({
           transition: "opacity 0.2s ease, transform 0.2s ease",
           minHeight: "205px",
           zIndex: "9",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <div
-          className="grid grid-cols-5 w-full gap-x-[18px] menu"
-          ref={paperRef}
-        >
-          {children?.map((list) => {
-            const { subheader, items } = list;
-            return (
-              <div
-                key={subheader}
-                className={`w-full border-r border-[#CBCBCB] px-4`}
-              >
-                {/* <List
-                  sx={{
-                    display:"flex",
-                    flexDirection:"column",
-                    paddingBottom: "18px",
-                    gap:"8px",
-                  }}
-                > */}
-                <div className="felx flex-col gap-2">
-                  <ListSubheader
-                    disableSticky
-                    disableGutters
-                    sx={{
-                      fontFamily: "Open Sans",
-                      fontSize: "18px",
-                      fontStyle: "normal",
-                      fontWeight: 600,
-                      lineHeight: "135%",
-                      color: "#282828",
-                      position: "relative", // Ensure positioning context for the pseudo-element
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        width: "109.464px",
-                        height: "2px",
-                        backgroundColor: "#004DD7",
-                        opacity: 0, // Initially hidden
-                        transition: "opacity 0.3s ease", // Smooth transition
-                      },
-                      "&:hover::after": {
-                        opacity: 1, // Show underline on hover
-                      },
-                    }}
-                  >
-                    {subheader}
-                  </ListSubheader>
-                  {items?.map((item) => (
-                    <ListItemStyle
-                      onClick={onClose}
-                      key={item.title}
-                      to={item.path}
-                      component={RouterLink}
-                      underline="none"
-                      sx={{
-                        ...(item.path === pathname && {
-                          typography: "subtitle2",
-                          color: "text.primary",
-                        }),
-                        marginTop: "0px",
-                        paddingTop: "8px",
-                      }}
-                    >
-                      <>
-                        {/* <IconBullet /> */}
-                        <div className="px-2">{item.title}</div>
-                      </>
-                    </ListItemStyle>
-                  ))}
-                  {/* </List> */}
+        <div className="w-fit flex justify-center items-center">
+          <div
+            className={`grid ${
+              title === "Research" ? "grid-cols-4" : "grid-cols-5"
+            } w-fit`}
+            ref={paperRef}
+          >
+            {children?.map((column) => {
+              // const { subheader, items } = list;
+              return (
+                <div
+                  key={`${column}subcol`}
+                  className={`w-fit flex flex-col pl-[1rem] ${
+                    title === "Research" ? "gap-[2.25rem]" : "gap-[1.25rem]"
+                  } border-r border-[#CBCBCB] last:border-none`}
+                >
+                  {column?.map((list) => {
+                    const { subheader, items } = list;
+                    return (
+                      <div
+                        key={subheader}
+                        className={`min-w-[14.5rem] w-fit items-start justify-start  flex flex-col gap-2 ${
+                          item.length === 0 && "py-[2.25rem]"
+                        }`}
+                      >
+                        <ListSubheader
+                          disableSticky
+                          disableGutters
+                          sx={{
+                            fontFamily: "Open Sans",
+                            fontSize: "18px",
+                            fontStyle: "normal",
+                            fontWeight: 600,
+                            lineHeight: "135%",
+                            color: "#282828",
+                            position: "relative", // Ensure positioning context for the pseudo-element
+                            "&::after": {
+                              content: '""',
+                              position: "absolute",
+                              bottom: 0,
+                              left: 0,
+                              width: "109.464px",
+                              height: "2px",
+                              backgroundColor: "#004DD7",
+                              opacity: 0, // Initially hidden
+                              transition: "opacity 0.3s ease", // Smooth transition
+                            },
+                            "&:hover::after": {
+                              opacity: 1, // Show underline on hover
+                            },
+                          }}
+                        >
+                          {subheader}
+                        </ListSubheader>
+                        {items?.map((item) => (
+                          <ListItemStyle
+                            onClick={onClose}
+                            key={item.title}
+                            to={item.path}
+                            component={RouterLink}
+                            underline="none"
+                            sx={{
+                              ...(item.path === pathname && {
+                                typography: "subtitle2",
+                                color: "text.primary",
+                              }),
+                              marginTop: "0px",
+                              paddingTop: "8px",
+                              fontFamily: "Open Sans",
+                              fontSize: "0.6875rem",
+                              fontStyle: "normal",
+                              fontWeight: 400,
+                              lineHeight: "150%",
+                            }}
+                          >
+                            <>
+                              <div className="px-2">{item.title}</div>
+                            </>
+                          </ListItemStyle>
+                        ))}
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
-              // </Grid>
-            );
-          })}
-          {Array.from({ length: extraContainers }, (_, index) => index + 1).map(
-            (extraHeader) => (
-              <div
-                key={extraHeader}
-                className={`w-full border-r border-[#CBCBCB]`}
-              >
-                <List disablePadding>
-                  <ListSubheader
-                    disableSticky
-                    disableGutters
-                    sx={{
-                      fontFamily: "Open Sans",
-                      fontSize: "18px",
-                      fontStyle: "normal",
-                      fontWeight: 600,
-                      lineHeight: "135%",
-                      color: "#282828",
-                      position: "relative", // Ensure positioning context for the pseudo-element
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        width: "109.464px",
-                        height: "2px",
-                        backgroundColor: "#004DD7",
-                        opacity: 0, // Initially hidden
-                        transition: "opacity 0.3s ease", // Smooth transition
-                      },
-                      "&:hover::after": {
-                        opacity: 1, // Show underline on hover
-                      },
-                    }}
-                  />
-                </List>
-              </div>
-            )
-          )}
+              );
+            })}
+            {/* {Array.from({ length: extraContainers }, (_, index) => index + 1).map(
+              (extraHeader) => (
+                <div
+                  key={extraHeader}
+                  className={`w-full border-r border-[#CBCBCB]`}
+                >
+                  <List disablePadding>
+                    <ListSubheader
+                      disableSticky
+                      disableGutters
+                      sx={{
+                        fontFamily: "Open Sans",
+                        fontSize: "18px",
+                        fontStyle: "normal",
+                        fontWeight: 600,
+                        lineHeight: "135%",
+                        color: "#282828",
+                        position: "relative", // Ensure positioning context for the pseudo-element
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          width: "109.464px",
+                          height: "2px",
+                          backgroundColor: "#004DD7",
+                          opacity: 0, // Initially hidden
+                          transition: "opacity 0.3s ease", // Smooth transition
+                        },
+                        "&:hover::after": {
+                          opacity: 1, // Show underline on hover
+                        },
+                      }}
+                    />
+                  </List>
+                </div>
+              )
+            )} */}
+          </div>
         </div>
       </Paper>
     ),
