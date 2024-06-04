@@ -125,7 +125,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-accent-blue w-full  justify-between h-16 flex ">
+      <div className="bg-accent-blue w-full  justify-between h-12 flex ">
         {/* this div is off the navbar */}
         {/* we have three parts here */}
         <div className="h-full w-16 flex justify-center items-center">

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
-const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName}) => {
+import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, clientPropertyData, serviceData, vendorData, tallyLedgerData, clientName , formErrors ,setClientName, orderText, setOrderText }) => {
+    const [propertyData,setPropertyData] = useState(clientPropertyData)
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -76,7 +78,17 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
 
 
 
+    const getClientPropertyByClientId = async (id) => {
+        const data = {
+            "user_id": 1234,
+            "client_id": id
+        }
+        const response = await APIService.getClientPropertyByClientId(data)
+        const res = await response.json()
+        // setClientPropertyData((prev) => res.data)
+        setPropertyData((prev) => res.data)
 
+    }
 
 
 
@@ -118,9 +130,12 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         const existing = { ...formValues }
         const temp = { ...existing.order_info }
         temp.clientid = e.value
+        temp.clientpropertyid = null
         setClientName(e.label)
+        setOrderText('Select Client Property')
         existing.order_info = temp;
         setFormValues(existing)
+        getClientPropertyByClientId(e.value)
         console.log(formValues)
         setSelectedOption(e)
     }
@@ -146,7 +161,10 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
         }
         return results
     }
-
+    useEffect(() => {
+        // getClientPropertyByClientId(formValues.order_info.clientid)
+        console.log(formValues)
+    },[])
 
     return (
         <div>
@@ -187,15 +205,19 @@ const EditOrderInformation = ({ setIsStateDialogue, formValues, setFormValues, u
                             <div className="text-[10px] text-[#CD0000] ">{formErrors.status}</div>
                         </div>
                         <div className="">
+                            {console.log(clientPropertyData)}
                             <div className="text-[13px]">Client Property</div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.order_info.clientpropertyid} onChange={handleChange} name="clientpropertyid" >
+                            <PropertyDropDown options={propertyData} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                            handleChange(e)
+                        }} formValueName="clientpropertyid" value={formValues.order_info.clientpropertyid}  />
+                            {/* <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.order_info.clientpropertyid} onChange={handleChange} name="clientpropertyid" >
                                 <option value={null}>Select Client Property</option>
                                 {clientPropertyData.map(item => (
                                     <option key={item[0]} value={item[0]}>
                                         {item[1]}
                                     </option>
                                 ))}
-                            </select>
+                            </select> */}
                         </div>
                         <div className="">
                             <div className="text-[13px]">Service <label className="text-red-500">*</label></div>
