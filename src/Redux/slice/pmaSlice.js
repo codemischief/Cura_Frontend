@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { env_URL_SERVER, updatedResponsePmaData } from "../helper";
-
+import FileSaver from "file-saver";
 const initialState = {
   pmaBillingData: [],
   status: "",
@@ -101,5 +101,25 @@ export const addNewInvoices = (payloadObj) => async (dispatch) => {
 
 export const handleRefresh = (payload) => async (dispatch) => {
   
+};
+export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      `${env_URL_SERVER}download/${filename}`,
+      {
+        filename: filename,
+        user_id: userId,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    FileSaver.saveAs(blob, "PmaBillingTable.xlsx");
+  } catch (error) {
+    console.log("error", error);
+  }
 };
 export default pmaSlice.reducer;
