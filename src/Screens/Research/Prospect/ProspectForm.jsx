@@ -1,18 +1,17 @@
-import PropTypes from "prop-types";
-
-import { CircularProgress, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
-import { APIService } from "../../../services/API";
-import { Form, FormikProvider, useFormik } from "formik";
+import PropTypes from "prop-types";
 import * as Yup from "yup";
+import { Form, FormikProvider, useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress, Modal, Typography } from "@mui/material";
+
+import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-import { useDispatch } from "react-redux";
 import {
   addProspectData,
   editProspectData,
 } from "../../../Redux/slice/Research/ProspectSlice";
-import { useSelector } from "react-redux";
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
@@ -119,7 +118,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         city: values.city,
         state: values.state,
         phoneno: values.phoneNumber,
-        email: values.email,
+        email1: values.email,
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,

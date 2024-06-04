@@ -1975,7 +1975,7 @@ const ManageLLAgreement = () => {
                                                 {/* this should a list */}
                                                 {selectedOptions.map((item, index) => {
                                                     return <div className='mb-2'>
-                                                        <div className="text-[13px]">
+                                                        <div className="text-[13px] mb-2">
                                                             Tenant {index + 1}
                                                         </div>
                                                         <div className='flex space-x-2'>
@@ -1994,7 +1994,7 @@ const ManageLLAgreement = () => {
                                                                     minHeight: 23,
                                                                     lineHeight: '0.8',
                                                                     height: 4,
-                                                                    width: 230,
+                                                                    width: 270,
                                                                     fontSize: 10,
                                                                     // padding: '1px'
                                                                 }),
@@ -2020,7 +2020,7 @@ const ManageLLAgreement = () => {
                                                                 }),
                                                                 menu: (provided, state) => ({
                                                                     ...provided,
-                                                                    width: 230, // Adjust the width of the dropdown menu
+                                                                    width: 270, // Adjust the width of the dropdown menu
                                                                     zIndex: 9999 // Ensure the menu appears above other elements
                                                                 }),
                                                                 menuList: (provided, state) => ({

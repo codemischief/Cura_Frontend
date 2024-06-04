@@ -2,7 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import AsyncSelect from "react-select/async"
 import { APIService } from '../../../../services/API';
-const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, serviceData, vendorData, tallyLedgerData, formErrors , hyperlinkstate}) => {
+import PropertyDropDown from '../../../../Components/Dropdown/PropertyDropDown';
+const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, usersData, orderStatusData, serviceData, vendorData, tallyLedgerData, formErrors , hyperlinkstate, orderText,setOrderText}) => {
     const handleClose = () => {
         setIsStateDialogue(false);
     }
@@ -185,14 +186,17 @@ const orderInformation = ({ setIsStateDialogue, formValues, setFormValues, users
                         </div>
                         <div className="">
                             <div className="text-[13px]">Client Property</div>
-                            <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.order_info.clientpropertyid} onChange={handleChange} name="clientpropertyid" >
+                            <PropertyDropDown options={clientPropertyData} orderText={orderText} setOrderText={setOrderText} leftLabel="Builder Name" rightLabel="Property" leftAttr="buildername" rightAttr="propertyname" toSelect="propertyname" handleChange={(e) => {
+                            handleChange(e)
+                        }} formValueName="clientpropertyid" value={formValues.order_info.clientpropertyid}  />
+                            {/* <select className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]" value={formValues.order_info.clientpropertyid} onChange={handleChange} name="clientpropertyid" >
                                 <option value={null}>Select Client Property</option>
                                 {clientPropertyData.map(item => (
                                     <option key={item.id} value={item.id}>
                                         {item.propertyname}
                                     </option>
                                 ))}
-                            </select>
+                            </select> */}
                         </div>
                         <div className="">
                             <div className="text-[13px]">Service <label className="text-red-500">*</label></div>
