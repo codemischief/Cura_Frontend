@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../../utils/filters";
 import * as XLSX from "xlsx";
+import Container from "../../../../Components/common/Container";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
@@ -198,6 +199,8 @@ const LobReceiptPayments = () => {
    }
 
   return (
+    <Container>
+      
     <Stack gap="1rem">
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
@@ -219,7 +222,7 @@ const LobReceiptPayments = () => {
               handleSearch={handleSearch}
               removeSearchValue={removeSearchValue}
               onKeyDown={handleSearchEnterKey}
-            />
+              />
           </div>
         </div>
 
@@ -245,7 +248,7 @@ const LobReceiptPayments = () => {
                 cacheOptions
                 defaultOptions
                 onInputChange={(value) => setQuery(value)}
-
+                
                 styles={{
                   control: (provided, state) => ({
                     ...provided,
@@ -289,7 +292,7 @@ const LobReceiptPayments = () => {
                   }),
 
                 }}
-              />
+                />
             </div>
             <Button
               variant="outlined"
@@ -304,7 +307,7 @@ const LobReceiptPayments = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "12px",
+                marginTop: "14px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",
@@ -333,8 +336,8 @@ const LobReceiptPayments = () => {
           handleRefresh={handleRefresh}
           handleSortingChange={handleSortingChange}
           downloadExcel={downloadExcel}
-
-        />
+          
+          />
       </div>
       {toast && (
         <SucessfullModal
@@ -343,6 +346,7 @@ const LobReceiptPayments = () => {
         />
       )}
     </Stack>
+      </Container>
   );
 };
 

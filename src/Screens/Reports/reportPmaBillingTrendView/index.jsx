@@ -20,13 +20,13 @@ import { useDispatch } from "react-redux";
 //   setStatus,
 // } from "../../../Redux/slice/reporting/LOBReceiptPaymentSlice";
 import {
-    downloadPmaBillingTrendView,
-    getPmaBillingTrendViewData,
-    setCountPerPage,
-    setInitialState,
-    setPageNumber,
-    setSorting,
-    setStatus
+  downloadPmaBillingTrendView,
+  getPmaBillingTrendViewData,
+  setCountPerPage,
+  setInitialState,
+  setPageNumber,
+  setSorting,
+  setStatus
 } from "../../../Redux/slice/reporting/pmaBillingTrendView"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -34,6 +34,7 @@ import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
+import Container from "../../../Components/common/Container";
 
 const PmaBillingTrendView = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const PmaBillingTrendView = () => {
     pageNo,
     filter,
   } = useSelector((state) => state.pmaBillingTrendView);
-  
+
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -99,19 +100,19 @@ const PmaBillingTrendView = () => {
       let obj = {
         user_id: 1234,
         fy: String(startYear),
-        rows:["clientname",
-        "jan",
-        "feb",
-        "mar",
-        "apr",
-        "may",
-        "jun",
-        "jul",
-        "aug",
-        "sep",
-        "oct",
-        "nov",
-        "dec"],
+        rows: ["clientname",
+          "jan",
+          "feb",
+          "mar",
+          "apr",
+          "may",
+          "jun",
+          "jul",
+          "aug",
+          "sep",
+          "oct",
+          "nov",
+          "dec"],
         sort_by: [],
         filters: formatedFilterData(filter),
         search_key: search,
@@ -147,19 +148,19 @@ const PmaBillingTrendView = () => {
       let obj = {
         user_id: 1234,
         fy: String(startYear),
-        rows:["clientname",
-        "jan",
-        "feb",
-        "mar",
-        "apr",
-        "may",
-        "jun",
-        "jul",
-        "aug",
-        "sep",
-        "oct",
-        "nov",
-        "dec"],
+        rows: ["clientname",
+          "jan",
+          "feb",
+          "mar",
+          "apr",
+          "may",
+          "jun",
+          "jul",
+          "aug",
+          "sep",
+          "oct",
+          "nov",
+          "dec"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         filters: formatedFilterData(filter),
         search_key: search,
@@ -179,7 +180,7 @@ const PmaBillingTrendView = () => {
   ]);
 
   useEffect(() => {
-    
+
   }, []);
 
   const handleSortingChange = (accessor) => {
@@ -193,39 +194,39 @@ const PmaBillingTrendView = () => {
   const downloadExcel = async () => {
     const startYear = startDate.getFullYear()
     let obj = {
-      
+
       user_id: 1234,
       fy: String(startYear),
-      rows:["clientname",
-      "jan",
-      "feb",
-      "mar",
-      "apr",
-      "may",
-      "jun",
-      "jul",
-      "aug",
-      "sep",
-      "oct",
-      "nov",
-      "dec"],
+      rows: ["clientname",
+        "jan",
+        "feb",
+        "mar",
+        "apr",
+        "may",
+        "jun",
+        "jul",
+        "aug",
+        "sep",
+        "oct",
+        "nov",
+        "dec"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
-      downloadType : "excel",
-      colmap : {
+      downloadType: "excel",
+      colmap: {
         "clientname": "Client Name",
-      "jan": "Jan",
-      "feb": "Feb",
-      "mar": "Mar",
-      "apr": "Apr",
-      "may": "May",
-      "jun": "Jun",
-      "jul": "Jul",
-      "aug": "Aug",
-      "sep": "Sep",
-      "oct": "Oct",
-      "nov": "Nov",
-      "dec": "Dec"
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun",
+        "jul": "Jul",
+        "aug": "Aug",
+        "sep": "Sep",
+        "oct": "Oct",
+        "nov": "Nov",
+        "dec": "Dec"
 
       },
       search_key: search,
@@ -246,7 +247,7 @@ const PmaBillingTrendView = () => {
 
   const handleShow = () => {
     if (startDate) {
-      
+
       dispatch(setInitialState())
 
       setShowTable(true);
@@ -258,130 +259,133 @@ const PmaBillingTrendView = () => {
       // }));
     }
   };
-  
+
   const renderYearContent = (year) => {
-      const tooltipText = `Tooltip for year: ${year}`;
-      return <span title={tooltipText}>{year}</span>;
+    const tooltipText = `Tooltip for year: ${year}`;
+    return <span title={tooltipText}>{year}</span>;
   }
   return (
-    <Stack gap="1rem">
-      
-      <div className="flex flex-col px-4">
-        <div className="flex justify-between">
-          <HeaderBreadcrum
-            heading={"PMA Billing Trend List"}
-            path={["Reports", "PMA", "PMA Billing Trend List"]}
-          />
-          <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
-              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-                <p>
-                  Generated on: <span> {new Date().toLocaleString()}</span>
-                </p>
-              </div>
-            )}
-            <SearchBar
-              value={searchInput}
-              handleSearchvalue={handleSearchvalue}
-              handleSearch={handleSearch}
-              removeSearchValue={removeSearchValue}
-              onKeyDown={handleSearchEnterKey}
-            />
-          </div>
-        </div>
+    <Container>
 
-        <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          alignItems={"center"}
-          height={"3.875rem"}
-        >
+      <Stack gap="1rem">
+
+        <div className="flex flex-col px-4">
+          <div className="flex justify-between">
+            <HeaderBreadcrum
+              heading={"PMA Billing Trend List"}
+              path={["Reports", "PMA", "PMA Billing Trend List"]}
+            />
+            <div className="flex justify-between gap-7 h-[36px]">
+              {showTable && (
+                <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+                  <p>
+                    Generated on: <span> {new Date().toLocaleString()}</span>
+                  </p>
+                </div>
+              )}
+              <SearchBar
+                value={searchInput}
+                handleSearchvalue={handleSearchvalue}
+                handleSearch={handleSearch}
+                removeSearchValue={removeSearchValue}
+                onKeyDown={handleSearchEnterKey}
+              />
+            </div>
+          </div>
+
           <Stack
+            marginTop={"8px"}
+            justifyContent={"space-between"}
             direction={"row"}
-            marginLeft={"30px"}
-            justifyContent={"space-around"}
             alignItems={"center"}
-            gap={"24px"}
+            height={"3.875rem"}
           >
-          <Stack
-            direction={"column"}
-          > 
-                 <Typography>Select Year</Typography>
-          <DatePicker
-            className="border-[#F5F5F5] border-[0.8px] rounded-md shadow-md bg-[#F5F5F5] p-2 text-[12px]"
-            value={startDate}
-            placeholderText="Select Year"
-            // selectedDates={sea}
-            onChange={(e) => {
-              console.log(e)
-              setStartDate(e)
-            }}
-      selected={startDate}
-      renderYearContent={renderYearContent}
-      showYearPicker
-      dateFormat="yyyy"
-    />
-          </Stack>
-         
-          
-            
-         {/* <input className="border-black border-2" type="number" value={startDate} onChange={(e) => setStartDate(e.target.value)}/> */}
-          
-            <Button
-              variant="outlined"
-              //   onClick={handleShow}
-              sx={{
-                height: "36px",
-                textTransform: "none",
-                color: "#004DD7",
-                borderRadius: "8px",
-                width: "133px",
-                fontSize: "14px",
-                border: "1px solid #004DD7",
-                fontWeight: "600px",
-                lineHeight: "18.9px",
-                marginTop: "12px",
-                "&:hover": {
-                  //you want this to be the same as the backgroundColor above
-                  backgroundColor: "#004DD7",
-                  color: "#fff",
-                },
-              }}
-              onClick={handleShow}
-              disabled={!(startDate)}
+            <Stack
+              direction={"row"}
+              marginLeft={"30px"}
+              justifyContent={"space-around"}
+              alignItems={"center"}
+              gap={"24px"}
             >
-              Show
-            </Button>
+              <Stack
+                direction={"column"}
+              >
+                <Typography>Select Year</Typography>
+                <DatePicker
+                  className="border-[#F5F5F5] border-[0.8px] rounded-md shadow-md bg-[#F5F5F5] p-2 text-[12px]"
+                  value={startDate}
+                  placeholderText="Select Year"
+                  // selectedDates={sea}
+                  onChange={(e) => {
+                    console.log(e)
+                    setStartDate(e)
+                  }}
+                  selected={startDate}
+                  renderYearContent={renderYearContent}
+                  showYearPicker
+                  dateFormat="yyyy"
+                />
+              </Stack>
+
+
+
+              {/* <input className="border-black border-2" type="number" value={startDate} onChange={(e) => setStartDate(e.target.value)}/> */}
+
+              <Button
+                variant="outlined"
+                //   onClick={handleShow}
+                sx={{
+                  height: "36px",
+                  textTransform: "none",
+                  color: "#004DD7",
+                  borderRadius: "8px",
+                  width: "133px",
+                  fontSize: "14px",
+                  border: "1px solid #004DD7",
+                  fontWeight: "600px",
+                  lineHeight: "18.9px",
+                  marginTop: "23.5px",
+                  "&:hover": {
+                    //you want this to be the same as the backgroundColor above
+                    backgroundColor: "#004DD7",
+                    color: "#fff",
+                  },
+                }}
+                onClick={handleShow}
+                disabled={!(startDate)}
+              >
+                Show
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
-        {console.log(pmaBillingTrendView)}
-        <SimpleTableWithFooter
-          pageName={'pmaBillingTrendView'}
-          columns={columns}
-          data={pmaBillingTrendView}
-          totalData={totalAmount}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-          height="calc(100vh - 16rem)"
-          
-        />
-      </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
-        />
-      )}
-    </Stack>
+          {console.log(pmaBillingTrendView)}
+          <SimpleTableWithFooter
+            pageName={'pmaBillingTrendView'}
+            columns={columns}
+            data={pmaBillingTrendView}
+            totalData={totalAmount}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
+            height="calc(100vh - 16rem)"
+
+          />
+        </div>
+        {toast && (
+          <SucessfullModal
+            isOpen={toast}
+            message="New Receipt Added Successfully"
+          />
+        )}
+      </Stack>
+    </Container>
   );
 };
 

@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
+import Container from "../../../Components/common/Container";
 
 const OrderReceiptList = () => {
   const dispatch = useDispatch();
@@ -270,105 +271,108 @@ const OrderReceiptList = () => {
     }
   };
   return (
-    <Stack gap="1rem">
-      
-      <div className="flex flex-col px-4">
-        <div className="flex justify-between">
-          <HeaderBreadcrum
-            heading={"Order Receipt List"}
-            path={["Reports", "Lists", "Order Receipt List"]}
-          />
-          <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
-              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-                <p>
-                  Generated on: <span> {new Date().toLocaleString()}</span>
-                </p>
-              </div>
-            )}
-            <SearchBar
-              value={searchInput}
-              handleSearchvalue={handleSearchvalue}
-              handleSearch={handleSearch}
-              removeSearchValue={removeSearchValue}
-              onKeyDown={handleSearchEnterKey}
+    <Container>
+
+      <Stack gap="1rem">
+
+        <div className="flex flex-col px-4">
+          <div className="flex justify-between">
+            <HeaderBreadcrum
+              heading={"Order Receipt List"}
+              path={["Reports", "Lists", "Order Receipt List"]}
             />
+            <div className="flex justify-between gap-7 h-[36px]">
+              {showTable && (
+                <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+                  <p>
+                    Generated on: <span> {new Date().toLocaleString()}</span>
+                  </p>
+                </div>
+              )}
+              <SearchBar
+                value={searchInput}
+                handleSearchvalue={handleSearchvalue}
+                handleSearch={handleSearch}
+                removeSearchValue={removeSearchValue}
+                onKeyDown={handleSearchEnterKey}
+              />
+            </div>
           </div>
-        </div>
 
-        <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          alignItems={"center"}
-          height={"3.875rem"}
-        >
           <Stack
+            marginTop={"8px"}
+            justifyContent={"space-between"}
             direction={"row"}
-            justifyContent={"space-around"}
             alignItems={"center"}
-            gap={"24px"}
+            height={"3.875rem"}
           >
-            <DatePicker
-              label={"Select Start Date"}
-              onChange={handleDateChange}
-              name="startDate"
-            />
-            <DatePicker
-              label={"Select End Date"}
-              onChange={handleDateChange}
-              name="endDate"
-            />
-            <Button
-              variant="outlined"
-              //   onClick={handleShow}
-              sx={{
-                height: "36px",
-                textTransform: "none",
-                color: "#004DD7",
-                borderRadius: "8px",
-                width: "133px",
-                fontSize: "14px",
-                border: "1px solid #004DD7",
-                fontWeight: "600px",
-                lineHeight: "18.9px",
-                marginTop: "12px",
-                "&:hover": {
-                  //you want this to be the same as the backgroundColor above
-                  backgroundColor: "#004DD7",
-                  color: "#fff",
-                },
-              }}
-              onClick={handleShow}
-              disabled={!(startDate && endDate)}
+            <Stack
+              direction={"row"}
+              justifyContent={"space-around"}
+              alignItems={"center"}
+              gap={"24px"}
             >
-              Show
-            </Button>
+              <DatePicker
+                label={"Select Start Date"}
+                onChange={handleDateChange}
+                name="startDate"
+              />
+              <DatePicker
+                label={"Select End Date"}
+                onChange={handleDateChange}
+                name="endDate"
+              />
+              <Button
+                variant="outlined"
+                //   onClick={handleShow}
+                sx={{
+                  height: "36px",
+                  textTransform: "none",
+                  color: "#004DD7",
+                  borderRadius: "8px",
+                  width: "133px",
+                  fontSize: "14px",
+                  border: "1px solid #004DD7",
+                  fontWeight: "600px",
+                  lineHeight: "18.9px",
+                  marginTop: "14px",
+                  "&:hover": {
+                    //you want this to be the same as the backgroundColor above
+                    backgroundColor: "#004DD7",
+                    color: "#fff",
+                  },
+                }}
+                onClick={handleShow}
+                disabled={!(startDate && endDate)}
+              >
+                Show
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
 
-        <SimpleTable
-          columns={columns}
-          data={orderReceiptData}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-        />
-      </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
-        />
-      )}
-    </Stack>
+          <SimpleTable
+            columns={columns}
+            data={orderReceiptData}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
+          />
+        </div>
+        {toast && (
+          <SucessfullModal
+            isOpen={toast}
+            message="New Receipt Added Successfully"
+          />
+        )}
+      </Stack>
+    </Container>
   );
 };
 

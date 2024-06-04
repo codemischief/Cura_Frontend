@@ -277,15 +277,15 @@ const App = () => {
                 element={<VendorInvoiceList />}
               />
               <Route
-                path="/reports/lobReceiptPayments"
+                path="/admin/lobReceiptPayments"
                 element={<LobReceiptPayments />}
               />
               <Route
-                path="/reports/entityReceiptPayments"
+                path="/admin/entityReceiptPayments"
                 element={<EntityReceiptPayments />}
               />
               <Route
-                path="/reports/lobReceiptPaymentsConsolidated"
+                path="/admin/lobReceiptPaymentsConsolidated"
                 element={<LobReceiptPaymentsConsolidated />}
               />
               <Route
@@ -366,6 +366,8 @@ const App = () => {
               <Route
                 path="/reports/vendorTraceReport"
                 element={<VendorTraceReport />}
+              />
+              <Route
                 path="/reports/clientReceipt"
                 element={<ClientReceiptView />}
               />
