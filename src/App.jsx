@@ -363,6 +363,8 @@ const App = () => {
               <Route
                 path="/reports/vendorTraceReport"
                 element={<VendorTraceReport />}
+              />
+              <Route
                 path="/reports/clientReceipt"
                 element={<ClientReceiptView />}
               />
