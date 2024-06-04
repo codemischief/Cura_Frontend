@@ -288,8 +288,8 @@ export const navMenuConfig = [
     title: "Research",
     path: ROOTS.research,
     children: [
-      { subheader: "Prospect", path: "" },
-      { subheader: "Employer", path: "" },
+      { subheader: "Prospect", path: PATH_DASHBOARD.research.prospect },
+      { subheader: "Employer", path: PATH_DASHBOARD.research.employer },
       { subheader: "Manage Govt Department", path: "" },
       { subheader: "Real Estate Agents", path: "" },
       { subheader: "Manage Owners", path: "" },

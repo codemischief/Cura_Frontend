@@ -18,9 +18,9 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "50px",
+        width: "10%",
       },
-      align: "left",
+      align: "center",
       sorting: false,
       field: "srNo",
 
@@ -38,30 +38,31 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 2,
       filterComponent: TextFilterField,
-      title: "Person Name",
-      field: "personname",
+      title: "Employer Name",
+      field: "employername",
       sorting: true,
+    //   width : '1000px',
       align: "left",
       filterDisabled: false,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "300px",
+        width : '300px'
       },
     },
     {
       id: 3,
       filterComponent: TextFilterField,
-      title: "Suburb",
-      field: "suburb",
+      title: "Industry",
+      field: "industry",
       align: "left",
+    //   width : '20%',
       filterDisabled: false,
       sorting: true,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "50px",
-        maxWidth:"13.563"
+        width : '300px'
         
       },
     },
@@ -69,21 +70,22 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 4,
       filterComponent: TextFilterField,
 
-      title: "City",
-      field: "city",
+      title: "Website",
+      field: "website",
       align: "left",
       filterDisabled: false,
       sorting: true,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "50px",
+        // maxWidth: "18.25rem",
+        width : '300px'
       },
     },
     {
       id: 5,
-      title: "Property Location",
-      field: "propertylocation",
+      title: "Onsite Oppurtunity",
+      field: "onsiteopportunity",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -91,37 +93,9 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "300px",
+        // maxWidth: "18.25rem",
+        width : '300px'
       },
-    },
-    {
-      id: 6,
-      title: "Possible services",
-      field: "possibleservices",
-      sorting: true,
-      align: "left",
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        minWidth: "300px",
-      },
-
-      filterComponent: TextFilterField,
-    },
-
-    {
-      id: 7,
-      title: "ID",
-      field: "id",
-      sorting: true,
-      align: "left",
-      cellStyle: {
-        ...cellStyleCommon,
-        justifyContent: "center",
-        minWidth: "50px",
-      },
-      type: "numeric",
-      filterComponent: NumberFilterField,
     },
     {
       id: 8,
@@ -132,7 +106,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        minWidth: "50px",
+        width : '300px'
+        // maxWidth: "18.25rem",
       },
       render: (rowData) => {
         return (

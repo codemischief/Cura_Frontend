@@ -7,7 +7,6 @@ function path(root, sublink) {
 export const ROOTS = {
   root: "/dashboard",
   admin: "/admin",
-
   research: "/research",
   manage: "/manage",
   report: "/reports",
@@ -38,6 +37,7 @@ export const PATH_DASHBOARD = {
   },
   research: {
     prospect: path(ROOTS.research, "/prospect"),
+    employer: path(ROOTS.research, "/employer"),
     owner: path(ROOTS.research, "/owner"),
     educational: path(ROOTS.research, "/educational"),
     architect: path(ROOTS.research, "/architect"),
@@ -47,7 +47,6 @@ export const PATH_DASHBOARD = {
     banks: path(ROOTS.research, "/banks"),
     friends: path(ROOTS.research, "/friends"),
     agent: path(ROOTS.research, "/agent"),
-    employer: path(ROOTS.research, "/employer"),
     governmentDepartment: path(ROOTS.research, "/governmentdepartment"),
     serviceApartmentGuestHouse: path(
       ROOTS.research,
