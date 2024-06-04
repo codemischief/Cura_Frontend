@@ -63,7 +63,6 @@ export const updatedClientReceiptData = (data, year, month) => {
   }));
 };
 export const updatedVendorInvoiceData = (data, year, month) => {
-  console.log(data)
   return data.map((billing, index) => ({
     ...billing,
     invoicedate: billing.invoicedate ? formatDate(billing.invoicedate) : "",
@@ -264,9 +263,16 @@ export const updatedGovernmentDepartmentData = (data) => {
   }));
 }
 export const updatedAgentData = (data) => {
-  console.log(data)
   return data.map((billing, index) => ({
     ...billing,
+  }));
+}
+
+export const vendorStatementReport = (data)=>{
+  return data.map((ele, index) => ({
+    
+    ...ele,invoicedate_orderpaymentdate:formatDate(ele.invoicedate_orderpaymentdate),
+    invoiceamount_orderpaymentamount:floorDecimal(ele.invoiceamount_orderpaymentamount)
   }));
 }
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

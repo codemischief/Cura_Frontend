@@ -46,6 +46,7 @@ import agent from "./slice/Research/AgentSlice";
 import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 // import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
 
+import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement"
 
 
 
@@ -94,6 +95,8 @@ export const store = configureStore({
     governmentdepartment : governmentdepartment,
     agent : agent,
     clientStatistics:ClientStatistics,
+    vendorStatement:VendorStatementReducer
+
   },
   // Add the RTK Query API middleware
 });

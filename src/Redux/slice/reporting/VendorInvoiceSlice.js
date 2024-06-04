@@ -5,6 +5,7 @@ import {
   updatedVendorInvoiceData
 } from "../../helper";
 import FileSaver from "file-saver";
+import { vendorStatement } from "./Group9/VendorStatement";
 
 const initialState = {
   VendorInvoiceData: [],
@@ -27,7 +28,7 @@ export const pmaSlice = createSlice({
   reducers: {
     setVendorInvoiceData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.VendorInvoiceData = updatedVendorInvoiceData(data.data, year, month);
+      state.VendorInvoiceData = vendorStatement(data.data, year, month);
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {

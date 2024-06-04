@@ -101,6 +101,7 @@ import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/Orde
 import ClientStatistics from "./Screens/Reports/Statistics/ClientStatisticsReport/index.jsx";
 import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
 import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
+import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -401,6 +402,10 @@ const App = () => {
               <Route
                 path="reports/clientStatistics"
                 element={<ClientStatistics />}
+                >
+               <Route
+                path="reports/vendorstatement"
+                element={<VendorStatementView />}
               />
             </Route>
 
