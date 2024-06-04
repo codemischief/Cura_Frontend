@@ -18,8 +18,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus,
-  setActivePmaAgreementFilters
-
+  setActivePmaAgreementFilters,
 } from "../../../Redux/slice/reporting/ActivePmaAgreement";
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
@@ -27,7 +26,7 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 import SimpleTable from "../../../Components/common/table/CustomTable";
-
+import Container from "../../../Components/common/Container";
 
 const PmaInvoiceList = () => {
   const dispatch = useDispatch();
@@ -38,8 +37,8 @@ const PmaInvoiceList = () => {
     sorting,
     countPerPage,
     pageNo,
-    filter
-  } = useSelector((state) => state.activePmaAgreement)
+    filter,
+  } = useSelector((state) => state.activePmaAgreement);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -77,10 +76,21 @@ const PmaInvoiceList = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["clientname","propertydescription","description","propertystatus",
-      "electricitybillingunit","electricityconsumernumber",
-      "propertytaxnumber","rentamount","startdate","enddate","lnlstartdate",
-      "lnlenddate","poastartdate"],
+      rows: [
+        "clientname",
+        "propertydescription",
+        "description",
+        "propertystatus",
+        "electricitybillingunit",
+        "electricityconsumernumber",
+        "propertytaxnumber",
+        "rentamount",
+        "startdate",
+        "enddate",
+        "lnlstartdate",
+        "lnlenddate",
+        "poastartdate",
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -89,7 +99,6 @@ const PmaInvoiceList = () => {
       pg_size: +countPerPage,
     };
     dispatch(getActivePmaAgreement(obj));
-
   };
 
   const handleSearch = () => {
@@ -112,13 +121,23 @@ const PmaInvoiceList = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-
     let obj = {
       user_id: 1234,
-      rows: ["clientname","propertydescription","description","propertystatus",
-      "electricitybillingunit","electricityconsumernumber",
-      "propertytaxnumber","rentamount","startdate","enddate","lnlstartdate",
-      "lnlenddate","poastartdate"],
+      rows: [
+        "clientname",
+        "propertydescription",
+        "description",
+        "propertystatus",
+        "electricitybillingunit",
+        "electricityconsumernumber",
+        "propertytaxnumber",
+        "rentamount",
+        "startdate",
+        "enddate",
+        "lnlstartdate",
+        "lnlenddate",
+        "poastartdate",
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -127,7 +146,6 @@ const PmaInvoiceList = () => {
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
     dispatch(getActivePmaAgreement(obj));
-
   }, [
     filter,
     countPerPage,
@@ -137,9 +155,7 @@ const PmaInvoiceList = () => {
     sorting.sort_by,
   ]);
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const handleSortingChange = (accessor) => {
     const sortOrder =
@@ -152,33 +168,43 @@ const PmaInvoiceList = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["clientname","propertydescription","description","propertystatus",
-      "electricitybillingunit",
-      "propertytaxnumber","rentamount","startdate","enddate","lnlstartdate",
-      "lnlenddate","poastartdate"],
+      rows: [
+        "clientname",
+        "propertydescription",
+        "description",
+        "propertystatus",
+        "electricitybillingunit",
+        "propertytaxnumber",
+        "rentamount",
+        "startdate",
+        "enddate",
+        "lnlstartdate",
+        "lnlenddate",
+        "poastartdate",
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
-        "clientname": "Client Name",
-        "propertydescription": "Property Description",
-        "description": "Care Taking Description",
-        "propertystatus": "Property Status",
-        "propertytaxnumber" : "Property Tax Number",
-        "electricitybillingunit": "Electricity Billing Unit",
-        "rentamount": "Rent",
-        "startdate": "PMA Start Date",
-        "enddate": "PMA End Date",
-        "lnlstartdate": "LnL Start Date",
-        "lnlenddate": "LnL End Date",
-        "poastartdate": "POA Start Date",
+        clientname: "Client Name",
+        propertydescription: "Property Description",
+        description: "Care Taking Description",
+        propertystatus: "Property Status",
+        propertytaxnumber: "Property Tax Number",
+        electricitybillingunit: "Electricity Billing Unit",
+        rentamount: "Rent",
+        startdate: "PMA Start Date",
+        enddate: "PMA End Date",
+        lnlstartdate: "LnL Start Date",
+        lnlenddate: "LnL End Date",
+        poastartdate: "POA Start Date",
       },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadActivePmaAgreement(obj))
+    dispatch(downloadActivePmaAgreement(obj));
     // .then((response) => {
     //   const tableData = response.data;
     //   const worksheet = XLSX.utils.json_to_sheet(tableData);
@@ -191,8 +217,7 @@ const PmaInvoiceList = () => {
 
   const handleShow = () => {
     if (startDate) {
-
-      dispatch(setInitialState())
+      dispatch(setInitialState());
 
       setShowTable(true);
     } else {
@@ -207,54 +232,46 @@ const PmaInvoiceList = () => {
   const renderYearContent = (year) => {
     const tooltipText = `Tooltip for year: ${year}`;
     return <span title={tooltipText}>{year}</span>;
-  }
+  };
   return (
-    <Stack gap="1rem">
-      <div className="flex flex-col px-4">
+    <Container>
+      <div className="flex flex-col px-4 w-full">
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"Active PMA Agreements"}
             path={["Reports", "PMA", "Active PMA Agreements"]}
           />
 
-            <div className="flex justify-between gap-7 h-[36px]">
-            
-                <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-                  <p>
-                    Generated on: <span> {new Date().toLocaleString()}</span>
-                  </p>
-                </div>
-              
-          {/* <div className="flex flex-col"> */}
-              <SearchBar
-                value={searchInput}
-                handleSearchvalue={handleSearchvalue}
-                handleSearch={handleSearch}
-                removeSearchValue={removeSearchValue}
-                onKeyDown={handleSearchEnterKey}
-              />
-            
+          <div className="flex justify-between gap-7 h-[36px]">
+            <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+              <p>
+                Generated on: <span> {new Date().toLocaleString()}</span>
+              </p>
+            </div>
+
+            {/* <div className="flex flex-col"> */}
+            <SearchBar
+              value={searchInput}
+              handleSearchvalue={handleSearchvalue}
+              handleSearch={handleSearch}
+              removeSearchValue={removeSearchValue}
+              onKeyDown={handleSearchEnterKey}
+            />
+
             {/* </div> */}
-           </div>
+          </div>
         </div>
         <div className="flex justify-end">
-
-        <Button variant="outlined" size="small" onClick={() => dispatch(setActivePmaAgreementFilters({}))}>
-              Clear All
-            </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => dispatch(setActivePmaAgreementFilters({}))}
+          >
+            Clear All
+          </Button>
         </div>
-        {/* <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          alignItems={"center"}
-          height={"3.875rem"}
-        >
-          
-        </Stack> */}
 
         <SimpleTable
-          
           columns={columns}
           data={activePmaAgreement}
           pageNo={pageNo}
@@ -276,7 +293,7 @@ const PmaInvoiceList = () => {
           message="New Receipt Added Successfully"
         />
       )}
-    </Stack>
+    </Container>
   );
 };
 

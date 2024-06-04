@@ -16,6 +16,7 @@ const buttonStyle = {
   fontStyle: "normal",
   fontWeight: 500,
   lineHeight: "85.714%",
+  textTransform:"none",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
