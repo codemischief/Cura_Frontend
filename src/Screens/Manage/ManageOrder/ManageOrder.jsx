@@ -276,7 +276,7 @@ const ManageOrder = () => {
             "earlieststartdate": null,
             "expectedcompletiondate": null,
             "actualcompletiondate": null,
-            "owner": null,
+            "owner": 1234,
             "comments": null,
             "additionalcomments": null,
             "status": null,
@@ -460,7 +460,6 @@ const ManageOrder = () => {
         const response = await APIService.deleteOrders(data)
         const res = await response.json()
         if (res.result == 'success') {
-            // we need to open delete success
             setShowDeleteModal(false)
             openDeleteSuccess();
         }
@@ -987,6 +986,7 @@ const ManageOrder = () => {
         setIsStateDialogue(false);
     }
     const initials = () => {
+        setOrderText('Select Client Property')
         setFormValues(initialValues);
         setFormErrors({});
     }
@@ -1134,9 +1134,10 @@ const ManageOrder = () => {
             }
         }
     }
-
+    const [orderText,setOrderText] = useState('Select Client Property')
     return (
         <div className="h-screen font-medium">
+            {/* <Navbar/> */}
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={pageLoading}
@@ -1661,11 +1662,11 @@ const ManageOrder = () => {
                     <Draggable handle='div.move'>
                         <div className="w-[1050px] h-auto bg-white  rounded-lg">
                             <div className="move cursor-move">
-                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg">
+                                <div className="h-[40px] bg-[#EDF3FF]  justify-center flex items-center rounded-lg relative">
                                     <div className="mr-[410px] ml-[410px]">
                                         <div className="text-[16px]">New Order</div>
                                     </div>
-                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white">
+                                    <div className="flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white absolute right-2">
                                         <img onClick={handleClose} className="w-[20px] h-[20px]" src={Cross} alt="cross" />
                                     </div>
                                 </div>
@@ -1681,7 +1682,7 @@ const ManageOrder = () => {
                                     <div>Order Status history</div>
                                 </div>
                             </div>
-                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state}/>}
+                            {selectedDialog == 1 && <OrderInformation setIsStateDialogue={setIsStateDialogue} formValues={formValues} setFormValues={setFormValues} usersData={usersData} orderStatusData={orderStatusData} clientPropertyData={clientPropertyData} serviceData={serviceData} vendorData={vendorData} tallyLedgerData={tallyLedgerData} formErrors={formErrors} hyperlinkstate={state} orderText={orderText} setOrderText={setOrderText}/>}
                             {selectedDialog == 2 && <Photos formValues={formValues} setFormValues={setFormValues} />}
                             {selectedDialog == 3 && <OrderStatusHistory formValues={formValues} setFormValues={setFormValues} />}
                             <div className="my-[10px] flex justify-center items-center gap-[10px]">
