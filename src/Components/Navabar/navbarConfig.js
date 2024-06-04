@@ -423,8 +423,8 @@ export const navMenuConfig = [
 
       // col-1
       [
-        { subheader: "Prospect", path: "" },
-        { subheader: "Employer", path: "" },
+        { subheader: "Prospect", path: PATH_DASHBOARD.research.prospect },
+        { subheader: "Employer", path: PATH_DASHBOARD.research.employer },
         { subheader: "Manage Govt Department", path: "" },
         { subheader: "Real Estate Agents", path: "" },
       ],
