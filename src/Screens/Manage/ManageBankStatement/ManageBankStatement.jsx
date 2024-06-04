@@ -626,7 +626,7 @@ const ManageBankStatement = () => {
             "order": flag ? "asc" : "desc",
             "pg_no": 0,
             "pg_size": 0,
-            "search_key": searchInput,
+            "search_key": searchQuery,
             "downloadType": type,
             "colmap" : {
                 "mode" : "Mode",
