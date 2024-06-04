@@ -98,6 +98,7 @@ import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPayment
 import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
 import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
 import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
+import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -170,7 +171,7 @@ const App = () => {
               {/* <Route path="/reasearch/employer" element={<Employer />} /> */}
               <Route
                 path="/reasearch/governmentdepartment"
-                element={<GovernmentDepartment />}
+                element={<ResearchGovernmentDepartment />}
               />
               <Route
                 path="/manage/bankstatement"
