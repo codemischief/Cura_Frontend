@@ -40,6 +40,7 @@ import OrderPaymentB2BReducer from "./slice/reporting/TallyReports/OrderPaymentB
 import OrderPaymentWithTdsReducer from "./slice/reporting/TallyReports/OrderPaymentWithTds/OrderPaymentWithTds";
 import OrderPaymentWithoutTdsReducer from "./slice/reporting/TallyReports/OrderPaymentWithoutTds/OrderPaymentWithoutTds";
 import OrderReceiptToServiceTaxReducer from "./slice/reporting/TallyReports/OrderReceiptToInvoiceServiceTax/OrderReceiptToInvoiceServiceTax";
+import employer  from "./slice/Research/EmployerSlice";
 
 
 
@@ -84,8 +85,8 @@ export const store = configureStore({
     orderPaymentB2B:OrderPaymentB2BReducer,
     orderPaymentWithTds:OrderPaymentWithTdsReducer,
     orderPaymentWithoutTds:OrderPaymentWithoutTdsReducer,
-    orderReceiptToServiceTax:OrderReceiptToServiceTaxReducer
-
+    orderReceiptToServiceTax:OrderReceiptToServiceTaxReducer,
+    employer : employer,
   },
   // Add the RTK Query API middleware
 });

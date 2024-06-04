@@ -60,7 +60,7 @@ const SimpleTable = ({
             </tr>
           </thead>
 
-          <tbody className=" max-h-[calc(100vh-375px)]  overflow-y-auto">
+          <tbody className=" max-h-[calc(100vh-375px)]   overflow-y-auto">
             {isLoading && (
               <tr>
                 <td colSpan={columns.length} className="text-center">

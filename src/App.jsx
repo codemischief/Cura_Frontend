@@ -35,7 +35,7 @@ import Userscreen from "./Screens/UserScreens/Userscreen";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
 import Agent from "./Screens/Research/Agent/Agent";
-import Employer from "./Screens/Research/Employer/Employer";
+// import Employer from "./Screens/Research/Employer/Employer";
 import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
@@ -97,6 +97,7 @@ import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2C/
 import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx";
 import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
 import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
+import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -151,7 +152,9 @@ const App = () => {
               <Route path="/admin/LOB" element={<LOB />} />
               <Route path="/admin/service" element={<Service />} />
               <Route path="/admin/payments" element={<Payments />} />
+
               <Route path="/research/prospect" element={<PropectusPage />} />
+              <Route path="/research/employer" element={<ResearchEmployer/>}/>
               <Route path="/research/owner" element={<Owner />} />
               <Route path="/research/educational" element={<Educational />} />
               <Route path="/research/architect" element={<Architect />} />
@@ -164,7 +167,7 @@ const App = () => {
               <Route path="/research/banks" element={<Banks />} />
               <Route path="/research/friends" element={<Friends />} />
               <Route path="/reasearch/agent" element={<Agent />} />
-              <Route path="/reasearch/employer" element={<Employer />} />
+              {/* <Route path="/reasearch/employer" element={<Employer />} /> */}
               <Route
                 path="/reasearch/governmentdepartment"
                 element={<GovernmentDepartment />}

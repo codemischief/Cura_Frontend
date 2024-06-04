@@ -420,6 +420,7 @@ export const navMenuConfig = [
     title: "Research",
     path: ROOTS.research,
     children: [
+
       // col-1
       [
         { subheader: "Prospect", path: "" },
