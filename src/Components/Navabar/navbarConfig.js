@@ -37,7 +37,7 @@ export const navMenuConfig = [
         subheader: "Margin Report",
         items: [
           {
-            title: "LOB- Receipts - Payments",
+            title: "LOB-Service-Receipts-Payments",
             path: PATH_DASHBOARD.admin.lobReceiptPayments,
           },
           {

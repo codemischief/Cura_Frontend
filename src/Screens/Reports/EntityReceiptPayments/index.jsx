@@ -87,7 +87,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
-        rows: ["lobname","orderreceiptamount","paymentamount","diff"],
+        rows: ["entityname","orderreceiptamount","paymentamount","diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
         order: sorting.sort_order ? sorting.sort_order : undefined,
         filters: formatedFilterData(filter),
@@ -125,7 +125,7 @@ const LobReceiptPayments = () => {
         startdate: startDate ?? "2021-01-01",
         enddate: endDate ?? "2022-01-01",
         entityName: entity,
-        rows: ["lobname","orderreceiptamount","paymentamount","diff"],
+        rows: ["entityname","orderreceiptamount","paymentamount","diff"],
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
 
         filters: formatedFilterData(filter),
@@ -165,12 +165,12 @@ const LobReceiptPayments = () => {
       entityName: entity,
       downloadType : "excel",
       colmap : {
-        "lobname" : "LOB Name",
+        "entityname" : "Entity",
         "orderreceiptamount" : "Receipt Amount",
         "paymentamount" : "Payment Amount",
         "diff" : "Difference"
       },
-      rows: ["lobname","orderreceiptamount","paymentamount","diff"],
+      rows: ["entityname","orderreceiptamount","paymentamount","diff"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -202,7 +202,7 @@ const LobReceiptPayments = () => {
         <div className="flex justify-between">
           <HeaderBreadcrum
             heading={"Entity-Receipts-Payments"}
-            path={["Reports", "Lists", "Entity-Receipts-Payments"]}
+            path={["Admin", "Entity-Receipts-Payments"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
