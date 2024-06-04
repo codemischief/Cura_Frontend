@@ -199,7 +199,7 @@ const PmaBilling = () => {
                 value={selectedYear}
                 onChange={handleSelectYear}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Year</option>
                 {YEARS.map((item) => {
                   return (
                     <option value={item} key={item}>
@@ -220,7 +220,7 @@ const PmaBilling = () => {
                 defaultValue="Select State"
                 onChange={handleSelectMonth}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Month</option>
                 {MONTHS.map((item, index) => {
                   return (
                     <option value={index + 1} key={index}>

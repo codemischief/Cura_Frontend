@@ -1,10 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import MainLogo from "../Logo";
 import { Button, Stack } from "@mui/material";
 import { PowerSettingsNew } from "@mui/icons-material";
 import MenuDesktop from "./DeskTopMenu";
 import MainLogo from "../Svg/logo";
 import useAuth from "../../context/JwtContext";
+import { ROOTS } from "../../route/path";
 const buttonStyle = {
   color: "white",
   height: "26px",
@@ -29,6 +30,7 @@ const buttonStyle = {
 const Navbar = () => {
   const { logout } = useAuth();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isHome = pathname === "/";
   return (
     <div className="w-full px-[36px] items-center justify-between flex h-[89px] gap-[36px] bg-blue-700 text-white">
@@ -40,11 +42,16 @@ const Navbar = () => {
         alignItems={"center"}
         gap={2}
       >
-        <Button sx={{ ...buttonStyle, width: "142px" }}>Dashboard</Button>
+        <Button
+          sx={{ ...buttonStyle, width: "142px", textTransform: "none" }}
+          onClick={() => navigate(ROOTS.root)}
+        >
+          Dashboard
+        </Button>
         <Button sx={buttonStyle}>Change Password</Button>
         <Button
           onClick={logout}
-          sx={{ ...buttonStyle, width: "142px" }}
+          sx={{ ...buttonStyle, width: "142px", textTransform: "none" }}
           startIcon={<PowerSettingsNew />}
         >
           Logout
