@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
+import Container from "../../../Components/common/Container";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
@@ -47,11 +48,11 @@ const LobReceiptPayments = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [paymentMode, setPaymentMode] = useState([]);
-  const [bankName , setBankName] = useState("");
+  const [bankName, setBankName] = useState("");
 
   const fetchPaymentMode = async () => {
     const data = {
-        "user_id": 1234
+      "user_id": 1234
     }
     const response = await APIService.getModesAdmin(data);
     const result = (await response.json());
@@ -60,7 +61,7 @@ const LobReceiptPayments = () => {
     // setFormValues((existing) => {
     //     return { ...existing, paymentmode: result.data[0][0] }
     // })
-}
+  }
 
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
@@ -167,7 +168,7 @@ const LobReceiptPayments = () => {
       startdate: startDate ?? "2021-01-01",
       enddate: endDate ?? "2022-01-01",
       bankName: bankName,
-      rows: ["date", "bankst_dr","contorderpayments", "order_payments", "contractual_payments", ],
+      rows: ["date", "bankst_dr", "contorderpayments", "order_payments", "contractual_payments",],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
@@ -209,119 +210,122 @@ const LobReceiptPayments = () => {
     }
   };
   return (
-    <Stack gap="1rem">
-      
-      <div className="flex flex-col px-4">
-        <div className="flex justify-between">
-          <HeaderBreadcrum
-            heading={"Daily Bank Payments Reconciliation"}
-            path={["Reports", "Bank Records", "Daily Bank Payments Reconciliation"]}
-          />
-          <div className="flex justify-between gap-7 h-[36px]">
-            {showTable && (
-              <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
-                <p>
-                  Generated on: <span> {new Date().toLocaleString()}</span>
-                </p>
-              </div>
-            )}
-            <SearchBar
-              value={searchInput}
-              handleSearchvalue={handleSearchvalue}
-              handleSearch={handleSearch}
-              removeSearchValue={removeSearchValue}
-              onKeyDown={handleSearchEnterKey}
-            />
-          </div>
-        </div>
+    <Container>
 
-        <Stack
-          marginTop={"8px"}
-          justifyContent={"space-between"}
-          direction={"row"}
-          alignItems={"center"}
-          height={"3.875rem"}
-        >
-          <Stack
-            direction={"row"}
-            justifyContent={"space-around"}
-            alignItems={"center"}
-            gap={"24px"}
-          >
-            <div className="">
-              <div className="text-sm">Bank Name <label className="text-red-500">*</label></div>
-              <select className="w-[160px] h-8 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="bankName" value={bankName} onChange={(e)=> setBankName(e.target.value)} defaultValue="Bank Name" >
-                <option value="none" hidden>Bank Name</option>
-                <option value="all" hidden>All</option>
-                {paymentMode.map(item => (
-                  <option key={item[0]} value={item[1]}>
-                    {item[1]}
-                  </option>
-                ))}
-              </select>
+      <Stack gap="1rem">
+
+        <div className="flex flex-col px-4">
+          <div className="flex justify-between">
+            <HeaderBreadcrum
+              heading={"Daily Bank Payments Reconciliation"}
+              path={["Reports", "Bank Records", "Daily Bank Payments Reconciliation"]}
+            />
+            <div className="flex justify-between gap-7 h-[36px]">
+              {showTable && (
+                <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
+                  <p>
+                    Generated on: <span> {new Date().toLocaleString()}</span>
+                  </p>
+                </div>
+              )}
+              <SearchBar
+                value={searchInput}
+                handleSearchvalue={handleSearchvalue}
+                handleSearch={handleSearch}
+                removeSearchValue={removeSearchValue}
+                onKeyDown={handleSearchEnterKey}
+              />
             </div>
-            <DatePicker
-              label={"Select Start Date"}
-              onChange={handleDateChange}
-              name="startDate"
-            />
-            <DatePicker
-              label={"Select End Date"}
-              onChange={handleDateChange}
-              name="endDate"
-            />
-            <Button
-              variant="outlined"
-              //   onClick={handleShow}
-              sx={{
-                height: "36px",
-                textTransform: "none",
-                color: "#004DD7",
-                borderRadius: "8px",
-                width: "133px",
-                fontSize: "14px",
-                border: "1px solid #004DD7",
-                fontWeight: "600px",
-                lineHeight: "18.9px",
-                marginTop: "12px",
-                "&:hover": {
-                  //you want this to be the same as the backgroundColor above
-                  backgroundColor: "#004DD7",
-                  color: "#fff",
-                },
-              }}
-              onClick={handleShow}
-              disabled={!(startDate && endDate && bankName)}
-            >
-              Show
-            </Button>
-          </Stack>
-        </Stack>
+          </div>
 
-        <SimpleTableWithFooter
-          pageName={'bankPaymentsReconciliation'}
-          columns={columns}
-          data={bankPaymentsReconciliation}
-          totalData={totalAmount}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-        />
-      </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
-        />
-      )}
-    </Stack>
+          <Stack
+            marginTop={"8px"}
+            justifyContent={"space-between"}
+            direction={"row"}
+            alignItems={"center"}
+            height={"3.875rem"}
+          >
+            <Stack
+              direction={"row"}
+              justifyContent={"space-around"}
+              alignItems={"center"}
+              gap={"24px"}
+            >
+              <div className="">
+                <div className="text-sm">Bank Name <label className="text-red-500">*</label></div>
+                <select className="w-[160px] h-8 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs" name="bankName" value={bankName} onChange={(e) => setBankName(e.target.value)} defaultValue="Bank Name" >
+                  <option value="none" hidden>Bank Name</option>
+                  <option value="all" hidden>All</option>
+                  {paymentMode.map(item => (
+                    <option key={item[0]} value={item[1]}>
+                      {item[1]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <DatePicker
+                label={"Select Start Date"}
+                onChange={handleDateChange}
+                name="startDate"
+              />
+              <DatePicker
+                label={"Select End Date"}
+                onChange={handleDateChange}
+                name="endDate"
+              />
+              <Button
+                variant="outlined"
+                //   onClick={handleShow}
+                sx={{
+                  height: "36px",
+                  textTransform: "none",
+                  color: "#004DD7",
+                  borderRadius: "8px",
+                  width: "133px",
+                  fontSize: "14px",
+                  border: "1px solid #004DD7",
+                  fontWeight: "600px",
+                  lineHeight: "18.9px",
+                  marginTop: "14px",
+                  "&:hover": {
+                    //you want this to be the same as the backgroundColor above
+                    backgroundColor: "#004DD7",
+                    color: "#fff",
+                  },
+                }}
+                onClick={handleShow}
+                disabled={!(startDate && endDate && bankName)}
+              >
+                Show
+              </Button>
+            </Stack>
+          </Stack>
+
+          <SimpleTableWithFooter
+            pageName={'bankPaymentsReconciliation'}
+            columns={columns}
+            data={bankPaymentsReconciliation}
+            totalData={totalAmount}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
+          />
+        </div>
+        {toast && (
+          <SucessfullModal
+            isOpen={toast}
+            message="New Receipt Added Successfully"
+          />
+        )}
+      </Stack>
+    </Container>
   );
 };
 
