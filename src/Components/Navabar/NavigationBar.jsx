@@ -30,7 +30,7 @@ const buttonStyle = {
 const Navbar = () => {
   const { logout } = useAuth();
   const { pathname } = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const isHome = pathname === "/";
   return (
     <div className="w-full px-[36px] items-center justify-between flex h-[89px] gap-[36px] bg-blue-700 text-white">
@@ -42,11 +42,16 @@ const Navbar = () => {
         alignItems={"center"}
         gap={2}
       >
-        <Button sx={{ ...buttonStyle, width: "142px" }} onClick={()=>navigate(ROOTS.root)}>Dashboard</Button>
+        <Button
+          sx={{ ...buttonStyle, width: "142px", textTransform: "none" }}
+          onClick={() => navigate(ROOTS.root)}
+        >
+          Dashboard
+        </Button>
         <Button sx={buttonStyle}>Change Password</Button>
         <Button
           onClick={logout}
-          sx={{ ...buttonStyle, width: "142px" }}
+          sx={{ ...buttonStyle, width: "142px", textTransform: "none" }}
           startIcon={<PowerSettingsNew />}
         >
           Logout

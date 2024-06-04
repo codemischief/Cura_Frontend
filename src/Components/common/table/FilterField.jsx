@@ -9,7 +9,8 @@ import {
 } from "../../Filters/data";
 
 export const FilterField = (props) => {
-  const { columnfield, type, onFilterChange, filter, isDisabled, filterStyle } = props;
+  const { columnfield, type, onFilterChange, filter, isDisabled, filterStyle } =
+    props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [search, setSearch] = useState("");
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -24,6 +25,7 @@ export const FilterField = (props) => {
       onFilterChange(copiedFilters);
     }
   }, [search]);
+
   useEffect(() => {
     let copiedFilters = { ...filter };
     if (search && !copiedFilters.hasOwnProperty(columnfield)) {
@@ -57,7 +59,12 @@ export const FilterField = (props) => {
         onFilterChange({ ...prevFilters });
       }
     }
-    if (!search && (filters === "isNull" || filters === "isNotNull")) {
+    if (
+      !search &&
+      (filters === "isNull" ||
+        filters === "isNotNull" ||
+        filters === "noFilter")
+    ) {
       let filterType = {
         text: "String",
         number: "Numeric",
@@ -113,7 +120,7 @@ export const FilterField = (props) => {
       <div className="w-full h-full flex justify-start py-3 px-1">
         <div className="w-full h-[1.75rem] flex justify-start items-center bg-[#F5F5F5] rounded-md">
           <input
-            className="w-full min-w-[3rem] h-full bg-[#F5F5F5] rounded-md text-xs pl-2 outline-none"
+            className="w-full min-w-[3rem] h-full bg-[#F5F5F5] rounded-md font-normal pl-2 outline-none"
             type={type}
             disabled={isDisabled}
             value={search}
