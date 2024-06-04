@@ -102,6 +102,7 @@ import ClientStatistics from "./Screens/Reports/Statistics/ClientStatisticsRepor
 import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
 import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
 import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/index.jsx";
+import TdsPaidToGovernement from "./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -230,7 +231,7 @@ const App = () => {
                 path="/manage/managevendorpayment/:orderid"
                 element={<ManageVendorPayment />}
               />
-                <Route
+              <Route
                 path="/manage/manageclientinvoice/:orderid"
                 element={<ManageClientInvoice />}
               />
@@ -296,8 +297,14 @@ const App = () => {
                 path="/reports/pmaBillingTrendView"
                 element={<PmaBillingTrendView />}
               />
-              <Route path="/reports/pmaClientReport" element={<PmaClientReport />} />
-              <Route path="/reports/pmaInvoiceList" element={<PmaInvoiceList />} />
+              <Route
+                path="/reports/pmaClientReport"
+                element={<PmaClientReport />}
+              />
+              <Route
+                path="/reports/pmaInvoiceList"
+                element={<PmaInvoiceList />}
+              />
               <Route
                 path="/reports/pmaClientReceivable"
                 element={<PmaClientReceivable />}
@@ -306,7 +313,10 @@ const App = () => {
                 path="/reports/activePmaAgreement"
                 element={<ActivePmaAgreement />}
               />
-              <Route path="/reports/projectContact" element={<ProjectContact />} />
+              <Route
+                path="/reports/projectContact"
+                element={<ProjectContact />}
+              />
               <Route
                 path="/reports/advanceHoldingAmount"
                 element={<AdvanceHoldingAmount />}
@@ -372,10 +382,6 @@ const App = () => {
                 element={<VendorTraceReport />}
               />
               <Route
-                path="/reports/clientReceipt"
-                element={<ClientReceiptView />}
-              />
-              <Route
                 path="/reports/orderpaymentDD"
                 element={<OrderPaymentDDView />}
               />
@@ -400,12 +406,12 @@ const App = () => {
                 element={<OrderReceiptToInvoiceServiceTax />}
               />
               <Route
-                path="reports/clientStatistics"
-                element={<ClientStatistics />}
-                >
-               <Route
                 path="reports/vendorstatement"
                 element={<VendorStatementView />}
+              />
+              <Route
+                path="reports/tdsPaidToGovernment"
+                element={<TdsPaidToGovernement />}
               />
             </Route>
 

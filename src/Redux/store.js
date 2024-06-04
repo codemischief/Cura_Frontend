@@ -14,7 +14,7 @@ import pmaBillingTrendView from "./slice/reporting/pmaBillingTrendView";
 import pmaClientReport from "./slice/reporting/pmaClientReport";
 import pmaInvoiceList from "./slice/reporting/pmaInvoiceList";
 // import { setPmaClientReceivables } from "./slice/reporting/ReportPmaClientReceivable";
-import pmaClientReceivable from "./slice/reporting/ReportPmaClientReceivable"
+import pmaClientReceivable from "./slice/reporting/ReportPmaClientReceivable";
 import ActivePmaAgreement from "./slice/reporting/ActivePmaAgreement";
 import ProjectContacts from "./slice/reporting/ProjectContacts";
 import AdvanceHoldingAmount from "./slice/reporting/AdvanceHoldingAmount";
@@ -33,23 +33,24 @@ import ProsPectReducer from "./slice/Research/ProspectSlice";
 import ClientTraceReport from "./slice/reporting/ClientTraceReport";
 import OrderTraceReport from "./slice/reporting/OrderTraceReport";
 import VendorTraceReport from "./slice/reporting/VendorTraceReport";
-import ClientReceiptReportReducer from "./slice/reporting/TallyReports/ClientReceipt/ClientReceipt"
-import OrderPaymentDDReportReducer from "./slice/reporting/TallyReports/OrderPaymentDD/OrderPaymentDD"
+import ClientReceiptReportReducer from "./slice/reporting/TallyReports/ClientReceipt/ClientReceipt";
+import OrderPaymentDDReportReducer from "./slice/reporting/TallyReports/OrderPaymentDD/OrderPaymentDD";
 import OrderPaymentB2CReducer from "./slice/reporting/TallyReports/OrderPaymentB2C/OrderPaymentB2C";
 import OrderPaymentB2BReducer from "./slice/reporting/TallyReports/OrderPaymentB2B/OrderPaymentB2B";
 import OrderPaymentWithTdsReducer from "./slice/reporting/TallyReports/OrderPaymentWithTds/OrderPaymentWithTds";
 import OrderPaymentWithoutTdsReducer from "./slice/reporting/TallyReports/OrderPaymentWithoutTds/OrderPaymentWithoutTds";
 import OrderReceiptToServiceTaxReducer from "./slice/reporting/TallyReports/OrderReceiptToInvoiceServiceTax/OrderReceiptToInvoiceServiceTax";
-import employer  from "./slice/Research/EmployerSlice";
-import governmentdepartment  from "./slice/Research/GovernmentDepartmentSlice";
+import employer from "./slice/Research/EmployerSlice";
+import governmentdepartment from "./slice/Research/GovernmentDepartmentSlice";
 import agent from "./slice/Research/AgentSlice";
 import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 // import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
 
-import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement"
+import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
 
+import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
 
-
+import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
 
 export const store = configureStore({
   reducer: {
@@ -59,44 +60,53 @@ export const store = configureStore({
     orderInvoice: OrderInvoiceReducer,
     clientReceipt: ClientReceiptReducer,
     vendorInvoice: VendorInvoiceReducer,
-    lobReceiptPayments : LOBReceiptPaymentReducer,
-    entityReceiptPayments : EntityReceiptPaymentReducer,
-    lobReceiptPaymentConsolidated : LOBReceiptPaymentConsolidatedReducer,
-    pmaBillingTrendView : pmaBillingTrendView,
-    pmaClientReport : pmaClientReport,
-    pmaInvoiceList : pmaInvoiceList,
-    pmaClientReceivable : pmaClientReceivable,
+    lobReceiptPayments: LOBReceiptPaymentReducer,
+    entityReceiptPayments: EntityReceiptPaymentReducer,
+    lobReceiptPaymentConsolidated: LOBReceiptPaymentConsolidatedReducer,
+    pmaBillingTrendView: pmaBillingTrendView,
+    pmaClientReport: pmaClientReport,
+    pmaInvoiceList: pmaInvoiceList,
+    pmaClientReceivable: pmaClientReceivable,
     activePmaAgreement: ActivePmaAgreement,
     projectContacts: ProjectContacts,
     advanceHoldingAmount: AdvanceHoldingAmount,
-    pmaClientStatementAll:pmaClientStatementAll,
+    pmaClientStatementAll: pmaClientStatementAll,
     pmaClientStatement: pmaClientStatement,
     nonPmaClientStAndRec: NonPmaClientStAndRec,
     clientStatementAllEntities: ClientStatementAllEntities,
     duplicateClientsReport: DuplicateClientReports,
-    clientBankDetails:ClientBankDetails,
-    monthlyBankSummary:MonthlyBankSummary,
+    clientBankDetails: ClientBankDetails,
+    monthlyBankSummary: MonthlyBankSummary,
     bankTransferReconsiliation: BankTransferReconciliation,
     clientOrderReceiptMismatchDetails: ClientOrderReceiptMismatchDetails,
     bankReceiptReconciliation: BankReceiptsReconciliation,
-    bankPaymentsReconciliation : BankPaymentsReconciliation,
+    bankPaymentsReconciliation: BankPaymentsReconciliation,
     prospect: ProsPectReducer,
-    clientTraceReport:ClientTraceReport,
-    orderTraceReport:OrderTraceReport,
+    clientTraceReport: ClientTraceReport,
+    orderTraceReport: OrderTraceReport,
     vendorTraceReport: VendorTraceReport,
-    clientReceiptReport:ClientReceiptReportReducer,
-    orderPaymentDDReport:OrderPaymentDDReportReducer,
-    orderPaymentB2C:OrderPaymentB2CReducer,
-    orderPaymentB2B:OrderPaymentB2BReducer,
-    orderPaymentWithTds:OrderPaymentWithTdsReducer,
-    orderPaymentWithoutTds:OrderPaymentWithoutTdsReducer,
-    orderReceiptToServiceTax:OrderReceiptToServiceTaxReducer,
-    employer : employer,
-    governmentdepartment : governmentdepartment,
-    agent : agent,
-    clientStatistics:ClientStatistics,
-    vendorStatement:VendorStatementReducer
+    clientReceiptReport: ClientReceiptReportReducer,
+    orderPaymentDDReport: OrderPaymentDDReportReducer,
+    orderPaymentB2C: OrderPaymentB2CReducer,
+    orderPaymentB2B: OrderPaymentB2BReducer,
+    orderPaymentWithTds: OrderPaymentWithTdsReducer,
+    orderPaymentWithoutTds: OrderPaymentWithoutTdsReducer,
+    orderReceiptToServiceTax: OrderReceiptToServiceTaxReducer,
+    employer: employer,
+    governmentdepartment: governmentdepartment,
+    agent: agent,
+    clientStatistics: ClientStatistics,
+    vendorStatement: VendorStatementReducer,
 
+    clientReceiptReport: ClientReceiptReportReducer,
+    orderPaymentDDReport: OrderPaymentDDReportReducer,
+    orderPaymentB2C: OrderPaymentB2CReducer,
+    orderPaymentB2B: OrderPaymentB2BReducer,
+    orderPaymentWithTds: OrderPaymentWithTdsReducer,
+    orderPaymentWithoutTds: OrderPaymentWithoutTdsReducer,
+    orderReceiptToServiceTax: OrderReceiptToServiceTaxReducer,
+    vendorStatement: VendorStatementReducer,
+    tdsToGovt: TdsToGovtReducer,
   },
   // Add the RTK Query API middleware
 });
