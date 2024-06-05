@@ -218,7 +218,7 @@ const EditUser = ({ handleClose, currUser, allCity, allRoles, allLOB , showSucce
             "id" : currUser,
             "username": formValues.userName,
             "roleid": Number(formValues.role),
-            "password": formValues.password ? btoa(formValues.password) : pass ,
+            "password": formValues.password ? btoa(formValues.password) :null,
             "officeid": 2,
             "lobid": Number(formValues.lob),
             "usercode": "code",
