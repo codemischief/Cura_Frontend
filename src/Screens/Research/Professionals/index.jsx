@@ -20,7 +20,7 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 
-const ResearchAgent = () => {
+const ResearchProfessionals = () => {
   const dispatch = useDispatch();
   const {
     AgentData,
@@ -255,8 +255,8 @@ const ResearchAgent = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Real Estate Agents"}
-            path={["Research ", "Real Estate Agents"]}
+            heading={"Professionals"}
+            path={["Research ", "Professionals"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -271,7 +271,7 @@ const ResearchAgent = () => {
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
-                Add New Real Estate Agents
+                Add New Professionals
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
@@ -318,4 +318,4 @@ const ResearchAgent = () => {
   );
 };
 
-export default ResearchAgent;
+export default ResearchProfessionals;

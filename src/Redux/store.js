@@ -43,6 +43,8 @@ import OrderReceiptToServiceTaxReducer from "./slice/reporting/TallyReports/Orde
 import employer from "./slice/Research/EmployerSlice";
 import governmentdepartment from "./slice/Research/GovernmentDepartmentSlice";
 import agent from "./slice/Research/AgentSlice";
+import owner  from "./slice/Research/OwnerSlice";
+import serviceapartment  from "./slice/Research/ServiceApartmentSlice";
 import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 // import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
 
@@ -85,18 +87,11 @@ export const store = configureStore({
     clientTraceReport: ClientTraceReport,
     orderTraceReport: OrderTraceReport,
     vendorTraceReport: VendorTraceReport,
-    clientReceiptReport: ClientReceiptReportReducer,
-    orderPaymentDDReport: OrderPaymentDDReportReducer,
-    orderPaymentB2C: OrderPaymentB2CReducer,
-    orderPaymentB2B: OrderPaymentB2BReducer,
-    orderPaymentWithTds: OrderPaymentWithTdsReducer,
-    orderPaymentWithoutTds: OrderPaymentWithoutTdsReducer,
-    orderReceiptToServiceTax: OrderReceiptToServiceTaxReducer,
+    serviceapartment : serviceapartment,
     employer: employer,
     governmentdepartment: governmentdepartment,
     agent: agent,
     clientStatistics: ClientStatistics,
-
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,
     orderPaymentB2C: OrderPaymentB2CReducer,

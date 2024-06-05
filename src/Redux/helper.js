@@ -345,6 +345,20 @@ export const updatedAgentData = (data) => {
   }));
 }
 
+export const updatedOwnerData = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
+export const updatedServiceApartmentData = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
+
+
 export const receiptToInvoice = (data)=>{
   return data.map((ele, index) => ({
     ...ele,
@@ -353,7 +367,5 @@ export const receiptToInvoice = (data)=>{
 
   }));
 }
-
-
 
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
