@@ -360,7 +360,7 @@ export const navMenuConfig = [
           subheader: "Vendor",
           items: [
             { title: "Vendor Summary", path: "" },
-            { title: "Vendor Statement", path: "" },
+            { title: "Vendor Statement", path: PATH_DASHBOARD.report.vendorReport.vendorStatement },
           ],
         },
         {
@@ -413,9 +413,9 @@ export const navMenuConfig = [
         {
           subheader: "TDS Report",
           items: [
-            { title: "TDS Paid By Vendor", path: "" },
-            { title: "Vendor Payment Summary For Period", path: "" },
-            { title: "TDS Paid to Government", path: "" },
+            { title: "TDS Paid By Vendor", path: PATH_DASHBOARD.report.tdsReport.tdsPaidByVendor },
+            { title: "Vendor Payment Summary For Period", path: PATH_DASHBOARD.report.tdsReport.vendorPaymentPeriod },
+            { title: "TDS Paid to Government", path: PATH_DASHBOARD.report.tdsReport.tdsPaidByGovernment },
           ],
         },
       ],
