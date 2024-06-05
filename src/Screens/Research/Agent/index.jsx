@@ -7,12 +7,12 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
 import {
-  deleteEmployer,
-  getEmployer,
+  deleteAgents,
+  getAgentData,
   setCountPerPage,
   setPageNumber,
-  setSorting,
-} from "../../../Redux/slice/Research/EmployerSlice";
+  setSorting
+} from "../../../Redux/slice/Research/AgentSlice";
 import { PlusOutlined } from "@ant-design/icons";
 import EmployerForm from "./EmployerForm";
 import AlertModal, {
@@ -20,17 +20,17 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 
-const ResearchGovernmentDepartment = () => {
+const ResearchAgent = () => {
   const dispatch = useDispatch();
   const {
-    EmployerData,
+    AgentData,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.employer);
+  } = useSelector((state) => state.agent);
 
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -128,10 +128,14 @@ const ResearchGovernmentDepartment = () => {
       user_id: 1234,
       rows: [
         "id",
-        "employername",
-        "industry",
-        "website",
-        "onsiteopportunity"
+        "nameofagent",
+        "agencyname",
+        "emailid",
+        "phoneno",
+        "phoneno2",
+        "localitiesdealing",
+        "nameofpartners",
+        "registered"
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
@@ -140,7 +144,7 @@ const ResearchGovernmentDepartment = () => {
       pg_size: +countPerPage,
       search_key: searchInput,
     };
-    dispatch(getEmployer(obj));
+    dispatch(getAgentData(obj));
   }, [
     filter,
     countPerPage,
@@ -195,10 +199,10 @@ const ResearchGovernmentDepartment = () => {
     setEditData({});
   };
 
-  const deleteEmployer = async () => {
+  const deleteAgents = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
-      await dispatch(deleteEmployer(data));
+      await dispatch(deleteAgents(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");
       setPromptType(alertVariant.success);
@@ -251,8 +255,8 @@ const ResearchGovernmentDepartment = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Government Department"}
-            path={["Research ", "Government Department"]}
+            heading={"Real Estate Agents"}
+            path={["Research ", "Real Estate Agents"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -274,9 +278,10 @@ const ResearchGovernmentDepartment = () => {
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
+          {console.log(AgentData)}
           <SimpleTable
             columns={columns}
-            data={EmployerData}
+            data={AgentData}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}
@@ -305,7 +310,7 @@ const ResearchGovernmentDepartment = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteEmployer}
+          handleDelete={deleteAgents}
           deleteError={deleteError}
         />
       )}
@@ -313,4 +318,4 @@ const ResearchGovernmentDepartment = () => {
   );
 };
 
-export default ResearchGovernmentDepartment;
+export default ResearchAgent;

@@ -43,8 +43,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 2,
       filterComponent: TextFilterField,
-      title: "Employer Name",
-      field: "employername",
+      title: "Name Of Agent",
+      field: "nameofagent",
       sorting: true,
     //   width : '1000px',
       align: "left",
@@ -58,8 +58,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 3,
       filterComponent: TextFilterField,
-      title: "Industry",
-      field: "industry",
+      title: "Agency Name",
+      field: "agencyname",
       align: "left",
     //   width : '20%',
       filterDisabled: false,
@@ -75,8 +75,8 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       id: 4,
       filterComponent: TextFilterField,
 
-      title: "Website",
-      field: "website",
+      title: "Email ID",
+      field: "emailid",
       align: "left",
       filterDisabled: false,
       sorting: true,
@@ -89,8 +89,53 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 5,
-      title: "Onsite Oppurtunity",
-      field: "onsiteopportunity",
+      title: "Phone Number",
+      field: "phoneno",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '300px'
+      },
+    },
+    {
+      id: 6,
+      title: "Whatsapp Number",
+      field: "phoneno2",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '300px'
+      },
+    },
+    {
+      id: 6,
+      title: "Localities Dealing",
+      field: "localitiesdealing",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '300px'
+      },
+    },
+    {
+      id: 7,
+      title: "Name Of Partners",
+      field: "nameofpartners",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,
@@ -104,6 +149,36 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 8,
+      title: "Registered",
+      field: "registered",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '300px'
+      },
+    },
+    {
+      id: 9,
+      title: "ID",
+      field: "id",
+      sorting: true,
+      align: "left",
+      filterComponent: TextFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '300px'
+      },
+    },
+    {
+      id: 10,
       title: "Action",
       field: "action",
       sorting: false,

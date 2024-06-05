@@ -6,15 +6,22 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
+// import {
+//   deleteEmployer,
+//   getGovernmentDepartmentData,
+//   setCountPerPage,
+//   setPageNumber,
+//   setSorting,
+// } from "../../../Redux/slice/Research/EmployerSlice";
 import {
-  deleteEmployer,
-  getEmployer,
-  setCountPerPage,
-  setPageNumber,
-  setSorting,
-} from "../../../Redux/slice/Research/EmployerSlice";
+   deleteGovernmentDepartment,
+   getGovernmentDepartmentData,
+   setCountPerPage,
+   setPageNumber,
+   setSorting
+} from "../../../Redux/slice/Research/GovernmentDepartmentSlice"
 import { PlusOutlined } from "@ant-design/icons";
-import EmployerForm from "./EmployerForm";
+import EmployerForm from "./GovernmentDepartmentForm";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
@@ -22,16 +29,24 @@ import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 
 const ResearchGovernmentDepartment = () => {
   const dispatch = useDispatch();
+  // const {
+  //   GovernmentDepartmentData,
+  //   status,
+  //   totalCount,
+  //   sorting,
+  //   countPerPage,
+  //   pageNo,
+  //   filter,
+  // } = useSelector((state) => state.employer);
   const {
-    EmployerData,
+    GovernmentDepartmentData,
     status,
     totalCount,
     sorting,
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.employer);
-
+  } = useSelector((state) => state.governmentdepartment)
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
@@ -128,10 +143,11 @@ const ResearchGovernmentDepartment = () => {
       user_id: 1234,
       rows: [
         "id",
-        "employername",
-        "industry",
-        "website",
-        "onsiteopportunity"
+        "agencyname",
+        "agencytype",
+        "city",
+        "suburb",
+        "details"
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
@@ -140,7 +156,7 @@ const ResearchGovernmentDepartment = () => {
       pg_size: +countPerPage,
       search_key: searchInput,
     };
-    dispatch(getEmployer(obj));
+    dispatch(getGovernmentDepartmentData(obj));
   }, [
     filter,
     countPerPage,
@@ -263,11 +279,11 @@ const ResearchGovernmentDepartment = () => {
               onKeyDown={handleSearchEnterKey}
             />
             <button
-              className="bg-[#004DD7] text-white h-[36px] w-[240px] rounded-lg"
+              className="bg-[#004DD7] text-white h-[36px] w-[330px] rounded-lg"
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
-                Add New Employer
+                Add New Government Department
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
@@ -276,7 +292,7 @@ const ResearchGovernmentDepartment = () => {
         <div className="w-full h-full overflow-y-auto">
           <SimpleTable
             columns={columns}
-            data={EmployerData}
+            data={GovernmentDepartmentData}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}

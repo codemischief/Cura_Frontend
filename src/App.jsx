@@ -34,7 +34,8 @@ import { Route, Routes, Outlet } from "react-router-dom";
 import Userscreen from "./Screens/UserScreens/Userscreen";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
-import Agent from "./Screens/Research/Agent/Agent";
+import ResearchAgent from "./Screens/Research/Agent/index.jsx";
+// import Agent from "./Screens/Research/Agent/Agent";
 // import Employer from "./Screens/Research/Employer/Employer";
 import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
@@ -167,10 +168,10 @@ const App = () => {
               <Route path="/research/coc" element={<COC />} />
               <Route path="/research/banks" element={<Banks />} />
               <Route path="/research/friends" element={<Friends />} />
-              <Route path="/reasearch/agent" element={<Agent />} />
+              <Route path="/research/agent" element={<ResearchAgent />} />
               {/* <Route path="/reasearch/employer" element={<Employer />} /> */}
               <Route
-                path="/reasearch/governmentdepartment"
+                path="/research/governmentdepartment"
                 element={<ResearchGovernmentDepartment />}
               />
               <Route

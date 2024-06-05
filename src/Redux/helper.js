@@ -257,4 +257,16 @@ export const updatedEmployerData = (data) => {
     ...billing,
   }));
 }
+export const updatedGovernmentDepartmentData = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
+export const updatedAgentData = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

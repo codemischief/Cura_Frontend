@@ -224,7 +224,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
                     <ModalHeader
                       onClose={handleClose}
-                      title={editData.id ? "Edit Employer" : "New Employer"}
+                      title={editData.id ? "Edit Government Department" : "New Government Department"}
                     />
                     </div>
                     <div className="h-auto w-full mt-[5px] ">
