@@ -240,7 +240,8 @@ const OrderReceiptToInvoiceServiceTax = () => {
         uniqueid: "Unique ID",
         base_vch_type: "Base-Vch-Type",
         vch_type: "Voucher Type",
-        vch_date: "Voucher Type",
+        vch_no: "Voucher Number",
+        vch_date: "Voucher Date",
         ref_no: "Ref No.",
         ref_date: "Ref Date",
         party: "Party",
@@ -376,7 +377,7 @@ const OrderReceiptToInvoiceServiceTax = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "12px",
+                marginTop: "6px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",

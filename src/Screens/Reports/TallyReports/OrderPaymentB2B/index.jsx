@@ -259,8 +259,8 @@ const OrderPaymentB2BView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Payment-Bank to Bash"}
-            path={["Reports", "Tally Report", "Order Payment-Bank to Bash"]}
+            heading={"Order Payment-Bank to Bank"}
+            path={["Reports", "Tally Report", "Order Payment-Bank to Bank"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -358,7 +358,7 @@ const OrderPaymentB2BView = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "12px",
+                marginTop: "6px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",
