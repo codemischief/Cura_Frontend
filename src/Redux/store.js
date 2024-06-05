@@ -43,6 +43,7 @@ import OrderReceiptToServiceTaxReducer from "./slice/reporting/TallyReports/Orde
 import employer  from "./slice/Research/EmployerSlice";
 import governmentdepartment  from "./slice/Research/GovernmentDepartmentSlice";
 import agent from "./slice/Research/AgentSlice";
+import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 // import GovernmentDepartment from "../Screens/Research/Government Department/GovernmentDepartment";
 
 
@@ -92,6 +93,7 @@ export const store = configureStore({
     employer : employer,
     governmentdepartment : governmentdepartment,
     agent : agent,
+    clientStatistics:ClientStatistics,
   },
   // Add the RTK Query API middleware
 });

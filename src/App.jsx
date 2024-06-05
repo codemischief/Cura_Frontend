@@ -98,6 +98,7 @@ import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2C/
 import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx";
 import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
 import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
+import ClientStatistics from "./Screens/Reports/Statistics/ClientStatisticsReport/index.jsx";
 import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
 import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
 
@@ -396,6 +397,10 @@ const App = () => {
               <Route
                 path="reports/orderreceipttoinvoiceTax"
                 element={<OrderReceiptToInvoiceServiceTax />}
+              />
+              <Route
+                path="reports/clientStatistics"
+                element={<ClientStatistics />}
               />
             </Route>
 

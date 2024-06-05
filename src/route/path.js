@@ -119,5 +119,8 @@ export const PATH_DASHBOARD = {
       OrderReceiptToInvoiceTax:path(ROOTS.report,"/orderreceipttoinvoiceTax")
 
     },
+    statistics: {
+      clientStatistics: path(ROOTS.report , "/clientStatistics")
+    }
   },
 };
