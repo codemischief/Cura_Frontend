@@ -10,46 +10,19 @@ import { APIService } from "../../../services/API";
 import ConfirmationModal from "../../../Components/common/ConfirmationModal";
 
 import {
-  addEmployerData,
-  editEmployerData
-} from "../../../Redux/slice/Research/EmployerSlice"
+  addGovernmentDepartment,
+  editGovernmentDepartment
+} from "../../../Redux/slice/Research/GovernmentDepartmentSlice"
 import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  employername : Yup.string().required('Employer Name Is Required'),
+  departmentname : Yup.string().required('Department Name Is Required'),
   countryId: Yup.string().required("Country Name is required"),
   state: Yup.string().required("State is required"),
   city: Yup.string().required("City is required"),
 });
-// {
-//   "user_id": 1234,
-//   "country": 5,
-//   "onsiteopportunity": true,
-//   "city": "Pune",
-//   "state": "Maharashtra",
-//   "admincontactmail": "admin@example.com",
-//   "zip": "10001",
-//   "hc": "Healthcare",
-//   "website": "www.example.com",
-//   "admincontactphone": "1234567890",
-//   "contactname1": "Jane Smith",
-//   "contactmail1": "jane@example.com",
-//   "contactphone1": "2345678901",
-//   "contactname2": "Michael Johnson",
-//   "contactmail2": "michael@example.com",
-//   "contactphone2": "3456789012",
-//   "hrcontactname": "Emily Brown",
-//   "hrcontactmail": "hr@example.com",
-//   "hrcontactphone": "4567890123",
-//   "admincontactname": "Admin Name",
-//   "employername": "Example Corp",
-//   "industry": "Technology",
-//   "addressline1": "123 Main St",
-//   "addressline2": "Suite 101",
-//   "suburb": "Downtown"
-// }
-const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
+const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
   const [countryData, setCountryData] = useState({
     arr: [],
@@ -110,30 +83,23 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setCityData(result.data);
   };
-
+  console.log(editData)
   const formik = useFormik({
     initialValues: {
-      employername : editData?.employername ? editData.employername : "",
+      departmentname : editData?.agencyname ? editData.agencyname : null,
       adressline1 : editData?.addressline1 ? editData.addressline1 : "",
       adressline2 : editData?.addressline2 ? editData.addressline2 : "",
-      countryId: editData?.country ? editData.country : 5,
+      countryId: editData?.countryid ? editData.countryid : 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : "Pune",
-      zip : editData?.zip ? editData.zip : "",
-      industry : editData?.industry ? editData.industry : "",
-      hrcontactname : editData?.hrcontactname ? editData.hrcontactname : "",
-      hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : "",
-      hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : "",
-      admincontactname : editData?.admincontactname ? editData.admincontactname : "",
-      admincontactmail : editData?.admincontactmail ? editData.admincontactmail : "",
-      hc : editData?.hc ? emailData.hc : "",
-      website : editData?.website ? emailData.website : "",
-      contactname1 : editData?.contactname1 ? emailData.contactname1 : "",
-      contactphone1 : editData?.contactphone1 ? emailData.contactphone1 : "",
-      contactmail1 : editData?.contactmail1 ? emailData.contactmail1 : "",
-      contactname2 : editData?.contactname2 ? emailData.contactname2 : "",
-      contactphone2 : editData?.contactphone2 ? emailData.contactphone2 : "",
-      contactmail2 : editData?.contactmail2 ? emailData.contactmail2 : ""
+      suburb : editData.suburb ? editData.suburb : null,
+      departmenttype : editData.agencytype ? editData.agencytype : null,
+      details : editData.details ? editData.details : null,
+      contactname : editData.contactname ? editData.contactname : null,
+      contactemail : editData.contactemail ? editData.contactemail : null,
+      contactphone : editData.contactphone ? editData.contactphone : null,
+      maplink : editData.maplink ? editData.maplink : null,
+      zip : editData?.zip ? editData.zip : null,
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -141,29 +107,32 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
       setOpenConfimation(true);
     },
   });
-
+  
   const handleConfirm = async () => {
     try {
       const data = {
         user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
-        city: values.city,
-        state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
+        agencyname : values.departmentname,
+        addressline1 : values.adressline1,
+        addressline2 : values.adressline2,
+        suburb : values.suburb,
+        city : values.city,
+        state : values.state,
         country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
+        zip : values.zip,
+        agencytype : values.departmenttype,
+        details : values.details,
+        contactname : values.contactname,
+        contactmail : values.contactemail,
+        contactphone : values.contactphone,
+        maplink : values.maplink
       };
 
       if (editData?.id) {
-        await dispatch(editEmployerData(data));
+        await dispatch(editGovernmentDepartment(data));
         openSucess();
       } else {
-        await dispatch(addEmployerData(data));
+        await dispatch(addGovernmentDepartment(data));
         openSucess();
       }
     } catch (error) {
@@ -192,7 +161,17 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+    // console.log(e.target)
+    // setFieldValue(e.target.name, e.target.value);
+    const { type, name, value, checked } = e.target;
+    // const fieldValue = type === 'checkbox' ? checked : value;
+    console.log(name, checked);
+    if(type == 'checkbox') {
+      setFieldValue(name,checked)
+    }else {
+
+      setFieldValue(name, value);
+    }
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
@@ -233,21 +212,21 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
-                                Employer Name
+                                Department Name
                               </label>
                               <span className="requiredError">*</span>
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="employername"
-                              value={formik.values.employername}
+                              name="departmentname"
+                              value={formik.values.departmentname}
                               onBlur={handleBlur}
                               onChange={handleChange}
                             />
                             <div className="inputValidationError">
-                              {touched.employername && errors.employername && (
-                                <div>{errors.employername}</div>
+                              {touched.departmentname && errors.departmentname && (
+                                <div>{errors.departmentname}</div>
                               )}
                             </div>
                           </div>
@@ -260,7 +239,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="addressline1"
+                              name="adressline1"
                               value={formik.values.adressline1}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -280,7 +259,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="addressline2"
+                              name="adressline2"
                               value={formik.values.adressline2}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -412,6 +391,97 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div>
                           </div>
+                          
+                        </div>
+                        <div className=" space-y-[10px] py-[20px] px-[10px]">
+                          <div className="">
+                            {/* <div className="text-[13px]">Email </div> */}
+                            <label className="inputFieldLabel">Department Type</label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="industry"
+                              value={formik.values.industry}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Details
+                            </label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="details"
+                              value={formik.values.details}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Contact Name
+                            </label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="contactname"
+                              value={formik.values.contactname}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Contact Email
+                            </label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="contactemail"
+                              value={formik.values.contactemail}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Contact Phone
+                            </label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="contactphone"
+                              value={formik.values.contactphone}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
+                          <div className="">
+                            {/* <div className="text-[13px]">Phone Number </div> */}
+                            <label className="inputFieldLabel">
+                              Map Link
+                            </label>
+                            <input
+                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="inputFieldBorder inputFieldValue"
+                              type="text"
+                              name="maplink"
+                              value={formik.values.maplink}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                            />
+                          </div>
                           <div className="">
                             <div className="flex">
                               <label className="inputFieldLabel">
@@ -433,263 +503,14 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               )}
                             </div> */}
                           </div>
-                          
-                          
-
-                          
-                        </div>
-                        <div className=" space-y-[10px] py-[20px] px-[10px]">
-                          <div className="">
-                            {/* <div className="text-[13px]">Email </div> */}
-                            <label className="inputFieldLabel">Industry</label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="industry"
-                              value={formik.values.industry}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              HR Name
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="hrcontactname"
-                              value={formik.values.hrcontactname}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              HR Phone
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="hrcontactphone"
-                              value={formik.values.hrcontactphone}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              HR Email
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="hrcontactmail"
-                              value={formik.values.hrcontactmail}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Admin Name
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="admincontactname"
-                              value={formik.values.admincontactname}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Admin Phone
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="admincontactphone"
-                              value={formik.values.admincontactphone}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Admin Email
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="email"
-                              name="admincontactmail"
-                              value={formik.values.admincontactmail}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
-                            <label className="inputFieldLabel">
-                              Notes
-                            </label>
-                            <input
-                              // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="hc"
-                              value={formik.values.hc}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                            />
-                          </div>
-                          
-                        </div>
-
-
-
-                        <div className=" space-y-[10px] py-[20px] px-[10px]">
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Website
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="website"
-                              value={formik.values.website}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Contact Name 1
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="contactname1"
-                              value={formik.values.contactname1}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Contact Phone 1
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="contactphone1"
-                              value={formik.values.contactphone1}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Contact Email 1
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="contactmail1"
-                              value={formik.values.contactmail1}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Contact Name 2
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="contactname2"
-                              value={formik.values.contactname2}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Contact Phone 2
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="contactphone2"
-                              value={formik.values.contactphone2}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          <div className="">
-                            <div className="flex">
-                              <label className="inputFieldLabel">
-                                Contact Email 2
-                              </label>
-                              
-                            </div>
-                            <input
-                              className="inputFieldBorder inputFieldValue"
-                              type="text"
-                              name="contactmail2"
-                              value={formik.values.contactmail2}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                            />
-                            
-                          </div>
-                          
-                          
-                          
-
                          
-
-                         
+                          
+                          
                         </div>
+
+
+
+                        
                       </div>
                     </div>
 
@@ -703,9 +524,9 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Update"
-                        ) : (
                           "Save"
+                        ) : (
+                          "Add"
                         )}
                       </button>
                       <button
@@ -728,16 +549,16 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title="Add Employer"
           description={
             <div>
-              <p className="">Client: {values.personname}</p>
+              <p className="">Department Name: {values.departmentname}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -748,7 +569,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this client?
+                Are you sure you want to add this Government Department?
               </Typography>
             </div>
           }
@@ -759,7 +580,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   // );
 };
 
-EmployerForm.propTypes = {
+GovernmentDepartmentForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   editData: PropTypes.shape({
@@ -774,4 +595,4 @@ EmployerForm.propTypes = {
   }),
   openSucess: PropTypes.func.isRequired,
 };
-export default EmployerForm;
+export default GovernmentDepartmentForm;

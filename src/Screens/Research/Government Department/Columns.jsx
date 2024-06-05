@@ -23,7 +23,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "150px",
+        width: "5%",
       },
       align: "center",
       sorting: false,
@@ -52,7 +52,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '250px'
+        width : '19%'
       },
     },
     {
@@ -67,7 +67,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '250px'
+        width : '19%'
         
       },
     },
@@ -84,7 +84,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '250px'
+        width : '19%'
       },
     },
     {
@@ -99,7 +99,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '250px'
+        width : '19%'
       },
     },
     {
@@ -114,19 +114,34 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
           ...cellStyleCommon,
           justifyContent: "center",
           // maxWidth: "18.25rem",
-          width : '250px'
+          width : '19%'
+        },
+      },
+      {
+        id: 7,
+        title: "ID",
+        field: "id",
+        sorting: true,
+        align: "left",
+        filterComponent: NumberFilterField,
+  
+        cellStyle: {
+          ...cellStyleCommon,
+          justifyContent: "center",
+          // maxWidth: "18.25rem",
+          width : '19%'
         },
       },
     {
       id: 8,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '5%'
         // maxWidth: "18.25rem",
       },
       render: (rowData) => {

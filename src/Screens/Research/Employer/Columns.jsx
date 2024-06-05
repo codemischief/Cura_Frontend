@@ -18,7 +18,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "10%",
+        width: "5%",
       },
       align: "center",
       sorting: false,
@@ -47,7 +47,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '23%'
       },
     },
     {
@@ -56,13 +56,13 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       title: "Industry",
       field: "industry",
       align: "left",
-    //   width : '20%',
+    //   width : '18%',
       filterDisabled: false,
       sorting: true,
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '22%'
         
       },
     },
@@ -79,7 +79,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '22%'
       },
     },
     {
@@ -94,19 +94,34 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '18%'
+      },
+    },
+    {
+      id: 6,
+      title: "ID",
+      field: "id",
+      sorting: true,
+      align: "left",
+      filterComponent: NumberFilterField,
+
+      cellStyle: {
+        ...cellStyleCommon,
+        justifyContent: "center",
+        // maxWidth: "18.25rem",
+        width : '5%'
       },
     },
     {
       id: 8,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '5%'
         // maxWidth: "18.25rem",
       },
       render: (rowData) => {

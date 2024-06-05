@@ -91,6 +91,7 @@ export const store = configureStore({
     employer: employer,
     governmentdepartment: governmentdepartment,
     agent: agent,
+    owner : owner,
     clientStatistics: ClientStatistics,
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,

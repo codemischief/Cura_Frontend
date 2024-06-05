@@ -125,7 +125,7 @@ export default function getColumns(handleEdit, handleDelete) {
     },
     {
       id: 8,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",

@@ -23,7 +23,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width: "10%",
+        width: "5%",
       },
       align: "center",
       sorting: false,
@@ -52,7 +52,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '12%'
       },
     },
     {
@@ -67,7 +67,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '12%'
         
       },
     },
@@ -84,7 +84,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '12%'
       },
     },
     {
@@ -99,7 +99,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '12%'
       },
     },
     {
@@ -114,7 +114,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '12%'
       },
     },
     {
@@ -129,7 +129,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '10%'
       },
     },
     {
@@ -144,7 +144,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '10%'
       },
     },
     {
@@ -159,7 +159,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '10%'
       },
     },
     {
@@ -174,19 +174,19 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
         ...cellStyleCommon,
         justifyContent: "center",
         // maxWidth: "18.25rem",
-        width : '300px'
+        width : '10%'
       },
     },
     {
       id: 10,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        width : '300px'
+        width : '5%'
         // maxWidth: "18.25rem",
       },
       render: (rowData) => {

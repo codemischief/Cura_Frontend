@@ -201,7 +201,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 10,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",

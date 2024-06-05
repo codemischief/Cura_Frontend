@@ -188,6 +188,7 @@ const PropectusPage = () => {
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");
       setPromptType(alertVariant.success);
+      fetchData()
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -213,6 +214,8 @@ const PropectusPage = () => {
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
+    fetchData()
+    
   };
 
   const openCancel = () => {

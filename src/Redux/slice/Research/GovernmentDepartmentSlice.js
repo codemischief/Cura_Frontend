@@ -13,8 +13,8 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   sorting: {
-    sort_by: "",
-    sort_order: "",
+    sort_by: "id",
+    sort_order: "desc",
   },
 };
 
@@ -120,6 +120,47 @@ export const editGovernmentDepartment = (payload) => async (dispatch) => {
     // throw error;
   }
 };
+export const downloadGovernmentDepartmentDataXls = (payloadObj) => async (dispatch) => {
+  try {
+    dispatch(setStatus("loading"));
+    const response = await axios.post(
+      `${env_URL_SERVER}getResearchGovtAgencies`,
+      payloadObj
+    );
+    if ((response.data.filename, payloadObj.user_id)) {
+      await dispatch(
+        downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
+      );
+    }
+    dispatch(setStatus("success"));
+    // return response.data;
+    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
+    // dispatch(setStatus("success"));
+  } catch (err) {
+    dispatch(setStatus("error"));
+  }
+};
+export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      `${env_URL_SERVER}download/${filename}`,
+      {
+        filename: filename,
+        user_id: userId,
+      },
+      {
+        responseType: "blob",
+      }
+    );
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    FileSaver.saveAs(blob, "GovernmentDepartmentData.xlsx");
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
 
 export const deleteGovernmentDepartment = (payload) => async (dispatch) => {
   try {

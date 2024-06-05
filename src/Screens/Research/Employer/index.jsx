@@ -1,25 +1,29 @@
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import SimpleTable from "../../../Components/common/table/CustomTable";
-import connectionDataColumn from "./Columns";
-import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { PlusOutlined } from "@ant-design/icons";
+
+import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import SimpleTable from "../../../Components/common/table/CustomTable";
+import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { formatedFilterData } from "../../../utils/filters";
+import { APIService } from "../../../services/API";
 import {
   deleteEmployer,
+  downloadEmployerDataXls,
   getEmployer,
   setCountPerPage,
   setPageNumber,
   setSorting,
 } from "../../../Redux/slice/Research/EmployerSlice";
-import { PlusOutlined } from "@ant-design/icons";
-import EmployerForm from "./EmployerForm";
+
+import getColumns from "./Columns";
 import AlertModal, {
   alertVariant,
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
-
+import errorHandler from "../../../Components/common/ErrorHandler";
+import EmployerForm from "./EmployerForm"
 const ResearchEmployer = () => {
   const dispatch = useDispatch();
   const {
@@ -41,18 +45,27 @@ const ResearchEmployer = () => {
   const [isDeleteDialogue, setIsDeleteDialogue] = useState(null);
   const [deleteError, setDeleteError] = useState("");
 
-  const handleEdit = (data) => {
-    setEditData({ ...data });
-    setOpenForm(true);
+  const handleEdit = async (data) => {
+    try {
+      let dataItem = {
+        user_id: 1234,
+        table_name: "get_research_employer_view",
+        item_id: data.id,
+      };
+      const response = await APIService.getItembyId(dataItem);
+      let updatedaresponse = await response.json();
+      setEditData(updatedaresponse?.data);
+      setOpenForm(true);
+    } catch (error) {
+      errorHandler(error, "Failed to fetch Please try again later");
+    }
   };
+
   const handleDelete = (data) => {
     setIsDeleteDialogue(data.id);
   };
 
-  const columns = useMemo(
-    () => connectionDataColumn(handleEdit, handleDelete),
-    []
-  );
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
   const handleSearchvalue = (e) => {
     setSearchInput(e.target.value);
   };
@@ -66,39 +79,25 @@ const ResearchEmployer = () => {
     dispatch(setPageNumber(1));
   };
 
-  const handleRefresh = () => {
-    if (startDate && endDate) {
-      let obj = {
-        user_id: 1234,
-        startdate: startDate ?? "2021-01-01",
-        enddate: endDate ?? "2022-01-01",
-        rows: [
-          "id",
-          "type",
-          "paymentdate",
-          "monthyear",
-          "fy",
-          "amount",
-          "entityname",
-          "mode_of_payment",
-          "clientid",
-          "clientname",
-          "vendorname",
-          "orderid",
-          "orderdescription",
-          "serviceid",
-          "service",
-          "lobname",
-        ],
-        sort_by: ["id"],
+  const fetchData = () => {
+    let obj = {
+      user_id: 1234,
 
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      // dispatch(getOrderPaymentData(obj));
-    }
+      rows: [
+        "id",
+        "employername",
+        "industry",
+        "website",
+        "onsiteopportunity"
+      ],
+      filters: formatedFilterData(filter),
+      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
+      order: sorting.sort_order,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      search_key: searchInput,
+    };
+    dispatch(getEmployer(obj));
   };
 
   const handleSearch = () => {
@@ -124,23 +123,7 @@ const ResearchEmployer = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    const obj = {
-      user_id: 1234,
-      rows: [
-        "id",
-        "employername",
-        "industry",
-        "website",
-        "onsiteopportunity"
-      ],
-      filters: formatedFilterData(filter),
-      sort_by: sorting.sort_by ? [sorting.sort_by] : [],
-      order: sorting.sort_order,
-      pg_no: +pageNo,
-      pg_size: +countPerPage,
-      search_key: searchInput,
-    };
-    dispatch(getEmployer(obj));
+    fetchData();
   }, [
     filter,
     countPerPage,
@@ -159,35 +142,32 @@ const ResearchEmployer = () => {
   };
 
   const downloadExcel = async () => {
+    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
+      if (column.field) {
+        acc[column.field] = column.title;
+      }
+      return acc;
+    }, {});
+
     let obj = {
       user_id: 1234,
       rows: [
         "id",
-        "type",
-        "paymentdate",
-        "monthyear",
-        "fy",
-        "amount",
-        "entityname",
-        "mode_of_payment",
-        "clientid",
-        "clientname",
-        "vendorname",
-        "orderid",
-        "orderdescription",
-        "serviceid",
-        "service",
-        "lobname",
+        "employername",
+        "industry",
+        "website",
+        "onsiteopportunity"
       ],
+      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
       search_key: search,
-      pg_no: 1,
-      pg_size: 15,
+      pg_no: 0,
+      pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    // dispatch(downloadPaymentDataXls(obj));
+    dispatch(downloadEmployerDataXls(obj));
   };
 
   const handleFormOpen = () => {
@@ -195,13 +175,14 @@ const ResearchEmployer = () => {
     setEditData({});
   };
 
-  const deleteEmployer = async () => {
+  const deleteEmployers = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteEmployer(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Prospect Deleted Successfully");
+      SetOpenSubmissionPrompt("Employer Deleted Successfully");
       setPromptType(alertVariant.success);
+      fetchData()
     } catch (error) {
       if (error.response) {
         setDeleteError(error.response.data.detail);
@@ -222,17 +203,19 @@ const ResearchEmployer = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "New Prospect updated successfully"
-      : "New Prospect created successfully";
+      ? "Employer updated successfully"
+      : "New Employer created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
     setOpenForm(false);
+    fetchData()
+    
   };
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Prospect updated."
-      : "Process cancelled, no new Prospect created.";
+      ? "Process cancelled, no new Employer updated."
+      : "Process cancelled, no new Employer created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -285,7 +268,7 @@ const ResearchEmployer = () => {
             height="calc(100vh - 15rem)"
             handlePageCountChange={handlePageCountChange}
             handlePageChange={handlePageChange}
-            handleRefresh={handleRefresh}
+            handleRefresh={fetchData}
             handleSortingChange={handleSortingChange}
             downloadExcel={downloadExcel}
             handleEdit={handleEdit}
@@ -305,7 +288,7 @@ const ResearchEmployer = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteEmployer}
+          handleDelete={deleteEmployers}
           deleteError={deleteError}
         />
       )}

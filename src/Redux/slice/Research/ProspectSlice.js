@@ -14,8 +14,8 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   sorting: {
-    sort_by: "",
-    sort_order: "",
+    sort_by: "id",
+    sort_order: "desc",
   },
 };
 
@@ -95,7 +95,7 @@ export const addProspectData = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}addResearchProspects`,
+      `${env_URL_SERVER}addResearchProspect`,
       payload
     );
     dispatch(setFormSubmissionStatus("success"));

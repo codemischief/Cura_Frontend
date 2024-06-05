@@ -110,30 +110,33 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setCityData(result.data);
   };
-
+  console.log(editData)
   const formik = useFormik({
     initialValues: {
       employername : editData?.employername ? editData.employername : "",
       adressline1 : editData?.addressline1 ? editData.addressline1 : "",
       adressline2 : editData?.addressline2 ? editData.addressline2 : "",
-      countryId: editData?.country ? editData.country : 5,
+      countryId: editData?.countryid ? editData.countryid: 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : "Pune",
+      suburb : editData.suburb ? editData.suburb : "",
       zip : editData?.zip ? editData.zip : "",
       industry : editData?.industry ? editData.industry : "",
       hrcontactname : editData?.hrcontactname ? editData.hrcontactname : "",
       hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : "",
       hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : "",
       admincontactname : editData?.admincontactname ? editData.admincontactname : "",
+      admincontactphone : editData?.admincontactphone ? editData.admincontactphone : "",
       admincontactmail : editData?.admincontactmail ? editData.admincontactmail : "",
-      hc : editData?.hc ? emailData.hc : "",
-      website : editData?.website ? emailData.website : "",
-      contactname1 : editData?.contactname1 ? emailData.contactname1 : "",
-      contactphone1 : editData?.contactphone1 ? emailData.contactphone1 : "",
-      contactmail1 : editData?.contactmail1 ? emailData.contactmail1 : "",
-      contactname2 : editData?.contactname2 ? emailData.contactname2 : "",
-      contactphone2 : editData?.contactphone2 ? emailData.contactphone2 : "",
-      contactmail2 : editData?.contactmail2 ? emailData.contactmail2 : ""
+      hc : editData?.hc ? editData.hc : "",
+      website : editData?.website ? editData.website : "",
+      contactname1 : editData?.contactname1 ? editData.contactname1 : "",
+      contactphone1 : editData?.contactphone1 ? editData.contactphone1 : "",
+      contactmail1 : editData?.contactmail1 ? editData.contactmail1 : "",
+      contactname2 : editData?.contactname2 ? editData.contactname2 : "",
+      contactphone2 : editData?.contactphone2 ? editData.contactphone2 : "",
+      contactmail2 : editData?.contactmail2 ? editData.contactmail2 : "",
+      onsiteopportunity : editData?.onsiteopportunity ? editData.onsiteopportunity : false
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -146,17 +149,30 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
     try {
       const data = {
         user_id: 1234,
-        personname: values.personname,
-        suburb: values.suburb,
+        country: Number(values.countryId),
+        onsiteopportunity : true,
         city: values.city,
         state: values.state,
-        phoneno: values.phoneNumber,
-        email1: values.email,
-        country: Number(values.countryId),
-        propertylocation: values.propertylocation,
-        possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
+        admincontactmail : values.admincontactmail,
+        zip : values.zip,
+        hc : values.hc,
+        website : values.website,
+        admincontactphone : values.admincontactphone,
+        contactname1 : values.contactname1,
+        contactmail1 : values.contactmail1,
+        contactphone1 : values.contactphone1,
+        contactname2 : values.contactname2,
+        contactmail2 : values.contactmail2,
+        contactphone2 : values.contactphone2,
+        hrcontactname : values.hrcontactname,
+        hrcontactmail : values.hrcontactmail,
+        hrcontactphone : values.hrcontactphone,
+        admincontactname : values.admincontactname,
+        employername : values.employername,
+        industry : values.industry,
+        addressline1 : values.adressline1,
+        addressline2 : values.adressline2,
+        suburb: values.suburb
       };
 
       if (editData?.id) {
@@ -192,7 +208,17 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   } = formik;
 
   const handleChange = (e) => {
-    setFieldValue(e.target.name, e.target.value);
+    // console.log(e.target)
+    // setFieldValue(e.target.name, e.target.value);
+    const { type, name, value, checked } = e.target;
+    // const fieldValue = type === 'checkbox' ? checked : value;
+    console.log(name, checked);
+    if(type == 'checkbox') {
+      setFieldValue(name,checked)
+    }else {
+
+      setFieldValue(name, value);
+    }
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
@@ -260,7 +286,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="addressline1"
+                              name="adressline1"
                               value={formik.values.adressline1}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -280,7 +306,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               className="inputFieldBorder inputFieldValue"
                               type="text"
-                              name="addressline2"
+                              name="adressline2"
                               value={formik.values.adressline2}
                               onBlur={handleBlur}
                               onChange={handleChange}
@@ -682,6 +708,22 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             />
                             
                           </div>
+                          <div className="mt-12">
+                            <div className="flex space-x-2">
+                              
+                            <input 
+                            type="checkbox" checked={values.onsiteopportunity}
+                                className='mr-3 h-4 w-4'
+                                name="onsiteopportunity"
+                                onBlur={handleBlur}
+                                onChange={handleChange}/>
+                              <label className="inputFieldLabel">
+                                On Site Oppurtunity
+                              </label>
+                              
+                            </div>
+                            
+                          </div> 
                           
                           
                           
@@ -703,9 +745,9 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Update"
-                        ) : (
                           "Save"
+                        ) : (
+                          "Add"
                         )}
                       </button>
                       <button
@@ -728,16 +770,16 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title="Add Employer"
           description={
             <div>
-              <p className="">Client: {values.personname}</p>
+              <p className="">Employer: {values.employername}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -748,7 +790,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this client?
+                Are you sure you want to add this Employer?
               </Typography>
             </div>
           }
