@@ -489,7 +489,7 @@ ProspectForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   editData: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     country: PropTypes.number,
     state: PropTypes.string,
     city: PropTypes.string,

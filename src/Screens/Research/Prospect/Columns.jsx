@@ -8,7 +8,7 @@ import {
 } from "./CustomFilterField";
 import { Create, Delete } from "@mui/icons-material";
 
-export default function connectionDataColumn(handleEdit, handleDelete) {
+export default function getColumns(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
 
   const columns = [

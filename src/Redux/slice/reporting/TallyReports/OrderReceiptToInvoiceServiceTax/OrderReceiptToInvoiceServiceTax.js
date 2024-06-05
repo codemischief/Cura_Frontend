@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import { env_URL_SERVER } from "../../../../helper";
+import { env_URL_SERVER,receiptToInvoice } from "../../../../helper";
 
 const initialState = {
   invoiceData: [],
@@ -25,7 +25,7 @@ export const orderReceiptToInvoiceServiceTax = createSlice({
   reducers: {
     setInvoiceData: (state, { payload }) => {
       const { data } = payload;
-      state.invoiceData = data.data;
+      state.invoiceData = receiptToInvoice(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },

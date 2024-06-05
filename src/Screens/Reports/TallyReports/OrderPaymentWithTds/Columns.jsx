@@ -38,15 +38,15 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "6.25rem" },
     },
     {
-      title: "Type",
-      field: "voucher",
+      title: "Voucher Type",
+      field: "vouchertype",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
     },
     {
-      title: "Voucher Type",
-      field: "vouchertype",
+      title: "Type",
+      field: "voucher",
       sorting: true,
       filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
@@ -59,15 +59,8 @@ export default function connectionDataColumn(onQuery) {
       cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
     },
     {
-        title: "DR. Ledger",
+        title: "Ledger Name",
         field: "drledger",
-        sorting: true,
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
-      },
-      {
-        title: "CR. Ledger",
-        field: "crledger",
         sorting: true,
         filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
@@ -80,26 +73,19 @@ export default function connectionDataColumn(onQuery) {
         cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
       },
       {
+        title: "Amount Type",
+        field: "instrumentdate",
+        sorting: true,
+        filterComponent: TextFilterField,
+        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "15%" },
+      },
+      {
         title: "Narration",
         field: "narration",
         sorting: true,
         filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "5.063rem" },
       },
-      {
-        title: "Instrument Number",
-        field: "instrumentno",
-        sorting: true,
-        filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "15%" },
-      },
-      {
-        title: "Instrument Date",
-        field: "instrumentdate",
-        sorting: true,
-        filterComponent: DateFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",width: "15%" },
-      }
   ];
   return columns;
 }

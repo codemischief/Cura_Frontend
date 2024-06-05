@@ -58,7 +58,7 @@ export default function connectionDataColumn(onQuery) {
       title: "Voucher Number",
       field: "vouchernumber",
       sorting: true,
-      filterComponent: NumberFilterField,
+      filterComponent: TextFilterField,
       cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
     },
     {
@@ -93,7 +93,7 @@ export default function connectionDataColumn(onQuery) {
         title: "Instrument Number",
         field: "instrumentno",
         sorting: true,
-        filterComponent: NumberFilterField,
+        filterComponent: TextFilterField,
         cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "2rem",maxWidth:"6rem"},
       },
       {
