@@ -100,7 +100,15 @@ import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaym
 import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
 import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
 import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
-
+import ResearchOwner from "./Screens/Research/Owner/index.jsx";
+import ResearchFriends from "./Screens/Research/Friends/index.jsx";
+import ResearchBanks from "./Screens/Research/Banks/index.jsx";
+import ResearchBusinessGroup from "./Screens/Research/COC/index.jsx";
+import ResearchProfessionals from "./Screens/Research/Professionals/index.jsx";
+import ResearchMandals from "./Screens/Research/Mandals/index.jsx";
+import ResearchArchitect from "./Screens/Research/Architect/index.jsx";
+import ResearchEducational from "./Screens/Research/Educational/index.jsx";
+import ResearchServiceApartments from "./Screens/Research/ServiceApartment/index.jsx";
 const App = () => {
   const { isInitialized } = useAuth();
   const ROLES = {
@@ -157,17 +165,18 @@ const App = () => {
 
               <Route path="/research/prospect" element={<PropectusPage />} />
               <Route path="/research/employer" element={<ResearchEmployer/>}/>
-              <Route path="/research/owner" element={<Owner />} />
-              <Route path="/research/educational" element={<Educational />} />
-              <Route path="/research/architect" element={<Architect />} />
-              <Route path="/research/mandals" element={<Mandals />} />
+              <Route path="/research/owner" element={<ResearchOwner />} />
+              <Route path="/research/educational" element={<ResearchEducational />} />
+              <Route path="/research/architect" element={<ResearchArchitect />} />
+              <Route path="/research/mandals" element={<ResearchMandals />} />
               <Route
                 path="/research/professionals"
-                element={<Professionals />}
+                element={<ResearchProfessionals />}
               />
-              <Route path="/research/coc" element={<COC />} />
-              <Route path="/research/banks" element={<Banks />} />
-              <Route path="/research/friends" element={<Friends />} />
+              <Route path="/research/businessgroup" element={<ResearchBusinessGroup />} />
+              <Route path="/research/banks" element={<ResearchBanks />} />
+              <Route path="/research/friends" element={<ResearchFriends />} />
+              <Route path="/research/serviceapartment" element={<ResearchServiceApartments />} />
               <Route path="/research/agent" element={<ResearchAgent />} />
               {/* <Route path="/reasearch/employer" element={<Employer />} /> */}
               <Route

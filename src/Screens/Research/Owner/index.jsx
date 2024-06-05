@@ -6,13 +6,14 @@ import SearchBar from "../../../Components/common/SearchBar/SearchBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { formatedFilterData } from "../../../utils/filters";
+
 import {
-  deleteAgents,
-  getAgentData,
+  deleteOwner,
+  getOwnerData,
   setCountPerPage,
   setPageNumber,
-  setSorting
-} from "../../../Redux/slice/Research/AgentSlice";
+  setSorting,
+} from "../../../Redux/slice/Research/OwnerSlice"
 import { PlusOutlined } from "@ant-design/icons";
 import EmployerForm from "./EmployerForm";
 import AlertModal, {
@@ -20,18 +21,26 @@ import AlertModal, {
 } from "../../../Components/modals/AlertModal";
 import CustomDeleteModal from "../../../Components/modals/CustomDeleteModal";
 
-const ResearchAgent = () => {
+const ResearchOwner = () => {
   const dispatch = useDispatch();
+  // const {
+  //   AgentData,
+  //   status,
+  //   totalCount,
+  //   sorting,
+  //   countPerPage,
+  //   pageNo,
+  //   filter,
+  // } = useSelector((state) => state.agent);
   const {
-    AgentData,
-    status,
-    totalCount,
-    sorting,
-    countPerPage,
-    pageNo,
-    filter,
-  } = useSelector((state) => state.agent);
-
+     OwnerData,
+     status,
+     totalCount,
+     sorting,
+     countPerPage,
+     pageNo,
+     filter
+  } = useSelector((state) => state.owner)
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [openForm, setOpenForm] = useState(false);
@@ -126,17 +135,7 @@ const ResearchAgent = () => {
   useEffect(() => {
     const obj = {
       user_id: 1234,
-      rows: [
-        "id",
-        "nameofagent",
-        "agencyname",
-        "emailid",
-        "phoneno",
-        "phoneno2",
-        "localitiesdealing",
-        "nameofpartners",
-        "registered"
-      ],
+      rows: ["corporation","name","propertytaxno","phoneno","emailid","propertyfor","societyname","source","propertydetails","id"],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
       order: sorting.sort_order,
@@ -144,7 +143,7 @@ const ResearchAgent = () => {
       pg_size: +countPerPage,
       search_key: searchInput,
     };
-    dispatch(getAgentData(obj));
+    dispatch(getOwnerData(obj));
   }, [
     filter,
     countPerPage,
@@ -199,10 +198,10 @@ const ResearchAgent = () => {
     setEditData({});
   };
 
-  const deleteAgents = async () => {
+  const deleteOwner = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
-      await dispatch(deleteAgents(data));
+      await dispatch(deleteOwner(data));
       setIsDeleteDialogue(null);
       SetOpenSubmissionPrompt("Prospect Deleted Successfully");
       setPromptType(alertVariant.success);
@@ -255,8 +254,8 @@ const ResearchAgent = () => {
       <div className="flex flex-col px-4 gap-[1.75rem]">
         <div className="flex justify-between mt-[10px]">
           <HeaderBreadcrum
-            heading={"Real Estate Agents"}
-            path={["Research ", "Real Estate Agents"]}
+            heading={"Owner"}
+            path={["Research ", "Owner"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             <SearchBar
@@ -271,17 +270,17 @@ const ResearchAgent = () => {
               onClick={handleFormOpen}
             >
               <div className="flex items-center justify-center gap-4">
-                Add New Real Estate Agents
+                Add New Owner
                 <PlusOutlined className="fill-white stroke-2" />
               </div>
             </button>
           </div>
         </div>
         <div className="w-full h-full overflow-y-auto">
-          {console.log(AgentData)}
+          {console.log(OwnerData)}
           <SimpleTable
             columns={columns}
-            data={AgentData}
+            data={OwnerData}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}
@@ -310,7 +309,7 @@ const ResearchAgent = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteAgents}
+          handleDelete={deleteOwner}
           deleteError={deleteError}
         />
       )}
@@ -318,4 +317,4 @@ const ResearchAgent = () => {
   );
 };
 
-export default ResearchAgent;
+export default ResearchOwner;

@@ -269,4 +269,16 @@ export const updatedAgentData = (data) => {
     ...billing,
   }));
 }
+export const updatedOwnerData = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
+export const updatedServiceApartmentData = (data) => {
+  console.log(data)
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

@@ -43,14 +43,14 @@ export const PATH_DASHBOARD = {
     architect: path(ROOTS.research, "/architect"),
     mandals: path(ROOTS.research, "/mandals"),
     professionals: path(ROOTS.research, "/professionals"),
-    coc: path(ROOTS.research, "/coc"),
+    businessgroup: path(ROOTS.research, "/businessgroup"),
     banks: path(ROOTS.research, "/banks"),
     friends: path(ROOTS.research, "/friends"),
     agent: path(ROOTS.research, "/agent"),
     governmentDepartment: path(ROOTS.research, "/governmentdepartment"),
     serviceApartmentGuestHouse: path(
       ROOTS.research,
-      "/serviceApartmentGuestHouse"
+      "/serviceapartment"
     ),
   },
   manage: {
