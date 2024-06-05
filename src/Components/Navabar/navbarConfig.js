@@ -271,7 +271,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.pma.advanceHoldingAmont,
             },
             {
-              title: "PMA Client Statement-CL,CR and OR(All Entities)",
+              title: "PMA Client Statement-CI,CR & OR (All Ent.)",
               path: PATH_DASHBOARD.report.pma.pmaClientStatementAll,
             },
             {
@@ -287,7 +287,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.pma.pmaInvoiceList,
             },
             {
-              title: "PMA Billing Treand Report",
+              title: "PMA Billing Trend Report",
               path: PATH_DASHBOARD.report.pma.pmaBillingTrendReport,
             },
             {
@@ -341,23 +341,7 @@ export const navMenuConfig = [
             },
           ],
         },
-        {
-          subheader: "Report Trace",
-          items: [
-            {
-              title: "Client Trace",
-              path: PATH_DASHBOARD.report.reportTrace.clientTrace,
-            },
-            {
-              title: "Order Trace",
-              path: PATH_DASHBOARD.report.reportTrace.orderTrace,
-            },
-            {
-              title: "Vendor Trace",
-              path: PATH_DASHBOARD.report.reportTrace.vendorTrace,
-            },
-          ],
-        },
+        
       ],
       [
         {
@@ -380,6 +364,23 @@ export const navMenuConfig = [
           items: [
             { title: "Agency Repair Service Receipts", path: "" },
             { title: "Service Tax Paid by Vendor", path: "" },
+          ],
+        },
+        {
+          subheader: "Report Trace",
+          items: [
+            {
+              title: "Client Trace",
+              path: PATH_DASHBOARD.report.reportTrace.clientTrace,
+            },
+            {
+              title: "Order Trace",
+              path: PATH_DASHBOARD.report.reportTrace.orderTrace,
+            },
+            {
+              title: "Vendor Trace",
+              path: PATH_DASHBOARD.report.reportTrace.vendorTrace,
+            },
           ],
         },
       ],
@@ -410,7 +411,7 @@ export const navMenuConfig = [
           items: [
             { title: "TDS Paid By Vendor", path: "" },
             { title: "Vendor Payment Summary For Period", path: "" },
-            { title: "Paid Paid to Government", path: "" },
+            { title: "TDS Paid to Government", path: "" },
           ],
         },
       ],
