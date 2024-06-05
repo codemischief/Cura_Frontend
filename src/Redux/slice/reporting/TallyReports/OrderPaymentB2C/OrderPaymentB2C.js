@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import { env_URL_SERVER } from "../../../../helper";
+import { clientReceiptFormatData, env_URL_SERVER } from "../../../../helper";
 
 const initialState = {
   orderPaymentB2CView: [],
@@ -25,7 +25,7 @@ export const orderPaymentB2C = createSlice({
   reducers: {
     setOrderPaymentB2CView: (state, { payload }) => {
       const { data } = payload;
-      state.orderPaymentB2CView = data.data;
+      state.orderPaymentB2CView = clientReceiptFormatData(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },

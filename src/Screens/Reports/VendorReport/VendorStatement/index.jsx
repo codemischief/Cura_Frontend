@@ -8,23 +8,23 @@ import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import SimpleTableWithFooter from "../../../../Components/common/table/CustomTableWithFooter";
 import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
 import {
-  downloadOrderPaymentWithTdsReport,
-  getOrderPaymentWithTdsView,
+  downloadVendorStatementReport,
+  getVendorStatementView,
   setCountPerPage,
   setInitialState,
   setPageNumber,
   setSorting,
   setStatus,
-} from "../../../../Redux/slice/reporting/TallyReports/OrderPaymentWithTds/OrderPaymentWithTds";
+} from "../../../../Redux/slice/reporting/Group9/VendorStatement";
 import connectionDataColumn from "./Columns";
 import DatePicker from "../../../../Components/common/select/CustomDate";
 import { APIService } from "../../../../services/API";
 import { formatedFilterData } from "../../../../utils/filters";
 
-const OrderPaymentWithTdsView = () => {
+const VendorStatementView = () => {
   const dispatch = useDispatch();
   const {
-    orderPaymentWithTdsView,
+    vendorStatementView,
     status,
     totalAmount,
     totalCount,
@@ -32,18 +32,16 @@ const OrderPaymentWithTdsView = () => {
     countPerPage,
     pageNo,
     filter,
-  } = useSelector((state) => state.orderPaymentWithTds);
-
+  } = useSelector((state) => state.vendorStatement);
+ 
   const [showTable, setShowTable] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [modeData, setModeData] = useState([]);
-  const [entityData, setEntityData] = useState([]);
+  const [vendorData, setVendor] = useState([]);
   const [search, setSearch] = useState("");
   const [intialFields, setIntialFields] = useState({
     start_date: "",
     end_date: "",
-    mode: "",
-    entity: "",
+    vendor: "",
   });
 
   const columns = useMemo(() => connectionDataColumn(), []);
@@ -66,48 +64,35 @@ const OrderPaymentWithTdsView = () => {
     dispatch(setPageNumber(1));
   };
 
-  const getEntityAndMode = async () => {
+  const getVendor = async () => {
     const data = {
       user_id: 1234,
     };
-    const mode = await APIService.getModesAdmin(data);
-    const entity = await APIService.getEntityAdmin(data);
-    setEntityData((await entity.json()).data);
-    setModeData((await mode.json()).data);
+    const vendor = await APIService.getVendorAdmin(data);
+    console.log(vendor,"vendor");
+    setVendor((await vendor.json()).data);
   };
 
   useState(() => {
-    getEntityAndMode();
+    getVendor();
   }, []);
 
   const handleRefresh = () => {
     if (
       intialFields.start_date &&
       intialFields.end_date &&
-      intialFields.mode &&
-      intialFields.entity
+      intialFields.vendor
     ) {
       let obj = {
         user_id: 1234,
         rows: [
-          "uniqueid",
-          "date",
-          "voucher",
-          "vouchertype",
-          "vouchernumber",
-          "drledger",
-          "crledger",
-          "ledgeramount",
-          "narration",
-          "instrumentno",
-          "instrumentdate",
+          "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
+          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
         ],
-        paymentMode: !isNaN(+intialFields.mode)
-          ? +intialFields.mode
-          : intialFields.mode,
-        entityid: !isNaN(+intialFields.entity)
-          ? +intialFields.entity
-          : intialFields.entity,
+        vendorID: !isNaN(+intialFields.vendor)
+          ? +intialFields.vendor
+          : intialFields.vendor,
+        
         startdate: intialFields.start_date,
         enddate: intialFields.end_date,
         sort_by: undefined,
@@ -117,7 +102,7 @@ const OrderPaymentWithTdsView = () => {
         pg_size: +countPerPage,
         order: undefined,
       };
-      dispatch(getOrderPaymentWithTdsView(obj));
+      dispatch(getVendorStatementView(obj));
     }
   };
 
@@ -143,28 +128,17 @@ const OrderPaymentWithTdsView = () => {
   }, [searchInput]);
 
   useEffect(() => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
+    if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
       let obj = {
         user_id: 1234,
         rows: [
-          "uniqueid",
-          "date",
-          "voucher",
-          "vouchertype",
-          "vouchernumber",
-          "drledger",
-          "crledger",
-          "ledgeramount",
-          "narration",
-          "instrumentno",
-          "instrumentdate",
+          "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
+          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
         ],
-        paymentMode: !isNaN(+intialFields.mode)
-          ? +intialFields.mode
-          : intialFields.mode,
-        entityid: !isNaN(+intialFields.entity)
-          ? +intialFields.entity
-          : intialFields.entity,
+        vendorID: !isNaN(+intialFields.vendor)
+          ? +intialFields.vendor
+          : intialFields.vendor,
+        
         startdate: intialFields.start_date,
         enddate: intialFields.end_date,
         sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
@@ -174,7 +148,7 @@ const OrderPaymentWithTdsView = () => {
         pg_size: +countPerPage,
         order: sorting.sort_order ? sorting.sort_order : undefined,
       };
-      dispatch(getOrderPaymentWithTdsView(obj));
+      dispatch(getVendorStatementView(obj));
     }
   }, [
     filter,
@@ -197,52 +171,40 @@ const OrderPaymentWithTdsView = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "uniqueid",
-        "date",
-        "voucher",
-        "vouchertype",
-        "vouchernumber",
-        "drledger",
-        "crledger",
-        "ledgeramount",
-        "narration",
-        "instrumentno",
-        "instrumentdate",
+        "type","id","clientname","invoicedate_orderpaymentdate","invoiceamount_orderpaymentamount",
+          "estimatedescription_orderdescription","monthyear","modeofpayment","entityname"
       ],
-      paymentMode: !isNaN(+intialFields.mode)
-        ? +intialFields.mode
-        : intialFields.mode,
-      entityid: !isNaN(+intialFields.entity)
-        ? +intialFields.entity
-        : intialFields.entity,
+      vendorID: !isNaN(+intialFields.vendor)
+        ? +intialFields.vendor
+        : intialFields.vendor,
+     
       startdate: intialFields.start_date,
       downloadType: "excel",
       enddate: intialFields.end_date,
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-      filters: formatedFilterData(filter),
+      filters: [],
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       colmap: {
-        uniqueid: "Unique ID",
-        date: "Date",
-        voucher: "Type",
-        vouchertype: "Voucher Type",
-        vouchernumber: "Voucher Number",
-        drledger: "DR. Ledger",
-        crledger: "CR. Ledger",
-        ledgeramount: "Ledger Amount",
-        narration: "Narration",
-        instrumentno: "Instrument Number",
-        instrumentdate: "Instrument Date",
+        type: "Type",
+        id: "ID",
+        clientname: "Client Name",
+        invoicedate_orderpaymentdate: "Date",
+        invoiceamount_orderpaymentamount:"Amount",
+        estimatedescription_orderdescription:"Estimate / Order Description",
+        monthyear:"Month-Year",
+        modeofpayment :"Mode of Payment",
+        entityname:"Entity"
+        
       },
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadOrderPaymentWithTdsReport(obj));
+    dispatch(downloadVendorStatementReport(obj));
   };
 
   const handleShow = () => {
-    if (intialFields.start_date && intialFields.end_date && intialFields.mode) {
+    if (intialFields.start_date && intialFields.end_date && intialFields.vendor) {
       dispatch(setInitialState());
       setShowTable(true);
     } else {
@@ -259,8 +221,8 @@ const OrderPaymentWithTdsView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Payments With TDS"}
-            path={["Reports", "Tally Report", " Order Payments With TDS"]}
+            heading={"Vendor Statement"}
+            path={["Reports", "Vendor", "Vendor Statement"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -296,40 +258,23 @@ const OrderPaymentWithTdsView = () => {
           >
             <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
-                Mode
+                Vendor
               </label>
 
               <select
                 className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="mode"
-                value={intialFields.mode}
+                name="vendor"
+                value={intialFields.vendor}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden">Select Mode</option>
+                <option selected value={""} className="hidden">Select Vendor</option>
                 <option value="all">all</option>
-                {modeData.map((opt) => (
+                {vendorData.map((opt) => (
                   <option value={opt[0]}>{opt[1]}</option>
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[200px]">
-              <label className="font-sans text-sm font-normal leading-5">
-                Entity
-              </label>
-              <select
-                className="w-full max-h-[224px] h-8 border-[1px] border-[#C6C6C6] bg-white rounded-sm px-3 text-xs outline-none"
-                name="entity"
-                value={intialFields.entity}
-                onChange={handleChange}
-              >
-                <option selected value={""} className="hidden">Select Entity</option>
-                <option value="all">all</option>
-
-                {entityData.map((opt) => (
-                  <option value={opt[0]}>{opt[1]}</option>
-                ))}
-              </select>
-            </div>
+            
             <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select Start Date"}
@@ -368,8 +313,8 @@ const OrderPaymentWithTdsView = () => {
               disabled={
                 !intialFields.start_date ||
                 !intialFields.end_date ||
-                !intialFields.mode ||
-                !intialFields.entity
+                !intialFields.vendor 
+                
               }
             >
               Show
@@ -377,9 +322,9 @@ const OrderPaymentWithTdsView = () => {
           </Stack>
         </Stack>
         <SimpleTableWithFooter
-          pageName={"ClientReciptReports"}
+          pageName={"vendorStatement"}
           columns={columns}
-          data={orderPaymentWithTdsView}
+          data={vendorStatementView}
           totalData={totalAmount}
           pageNo={pageNo}
           isLoading={status === "loading"}
@@ -398,4 +343,4 @@ const OrderPaymentWithTdsView = () => {
   );
 };
 
-export default OrderPaymentWithTdsView;
+export default VendorStatementView;

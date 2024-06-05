@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
-import { env_URL_SERVER,receiptToInvoice } from "../../../../helper";
+import { env_URL_SERVER, vendorStatementReport } from "../../../helper";
 
 const initialState = {
-  invoiceData: [],
+  vendorStatementView: [],
   totalAmount: {},
   status: "",
   filter: {},
@@ -19,13 +19,14 @@ const initialState = {
   },
 };
 
-export const orderReceiptToInvoiceServiceTax = createSlice({
-  name: "orderReceiptToInvoice",
+export const vendorStatement = createSlice({
+  name: "vendorStatement",
   initialState,
   reducers: {
-    setInvoiceData: (state, { payload }) => {
-      const { data } = payload;
-      state.invoiceData = receiptToInvoice(data.data)
+    setvendorStatementView: (state, { payload }) => {
+      const { data } = payload.data;
+
+      state.vendorStatementView = vendorStatementReport(data);
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -52,7 +53,7 @@ export const orderReceiptToInvoiceServiceTax = createSlice({
         sort_order: "",
       };
     },
-    setInvoiceServiceTaxFilters: (state, { payload }) => {
+    setvendorStatementViewFilters: (state, { payload }) => {
       state.filter = { ...payload };
     },
     setSorting: (state, { payload }) => {
@@ -61,43 +62,40 @@ export const orderReceiptToInvoiceServiceTax = createSlice({
   },
 });
 
-// reducer
-// Action creators are generated for each case reducer function
 export const {
-  setInvoiceData,
+  setvendorStatementView,
   setStatus,
   setPageNumber,
   setCountPerPage,
-  setInvoiceServiceTaxFilters,
+  setvendorStatementViewFilters,
   setInitialState,
   setSorting,
-} = orderReceiptToInvoiceServiceTax.actions;
+} = vendorStatement.actions;
 
-export const getInvoiceTaxData = (payloadObj) => async (dispatch) => {
+export const getVendorStatementView = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}reportOrderPaymentCRToSalesInvoice`,
+      `${env_URL_SERVER}reportVendorStatement`,
       payloadObj
     );
 
-    dispatch(setInvoiceData({ data: response.data }));
+    dispatch(setvendorStatementView({ data: response.data }));
     dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
 };
 
-export const downloadInvoiceServiceTax = (payloadObj) => async (
+export const downloadVendorStatementReport = (payloadObj) => async (
   dispatch
 ) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}reportOrderPaymentCRToSalesInvoice`,
+      `${env_URL_SERVER}reportVendorStatement`,
       payloadObj
     );
-
     if ((response.data.filename, payloadObj.user_id)) {
       await dispatch(
         downloadXlsEndpoint(response.data.filename, payloadObj.user_id)
@@ -127,9 +125,9 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "Order-Receipt-to-Invoice(Service Tax/GST).xlsx");
+    FileSaver.saveAs(blob, "Vendor_statement.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-export default orderReceiptToInvoiceServiceTax.reducer;
+export default vendorStatement.reducer;
