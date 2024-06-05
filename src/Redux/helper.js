@@ -367,5 +367,9 @@ export const receiptToInvoice = (data)=>{
 
   }));
 }
-
+export const updatedFriendsData = (data) => {
+  return data.map((ele, index) => ({
+    ...ele,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

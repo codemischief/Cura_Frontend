@@ -53,6 +53,7 @@ import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
 import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice"
 import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
 import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice"
+import friends  from "./slice/Research/FriendsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -92,6 +93,7 @@ export const store = configureStore({
     governmentdepartment: governmentdepartment,
     agent: agent,
     owner : owner,
+    friends : friends,
     clientStatistics: ClientStatistics,
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,
