@@ -48,7 +48,6 @@ import ClientStatistics from "./slice/reporting/Statistics/ClientStatistics";
 
 import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
 
-import VendorStatementReducer from "./slice/reporting/Group9/VendorStatement";
 import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice"
 import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
 import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice"
@@ -97,7 +96,6 @@ export const store = configureStore({
     governmentdepartment: governmentdepartment,
     agent: agent,
     clientStatistics: ClientStatistics,
-    vendorStatement: VendorStatementReducer,
 
     clientReceiptReport: ClientReceiptReportReducer,
     orderPaymentDDReport: OrderPaymentDDReportReducer,

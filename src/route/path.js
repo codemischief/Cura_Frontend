@@ -1,5 +1,6 @@
 
 
+
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
@@ -121,6 +122,14 @@ export const PATH_DASHBOARD = {
     },
     statistics: {
       clientStatistics: path(ROOTS.report , "/clientStatistics")
+    },
+    vendorReport:{
+      vendorStatement : path(ROOTS.report, "/vendorstatement")
+    },
+    tdsReport: {
+      tdsPaidByVendor: path(ROOTS.report , "/tdspaidbyvendor"),
+      tdsPaidByGovernment: path(ROOTS.report , "/tdsPaidToGovernment"),
+      vendorPaymentPeriod: path(ROOTS.report , "/vendorpaymentsummary"),
     }
   },
 };

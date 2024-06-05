@@ -22,7 +22,7 @@ const SimpleTable = ({
         className={`w-full text-[12px] overflow-x-auto `}
         style={{ height: height }}
       >
-        <table className="table-auto ">
+        <table className="table-auto " style={{width:"-webkit-fill-available"}}>
           <thead className="h-[115px] sticky top-0 z-100 bg-white">
             <tr className="h-[56px]">
               {columns.map((column, index) => (
