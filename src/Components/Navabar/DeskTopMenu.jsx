@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import {
   Box,
   Link,
-  List,
   ListItem,
   ListSubheader,
   Paper,
@@ -22,8 +21,7 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
   ...theme.typography.body2,
   padding: 0,
   marginTop: theme.spacing(3),
-  // color: theme.palette.text.secondary,
-  // transition: theme.transitions.create("color"),
+
   color: "#505050",
   "&:hover": {
     color: "#505050",
@@ -62,10 +60,7 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   transition: theme.transitions.create("opacity", {
     duration: theme.transitions.duration.shortest,
   }),
-  // "&:hover": {
-  //   opacity: 0.48,
-  //   textDecoration: "none",
-  // },
+ 
 }));
 function MenuDesktopItem({
   item,
@@ -80,9 +75,7 @@ function MenuDesktopItem({
   const paperRef = useRef();
   const { title, path, children } = item;
 
-  // const isActive = pathname === path;
-  const extraContainers =
-    children?.length % 15 === 0 ? 0 : 15 - (children?.length % 15);
+
   useEffect(() => {
     let timeoutId;
     const handler = (event) => {
@@ -189,6 +182,7 @@ function MenuDesktopItem({
                 >
                   {column?.map((list) => {
                     const { subheader, items } = list;
+
                     return (
                       <div
                         key={subheader}
@@ -199,6 +193,8 @@ function MenuDesktopItem({
                         <ListSubheader
                           disableSticky
                           disableGutters
+                          component={RouterLink}
+                          to={list.path ? list.path : "#"}
                           sx={{
                             fontFamily: "Open Sans",
                             fontSize: "18px",
@@ -257,44 +253,6 @@ function MenuDesktopItem({
                 </div>
               );
             })}
-            {/* {Array.from({ length: extraContainers }, (_, index) => index + 1).map(
-              (extraHeader) => (
-                <div
-                  key={extraHeader}
-                  className={`w-full border-r border-[#CBCBCB]`}
-                >
-                  <List disablePadding>
-                    <ListSubheader
-                      disableSticky
-                      disableGutters
-                      sx={{
-                        fontFamily: "Open Sans",
-                        fontSize: "18px",
-                        fontStyle: "normal",
-                        fontWeight: 600,
-                        lineHeight: "135%",
-                        color: "#282828",
-                        position: "relative", // Ensure positioning context for the pseudo-element
-                        "&::after": {
-                          content: '""',
-                          position: "absolute",
-                          bottom: 0,
-                          left: 0,
-                          width: "109.464px",
-                          height: "2px",
-                          backgroundColor: "#004DD7",
-                          opacity: 0, // Initially hidden
-                          transition: "opacity 0.3s ease", // Smooth transition
-                        },
-                        "&:hover::after": {
-                          opacity: 1, // Show underline on hover
-                        },
-                      }}
-                    />
-                  </List>
-                </div>
-              )
-            )} */}
           </div>
         </div>
       </Paper>
