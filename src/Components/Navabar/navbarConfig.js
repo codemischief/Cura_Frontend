@@ -222,21 +222,21 @@ export const navMenuConfig = [
             { title: "L and L List", path: "" },
           ],
         },
-        {
-          subheader: "Monthly Margin",
-          items: [
-            {
-              title: "Client Statement-CI,CR and OR(All Entities)",
-              path: PATH_DASHBOARD.report.monthlyMargin.clientStatementAll,
-            },
-          ],
-        },
+        // {
+        //   subheader: "Monthly Margin",
+        //   items: [
+        //     {
+        //       title: "Client Statement-CI,CR and OR(All Entities)",
+        //       path: PATH_DASHBOARD.report.monthlyMargin.clientStatementAll,
+        //     },
+        //   ],
+        // },
       ],
       [
         {
           subheader: "Client",
           items: [
-            { title: "Client Statement", path: "" },
+            { title: "Client Statement by Date (CI,CR,OR)", path: "" },
             {
               title: "Duplicate Clients ",
               path: PATH_DASHBOARD.report.clients.duplicateClients,
@@ -252,6 +252,10 @@ export const navMenuConfig = [
             {
               title: "Cura Non PMA Receivables",
               path: PATH_DASHBOARD.report.clients.nonPmaClientReceivables,
+            },
+            {
+              title: "Client Statement by LOB & Ent (CI,OR)",
+              path: PATH_DASHBOARD.report.monthlyMargin.clientStatementAll,
             },
           ],
         },
