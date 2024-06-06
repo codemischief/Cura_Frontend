@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import DatePicker from "../../../Components/common/select/CustomDate";
 import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
+import Container from "../../../Components/common/Container";
 
 const LobReceiptPayments = () => {
   const dispatch = useDispatch();
@@ -73,17 +74,17 @@ const LobReceiptPayments = () => {
   };
 
   const handleRefresh = () => {
-      let obj = {
-        user_id: 1234,
-        rows:["clientname","amount"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-      };
-      dispatch(getNonPmaClientStAndRec(obj));
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+    };
+    dispatch(getNonPmaClientStAndRec(obj));
   };
 
   const handleSearch = () => {
@@ -106,18 +107,18 @@ const LobReceiptPayments = () => {
     if (searchInput === "") setSearch("");
   }, [searchInput]);
   useEffect(() => {
-    
-      let obj = {
-        user_id: 1234,
-        rows:["clientname","amount"],
-        sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
-        filters: formatedFilterData(filter),
-        search_key: search,
-        pg_no: +pageNo,
-        pg_size: +countPerPage,
-        order: sorting.sort_order ? sorting.sort_order : undefined,
-      };
-      dispatch(getNonPmaClientStAndRec(obj));
+
+    let obj = {
+      user_id: 1234,
+      rows: ["clientname", "amount"],
+      sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
+      filters: formatedFilterData(filter),
+      search_key: search,
+      pg_no: +pageNo,
+      pg_size: +countPerPage,
+      order: sorting.sort_order ? sorting.sort_order : undefined,
+    };
+    dispatch(getNonPmaClientStAndRec(obj));
   }, [
     filter,
     countPerPage,
@@ -138,13 +139,13 @@ const LobReceiptPayments = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows:["clientname","amount"],
+      rows: ["clientname", "amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
-      downloadType : "excel",
-      colmap : {
-        "clientname" : "Client Name",
-        "amount" : "Amount"
+      downloadType: "excel",
+      colmap: {
+        "clientname": "Client Name",
+        "amount": "Amount"
       },
       search_key: search,
       pg_no: 0,
@@ -163,65 +164,69 @@ const LobReceiptPayments = () => {
   };
 
   const handleShow = () => {
-    
-      dispatch(setInitialState())
 
-      setShowTable(true);
-     
+    dispatch(setInitialState())
+
+    setShowTable(true);
+
 
   };
   return (
-    <Stack gap="1rem">
-      
-      <div className="flex flex-col px-4">
-        <div className="flex justify-between">
-          <HeaderBreadcrum
-            heading={"CURA Non Pma Client Receivables"}
-            path={["Reports", "Clients", "CURA Non Pma Client Receivables"]}
-          />
-          <div className="flex justify-between gap-7 h-[36px]">
-            
+
+    <Container>
+
+      <Stack gap="1rem">
+
+        <div className="flex flex-col px-4">
+          <div className="flex justify-between">
+            <HeaderBreadcrum
+              heading={"CURA Non Pma Client Receivables"}
+              path={["Reports", "Clients", "CURA Non Pma Client Receivables"]}
+            />
+            <div className="flex justify-between gap-7 h-[36px]">
+
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            
-            <SearchBar
-              value={searchInput}
-              handleSearchvalue={handleSearchvalue}
-              handleSearch={handleSearch}
-              removeSearchValue={removeSearchValue}
-              onKeyDown={handleSearchEnterKey}
-            />
-          </div>
-        </div>
 
-        <SimpleTableWithFooter
-          pageName={'nonPmaClientReceivables'}
-          columns={columns}
-          data={NonPmaClientStAndRec}
-          totalData={totalAmount}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-          height = "calc(100vh - 12rem)"
-        />
-      </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
-        />
-      )}
-    </Stack>
+              <SearchBar
+                value={searchInput}
+                handleSearchvalue={handleSearchvalue}
+                handleSearch={handleSearch}
+                removeSearchValue={removeSearchValue}
+                onKeyDown={handleSearchEnterKey}
+              />
+            </div>
+          </div>
+
+          <SimpleTableWithFooter
+            pageName={'nonPmaClientReceivables'}
+            columns={columns}
+            data={NonPmaClientStAndRec}
+            totalData={totalAmount}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
+            height="calc(100vh - 12rem)"
+          />
+        </div>
+        {toast && (
+          <SucessfullModal
+            isOpen={toast}
+            message="New Receipt Added Successfully"
+          />
+        )}
+      </Stack>
+    </Container>
   );
 };
 

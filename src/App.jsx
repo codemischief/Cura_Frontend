@@ -34,8 +34,9 @@ import { Route, Routes, Outlet } from "react-router-dom";
 import Userscreen from "./Screens/UserScreens/Userscreen";
 import LOB from "./Screens/Admin/LOB";
 import Service from "./Screens/Admin/Service";
-import Agent from "./Screens/Research/Agent/Agent";
-import Employer from "./Screens/Research/Employer/Employer";
+import ResearchAgent from "./Screens/Research/Agent/index.jsx";
+// import Agent from "./Screens/Research/Agent/Agent";
+// import Employer from "./Screens/Research/Employer/Employer";
 import GovernmentDepartment from "./Screens/Research/Government Department/GovernmentDepartment";
 import ManageBankStatement from "./Screens/Manage/ManageBankStatement/ManageBankStatement";
 import ManageBuilderProject from "./Screens/Manage/ManageBuilder/ManageBuilderProject/ManageBuilderProject";
@@ -92,11 +93,30 @@ import { CircularProgress } from "@mui/material";
 import UnAuthorized from "./Screens/UnAuthorized/UnAuthorized.jsx";
 import ClientReceiptView from "./Screens/Reports/TallyReports/ClientReceipt/index.jsx";
 import OrderPaymentDDView from "./Screens/Reports/TallyReports/OrderPaymentDD/index.jsx";
-import OrderPaymentB2CView from "./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx";
-import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx";
+import OrderPaymentB2CView from "./Screens/Reports/TallyReports/OrderPaymentB2C/index.jsx";
+import OrderPaymentB2BView from "./Screens/Reports/TallyReports/OrderPaymentB2B/index.jsx";
 import OrderPaymentWithTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithTds/index.jsx";
 import OrderPaymentWithoutTdsView from "./Screens/Reports/TallyReports/OrderPaymentWithoutTds/index.jsx";
 import OrderReceiptToInvoiceServiceTax from "./Screens/Reports/TallyReports/OrderReceiptToServiceTax/index.jsx";
+import ClientStatistics from "./Screens/Reports/Statistics/ClientStatisticsReport/index.jsx";
+import ResearchEmployer from "./Screens/Research/Employer/index.jsx";
+import ResearchGovernmentDepartment from "./Screens/Research/Government Department/index.jsx";
+
+import ResearchOwner from "./Screens/Research/Owner/index.jsx";
+import ResearchFriends from "./Screens/Research/Friends/index.jsx";
+import ResearchBanks from "./Screens/Research/Banks/index.jsx";
+import ResearchBusinessGroup from "./Screens/Research/COC/index.jsx";
+import ResearchProfessionals from "./Screens/Research/Professionals/index.jsx";
+import ResearchMandals from "./Screens/Research/Mandals/index.jsx";
+import ResearchArchitect from "./Screens/Research/Architect/index.jsx";
+import ResearchEducational from "./Screens/Research/Educational/index.jsx";
+import ResearchServiceApartments from "./Screens/Research/ServiceApartment/index.jsx";
+
+import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/index.jsx";
+import TdsPaidToGovernement from "./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx";
+import TdsPaidByVendorView from "./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx";
+import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx";
+import StatisticsReport from "./Screens/Reports/Statistics/StatisticsReport/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -151,23 +171,26 @@ const App = () => {
               <Route path="/admin/LOB" element={<LOB />} />
               <Route path="/admin/service" element={<Service />} />
               <Route path="/admin/payments" element={<Payments />} />
+
               <Route path="/research/prospect" element={<PropectusPage />} />
-              <Route path="/research/owner" element={<Owner />} />
-              <Route path="/research/educational" element={<Educational />} />
-              <Route path="/research/architect" element={<Architect />} />
-              <Route path="/research/mandals" element={<Mandals />} />
+              <Route path="/research/employer" element={<ResearchEmployer/>}/>
+              <Route path="/research/owner" element={<ResearchOwner />} />
+              <Route path="/research/educational" element={<ResearchEducational />} />
+              <Route path="/research/architect" element={<ResearchArchitect />} />
+              <Route path="/research/mandals" element={<ResearchMandals />} />
               <Route
                 path="/research/professionals"
-                element={<Professionals />}
+                element={<ResearchProfessionals />}
               />
-              <Route path="/research/coc" element={<COC />} />
-              <Route path="/research/banks" element={<Banks />} />
-              <Route path="/research/friends" element={<Friends />} />
-              <Route path="/reasearch/agent" element={<Agent />} />
-              <Route path="/reasearch/employer" element={<Employer />} />
+              <Route path="/research/businessgroup" element={<ResearchBusinessGroup />} />
+              <Route path="/research/banks" element={<ResearchBanks />} />
+              <Route path="/research/friends" element={<ResearchFriends />} />
+              <Route path="/research/serviceapartment" element={<ResearchServiceApartments />} />
+              <Route path="/research/agent" element={<ResearchAgent />} />
+              {/* <Route path="/reasearch/employer" element={<Employer />} /> */}
               <Route
-                path="/reasearch/governmentdepartment"
-                element={<GovernmentDepartment />}
+                path="/research/governmentdepartment"
+                element={<ResearchGovernmentDepartment />}
               />
               <Route
                 path="/manage/bankstatement"
@@ -223,7 +246,7 @@ const App = () => {
                 path="/manage/managevendorpayment/:orderid"
                 element={<ManageVendorPayment />}
               />
-                <Route
+              <Route
                 path="/manage/manageclientinvoice/:orderid"
                 element={<ManageClientInvoice />}
               />
@@ -289,8 +312,14 @@ const App = () => {
                 path="/reports/pmaBillingTrendView"
                 element={<PmaBillingTrendView />}
               />
-              <Route path="/reports/pmaClientReport" element={<PmaClientReport />} />
-              <Route path="/reports/pmaInvoiceList" element={<PmaInvoiceList />} />
+              <Route
+                path="/reports/pmaClientReport"
+                element={<PmaClientReport />}
+              />
+              <Route
+                path="/reports/pmaInvoiceList"
+                element={<PmaInvoiceList />}
+              />
               <Route
                 path="/reports/pmaClientReceivable"
                 element={<PmaClientReceivable />}
@@ -299,7 +328,10 @@ const App = () => {
                 path="/reports/activePmaAgreement"
                 element={<ActivePmaAgreement />}
               />
-              <Route path="/reports/projectContact" element={<ProjectContact />} />
+              <Route
+                path="/reports/projectContact"
+                element={<ProjectContact />}
+              />
               <Route
                 path="/reports/advanceHoldingAmount"
                 element={<AdvanceHoldingAmount />}
@@ -391,6 +423,30 @@ const App = () => {
               <Route
                 path="reports/orderreceipttoinvoiceTax"
                 element={<OrderReceiptToInvoiceServiceTax />}
+              />
+              <Route
+                path="reports/tdspaidbyvendor"
+                element={<TdsPaidByVendorView />}
+              />
+              <Route
+                path="reports/vendorstatement"
+                element={<VendorStatementView />}
+              />
+              <Route
+                path="reports/tdsPaidToGovernment"
+                element={<TdsPaidToGovernement />}
+              />
+              <Route
+                path="reports/vendorpaymentsummary"
+                element={<VendorPaymentPeriodView />}
+              />
+              <Route
+                path="reports/clientStatistics"
+                element={<ClientStatistics />}
+              />
+              <Route
+                path="reports/statisticsReport"
+                element={<StatisticsReport />}
               />
             </Route>
 

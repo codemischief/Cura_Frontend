@@ -13,7 +13,7 @@ import Cross from "../../../assets/cross.png";
 import { Modal } from "@mui/material";
 import * as XLSX from 'xlsx';
 import FileSaver from 'file-saver';
-const Agent = () => {
+const GovernmentDepartment = () => {
 
     // we have the module here
     const [existingExployer, setExistingEmployer] = useState([]);
@@ -158,40 +158,31 @@ const Agent = () => {
 
                         </div>
                         <div className='h-12 w-full bg-white'>
-                           
                         <div className='flex justify-between'>
-                        <div className='w-[85%] flex '>
+                            <div className='w-[85%] flex'>
                                 <div className='w-[5%] p-4'>
-                                    
+                                    {/* <p>Sr. </p> */}
                                 </div>
-                                <div className='w-[12%]  p-4'>
-                                   <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[25%]  px-4 py-3'>
+                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[10%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[20%]  px-4 py-3'>
+                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[10%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+
+                                <div className='w-[20%]  px-4 py-3'>
+                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[12%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[20%]  px-4 py-3'>
+                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
-                                <div className='w-[12%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[12%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[12%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
-                                </div>
-                                <div className='w-[10%]  p-4'>
-                                    <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <div className='w-[15%] px-4 py-3'>
+                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
                                 <div className='w-1/2  px-4 py-3'>
-                                   <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
+                                <input className="w-14 h-6 bg-[#EBEBEB] rounded-md" />
                                 </div>
                                 <div className='w-1/2 0 p-4'>
                                     
@@ -202,34 +193,25 @@ const Agent = () => {
                     </div>
 
                     <div className='w-full h-[500px] bg-white px-6 text-[12px]'>
-                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between '>
-                            <div className='w-[85%] flex '>
-                                <div className='w-[5%] p-4 '>
-                                    <p className='text-xs'>Sr. </p>
+                        <div className='w-full h-12 bg-[#F0F6FF] flex justify-between'>
+                            <div className='w-[85%] flex'>
+                                <div className='w-[5%] p-4'>
+                                    <p>Sr. </p>
                                 </div>
-                                <div className='w-[12%]  p-3 flex items-center'>
-                                    <p className='text-xs'>Name of Agent<span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[25%]  p-4'>
+                                    <p>Department Name<span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[10%]  p-3 flex items-center'>
-                                    <p className='text-xs'>Agency Name <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[20%]  p-4'>
+                                    <p>Department Type <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[10%]  p-3 flex items-center'>
-                                    <p>Email Id <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[20%]  p-4'>
+                                    <p>City <span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[12%]  p-3 flex items-center'>
-                                    <p className='text-xs'>Phone Number<span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[20%]  p-4'>
+                                    <p>Suburb<span className="font-extrabold">↑↓</span></p>
                                 </div>
-                                <div className='w-[12%]  flex items-center'>
-                                    <p className='text-xs'>Whatsapp Number <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[12%]  flex items-center'>
-                                    <p className='text-xs'>Localities Dealing <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[12%] flex items-center'>
-                                    <p className='text-xs'>Name Of Partners <span className="font-extrabold">↑↓</span></p>
-                                </div>
-                                <div className='w-[10%]  p-3 flex items-center'>
-                                    <p className='text-xs'>Registered <span className="font-extrabold">↑↓</span></p>
+                                <div className='w-[15%]  p-4'>
+                                    <p>Details <span className="font-extrabold">↑↓</span></p>
                                 </div>
                             </div>
                             <div className='w-[15%] flex'>
@@ -440,5 +422,5 @@ const Agent = () => {
     )
 }
 
-export default Agent;
+export default GovernmentDepartment;
 

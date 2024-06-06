@@ -22,7 +22,7 @@ const SimpleTable = ({
         className={`w-full text-[12px] overflow-x-auto `}
         style={{ height: height }}
       >
-        <table className="table-auto ">
+        <table style={{ width: "-webkit-fill-available" }}>
           <thead className="h-[115px] sticky top-0 z-100 bg-white">
             <tr className="h-[56px]">
               {columns.map((column, index) => (
@@ -37,7 +37,7 @@ const SimpleTable = ({
                       key={column.field}
                       columnfield={column.field}
                       isDisabled={column.filterDisabled || false}
-                    />
+                    />,
                   ]}
                 </th>
               ))}
@@ -60,7 +60,7 @@ const SimpleTable = ({
             </tr>
           </thead>
 
-          <tbody className=" max-h-[calc(100vh-375px)]  overflow-y-auto">
+          <tbody className=" max-h-[calc(100vh-375px)]   overflow-y-auto">
             {isLoading && (
               <tr>
                 <td colSpan={columns.length} className="text-center">

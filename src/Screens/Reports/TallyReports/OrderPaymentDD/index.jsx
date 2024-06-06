@@ -263,8 +263,8 @@ const OrderPaymentDDView = () => {
         <div className="flex justify-between items-center h-[59px]">
           <HeaderBreadcrum
             
-            heading={"Order Payment-Direct Debit"}
-            path={["Reports", "Tally Report", " Order Payment-Direct Debit"]}
+            heading={"Order Payment-Taxes"}
+            path={["Reports", "Tally Report", " Order Payment-Taxes"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -298,7 +298,7 @@ const OrderPaymentDDView = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Mode
               </label>
@@ -309,14 +309,14 @@ const OrderPaymentDDView = () => {
                 value={intialFields.mode}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">select Mode</option>
                 <option value="all">all</option>
                 {modeData.map((opt) => (
                   <option value={opt[0]}>{opt[1]}</option>
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Entity
               </label>
@@ -326,7 +326,7 @@ const OrderPaymentDDView = () => {
                 value={intialFields.entity}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Entity</option>
                 <option value="all">all</option>
 
                 {entityData.map((opt) => (
@@ -334,14 +334,14 @@ const OrderPaymentDDView = () => {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select Start Date"}
                 onChange={handleChange}
                 name="start_date"
               />
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select End Date"}
                 onChange={handleChange}
@@ -362,7 +362,7 @@ const OrderPaymentDDView = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "12px",
+                marginTop: "6px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",

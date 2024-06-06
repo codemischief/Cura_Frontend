@@ -240,7 +240,8 @@ const OrderReceiptToInvoiceServiceTax = () => {
         uniqueid: "Unique ID",
         base_vch_type: "Base-Vch-Type",
         vch_type: "Voucher Type",
-        vch_date: "Voucher Type",
+        vch_no: "Voucher Number",
+        vch_date: "Voucher Date",
         ref_no: "Ref No.",
         ref_date: "Ref Date",
         party: "Party",
@@ -277,8 +278,8 @@ const OrderReceiptToInvoiceServiceTax = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Receipt to Invoice(Service Tax / GST)"}
-            path={["Reports", "Tally Report", "Order Receipt to Invoice(Service Tax / GST)"]}
+            heading={"CR-GST Invoice"}
+            path={["Reports", "Tally Report", "CR-GST Invoice"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
@@ -312,7 +313,7 @@ const OrderReceiptToInvoiceServiceTax = () => {
             alignItems={"center"}
             gap={"24px"}
           >
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Mode
               </label>
@@ -323,14 +324,14 @@ const OrderReceiptToInvoiceServiceTax = () => {
                 value={intialFields.mode}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Mode</option>
                 <option value="all">all</option>
                 {modeData.map((opt) => (
                   <option value={opt[0]}>{opt[1]}</option>
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <label className="font-sans text-sm font-normal leading-5">
                 Entity
               </label>
@@ -340,7 +341,7 @@ const OrderReceiptToInvoiceServiceTax = () => {
                 value={intialFields.entity}
                 onChange={handleChange}
               >
-                <option selected value={""} className="hidden"></option>
+                <option selected value={""} className="hidden">Select Entity</option>
                 <option value="all">all</option>
 
                 {entityData.map((opt) => (
@@ -348,14 +349,14 @@ const OrderReceiptToInvoiceServiceTax = () => {
                 ))}
               </select>
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select Start Date"}
                 onChange={handleChange}
                 name="start_date"
               />
             </div>
-            <div className="flex flex-col h-16 w-[281px]">
+            <div className="flex flex-col h-16 w-[200px]">
               <DatePicker
                 label={"Select End Date"}
                 onChange={handleChange}
@@ -376,7 +377,7 @@ const OrderReceiptToInvoiceServiceTax = () => {
                 border: "1px solid #004DD7",
                 fontWeight: "600px",
                 lineHeight: "18.9px",
-                marginTop: "12px",
+                marginTop: "6px",
                 "&:hover": {
                   //you want this to be the same as the backgroundColor above
                   backgroundColor: "#004DD7",

@@ -20,5 +20,3 @@ AddButton.propTypes = {
   onClick: PropTypes.func,
   icon: PropTypes.element,
 };
-
-

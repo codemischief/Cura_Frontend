@@ -11,7 +11,7 @@ export default function connectionDataColumn(onQuery) {
   const columns = [
     {
       title: "Sr No",
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "10%" },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "9%" },
       sorting: false,
       render: (index) => {
         return (
@@ -25,11 +25,11 @@ export default function connectionDataColumn(onQuery) {
       },
     },
     {
-        title: "Client Name",
-        field: "clientname",
-        sorting: true,
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%" },
+      title: "Client Name",
+      field: "clientname",
+      sorting: true,
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
     },
     {
       title: "Order Description",
@@ -37,49 +37,49 @@ export default function connectionDataColumn(onQuery) {
       sorting: true,
       // cellStyle: { minWidth: "20px", },
       filterComponent: TextFilterField,
-      cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
     },
     {
-        title: "Invoice Date",
-        field: "invoicedate",
-        sorting: true,
-        // cellStyle: { minWidth: "20px", },
-        filterComponent: DateFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
-      },
-      {
-        title: "Base Amount",
-        field: "baseamount",
-        sorting: true,
-        // cellStyle: { minWidth: "20px", },
-        filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
-      },
-      {
-        title: "Tax",
-        field: "tax",
-        sorting: true,
-        // cellStyle: { minWidth: "20px", },
-        filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
-      },
-      {
-        title: "Invoice Amount",
-        field: "invoiceamount",
-        sorting: true,
-        // cellStyle: { minWidth: "20px", },
-        filterComponent: NumberFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
-      },
-      {
-        title: "Entity Name",
-        field: "entityname",
-        sorting: true,
-        // cellStyle: { minWidth: "20px", },
-        filterComponent: TextFilterField,
-        cellStyle: { ...cellStyleCommon,justifyContent: "center",minWidth: "15%"  },
-      },
-      
+      title: "Invoice Date",
+      field: "invoicedate",
+      sorting: true,
+      // cellStyle: { minWidth: "20px", },
+      filterComponent: DateFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
+    },
+    {
+      title: "Base Amount",
+      field: "baseamount",
+      sorting: true,
+      // cellStyle: { minWidth: "20px", },
+      filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
+    },
+    {
+      title: "Tax",
+      field: "tax",
+      sorting: true,
+      // cellStyle: { minWidth: "20px", },
+      filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
+    },
+    {
+      title: "Invoice Amount",
+      field: "invoiceamount",
+      sorting: true,
+      // cellStyle: { minWidth: "20px", },
+      filterComponent: NumberFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
+    },
+    {
+      title: "Entity Name",
+      field: "entityname",
+      sorting: true,
+      // cellStyle: { minWidth: "20px", },
+      filterComponent: TextFilterField,
+      cellStyle: { ...cellStyleCommon, justifyContent: "center", width: "13%" },
+    },
+
   ];
   return columns;
 }

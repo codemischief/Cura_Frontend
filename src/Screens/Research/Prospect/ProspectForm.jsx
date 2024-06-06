@@ -86,7 +86,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     const result = await response.json();
     setCityData(result.data);
   };
-
+  console.log(editData)
   const formik = useFormik({
     initialValues: {
       countryId: editData?.country ? editData.country : 5,
@@ -386,9 +386,9 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                           </div>
                         </div>
-                        <div className=" space-y-[10px] py-[20px] px-[10px]">
-                          <div className="">
-                            {/* <div className="text-[13px]">Email </div> */}
+                        {/* <div className=" space-y-[10px] py-[20px] px-[10px]"> */}
+                          {/* <div className="">
+                            
                             <label className="inputFieldLabel">Email</label>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -399,9 +399,9 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                          </div>
-                          <div className="">
-                            {/* <div className="text-[13px]">Phone Number </div> */}
+                          </div> */}
+                          {/* <div className="">
+                           
                             <label className="inputFieldLabel">
                               Phone Number
                             </label>
@@ -414,8 +414,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
-                          </div>
-                        </div>
+                          </div> */}
+                        {/* </div> */}
                       </div>
                     </div>
 
@@ -429,9 +429,9 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                         {isSubmitting ? (
                           <CircularProgress />
                         ) : editData?.id ? (
-                          "Update"
-                        ) : (
                           "Save"
+                        ) : (
+                          "Add"
                         )}
                       </button>
                       <button
@@ -454,16 +454,16 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         <ConfirmationModal
           open={openConfirmation}
           loading={formSubmissionStatus === "loading"}
-          btnTitle={editData?.id ? "Update" : "Save"}
+          btnTitle={editData?.id ? "Save" : "Add"}
           onClose={() => {
             setOpenConfimation(false);
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Client"
+          title="Add Prospect"
           description={
             <div>
-              <p className="">Client: {values.personname}</p>
+              <p className="">Prospect: {values.personname}</p>
               <Typography
                 sx={{
                   fontFamily: "Open Sans",
@@ -474,7 +474,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this client?
+                Are you sure you want to add this Prospect?
               </Typography>
             </div>
           }
@@ -489,7 +489,7 @@ ProspectForm.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   editData: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     country: PropTypes.number,
     state: PropTypes.string,
     city: PropTypes.string,

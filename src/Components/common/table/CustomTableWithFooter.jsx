@@ -307,6 +307,12 @@ const helper = (index, obj, pageName) => {
      return `Total: ${obj?.total_amount}`
     }
  }
+ else if(pageName==="vendorStatement"){
+  if(index===5){
+    return `Total:${obj.invoiceamount_orderpaymentamount}`
+  }
+  
+ }
  
 }
 const helper2 = (index, obj, pageName) => {

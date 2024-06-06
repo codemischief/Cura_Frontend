@@ -240,7 +240,13 @@ const ManageUser = () => {
         // setPageLoading(true);
         const data = {
             "user_id": 1234,
-            "rows": ["*"],
+            "rows": [
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
+            ],
             "filters": tempArray,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -265,7 +271,13 @@ const ManageUser = () => {
         setCurrentPage((prev) => pageNumber)
         const data = {
             "user_id": 1234,
-            "rows": ["*"],
+            "rows": [
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
+            ],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -288,7 +300,13 @@ const ManageUser = () => {
         console.log(searchInput);
         const data = {
             "user_id": 1234,
-            "rows": ["*"],
+            "rows": [
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
+            ],
             "filters": filterState,
             "sort_by": [sortField],
             "order": flag ? "asc" : "desc",
@@ -386,7 +404,7 @@ const ManageUser = () => {
             "lobid": Number(formValues.lob),
             "usercode": "code",
             "firstname": firstName,
-            "lastname": lastName,
+            "lastname": lastName ? lastName : "",
             "status": formValues.status,
             "effectivedate": formValues.effectiveDate,
             "homephone": formValues.homePhone,
@@ -488,7 +506,7 @@ const ManageUser = () => {
 
         if (!formValues.lob) {
             setFormErrors((existing) => {
-                return { ...existing, lob: "Enter Lob" }
+                return { ...existing, lob: "Enter LOB" }
             })
             res = false;
         } else {
@@ -547,7 +565,7 @@ const ManageUser = () => {
         }
         if (!formValues.role) {
             setFormErrors((existing) => {
-                return { ...existing, role: "select Role" }
+                return { ...existing, role: "Select Role" }
             })
             res = false;
         } else {
@@ -705,7 +723,11 @@ const ManageUser = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "*"
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -731,7 +753,11 @@ const ManageUser = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "*"
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
             ],
             "filters": filterState,
             "sort_by": [sortField],
@@ -856,7 +882,11 @@ const ManageUser = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "*"
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
             ],
             "filters": tempArray,
             "sort_by": [sortField],
@@ -957,7 +987,11 @@ const ManageUser = () => {
         const data = {
             "user_id": 1234,
             "rows": [
-                "*"
+                "fullname",
+                "username",
+                "role_name",
+                "status",
+                "id"
             ],
             "filters": filterState,
             "sort_by": [field],
@@ -1495,7 +1529,7 @@ const ManageUser = () => {
                                         <div className=" space-y-[12px] py-[20px] px-[10px]">
                                             <div className="">
                                                 <div className="text-sm text-[#787878] mb-0.5">Office </div>
-                                                <div className="w-56 h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
+                                                <div className="w-[230px] h-5 border-[1px] border-[#C6C6C6] rounded-sm px-3 text-xs py-0.5 bg-[#F5F5F5]" type="text" name="curaoffice" value={formValues.curaoffice} onChange={handleChange} >Pune</div>
                                             </div>
                                             <div className="">
                                                 <div className="text-[13px]">Effective Date <label className="text-red-500">*</label></div>

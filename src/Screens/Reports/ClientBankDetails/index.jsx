@@ -26,6 +26,7 @@ import { formatedFilterData } from "../../../utils/filters";
 import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
 import SimpleTable from "../../../Components/common/table/ClientPortalTable";
+import Container from "../../../Components/common/Container";
 
 const PmaClientReport = () => {
   const dispatch = useDispatch();
@@ -76,9 +77,9 @@ const PmaClientReport = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["clientname","onlinemailid","bankname","bankbranch",
-      "bankaccountno","bankaccountholdername","bankcity","bankifsccode",
-      "bankaccounttype"],
+      rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
+        "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
+        "bankaccounttype"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -113,9 +114,9 @@ const PmaClientReport = () => {
 
     let obj = {
       user_id: 1234,
-      rows: ["clientname","onlinemailid","bankname","bankbranch",
-      "bankaccountno","bankaccountholdername","bankcity","bankifsccode",
-      "bankaccounttype"],
+      rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
+        "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
+        "bankaccounttype"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -149,9 +150,9 @@ const PmaClientReport = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["clientname","onlinemailid","bankname","bankbranch",
-      "bankaccountno","bankaccountholdername","bankcity","bankifsccode",
-      "bankaccounttype"],
+      rows: ["clientname", "onlinemailid", "bankname", "bankbranch",
+        "bankaccountno", "bankaccountholdername", "bankcity", "bankifsccode",
+        "bankaccounttype"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
@@ -202,65 +203,68 @@ const PmaClientReport = () => {
     return <span title={tooltipText}>{year}</span>;
   }
   return (
-    <Stack gap="1rem">
-      
-      <div className="flex flex-col px-4">
-        <div className="flex justify-between">
-          <HeaderBreadcrum
-            heading={"Client Bank Details"}
-            path={["Reports", "Client", "Client Bank Details"]}
-          />
-          <div className="flex justify-between gap-7 h-[36px]">
-           
+    <Container>
+
+      <Stack gap="1rem">
+
+        <div className="flex flex-col px-4">
+          <div className="flex justify-between">
+            <HeaderBreadcrum
+              heading={"Client Bank Details"}
+              path={["Reports", "Client", "Client Bank Details"]}
+            />
+            <div className="flex justify-between gap-7 h-[36px]">
+
               <div className="flex p-2 items-center justify-center rounded border border-[#CBCBCB] text-base font-normal leading-relaxed">
                 <p>
                   Generated on: <span> {new Date().toLocaleString()}</span>
                 </p>
               </div>
-            
-            <SearchBar
-              value={searchInput}
-              handleSearchvalue={handleSearchvalue}
-              handleSearch={handleSearch}
-              removeSearchValue={removeSearchValue}
-              onKeyDown={handleSearchEnterKey}
-            />
-          </div>
-        </div>
 
-        {/* <Stack
+              <SearchBar
+                value={searchInput}
+                handleSearchvalue={handleSearchvalue}
+                handleSearch={handleSearch}
+                removeSearchValue={removeSearchValue}
+                onKeyDown={handleSearchEnterKey}
+              />
+            </div>
+          </div>
+
+          {/* <Stack
           marginTop={"8px"}
           justifyContent={"space-between"}
           direction={"row"}
           alignItems={"center"}
           height={"3.875rem"}
-        >
+          >
           
         </Stack> */}
 
-        <SimpleTable
-          columns={columns}
-          data={clientBankDetails}
-          pageNo={pageNo}
-          isLoading={status === "loading"}
-          totalCount={totalCount}
-          style={"text-center"}
-          countPerPage={countPerPage}
-          handlePageCountChange={handlePageCountChange}
-          handlePageChange={handlePageChange}
-          handleRefresh={handleRefresh}
-          handleSortingChange={handleSortingChange}
-          downloadExcel={downloadExcel}
-          height="calc(100vh - 12rem)"
-        />
-      </div>
-      {toast && (
-        <SucessfullModal
-          isOpen={toast}
-          message="New Receipt Added Successfully"
-        />
-      )}
-    </Stack>
+          <SimpleTable
+            columns={columns}
+            data={clientBankDetails}
+            pageNo={pageNo}
+            isLoading={status === "loading"}
+            totalCount={totalCount}
+            style={"text-center"}
+            countPerPage={countPerPage}
+            handlePageCountChange={handlePageCountChange}
+            handlePageChange={handlePageChange}
+            handleRefresh={handleRefresh}
+            handleSortingChange={handleSortingChange}
+            downloadExcel={downloadExcel}
+            height="calc(100vh - 12rem)"
+          />
+        </div>
+        {toast && (
+          <SucessfullModal
+            isOpen={toast}
+            message="New Receipt Added Successfully"
+          />
+        )}
+      </Stack>
+    </Container>
   );
 };
 

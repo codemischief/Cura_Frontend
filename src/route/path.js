@@ -1,5 +1,6 @@
 
 
+
 function path(root, sublink) {
   return `${root}${sublink}`;
 }
@@ -7,7 +8,6 @@ function path(root, sublink) {
 export const ROOTS = {
   root: "/dashboard",
   admin: "/admin",
-
   research: "/research",
   manage: "/manage",
   report: "/reports",
@@ -38,20 +38,20 @@ export const PATH_DASHBOARD = {
   },
   research: {
     prospect: path(ROOTS.research, "/prospect"),
+    employer: path(ROOTS.research, "/employer"),
     owner: path(ROOTS.research, "/owner"),
     educational: path(ROOTS.research, "/educational"),
     architect: path(ROOTS.research, "/architect"),
     mandals: path(ROOTS.research, "/mandals"),
     professionals: path(ROOTS.research, "/professionals"),
-    coc: path(ROOTS.research, "/coc"),
+    businessgroup: path(ROOTS.research, "/businessgroup"),
     banks: path(ROOTS.research, "/banks"),
     friends: path(ROOTS.research, "/friends"),
     agent: path(ROOTS.research, "/agent"),
-    employer: path(ROOTS.research, "/employer"),
     governmentDepartment: path(ROOTS.research, "/governmentdepartment"),
     serviceApartmentGuestHouse: path(
       ROOTS.research,
-      "/serviceApartmentGuestHouse"
+      "/serviceapartment"
     ),
   },
   manage: {
@@ -120,5 +120,16 @@ export const PATH_DASHBOARD = {
       OrderReceiptToInvoiceTax:path(ROOTS.report,"/orderreceipttoinvoiceTax")
 
     },
+    statistics: {
+      clientStatistics: path(ROOTS.report , "/clientStatistics")
+    },
+    vendorReport:{
+      vendorStatement : path(ROOTS.report, "/vendorstatement")
+    },
+    tdsReport: {
+      tdsPaidByVendor: path(ROOTS.report , "/tdspaidbyvendor"),
+      tdsPaidByGovernment: path(ROOTS.report , "/tdsPaidToGovernment"),
+      vendorPaymentPeriod: path(ROOTS.report , "/vendorpaymentsummary"),
+    }
   },
 };

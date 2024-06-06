@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import FileSaver from "file-saver";
 import {
+  clientReceiptFormatData,
   env_URL_SERVER,
 } from "../../../../helper";
 
@@ -27,7 +28,7 @@ export const clientReceipt = createSlice({
   reducers: {
     setClientReceiptView: (state, { payload }) => {
       const { data } = payload;
-      state.clientReceiptView = data.data
+      state.clientReceiptView = clientReceiptFormatData(data.data)
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
@@ -127,7 +128,7 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "ActivePmaAgreement.xlsx");
+    FileSaver.saveAs(blob, "ClientReceiptReport.xlsx");
   } catch (error) {
     console.log("error", error);
   }

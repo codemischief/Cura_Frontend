@@ -8,7 +8,7 @@ import {
 } from "./CustomFilterField";
 import { Create, Delete } from "@mui/icons-material";
 
-export default function connectionDataColumn(handleEdit, handleDelete) {
+export default function getColumns(handleEdit, handleDelete) {
   const { cellStyleCommon } = styleConst;
 
   const columns = [
@@ -46,7 +46,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
       cellStyle: {
         ...cellStyleCommon,
         justifyContent: "center",
-        maxWidth: "18.25rem",
+        width: "300px",
       },
     },
     {
@@ -125,7 +125,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     },
     {
       id: 8,
-      title: "Action",
+      title: "",
       field: "action",
       sorting: false,
       align: "left",
