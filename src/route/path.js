@@ -121,7 +121,8 @@ export const PATH_DASHBOARD = {
 
     },
     statistics: {
-      clientStatistics: path(ROOTS.report , "/clientStatistics")
+      clientStatistics: path(ROOTS.report , "/clientStatistics"),
+      statisticsReport: path(ROOTS.report , "/statisticsReport"),
     },
     vendorReport:{
       vendorStatement : path(ROOTS.report, "/vendorstatement")

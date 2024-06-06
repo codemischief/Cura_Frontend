@@ -406,7 +406,7 @@ export const navMenuConfig = [
           items: [
             { title: "Order Statistics", path: "" },
             { title: "Client Statistics", path: PATH_DASHBOARD.report.statistics.clientStatistics },
-            { title: "Statistics Report", path: "" },
+            { title: "Statistics Report", path: PATH_DASHBOARD.report.statistics.statisticsReport },
             { title: "Owners Statistics Report", path: "" },
           ],
         },
