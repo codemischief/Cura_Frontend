@@ -60,7 +60,6 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   transition: theme.transitions.create("opacity", {
     duration: theme.transitions.duration.shortest,
   }),
- 
 }));
 function MenuDesktopItem({
   item,
@@ -74,7 +73,6 @@ function MenuDesktopItem({
 }) {
   const paperRef = useRef();
   const { title, path, children } = item;
-
 
   useEffect(() => {
     let timeoutId;
@@ -96,12 +94,16 @@ function MenuDesktopItem({
       document.removeEventListener("touchstart", handler);
       clearTimeout(timeoutId);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
+
   const handleClick = (event, title) => {
     event.preventDefault();
     if (isOpen !== title) {
       onOpen(title);
     }
+  };
+  const handleSubheaderClick = (path) => {
+    if (path) onClose();
   };
   return [
     <LinkStyle
@@ -194,6 +196,7 @@ function MenuDesktopItem({
                           disableSticky
                           disableGutters
                           component={RouterLink}
+                          onClick={() => handleSubheaderClick(list.path)}
                           to={list.path ? list.path : "#"}
                           sx={{
                             fontFamily: "Open Sans",
