@@ -392,4 +392,9 @@ export const serviceTaxPaidByVendor = (data) => {
       paymentdate: billing.paymentdate ? formatDate(billing.paymentdate) : "",
   }));
 }
+export const TenantEmail = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

@@ -15,7 +15,7 @@ import {
   setPageNumber,
   setSorting,
   setStatus
-} from "../../../../Redux/slice/reporting/Statistics/ServiceTaxPaidByVendor"
+} from "../../../../Redux/slice/reporting/Contacts/TenantEmail";
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
@@ -25,7 +25,7 @@ import * as XLSX from "xlsx";
 import SimpleTable from "../../../../Components/common/table/CustomTable";
 import Container from "../../../../Components/common/Container";
 
-const ServiceTaxPaidByVendor = () => {
+const TenantEmail = () => {
   const dispatch = useDispatch();
   const {
     data,
@@ -36,7 +36,7 @@ const ServiceTaxPaidByVendor = () => {
     countPerPage,
     pageNo,
     filter
-  } = useSelector((state) => state.serviceTaxPaidByVendor)
+  } = useSelector((state) => state.tenantEmail);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -74,7 +74,9 @@ const ServiceTaxPaidByVendor = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["vendorname","vendorcategory","servicetaxamount","amount","paymentmode","registered","paymentdate","monthyear"],
+      rows: [
+        "fullname","firstname","lastname","email1","email2","employername"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -109,7 +111,9 @@ const ServiceTaxPaidByVendor = () => {
 
     let obj = {
       user_id: 1234,
-      rows: ["vendorname","vendorcategory","servicetaxamount","amount","paymentmode","registered","paymentdate","monthyear"],
+      rows: [
+        "fullname","firstname","lastname","email1","email2","employername"
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -143,19 +147,19 @@ const ServiceTaxPaidByVendor = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["vendorname","vendorcategory","servicetaxamount","amount","paymentmode","registered","paymentdate","monthyear"],
+      rows: [
+        "fullname","firstname","lastname","employername","email1","email2",
+      ],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
-        "vendorname": "Vendor Name",
-        "vendorcategory": "Service Type",
-        "servicetaxamount" : "Service Tax Amount",
-        "amount" : "Amount",
-        "paymentmode" : "Payment Mode",
-        "registered" : "Registered",
-        "paymentdate" : "Payment Date",
-        "monthyear" : "Month Year",
+        "fullname": "Full Name",
+        "firstname": "First Name",
+        "lastname" : "Last Name",
+        "employername" : "Employer Name",
+        "email1" : "Email 1",
+        "email2" : "Email 2",
       },
       search_key: search,
       pg_no: 0,
@@ -250,4 +254,4 @@ const ServiceTaxPaidByVendor = () => {
   );
 };
 
-export default ServiceTaxPaidByVendor;
+export default TenantEmail;

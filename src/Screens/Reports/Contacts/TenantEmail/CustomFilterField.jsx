@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
 import { FilterField } from "../../../../Components/common/table/FilterField";
 // import { setPmaClientReportFilters, setPageNumber } from "../../../Redux/slice/reporting/DuplicateClientReports";
-import { setFilters , setPageNumber } from "../../../../Redux/slice/reporting/Statistics/ServiceTaxPaidByVendor";
+import { setFilters , setPageNumber } from "../../../../Redux/slice/reporting/Contacts/TenantEmail";
 import { useSelector } from "react-redux";
 
 export function CustomFilterField(props) {
   const dispatch = useDispatch();
-  const { filter } = useSelector((state) => state.serviceTaxPaidByVendor);
+  const { filter } = useSelector((state) => state.tenantEmail);
 
   const handleFilterChange = (filters) => {
     dispatch(setFilters({...filters}));
