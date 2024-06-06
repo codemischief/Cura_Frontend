@@ -1,37 +1,34 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Navbar from "../../../Components/Navabar/Navbar";
-import HeaderBreadcrum from "../../../Components/common/HeaderBreadcum";
+import HeaderBreadcrum from "../../../../Components/common/HeaderBreadcum";
 import { useEffect, useMemo, useState } from "react";
-import ConfirmationModal from "../../../Components/common/ConfirmationModal";
-import SucessfullModal from "../../../Components/modals/SucessfullModal";
-// import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTableWithFooter from "../../../Components/common/table/CustomTableWithFooter";
+import ConfirmationModal from "../../../../Components/common/ConfirmationModal";
+import SucessfullModal from "../../../../Components/modals/SucessfullModal";
 import connectionDataColumn from "./Columns";
-import SearchBar from "../../../Components/common/SearchBar/SearchBar";
-import { APIService } from "../../../services/API";
+import SearchBar from "../../../../Components/common/SearchBar/SearchBar";
+import { APIService } from "../../../../services/API";
 import { useDispatch } from "react-redux";
 import {
-  downloadPmaClientStatementAll,
-  getPmaClientStatementAll,
+  downloadDataXls,
+  getData,
   setCountPerPage,
   setInitialState,
   setPageNumber,
   setSorting,
   setStatus
-} from "../../../Redux/slice/reporting/pmaClientStatementAll"
+} from "../../../../Redux/slice/reporting/Statistics/StatisticsReport"
 import { useSelector } from "react-redux";
 // import DatePicker from "../../../Components/common/select/CustomDate";
 import DatePicker from "react-datepicker";
-import { formatedFilterData } from "../../../utils/filters";
+import { formatedFilterData } from "../../../../utils/filters";
 import * as XLSX from "xlsx";
-import SimpleTable from "../../../Components/common/table/CustomTable";
-import Container from "../../../Components/common/Container";
+// import SimpleTable from "../../../Components/common/table/CustomTable";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
+import Container from "../../../../Components/common/Container";
 
-
-const PmaInvoiceList = () => {
+const StatisticsReport = () => {
   const dispatch = useDispatch();
   const {
-    pmaClientStatementAll,
+    data,
     status,
     totalAmount,
     totalCount,
@@ -39,7 +36,7 @@ const PmaInvoiceList = () => {
     countPerPage,
     pageNo,
     filter
-  } = useSelector((state) => state.pmaClientStatementAll)
+  } = useSelector((state) => state.statisticsReport)
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -77,8 +74,7 @@ const PmaInvoiceList = () => {
   const handleRefresh = () => {
     let obj = {
       user_id: 1234,
-      rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails", "lobname",
-        "service", "fy", "mode"],
+      rows: ["type","count","amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       order: sorting.sort_order ? sorting.sort_order : undefined,
       filters: formatedFilterData(filter),
@@ -86,7 +82,7 @@ const PmaInvoiceList = () => {
       pg_no: +pageNo,
       pg_size: +countPerPage,
     };
-    dispatch(getPmaClientStatementAll(obj));
+    dispatch(getData(obj));
 
   };
 
@@ -113,8 +109,7 @@ const PmaInvoiceList = () => {
 
     let obj = {
       user_id: 1234,
-      rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails", "lobname",
-        "service", "fy", "mode"],
+      rows: ["type","count","amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       search_key: search,
@@ -122,7 +117,7 @@ const PmaInvoiceList = () => {
       pg_size: +countPerPage,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(getPmaClientStatementAll(obj));
+    dispatch(getData(obj));
 
   }, [
     filter,
@@ -148,38 +143,21 @@ const PmaInvoiceList = () => {
   const downloadExcel = async () => {
     let obj = {
       user_id: 1234,
-      rows: ["id", "entity", "clientname", "type", "date", "amount", "orderdetails", "lobname",
-        "service", "fy", "mode"],
+      rows: ["type","count","amount"],
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       filters: formatedFilterData(filter),
       downloadType: "excel",
       colmap: {
-        "id": "ID",
-        "entity": "Entity",
-        "clientname": "Client Name",
         "type": "Type",
-        "date": "Date",
-        "amount": "Amount",
-        "orderdetails": "Order Details",
-        "lobname": "LOB Name",
-        "service": "Service",
-        "fy": "FY",
-        "mode": "Mode",
+        "count": "No. of Records",
+        "amount" : "Amount"
       },
       search_key: search,
       pg_no: 0,
       pg_size: 0,
       order: sorting.sort_order ? sorting.sort_order : undefined,
     };
-    dispatch(downloadPmaClientStatementAll(obj))
-    // .then((response) => {
-    //   const tableData = response.data;
-    //   const worksheet = XLSX.utils.json_to_sheet(tableData);
-    //   const workbook = XLSX.utils.book_new();
-    //   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-    //   XLSX.writeFile(workbook, "LobReceiptPayments.xlsx");
-    //   dispatch(setStatus("success"));
-    // });
+    dispatch(downloadDataXls(obj))
   };
 
   const handleShow = () => {
@@ -209,8 +187,8 @@ const PmaInvoiceList = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"PMA Client Statement-CI,CR & OR (All Ent.)"}
-              path={["Reports", "PMA", "PMA Client Statement-CI,CR & OR (All Ent.)"]}
+              heading={"Client Statistics Report"}
+              path={["Reports", "Statistics", "Client Statistics Report"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 
@@ -242,7 +220,7 @@ const PmaInvoiceList = () => {
 
           <SimpleTable
             columns={columns}
-            data={pmaClientStatementAll}
+            data={data}
             pageNo={pageNo}
             isLoading={status === "loading"}
             totalCount={totalCount}
@@ -267,4 +245,4 @@ const PmaInvoiceList = () => {
   );
 };
 
-export default PmaInvoiceList;
+export default StatisticsReport;

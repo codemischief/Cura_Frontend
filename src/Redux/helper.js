@@ -284,6 +284,16 @@ export const orderTraceReport = (data) => {
   }));
 };
 
+export const StatisticsReport = (data) => {
+  console.log(data);
+  return data.map((billing, index) => ({
+    ...billing,
+    amount: billing.amount
+      ? floorDecimal(billing.amount)
+      : "0.00",
+  }));
+};
+
 export const vendorStatementReport = (data) => {
   return data.map((ele, index) => ({
     ...ele,

@@ -116,6 +116,7 @@ import VendorStatementView from "./Screens/Reports/VendorReport/VendorStatement/
 import TdsPaidToGovernement from "./Screens/Reports/VendorReport/TdsPaidToGovernment/index.jsx";
 import TdsPaidByVendorView from "./Screens/Reports/VendorReport/TDSPaidByvendor/index.jsx";
 import VendorPaymentPeriodView from "./Screens/Reports/VendorReport/VendorPaymentPeriod/index.jsx";
+import StatisticsReport from "./Screens/Reports/Statistics/StatisticsReport/index.jsx";
 
 const App = () => {
   const { isInitialized } = useAuth();
@@ -438,6 +439,14 @@ const App = () => {
               <Route
                 path="reports/vendorpaymentsummary"
                 element={<VendorPaymentPeriodView />}
+              />
+              <Route
+                path="reports/clientStatistics"
+                element={<ClientStatistics />}
+              />
+              <Route
+                path="reports/statisticsReport"
+                element={<StatisticsReport />}
               />
             </Route>
 

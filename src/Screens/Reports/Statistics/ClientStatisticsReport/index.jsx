@@ -22,7 +22,7 @@ import DatePicker from "react-datepicker";
 import { formatedFilterData } from "../../../../utils/filters";
 import * as XLSX from "xlsx";
 // import SimpleTable from "../../../Components/common/table/CustomTable";
-import SimpleTable from "../../../../Components/common/table/ClientPortalTable";
+import SimpleTable from "../../../../Components/common/table/CustomTable";
 import Container from "../../../../Components/common/Container";
 
 const ClientStatistics = () => {
@@ -186,8 +186,8 @@ const ClientStatistics = () => {
         <div className="flex flex-col px-4">
           <div className="flex justify-between">
             <HeaderBreadcrum
-              heading={"Client Statistics Report"}
-              path={["Reports", "Statistics", "Client Statistics Report"]}
+              heading={"Statistics Report"}
+              path={["Reports", "Statistics", "Statistics Report"]}
             />
             <div className="flex justify-between gap-7 h-[36px]">
 

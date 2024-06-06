@@ -263,8 +263,8 @@ const OrderPaymentDDView = () => {
         <div className="flex justify-between items-center h-[59px]">
           <HeaderBreadcrum
             
-            heading={"Order Payment-Direct Debit"}
-            path={["Reports", "Tally Report", " Order Payment-Direct Debit"]}
+            heading={"Order Payment-Taxes"}
+            path={["Reports", "Tally Report", " Order Payment-Taxes"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (

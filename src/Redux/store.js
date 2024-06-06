@@ -54,6 +54,7 @@ import TdsPaidByVendorReducer from "./slice/reporting/Group9/TdsByVendorSlice"
 import TdsToGovtReducer from "./slice/reporting/Group9/tdsPaidToGovt";
 import VendorPaymentPeriodReducer from "./slice/reporting/Group9/VendorPaymentPeriodSlice"
 import friends  from "./slice/Research/FriendsSlice";
+import StatisticsReport from "./slice/reporting/Statistics/StatisticsReport";
 
 export const store = configureStore({
   reducer: {
@@ -105,7 +106,8 @@ export const store = configureStore({
     vendorStatement: VendorStatementReducer,
     tdspaidByVendor:TdsPaidByVendorReducer,
     tdsToGovt: TdsToGovtReducer,
-    vendorPaymentPeriod:VendorPaymentPeriodReducer
+    vendorPaymentPeriod:VendorPaymentPeriodReducer,
+    statisticsReport:StatisticsReport,
   },
   // Add the RTK Query API middleware
 });

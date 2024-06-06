@@ -259,8 +259,8 @@ const OrderPaymentB2CView = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Payment-Bank to Cank"}
-            path={["Reports", "Tally Report", " Order Payment-Bank to Cank"]}
+            heading={"Order Payment-Bank to Cash"}
+            path={["Reports", "Tally Report", " Order Payment-Bank to Cash"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (

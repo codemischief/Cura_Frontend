@@ -320,7 +320,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.tally.ClientReceipt,
             },
             {
-              title: "Order Payment-DD",
+              title: "Order Payment-Taxes",
               path: PATH_DASHBOARD.report.tally.OrderPaymentDD,
             },
             {
@@ -336,7 +336,7 @@ export const navMenuConfig = [
               path: PATH_DASHBOARD.report.tally.OrderPaymentWithTds,
             },
             {
-              title: "OR-Invoice-Service Tax/GST",
+              title: "CR-GST Invoice",
               path: PATH_DASHBOARD.report.tally.OrderReceiptToInvoiceTax,
             },
             {
