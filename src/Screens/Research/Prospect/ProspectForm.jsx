@@ -27,10 +27,7 @@ const validationSchema = Yup.object().shape({
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  const [countryData, setCountryData] = useState({
-    arr: [],
-    obj: {},
-  });
+  const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,13 +48,14 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
+    setCountryData(result)
+    // const resultConverted = await result?.reduce((acc, current) => {
+    //   acc[current.id] = current.name;
+    //   return acc;
+    // }, {});
 
-    setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
+    // setLoading(false);
+    // setCountryData({ arr: result, obj: resultConverted });
   };
 
   const fetchCityData = async (id) => {
@@ -69,8 +67,16 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id ) {
+      // we are editing
+      // console.log(editData)
+      fetchStateData(editData?.country)
+      fetchCityData(editData?.state)
+    }else {
+      fetchStateData(5);
+      fetchCityData("Maharashtra");
+    }
+    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -122,11 +128,10 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
         country: Number(values.countryId),
         propertylocation: values.propertylocation,
         possibleservices: values.possibleservices,
-        createdby: 1234,
-        isdeleted: false,
       };
 
       if (editData?.id) {
+        data.id = editData?.id
         await dispatch(editProspectData(data));
         openSucess();
       } else {
@@ -161,14 +166,17 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const handleChange = (e) => {
     setFieldValue(e.target.name, e.target.value);
   };
-  const handleCountrySelect = (country) => {
-    setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
-    fetchStateData(country?.id);
+  const handleCountrySelect = (e) => {
+    setFieldValue("countryId", e.target.value);
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([])
+    fetchStateData(e.target.value);
   };
 
   const handleState = (e) => {
+    console.log(e.target.name)
+    console.log(e.target.value)
     setFieldValue(e.target.name, e.target.value);
     fetchCity(e.target.value);
   };
@@ -223,12 +231,29 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <span className="requiredError">*</span>
                             </div>
 
-                            <CustomSelect
-                              isLoading={loading}
-                              value={countryData?.obj[formik.values.countryId]}
-                              onSelect={handleCountrySelect}
-                              options={countryData?.arr}
-                            />
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
+                              onChange={handleCountrySelect}
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                select Country
+                              </option>
+                              {countryData.length > 0 &&
+                                countryData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
                               {errors.countryId && (
                                 <div>{errors.countryId}</div>
@@ -250,8 +275,8 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue">
-                                select state
+                              <option value="" className="inputFieldValue" hidden>
+                                Select State
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -287,12 +312,12 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               className="selectBoxField inputFieldValue"
                               name="city"
                               value={formik.values.city}
-                              defaultValue="Select State"
+                              defaultValue="Select City"
                               onChange={handleChange}
                               onBlur={handleBlur}
                             >
-                              <option value="" className="inputValidationError">
-                                select city
+                              <option value="" className="inputValidationError hidden">
+                                Select City
                               </option>
                               {cityData.length > 0 &&
                                 cityData.map((editData) => {
@@ -300,7 +325,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                     <option
                                       value={editData.city}
                                       key={editData.city}
-                                      selected
+                
                                     >
                                       {editData.city}
                                     </option>
@@ -460,7 +485,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Prospect"
+          title={`${editData?.id ? 'Save Prospect' : 'Add Prospect'}`}
           description={
             <div>
               <p className="">Prospect: {values.personname}</p>
@@ -474,7 +499,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this Prospect?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Prospect?
               </Typography>
             </div>
           }

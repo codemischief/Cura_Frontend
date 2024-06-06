@@ -86,7 +86,7 @@ const ResearchGovernmentDepartment = () => {
       rows: [
         "id",
         "agencyname",
-        "agencytype",
+        "departmenttype",
         "city",
         "suburb",
         "details"    
@@ -143,24 +143,26 @@ const ResearchGovernmentDepartment = () => {
   };
 
   const downloadExcel = async () => {
-    const colMap = columns?.slice(1, -1)?.reduce((acc, column) => {
-      if (column.field) {
-        acc[column.field] = column.title;
-      }
-      return acc;
-    }, {});
+    
 
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "agencyname",
-        "agencytype",
+        "departmenttype",
         "city",
         "suburb",
-        "details"
+        "details",
+        "id"
       ],
-      // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
+      colmap : {
+         "agencyname" : "Department Name",
+         "departmenttype" : "Department Type",
+         "city" : "City",
+         "suburb" : "Suburb",
+         "details" : "Details",
+         "id" : "ID"
+      },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",
       filters: formatedFilterData(filter),
@@ -177,12 +179,12 @@ const ResearchGovernmentDepartment = () => {
     setEditData({});
   };
 
-  const deleteGovernmentDepartment = async () => {
+  const deleteGovt = async () => {
     try {
       const data = { user_id: 1234, id: isDeleteDialogue };
       await dispatch(deleteGovernmentDepartment(data));
       setIsDeleteDialogue(null);
-      SetOpenSubmissionPrompt("Employer Deleted Successfully");
+      SetOpenSubmissionPrompt("Department Deleted Successfully");
       setPromptType(alertVariant.success);
       fetchData()
     } catch (error) {
@@ -290,8 +292,9 @@ const ResearchGovernmentDepartment = () => {
         <CustomDeleteModal
           openDialog={isDeleteDialogue ? true : false}
           setOpenDialog={setIsDeleteDialogue}
-          handleDelete={deleteGovernmentDepartment}
+          handleDelete={deleteGovt}
           deleteError={deleteError}
+          text={'Government Department'}
         />
       )}
     </div>

@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { env_URL_SERVER, updatedGovernmentDepartmentData } from "../../helper";
+import { env_URL_SERVER, updatedBanksAndBranchesData } from "../../helper";
 import FileSaver from "file-saver";
 const initialState = {
-  GovernmentDepartmentData: [],
+  BankAndBranchesData: [],
   formSubmissionStatus: "",
   status: "",
   filter: {},
@@ -18,13 +18,13 @@ const initialState = {
   },
 };
 
-export const governmentdepartment = createSlice({
-  name: "governmentdepartment",
+export const banksandbranches = createSlice({
+  name: "banksandbranches",
   initialState,
   reducers: {
-    setGovermentDepartmentData: (state, { payload }) => {
+    setBanksAndBranchesData: (state, { payload }) => {
       const { data, year, month } = payload;
-      state.GovernmentDepartmentData = updatedGovernmentDepartmentData(data.data, year, month);
+      state.BankAndBranchesData = updatedBanksAndBranchesData(data.data, year, month);
       state.totalCount = payload.data.total_count;
     },
     setStatus: (state, { payload }) => {
@@ -65,7 +65,7 @@ export const governmentdepartment = createSlice({
 // reducer
 // Action creators are generated for each case reducer function
 export const {
-  setGovermentDepartmentData,
+  setBanksAndBranchesData,
   setStatus,
   setPageNumber,
   setCountPerPage,
@@ -73,28 +73,28 @@ export const {
   setInitialState,
   setSorting,
   setFormSubmissionStatus,
-} = governmentdepartment.actions;
+} = banksandbranches.actions;
 
-export const getGovernmentDepartmentData = (payloadObj, year, month) => async (dispatch) => {
+export const getBanksAndBranches = (payloadObj, year, month) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}getResearchGovtAgencies`,
+      `${env_URL_SERVER}getResearchBanksAndBranches`,
       payloadObj
     );
 
-    dispatch(setGovermentDepartmentData({ data: response.data, year, month }));
+    dispatch(setBanksAndBranchesData({ data: response.data, year, month }));
     dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
 };
 
-export const addGovernmentDepartment = (payload) => async (dispatch) => {
+export const addBanksAndBranches = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}addResearchGovtAgencies`,
+      `${env_URL_SERVER}addResearchBanksAndBranches`,
       payload
     );
     dispatch(setFormSubmissionStatus("success"));
@@ -106,11 +106,11 @@ export const addGovernmentDepartment = (payload) => async (dispatch) => {
   }
 };
 
-export const editGovernmentDepartment = (payload) => async (dispatch) => {
+export const editBanksAndBranches = (payload) => async (dispatch) => {
   try {
     dispatch(setFormSubmissionStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}editResearchGovtAgencies`,
+      `${env_URL_SERVER}editResearchBanksAndBranches`,
       payload
     );
     dispatch(setFormSubmissionStatus("success"));
@@ -120,11 +120,11 @@ export const editGovernmentDepartment = (payload) => async (dispatch) => {
     // throw error;
   }
 };
-export const downloadGovernmentDepartmentDataXls = (payloadObj) => async (dispatch) => {
+export const downloadBanksAndBranchesDataXls = (payloadObj) => async (dispatch) => {
   try {
     dispatch(setStatus("loading"));
     const response = await axios.post(
-      `${env_URL_SERVER}getResearchGovtAgencies`,
+      `${env_URL_SERVER}getResearchBanksAndBranches`,
       payloadObj
     );
     if ((response.data.filename, payloadObj.user_id)) {
@@ -133,9 +133,6 @@ export const downloadGovernmentDepartmentDataXls = (payloadObj) => async (dispat
       );
     }
     dispatch(setStatus("success"));
-    // return response.data;
-    // dispatch(setOrderPaymentData({ data: response.data, year, month }));
-    // dispatch(setStatus("success"));
   } catch (err) {
     dispatch(setStatus("error"));
   }
@@ -155,17 +152,15 @@ export const downloadXlsEndpoint = (filename, userId) => async (dispatch) => {
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    FileSaver.saveAs(blob, "GovernmentDepartmentData.xlsx");
+    FileSaver.saveAs(blob, "BanksAndBranchesData.xlsx");
   } catch (error) {
     console.log("error", error);
   }
 };
-
-
-export const deleteGovernmentDepartment = (payload) => async (dispatch) => {
+export const deleteBanksAndBranches = (payload) => async (dispatch) => {
   try {
     const response = await axios.post(
-      `${env_URL_SERVER}deleteResearchGovtAgencies`,
+      `${env_URL_SERVER}deleteResearchBanksAndBranches`,
       payload
     );
     return response;
@@ -175,4 +170,4 @@ export const deleteGovernmentDepartment = (payload) => async (dispatch) => {
 };
 
 export const handleRefresh = (payload) => async (dispatch) => {};
-export default governmentdepartment.reducer;
+export default banksandbranches.reducer;

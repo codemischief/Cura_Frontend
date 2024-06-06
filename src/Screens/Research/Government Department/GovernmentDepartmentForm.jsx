@@ -24,12 +24,10 @@ const validationSchema = Yup.object().shape({
 });
 const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess }) => {
   const dispatch = useDispatch();
-  const [countryData, setCountryData] = useState({
-    arr: [],
-    obj: {},
-  });
+  const [countryData, setCountryData] = useState([]);
   const [stateData, setStateData] = useState([]);
   const [cityData, setCityData] = useState([]);
+  const [departmentTypeData,setDepartmentTypeData] = useState([])
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [openConfirmation, setOpenConfimation] = useState(false);
@@ -48,13 +46,8 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
     };
     const response = await APIService.getCountries(data);
     const result = (await response.json()).data;
-    const resultConverted = await result?.reduce((acc, current) => {
-      acc[current.id] = current.name;
-      return acc;
-    }, {});
-
-    setLoading(false);
-    setCountryData({ arr: result, obj: resultConverted });
+    setCountryData(result)
+    setLoading(false); 
   };
 
   const fetchCityData = async (id) => {
@@ -66,8 +59,16 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    fetchDepartmentTypeData()
+    if(editData?.id) {
+      // then its edit
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+
+      fetchStateData(5);
+      fetchCityData("Maharashtra");
+    }
   }, []);
 
   const fetchStateData = async (id) => {
@@ -93,10 +94,10 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : "Pune",
       suburb : editData.suburb ? editData.suburb : null,
-      departmenttype : editData.agencytype ? editData.agencytype : null,
+      departmenttype : editData.departmenttypeid ? editData.departmenttypeid : null,
       details : editData.details ? editData.details : null,
       contactname : editData.contactname ? editData.contactname : null,
-      contactemail : editData.contactemail ? editData.contactemail : null,
+      contactemail : editData.contactmail ? editData.contactmail : null,
       contactphone : editData.contactphone ? editData.contactphone : null,
       maplink : editData.maplink ? editData.maplink : null,
       zip : editData?.zip ? editData.zip : null,
@@ -120,7 +121,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
         state : values.state,
         country: Number(values.countryId),
         zip : values.zip,
-        agencytype : values.departmenttype,
+        departmenttype : Number(values.departmenttype),
         details : values.details,
         contactname : values.contactname,
         contactmail : values.contactemail,
@@ -129,6 +130,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
       };
 
       if (editData?.id) {
+        data.id = editData?.id
         await dispatch(editGovernmentDepartment(data));
         openSucess();
       } else {
@@ -173,18 +175,26 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
       setFieldValue(name, value);
     }
   };
-  const handleCountrySelect = (country) => {
-    setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
-    fetchStateData(country?.id);
+  const handleCountrySelect = (e) => {
+    // console.log(country)
+    setFieldValue("countryId", e.target.value);
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([])
+    fetchStateData(e.target.value);
   };
 
   const handleState = (e) => {
     setFieldValue(e.target.name, e.target.value);
     fetchCity(e.target.value);
   };
-
+  const fetchDepartmentTypeData = async () => {
+     const data = {"user_id" : 1234}
+     const response = await APIService.getDepartmentTypeAdmin(data)
+     const res = await response.json()
+     setDepartmentTypeData(res.data)
+     console.log(res.data)
+  }
   return (
     <>
       <Modal
@@ -278,12 +288,31 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               <span className="requiredError">*</span>
                             </div>
 
-                            <CustomSelect
-                              isLoading={loading}
-                              value={countryData?.obj[formik.values.countryId]}
-                              onSelect={handleCountrySelect}
-                              options={countryData?.arr}
-                            />
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="countryId"
+                              value={formik.values.countryId}
+                              defaultValue="Select Country"
+                              onChange={handleCountrySelect}
+                              onBlur={handleBlur}
+                            >
+                              <option value="" className="inputValidationError" hidden>
+                                Select Country
+                              </option>
+                              {countryData?.length > 0 &&
+                                countryData?.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                      
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
                             <div className="inputValidationError">
                               {errors.countryId && (
                                 <div>{errors.countryId}</div>
@@ -295,7 +324,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
                             <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -305,8 +334,8 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue">
-                                select state
+                              <option value="" className="inputFieldValue" hidden>
+                                Select State
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -334,7 +363,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
 
                             <select
@@ -346,8 +375,8 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               onChange={handleChange}
                               onBlur={handleBlur}
                             >
-                              <option value="" className="inputValidationError">
-                                select city
+                              <option value="" className="inputValidationError" hidden>
+                                Select City
                               </option>
                               {cityData.length > 0 &&
                                 cityData.map((editData) => {
@@ -355,7 +384,6 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                                     <option
                                       value={editData.city}
                                       key={editData.city}
-                                      selected
                                     >
                                       {editData.city}
                                     </option>
@@ -397,7 +425,31 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                           <div className="">
                             {/* <div className="text-[13px]">Email </div> */}
                             <label className="inputFieldLabel">Department Type</label>
-                            <input
+                            <span className="requiredError">*</span>
+                            <select
+                              // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
+                              className="selectBoxField inputFieldValue"
+                              name="departmenttype"
+                              value={formik.values.departmenttype}
+                              defaultValue="Select Department Type"
+                              onChange={handleChange}
+                            >
+                              <option value="" className="inputFieldValue" hidden>
+                                Select Department Type
+                              </option>
+                              {departmentTypeData.length > 0 &&
+                                departmentTypeData.map((editData) => {
+                                  return (
+                                    <option
+                                      value={editData.id}
+                                      key={editData.id}
+                                    >
+                                      {editData.name}
+                                    </option>
+                                  );
+                                })}
+                            </select>
+                            {/* <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
                               type="text"
@@ -405,7 +457,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                               value={formik.values.industry}
                               onChange={handleChange}
                               onBlur={handleBlur}
-                            />
+                            /> */}
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -555,7 +607,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Employer"
+          title={`${editData?.id ? 'Save Department' : 'Add Department'}`}
           description={
             <div>
               <p className="">Department Name: {values.departmentname}</p>
@@ -569,7 +621,7 @@ const GovernmentDepartmentForm = ({ isOpen, handleClose, editData, openSucess })
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this Government Department?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Government Department?
               </Typography>
             </div>
           }

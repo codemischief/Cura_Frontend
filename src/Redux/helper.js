@@ -397,4 +397,9 @@ export const TenantEmail = (data) => {
     ...billing,
   }));
 }
+export const updatedBanksAndBranchesData = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;
