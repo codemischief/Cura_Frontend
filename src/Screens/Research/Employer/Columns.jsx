@@ -86,7 +86,7 @@ export default function connectionDataColumn(handleEdit, handleDelete) {
     {
       id: 5,
       title: "Onsite Oppurtunity",
-      field: "onsiteopportunity",
+      field: "onsiteopportunitytext",
       sorting: true,
       align: "left",
       filterComponent: TextFilterField,

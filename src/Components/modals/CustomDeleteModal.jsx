@@ -8,6 +8,7 @@ const CustomDeleteModal = ({
   setOpenDialog,
   handleDelete,
   deleteError,
+  text,
 }) => {
   const handleDialogClose = () => {
     setOpenDialog(null);
@@ -38,7 +39,7 @@ const CustomDeleteModal = ({
                 {deleteError}
               </span>
               <div className="mt-4 w-full text-center">
-                <p>Are you sure you want to delete this prospect</p>
+                <p>Are you sure you want to delete this {text}</p>
               </div>
               <div className="my-5 flex justify-center items-center gap-[10px]">
                 <button

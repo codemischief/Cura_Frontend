@@ -88,7 +88,7 @@ const ResearchEmployer = () => {
         "employername",
         "industry",
         "website",
-        "onsiteopportunity"
+        "onsiteopportunitytext"
       ],
       filters: formatedFilterData(filter),
       sort_by: sorting.sort_by ? [sorting.sort_by] : [],
@@ -155,14 +155,14 @@ const ResearchEmployer = () => {
         "employername",
         "industry",
         "website",
-        "onsiteopportunity",
+        "onsiteopportunitytext",
         "id",
       ],
       colmap : {
         "employername" : "Employer Name",
         "industry" : "Industry",
         "website" : "Website",
-        "onsiteopportunity" : "On-Site Oppurtunity",
+        "onsiteopportunitytext" : "On-Site Oppurtunity",
         "id" : "ID",
       },
       // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
@@ -297,6 +297,7 @@ const ResearchEmployer = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteEmployers}
           deleteError={deleteError}
+          text={'Employer'}
         />
       )}
     </div>

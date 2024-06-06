@@ -92,8 +92,16 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
 
   useEffect(() => {
     fetchCountryData();
-    fetchStateData(5);
-    fetchCityData("Maharashtra");
+    if(editData?.id) {
+      // then its update wala case
+      fetchStateData(editData?.countryid)
+      fetchCityData(editData?.state)
+    }else {
+      // then its add wala case
+      fetchStateData(5);
+     fetchCityData("Maharashtra");
+    }
+    
   }, []);
 
   const fetchStateData = async (id) => {
@@ -381,7 +389,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleState}
                             >
                               <option value="" className="inputFieldValue" hidden>
-                                select state
+                                Select State
                               </option>
                               {stateData.length > 0 &&
                                 stateData.map((editData) => {
@@ -420,7 +428,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onBlur={handleBlur}
                             >
                               <option value="" className="inputValidationError" hidden>
-                                select city
+                                Select City
                               </option>
                               {cityData.length > 0 &&
                                 cityData.map((editData) => {
@@ -735,7 +743,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             
                           </div>
                           <div className="mt-12">
-                            <div className="flex space-x-2">
+                            <div className="flex space-x-2 items-center">
                               
                               <input 
                                 type="checkbox" checked={values.onsiteopportunity}
@@ -802,9 +810,9 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
           }}
           errors={apiError}
           onSubmit={handleConfirm}
-          title="Add Employer"
+          title={`${editData?.id ?  "Save Employer" : "Add Employer"}`}
           description={
-            <div>
+            <div className="flex flex-col items-center">
               <p className="">Employer: {values.employername}</p>
               <Typography
                 sx={{
@@ -816,7 +824,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                   color: "#282828",
                 }}
               >
-                Are you sure you want to add this Employer?
+                Are you sure you want to {editData?.id ? 'Save' : 'Add'} this Employer?
               </Typography>
             </div>
           }
