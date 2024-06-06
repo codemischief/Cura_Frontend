@@ -152,12 +152,19 @@ const ResearchEmployer = () => {
     let obj = {
       user_id: 1234,
       rows: [
-        "id",
         "employername",
         "industry",
         "website",
-        "onsiteopportunity"
+        "onsiteopportunity",
+        "id",
       ],
+      colmap : {
+        "employername" : "Employer Name",
+        "industry" : "Industry",
+        "website" : "Website",
+        "onsiteopportunity" : "On-Site Oppurtunity",
+        "id" : "ID",
+      },
       // colmap: { ...colMap, state: "State", country: "Country", city: "City" },
       sort_by: sorting.sort_by ? [sorting.sort_by] : undefined,
       downloadType: "excel",

@@ -113,29 +113,29 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   console.log(editData)
   const formik = useFormik({
     initialValues: {
-      employername : editData?.employername ? editData.employername : "",
-      adressline1 : editData?.addressline1 ? editData.addressline1 : "",
-      adressline2 : editData?.addressline2 ? editData.addressline2 : "",
+      employername : editData?.employername ? editData.employername : null,
+      adressline1 : editData?.addressline1 ? editData.addressline1 : null,
+      adressline2 : editData?.addressline2 ? editData.addressline2 : null,
       countryId: editData?.countryid ? editData.countryid: 5,
       state: editData?.state ? editData.state : "Maharashtra",
       city: editData?.city ? editData.city : "Pune",
-      suburb : editData.suburb ? editData.suburb : "",
-      zip : editData?.zip ? editData.zip : "",
-      industry : editData?.industry ? editData.industry : "",
-      hrcontactname : editData?.hrcontactname ? editData.hrcontactname : "",
-      hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : "",
-      hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : "",
-      admincontactname : editData?.admincontactname ? editData.admincontactname : "",
-      admincontactphone : editData?.admincontactphone ? editData.admincontactphone : "",
-      admincontactmail : editData?.admincontactmail ? editData.admincontactmail : "",
-      hc : editData?.hc ? editData.hc : "",
-      website : editData?.website ? editData.website : "",
-      contactname1 : editData?.contactname1 ? editData.contactname1 : "",
-      contactphone1 : editData?.contactphone1 ? editData.contactphone1 : "",
-      contactmail1 : editData?.contactmail1 ? editData.contactmail1 : "",
-      contactname2 : editData?.contactname2 ? editData.contactname2 : "",
-      contactphone2 : editData?.contactphone2 ? editData.contactphone2 : "",
-      contactmail2 : editData?.contactmail2 ? editData.contactmail2 : "",
+      suburb : editData.suburb ? editData.suburb : null,
+      zip : editData?.zip ? editData.zip : null,
+      industry : editData?.industry ? editData.industry : null,
+      hrcontactname : editData?.hrcontactname ? editData.hrcontactname : null,
+      hrcontactphone : editData?.hrcontactphone ? editData.hrcontactphone : null,
+      hrcontactmail : editData?.hrcontactmail ? editData.hrcontactmail : null,
+      admincontactname : editData?.admincontactname ? editData.admincontactname : null,
+      admincontactphone : editData?.admincontactphone ? editData.admincontactphone : null,
+      admincontactmail : editData?.admincontactmail ? editData.admincontactmail : null,
+      hc : editData?.hc ? editData.hc : null,
+      website : editData?.website ? editData.website : null,
+      contactname1 : editData?.contactname1 ? editData.contactname1 : null,
+      contactphone1 : editData?.contactphone1 ? editData.contactphone1 : null,
+      contactmail1 : editData?.contactmail1 ? editData.contactmail1 : null,
+      contactname2 : editData?.contactname2 ? editData.contactname2 : null,
+      contactphone2 : editData?.contactphone2 ? editData.contactphone2 : null,
+      contactmail2 : editData?.contactmail2 ? editData.contactmail2 : null,
       onsiteopportunity : editData?.onsiteopportunity ? editData.onsiteopportunity : false
     },
     validationSchema,
@@ -150,7 +150,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
       const data = {
         user_id: 1234,
         country: Number(values.countryId),
-        onsiteopportunity : true,
+        onsiteopportunity : values.onsiteopportunity,
         city: values.city,
         state: values.state,
         admincontactmail : values.admincontactmail,
@@ -176,6 +176,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
       };
 
       if (editData?.id) {
+        data.id = editData.id
         await dispatch(editEmployerData(data));
         openSucess();
       } else {
@@ -222,8 +223,9 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
   };
   const handleCountrySelect = (country) => {
     setFieldValue("countryId", country?.id);
-    setFieldValue("state", "");
-    setFieldValue("city", "");
+    setFieldValue("city", null);
+    setFieldValue("state", null);
+    setCityData([])
     fetchStateData(country?.id);
   };
 
@@ -342,6 +344,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
+                              <span className="requiredError">*</span>
                               {/* <span className="requiredError">*</span> */}
                             </div>
                             <select
@@ -352,7 +355,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               defaultValue="Select State"
                               onChange={handleState}
                             >
-                              <option value="" className="inputFieldValue">
+                              <option value="" className="inputFieldValue" hidden>
                                 select state
                               </option>
                               {stateData.length > 0 &&
@@ -368,19 +371,17 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                                 })}
                             </select>
                             <div className="inputValidationError">
-                              {/* {formErrors.state} */}
+                              {/* {formErrors.city} */}
                               {errors.state && <div>{errors.state}</div>}
                             </div>
+                            
                           </div>
                           <div className="">
-                            {/* <div className="text-[13px]">
-                              City Name{" "}
-                              <label className="text-red-500">*</label>
-                            </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
+                              <span className="requiredError">*</span>
                               {/* <span className="requiredError">*</span> */}
                             </div>
 
@@ -393,7 +394,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             >
-                              <option value="" className="inputValidationError">
+                              <option value="" className="inputValidationError" hidden>
                                 select city
                               </option>
                               {cityData.length > 0 &&
@@ -711,8 +712,8 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="mt-12">
                             <div className="flex space-x-2">
                               
-                            <input 
-                            type="checkbox" checked={values.onsiteopportunity}
+                              <input 
+                                type="checkbox" checked={values.onsiteopportunity}
                                 className='mr-3 h-4 w-4'
                                 name="onsiteopportunity"
                                 onBlur={handleBlur}

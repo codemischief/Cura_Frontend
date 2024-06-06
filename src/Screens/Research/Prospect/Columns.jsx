@@ -20,7 +20,7 @@ export default function getColumns(handleEdit, handleDelete) {
         justifyContent: "center",
         minWidth: "50px",
       },
-      align: "left",
+      align: "center",
       sorting: false,
       field: "srNo",
 
