@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
   state: Yup.string().required("State is required"),
   city: Yup.string().required("City is required"),
   personname: Yup.string().required("Person Name is required"),
-  suburb: Yup.string().required("suburbis required"),
+  suburb: Yup.string().required("suburb is required"),
   propertylocation: Yup.string().required("Location is required"),
   possibleservices: Yup.string().required("posiible services is required"),
 });
@@ -240,7 +240,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 State Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                               <span className="requiredError">*</span>
                             </div>
                             <select
                               // className="w-[230px] hy-[10px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -279,7 +279,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 City Name
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span> 
                             </div>
 
                             <select
@@ -318,7 +318,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">Suburb</label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -340,7 +340,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <label className="inputFieldLabel">
                               Property Location
                             </label>
-                            {/* <span className="requiredError">*</span> */}
+                             <span className="requiredError">*</span>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -366,7 +366,7 @@ const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               <label className="inputFieldLabel">
                                 Possible Services
                               </label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span> 
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"

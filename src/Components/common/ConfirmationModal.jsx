@@ -19,16 +19,16 @@ const ConfirmationModal = ({
     <Modal open={open}>
       <>
         <Draggable>
-          <div className="ml-[320px] mt-52 flex flex-col w-[638px] h-[316px] rounded-xl bg-white justify-center items-center">
+          <div className="mx-auto mt-52 flex flex-col w-[638px] h-[316px] rounded-xl bg-white justify-center items-center">
             <button
               onClick={onClose}
               className="flex self-end mr-[50px] mt-[10px]"
             >
               {/* <img className="w-[20px] h-[20px]" src={Cross} alt="cross" /> */}
-              <CloseOutlined />
+              <CloseOutlined style={{position : 'absolute' , right : '2'}}/>
             </button>
             <Stack direction={"column"} gap={"55px"}>
-              <Stack direction={"column"} gap={"12px"}>
+              <Stack direction={"column"} gap={"12px"} justifyContent={'center'} alignItems={'center'}>
                 <Typography
                   sx={{
                     alignContent: "center",
@@ -37,6 +37,7 @@ const ConfirmationModal = ({
                     fontStyle: "normal",
                     fontWeight: 600,
                     lineHeight: "135%",
+                   
                   }}
                 >
                   {" "}
