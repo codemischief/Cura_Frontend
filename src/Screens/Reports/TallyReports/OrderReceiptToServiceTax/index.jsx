@@ -278,8 +278,8 @@ const OrderReceiptToInvoiceServiceTax = () => {
       <div className="flex flex-col px-4">
         <div className="flex justify-between">
           <HeaderBreadcrum
-            heading={"Order Receipt to Invoice(Service Tax / GST)"}
-            path={["Reports", "Tally Report", "Order Receipt to Invoice(Service Tax / GST)"]}
+            heading={"CR-GST Invoice"}
+            path={["Reports", "Tally Report", "CR-GST Invoice"]}
           />
           <div className="flex justify-between gap-7 h-[36px]">
             {showTable && (
