@@ -402,4 +402,11 @@ export const updatedBanksAndBranchesData = (data) => {
     ...billing,
   }));
 }
+export const updatedOrderPaymentDD = (data) => {
+  return data.map((billing, index) => ({
+    ...billing,
+    ledgeramount: billing.ledgeramount ? floorDecimal(billing.ledgeramount) : "0.00",
+    date: billing.date ? formatDate(billing.date) : "",
+  }));
+}
 export const env_URL_SERVER = import.meta.env.VITE_ENV_URL_SERVER;

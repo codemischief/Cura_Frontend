@@ -3,6 +3,7 @@ import axios from "axios";
 import FileSaver from "file-saver";
 import {
   env_URL_SERVER,
+  updatedOrderPaymentDD
 } from "../../../../helper";
 
 const initialState = {
@@ -27,7 +28,7 @@ export const orderPaymentDD = createSlice({
   reducers: {
     setorderPaymentDDView: (state, { payload }) => {
       const { data } = payload;
-      state.orderPaymentDDView = data.data
+      state.orderPaymentDDView = updatedOrderPaymentDD(data.data),
       state.totalCount = payload.data.total_count;
       state.totalAmount = payload.data.total;
     },
