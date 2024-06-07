@@ -218,8 +218,8 @@ const PropectusPage = () => {
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Prospect updated."
-      : "Process cancelled, no new Prospect created.";
+      ? "Process cancelled, No Changes Saved."
+      : "Process cancelled, No New Prospect Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
@@ -294,6 +294,7 @@ const PropectusPage = () => {
           setOpenDialog={setIsDeleteDialogue}
           handleDelete={deleteProspects}
           deleteError={deleteError}
+          text={'Prospect'}
         />
       )}
     </div>

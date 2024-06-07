@@ -16,13 +16,13 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  countryId: Yup.string().required("Country Name is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
-  personname: Yup.string().required("Person Name is required"),
-  suburb: Yup.string().required("suburb is required"),
-  propertylocation: Yup.string().required("Location is required"),
-  possibleservices: Yup.string().required("posiible services is required"),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
+  personname: Yup.string().required("Enter Name Of The Person"),
+  suburb: Yup.string().required("Enter Suburb"),
+  propertylocation: Yup.string().required("Enter Property Location"),
+  possibleservices: Yup.string().required("Enter Possible Services"),
 });
 
 const ProspectForm = ({ isOpen, handleClose, editData, openSucess }) => {

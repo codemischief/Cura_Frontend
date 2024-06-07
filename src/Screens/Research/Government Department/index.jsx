@@ -207,7 +207,7 @@ const ResearchGovernmentDepartment = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "Governemnt Department updated successfully"
+      ? "Changes Saved Successfully"
       : "New Government Department created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
@@ -218,8 +218,8 @@ const ResearchGovernmentDepartment = () => {
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no Government Department updated."
-      : "Process cancelled, no new Government Department created.";
+      ? "Process cancelled, No Changes Saved."
+      : "Process cancelled, No New Government Department Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);

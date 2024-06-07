@@ -17,10 +17,12 @@ import { ModalHeader } from "../../../Components/modals/ModalAtoms";
 import CustomSelect from "../../../Components/common/select/CustomSelect";
 
 const validationSchema = Yup.object().shape({
-  employername : Yup.string().required('Employer Name Is Required'),
-  countryId: Yup.string().required("Country Name is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
+  employername : Yup.string().required('Enter Employer Name'),
+  industry : Yup.string().required('Enter Industry'),
+  suburb : Yup.string().required('Enter Suburb'),
+  countryId: Yup.string().required("Select Country"),
+  state: Yup.string().required("Select State"),
+  city: Yup.string().required("Select City"),
 });
 // {
 //   "user_id": 1234,
@@ -454,7 +456,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div> */}
                             <div className="flex">
                               <label className="inputFieldLabel">Suburb</label>
-                              {/* <span className="requiredError">*</span> */}
+                              <span className="requiredError">*</span>
                             </div>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
@@ -502,6 +504,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                           <div className="">
                             {/* <div className="text-[13px]">Email </div> */}
                             <label className="inputFieldLabel">Industry</label>
+                            <span className="requiredError">*</span>
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
@@ -511,6 +514,11 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                            <div className="inputValidationError">
+                              {touched.industry && errors.industry && (
+                                <div>{errors.industry}</div>
+                              )}
+                            </div>
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -526,6 +534,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                               onChange={handleChange}
                               onBlur={handleBlur}
                             />
+                             
                           </div>
                           <div className="">
                             {/* <div className="text-[13px]">Phone Number </div> */}
@@ -550,7 +559,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             <input
                               // className="w-[230px] h-[20px] border-[1px] border-[#C6C6C6] rounded-sm px-3 text-[11px]"
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="hrcontactmail"
                               value={formik.values.hrcontactmail}
                               onChange={handleChange}
@@ -683,7 +692,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="contactmail1"
                               value={formik.values.contactmail1}
                               onBlur={handleBlur}
@@ -734,7 +743,7 @@ const EmployerForm = ({ isOpen, handleClose, editData, openSucess }) => {
                             </div>
                             <input
                               className="inputFieldBorder inputFieldValue"
-                              type="text"
+                              type="email"
                               name="contactmail2"
                               value={formik.values.contactmail2}
                               onBlur={handleBlur}

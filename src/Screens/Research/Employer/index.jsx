@@ -87,6 +87,7 @@ const ResearchEmployer = () => {
         "id",
         "employername",
         "industry",
+        "suburb",
         "website",
         "onsiteopportunitytext"
       ],
@@ -154,6 +155,7 @@ const ResearchEmployer = () => {
       rows: [
         "employername",
         "industry",
+        "suburb",
         "website",
         "onsiteopportunitytext",
         "id",
@@ -161,6 +163,7 @@ const ResearchEmployer = () => {
       colmap : {
         "employername" : "Employer Name",
         "industry" : "Industry",
+        "suburb" : "Suburb",
         "website" : "Website",
         "onsiteopportunitytext" : "On-Site Oppurtunity",
         "id" : "ID",
@@ -210,7 +213,7 @@ const ResearchEmployer = () => {
 
   const openSucess = () => {
     let messageToUpdate = editData?.id
-      ? "Employer updated successfully"
+      ? "Changes Saved Successfully"
       : "New Employer created successfully";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.success);
@@ -221,8 +224,8 @@ const ResearchEmployer = () => {
 
   const openCancel = () => {
     let messageToUpdate = editData?.id
-      ? "Process cancelled, no new Employer updated."
-      : "Process cancelled, no new Employer created.";
+      ? "Process cancelled, No Changes Saved."
+      : "Process cancelled, No New Employer Created.";
     SetOpenSubmissionPrompt(messageToUpdate);
     setPromptType(alertVariant.cancel);
     setOpenForm(false);
